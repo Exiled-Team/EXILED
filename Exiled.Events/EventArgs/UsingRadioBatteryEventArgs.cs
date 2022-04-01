@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before radio battery charge is changed.
     /// </summary>
-    public class UsingRadioBatteryEventArgs : EventArgs
-    {
+    public class UsingRadioBatteryEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UsingRadioBatteryEventArgs"/> class.
         /// </summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="drain"><inheritdoc cref="Drain"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UsingRadioBatteryEventArgs(RadioItem radio, Player player, float drain, bool isAllowed = true)
-        {
+        public UsingRadioBatteryEventArgs(RadioItem radio, Player player, float drain, bool isAllowed = true) {
             Radio = (Radio)Item.Get(radio);
             Player = player;
             Drain = drain;

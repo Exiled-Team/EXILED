@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -18,8 +17,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-096 tries not to cry.
     /// </summary>
-    public class TryingNotToCryEventArgs : EventArgs
-    {
+    public class TryingNotToCryEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="TryingNotToCryEventArgs"/> class.
         /// </summary>
@@ -27,8 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="door"><inheritdoc cref="Door"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public TryingNotToCryEventArgs(Scp096 scp096, Player player, DoorVariant door, bool isAllowed = true)
-        {
+        public TryingNotToCryEventArgs(Scp096 scp096, Player player, DoorVariant door, bool isAllowed = true) {
             Scp096 = scp096;
             Player = player;
             Door = Door.Get(door);

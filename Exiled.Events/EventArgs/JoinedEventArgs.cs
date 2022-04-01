@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after a player joins the server.
     /// </summary>
-    public class JoinedEventArgs : EventArgs
-    {
+    public class JoinedEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="JoinedEventArgs"/> class.
         /// </summary>

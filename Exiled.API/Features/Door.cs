@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
@@ -23,8 +22,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door
-    {
+    public class Door {
         private static readonly Dictionary<int, DoorType> OrderedDoorTypes = new Dictionary<int, DoorType>();
         private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new Dictionary<DoorVariant, Door>();
 
@@ -32,8 +30,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
         /// <param name="door"><inheritdoc cref="Base"/></param>
-        public Door(DoorVariant door)
-        {
+        public Door(DoorVariant door) {
             DoorVariantToDoor.Add(door, this);
             Base = door;
             Room = door.GetComponentInParent<Room>();
@@ -59,8 +56,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the door is open.
         /// </summary>
-        public bool IsOpen
-        {
+        public bool IsOpen {
             get => Base.IsConsideredOpen();
             set => Base.NetworkTargetState = value;
         }
@@ -68,11 +64,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the door's position.
         /// </summary>
-        public Vector3 Position
-        {
+        public Vector3 Position {
             get => Base.gameObject.transform.position;
-            set
-            {
+            set {
                 GameObject gameObject = Base.gameObject;
                 NetworkServer.UnSpawn(gameObject);
                 gameObject.transform.position = value;
@@ -83,8 +77,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether SCP-106 can walk through the door.
         /// </summary>
-        public bool AllowsScp106
-        {
+        public bool AllowsScp106 {
             get => Base.UsedBy106;
             set => Base.UsedBy106 = value;
         }
@@ -122,8 +115,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the required permissions to open the door.
         /// </summary>
-        public DoorPermissions RequiredPermissions
-        {
+        public DoorPermissions RequiredPermissions {
             get => Base.RequiredPermissions;
             set => Base.RequiredPermissions = value;
         }
@@ -131,11 +123,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the max health of the door. No effect if the door cannot be broken.
         /// </summary>
-        public float MaxHealth
-        {
+        public float MaxHealth {
             get => Base is BreakableDoor breakable ? breakable._maxHealth : float.NaN;
-            set
-            {
+            set {
                 if (Base is BreakableDoor breakable)
                     breakable._maxHealth = value;
             }
@@ -144,11 +134,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the door's remaining health. No effect if the door cannot be broken.
         /// </summary>
-        public float Health
-        {
+        public float Health {
             get => Base is BreakableDoor breakable ? breakable._remainingHealth : float.NaN;
-            set
-            {
+            set {
                 if (Base is BreakableDoor breakable)
                     breakable._remainingHealth = value;
             }
@@ -157,11 +145,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the damage types this door ignores, if it is breakable.
         /// </summary>
-        public DoorDamageType IgnoredDamageTypes
-        {
+        public DoorDamageType IgnoredDamageTypes {
             get => Base is BreakableDoor breakable ? breakable._ignoredDamageSources : DoorDamageType.None;
-            set
-            {
+            set {
                 if (Base is BreakableDoor breakable)
                     breakable._ignoredDamageSources = value;
             }
@@ -170,11 +156,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the door's rotation.
         /// </summary>
-        public Quaternion Rotation
-        {
+        public Quaternion Rotation {
             get => Base.gameObject.transform.rotation;
-            set
-            {
+            set {
                 GameObject gameObject = Base.gameObject;
                 NetworkServer.UnSpawn(gameObject);
                 gameObject.transform.rotation = value;
@@ -185,11 +169,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the size scale of the door.
         /// </summary>
-        public Vector3 Scale
-        {
+        public Vector3 Scale {
             get => Base.gameObject.transform.localScale;
-            set
-            {
+            set {
                 GameObject gameObject = Base.gameObject;
                 NetworkServer.UnSpawn(gameObject);
                 gameObject.transform.localScale = value;
@@ -210,10 +192,8 @@ namespace Exiled.API.Features
         /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
         /// </summary>
         /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
-        public bool BreakDoor()
-        {
-            if (Base is IDamageableDoor dmg && !dmg.IsDestroyed)
-            {
+        public bool BreakDoor() {
+            if (Base is IDamageableDoor dmg && !dmg.IsDestroyed) {
                 dmg.ServerDamage(ushort.MaxValue, DoorDamageType.ServerCommand);
                 return true;
             }
@@ -239,10 +219,8 @@ namespace Exiled.API.Features
         /// Makes the door play a beep sound.
         /// </summary>
         /// <param name="beep">The beep sound to play.</param>
-        public void PlaySound(DoorBeepType beep)
-        {
-            switch (Base)
-            {
+        public void PlaySound(DoorBeepType beep) {
+            switch (Base) {
                 case BasicDoor basic:
                     basic.RpcPlayBeepSound(beep != DoorBeepType.InteractionAllowed);
                     break;
@@ -256,14 +234,11 @@ namespace Exiled.API.Features
         /// Locks the door with the given lock type.
         /// </summary>
         /// <param name="lockType"><inheritdoc cref="DoorLockType"/></param>
-        public void ChangeLock(DoorLockType lockType)
-        {
-            if (lockType == DoorLockType.None)
-            {
+        public void ChangeLock(DoorLockType lockType) {
+            if (lockType == DoorLockType.None) {
                 Base.NetworkActiveLocks = 0;
             }
-            else
-            {
+            else {
                 DoorLockType locks = DoorLockType;
                 if (locks.HasFlag(lockType))
                     locks &= ~lockType;
@@ -284,14 +259,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
-        internal static void RegisterDoorTypesOnLevelLoad()
-        {
+        internal static void RegisterDoorTypesOnLevelLoad() {
             OrderedDoorTypes.Clear();
             ReadOnlyCollection<Door> doors = Map.Doors;
 
             int doorCount = doors.Count;
-            for (int i = 0; i < doorCount; i++)
-            {
+            for (int i = 0; i < doorCount; i++) {
                 Door door = doors[i];
                 int doorID = door.InstanceId;
 
@@ -301,13 +274,10 @@ namespace Exiled.API.Features
             }
         }
 
-        private DoorType GetDoorType()
-        {
-            if (Nametag == null)
-            {
+        private DoorType GetDoorType() {
+            if (Nametag == null) {
                 string doorName = Base.gameObject.name.GetBefore(' ');
-                switch (doorName)
-                {
+                switch (doorName) {
                     case "LCZ":
                         return DoorType.LightContainmentDoor;
                     case "HCZ":
@@ -321,8 +291,7 @@ namespace Exiled.API.Features
                 }
             }
 
-            switch (Nametag.RemoveBracketsOnEndOfName())
-            {
+            switch (Nametag.RemoveBracketsOnEndOfName()) {
                 // Doors contains the DoorNameTagExtension component
                 case "CHECKPOINT_LCZ_A":
                     return DoorType.CheckpointLczA;

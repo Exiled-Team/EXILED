@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -19,8 +18,7 @@ namespace Exiled.API.Extensions
     /// <summary>
     /// A set of extensions for <see cref="string"/>.
     /// </summary>
-    public static class StringExtensions
-    {
+    public static class StringExtensions {
         private static readonly SHA256 Sha256 = SHA256.Create();
 
         /// <summary>
@@ -29,8 +27,7 @@ namespace Exiled.API.Extensions
         /// <param name="firstString">The first string to be compared.</param>
         /// <param name="secondString">The second string to be compared.</param>
         /// <returns>Returns the distance between the two strings.</returns>
-        public static int GetDistance(this string firstString, string secondString)
-        {
+        public static int GetDistance(this string firstString, string secondString) {
             int n = firstString.Length;
             int m = secondString.Length;
             int[,] d = new int[n + 1, m + 1];
@@ -41,18 +38,14 @@ namespace Exiled.API.Extensions
             if (m == 0)
                 return n;
 
-            for (int i = 0; i <= n; d[i, 0] = i++)
-            {
+            for (int i = 0; i <= n; d[i, 0] = i++) {
             }
 
-            for (int j = 0; j <= m; d[0, j] = j++)
-            {
+            for (int j = 0; j <= m; d[0, j] = j++) {
             }
 
-            for (int i = 1; i <= n; i++)
-            {
-                for (int j = 1; j <= m; j++)
-                {
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= m; j++) {
                     int cost = (secondString[j - 1] == firstString[i - 1]) ? 0 : 1;
 
                     d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
@@ -67,8 +60,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="commandLine">The <see cref="string"/> to extract from.</param>
         /// <returns>Returns a <see cref="ValueTuple"/> containing the exctracted command name and arguments.</returns>
-        public static (string commandName, string[] arguments) ExtractCommand(this string commandLine)
-        {
+        public static (string commandName, string[] arguments) ExtractCommand(this string commandLine) {
             string[] extractedArguments = commandLine.Split(' ');
 
             return (extractedArguments[0].ToLower(), extractedArguments.Skip(1).ToArray());
@@ -80,8 +72,7 @@ namespace Exiled.API.Extensions
         /// <param name="str">The string to be converted.</param>
         /// <param name="shouldReplaceSpecialChars">Indicates whether special chars has to be replaced or not.</param>
         /// <returns>Returns the new snake_case string.</returns>
-        public static string ToSnakeCase(this string str, bool shouldReplaceSpecialChars = true)
-        {
+        public static string ToSnakeCase(this string str, bool shouldReplaceSpecialChars = true) {
             string snakeCaseString = string.Concat(str.Select((ch, i) => i > 0 && char.IsUpper(ch) ? "_" + ch.ToString() : ch.ToString())).ToLower();
 
             return shouldReplaceSpecialChars ? Regex.Replace(snakeCaseString, @"[^0-9a-zA-Z_]+", string.Empty) : snakeCaseString;
@@ -94,17 +85,14 @@ namespace Exiled.API.Extensions
         /// <param name="enumerable">The instance.</param>
         /// <param name="showIndex">Indicates whether the enumerator index should be shown or not.</param>
         /// <returns>Returns the converted <see cref="IEnumerable{T}"/>.</returns>
-        public static string ToString<T>(this IEnumerable<T> enumerable, bool showIndex = true)
-        {
+        public static string ToString<T>(this IEnumerable<T> enumerable, bool showIndex = true) {
             StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
             int index = 0;
 
             stringBuilder.AppendLine(string.Empty);
 
-            foreach (T enumerator in enumerable)
-            {
-                if (showIndex)
-                {
+            foreach (T enumerator in enumerable) {
+                if (showIndex) {
                     stringBuilder.Append(index++);
                     stringBuilder.Append(' ');
                 }
@@ -124,8 +112,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="name">Name of the <see cref="UnityEngine.GameObject"/>.</param>
         /// <returns>Name without brackets.</returns>
-        public static string RemoveBracketsOnEndOfName(this string name)
-        {
+        public static string RemoveBracketsOnEndOfName(this string name) {
             int bracketStart = name.IndexOf('(') - 1;
 
             if (bracketStart > 0)
@@ -140,8 +127,7 @@ namespace Exiled.API.Extensions
         /// <param name="input">The input.</param>
         /// <param name="symbol">The symbol.</param>
         /// <returns>Substring before the symbol.</returns>
-        public static string GetBefore(this string input, char symbol)
-        {
+        public static string GetBefore(this string input, char symbol) {
             int start = input.IndexOf(symbol);
             if (start != 0)
                 input = input.Substring(0, start);
@@ -175,8 +161,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="userId">The user id.</param>
         /// <returns>The hashed userid.</returns>
-        public static string GetHashedUserId(this string userId)
-        {
+        public static string GetHashedUserId(this string userId) {
             byte[] textData = Encoding.UTF8.GetBytes(userId.Substring(0, userId.LastIndexOf('@')));
             byte[] hash = Sha256.ComputeHash(textData);
             return BitConverter.ToString(hash).Replace("-", string.Empty);

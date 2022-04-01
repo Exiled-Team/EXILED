@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -25,10 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.ActivatingWarheadPanel"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdSwitchAWButton))]
-    internal static class ActivatingWarheadPanel
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ActivatingWarheadPanel {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 0;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_0) + offset;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Features;
 
     using InventorySystem.Items.Usables;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player uses an item.
     /// </summary>
-    public class UsingItemEventArgs : UsedItemEventArgs
-    {
+    public class UsingItemEventArgs : UsedItemEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UsingItemEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="cooldown"><inheritdoc cref="Cooldown"/></param>
         /// <param name="item"><inheritdoc cref="UsedItemEventArgs.Item"/></param>
         public UsingItemEventArgs(Player player, UsableItem item, float cooldown)
-            : base(player, item)
-        {
+            : base(player, item) {
             Cooldown = cooldown;
         }
 

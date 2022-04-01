@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     /// <summary>
     /// Represents the in-game badge.
     /// </summary>
-    public struct Badge
-    {
+    public struct Badge {
         /// <summary>
         /// Initializes a new instance of the <see cref="Badge"/> struct.
         /// </summary>
@@ -19,8 +17,7 @@ namespace Exiled.API.Features
         /// <param name="color">The badge color.</param>
         /// <param name="type">The badge type.</param>
         /// <param name="isGlobal">Indicates whether the badge is global or not.</param>
-        public Badge(string text, string color, int type, bool isGlobal = false)
-        {
+        public Badge(string text, string color, int type, bool isGlobal = false) {
             Text = text;
             Color = color;
             Type = type;

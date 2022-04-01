@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
@@ -22,15 +21,13 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="FlashbangGrenade"/>.
     /// </summary>
-    public class FlashGrenade : Throwable
-    {
+    public class FlashGrenade : Throwable {
         /// <summary>
         /// Initializes a new instance of the <see cref="FlashGrenade"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Throwable.Base"/></param>
         public FlashGrenade(ThrowableItem itemBase)
-            : base(itemBase)
-        {
+            : base(itemBase) {
             FlashbangGrenade grenade = (FlashbangGrenade)Base.Projectile;
             BlindCurve = grenade._blindingOverDistance;
             SurfaceDistanceIntensifier = grenade._surfaceZoneDistanceIntensifier;
@@ -45,8 +42,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         public FlashGrenade(ItemType type, Player player = null)
-            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
-        {
+            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true)) {
         }
 
         /// <summary>
@@ -79,8 +75,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="position">The location to spawn the grenade.</param>
         /// <param name="owner">Optional: The <see cref="Player"/> owner of the grenade.</param>
-        public void SpawnActive(Vector3 position, Player owner = null)
-        {
+        public void SpawnActive(Vector3 position, Player owner = null) {
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
@@ -95,8 +90,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <inheritdoc/>
-        public override string ToString()
-        {
+        public override string ToString() {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
         }
     }

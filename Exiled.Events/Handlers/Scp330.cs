@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Scp330 related events.
     /// </summary>
-    public static class Scp330
-    {
+    public static class Scp330 {
         /// <summary>
         /// Invoked before a player eats a candy from SCP-330.
         /// </summary>

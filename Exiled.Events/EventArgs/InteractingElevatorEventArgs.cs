@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player interacts with an elevator.
     /// </summary>
-    public class InteractingElevatorEventArgs : EventArgs
-    {
+    public class InteractingElevatorEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractingElevatorEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="elevator"><inheritdoc cref="Elevator"/></param>
         /// <param name="lift"><inheritdoc cref="Type"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingElevatorEventArgs(Player player, Lift.Elevator elevator, Lift lift, bool isAllowed = true)
-        {
+        public InteractingElevatorEventArgs(Player player, Lift.Elevator elevator, Lift lift, bool isAllowed = true) {
             Lift = lift;
             Status = lift.status;
             Player = player;

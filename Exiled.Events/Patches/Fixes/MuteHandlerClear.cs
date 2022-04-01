@@ -5,16 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Fixes
-{
+namespace Exiled.Events.Patches.Fixes {
     using HarmonyLib;
 
     /// <summary>
     /// Fixes <see cref="MuteHandler.Reload"/> method.
     /// </summary>
     [HarmonyPatch(typeof(MuteHandler), nameof(MuteHandler.Reload))]
-    internal static class MuteHandlerClear
-    {
+    internal static class MuteHandlerClear {
         private static void Prefix() => MuteHandler.Mutes?.Clear();
     }
 }

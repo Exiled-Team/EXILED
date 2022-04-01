@@ -5,14 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.GHApi.Models
-{
+namespace Exiled.Updater.GHApi.Models {
     using System.Runtime.Serialization;
 
     using Utf8Json;
 
-    public readonly struct ReleaseAsset
-    {
+    public readonly struct ReleaseAsset {
         [DataMember(Name = "id")] public readonly int Id;
         [DataMember(Name = "name")] public readonly string Name;
         [DataMember(Name = "size")] public readonly int Size;
@@ -20,8 +18,7 @@ namespace Exiled.Updater.GHApi.Models
         [DataMember(Name = "browser_download_url")] public readonly string BrowserDownloadUrl;
 
         [SerializationConstructor]
-        public ReleaseAsset(int id, string name, int size, string url, string browser_download_url)
-        {
+        public ReleaseAsset(int id, string name, int size, string url, string browser_download_url) {
             Id = id;
             Name = name;
             Size = size;

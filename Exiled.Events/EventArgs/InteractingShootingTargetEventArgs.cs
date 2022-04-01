@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Enums;
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player interacts with a shooting target.
     /// </summary>
-    public class InteractingShootingTargetEventArgs : EventArgs
-    {
+    public class InteractingShootingTargetEventArgs : EventArgs {
         private int maxHp;
         private int autoResetTime;
 
@@ -31,8 +29,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="maxHp"><inheritdoc cref="NewMaxHp"/></param>
         /// <param name="autoResetTime"><inheritdoc cref="NewAutoResetTime"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingShootingTargetEventArgs(Player player, AdminToys.ShootingTarget shootingTarget, ShootingTargetButton targetButton, int maxHp, int autoResetTime, bool isAllowed = true)
-        {
+        public InteractingShootingTargetEventArgs(Player player, AdminToys.ShootingTarget shootingTarget, ShootingTargetButton targetButton, int maxHp, int autoResetTime, bool isAllowed = true) {
             Player = player;
             ShootingTarget = ShootingTarget.Get(shootingTarget);
             TargetButton = targetButton;
@@ -59,11 +56,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the new max HP of the target.
         /// </summary>
-        public int NewMaxHp
-        {
+        public int NewMaxHp {
             get => maxHp;
-            set
-            {
+            set {
                 if (!ShootingTarget.IsSynced)
                     throw new InvalidOperationException("Attempted to set MaxHp while target is in local mode. Set target's IsSynced to true before setting IsAllowed.");
                 maxHp = Mathf.Clamp(value, 1, 256);
@@ -73,11 +68,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the new auto reset time of the target.
         /// </summary>
-        public int NewAutoResetTime
-        {
+        public int NewAutoResetTime {
             get => autoResetTime;
-            set
-            {
+            set {
                 if (!ShootingTarget.IsSynced)
                     throw new InvalidOperationException("Attempted to set AutoResetTime while target is in local mode. Set target's IsSynced to true before setting IsAllowed.");
                 autoResetTime = Mathf.Clamp(value, 0, 10);

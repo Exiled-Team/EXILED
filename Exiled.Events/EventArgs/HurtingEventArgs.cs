@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
     using System.Runtime.Remoting.Messaging;
 
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player gets damaged.
     /// </summary>
-    public class HurtingEventArgs : EventArgs
-    {
+    public class HurtingEventArgs : EventArgs {
         private DamageHandlerBase damageHandler;
         private DamageHandler handler;
 
@@ -27,8 +25,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
-        public HurtingEventArgs(Player target, DamageHandlerBase damageHandler)
-        {
+        public HurtingEventArgs(Player target, DamageHandlerBase damageHandler) {
             Attacker = damageHandler is AttackerDamageHandler attackerDamageHandler
                 ? Player.Get(attackerDamageHandler.Attacker.Hub)
                 : null;
@@ -50,8 +47,7 @@ namespace Exiled.Events.EventArgs
         /// Gets the hit informations.
         /// </summary>
         [Obsolete("Use HurtingEventArgs.Handler instead.", true)]
-        public DamageHandlerBase DamageHandler
-        {
+        public DamageHandlerBase DamageHandler {
             get => Handler.Base;
             private set => Handler.Base = value;
         }
@@ -59,11 +55,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the <see cref="API.Features.DamageHandler"/> for the event.
         /// </summary>
-        public DamageHandler Handler
-        {
+        public DamageHandler Handler {
             get => handler;
-            set
-            {
+            set {
                 handler = value;
                 damageHandler = value.Base;
             }
@@ -72,8 +66,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the amount of inflicted damage.
         /// </summary>
-        public float Amount
-        {
+        public float Amount {
             get => Handler.Amount;
             set => Handler.Amount = value;
         }

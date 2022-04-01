@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
-{
+namespace Exiled.Events.Patches.Events.Server {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Linq;
@@ -30,10 +29,8 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Handlers.Server.RespawningTeam"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
-    internal static class RespawningTeam
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class RespawningTeam {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_3) + offset;

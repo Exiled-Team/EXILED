@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
 #pragma warning disable CS0618
     using System;
 
@@ -17,16 +16,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before C.A.S.S.I.E announces an SCP termination.
     /// </summary>
-    public class AnnouncingScpTerminationEventArgs : EventArgs
-    {
+    public class AnnouncingScpTerminationEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingScpTerminationEventArgs"/> class.
         /// </summary>
         /// <param name="scp"><inheritdoc cref="Player"/></param>
         /// <param name="damageHandlerBase"><inheritdoc cref="DamageHandler"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public AnnouncingScpTerminationEventArgs(Player scp, DamageHandlerBase damageHandlerBase, bool isAllowed = true)
-        {
+        public AnnouncingScpTerminationEventArgs(Player scp, DamageHandlerBase damageHandlerBase, bool isAllowed = true) {
             Player = scp;
             Role = scp.ReferenceHub.characterClassManager.CurRole;
             Handler = new DamageHandler(scp, damageHandlerBase);

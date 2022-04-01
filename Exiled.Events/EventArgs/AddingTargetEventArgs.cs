@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -18,8 +17,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before adding a target to SCP-096.
     /// </summary>
-    public class AddingTargetEventArgs : EventArgs
-    {
+    public class AddingTargetEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="AddingTargetEventArgs"/> class.
         /// </summary>
@@ -27,8 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="enrageTimeToAdd"><inheritdoc cref="EnrageTimeToAdd"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public AddingTargetEventArgs(Player scp096, Player target, float enrageTimeToAdd, bool isAllowed = true)
-        {
+        public AddingTargetEventArgs(Player scp096, Player target, float enrageTimeToAdd, bool isAllowed = true) {
             Scp096 = scp096;
             Target = target;
             EnrageTimeToAdd = scp096.CurrentScp is Scp096 scp

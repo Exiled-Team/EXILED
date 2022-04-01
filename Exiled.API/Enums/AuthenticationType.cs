@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Players authentication types.
     /// </summary>
-    public enum AuthenticationType
-    {
+    public enum AuthenticationType {
         /// <summary>
         /// Indicates that the player has been authenticated through Steam.
         /// </summary>

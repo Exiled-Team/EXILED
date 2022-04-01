@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions.Commands.Permissions
-{
+namespace Exiled.Permissions.Commands.Permissions {
     using System;
     using System.Text;
 
@@ -16,8 +15,7 @@ namespace Exiled.Permissions.Commands.Permissions
     /// Handles commands about permissions.
     /// </summary>
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public class Permissions : ParentCommand
-    {
+    public class Permissions : ParentCommand {
         /// <summary>
         /// Initializes a new instance of the <see cref="Permissions"/> class.
         /// </summary>
@@ -33,8 +31,7 @@ namespace Exiled.Permissions.Commands.Permissions
         public override string Description { get; } = "Handles commands about permissions";
 
         /// <inheritdoc/>
-        public override void LoadGeneratedCommands()
-        {
+        public override void LoadGeneratedCommands() {
             RegisterCommand(new Reload());
             RegisterCommand(new Group.Group());
             RegisterCommand(new Add());
@@ -42,8 +39,7 @@ namespace Exiled.Permissions.Commands.Permissions
         }
 
         /// <inheritdoc/>
-        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.AppendLine("Available commands: ");

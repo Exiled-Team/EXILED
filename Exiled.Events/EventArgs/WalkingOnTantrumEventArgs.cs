@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player walks over a tantrum.
     /// </summary>
-    public class WalkingOnTantrumEventArgs : EventArgs
-    {
+    public class WalkingOnTantrumEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="WalkingOnTantrumEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="tantrum"><inheritdoc cref="Tantrum"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public WalkingOnTantrumEventArgs(Player player, TantrumEnvironmentalHazard tantrum, bool isAllowed = true)
-        {
+        public WalkingOnTantrumEventArgs(Player player, TantrumEnvironmentalHazard tantrum, bool isAllowed = true) {
             Player = player;
             Tantrum = tantrum;
             IsAllowed = isAllowed;

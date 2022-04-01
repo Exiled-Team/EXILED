@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp096
-{
+namespace Exiled.Events.Patches.Events.Scp096 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -18,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayableScps;
 
     using UnityEngine;
@@ -31,10 +31,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Adds the <see cref="Handlers.Scp096.AddingTarget"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.AddTarget))]
-    internal static class AddingTarget
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class AddingTarget {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
@@ -147,8 +145,7 @@ namespace Exiled.Events.Patches.Events.Scp096
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static float GetRageTime(Scp096 scp096)
-        {
+        private static float GetRageTime(Scp096 scp096) {
             bool isValidTimeAddition = scp096.PlayerState == Scp096PlayerState.Docile ||
                                        scp096.PlayerState == Scp096PlayerState.TryNotToCry ||
                                        scp096.PlayerState == Scp096PlayerState.Enraging;

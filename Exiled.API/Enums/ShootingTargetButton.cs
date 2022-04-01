@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Possible shooting target buttons.
     /// </summary>
-    public enum ShootingTargetButton
-    {
+    public enum ShootingTargetButton {
         /// <summary>
         /// Increase HP button.
         /// </summary>

@@ -5,12 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Interfaces
-{
+namespace Exiled.API.Interfaces {
     /// <summary>
     /// Defines the contract for basic translation features.
     /// </summary>
-    public interface ITranslation
-    {
+    public interface ITranslation {
     }
 }

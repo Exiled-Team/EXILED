@@ -10,8 +10,8 @@
 
 namespace Exiled.Installer.Properties {
     using System;
-    
-    
+
+
     /// <summary>
     ///   Classe di risorse fortemente tipizzata per la ricerca di stringhe localizzate e così via.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Exiled.Installer.Properties {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         /// <summary>
         ///   Restituisce l'istanza di ResourceManager nella cache utilizzata da questa classe.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Exiled.Installer.Properties {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Esegue l'override della proprietà CurrentUICulture del thread corrente per tutte le
         ///   ricerche di risorse eseguite utilizzando questa classe di risorse fortemente tipizzata.
@@ -59,7 +59,7 @@ namespace Exiled.Installer.Properties {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Cerca una stringa localizzata simile a EXILED\:ABSOLUTE
         ///Assembly-CSharp.dll:GAME

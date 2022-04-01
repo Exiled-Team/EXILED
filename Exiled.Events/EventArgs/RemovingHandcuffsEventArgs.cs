@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Features;
 
     /// <summary>
     /// Contains all informations before freeing a handcuffed player.
     /// </summary>
-    public class RemovingHandcuffsEventArgs : HandcuffingEventArgs
-    {
+    public class RemovingHandcuffsEventArgs : HandcuffingEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="RemovingHandcuffsEventArgs"/> class.
         /// </summary>
@@ -21,8 +19,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="target">The target player to be uncuffed.</param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
         public RemovingHandcuffsEventArgs(Player cuffer, Player target, bool isAllowed = true)
-            : base(cuffer, target, isAllowed)
-        {
+            : base(cuffer, target, isAllowed) {
         }
     }
 }

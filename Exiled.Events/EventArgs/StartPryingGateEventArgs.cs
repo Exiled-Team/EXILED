@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -18,8 +17,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before SCP-096 begins prying a gate open.
     /// </summary>
-    public class StartPryingGateEventArgs : EventArgs
-    {
+    public class StartPryingGateEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="StartPryingGateEventArgs"/> class.
         /// </summary>
@@ -27,8 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="scp096"><inheritdoc cref="Scp096"/></param>
         /// <param name="gate"><inheritdoc cref="Gate"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StartPryingGateEventArgs(Scp096 scp096, Player player, PryableDoor gate, bool isAllowed = true)
-        {
+        public StartPryingGateEventArgs(Scp096 scp096, Player player, PryableDoor gate, bool isAllowed = true) {
             Scp096 = scp096;
             Player = player;
             Gate = Door.Get(gate);

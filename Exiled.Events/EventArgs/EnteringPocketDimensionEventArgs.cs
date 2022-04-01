@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player enters the pocket dimension.
     /// </summary>
-    public class EnteringPocketDimensionEventArgs : EventArgs
-    {
+    public class EnteringPocketDimensionEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="EnteringPocketDimensionEventArgs"/> class.
         /// </summary>
@@ -25,8 +23,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="scp106"><inheritdoc cref="Scp106"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public EnteringPocketDimensionEventArgs(Player player, Vector3 position, Player scp106, bool isAllowed = true)
-        {
+        public EnteringPocketDimensionEventArgs(Player player, Vector3 position, Player scp106, bool isAllowed = true) {
             Player = player;
             Position = position;
             Scp106 = scp106;

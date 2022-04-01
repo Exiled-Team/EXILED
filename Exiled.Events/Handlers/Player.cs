@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Player related events.
     /// </summary>
-    public static class Player
-    {
+    public static class Player {
         /// <summary>
         /// Invoked before authenticating a player.
         /// </summary>

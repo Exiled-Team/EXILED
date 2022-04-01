@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// SCP-049 related events.
     /// </summary>
-    public static class Scp049
-    {
+    public static class Scp049 {
         /// <summary>
         /// Invoked before SCP-049 finishes recalling a player.
         /// </summary>

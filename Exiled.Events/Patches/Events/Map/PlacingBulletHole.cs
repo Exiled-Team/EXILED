@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
-{
+namespace Exiled.Events.Patches.Events.Map {
 #pragma warning disable SA1118
 
     using System.Collections.Generic;
@@ -32,10 +31,8 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.PlacingBulletHole"/> event.
     /// </summary>
     [HarmonyPatch(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal))]
-    internal static class PlacingBulletHole
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class PlacingBulletHole {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 0;
             int index = 0 + offset;

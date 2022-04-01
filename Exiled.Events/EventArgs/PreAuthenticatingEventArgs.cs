@@ -4,8 +4,7 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using LiteNetLib;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before pre-autenticating a player.
     /// </summary>
-    public class PreAuthenticatingEventArgs : EventArgs
-    {
+    public class PreAuthenticatingEventArgs : EventArgs {
         private bool isAllowed;
 
         /// <summary>
@@ -29,8 +27,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="flags"><inheritdoc cref="Flags"/></param>
         /// <param name="country"><inheritdoc cref="Country"/></param>
         /// <param name="num"><inheritdoc cref="IsAllowed"/></param>
-        public PreAuthenticatingEventArgs(string userId, ConnectionRequest request, int readerStartPosition, byte flags, string country, int num)
-        {
+        public PreAuthenticatingEventArgs(string userId, ConnectionRequest request, int readerStartPosition, byte flags, string country, int num) {
             UserId = userId;
             Request = request;
             ReaderStartPosition = readerStartPosition;
@@ -68,11 +65,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether the player can be authenticated or not.
         /// </summary>
-        public bool IsAllowed
-        {
+        public bool IsAllowed {
             get => isAllowed;
-            set
-            {
+            set {
                 if (!value)
                     throw new InvalidOperationException("You cannot set IsAllowed to false. Use ev.Reject instead.");
                 isAllowed = true;
@@ -89,8 +84,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="seconds">The delay in seconds.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void Delay(byte seconds, bool isForced)
-        {
+        public void Delay(byte seconds, bool isForced) {
             if (seconds < 1 && seconds > 25)
                 throw new Exception("Delay duration must be between 1 and 25 seconds.");
 
@@ -110,8 +104,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="banReason">The ban reason.</param>
         /// <param name="expiration">The ban expiration time.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void RejectBanned(string banReason, DateTime expiration, bool isForced)
-        {
+        public void RejectBanned(string banReason, DateTime expiration, bool isForced) {
             Reject(RejectionReason.Banned, isForced, banReason, expiration.Ticks);
         }
 
@@ -121,8 +114,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="banReason">The ban reason.</param>
         /// <param name="expiration">The ban expiration time in .NET Ticks.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void RejectBanned(string banReason, long expiration, bool isForced)
-        {
+        public void RejectBanned(string banReason, long expiration, bool isForced) {
             Reject(RejectionReason.Banned, isForced, banReason, expiration);
         }
 
@@ -131,8 +123,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="writer">The <see cref="NetDataWriter"/> instance.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void Reject(NetDataWriter writer, bool isForced)
-        {
+        public void Reject(NetDataWriter writer, bool isForced) {
             if (!IsAllowed)
                 return;
 
@@ -160,8 +151,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="expiration">The ban expiration ticks (Banned reason only).</param>
         /// <param name="seconds">The delay in seconds (Delay reason only).</param>
         /// <param name="port">The redirection port (Redirect reason only).</param>
-        public void Reject(RejectionReason rejectionReason, bool isForced, string customReason = null, long expiration = 0, byte seconds = 0, ushort port = 0)
-        {
+        public void Reject(RejectionReason rejectionReason, bool isForced, string customReason = null, long expiration = 0, byte seconds = 0, ushort port = 0) {
             if (customReason != null && customReason.Length > 400)
                 throw new ArgumentOutOfRangeException(nameof(rejectionReason), "Reason can't be longer than 400 characters.");
 
@@ -174,8 +164,7 @@ namespace Exiled.Events.EventArgs
 
             rejectData.Put((byte)rejectionReason);
 
-            switch (rejectionReason)
-            {
+            switch (rejectionReason) {
                 case RejectionReason.Banned:
                     rejectData.Put(expiration);
                     rejectData.Put(customReason);

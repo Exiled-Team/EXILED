@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Enums;
@@ -18,8 +17,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player drops an item.
     /// </summary>
-    public class DroppingAmmoEventArgs : EventArgs
-    {
+    public class DroppingAmmoEventArgs : EventArgs {
         private bool isAllowed = true;
 
         /// <summary>
@@ -29,8 +27,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="ammoType"><inheritdoc cref="AmmoType"/></param>
         /// <param name="amount"><inheritdoc cref="int"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DroppingAmmoEventArgs(Player player, AmmoType ammoType, ushort amount, bool isAllowed = true)
-        {
+        public DroppingAmmoEventArgs(Player player, AmmoType ammoType, ushort amount, bool isAllowed = true) {
             Player = player;
             AmmoType = ammoType;
             Amount = amount;
@@ -55,17 +52,14 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the ammo can be dropped.
         /// </summary>
-        public bool IsAllowed
-        {
-            get
-            {
+        public bool IsAllowed {
+            get {
                 if (Player.Role == RoleType.Spectator)
                     isAllowed = true;
                 return isAllowed;
             }
 
-            set
-            {
+            set {
                 if (Player.Role == RoleType.Spectator)
                     value = true;
                 isAllowed = value;

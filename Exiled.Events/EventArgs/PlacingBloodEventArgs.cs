@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player places blood.
     /// </summary>
-    public class PlacingBloodEventArgs : EventArgs
-    {
+    public class PlacingBloodEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlacingBloodEventArgs"/> class.
         /// </summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="type"><inheritdoc cref="Type"/></param>
         /// <param name="multiplier"><inheritdoc cref="Multiplier"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PlacingBloodEventArgs(Player player, Vector3 position, int type, float multiplier, bool isAllowed = true)
-        {
+        public PlacingBloodEventArgs(Player player, Vector3 position, int type, float multiplier, bool isAllowed = true) {
             Player = player;
             Position = position;
             Type = type;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,19 +13,15 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player escapes.
     /// </summary>
-    public class EscapingEventArgs : EventArgs
-    {
+    public class EscapingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="EscapingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        public EscapingEventArgs(Player player)
-        {
+        public EscapingEventArgs(Player player) {
             Player = player;
-            if (player.IsCuffed)
-            {
-                switch (player.Team)
-                {
+            if (player.IsCuffed) {
+                switch (player.Team) {
                     case Team.CDP:
                         NewRole = RoleType.NtfPrivate;
                         break;
@@ -35,10 +30,8 @@ namespace Exiled.Events.EventArgs
                         break;
                 }
             }
-            else
-            {
-                switch (player.Team)
-                {
+            else {
+                switch (player.Team) {
                     case Team.CDP:
                         NewRole = RoleType.ChaosConscript;
                         break;

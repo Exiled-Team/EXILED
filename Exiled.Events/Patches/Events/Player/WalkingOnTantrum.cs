@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -24,10 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.WalkingOnTantrum"/> event.
     /// </summary>
     [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.DistanceChanged))]
-    internal static class WalkingOnTantrum
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class WalkingOnTantrum {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);

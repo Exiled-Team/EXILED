@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player's <see cref="RoleType"/> changes.
     /// </summary>
-    public class ChangingRoleEventArgs : EventArgs
-    {
+    public class ChangingRoleEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingRoleEventArgs"/> class.
         /// </summary>
@@ -26,12 +24,10 @@ namespace Exiled.Events.EventArgs
         /// <param name="newRole"><inheritdoc cref="NewRole"/></param>
         /// <param name="shouldPreservePosition"><inheritdoc cref="Lite"/></param>
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
-        public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)
-        {
+        public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason) {
             Player = player;
             NewRole = newRole;
-            if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole))
-            {
+            if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole)) {
                 foreach (ItemType itemType in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items)
                     Items.Add(itemType);
                 foreach (KeyValuePair<ItemType, ushort> ammoPair in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Ammo)

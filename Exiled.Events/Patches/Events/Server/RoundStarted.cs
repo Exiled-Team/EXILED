@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
-{
+namespace Exiled.Events.Patches.Events.Server {
 #pragma warning disable SA1313
 #pragma warning disable SA1118
     using System.Collections.Generic;
@@ -23,10 +22,8 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the RoundStarted event.
     /// </summary>
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.SetStartClassList))]
-    internal static class RoundStarted
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class RoundStarted {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstruction = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             newInstruction.InsertRange(newInstruction.Count - 1, new[]

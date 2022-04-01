@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1313
 #pragma warning disable SA1005
 #pragma warning disable SA1515
@@ -26,18 +25,14 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.InteractingDoor"/> event.
     /// </summary>
     [HarmonyPatch(typeof(DoorVariant), nameof(DoorVariant.ServerInteract), typeof(ReferenceHub), typeof(byte))]
-    internal static class InteractingDoor
-    {
-        private static bool Prefix(DoorVariant __instance, ReferenceHub ply, byte colliderId)
-        {
-            try
-            {
+    internal static class InteractingDoor {
+        private static bool Prefix(DoorVariant __instance, ReferenceHub ply, byte colliderId) {
+            try {
                 InteractingDoorEventArgs ev = new InteractingDoorEventArgs(Player.Get(ply), __instance, false);
                 bool bypassDenied = false;
                 bool allowInteracting = false;
 
-                if (__instance.ActiveLocks != 0)
-                {
+                if (__instance.ActiveLocks != 0) {
                     DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)__instance.ActiveLocks);
                     if ((!mode.HasFlagFast(DoorLockMode.CanClose)
                             || !mode.HasFlagFast(DoorLockMode.CanOpen))
@@ -47,8 +42,7 @@ namespace Exiled.Events.Patches.Events.Player
                             || (__instance.TargetState
                                 && !mode.HasFlagFast(DoorLockMode.CanClose))
                             || (!__instance.TargetState
-                                && !mode.HasFlagFast(DoorLockMode.CanOpen))))
-                    {
+                                && !mode.HasFlagFast(DoorLockMode.CanOpen)))) {
                         /*
                         __instance.LockBypassDenied(ply, colliderId);
                         return false;
@@ -60,10 +54,8 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
-                if (!bypassDenied && (allowInteracting = __instance.AllowInteracting(ply, colliderId)))
-                {
-                    if (ply.characterClassManager.CurClass == RoleType.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply))
-                    {
+                if (!bypassDenied && (allowInteracting = __instance.AllowInteracting(ply, colliderId))) {
+                    if (ply.characterClassManager.CurClass == RoleType.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply)) {
                         /*
                         __instance.NetworkTargetState = !__instance.TargetState;
                         __instance._triggerPlayer = ply;
@@ -72,8 +64,7 @@ namespace Exiled.Events.Patches.Events.Player
                         ev.IsAllowed = true;
                         //<EXILED
                     }
-                    else
-                    {
+                    else {
                         /*
                         __instance.PermissionsDenied(ply, colliderId);
                         DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
@@ -87,18 +78,15 @@ namespace Exiled.Events.Patches.Events.Player
                 //>EXILED
                 Handlers.Player.OnInteractingDoor(ev);
 
-                if (ev.IsAllowed && allowInteracting)
-                {
+                if (ev.IsAllowed && allowInteracting) {
                     __instance.NetworkTargetState = !__instance.TargetState;
                     __instance._triggerPlayer = ply;
                 }
-                else if (bypassDenied)
-                {
+                else if (bypassDenied) {
                     __instance.LockBypassDenied(ply, colliderId);
                 }
                 // Don't call the RPC if the door is still moving
-                else if (allowInteracting)
-                {
+                else if (allowInteracting) {
                     // To avoid breaking their API, call the access denied event
                     // when our event prevents the door from opening
                     __instance.PermissionsDenied(ply, colliderId);
@@ -108,8 +96,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 return false;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Log.Error($"{typeof(InteractingDoor).FullName}.{nameof(Prefix)}:\n{ex}");
                 return true;
             }

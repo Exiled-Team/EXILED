@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-079 finishes using a speaker.
     /// </summary>
-    public class StoppingSpeakerEventArgs : EventArgs
-    {
+    public class StoppingSpeakerEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoppingSpeakerEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="room"><inheritdoc cref="Room"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StoppingSpeakerEventArgs(Player player, Room room, bool isAllowed = true)
-        {
+        public StoppingSpeakerEventArgs(Player player, Room room, bool isAllowed = true) {
             Player = player;
             Room = room;
             IsAllowed = isAllowed;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-079 triggers a tesla gate.
     /// </summary>
-    public class InteractingTeslaEventArgs : EventArgs
-    {
+    public class InteractingTeslaEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractingTeslaEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="tesla"><inheritdoc cref="Tesla"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
-        public InteractingTeslaEventArgs(Player player, TeslaGate tesla, float auxiliaryPowerCost)
-        {
+        public InteractingTeslaEventArgs(Player player, TeslaGate tesla, float auxiliaryPowerCost) {
             Player = player;
             Tesla = tesla;
             AuxiliaryPowerCost = auxiliaryPowerCost;

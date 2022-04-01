@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player drops an item.
     /// </summary>
-    public class DroppingItemEventArgs : EventArgs
-    {
+    public class DroppingItemEventArgs : EventArgs {
         private bool isAllowed = true;
 
         /// <summary>
@@ -28,8 +26,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="isThrown"><inheritdoc cref="IsThrown"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DroppingItemEventArgs(Player player, ItemBase item, bool isThrown, bool isAllowed = true)
-        {
+        public DroppingItemEventArgs(Player player, ItemBase item, bool isThrown, bool isAllowed = true) {
             Player = player;
             Item = Item.Get(item);
             IsAllowed = isAllowed;
@@ -54,17 +51,14 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be dropped.
         /// </summary>
-        public bool IsAllowed
-        {
-            get
-            {
+        public bool IsAllowed {
+            get {
                 if (Player.Role == RoleType.Spectator)
                     isAllowed = true;
                 return isAllowed;
             }
 
-            set
-            {
+            set {
                 if (Player.Role == RoleType.Spectator)
                     value = true;
                 isAllowed = value;

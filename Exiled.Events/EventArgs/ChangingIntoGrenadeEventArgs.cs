@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Enums;
@@ -19,14 +18,12 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information for when the server is turning a pickup into a live grenade.
     /// </summary>
-    public class ChangingIntoGrenadeEventArgs : EventArgs
-    {
+    public class ChangingIntoGrenadeEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingIntoGrenadeEventArgs"/> class.
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> being changed.</param>
-        public ChangingIntoGrenadeEventArgs(TimedGrenadePickup pickup)
-        {
+        public ChangingIntoGrenadeEventArgs(TimedGrenadePickup pickup) {
             if (pickup == null)
                 Log.Error($"{nameof(ChangingIntoGrenadeEventArgs)}: Pickup is null!");
             Pickup = Pickup.Get(pickup);

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -18,15 +17,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player fires a weapon.
     /// </summary>
-    public class ShootingEventArgs : EventArgs
-    {
+    public class ShootingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShootingEventArgs"/> class.
         /// </summary>
         /// <param name="shooter"><inheritdoc cref="Shooter"/></param>
         /// <param name="msg"><inheritdoc cref="ShotMessage"/></param>
-        public ShootingEventArgs(Player shooter, ShotMessage msg)
-        {
+        public ShootingEventArgs(Player shooter, ShotMessage msg) {
             Shooter = shooter;
             ShotMessage = msg;
         }
@@ -44,14 +41,11 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the position of the shot.
         /// </summary>
-        public Vector3 ShotPosition
-        {
+        public Vector3 ShotPosition {
             get => ShotMessage.TargetPosition;
-            set
-            {
+            set {
                 ShotMessage msg = ShotMessage;
-                ShotMessage = new ShotMessage
-                {
+                ShotMessage = new ShotMessage {
                     ShooterPosition = msg.ShooterPosition,
                     ShooterCameraRotation = msg.ShooterCameraRotation,
                     ShooterCharacterRotation = msg.ShooterCharacterRotation,
@@ -66,14 +60,11 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the netId of the target of the shot.
         /// </summary>
-        public uint TargetNetId
-        {
+        public uint TargetNetId {
             get => ShotMessage.TargetNetId;
-            set
-            {
+            set {
                 ShotMessage msg = ShotMessage;
-                ShotMessage = new ShotMessage
-                {
+                ShotMessage = new ShotMessage {
                     ShooterPosition = msg.ShooterPosition,
                     ShooterCameraRotation = msg.ShooterCameraRotation,
                     ShooterCharacterRotation = msg.ShooterCharacterRotation,

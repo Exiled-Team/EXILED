@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -27,15 +26,13 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
     /// </summary>
-    public class Armor : Item
-    {
+    public class Armor : Item {
         /// <summary>
         /// Initializes a new instance of the <see cref="Armor"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
         public Armor(BodyArmor itemBase)
-            : base(itemBase)
-        {
+            : base(itemBase) {
             Base = itemBase;
         }
 
@@ -44,8 +41,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Armor(ItemType type)
-            : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(type, false))
-        {
+            : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(type, false)) {
         }
 
         /// <inheritdoc cref="Item.Base"/>
@@ -69,8 +65,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the Weight of the armor.
         /// </summary>
-        public new float Weight
-        {
+        public new float Weight {
             get => Base.Weight;
             set => Base._weight = value;
         }
@@ -78,8 +73,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether or not excess ammo should be removed when the armor is dropped.
         /// </summary>
-        public bool RemoveExcessOnDrop
-        {
+        public bool RemoveExcessOnDrop {
             get => !Base.DontRemoveExcessOnDrop;
             set => Base.DontRemoveExcessOnDrop = !value;
         }
@@ -88,11 +82,9 @@ namespace Exiled.API.Features.Items
         /// Gets or sets how strong the helmet on the armor is.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">When trying to set the value below 0 or above 100.</exception>
-        public int HelmetEfficacy
-        {
+        public int HelmetEfficacy {
             get => Base.HelmetEfficacy;
-            set
-            {
+            set {
                 if (value <= 101 && value >= 0)
                     Base.HelmetEfficacy = value;
                 else
@@ -104,11 +96,9 @@ namespace Exiled.API.Features.Items
         /// Gets or sets how strong the vest on the armor is.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">When trying to set the value below 0 or above 100.</exception>
-        public int VestEfficacy
-        {
+        public int VestEfficacy {
             get => Base.VestEfficacy;
-            set
-            {
+            set {
                 if (value <= 101 && value >= 0)
                     Base.VestEfficacy = value;
                 else
@@ -120,11 +110,9 @@ namespace Exiled.API.Features.Items
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 1 or above 2.</exception>
-        public float StaminaUseMultiplier
-        {
+        public float StaminaUseMultiplier {
             get => Base.StaminaUseMultiplier;
-            set
-            {
+            set {
                 if (value > 2f || value < 1f)
                     throw new ArgumentOutOfRangeException(nameof(StaminaUseMultiplier), "You can only set the stamina use multiplier to a value between 1f and 2f.");
                 Base.StaminaUseMultiplier = value;
@@ -135,11 +123,9 @@ namespace Exiled.API.Features.Items
         /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
-        public float MovementSpeedMultiplier
-        {
+        public float MovementSpeedMultiplier {
             get => Base.MovementSpeedMultiplier;
-            set
-            {
+            set {
                 if (value < 0.0f || value > 1f)
                     throw new ArgumentOutOfRangeException(nameof(MovementSpeedMultiplier), "You can only set the movement speed multiplier to a value between 0 and 1.");
                 Base.MovementSpeedMultiplier = value;
@@ -149,8 +135,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how much worse <see cref="RoleType.ClassD"/> and <see cref="RoleType.Scientist"/>s are affected by wearing this armor.
         /// </summary>
-        public float CivilianDownsideMultiplier
-        {
+        public float CivilianDownsideMultiplier {
             get => Base.CivilianClassDownsidesMultiplier;
             set => Base.CivilianClassDownsidesMultiplier = value;
         }
@@ -158,27 +143,21 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.
         /// </summary>
-        public List<ArmorAmmoLimit> AmmoLimits
-        {
-            get
-            {
+        public List<ArmorAmmoLimit> AmmoLimits {
+            get {
                 List<ArmorAmmoLimit> limits = new List<ArmorAmmoLimit>();
-                for (int i = 0; i < Base.AmmoLimits.Length; i++)
-                {
+                for (int i = 0; i < Base.AmmoLimits.Length; i++) {
                     limits.Add(new ArmorAmmoLimit(Base.AmmoLimits[i].AmmoType.GetAmmoType(), Base.AmmoLimits[i].Limit));
                 }
 
                 return limits;
             }
 
-            set
-            {
+            set {
                 List<BodyArmor.ArmorAmmoLimit> limits = ListPool<BodyArmor.ArmorAmmoLimit>.Shared.Rent();
-                for (int i = 0; i < value.Count; i++)
-                {
+                for (int i = 0; i < value.Count; i++) {
                     ArmorAmmoLimit limit = value[i];
-                    limits.Add(new BodyArmor.ArmorAmmoLimit
-                    {
+                    limits.Add(new BodyArmor.ArmorAmmoLimit {
                         AmmoType = limit.AmmoType.GetItemType(),
                         Limit = limit.Limit,
                     });

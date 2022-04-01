@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
-{
+namespace Exiled.Events.Patches.Events.Server {
 #pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
@@ -27,10 +26,8 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the RestartingRound event.
     /// </summary>
     [HarmonyPatch(typeof(RoundRestart), nameof(RoundRestart.InitiateRoundRestart))]
-    internal static class RestartingRound
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class RestartingRound {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             newInstructions.InsertRange(0, new[]
             {
@@ -63,22 +60,18 @@ namespace Exiled.Events.Patches.Events.Server
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void ShowDebugLine()
-        {
+        private static void ShowDebugLine() {
             API.Features.Log.Debug("Round restarting", Loader.Loader.ShouldDebugBeShown);
         }
 
-        private static bool ShouldServerRestart()
-        {
+        private static bool ShouldServerRestart() {
             bool flag = false;
 
-            try
-            {
+            try {
                 int num = ConfigFile.ServerConfig.GetInt("restart_after_rounds");
                 flag = num > 0 && RoundRestart.UptimeRounds >= num;
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 ServerConsole.AddLog("Failed to check the restart_after_rounds config value: " + ex.Message, ConsoleColor.Red);
             }
 

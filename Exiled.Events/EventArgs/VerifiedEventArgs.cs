@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after the server verifies a player.
     /// </summary>
-    public class VerifiedEventArgs : EventArgs
-    {
+    public class VerifiedEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="VerifiedEventArgs"/> class.
         /// </summary>

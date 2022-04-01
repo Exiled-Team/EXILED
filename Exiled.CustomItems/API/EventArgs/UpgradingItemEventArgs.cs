@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.EventArgs
-{
+namespace Exiled.CustomItems.API.EventArgs {
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
@@ -18,8 +17,7 @@ namespace Exiled.CustomItems.API.EventArgs
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/>'s inventory item is upgraded.
     /// </summary>
-    public class UpgradingItemEventArgs : UpgradingInventoryItemEventArgs
-    {
+    public class UpgradingItemEventArgs : UpgradingInventoryItemEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpgradingItemEventArgs"/> class.
         /// </summary>
@@ -28,8 +26,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="knobSetting"><inheritdoc cref="Events.EventArgs.UpgradingItemEventArgs.KnobSetting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="Events.EventArgs.UpgradingItemEventArgs.IsAllowed"/></param>
         public UpgradingItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, bool isAllowed = true)
-            : base(player, item, knobSetting, isAllowed)
-        {
+            : base(player, item, knobSetting, isAllowed) {
             Item = item;
         }
 

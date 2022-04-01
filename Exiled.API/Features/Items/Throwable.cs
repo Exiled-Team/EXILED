@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using Exiled.API.Enums;
 
     using Footprinting;
@@ -20,15 +19,13 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for throwable items.
     /// </summary>
-    public class Throwable : Item
-    {
+    public class Throwable : Item {
         /// <summary>
         /// Initializes a new instance of the <see cref="Throwable"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
         public Throwable(ThrowableItem itemBase)
-            : base(itemBase)
-        {
+            : base(itemBase) {
             Base = itemBase;
         }
 
@@ -39,8 +36,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this throwable is custom using Exiled.CustomItems.</remarks>
         public Throwable(ItemType type, Player player = null)
-            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
-        {
+            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true)) {
         }
 
         /// <summary>
@@ -51,8 +47,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the amount of time it takes to pull the pin.
         /// </summary>
-        public float PinPullTime
-        {
+        public float PinPullTime {
             get => Base._pinPullTime;
             set => Base._pinPullTime = value;
         }
@@ -64,8 +59,7 @@ namespace Exiled.API.Features.Items
         public void Throw(bool fullForce = true) => Base.ServerThrow(fullForce, ThrowableNetworkHandler.GetLimitedVelocity(Base.Owner.playerMovementSync.PlayerVelocity));
 
         /// <inheritdoc/>
-        public override string ToString()
-        {
+        public override string ToString() {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
         }
     }

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions
-{
+namespace Exiled.Permissions {
     using System.ComponentModel;
     using System.IO;
 
@@ -14,13 +13,11 @@ namespace Exiled.Permissions
     using Exiled.API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>
-    public sealed class Config : IConfig
-    {
+    public sealed class Config : IConfig {
         /// <summary>
         /// Initializes a new instance of the <see cref="Config"/> class.
         /// </summary>
-        public Config()
-        {
+        public Config() {
             Folder = Paths.Configs;
             FullPath = Path.Combine(Folder, "permissions.yml");
         }

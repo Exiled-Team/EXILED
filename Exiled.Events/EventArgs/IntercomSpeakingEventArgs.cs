@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player speaks to the intercom.
     /// </summary>
-    public class IntercomSpeakingEventArgs : EventArgs
-    {
+    public class IntercomSpeakingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="IntercomSpeakingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public IntercomSpeakingEventArgs(Player player, bool isAllowed = true)
-        {
+        public IntercomSpeakingEventArgs(Player player, bool isAllowed = true) {
             Player = player;
             IsAllowed = isAllowed;
         }

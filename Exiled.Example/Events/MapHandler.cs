@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example.Events
-{
+namespace Exiled.Example.Events {
     using System.Linq;
 
     using Exiled.API.Features;
@@ -15,17 +14,14 @@ namespace Exiled.Example.Events
     /// <summary>
     /// Handles Map events.
     /// </summary>
-    internal sealed class MapHandler
-    {
+    internal sealed class MapHandler {
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnExplodingGrenade(ExplodingGrenadeEventArgs)"/>
-        public void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
-        {
+        public void OnExplodingGrenade(ExplodingGrenadeEventArgs ev) {
             Log.Info($"A grenade thrown by {ev.Thrower.Nickname} is exploding: {ev.Grenade.name}\n[Targets]\n\n{string.Join("\n", ev.TargetsToAffect.Select(player => $"[{player.Nickname}]"))}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnGeneratorActivated(GeneratorActivatedEventArgs)"/>
-        public void OnGeneratorActivated(GeneratorActivatedEventArgs ev)
-        {
+        public void OnGeneratorActivated(GeneratorActivatedEventArgs ev) {
             Log.Info($"A generator has been activated in {ev.Generator.gameObject.GetComponent<Room>()?.Name}!");
         }
     }

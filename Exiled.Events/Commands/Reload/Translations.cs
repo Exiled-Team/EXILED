@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Reload
-{
+namespace Exiled.Events.Commands.Reload {
     using System;
 
     using CommandSystem;
@@ -18,8 +17,7 @@ namespace Exiled.Events.Commands.Reload
     /// <summary>
     /// The reload configs command.
     /// </summary>
-    public class Translations : ICommand
-    {
+    public class Translations : ICommand {
         /// <summary>
         /// Gets static instance of the <see cref="Translations"/> command.
         /// </summary>
@@ -35,10 +33,8 @@ namespace Exiled.Events.Commands.Reload
         public string Description { get; } = "Reload plugin translations.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ee.reloadtranslations"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ee.reloadtranslations")) {
                 response = "You can't reload translations, you don't have \"ee.reloadtranslations\" permission.";
                 return false;
             }
@@ -47,8 +43,7 @@ namespace Exiled.Events.Commands.Reload
 
             Handlers.Server.OnReloadedTranslations();
 
-            foreach (IPlugin<IConfig> plugin in Loader.Plugins)
-            {
+            foreach (IPlugin<IConfig> plugin in Loader.Plugins) {
                 plugin.OnUnregisteringCommands();
                 plugin.OnRegisteringCommands();
             }

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Warhead
-{
+namespace Exiled.Events.Patches.Events.Warhead {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -25,10 +24,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the <see cref="Handlers.Warhead.Starting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))]
-    internal static class StartingByServer
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class StartingByServer {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = 0;

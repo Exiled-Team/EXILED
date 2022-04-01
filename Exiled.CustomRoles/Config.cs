@@ -5,9 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles
-{
+namespace Exiled.CustomRoles {
     using System.ComponentModel;
+
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.CustomRoles.API.Features;
@@ -15,8 +15,7 @@ namespace Exiled.CustomRoles
     /// <summary>
     /// The plugin's config.
     /// </summary>
-    public class Config : IConfig
-    {
+    public class Config : IConfig {
         /// <inheritdoc/>
         [Description("Whether or not the plugin is enabled.")]
         public bool IsEnabled { get; set; } = true;

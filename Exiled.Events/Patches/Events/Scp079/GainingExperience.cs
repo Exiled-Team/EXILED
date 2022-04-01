@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp079
-{
+namespace Exiled.Events.Patches.Events.Scp079 {
 #pragma warning disable SA1118
 #pragma warning disable SA1123
     using System.Collections.Generic;
@@ -31,10 +30,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Adds the <see cref="Handlers.Scp079.GainingExperience"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_RpcGainExp))]
-    internal static class GainingExperience
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class GainingExperience {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Declare a local variable of the type "GainingExperienceEventArgs".

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// SCP-106 related events.
     /// </summary>
-    public static class Scp106
-    {
+    public static class Scp106 {
         /// <summary>
         /// Invoked before SCP-106 creates a portal.
         /// </summary>

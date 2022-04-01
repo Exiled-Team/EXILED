@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using MEC;
 
     using PlayerStatsSystem;
@@ -18,8 +17,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E.
     /// </summary>
-    public static class Cassie
-    {
+    public static class Cassie {
         /// <summary>
         /// Gets a value indicating whether or not C.A.S.S.I.E is currently announcing. Does not include decontamination messages.
         /// </summary>
@@ -102,8 +100,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scpname">SCP Name.</param>
         /// <param name="info">Hit Information.</param>
-        public static void CustomSCPTermination(string scpname, DamageHandlerBase info)
-        {
+        public static void CustomSCPTermination(string scpname, DamageHandlerBase info) {
             string result = scpname;
             if (info is MicroHidDamageHandler)
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";

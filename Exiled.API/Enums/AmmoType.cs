@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Ammo types present in the game.
     /// </summary>
-    public enum AmmoType
-    {
+    public enum AmmoType {
         /// <summary>
         /// Not ammo.
         /// </summary>

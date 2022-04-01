@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Commands
-{
+namespace Exiled.CustomItems.Commands {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -22,10 +21,8 @@ namespace Exiled.CustomItems.Commands
     /// <summary>
     /// The command to give a player an item.
     /// </summary>
-    internal sealed class Give : ICommand
-    {
-        private Give()
-        {
+    internal sealed class Give : ICommand {
+        private Give() {
         }
 
         /// <summary>
@@ -43,34 +40,27 @@ namespace Exiled.CustomItems.Commands
         public string Description { get; } = "Gives a custom item.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("customitems.give"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("customitems.give")) {
                 response = "Permission Denied, required: customitems.give";
                 return false;
             }
 
-            if (arguments.Count == 0)
-            {
+            if (arguments.Count == 0) {
                 response = "give <Custom item name/Custom item ID> [Nickname/PlayerID/UserID/all/*]";
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
-            {
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item)) {
                 response = $"Custom item {arguments.At(0)} not found!";
                 return false;
             }
 
-            if (arguments.Count == 1)
-            {
-                if (sender is PlayerCommandSender playerCommandSender)
-                {
+            if (arguments.Count == 1) {
+                if (sender is PlayerCommandSender playerCommandSender) {
                     Player player = Player.Get(playerCommandSender.SenderId);
 
-                    if (!CheckEligible(player))
-                    {
+                    if (!CheckEligible(player)) {
                         response = "You cannot receive custom items!";
                         return false;
                     }
@@ -86,8 +76,7 @@ namespace Exiled.CustomItems.Commands
 
             string identifier = string.Join(" ", arguments.Skip(1));
 
-            switch (identifier)
-            {
+            switch (identifier) {
                 case "*":
                 case "all":
                     List<Player> eligiblePlayers = Player.List.Where(CheckEligible).ToList();
@@ -97,14 +86,12 @@ namespace Exiled.CustomItems.Commands
                     response = $"Custom item {item.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";
                     return true;
                 default:
-                    if (!(Player.Get(identifier) is Player player))
-                    {
+                    if (!(Player.Get(identifier) is Player player)) {
                         response = $"Unable to find player: {identifier}.";
                         return false;
                     }
 
-                    if (!CheckEligible(player))
-                    {
+                    if (!CheckEligible(player)) {
                         response = "Player cannot receive custom items!";
                         return false;
                     }
@@ -118,8 +105,7 @@ namespace Exiled.CustomItems.Commands
         /// <summary>
         /// Checks if the player is eligible to receive custom items.
         /// </summary>
-        private bool CheckEligible(Player player)
-        {
+        private bool CheckEligible(Player player) {
             return player.IsAlive && !player.IsCuffed && player.Items.Count < 8;
         }
     }

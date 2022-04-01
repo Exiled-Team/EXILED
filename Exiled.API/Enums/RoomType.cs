@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Unique identifier for the different types of rooms.
     /// </summary>
-    public enum RoomType
-    {
+    public enum RoomType {
         /// <summary>
         /// Unknown Room Type.
         /// </summary>

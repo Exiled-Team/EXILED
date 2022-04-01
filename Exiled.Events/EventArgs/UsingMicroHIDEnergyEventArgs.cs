@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before MicroHID energy is changed.
     /// </summary>
-    public class UsingMicroHIDEnergyEventArgs : EventArgs
-    {
+    public class UsingMicroHIDEnergyEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UsingMicroHIDEnergyEventArgs"/> class.
         /// </summary>
@@ -27,8 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="currentState"><inheritdoc cref="CurrentState"/></param>
         /// <param name="drain"><inheritdoc cref="Drain"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UsingMicroHIDEnergyEventArgs(Player player, MicroHIDItem microHIDitem, HidState currentState, float drain, bool isAllowed = true)
-        {
+        public UsingMicroHIDEnergyEventArgs(Player player, MicroHIDItem microHIDitem, HidState currentState, float drain, bool isAllowed = true) {
             Player = player;
             MicroHID = (MicroHid)Item.Get(microHIDitem);
             CurrentState = currentState;

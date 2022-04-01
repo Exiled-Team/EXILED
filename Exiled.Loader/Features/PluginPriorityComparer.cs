@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader.Features
-{
+namespace Exiled.Loader.Features {
     using System.Collections.Generic;
 
     using Exiled.API.Interfaces;
@@ -14,16 +13,14 @@ namespace Exiled.Loader.Features
     /// <summary>
     /// Comparator implementation according to plugin priorities.
     /// </summary>
-    public sealed class PluginPriorityComparer : IComparer<IPlugin<IConfig>>
-    {
+    public sealed class PluginPriorityComparer : IComparer<IPlugin<IConfig>> {
         /// <summary>
         /// Public instance.
         /// </summary>
         public static readonly PluginPriorityComparer Instance = new PluginPriorityComparer();
 
         /// <inheritdoc/>
-        public int Compare(IPlugin<IConfig> x, IPlugin<IConfig> y)
-        {
+        public int Compare(IPlugin<IConfig> x, IPlugin<IConfig> y) {
             // Reverse to make int.MaxValue first than int.MinValue
             int value = y.Priority.CompareTo(x.Priority);
             if (value == 0)

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System.Reflection;
 
     using MEC;
@@ -20,8 +19,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to easily work with the server.
     /// </summary>
-    public static class Server
-    {
+    public static class Server {
         private static Player host;
         private static global::Broadcast broadcast;
         private static BanPlayer banPlayer;
@@ -31,10 +29,8 @@ namespace Exiled.API.Features
         /// Gets the player's host of the server.
         /// Might be null when called when the server isn't loaded.
         /// </summary>
-        public static Player Host
-        {
-            get
-            {
+        public static Player Host {
+            get {
                 if (host == null || host.ReferenceHub == null)
                     host = PlayerManager.localPlayer != null ? new Player(PlayerManager.localPlayer) : null;
 
@@ -45,10 +41,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="Broadcast"/> component.
         /// </summary>
-        public static global::Broadcast Broadcast
-        {
-            get
-            {
+        public static global::Broadcast Broadcast {
+            get {
                 if (broadcast == null)
                     broadcast = PlayerManager.localPlayer.GetComponent<global::Broadcast>();
 
@@ -59,10 +53,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="BanPlayer"/> component.
         /// </summary>
-        public static BanPlayer BanPlayer
-        {
-            get
-            {
+        public static BanPlayer BanPlayer {
+            get {
                 if (banPlayer == null)
                     banPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
 
@@ -73,12 +65,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SendSpawnMessage
-        {
-            get
-            {
-                if (sendSpawnMessage == null)
-                {
+        public static MethodInfo SendSpawnMessage {
+            get {
+                if (sendSpawnMessage == null) {
                     sendSpawnMessage = typeof(NetworkServer).GetMethod(
                         "SendSpawnMessage",
                         BindingFlags.NonPublic | BindingFlags.Static);
@@ -91,11 +80,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the name of the server.
         /// </summary>
-        public static string Name
-        {
+        public static string Name {
             get => ServerConsole._serverName;
-            set
-            {
+            set {
                 ServerConsole._serverName = value;
                 ServerConsole.singleton.RefreshServerName();
             }
@@ -119,8 +106,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether friendly fire is enabled or not.
         /// </summary>
-        public static bool FriendlyFire
-        {
+        public static bool FriendlyFire {
             get => ServerConsole.FriendlyFire;
             set => ServerConsole.FriendlyFire = value;
         }
@@ -133,8 +119,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the maximum number of players able to be on the server.
         /// </summary>
-        public static int MaxPlayerCount
-        {
+        public static int MaxPlayerCount {
             get => CustomNetworkManager.slots;
             set => CustomNetworkManager.slots = value;
         }
@@ -142,16 +127,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Restarts the server, reconnects all players.
         /// </summary>
-        public static void Restart()
-        {
+        public static void Restart() {
             Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
         }
 
         /// <summary>
         /// Shutdowns the server, disconnects all players.
         /// </summary>
-        public static void Shutdown()
-        {
+        public static void Shutdown() {
             global::Shutdown.Quit();
         }
 
@@ -161,8 +144,7 @@ namespace Exiled.API.Features
         /// <param name="redirectPort">The port to redirect players to.</param>
         /// <returns>true, if redirection was successful; otherwise, false.</returns>
         /// <remarks>If the returned value is false, the server won't restart.</remarks>
-        public static bool RestartRedirect(ushort redirectPort)
-        {
+        public static bool RestartRedirect(ushort redirectPort) {
             NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true, false));
             Timing.CallDelayed(0.5f, Restart);
 
@@ -175,8 +157,7 @@ namespace Exiled.API.Features
         /// <param name="redirectPort">The port to redirect players to.</param>
         /// <returns>true, if redirection was successful; otherwise, false.</returns>
         /// <remarks>If the returned value is false, the server won't shutdown.</remarks>
-        public static bool ShutdownRedirect(ushort redirectPort)
-        {
+        public static bool ShutdownRedirect(ushort redirectPort) {
             NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true, false));
             Timing.CallDelayed(0.5f, Shutdown);
             return true;

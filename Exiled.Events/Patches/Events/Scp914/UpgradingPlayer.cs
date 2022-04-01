@@ -9,8 +9,7 @@ using Scp914KnobSetting = Scp914.Scp914KnobSetting;
 using Scp914Upgrader = Scp914.Scp914Upgrader;
 #pragma warning restore
 
-namespace Exiled.Events.Patches.Events.Scp914
-{
+namespace Exiled.Events.Patches.Events.Scp914 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -33,10 +32,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// Patches <see cref="Scp914Upgrader.ProcessPlayer"/> to add the <see cref="Handlers.Scp914.UpgradingPlayer"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
-    internal static class UpgradingPlayer
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class UpgradingPlayer {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = 0;
@@ -47,8 +44,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
             int removalOffset = -9;
             int removalIndex = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + removalOffset;
-            for (int i = 0; i < 10; i++)
-            {
+            for (int i = 0; i < 10; i++) {
                 newInstructions.RemoveAt(removalIndex);
             }
 
@@ -164,8 +160,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static ItemBase GetItem(KeyValuePair<uint, ItemBase> kvp)
-        {
+        private static ItemBase GetItem(KeyValuePair<uint, ItemBase> kvp) {
             Log.Error($"{kvp.Key} - {kvp.Value.ItemTypeId} - {kvp.Value.ItemSerial}");
             return kvp.Value;
         }

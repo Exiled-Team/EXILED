@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater
-{
+namespace Exiled.Updater {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -30,10 +29,8 @@ namespace Exiled.Updater
 #pragma warning disable SA1124 // Do not use regions
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 
-    public sealed class Updater : Plugin<Config>
-    {
-        private enum Stage
-        {
+    public sealed class Updater : Plugin<Config> {
+        private enum Stage {
             Free,
             Start,
             Installing,
@@ -52,17 +49,14 @@ namespace Exiled.Updater
         private bool _firstLaunch = true;
         private volatile Stage _stage;
 
-        private Updater()
-        {
+        private Updater() {
         }
 
         /// <inheritdoc/>
-        public override void OnEnabled()
-        {
+        public override void OnEnabled() {
             base.OnEnabled();
 
-            if (!_firstLaunch)
-            {
+            if (!_firstLaunch) {
                 Log.Info("Exiled won't be checked for an update because that's not the first launch of the plugin");
                 return;
             }
@@ -72,11 +66,9 @@ namespace Exiled.Updater
             CheckUpdate(false);
         }
 
-        public bool CheckUpdate(bool forced)
-        {
+        public bool CheckUpdate(bool forced) {
             // FixInvalidProxyHandling();
-            if (_stage == Stage.Free)
-            {
+            if (_stage == Stage.Free) {
                 Timing.RunCoroutine(_CheckUpdate(forced), Segment.EndOfFrame);
                 return true;
             }
@@ -106,10 +98,8 @@ namespace Exiled.Updater
             }
         }*/
 
-        private HttpClient CreateHttpClient()
-        {
-            HttpClient client = new HttpClient()
-            {
+        private HttpClient CreateHttpClient() {
+            HttpClient client = new HttpClient() {
                 Timeout = TimeSpan.FromSeconds(480),
             };
 
@@ -118,32 +108,25 @@ namespace Exiled.Updater
             return client;
         }
 
-        private IEnumerator<float> _CheckUpdate(bool forced)
-        {
+        private IEnumerator<float> _CheckUpdate(bool forced) {
             _stage = Stage.Start;
 
-            Thread updateThread = new Thread(() =>
-            {
-                using (HttpClient client = CreateHttpClient())
-                {
-                    if (FindUpdate(client, forced, out NewVersion newVersion))
-                    {
+            Thread updateThread = new Thread(() => {
+                using (HttpClient client = CreateHttpClient()) {
+                    if (FindUpdate(client, forced, out NewVersion newVersion)) {
                         _stage = Stage.Installing;
                         Update(client, newVersion);
                     }
                 }
-            })
-            {
+            }) {
                 IsBackground = false,
                 Priority = System.Threading.ThreadPriority.AboveNormal,
             };
 
             updateThread.Start();
 
-            while (updateThread.IsAlive)
-            {
-                if (_stage == Stage.Installing)
-                {
+            while (updateThread.IsAlive) {
+                if (_stage == Stage.Installing) {
                     updateThread.Join();
                 }
 
@@ -158,38 +141,31 @@ namespace Exiled.Updater
 
         #region Finders
 
-        private bool FindUpdate(HttpClient client, bool forced, out NewVersion newVersion)
-        {
-            try
-            {
+        private bool FindUpdate(HttpClient client, bool forced, out NewVersion newVersion) {
+            try {
                 ExiledLibrary smallestVersion = FindSmallestExiledVersion();
                 Log.Info($"Found the smallest version of Exiled - {smallestVersion.Library.GetName().Name}:{smallestVersion.Version}");
 
                 // TODO: make it loop pages to find an update
                 TaggedRelease[] releases = TagReleases(client.GetReleases(REPOID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
 
-                if (FindRelease(releases, out Release targetRelease, smallestVersion, forced))
-                {
-                    if (!FindAsset(GetInstallerName(), targetRelease, out ReleaseAsset asset))
-                    {
+                if (FindRelease(releases, out Release targetRelease, smallestVersion, forced)) {
+                    if (!FindAsset(GetInstallerName(), targetRelease, out ReleaseAsset asset)) {
                         // Error: no asset
                         Log.Warn("Couldn't find the asset, the update will not be installed");
                     }
-                    else
-                    {
+                    else {
                         Log.Info($"Found asset - Name: {asset.Name} | Size: {asset.Size} Download: {asset.BrowserDownloadUrl}");
                         newVersion = new NewVersion(targetRelease, asset);
                         return true;
                     }
                 }
-                else
-                {
+                else {
                     // No errors
                     Log.Info("No new versions found, you're using the most recent version of Exiled!");
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Log.Error($"{nameof(FindUpdate)} threw an exception:\n{ex}");
             }
 
@@ -197,18 +173,15 @@ namespace Exiled.Updater
             return false;
         }
 
-        private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLibrary smallestVersion, bool forced = false)
-        {
+        private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLibrary smallestVersion, bool forced = false) {
             bool includePRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease();
 
-            for (int z = 0; z < releases.Length; z++)
-            {
+            for (int z = 0; z < releases.Length; z++) {
                 TaggedRelease taggedRelease = releases[z];
                 if (taggedRelease.Release.PreRelease && !includePRE)
                     continue;
 
-                if ((taggedRelease.Version > smallestVersion.Version) || forced)
-                {
+                if ((taggedRelease.Version > smallestVersion.Version) || forced) {
                     release = taggedRelease.Release;
                     return true;
                 }
@@ -218,10 +191,8 @@ namespace Exiled.Updater
             return false;
         }
 
-        private bool FindAsset(string assetName, Release release, out ReleaseAsset asset)
-        {
-            for (int z = 0; z < release.Assets.Length; z++)
-            {
+        private bool FindAsset(string assetName, Release release, out ReleaseAsset asset) {
+            for (int z = 0; z < release.Assets.Length; z++) {
                 asset = release.Assets[z];
                 if (assetName.Equals(asset.Name, StringComparison.OrdinalIgnoreCase))
                     return true;
@@ -235,29 +206,23 @@ namespace Exiled.Updater
 
         #region Utils
 
-        private TaggedRelease[] TagReleases(Release[] releases)
-        {
+        private TaggedRelease[] TagReleases(Release[] releases) {
             TaggedRelease[] arr = new TaggedRelease[releases.Length];
-            for (int z = 0; z < arr.Length; z++)
-            {
+            for (int z = 0; z < arr.Length; z++) {
                 arr[z] = new TaggedRelease(releases[z]);
             }
 
             return arr;
         }
 
-        private string GetInstallerName()
-        {
-            if (PlatformId == PlatformID.Win32NT)
-            {
+        private string GetInstallerName() {
+            if (PlatformId == PlatformID.Win32NT) {
                 return InstallerAssetNameWin;
             }
-            else if (PlatformId == PlatformID.Unix)
-            {
+            else if (PlatformId == PlatformID.Unix) {
                 return InstallerAssetNameLinux;
             }
-            else
-            {
+            else {
                 Log.Error("Can't determine your OS platform");
                 Log.Error($"OSDesc: {RuntimeInformation.OSDescription}");
                 Log.Error($"OSArch: {RuntimeInformation.OSArchitecture}");
@@ -270,8 +235,7 @@ namespace Exiled.Updater
 
         private bool OneOfExiledIsPrerelease() => GetExiledLibs().Any(l => l.Version.PreRelease != null);
 
-        private IEnumerable<ExiledLibrary> GetExiledLibs()
-        {
+        private IEnumerable<ExiledLibrary> GetExiledLibs() {
             return from a in AppDomain.CurrentDomain.GetAssemblies()
                    let name = a.GetName().Name
                    where name.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase)
@@ -282,13 +246,10 @@ namespace Exiled.Updater
 
         #endregion
 
-        private void Update(HttpClient client, NewVersion newVersion)
-        {
-            try
-            {
+        private void Update(HttpClient client, NewVersion newVersion) {
+            try {
                 Log.Info("Downloading installer...");
-                using (HttpResponseMessage installer = client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false).GetAwaiter().GetResult())
-                {
+                using (HttpResponseMessage installer = client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false).GetAwaiter().GetResult()) {
                     Log.Info("Downloaded!");
 
                     string serverPath = Environment.CurrentDirectory;
@@ -298,21 +259,18 @@ namespace Exiled.Updater
                         LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
 
                     using (Stream installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
-                    using (FileStream fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
-                    {
+                    using (FileStream fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None)) {
                         installerStream.CopyToAsync(fs).ConfigureAwait(false).GetAwaiter().GetResult();
                     }
 
                     if (PlatformId == PlatformID.Unix)
                         LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
 
-                    if (!File.Exists(installerPath))
-                    {
+                    if (!File.Exists(installerPath)) {
                         Log.Error("Couldn't find the downloaded installer!");
                     }
 
-                    ProcessStartInfo startInfo = new ProcessStartInfo
-                    {
+                    ProcessStartInfo startInfo = new ProcessStartInfo {
                         WorkingDirectory = serverPath,
                         FileName = installerPath,
                         UseShellExecute = false,
@@ -325,14 +283,12 @@ namespace Exiled.Updater
                     };
 
                     Process installerProcess = Process.Start(startInfo);
-                    installerProcess.OutputDataReceived += (s, args) =>
-                    {
+                    installerProcess.OutputDataReceived += (s, args) => {
                         if (!string.IsNullOrEmpty(args.Data))
                             Log.Info($"[Installer] {args.Data}");
                     };
                     installerProcess.BeginOutputReadLine();
-                    installerProcess.ErrorDataReceived += (s, args) =>
-                    {
+                    installerProcess.ErrorDataReceived += (s, args) => {
                         if (!string.IsNullOrEmpty(args.Data))
                             Log.Error($"[Installer] {args.Data}");
                     };
@@ -346,8 +302,7 @@ namespace Exiled.Updater
                     _stage = Stage.Installed;
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Log.Error($"{nameof(Update)} throw an exception");
                 Log.Error(ex);
             }

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information after a player has fired a weapon.
     /// </summary>
-    public class ShotEventArgs : EventArgs
-    {
+    public class ShotEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ShotEventArgs"/> class.
         /// </summary>
@@ -25,14 +23,12 @@ namespace Exiled.Events.EventArgs
         /// <param name="destructible">The <see cref="IDestructible"/> hit.</param>
         /// <param name="hit"><inheritdoc cref="Distance"/></param>
         /// <param name="damage"><inheritdoc cref="Damage"/></param>
-        public ShotEventArgs(Player shooter, RaycastHit hit, IDestructible destructible, float damage)
-        {
+        public ShotEventArgs(Player shooter, RaycastHit hit, IDestructible destructible, float damage) {
             Shooter = shooter;
             Damage = damage;
             Distance = hit.distance;
 
-            if (destructible is HitboxIdentity identity)
-            {
+            if (destructible is HitboxIdentity identity) {
                 Hitbox = identity;
                 Target = Player.Get(Hitbox.TargetHub);
             }

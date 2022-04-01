@@ -5,18 +5,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems
-{
+namespace Exiled.CustomItems {
     using Exiled.CustomItems.API.Features;
 
     /// <summary>
     /// Event Handlers for the CustomItem API.
     /// </summary>
-    internal sealed class RoundHandler
-    {
+    internal sealed class RoundHandler {
         /// <inheritdoc cref="Events.Handlers.Server.OnRoundStarted"/>
-        public void OnRoundStarted()
-        {
+        public void OnRoundStarted() {
             foreach (CustomItem customItem in CustomItem.Registered)
                 customItem?.SpawnAll();
         }

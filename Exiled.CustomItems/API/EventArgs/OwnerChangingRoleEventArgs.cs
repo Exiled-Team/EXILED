@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.EventArgs
-{
+namespace Exiled.CustomItems.API.EventArgs {
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
@@ -17,16 +16,14 @@ namespace Exiled.CustomItems.API.EventArgs
     /// <summary>
     /// Contains all informations of a <see cref="CustomItem"/> before a <see cref="Player"/> changes roles.
     /// </summary>
-    public class OwnerChangingRoleEventArgs : ChangingRoleEventArgs
-    {
+    public class OwnerChangingRoleEventArgs : ChangingRoleEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="OwnerChangingRoleEventArgs"/> class.
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
         public OwnerChangingRoleEventArgs(ItemBase item, ChangingRoleEventArgs ev)
-            : this(item, ev.Player, ev.NewRole, ev.Lite, (CharacterClassManager.SpawnReason)ev.Reason)
-        {
+            : this(item, ev.Player, ev.NewRole, ev.Lite, (CharacterClassManager.SpawnReason)ev.Reason) {
         }
 
         /// <summary>
@@ -38,8 +35,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="shouldPreservePosition"><inheritdoc cref="ChangingRoleEventArgs.Lite"/></param>
         /// <param name="reason"><inheritdoc cref="ChangingRoleEventArgs.Reason"/></param>
         public OwnerChangingRoleEventArgs(ItemBase item, Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)
-            : base(player, newRole, shouldPreservePosition, reason)
-        {
+            : base(player, newRole, shouldPreservePosition, reason) {
             Item = item;
         }
 

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player changes the SCP-914 knob setting.
     /// </summary>
-    public class ChangingKnobSettingEventArgs : EventArgs
-    {
+    public class ChangingKnobSettingEventArgs : EventArgs {
         private Scp914KnobSetting knobSetting;
 
         /// <summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="knobSetting"><inheritdoc cref="KnobSetting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingKnobSettingEventArgs(Player player, Scp914KnobSetting knobSetting, bool isAllowed = true)
-        {
+        public ChangingKnobSettingEventArgs(Player player, Scp914KnobSetting knobSetting, bool isAllowed = true) {
             Player = player;
             KnobSetting = knobSetting;
             IsAllowed = isAllowed;
@@ -41,8 +38,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the SCP-914 knob setting.
         /// </summary>
-        public Scp914KnobSetting KnobSetting
-        {
+        public Scp914KnobSetting KnobSetting {
             get => knobSetting;
             set => knobSetting = value > Scp914KnobSetting.VeryFine ? Scp914KnobSetting.Coarse : value;
         }

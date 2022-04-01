@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after kicking a player from the server.
     /// </summary>
-    public class KickedEventArgs : EventArgs
-    {
+    public class KickedEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="KickedEventArgs"/> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
-        public KickedEventArgs(Player target, string reason)
-        {
+        public KickedEventArgs(Player target, string reason) {
             Target = target;
             Reason = reason;
         }

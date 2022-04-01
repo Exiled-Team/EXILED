@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions.Extensions
-{
+namespace Exiled.Permissions.Extensions {
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -31,8 +30,7 @@ namespace Exiled.Permissions.Extensions
     using static Exiled.Permissions.Permissions;
 
     /// <inheritdoc cref="Exiled.Permissions.Permissions"/>
-    public static class Permissions
-    {
+    public static class Permissions {
         private static readonly ISerializer Serializer = new SerializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .IgnoreFields()
@@ -52,12 +50,9 @@ namespace Exiled.Permissions.Extensions
         /// <summary>
         /// Gets the default group.
         /// </summary>
-        public static Group DefaultGroup
-        {
-            get
-            {
-                foreach (KeyValuePair<string, Group> group in Groups)
-                {
+        public static Group DefaultGroup {
+            get {
+                foreach (KeyValuePair<string, Group> group in Groups) {
                     if (group.Value.IsDefault)
                         return group.Value;
                 }
@@ -69,16 +64,13 @@ namespace Exiled.Permissions.Extensions
         /// <summary>
         /// Create permissions.
         /// </summary>
-        public static void Create()
-        {
-            if (!Directory.Exists(Instance.Config.Folder))
-            {
+        public static void Create() {
+            if (!Directory.Exists(Instance.Config.Folder)) {
                 Log.Warn($"Permissions directory at {Instance.Config.Folder} is missing, creating.");
                 Directory.CreateDirectory(Instance.Config.Folder);
             }
 
-            if (!File.Exists(Instance.Config.FullPath))
-            {
+            if (!File.Exists(Instance.Config.FullPath)) {
                 Log.Warn($"Permissions file at {Instance.Config.FullPath} is missing, creating.");
                 File.WriteAllText(Instance.Config.FullPath, Encoding.UTF8.GetString(Resources.permissions));
             }
@@ -87,35 +79,27 @@ namespace Exiled.Permissions.Extensions
         /// <summary>
         /// Reloads permissions.
         /// </summary>
-        public static void Reload()
-        {
-            if (ServerStatic.PermissionsHandler == null)
-            {
+        public static void Reload() {
+            if (ServerStatic.PermissionsHandler == null) {
                 Log.Error("Your Remote Admin config is broken. You have to fix it because the game won't even start with a broken config.");
 
                 // If we don't return the context, it'll throw another exception.
                 return;
             }
 
-            try
-            {
+            try {
                 Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
                 Dictionary<string, Group> deserializedPerms = new Dictionary<string, Group>();
-                foreach (KeyValuePair<string, object> group in rawDeserializedPerms)
-                {
-                    try
-                    {
-                        if (string.Equals(group.Key, "user", StringComparison.OrdinalIgnoreCase) || ServerStatic.PermissionsHandler._groups.ContainsKey(group.Key))
-                        {
+                foreach (KeyValuePair<string, object> group in rawDeserializedPerms) {
+                    try {
+                        if (string.Equals(group.Key, "user", StringComparison.OrdinalIgnoreCase) || ServerStatic.PermissionsHandler._groups.ContainsKey(group.Key)) {
                             deserializedPerms.Add(group.Key, Deserializer.Deserialize<Group>(Serializer.Serialize(group.Value)));
                         }
-                        else
-                        {
+                        else {
                             Log.Warn($"{group.Key} is not a valid permission group.");
                         }
                     }
-                    catch (YamlException exception)
-                    {
+                    catch (YamlException exception) {
                         Log.Error($"Unable to parse permission config for: {group.Key}.\n{exception.Message}.\nEnable debug to see stacktrace.");
                         Log.Debug($"{exception.Message}\n{exception.StackTrace}");
                     }
@@ -123,15 +107,12 @@ namespace Exiled.Permissions.Extensions
 
                 Groups = deserializedPerms;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Log.Error($"Unable to parse permission config:\n{e}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
             }
 
-            foreach (KeyValuePair<string, Group> group in Groups.Reverse())
-            {
-                try
-                {
+            foreach (KeyValuePair<string, Group> group in Groups.Reverse()) {
+                try {
                     IEnumerable<string> inheritedPerms = new List<string>();
 
                     inheritedPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
@@ -141,8 +122,7 @@ namespace Exiled.Permissions.Extensions
 
                     Log.Debug($"{group.Key} permissions loaded.", Instance.Config.ShouldDebugBeShown);
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     Log.Error($"Failed to load permissions/inheritance for: {group.Key}.\n{e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
                     Log.Debug($"{e}", Instance.Config.ShouldDebugBeShown);
                 }
@@ -168,14 +148,11 @@ namespace Exiled.Permissions.Extensions
         /// <param name="sender">The sender to be checked.</param>
         /// <param name="permission">The permission to be checked.</param>
         /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
-        public static bool CheckPermission(this CommandSender sender, string permission)
-        {
-            if (sender.FullPermissions || sender is ServerConsoleSender || sender is GameCore.ConsoleCommandSender)
-            {
+        public static bool CheckPermission(this CommandSender sender, string permission) {
+            if (sender.FullPermissions || sender is ServerConsoleSender || sender is GameCore.ConsoleCommandSender) {
                 return true;
             }
-            else if (sender is PlayerCommandSender)
-            {
+            else if (sender is PlayerCommandSender) {
                 Player player = Player.Get(sender.SenderId);
 
                 if (player == null)
@@ -193,16 +170,14 @@ namespace Exiled.Permissions.Extensions
         /// <param name="player">The player to be checked.</param>
         /// <param name="permission">The permission to be checked.</param>
         /// <returns>true if the player's current or native group has permissions; otherwise, false.</returns>
-        public static bool CheckPermission(this Player player, string permission)
-        {
+        public static bool CheckPermission(this Player player, string permission) {
             if (string.IsNullOrEmpty(permission))
                 return false;
 
             if (Server.Host == player)
                 return true;
 
-            if (player == null || player.GameObject == null || Groups == null || Groups.Count == 0)
-            {
+            if (player == null || player.GameObject == null || Groups == null || Groups.Count == 0) {
                 return false;
             }
 
@@ -212,14 +187,12 @@ namespace Exiled.Permissions.Extensions
             string plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value.EqualsTo(player.Group)).Key : null;
             Log.Debug($"GroupKey: {plyGroupKey ?? "(null)"}", Instance.Config.ShouldDebugBeShown);
 
-            if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out Group group))
-            {
+            if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out Group group)) {
                 Log.Debug("The source group is null, the default group is used", Instance.Config.ShouldDebugBeShown);
                 group = DefaultGroup;
             }
 
-            if (group == null)
-            {
+            if (group == null) {
                 Log.Debug("There's no default group, returning false...", Instance.Config.ShouldDebugBeShown);
                 return false;
             }
@@ -230,18 +203,15 @@ namespace Exiled.Permissions.Extensions
             if (group.CombinedPermissions.Contains(allPerms))
                 return true;
 
-            if (permission.Contains(permSeparator))
-            {
+            if (permission.Contains(permSeparator)) {
                 StringBuilder strBuilder = StringBuilderPool.Shared.Rent();
                 string[] seraratedPermissions = permission.Split(permSeparator);
 
                 bool Check(string source) => group.CombinedPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
 
                 bool result = false;
-                for (int z = 0; z < seraratedPermissions.Length; z++)
-                {
-                    if (z != 0)
-                    {
+                for (int z = 0; z < seraratedPermissions.Length; z++) {
+                    if (z != 0) {
                         // We need to clear the last ALL_PERMS line
                         // or it'll be like 'permission.*.subpermission'.
                         strBuilder.Length -= allPerms.Length;
@@ -254,15 +224,13 @@ namespace Exiled.Permissions.Extensions
 
                     // If it's the last index,
                     // then we don't need to check for all permissions of the subpermission.
-                    if (z == seraratedPermissions.Length - 1)
-                    {
+                    if (z == seraratedPermissions.Length - 1) {
                         result = Check(strBuilder.ToString());
                         break;
                     }
 
                     strBuilder.Append(allPerms);
-                    if (Check(strBuilder.ToString()))
-                    {
+                    if (Check(strBuilder.ToString())) {
                         result = true;
                         break;
                     }

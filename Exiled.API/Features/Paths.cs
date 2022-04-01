@@ -5,16 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System;
     using System.IO;
 
     /// <summary>
     /// A set of useful paths.
     /// </summary>
-    public static class Paths
-    {
+    public static class Paths {
         static Paths() => Reload();
 
         /// <summary>
@@ -76,8 +74,7 @@ namespace Exiled.API.Features
         /// Reloads all paths.
         /// </summary>
         /// <param name="rootDirectoryName">The new root directory name.</param>
-        public static void Reload(string rootDirectoryName = "EXILED")
-        {
+        public static void Reload(string rootDirectoryName = "EXILED") {
             Exiled = Path.Combine(AppData, rootDirectoryName);
             Plugins = Path.Combine(Exiled, "Plugins");
             Dependencies = Path.Combine(Plugins, "dependencies");

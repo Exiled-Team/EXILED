@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using System;
 
     using CameraShaking;
@@ -22,19 +21,16 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
     /// </summary>
-    public class Firearm : Item
-    {
+    public class Firearm : Item {
         /// <summary>
         /// Initializes a new instance of the <see cref="Firearm"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
         public Firearm(InventorySystem.Items.Firearms.Firearm itemBase)
-            : base(itemBase)
-        {
+            : base(itemBase) {
             Base = itemBase;
 
-            switch (Base)
-            {
+            switch (Base) {
                 case AutomaticFirearm auto:
                     Base.AmmoManagerModule =
                         new AutomaticAmmoManager(auto, auto._baseMaxAmmo, 1, auto._boltTravelTime == 0);
@@ -55,8 +51,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Firearm(ItemType type)
-            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
-        {
+            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false)) {
         }
 
         /// <inheritdoc cref="Item.Base"/>
@@ -65,8 +60,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the amount of ammo in the firearm.
         /// </summary>
-        public byte Ammo
-        {
+        public byte Ammo {
             get => Base.Status.Ammo;
             set => Base.Status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
         }
@@ -94,8 +88,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the <see cref="FirearmAttachment"/>s of the firearm.
         /// </summary>
-        public FirearmAttachment[] Attachments
-        {
+        public FirearmAttachment[] Attachments {
             get => Base.Attachments;
             set => Base.Attachments = value;
         }
@@ -104,11 +97,9 @@ namespace Exiled.API.Features.Items
         /// Gets or sets the fire rate of the firearm, if it is an automatic weapon.
         /// </summary>
         /// <exception cref="InvalidOperationException">When trying to set this value for a weapon that is semi-automatic.</exception>
-        public float FireRate
-        {
+        public float FireRate {
             get => Base is AutomaticFirearm auto ? auto._fireRate : 1f;
-            set
-            {
+            set {
                 if (Base is AutomaticFirearm auto)
                     auto._fireRate = value;
                 else
@@ -120,11 +111,9 @@ namespace Exiled.API.Features.Items
         /// Gets or sets the recoil settings of the firearm, if it's an automatic weapon.
         /// </summary>
         /// <exception cref="InvalidOperationException">When trying to set this value for a weapon that is semi-automatic.</exception>
-        public RecoilSettings Recoil
-        {
+        public RecoilSettings Recoil {
             get => Base is AutomaticFirearm auto ? auto._recoil : default;
-            set
-            {
+            set {
                 if (Base is AutomaticFirearm auto)
                     auto.ActionModule = new AutomaticAction(Base, auto._semiAutomatic, auto._boltTravelTime, 1f / auto._fireRate, auto._dryfireClipId, auto._triggerClipId, auto._gunshotPitchRandomization, value, auto._recoilPattern, false);
                 else

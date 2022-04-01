@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Enums;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before ending a round.
     /// </summary>
-    public class EndingRoundEventArgs : EventArgs
-    {
+    public class EndingRoundEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="EndingRoundEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="leadingTeam"><inheritdoc cref="LeadingTeam"/></param>
         /// <param name="isRoundEnded"><inheritdoc cref="IsRoundEnded"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public EndingRoundEventArgs(LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isRoundEnded, bool isAllowed = true)
-        {
+        public EndingRoundEventArgs(LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isRoundEnded, bool isAllowed = true) {
             ClassList = classList;
             LeadingTeam = leadingTeam;
             IsRoundEnded = isRoundEnded;

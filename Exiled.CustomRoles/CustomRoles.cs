@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles
-{
+namespace Exiled.CustomRoles {
     using System.Collections.Generic;
 
     using Exiled.API.Features;
@@ -15,8 +14,7 @@ namespace Exiled.CustomRoles
     /// <summary>
     /// Handles all custom role API functions.
     /// </summary>
-    public class CustomRoles : Plugin<Config>
-    {
+    public class CustomRoles : Plugin<Config> {
         private PlayerHandlers playerHandlers;
 
         /// <summary>
@@ -30,8 +28,7 @@ namespace Exiled.CustomRoles
         internal List<Player> StopRagdollPlayers { get; } = new List<Player>();
 
         /// <inheritdoc/>
-        public override void OnEnabled()
-        {
+        public override void OnEnabled() {
             Instance = this;
             playerHandlers = new PlayerHandlers(this);
 
@@ -40,8 +37,7 @@ namespace Exiled.CustomRoles
         }
 
         /// <inheritdoc/>
-        public override void OnDisabled()
-        {
+        public override void OnDisabled() {
             Exiled.Events.Handlers.Player.SpawningRagdoll -= playerHandlers.OnSpawningRagdoll;
             playerHandlers = null;
             Instance = null;

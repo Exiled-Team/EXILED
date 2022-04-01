@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player's mute status is changed.
     /// </summary>
-    public class ChangingMuteStatusEventArgs : EventArgs
-    {
+    public class ChangingMuteStatusEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingMuteStatusEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isMuted"><inheritdoc cref="IsMuted"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingMuteStatusEventArgs(Player player, bool isMuted, bool isAllowed = true)
-        {
+        public ChangingMuteStatusEventArgs(Player player, bool isMuted, bool isAllowed = true) {
             Player = player;
             IsMuted = isMuted;
             IsAllowed = isAllowed;

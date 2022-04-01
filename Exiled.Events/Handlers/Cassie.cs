@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Cassie related events.
     /// </summary>
-    public static class Cassie
-    {
+    public static class Cassie {
         /// <summary>
         /// Invoked before sending a cassie message.
         /// </summary>

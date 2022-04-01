@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Provides simple and readable plugin priority values.
     /// </summary>
-    public enum PluginPriority
-    {
+    public enum PluginPriority {
         /// <inheritdoc cref="Medium"/>
         Default = Medium,
 

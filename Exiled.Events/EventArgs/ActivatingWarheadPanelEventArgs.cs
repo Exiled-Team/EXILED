@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player activates the warhead panel.
     /// </summary>
-    public class ActivatingWarheadPanelEventArgs : EventArgs
-    {
+    public class ActivatingWarheadPanelEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivatingWarheadPanelEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ActivatingWarheadPanelEventArgs(Player player, bool isAllowed = true)
-        {
+        public ActivatingWarheadPanelEventArgs(Player player, bool isAllowed = true) {
             Player = player;
             IsAllowed = isAllowed;
         }

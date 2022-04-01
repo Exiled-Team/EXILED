@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     /// <summary>
     /// Contains all the information after sending a C.A.S.S.I.E. message.
     /// </summary>
-    public class SendingCassieMessageEventArgs : EventArgs
-    {
+    public class SendingCassieMessageEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="SendingCassieMessageEventArgs"/> class.
         /// </summary>
@@ -21,8 +19,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="makeHold"><inheritdoc cref="MakeHold"/></param>
         /// <param name="makeNoise"><inheritdoc cref="MakeNoise"/></param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
-        public SendingCassieMessageEventArgs(string words, bool makeHold, bool makeNoise, bool isAllowed = true)
-        {
+        public SendingCassieMessageEventArgs(string words, bool makeHold, bool makeNoise, bool isAllowed = true) {
             Words = words;
             MakeHold = makeHold;
             MakeNoise = makeNoise;

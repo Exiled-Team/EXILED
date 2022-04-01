@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
-{
+namespace Exiled.Events.Patches.Events.Map {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -29,10 +28,8 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Handlers.Map.AnnouncingScpTermination"/> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceScpTermination))]
-    internal static class AnnouncingScpTermination
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class AnnouncingScpTermination {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(AnnouncingScpTerminationEventArgs));

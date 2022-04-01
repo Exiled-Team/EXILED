@@ -5,19 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.Models
-{
+namespace Exiled.Updater.Models {
     using Exiled.Updater.GHApi.Models;
 
     using SemVer;
 
-    public readonly struct TaggedRelease
-    {
+    public readonly struct TaggedRelease {
         public readonly Release Release;
         public readonly Version Version;
 
-        public TaggedRelease(Release release)
-        {
+        public TaggedRelease(Release release) {
             Release = release;
             Version = Version.Parse(release.TagName);
         }

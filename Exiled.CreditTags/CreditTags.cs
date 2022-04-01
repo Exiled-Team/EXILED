@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags
-{
+namespace Exiled.CreditTags {
     using System;
     using System.Collections.Generic;
 
@@ -23,16 +22,14 @@ namespace Exiled.CreditTags
     /// <summary>
     /// Handles credits for Exiled Devs, Contributors and Plugin devs.
     /// </summary>
-    public sealed class CreditTags : Plugin<Config>
-    {
+    public sealed class CreditTags : Plugin<Config> {
         private const string Url = "https://exiled.host/utilities/checkcredits.php";
 
         private static readonly CreditTags Singleton = new CreditTags();
 
         private CreditsHandler handler;
 
-        private CreditTags()
-        {
+        private CreditTags() {
         }
 
         /// <summary>
@@ -46,8 +43,7 @@ namespace Exiled.CreditTags
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of Exiled Credit ranks.
         /// </summary>
-        internal Dictionary<RankType, Rank> Ranks { get; } = new Dictionary<RankType, Rank>
-        {
+        internal Dictionary<RankType, Rank> Ranks { get; } = new Dictionary<RankType, Rank> {
             [RankType.Dev] = new Rank("Exiled Developer", "aqua", "33DEFF"),
             [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "B733FF"),
             [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "E60909"),
@@ -61,8 +57,7 @@ namespace Exiled.CreditTags
         internal Dictionary<string, RankType> RankCache { get; } = new Dictionary<string, RankType>();
 
         /// <inheritdoc/>
-        public override void OnEnabled()
-        {
+        public override void OnEnabled() {
             RefreshHandler();
             AttachHandler();
 
@@ -70,59 +65,49 @@ namespace Exiled.CreditTags
         }
 
         /// <inheritdoc/>
-        public override void OnDisabled()
-        {
+        public override void OnDisabled() {
             UnattachHandler();
 
             base.OnDisabled();
         }
 
-        internal void MakeRequest(string userId, Action<ThreadSafeRequest> errorHandler, Action<string> successHandler, GameObject issuer)
-        {
+        internal void MakeRequest(string userId, Action<ThreadSafeRequest> errorHandler, Action<string> successHandler, GameObject issuer) {
             ThreadSafeRequest.Go($"{Url}?userid={userId.GetHashedUserId()}", errorHandler, successHandler, issuer);
         }
 
         // returns true if the player was in the cache
-        internal bool ShowCreditTag(Player player, Action errorHandler, Action successHandler, bool force = false)
-        {
+        internal bool ShowCreditTag(Player player, Action errorHandler, Action successHandler, bool force = false) {
             if (player.DoNotTrack && !Instance.Config.IgnoreDntFlag && !force)
                 return false;
 
-            if (RankCache.TryGetValue(player.UserId, out RankType cachedRank))
-            {
+            if (RankCache.TryGetValue(player.UserId, out RankType cachedRank)) {
                 ShowRank(cachedRank);
                 return true;
             }
-            else
-            {
+            else {
                 MakeRequest(player.UserId, ErrorHandler, SuccessHandler, player.GameObject);
                 return false;
             }
 
-            void SuccessHandler(string result)
-            {
-                if (Enum.TryParse<RankType>(result, out RankType kind))
-                {
+            void SuccessHandler(string result) {
+                if (Enum.TryParse<RankType>(result, out RankType kind)) {
                     RankCache[player.UserId] = kind;
                     ShowRank(kind);
 
                     successHandler?.Invoke();
                 }
-                else
-                {
+                else {
                     Log.Debug($"{nameof(SuccessHandler)}: Invalid RankKind - response: {result}", Loader.Loader.ShouldDebugBeShown);
                 }
             }
 
-            void ErrorHandler(ThreadSafeRequest request)
-            {
+            void ErrorHandler(ThreadSafeRequest request) {
                 Log.Debug($"{nameof(ErrorHandler)}: Response: {request.Result} Code: {request.Code}", Loader.Loader.ShouldDebugBeShown);
 
                 errorHandler?.Invoke();
             }
 
-            void ShowRank(RankType rank)
-            {
+            void ShowRank(RankType rank) {
                 bool canReceiveCreditBadge = force ||
                                              (((string.IsNullOrEmpty(player.RankName) &&
                                                 string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge)) ||
@@ -130,31 +115,25 @@ namespace Exiled.CreditTags
                 bool canReceiveCreditCustomInfo =
                     string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride;
 
-                if (Ranks.TryGetValue(rank, out Rank value))
-                {
-                    switch (Config.Mode)
-                    {
+                if (Ranks.TryGetValue(rank, out Rank value)) {
+                    switch (Config.Mode) {
                         case InfoSide.Badge:
-                            if (canReceiveCreditBadge)
-                            {
-                              SetCreditBadge(player, value);
+                            if (canReceiveCreditBadge) {
+                                SetCreditBadge(player, value);
                             }
 
                             break;
                         case InfoSide.CustomPlayerInfo:
-                            if (canReceiveCreditCustomInfo)
-                            {
+                            if (canReceiveCreditCustomInfo) {
                                 SetCreditCustomInfo(player, value);
                             }
 
                             break;
                         case InfoSide.FirstAvailable:
-                            if (canReceiveCreditBadge)
-                            {
+                            if (canReceiveCreditBadge) {
                                 SetCreditBadge(player, value);
                             }
-                            else if (canReceiveCreditCustomInfo)
-                            {
+                            else if (canReceiveCreditCustomInfo) {
                                 SetCreditCustomInfo(player, value);
                             }
 
@@ -164,14 +143,12 @@ namespace Exiled.CreditTags
             }
         }
 
-        private void SetCreditBadge(Player player, Rank value)
-        {
+        private void SetCreditBadge(Player player, Rank value) {
             player.RankName = value.Name;
             player.RankColor = value.Color;
         }
 
-        private void SetCreditCustomInfo(Player player, Rank value)
-        {
+        private void SetCreditCustomInfo(Player player, Rank value) {
             player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
         }
 

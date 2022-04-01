@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example.Events
-{
+namespace Exiled.Example.Events {
     using System;
 
     using CameraShaking;
@@ -32,17 +31,14 @@ namespace Exiled.Example.Events
     /// <summary>
     /// Handles server-related events.
     /// </summary>
-    internal sealed class ServerHandler
-    {
+    internal sealed class ServerHandler {
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnWaitingForPlayers"/>
-        public void OnWaitingForPlayers()
-        {
+        public void OnWaitingForPlayers() {
             Log.Info("I'm waiting for players!"); // This is an example of information messages sent to your console!
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
-        public void OnRoundStarted()
-        {
+        public void OnRoundStarted() {
             Log.Info($"A round has started with {Player.Dictionary.Count} players!");
         }
     }

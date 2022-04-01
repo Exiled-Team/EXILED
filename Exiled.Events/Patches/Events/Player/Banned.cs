@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1313
 #pragma warning disable SA1118
     using System.Collections.Generic;
@@ -29,10 +28,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.Banned"/> event.
     /// </summary>
     [HarmonyPatch(typeof(BanHandler), nameof(BanHandler.IssueBan))]
-    internal static class Banned
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Banned {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = 0;
             int index = 0 + offset;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -18,8 +17,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to handle team respawns more easily.
     /// </summary>
-    public static class Respawn
-    {
+    public static class Respawn {
         /// <summary>
         /// Gets the next known <see cref="SpawnableTeamType"/> that will spawn.
         /// </summary>
@@ -83,8 +81,7 @@ namespace Exiled.API.Features
         /// Summons the <see cref="Side.ChaosInsurgency"/> van.
         /// </summary>
         /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
-        public static void SummonChaosInsurgencyVan(bool playMusic = true)
-        {
+        public static void SummonChaosInsurgencyVan(bool playMusic = true) {
             PlayEffects(playMusic ? new RespawnEffectType[]
             {
                 RespawnEffectType.PlayChaosInsurgencyMusic,
@@ -111,11 +108,9 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="team">The <see cref="SpawnableTeamType"/> to spawn.</param>
         /// <param name="playEffects">Whether or not effects will be played with the spawn.</param>
-        public static void ForceWave(SpawnableTeamType team, bool playEffects = false)
-        {
+        public static void ForceWave(SpawnableTeamType team, bool playEffects = false) {
             RespawnManager.Singleton.ForceSpawnTeam(team);
-            if (playEffects)
-            {
+            if (playEffects) {
                 RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.Selection, team);
             }
         }

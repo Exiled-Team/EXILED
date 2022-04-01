@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Status effects as enum.
     /// </summary>
-    public enum EffectType
-    {
+    public enum EffectType {
         /// <summary>
         /// The player isn't able to open their inventory or reload a weapon.
         /// </summary>

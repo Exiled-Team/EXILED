@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player toggles the flashlight.
     /// </summary>
-    public class TogglingFlashlightEventArgs : EventArgs
-    {
+    public class TogglingFlashlightEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="TogglingFlashlightEventArgs"/> class.
         /// </summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="flashlight"><inheritdoc cref="Flashlight"/></param>
         /// <param name="newState"><inheritdoc cref="NewState"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public TogglingFlashlightEventArgs(Player player, FlashlightItem flashlight, bool newState, bool isAllowed = true)
-        {
+        public TogglingFlashlightEventArgs(Player player, FlashlightItem flashlight, bool newState, bool isAllowed = true) {
             Player = player;
             Flashlight = (Flashlight)Item.Get(flashlight);
             NewState = newState;

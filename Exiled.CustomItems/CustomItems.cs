@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems
-{
+namespace Exiled.CustomItems {
     using System;
 
     using Exiled.API.Features;
@@ -16,8 +15,7 @@ namespace Exiled.CustomItems
     /// <summary>
     /// Handles all CustomItem API.
     /// </summary>
-    public class CustomItems : Plugin<Config>
-    {
+    public class CustomItems : Plugin<Config> {
         private RoundHandler roundHandler;
         private PlayerHandler playerHandler;
         private Harmony harmony;
@@ -28,8 +26,7 @@ namespace Exiled.CustomItems
         public static CustomItems Instance { get; private set; }
 
         /// <inheritdoc />
-        public override void OnEnabled()
-        {
+        public override void OnEnabled() {
             Instance = this;
             roundHandler = new RoundHandler();
             playerHandler = new PlayerHandler();
@@ -45,8 +42,7 @@ namespace Exiled.CustomItems
         }
 
         /// <inheritdoc />
-        public override void OnDisabled()
-        {
+        public override void OnDisabled() {
             Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
 
             Events.Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;

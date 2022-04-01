@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using System.Collections.Generic;
     using System.Linq;
 
@@ -30,8 +29,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
     /// </summary>
-    public class Item
-    {
+    public class Item {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
@@ -46,13 +44,11 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Item(ItemBase itemBase)
-        {
+        public Item(ItemBase itemBase) {
             Base = itemBase;
             Type = itemBase.ItemTypeId;
             Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
-            if (Serial == 0)
-            {
+            if (Serial == 0) {
                 ushort serial = ItemSerialGenerator.GenerateNext();
                 Serial = serial;
 #if DEBUG
@@ -70,15 +66,13 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Item(ItemType type)
-            : this(Server.Host.Inventory.CreateItemInstance(type, false))
-        {
+            : this(Server.Host.Inventory.CreateItemInstance(type, false)) {
         }
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.
         /// </summary>
-        public ushort Serial
-        {
+        public ushort Serial {
             get => Base.ItemSerial;
 
             set => Base.ItemSerial = value;
@@ -114,26 +108,23 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to convert into an item.</param>
         /// <returns>The item wrapper for the given <see cref="ItemBase"/>.</returns>
-        public static Item Get(ItemBase itemBase)
-        {
+        public static Item Get(ItemBase itemBase) {
             if (itemBase == null)
                 return null;
 
             if (BaseToItem.TryGetValue(itemBase, out Item item))
                 return item;
 
-            switch (itemBase)
-            {
+            switch (itemBase) {
                 case InventorySystem.Items.Firearms.Firearm firearm:
                     return new Firearm(firearm);
                 case KeycardItem keycard:
                     return new Keycard(keycard);
-                case UsableItem usable:
-                {
-                    if (usable is Scp330Bag scp330Bag)
-                        return new Scp330(scp330Bag);
-                    return new Usable(usable);
-                }
+                case UsableItem usable: {
+                        if (usable is Scp330Bag scp330Bag)
+                            return new Scp330(scp330Bag);
+                        return new Usable(usable);
+                    }
 
                 case RadioItem radio:
                     return new Radio(radio);
@@ -146,8 +137,7 @@ namespace Exiled.API.Features.Items
                 case FlashlightItem flashlight:
                     return new Flashlight(flashlight);
                 case ThrowableItem throwable:
-                    switch (throwable.Projectile)
-                    {
+                    switch (throwable.Projectile) {
                         case FlashbangGrenade _:
                             return new FlashGrenade(throwable);
                         case ExplosionGrenade _:
@@ -173,8 +163,7 @@ namespace Exiled.API.Features.Items
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
-        {
+        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default) {
             Base.PickupDropModel.Info.ItemId = Type;
             Base.PickupDropModel.Info.Position = position;
             Base.PickupDropModel.Info.Weight = Weight;
@@ -182,17 +171,13 @@ namespace Exiled.API.Features.Items
             Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
 
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-            if (ipb is FirearmPickup firearmPickup)
-            {
-                if (this is Firearm firearm)
-                {
+            if (ipb is FirearmPickup firearmPickup) {
+                if (this is Firearm firearm) {
                     firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
                 }
-                else
-                {
+                else {
                     byte ammo;
-                    switch (Base)
-                    {
+                    switch (Base) {
                         case AutomaticFirearm auto:
                             ammo = auto._baseMaxAmmo;
                             break;
@@ -221,8 +206,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <inheritdoc/>
-        public override string ToString()
-        {
+        public override string ToString() {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}*";
         }
     }

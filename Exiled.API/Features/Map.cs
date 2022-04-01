@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -38,8 +37,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to easily handle the in-game map.
     /// </summary>
-    public static class Map
-    {
+    public static class Map {
         /// <summary>
         /// A list of <see cref="Room"/>s on the map.
         /// </summary>
@@ -101,13 +99,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the number of activated generators.
         /// </summary>
-        public static int ActivatedGenerators
-        {
-            get
-            {
+        public static int ActivatedGenerators {
+            get {
                 int i = 0;
-                foreach (Scp079Generator gen in Recontainer079.AllGenerators)
-                {
+                foreach (Scp079Generator gen in Recontainer079.AllGenerators) {
                     if (gen.Engaged)
                         i++;
                 }
@@ -154,13 +149,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// gets all <see cref="Pickup"/>s on the map.
         /// </summary>
-        public static ReadOnlyCollection<Pickup> Pickups
-        {
-            get
-            {
+        public static ReadOnlyCollection<Pickup> Pickups {
+            get {
                 List<Pickup> pickups = new List<Pickup>();
-                foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>())
-                {
+                foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>()) {
                     if (Pickup.Get(itemPickupBase) is Pickup pickup)
                         pickups.Add(pickup);
                 }
@@ -182,11 +174,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the current seed of the map.
         /// </summary>
-        public static int Seed
-        {
+        public static int Seed {
             get => MapGeneration.SeedSynchronizer.Seed;
-            set
-            {
+            set {
                 if (!MapGeneration.SeedSynchronizer.MapGenerated)
                     MapGeneration.SeedSynchronizer._singleton.Network_syncSeed = value;
             }
@@ -212,8 +202,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
         /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside.</returns>
-        public static Room FindParentRoom(GameObject objectInRoom)
-        {
+        public static Room FindParentRoom(GameObject objectInRoom) {
             // Avoid errors by forcing Map.Rooms to populate when this is called.
             ReadOnlyCollection<Room> rooms = Rooms;
 
@@ -222,12 +211,10 @@ namespace Exiled.API.Features
             const string playerTag = "Player";
 
             // First try to find the room owner quickly.
-            if (!objectInRoom.CompareTag(playerTag))
-            {
+            if (!objectInRoom.CompareTag(playerTag)) {
                 room = objectInRoom.GetComponentInParent<Room>();
             }
-            else
-            {
+            else {
                 // Check for Scp079 if it's a player
                 Player ply = Player.Get(objectInRoom);
 
@@ -238,8 +225,7 @@ namespace Exiled.API.Features
                     room = FindParentRoom(ply.Camera.gameObject);
             }
 
-            if (room == null)
-            {
+            if (room == null) {
                 // Then try for objects that aren't children, like players and pickups.
                 Ray ray = new Ray(objectInRoom.transform.position, Vector3.down);
 
@@ -260,8 +246,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
-        public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
-        {
+        public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false) {
             if (broadcast.Show)
                 Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
         }
@@ -273,8 +258,7 @@ namespace Exiled.API.Features
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="type">The broadcast type.</param>
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
-        public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
-        {
+        public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false) {
             if (shouldClearPrevious)
                 ClearBroadcasts();
 
@@ -286,8 +270,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message that will be broadcasted (supports Unity Rich Text formatting).</param>
         /// <param name="duration">The duration in seconds.</param>
-        public static void ShowHint(string message, float duration)
-        {
+        public static void ShowHint(string message, float duration) {
             foreach (Player player in Player.List)
                 player.ShowHint(message, duration);
         }
@@ -300,8 +283,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts the light containment zone decontamination process.
         /// </summary>
-        public static void StartDecontamination()
-        {
+        public static void StartDecontamination() {
             DecontaminationController.Singleton.FinishDecontamination();
             DecontaminationController.Singleton.NetworkRoundStartTime = -1f;
         }
@@ -311,10 +293,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
-        public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified)
-        {
-            foreach (FlickerableLightController controller in FlickerableLightController.Instances)
-            {
+        public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified) {
+            foreach (FlickerableLightController controller in FlickerableLightController.Instances) {
                 Room room = controller.GetComponentInParent<Room>();
                 if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room != null && zoneTypes.HasFlag(room.Zone)))
                     controller.ServerFlickerLights(duration);
@@ -326,8 +306,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
-        public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes)
-        {
+        public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes) {
             foreach (ZoneType zone in zoneTypes)
                 TurnOffAllLights(duration, zone);
         }
@@ -338,14 +317,10 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
-        public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
-        {
-            foreach (Room room in Rooms)
-            {
-                if (room != null && room.Zone == zoneType)
-                {
-                    foreach (Door door in room.Doors)
-                    {
+        public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079) {
+            foreach (Room room in Rooms) {
+                if (room != null && room.Zone == zoneType) {
+                    foreach (Door door in room.Doors) {
                         door.IsOpen = false;
                         door.ChangeLock(lockType);
                         MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
@@ -360,8 +335,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneTypes">DoorLockType of the lockdown.</param>
         /// <param name="lockType">The <see cref="ZoneType"/>s to affect.</param>
-        public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
-        {
+        public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079) {
             foreach (ZoneType zone in zoneTypes)
                 LockAllDoors(duration, zone, lockType);
         }
@@ -370,14 +344,10 @@ namespace Exiled.API.Features
         /// Unlocks all <see cref="Door">doors</see> in the facility.
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
-        public static void UnlockAllDoors(ZoneType zoneType)
-        {
-            foreach (Room room in Rooms)
-            {
-                if (room != null && room.Zone == zoneType)
-                {
-                    foreach (Door door in room.Doors)
-                    {
+        public static void UnlockAllDoors(ZoneType zoneType) {
+            foreach (Room room in Rooms) {
+                if (room != null && room.Zone == zoneType) {
+                    foreach (Door door in room.Doors) {
                         door.ChangeLock(DoorLockType.None);
                     }
                 }
@@ -388,8 +358,7 @@ namespace Exiled.API.Features
         /// Unlocks all <see cref="Door">doors</see> in the facility.
         /// </summary>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
-        public static void UnlockAllDoors(IEnumerable<ZoneType> zoneTypes)
-        {
+        public static void UnlockAllDoors(IEnumerable<ZoneType> zoneTypes) {
             foreach (ZoneType zone in zoneTypes)
                 UnlockAllDoors(zone);
         }
@@ -397,8 +366,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Unlocks all <see cref="Door">doors</see> in the facility.
         /// </summary>
-        public static void UnlockAllDoors()
-        {
+        public static void UnlockAllDoors() {
             foreach (Door door in Doors)
                 door.ChangeLock(DoorLockType.None);
         }
@@ -408,8 +376,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
         /// <returns><see cref="Room"/> object.</returns>
-        public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified)
-        {
+        public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified) {
             List<Room> rooms = type != ZoneType.Unspecified ? RoomsValue.Where(r => r.Zone == type).ToList() : RoomsValue;
             return rooms[random.Next(Math.Max(0, rooms.Count - 1))];
         }
@@ -426,8 +393,7 @@ namespace Exiled.API.Features
         /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
         /// <param name="onlyUnbroken">Whether or not it filters broken doors.</param>
         /// <returns><see cref="Door"/> object.</returns>
-        public static Door GetRandomDoor(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
-        {
+        public static Door GetRandomDoor(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false) {
             List<Door> doors = onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room == null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorsValue;
             return doors[random.Next(Math.Max(0, doors.Count - 1))];
         }
@@ -449,8 +415,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="type">Filters by <see cref="ItemType"/>.</param>
         /// <returns><see cref="Pickup"/> object.</returns>
-        public static Pickup GetRandomPickup(ItemType type = ItemType.None)
-        {
+        public static Pickup GetRandomPickup(ItemType type = ItemType.None) {
             List<Pickup> pickups = type != ItemType.None
                 ? Pickups.Where(p => p.Type == type).ToList()
                 : Pickups.ToList();
@@ -462,10 +427,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
         /// <returns>The <see cref="Camera079"/> with the given ID.</returns>
-        public static Camera079 GetCameraById(ushort cameraId)
-        {
-            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
-            {
+        public static Camera079 GetCameraById(ushort cameraId) {
+            foreach (Camera079 camera in Scp079PlayerScript.allCameras) {
                 if (camera.cameraId == cameraId)
                     return camera;
             }
@@ -486,8 +449,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="doorName">The door name.</param>
         /// <returns>The <see cref="Door"/> or null if a door with this name doesn't exist.</returns>
-        public static Door GetDoorByName(string doorName)
-        {
+        public static Door GetDoorByName(string doorName) {
             DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nameExtension);
             return nameExtension == null ? null : Door.Get(nameExtension.TargetDoor);
         }
@@ -497,15 +459,13 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="index">The index of the unit color you want to change.</param>
         /// <param name="color">The new color of the Unit.</param>
-        public static void ChangeUnitColor(int index, string color)
-        {
+        public static void ChangeUnitColor(int index, string color) {
             string unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
 
             Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Remove(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index]);
             Respawning.NamingRules.UnitNamingRules.AllNamingRules[Respawning.SpawnableTeamType.NineTailedFox].AddCombination($"<color={color}>{unit}</color>", Respawning.SpawnableTeamType.NineTailedFox);
 
-            foreach (Player ply in Player.List.Where(x => x.UnitName == unit))
-            {
+            foreach (Player ply in Player.List.Where(x => x.UnitName == unit)) {
                 string modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
                 if (!string.IsNullOrEmpty(color))
                     modifiedUnit = $"<color={color}>{modifiedUnit}</color>";
@@ -523,8 +483,7 @@ namespace Exiled.API.Features
         /// Plays an ambient sound.
         /// </summary>
         /// <param name="id">The id of the sound to play.</param>
-        public static void PlayAmbientSound(int id)
-        {
+        public static void PlayAmbientSound(int id) {
             if (id >= AmbientSoundPlayer.clips.Length)
                 throw new System.IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
 
@@ -536,8 +495,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">The position where you want to spawn the Tantrum.</param>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
-        public static GameObject PlaceTantrum(Vector3 position)
-        {
+        public static GameObject PlaceTantrum(Vector3 position) {
             GameObject gameObject =
                 Object.Instantiate(ScpScriptableObjects.Instance.Scp173Data.TantrumPrefab);
             gameObject.transform.position = position;
@@ -556,8 +514,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
-        internal static void ClearCache()
-        {
+        internal static void ClearCache() {
             RoomsValue.Clear();
             DoorsValue.Clear();
             LiftsValue.Clear();

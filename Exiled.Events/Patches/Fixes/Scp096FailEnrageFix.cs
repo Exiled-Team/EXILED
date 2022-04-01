@@ -5,15 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Fixes
-{
+namespace Exiled.Events.Patches.Fixes {
 #pragma warning disable SA1118
 #pragma warning disable SA1402
 #pragma warning disable SA1649
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using PlayableScps;
 
     using static HarmonyLib.AccessTools;
@@ -21,16 +23,14 @@ namespace Exiled.Events.Patches.Fixes
     /// <summary>
     /// Handles building new instructions.
     /// </summary>
-    internal static class InstructionBuilder
-    {
+    internal static class InstructionBuilder {
         /// <summary>
         /// Builds new instructions for enrage fix transpilers.
         /// </summary>
         /// <param name="instructions"><see cref="CodeInstruction"/>.</param>
         /// <param name="generator"><see cref="ILGenerator"/>.</param>
         /// <returns>New <see cref="CodeInstruction"/>.</returns>
-        internal static IEnumerable<CodeInstruction> FixInstructions(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+        internal static IEnumerable<CodeInstruction> FixInstructions(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = 1;
@@ -61,8 +61,7 @@ namespace Exiled.Events.Patches.Fixes
     /// patches <see cref="Scp096.PreWindup"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.PreWindup))]
-    internal static class Scp096FailEnrageFix
-    {
+    internal static class Scp096FailEnrageFix {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) => InstructionBuilder.FixInstructions(instructions, generator);
     }
 
@@ -70,10 +69,8 @@ namespace Exiled.Events.Patches.Fixes
     /// Patches <see cref="Scp096.Windup"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.Windup))]
-    internal static class Scp096WindupFix
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Scp096WindupFix {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 1;
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Throw) + offset;

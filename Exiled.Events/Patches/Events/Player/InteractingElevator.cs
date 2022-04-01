@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
     using Exiled.Events.EventArgs;
 
 #pragma warning disable SA1313
@@ -15,12 +14,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.InteractingElevator"/> event.
     /// </summary>
     [HarmonyLib.HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUseElevator), typeof(UnityEngine.GameObject))]
-    internal static class InteractingElevator
-    {
-        private static bool Prefix(PlayerInteract __instance, UnityEngine.GameObject elevator)
-        {
-            try
-            {
+    internal static class InteractingElevator {
+        private static bool Prefix(PlayerInteract __instance, UnityEngine.GameObject elevator) {
+            try {
                 if (!__instance.CanInteract || elevator == null)
                     return false;
 
@@ -28,16 +24,14 @@ namespace Exiled.Events.Patches.Events.Player
                 if (component == null)
                     return false;
 
-                foreach (Lift.Elevator elevator1 in component.elevators)
-                {
+                foreach (Lift.Elevator elevator1 in component.elevators) {
                     if (!__instance.ChckDis(elevator1.door.transform.position))
                         continue;
 
                     InteractingElevatorEventArgs interactingEventArgs = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance._hub), elevator1, component);
                     Handlers.Player.OnInteractingElevator(interactingEventArgs);
 
-                    if (interactingEventArgs.IsAllowed)
-                    {
+                    if (interactingEventArgs.IsAllowed) {
                         elevator.GetComponent<Lift>().UseLift();
                         __instance.OnInteract();
                     }
@@ -45,8 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 return false;
             }
-            catch (System.Exception e)
-            {
+            catch (System.Exception e) {
                 API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator:\n{e}");
 
                 return true;

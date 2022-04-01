@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -18,8 +17,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before SCP-914 upgrades a player.
     /// </summary>
-    public class UpgradingPlayerEventArgs : EventArgs
-    {
+    public class UpgradingPlayerEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpgradingPlayerEventArgs"/> class.
         /// </summary>
@@ -28,8 +26,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="setting">The <see cref="Scp914KnobSetting"/> being used.</param>
         /// <param name="upgradeItems"><inheritdoc cref="UpgradeItems"/></param>
         /// <param name="moveVector"><inheritdoc cref="OutputPosition"/></param>
-        public UpgradingPlayerEventArgs(Player player, bool upgradeItems, bool heldOnly, Scp914KnobSetting setting, Vector3 moveVector)
-        {
+        public UpgradingPlayerEventArgs(Player player, bool upgradeItems, bool heldOnly, Scp914KnobSetting setting, Vector3 moveVector) {
             Player = player;
             UpgradeItems = upgradeItems;
             HeldOnly = heldOnly;

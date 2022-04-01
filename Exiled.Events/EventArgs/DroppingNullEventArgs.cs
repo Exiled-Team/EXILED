@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player drops a null item.
     /// </summary>
-    public class DroppingNullEventArgs : EventArgs
-    {
+    public class DroppingNullEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="DroppingNullEventArgs"/> class.
         /// </summary>

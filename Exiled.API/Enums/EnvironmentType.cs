@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// A set of environment types.
     /// </summary>
-    public enum EnvironmentType
-    {
+    public enum EnvironmentType {
         /// <summary>
         /// The development environment, for developers.
         /// </summary>

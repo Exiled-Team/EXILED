@@ -5,26 +5,24 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using System;
 
     using Exiled.API.Enums;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Flashlight;
 
     /// <summary>
     /// A wrapped class for <see cref="FlashlightItem"/>.
     /// </summary>
-    public class Flashlight : Item
-    {
+    public class Flashlight : Item {
         /// <summary>
         /// Initializes a new instance of the <see cref="Flashlight"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
         public Flashlight(ItemBase itemBase)
-            : base(itemBase)
-        {
+            : base(itemBase) {
             Base = (FlashlightItem)itemBase;
         }
 
@@ -33,8 +31,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Flashlight(ItemType type)
-            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(type, false))
-        {
+            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(type, false)) {
         }
 
         /// <inheritdoc cref="Item.Base"/>
@@ -43,15 +40,13 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether the flashlight is turned on.
         /// </summary>
-        public bool Active
-        {
+        public bool Active {
             get => Base.IsEmittingLight;
             set => Base.IsEmittingLight = value;
         }
 
         /// <inheritdoc/>
-        public override string ToString()
-        {
+        public override string ToString() {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
         }
     }

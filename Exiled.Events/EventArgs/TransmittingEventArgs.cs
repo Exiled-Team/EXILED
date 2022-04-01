@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Assets._Scripts.Dissonance;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information after a player presses the transmission key.
     /// </summary>
-    public class TransmittingEventArgs : EventArgs
-    {
+    public class TransmittingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="TransmittingEventArgs"/> class.
         /// </summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="dissonanceUserSetup"><inheritdoc cref="DissonanceUserSetup"/></param>
         /// <param name="isTransmitting"><inheritdoc cref="IsTransmitting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public TransmittingEventArgs(Player player, Radio radio, DissonanceUserSetup dissonanceUserSetup, bool isTransmitting, bool isAllowed = true)
-        {
+        public TransmittingEventArgs(Player player, Radio radio, DissonanceUserSetup dissonanceUserSetup, bool isTransmitting, bool isAllowed = true) {
             Player = player;
             Radio = radio;
             DissonanceUserSetup = dissonanceUserSetup;

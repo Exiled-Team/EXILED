@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using Exiled.API.Enums;
 
     using InventorySystem.Items.Firearms.Ammo;
@@ -14,15 +13,13 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="AmmoItem"/>.
     /// </summary>
-    public class Ammo : Item
-    {
+    public class Ammo : Item {
         /// <summary>
         /// Initializes a new instance of the <see cref="Ammo"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
         public Ammo(AmmoItem itemBase)
-            : base(itemBase)
-        {
+            : base(itemBase) {
             Base = itemBase;
         }
 
@@ -31,8 +28,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Ammo(ItemType type)
-            : this((AmmoItem)Server.Host.Inventory.CreateItemInstance(type, false))
-        {
+            : this((AmmoItem)Server.Host.Inventory.CreateItemInstance(type, false)) {
         }
 
         /// <inheritdoc cref="Item.Base"/>

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Fixes
-{
+namespace Exiled.Events.Patches.Fixes {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -28,10 +27,8 @@ namespace Exiled.Events.Patches.Fixes
     /// Patches <see cref="InventorySystem.Items.ThrowableProjectiles.ThrowableItem"/> to fix fuse times being unchangeable.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3), typeof(Vector3))]
-    internal static class GrenadeFuseTimeFix
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class GrenadeFuseTimeFix {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = -1;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt) + offset;

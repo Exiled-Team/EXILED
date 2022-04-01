@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
@@ -16,8 +15,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Server related events.
     /// </summary>
-    public static class Server
-    {
+    public static class Server {
         /// <summary>
         /// Invoked before waiting for players.
         /// </summary>

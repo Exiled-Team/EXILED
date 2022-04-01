@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Spawn
-{
+namespace Exiled.API.Features.Spawn {
     using UnityEngine;
 
     /// <summary>
     /// Handles static spawn locations.
     /// </summary>
-    public class StaticSpawnPoint : SpawnPoint
-    {
+    public class StaticSpawnPoint : SpawnPoint {
         /// <inheritdoc/>
         public override string Name { get; set; }
 

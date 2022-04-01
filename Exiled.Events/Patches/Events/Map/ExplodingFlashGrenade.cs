@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
-{
+namespace Exiled.Events.Patches.Events.Map {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Linq;
@@ -36,10 +35,8 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
-    internal static class ExplodingFlashGrenade
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ExplodingFlashGrenade {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = -3;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
@@ -119,12 +116,9 @@ namespace Exiled.Events.Patches.Events.Map
 
         private static List<Player> ConvertHubs(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
 
-        private static void ProcessPlayers(FlashbangGrenade grenade, List<Player> players)
-        {
-            foreach (Player player in players)
-            {
-                if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
-                {
+        private static void ProcessPlayers(FlashbangGrenade grenade, List<Player> players) {
+            foreach (Player player in players) {
+                if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass)) {
                     grenade.ProcessPlayer(player.ReferenceHub);
                 }
             }

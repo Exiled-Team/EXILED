@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// SCP-079 related events.
     /// </summary>
-    public static class Scp079
-    {
+    public static class Scp079 {
         /// <summary>
         /// Invoked before SCP-079 switches cameras.
         /// </summary>

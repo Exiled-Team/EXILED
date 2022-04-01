@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Commands
-{
+namespace Exiled.CustomItems.Commands {
     using System;
 
     using CommandSystem;
@@ -22,10 +21,8 @@ namespace Exiled.CustomItems.Commands
     /// <summary>
     /// The command to spawn a specific item.
     /// </summary>
-    internal sealed class Spawn : ICommand
-    {
-        private Spawn()
-        {
+    internal sealed class Spawn : ICommand {
+        private Spawn() {
         }
 
         /// <summary>
@@ -43,54 +40,44 @@ namespace Exiled.CustomItems.Commands
         public string Description { get; } = "Spawn an item at the specified Spawn Location, coordinates, or at the designated player's feet.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("customitems.spawn"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("customitems.spawn")) {
                 response = "Permission Denied, required: customitems.spawn";
                 return false;
             }
 
-            if (arguments.Count < 2)
-            {
+            if (arguments.Count < 2) {
                 response = "spawn [Custom item name] [Location name]\nspawn [Custom item name] [Nickname/PlayerID/UserID]\nspawn [Custom item name] [X] [Y] [Z]";
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
-            {
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item)) {
                 response = $" {arguments.At(0)} is not a valid custom item.";
                 return false;
             }
 
             Vector3 position;
 
-            if (Enum.TryParse(arguments.At(1), out SpawnLocation location))
-            {
+            if (Enum.TryParse(arguments.At(1), out SpawnLocation location)) {
                 position = location.GetPosition();
             }
-            else if (Player.Get(arguments.At(1)) is Player player)
-            {
-                if (player.IsDead)
-                {
+            else if (Player.Get(arguments.At(1)) is Player player) {
+                if (player.IsDead) {
                     response = $"Cannot spawn custom items under dead players!";
                     return false;
                 }
 
                 position = player.Position;
             }
-            else if (arguments.Count > 3)
-            {
-                if (!float.TryParse(arguments.At(1), out float x) || !float.TryParse(arguments.At(2), out float y) || !float.TryParse(arguments.At(3), out float z))
-                {
+            else if (arguments.Count > 3) {
+                if (!float.TryParse(arguments.At(1), out float x) || !float.TryParse(arguments.At(2), out float y) || !float.TryParse(arguments.At(3), out float z)) {
                     response = "Invalid coordinates selected.";
                     return false;
                 }
 
                 position = new Vector3(x, y, z);
             }
-            else
-            {
+            else {
                 response = $"Unable to find spawn location: {arguments.At(1)}.";
                 return false;
             }

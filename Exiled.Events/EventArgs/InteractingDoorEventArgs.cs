@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,16 +15,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player interacts with a door.
     /// </summary>
-    public class InteractingDoorEventArgs : EventArgs
-    {
+    public class InteractingDoorEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractingDoorEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="door"><inheritdoc cref="Door"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true)
-        {
+        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true) {
             Player = player;
             Door = Door.Get(door);
             IsAllowed = isAllowed;

@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Possible spawn reasons.
     /// </summary>
-    public enum SpawnReason : byte
-    {
+    public enum SpawnReason : byte {
         /// <summary>
         /// No reason specified.
         /// </summary>

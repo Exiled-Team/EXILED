@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp914
-{
+namespace Exiled.Events.Patches.Events.Scp914 {
 #pragma warning disable SA1313
 
     using Exiled.API.Features;
@@ -21,14 +20,11 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// Adds the <see cref="Handlers.Scp914.Activating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp914Controller), nameof(Scp914Controller.ServerInteract))]
-    internal static class InteractingEvents
-    {
-        private static bool Prefix(Scp914Controller __instance, ReferenceHub ply, byte colliderId)
-        {
+    internal static class InteractingEvents {
+        private static bool Prefix(Scp914Controller __instance, ReferenceHub ply, byte colliderId) {
             if (__instance._remainingCooldown > 0.0)
                 return false;
-            switch ((Scp914InteractCode)colliderId)
-            {
+            switch ((Scp914InteractCode)colliderId) {
                 case Scp914InteractCode.ChangeMode:
                     Scp914KnobSetting scp914KnobSetting;
                     if (__instance._knobSetting + 1 > Scp914KnobSetting.VeryFine)

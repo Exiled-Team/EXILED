@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a SCP-079 changes the current camera.
     /// </summary>
-    public class ChangingCameraEventArgs : EventArgs
-    {
+    public class ChangingCameraEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingCameraEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="camera"><inheritdoc cref="Camera"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingCameraEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
-        {
+        public ChangingCameraEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true) {
             Player = player;
             Camera = camera;
             AuxiliaryPowerCost = auxiliaryPowerCost;

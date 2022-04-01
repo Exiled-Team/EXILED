@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems
-{
+namespace Exiled.CustomItems {
     using System.ComponentModel;
 
     using Exiled.API.Features;
@@ -16,8 +15,7 @@ namespace Exiled.CustomItems
     /// <summary>
     /// The plugin's config class.
     /// </summary>
-    public class Config : IConfig
-    {
+    public class Config : IConfig {
         /// <inheritdoc/>
         [Description("Indicates whether this plugin is enabled or not.")]
         public bool IsEnabled { get; set; } = true;

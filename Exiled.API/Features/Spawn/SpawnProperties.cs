@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Spawn
-{
+namespace Exiled.API.Features.Spawn {
     using System.Collections.Generic;
 
     using NorthwoodLib.Pools;
@@ -16,8 +15,7 @@ namespace Exiled.API.Features.Spawn
     /// <summary>
     /// Handles special properties of spawning an item.
     /// </summary>
-    public class SpawnProperties
-    {
+    public class SpawnProperties {
         /// <summary>
         /// Gets or sets a value indicating how many of the item can be spawned when the round starts.
         /// </summary>

@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Possible barrel weapon modifications.
     /// </summary>
-    public enum BarrelType
-    {
+    public enum BarrelType {
         /// <summary>
         /// No barrel
         /// </summary>

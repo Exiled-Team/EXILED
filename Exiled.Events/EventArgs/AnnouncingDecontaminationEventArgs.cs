@@ -5,22 +5,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     /// <summary>
     /// Contains all informations before C.A.S.S.I.E announces light containment zone decontamination.
     /// </summary>
-    public class AnnouncingDecontaminationEventArgs : EventArgs
-    {
+    public class AnnouncingDecontaminationEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingDecontaminationEventArgs"/> class.
         /// </summary>
         /// <param name="announcementId"><inheritdoc cref="Id"/></param>
         /// <param name="isGlobal"><inheritdoc cref="IsGlobal"/></param>
-        public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal)
-        {
+        public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal) {
             Id = announcementId;
             IsGlobal = isGlobal;
         }

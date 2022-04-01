@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions.Features
-{
+namespace Exiled.Permissions.Features {
     using System.Collections.Generic;
 
     using YamlDotNet.Serialization;
@@ -14,8 +13,7 @@ namespace Exiled.Permissions.Features
     /// <summary>
     /// Represents a player's group.
     /// </summary>
-    public class Group
-    {
+    public class Group {
         /// <summary>
         /// Gets or sets a value indicating whether group is the default one or not.
         /// </summary>

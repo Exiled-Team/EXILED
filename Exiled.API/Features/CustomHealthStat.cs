@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using PlayerStatsSystem;
 
     /// <summary>
     /// A custom version of <see cref="HealthStat"/> which allows the player's max amount of health to be changed.
     /// </summary>
-    public class CustomHealthStat : HealthStat
-    {
+    public class CustomHealthStat : HealthStat {
         /// <inheritdoc/>
         public override float MaxValue => CustomMaxValue == default ? base.MaxValue : CustomMaxValue;
 

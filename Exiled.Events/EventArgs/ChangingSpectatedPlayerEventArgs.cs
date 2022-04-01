@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Features;
 
     /// <summary>
     /// Contains all informations before a spectator changes the spectated player.
     /// </summary>
-    public class ChangingSpectatedPlayerEventArgs : System.EventArgs
-    {
+    public class ChangingSpectatedPlayerEventArgs : System.EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingSpectatedPlayerEventArgs"/> class.
         /// </summary>
@@ -21,8 +19,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="oldTarget"><inheritdoc cref="OldTarget"/></param>
         /// <param name="newTarget"><inheritdoc cref="NewTarget"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingSpectatedPlayerEventArgs(Player player, Player oldTarget, Player newTarget, bool isAllowed)
-        {
+        public ChangingSpectatedPlayerEventArgs(Player player, Player oldTarget, Player newTarget, bool isAllowed) {
             Player = player;
             OldTarget = oldTarget;
             NewTarget = newTarget;

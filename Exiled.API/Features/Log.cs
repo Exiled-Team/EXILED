@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System.Reflection;
 
     using Discord;
@@ -14,8 +13,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to print messages on the server console.
     /// </summary>
-    public static class Log
-    {
+    public static class Log {
         /// <summary>
         /// Sends a <see cref="LogLevel.Info"/> level messages to the game console.
         /// </summary>
@@ -28,8 +26,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message to be sent.</param>
         /// <param name="canBeSent">Indicates whether the log can be sent or not.</param>
-        public static void Debug(object message, bool canBeSent = true)
-        {
+        public static void Debug(object message, bool canBeSent = true) {
             if (canBeSent)
                 Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Debug, System.ConsoleColor.Green);
         }
@@ -54,8 +51,7 @@ namespace Exiled.API.Features
         /// <param name="message">The message to be sent.</param>
         /// <param name="level">The message level of importance.</param>
         /// <param name="color">The message color.</param>
-        public static void Send(object message, LogLevel level, System.ConsoleColor color = System.ConsoleColor.Gray)
-        {
+        public static void Send(object message, LogLevel level, System.ConsoleColor color = System.ConsoleColor.Gray) {
             SendRaw($"[{level.ToString().ToUpper()}] {message}", color);
         }
 

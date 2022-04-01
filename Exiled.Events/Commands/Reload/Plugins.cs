@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Reload
-{
+namespace Exiled.Events.Commands.Reload {
     using System;
 
     using CommandSystem;
@@ -17,8 +16,7 @@ namespace Exiled.Events.Commands.Reload
     /// <summary>
     /// The reload plugins command.
     /// </summary>
-    public class Plugins : ICommand
-    {
+    public class Plugins : ICommand {
         /// <summary>
         /// Gets static instance of the <see cref="Plugins"/> command.
         /// </summary>
@@ -34,10 +32,8 @@ namespace Exiled.Events.Commands.Reload
         public string Description { get; } = "Reloads all plugins.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ee.reloadplugins"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ee.reloadplugins")) {
                 response = "You can't reload plugins, you don't have \"ee.reloadplugins\" permission.";
                 return false;
             }

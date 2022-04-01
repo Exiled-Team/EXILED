@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1313
     using System;
 
@@ -22,12 +21,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.Left"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), new[] { typeof(NetworkConnection) })]
-    internal static class Left
-    {
-        private static void Prefix(NetworkConnection conn)
-        {
-            try
-            {
+    internal static class Left {
+        private static void Prefix(NetworkConnection conn) {
+            try {
                 // The game checks for null NetworkIdentity, do the same
                 // GameObjects don't support the null-conditional operator (?) and the null-coalescing operator (??)
                 if (conn.identity == null || conn.identity.gameObject == null)
@@ -40,8 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
                 Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) disconnected", ConsoleColor.Green);
                 Handlers.Player.OnLeft(new LeftEventArgs(player));
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 Log.Error($"{typeof(Left).FullName}.{nameof(Prefix)}:\n{exception}");
             }
         }

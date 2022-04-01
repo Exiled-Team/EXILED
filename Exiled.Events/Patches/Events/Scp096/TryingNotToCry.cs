@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp096
-{
+namespace Exiled.Events.Patches.Events.Scp096 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -25,10 +24,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Adds the <see cref="Handlers.Scp096.TryingNotToCry"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.TryNotToCry))]
-    internal static class TryingNotToCry
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class TryingNotToCry {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.

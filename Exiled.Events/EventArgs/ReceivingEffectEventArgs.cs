@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using CustomPlayerEffects;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player receives a <see cref="PlayerEffect"/>.
     /// </summary>
-    public class ReceivingEffectEventArgs : EventArgs
-    {
+    public class ReceivingEffectEventArgs : EventArgs {
         private byte state;
 
         /// <summary>
@@ -27,8 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="effect">The <see cref="PlayerEffect"/> being added to the player.</param>
         /// <param name="state">The state the effect is being changed to.</param>
         /// <param name="currentState">The current state of the effect being changed.</param>
-        public ReceivingEffectEventArgs(Player player, PlayerEffect effect, byte state, byte currentState)
-        {
+        public ReceivingEffectEventArgs(Player player, PlayerEffect effect, byte state, byte currentState) {
             Player = player;
             Effect = effect;
             this.state = state;
@@ -58,11 +55,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the value of the new state of the effect. Setting this to 0 is the same as setting IsAllowed to false.
         /// </summary>
-        public byte State
-        {
+        public byte State {
             get => state;
-            set
-            {
+            set {
                 state = value;
                 if (state == 0)
                     IsAllowed = false;

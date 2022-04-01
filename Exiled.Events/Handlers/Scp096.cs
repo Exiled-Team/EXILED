@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// SCP-096 related events.
     /// </summary>
-    public static class Scp096
-    {
+    public static class Scp096 {
         /// <summary>
         /// Invoked before SCP-096 is enraged.
         /// </summary>

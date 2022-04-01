@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Features;
 
     /// <summary>
     /// Contains all informations before banning a player from the server.
     /// </summary>
-    public class BanningEventArgs : KickingEventArgs
-    {
+    public class BanningEventArgs : KickingEventArgs {
         private long duration;
 
         /// <summary>
@@ -26,19 +24,16 @@ namespace Exiled.Events.EventArgs
         /// <param name="fullMessage">The ban full message.</param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
         public BanningEventArgs(Player target, Player issuer, long duration, string reason, string fullMessage, bool isAllowed = true)
-            : base(target, issuer, reason, fullMessage, isAllowed)
-        {
+            : base(target, issuer, reason, fullMessage, isAllowed) {
             Duration = duration;
         }
 
         /// <summary>
         /// Gets or sets the ban duration.
         /// </summary>
-        public long Duration
-        {
+        public long Duration {
             get => duration;
-            set
-            {
+            set {
                 if (duration == value)
                     return;
 

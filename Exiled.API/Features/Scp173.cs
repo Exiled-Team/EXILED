@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System.Collections.Generic;
 
     /// <summary>
     /// A set of tools to modify SCP-173's behaviour.
     /// </summary>
-    public static class Scp173
-    {
+    public static class Scp173 {
         /// <summary>
         /// Gets a list of player ids who will be turned away from SCP-173.
         /// </summary>

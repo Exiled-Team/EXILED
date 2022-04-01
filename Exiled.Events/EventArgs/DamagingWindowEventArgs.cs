@@ -5,22 +5,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     /// <summary>
     /// Contains all informations before damage is dealt to a <see cref="BreakableWindow"/>.
     /// </summary>
-    public class DamagingWindowEventArgs : EventArgs
-    {
+    public class DamagingWindowEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="DamagingWindowEventArgs"/> class.
         /// </summary>
         /// <param name="window"><inheritdoc cref="Window"/></param>
         /// <param name="damage"><inheritdoc cref="Damage"/></param>
-        public DamagingWindowEventArgs(BreakableWindow window, float damage)
-        {
+        public DamagingWindowEventArgs(BreakableWindow window, float damage) {
             Window = window;
             Damage = damage;
         }

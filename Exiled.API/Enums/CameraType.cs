@@ -6,13 +6,11 @@
 // -----------------------------------------------------------------------
 
 #pragma warning disable SA1124 // Do not use regions
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Unique identifier for the different types of SCP-079 cameras.
     /// </summary>
-    public enum CameraType
-    {
+    public enum CameraType {
         /// <summary>
         /// Represents an unknown camera.
         /// </summary>

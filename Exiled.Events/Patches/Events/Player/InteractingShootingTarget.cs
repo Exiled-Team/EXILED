@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Linq;
@@ -33,10 +32,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.InteractingShootingTarget"/> event.
     /// </summary>
     [HarmonyPatch(typeof(BaseTarget), nameof(BaseTarget.ServerInteract))]
-    internal static class InteractingShootingTarget
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class InteractingShootingTarget {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = 0;
@@ -128,13 +125,11 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static int GetNextValue(byte buttonPressed, int targetButton, int curValue)
-        {
+        private static int GetNextValue(byte buttonPressed, int targetButton, int curValue) {
             if (targetButton != buttonPressed && (targetButton - 1) != buttonPressed)
                 return curValue;
 
-            switch ((BaseTarget.TargetButton)buttonPressed)
-            {
+            switch ((BaseTarget.TargetButton)buttonPressed) {
                 case BaseTarget.TargetButton.IncreaseHP:
                     return Mathf.Clamp(curValue * 2, 1, 256);
                 case BaseTarget.TargetButton.DecreaseHP:

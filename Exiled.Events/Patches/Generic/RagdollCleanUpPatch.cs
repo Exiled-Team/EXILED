@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Generic
-{
+namespace Exiled.Events.Patches.Generic {
 #pragma warning disable SA1118 // Parameter should not span multiple lines
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -23,10 +22,8 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="global::Ragdoll.UpdateCleanup"/>.
     /// </summary>
     [HarmonyPatch(typeof(global::Ragdoll), nameof(global::Ragdoll.UpdateCleanup))]
-    internal class RagdollCleanUpPatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal class RagdollCleanUpPatch {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label ret = generator.DefineLabel();

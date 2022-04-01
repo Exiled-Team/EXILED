@@ -4,8 +4,7 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
     using System.Collections.Generic;
 
@@ -22,8 +21,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a grenade explodes.
     /// </summary>
-    public class ExplodingGrenadeEventArgs : EventArgs
-    {
+    public class ExplodingGrenadeEventArgs : EventArgs {
         private static Dictionary<Type, GrenadeType> grenadeDictionary = new Dictionary<Type, GrenadeType>()
         {
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
@@ -37,14 +35,12 @@ namespace Exiled.Events.EventArgs
         /// <param name="thrower"><inheritdoc cref="Thrower"/></param>
         /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
-        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
-        {
+        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets) {
             Thrower = thrower ?? Server.Host;
             GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
-            foreach (Collider collider in targets)
-            {
+            foreach (Collider collider in targets) {
                 if (!(Grenade is ExplosionGrenade) || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
                     continue;
 
@@ -63,8 +59,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="thrower"><inheritdoc cref="Thrower"/></param>
         /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
         /// <param name="players"><inheritdoc cref="TargetsToAffect"/></param>
-        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
-        {
+        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players) {
             Thrower = thrower ?? Server.Host;
             GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
@@ -91,8 +86,7 @@ namespace Exiled.Events.EventArgs
         /// Gets a value indicating whether the grenade is a frag or flash grenade.
         /// </summary>
         [Obsolete("Use GrenadeType instead.", true)]
-        public bool IsFrag
-        {
+        public bool IsFrag {
             get => GrenadeType == GrenadeType.FragGrenade;
         }
 

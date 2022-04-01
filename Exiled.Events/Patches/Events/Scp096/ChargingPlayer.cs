@@ -5,12 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp096
-{
+namespace Exiled.Events.Patches.Events.Scp096 {
 #pragma warning disable SA1118
 #pragma warning disable SA1402
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -27,16 +27,14 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Adds the <see cref="Handlers.Scp096.ChargingPlayer"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.ChargePlayer))]
-    internal static class ChargingPlayer
-    {
+    internal static class ChargingPlayer {
         /// <summary>
         /// The hashset of already charged players.
         /// Prevents double calling on the same player.
         /// </summary>
         public static readonly HashSet<ReferenceHub> ChargedPlayers = new HashSet<ReferenceHub>();
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
@@ -106,10 +104,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Serves to clear the ChargedPlayers.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.EndCharge))]
-    internal static class ChargeEnded
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ChargeEnded {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // ChargePlayers.Clear();

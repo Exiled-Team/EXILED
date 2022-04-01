@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Patcher
-{
+namespace Exiled.Patcher {
     using System;
     using System.IO;
 
@@ -17,29 +16,23 @@ namespace Exiled.Patcher
     /// Takes a file path to your assembly as input, and will patch the assembly with the Bootstrap class.
     /// Original Patcher created by KadeDev.
     /// </summary>
-    internal static class Patcher
-    {
-        private static void Main(string[] args)
-        {
-            try
-            {
+    internal static class Patcher {
+        private static void Main(string[] args) {
+            try {
                 string path;
 
-                if (args.Length != 1)
-                {
+                if (args.Length != 1) {
                     Console.WriteLine("Provide the location of Assembly-CSharp.dll:");
 
                     path = Console.ReadLine();
                 }
-                else
-                {
+                else {
                     path = args[0];
                 }
 
                 ModuleDefMD module = ModuleDefMD.Load(path);
 
-                if (module == null)
-                {
+                if (module == null) {
                     Console.WriteLine($"File {path} not found!");
                     return;
                 }
@@ -60,10 +53,8 @@ namespace Exiled.Patcher
 
                 TypeDef modClass = bootstrap.Types[0];
 
-                foreach (var type in bootstrap.Types)
-                {
-                    if (type.Name == "Bootstrap")
-                    {
+                foreach (var type in bootstrap.Types) {
+                    if (type.Name == "Bootstrap") {
                         modClass = type;
                         Console.WriteLine($"Hooked to: \"{type.Namespace}.{type.Name}\"");
                     }
@@ -79,8 +70,7 @@ namespace Exiled.Patcher
 
                 MethodDef call = FindMethod(modRefType, "Load");
 
-                if (call == null)
-                {
+                if (call == null) {
                     Console.WriteLine($"Failed to get the \"{call.Name}\" method! Maybe you don't have permission?");
                     return;
                 }
@@ -93,8 +83,7 @@ namespace Exiled.Patcher
 
                 MethodDef start = FindMethod(typeDef, "Start");
 
-                if (start == null)
-                {
+                if (start == null) {
                     start = new MethodDefUser("Start", MethodSig.CreateInstance(module.CorLibTypes.Void), MethodImplAttributes.IL | MethodImplAttributes.Managed, MethodAttributes.Private | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
                     typeDef.Methods.Add(start);
                 }
@@ -105,20 +94,16 @@ namespace Exiled.Patcher
 
                 Console.WriteLine("Patching completed successfully!");
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 Console.WriteLine($"An error has occurred while patching: {exception}");
             }
 
             Console.Read();
         }
 
-        private static MethodDef FindMethod(TypeDef type, string methodName)
-        {
-            if (type != null)
-            {
-                foreach (var method in type.Methods)
-                {
+        private static MethodDef FindMethod(TypeDef type, string methodName) {
+            if (type != null) {
+                foreach (var method in type.Methods) {
                     if (method.Name == methodName)
                         return method;
                 }
@@ -127,12 +112,9 @@ namespace Exiled.Patcher
             return null;
         }
 
-        private static TypeDef FindType(AssemblyDef assembly, string path)
-        {
-            foreach (var module in assembly.Modules)
-            {
-                foreach (var type in module.Types)
-                {
+        private static TypeDef FindType(AssemblyDef assembly, string path) {
+            foreach (var module in assembly.Modules) {
+                foreach (var type in module.Types) {
                     if (type.FullName == path)
                         return type;
                 }

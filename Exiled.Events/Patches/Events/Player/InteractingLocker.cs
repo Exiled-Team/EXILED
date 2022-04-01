@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -15,8 +14,11 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
+
     using Interactables.Interobjects.DoorUtils;
+
     using MapGeneration.Distributors;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
@@ -26,10 +28,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.InteractingLocker"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Locker), nameof(Locker.ServerInteract))]
-    internal static class InteractingLocker
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class InteractingLocker {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = 2;

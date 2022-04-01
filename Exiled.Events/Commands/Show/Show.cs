@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Show
-{
+namespace Exiled.Events.Commands.Show {
     using System;
 
     using CommandSystem;
@@ -16,8 +15,7 @@ namespace Exiled.Events.Commands.Show
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public sealed class Show : ParentCommand
-    {
+    public sealed class Show : ParentCommand {
         /// <summary>
         /// Initializes a new instance of the <see cref="Show"/> class.
         /// </summary>
@@ -33,14 +31,12 @@ namespace Exiled.Events.Commands.Show
         public override string Description { get; } = "Show plugins";
 
         /// <inheritdoc/>
-        public override void LoadGeneratedCommands()
-        {
+        public override void LoadGeneratedCommands() {
             RegisterCommand(new Plugins());
         }
 
         /// <inheritdoc/>
-        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             response = "Please, specify a valid subcommand! Available: plugins";
             return false;
         }

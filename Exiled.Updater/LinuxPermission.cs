@@ -7,14 +7,11 @@
 
 #pragma warning disable SA1600 // Elements should be documented
 
-namespace Exiled.Updater
-{
+namespace Exiled.Updater {
     using Mono.Unix;
 
-    internal static class LinuxPermission
-    {
-        internal static void SetFileUserAndGroupReadWriteExecutePermissions(string path)
-        {
+    internal static class LinuxPermission {
+        internal static void SetFileUserAndGroupReadWriteExecutePermissions(string path) {
             UnixFileSystemInfo.GetFileSystemEntry(path).FileAccessPermissions |= FileAccessPermissions.UserReadWriteExecute | FileAccessPermissions.GroupReadWriteExecute;
         }
     }

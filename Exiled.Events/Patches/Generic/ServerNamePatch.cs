@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Generic
-{
+namespace Exiled.Events.Patches.Generic {
     using HarmonyLib;
 
     using static Exiled.Events.Events;
@@ -15,10 +14,8 @@ namespace Exiled.Events.Patches.Generic
     /// Patch the <see cref="ServerConsole.ReloadServerName"/>.
     /// </summary>
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.ReloadServerName))]
-    internal static class ServerNamePatch
-    {
-        private static void Postfix()
-        {
+    internal static class ServerNamePatch {
+        private static void Postfix() {
             if (!Instance.Config.IsNameTrackingEnabled)
                 return;
 

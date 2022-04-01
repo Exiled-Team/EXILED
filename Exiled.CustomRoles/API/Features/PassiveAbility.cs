@@ -5,14 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features
-{
+namespace Exiled.CustomRoles.API.Features {
     using Exiled.API.Features;
 
     /// <summary>
     /// The base class for passive (always active) abilities.
     /// </summary>
-    public abstract class PassiveAbility : CustomAbility
-    {
+    public abstract class PassiveAbility : CustomAbility {
     }
 }

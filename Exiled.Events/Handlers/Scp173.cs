@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// SCP-173 related events.
     /// </summary>
-    public static class Scp173
-    {
+    public static class Scp173 {
         /// <summary>
         /// Invoked before players near SCP-173 blink.
         /// </summary>

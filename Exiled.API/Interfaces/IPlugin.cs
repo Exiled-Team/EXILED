@@ -5,12 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Interfaces
-{
+namespace Exiled.API.Interfaces {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using CommandSystem;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
@@ -19,8 +20,7 @@ namespace Exiled.API.Interfaces
     /// </summary>
     /// <typeparam name="TConfig">The config type.</typeparam>
     public interface IPlugin<out TConfig> : IComparable<IPlugin<IConfig>>
-        where TConfig : IConfig
-    {
+        where TConfig : IConfig {
         /// <summary>
         /// Gets the plugin assembly.
         /// </summary>

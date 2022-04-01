@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Commands.List
-{
+namespace Exiled.CustomItems.Commands.List {
     using System;
     using System.Linq;
     using System.Text;
@@ -19,10 +18,8 @@ namespace Exiled.CustomItems.Commands.List
     using NorthwoodLib.Pools;
 
     /// <inheritdoc/>
-    internal sealed class Registered : ICommand
-    {
-        private Registered()
-        {
+    internal sealed class Registered : ICommand {
+        private Registered() {
         }
 
         /// <summary>
@@ -40,22 +37,18 @@ namespace Exiled.CustomItems.Commands.List
         public string Description { get; } = "Gets a list of registered custom items.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("customitems.list.registered"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("customitems.list.registered")) {
                 response = "Permission Denied, required: customitems.list.registered";
                 return false;
             }
 
-            if (arguments.Count != 0)
-            {
+            if (arguments.Count != 0) {
                 response = "list registered";
                 return false;
             }
 
-            if (CustomItem.Registered.Count == 0)
-            {
+            if (CustomItem.Registered.Count == 0) {
                 response = "There are no custom items currently on this server.";
                 return false;
             }

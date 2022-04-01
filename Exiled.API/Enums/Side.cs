@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// In which side a certain <see cref="RoleType"/> belongs.
     /// </summary>
-    public enum Side
-    {
+    public enum Side {
         /// <summary>
         /// SCP team. Same as <see cref="Team.SCP"/>.
         /// Contains all SCP-related roles: <see cref="RoleType.Scp049"/>, <see cref="RoleType.Scp0492"/>, <see cref="RoleType.Scp079"/>, <see cref="RoleType.Scp096"/>,

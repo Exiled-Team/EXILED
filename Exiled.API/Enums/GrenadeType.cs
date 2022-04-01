@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// The unique type of grenade.
     /// </summary>
-    public enum GrenadeType
-    {
+    public enum GrenadeType {
         /// <summary>
         /// Frag grenade.
         /// Used by <see cref="ItemType.GrenadeHE"/>.

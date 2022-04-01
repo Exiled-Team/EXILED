@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
 #pragma warning disable CS0618
     using System;
 
@@ -17,15 +16,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after a player dies.
     /// </summary>
-    public class DiedEventArgs : EventArgs
-    {
+    public class DiedEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="DiedEventArgs"/> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
-        public DiedEventArgs(Player target, DamageHandlerBase damageHandler)
-        {
+        public DiedEventArgs(Player target, DamageHandlerBase damageHandler) {
             Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
             Handler = new DamageHandler(target, damageHandler);

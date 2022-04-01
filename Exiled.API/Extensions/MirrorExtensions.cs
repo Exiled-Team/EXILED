@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -27,8 +26,7 @@ namespace Exiled.API.Extensions
     /// <summary>
     /// A set of extensions for <see cref="Mirror"/> Networking.
     /// </summary>
-    public static class MirrorExtensions
-    {
+    public static class MirrorExtensions {
         private static readonly Dictionary<Type, MethodInfo> WriterExtensionsValue = new Dictionary<Type, MethodInfo>();
         private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new Dictionary<string, ulong>();
         private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new ReadOnlyDictionary<Type, MethodInfo>(WriterExtensionsValue);
@@ -39,20 +37,16 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
         /// </summary>
-        public static ReadOnlyDictionary<Type, MethodInfo> WriterExtensions
-        {
-            get
-            {
-                if (WriterExtensionsValue.Count == 0)
-                {
+        public static ReadOnlyDictionary<Type, MethodInfo> WriterExtensions {
+            get {
+                if (WriterExtensionsValue.Count == 0) {
                     foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && x.GetParameters()?.Length == 2))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
                     foreach (MethodInfo method in typeof(GeneratedNetworkCode).GetMethods().Where(x => !x.IsGenericMethod && x.GetParameters()?.Length == 2 && x.ReturnType == typeof(void)))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
-                    foreach (Type serializer in typeof(ServerConsole).Assembly.GetTypes().Where(x => x.Name.EndsWith("Serializer")))
-                    {
+                    foreach (Type serializer in typeof(ServerConsole).Assembly.GetTypes().Where(x => x.Name.EndsWith("Serializer"))) {
                         foreach (MethodInfo method in serializer.GetMethods().Where(x => x.ReturnType == typeof(void) && x.Name.StartsWith("Write")))
                             WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
                     }
@@ -65,16 +59,12 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets a all DirtyBit <see cref="ulong"/> from <see cref="StringExtensions"/>(format:classname.methodname).
         /// </summary>
-        public static ReadOnlyDictionary<string, ulong> SyncVarDirtyBits
-        {
-            get
-            {
-                if (SyncVarDirtyBitsValue.Count == 0)
-                {
+        public static ReadOnlyDictionary<string, ulong> SyncVarDirtyBits {
+            get {
+                if (SyncVarDirtyBitsValue.Count == 0) {
                     foreach (PropertyInfo property in typeof(ServerConsole).Assembly.GetTypes()
                         .SelectMany(x => x.GetProperties())
-                        .Where(m => m.Name.StartsWith("Network")))
-                    {
+                        .Where(m => m.Name.StartsWith("Network"))) {
                         MethodInfo setMethod = property.GetSetMethod();
                         if (setMethod == null)
                             continue;
@@ -94,12 +84,9 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets a <see cref="NetworkBehaviour.SetDirtyBit(ulong)"/>'s <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SetDirtyBitsMethodInfo
-        {
-            get
-            {
-                if (setDirtyBitsMethodInfoValue == null)
-                {
+        public static MethodInfo SetDirtyBitsMethodInfo {
+            get {
+                if (setDirtyBitsMethodInfoValue == null) {
                     setDirtyBitsMethodInfoValue = typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
                 }
 
@@ -110,12 +97,9 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SendSpawnMessageMethodInfo
-        {
-            get
-            {
-                if (sendSpawnMessageMethodInfoValue == null)
-                {
+        public static MethodInfo SendSpawnMessageMethodInfo {
+            get {
+                if (sendSpawnMessageMethodInfoValue == null) {
                     sendSpawnMessageMethodInfoValue = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
                 }
 
@@ -151,10 +135,8 @@ namespace Exiled.API.Extensions
         /// <param name="itemType">Weapon' sound to play.</param>
         /// <param name="volume">Sound's volume to set.</param>
         /// <param name="audioClipId">GunAudioMessage's audioClipId to set (default = 0).</param>
-        public static void PlayGunSound(this Player player, Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0)
-        {
-            GunAudioMessage message = new GunAudioMessage
-            {
+        public static void PlayGunSound(this Player player, Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0) {
+            GunAudioMessage message = new GunAudioMessage {
                 Weapon = itemType,
                 AudioClipId = audioClipId,
                 MaxDistance = volume,
@@ -177,8 +159,7 @@ namespace Exiled.API.Extensions
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
         /// <param name="color">Color to set.</param>
-        public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color)
-        {
+        public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color) {
             target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightColor), color);
             target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightOverride), true);
         }
@@ -189,8 +170,7 @@ namespace Exiled.API.Extensions
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
         /// <param name="multiplier">Light intensity multiplier to set.</param>
-        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
-        {
+        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier) {
             target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_lightIntensityMultiplier), multiplier);
         }
 
@@ -200,8 +180,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
-        public static void ChangeAppearance(this Player player, RoleType type)
-        {
+        public static void ChangeAppearance(this Player player, RoleType type) {
             foreach (Player target in Player.List.Where(x => x != player))
                 SendFakeSyncVar(target, player.ReferenceHub.networkIdentity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurClass), (sbyte)type);
         }
@@ -222,8 +201,7 @@ namespace Exiled.API.Extensions
         /// <param name="player">Player to change.</param>
         /// <param name="multiplier">Speed multiplier.</param>
         /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
-        public static void ChangeWalkingSpeed(this Player player, float multiplier, bool useCap = true)
-        {
+        public static void ChangeWalkingSpeed(this Player player, float multiplier, bool useCap = true) {
             if (useCap)
                 multiplier = Mathf.Clamp(multiplier, -2f, 2f);
 
@@ -236,8 +214,7 @@ namespace Exiled.API.Extensions
         /// <param name="player">Player to change.</param>
         /// <param name="multiplier">Speed multiplier.</param>
         /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
-        public static void ChangeRunningSpeed(this Player player, float multiplier, bool useCap = true)
-        {
+        public static void ChangeRunningSpeed(this Player player, float multiplier, bool useCap = true) {
             if (useCap)
                 multiplier = Mathf.Clamp(multiplier, -1.4f, 1.4f);
 
@@ -252,10 +229,8 @@ namespace Exiled.API.Extensions
         /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
         /// <param name="value">Value of send to target.</param>
-        public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
-        {
-            void CustomSyncVarGenerator(NetworkWriter targetWriter)
-            {
+        public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value) {
+            void CustomSyncVarGenerator(NetworkWriter targetWriter) {
                 targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new object[] { targetWriter, value });
             }
@@ -284,15 +259,13 @@ namespace Exiled.API.Extensions
         /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
         /// <param name="rpcName">Property name starting with Rpc.</param>
         /// <param name="values">Values of send to target.</param>
-        public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
-        {
+        public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values) {
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
 
             foreach (object value in values)
                 WriterExtensions[value.GetType()].Invoke(null, new object[] { writer, value });
 
-            RpcMessage msg = new RpcMessage
-            {
+            RpcMessage msg = new RpcMessage {
                 netId = behaviorOwner.netId,
                 componentIndex = GetComponentIndex(behaviorOwner, targetType),
                 functionHash = (targetType.FullName.GetStableHashCode() * 503) + rpcName.GetStableHashCode(),
@@ -321,8 +294,7 @@ namespace Exiled.API.Extensions
         ///  });
         /// </code>
         /// </example>
-        public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
-        {
+        public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction) {
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);
@@ -336,38 +308,31 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="identity">Target object.</param>
         /// <param name="customAction">Edit function.</param>
-        public static void EditNetworkObject(NetworkIdentity identity, Action<NetworkIdentity> customAction)
-        {
+        public static void EditNetworkObject(NetworkIdentity identity, Action<NetworkIdentity> customAction) {
             customAction.Invoke(identity);
 
-            ObjectDestroyMessage objectDestroyMessage = new ObjectDestroyMessage
-            {
+            ObjectDestroyMessage objectDestroyMessage = new ObjectDestroyMessage {
                 netId = identity.netId,
             };
-            foreach (Player ply in Player.List)
-            {
+            foreach (Player ply in Player.List) {
                 ply.Connection.Send(objectDestroyMessage, 0);
                 SendSpawnMessageMethodInfo.Invoke(null, new object[] { identity, ply.Connection });
             }
         }
 
         // Get components index in identity.(private)
-        private static int GetComponentIndex(NetworkIdentity identity, Type type)
-        {
+        private static int GetComponentIndex(NetworkIdentity identity, Type type) {
             return Array.FindIndex(identity.NetworkBehaviours, (x) => x.GetType() == type);
         }
 
         // Make custom writer(private)
-        private static void MakeCustomSyncWriter(NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer)
-        {
+        private static void MakeCustomSyncWriter(NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer) {
             byte behaviorDirty = 0;
             NetworkBehaviour behaviour = null;
 
             // Get NetworkBehaviors index (behaviorDirty use index)
-            for (int i = 0; i < behaviorOwner.NetworkBehaviours.Length; i++)
-            {
-                if (behaviorOwner.NetworkBehaviours[i].GetType() == targetType)
-                {
+            for (int i = 0; i < behaviorOwner.NetworkBehaviours.Length; i++) {
+                if (behaviorOwner.NetworkBehaviours[i].GetType() == targetType) {
                     behaviour = behaviorOwner.NetworkBehaviours[i];
                     behaviorDirty = (byte)i;
                     break;
@@ -398,8 +363,7 @@ namespace Exiled.API.Extensions
             owner.Position = position3;
 
             // Copy owner to observer
-            if (behaviour.syncMode != SyncMode.Observers)
-            {
+            if (behaviour.syncMode != SyncMode.Observers) {
                 ArraySegment<byte> arraySegment = owner.ToArraySegment();
                 observer.WriteBytes(arraySegment.Array, position, owner.Position - position);
             }

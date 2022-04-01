@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1313
     using System;
 
@@ -26,39 +25,30 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ActivatingGenerator"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.ServerInteract))]
-    internal static class InteractingGeneratorEvents
-    {
-        private static bool Prefix(Scp079Generator __instance, ReferenceHub ply, byte colliderId)
-        {
-            try
-            {
+    internal static class InteractingGeneratorEvents {
+        private static bool Prefix(Scp079Generator __instance, ReferenceHub ply, byte colliderId) {
+            try {
                 if ((__instance._cooldownStopwatch.IsRunning && __instance._cooldownStopwatch.Elapsed.TotalSeconds <
                     __instance._targetCooldown) || (colliderId != 0 && !__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open)))
                     return false;
                 __instance._cooldownStopwatch.Stop();
-                switch (colliderId)
-                {
+                switch (colliderId) {
                     case 0:
-                        if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Unlocked))
-                        {
-                            if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open))
-                            {
+                        if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Unlocked)) {
+                            if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open)) {
                                 ClosingGeneratorEventArgs closingGenEvent =
                                     new ClosingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
                                 Player.OnClosingGenerator(closingGenEvent);
-                                if (!closingGenEvent.IsAllowed)
-                                {
+                                if (!closingGenEvent.IsAllowed) {
                                     __instance.RpcDenied();
                                     break;
                                 }
                             }
-                            else
-                            {
+                            else {
                                 OpeningGeneratorEventArgs openingGenEvent =
                                     new OpeningGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
                                 Player.OnOpeningGenerator(openingGenEvent);
-                                if (!openingGenEvent.IsAllowed)
-                                {
+                                if (!openingGenEvent.IsAllowed) {
                                     __instance.RpcDenied();
                                     break;
                                 }
@@ -84,25 +74,20 @@ namespace Exiled.Events.Patches.Events.Player
                         __instance._targetCooldown = __instance._unlockCooldownTime;
                         break;
                     case 1:
-                        if ((ply.characterClassManager.IsHuman() || __instance.Activating) && !__instance.Engaged)
-                        {
-                            if (__instance.Activating)
-                            {
+                        if ((ply.characterClassManager.IsHuman() || __instance.Activating) && !__instance.Engaged) {
+                            if (__instance.Activating) {
                                 StoppingGeneratorEventArgs stoppingGen = new StoppingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
                                 Player.OnStoppingGenerator(stoppingGen);
-                                if (!stoppingGen.IsAllowed)
-                                {
+                                if (!stoppingGen.IsAllowed) {
                                     __instance.RpcDenied();
                                     break;
                                 }
                             }
-                            else
-                            {
+                            else {
                                 ActivatingGeneratorEventArgs activatingEvent =
                                     new ActivatingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
                                 Player.OnActivatingGenerator(activatingEvent);
-                                if (!activatingEvent.IsAllowed)
-                                {
+                                if (!activatingEvent.IsAllowed) {
                                     __instance.RpcDenied();
                                     break;
                                 }
@@ -117,12 +102,10 @@ namespace Exiled.Events.Patches.Events.Player
 
                         break;
                     case 2:
-                        if (__instance.Activating && !__instance.Engaged)
-                        {
+                        if (__instance.Activating && !__instance.Engaged) {
                             StoppingGeneratorEventArgs stoppingGen = new StoppingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
                             Player.OnStoppingGenerator(stoppingGen);
-                            if (!stoppingGen.IsAllowed)
-                            {
+                            if (!stoppingGen.IsAllowed) {
                                 __instance.RpcDenied();
                                 break;
                             }
@@ -140,8 +123,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 __instance._cooldownStopwatch.Restart();
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 API.Features.Log.Error(
                     $"Exiled.Events.Patches.Events.Player.InteractingGeneratorEvent: {exception}\n{exception.StackTrace}");
 

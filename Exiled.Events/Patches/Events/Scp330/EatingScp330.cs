@@ -5,9 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp330
-{
-    #pragma warning disable SA1118
+namespace Exiled.Events.Patches.Events.Scp330 {
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -28,10 +27,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     /// Adds the <see cref="Handlers.Scp330.EatingScp330"/> and <see cref="Handlers.Scp330.EatenScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerOnUsingCompleted))]
-    internal static class EatingScp330
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class EatingScp330 {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = -3;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -19,8 +18,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player damages a shooting target.
     /// </summary>
-    public class DamagingShootingTargetEventArgs : EventArgs
-    {
+    public class DamagingShootingTargetEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="DamagingShootingTargetEventArgs"/> class.
         /// </summary>
@@ -31,8 +29,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="damageHandler"><inheritdoc cref="Item"/></param>
         /// <param name="hitLocation"><inheritdoc cref="HitLocation"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DamagingShootingTargetEventArgs(Player player, float damage, float distance, Vector3 hitLocation, AdminToys.ShootingTarget shootingTarget, DamageHandlerBase damageHandler, bool isAllowed = true)
-        {
+        public DamagingShootingTargetEventArgs(Player player, float damage, float distance, Vector3 hitLocation, AdminToys.ShootingTarget shootingTarget, DamageHandlerBase damageHandler, bool isAllowed = true) {
             Player = player;
             Amount = damage;
             Distance = distance;

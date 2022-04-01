@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Events
-{
+namespace Exiled.CustomRoles.Events {
     using Exiled.Events.EventArgs;
 
     /// <summary>
     /// Handles general events for players.
     /// </summary>
-    public class PlayerHandlers
-    {
+    public class PlayerHandlers {
         private readonly CustomRoles plugin;
 
         /// <summary>
@@ -23,10 +21,8 @@ namespace Exiled.CustomRoles.Events
         public PlayerHandlers(CustomRoles plugin) => this.plugin = plugin;
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.SpawningRagdoll"/>
-        internal void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
-        {
-            if (plugin.StopRagdollPlayers.Contains(ev.Owner))
-            {
+        internal void OnSpawningRagdoll(SpawningRagdollEventArgs ev) {
+            if (plugin.StopRagdollPlayers.Contains(ev.Owner)) {
                 ev.IsAllowed = false;
                 plugin.StopRagdollPlayers.Remove(ev.Owner);
             }

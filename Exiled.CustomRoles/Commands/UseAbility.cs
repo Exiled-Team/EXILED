@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Commands
-{
+namespace Exiled.CustomRoles.Commands {
     using System;
     using System.Collections.ObjectModel;
 
@@ -20,8 +19,7 @@ namespace Exiled.CustomRoles.Commands
     /// Handles the using of custom role abilities.
     /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
-    public class UseAbility : ICommand
-    {
+    public class UseAbility : ICommand {
         /// <inheritdoc/>
         public string Command { get; } = "useability";
 
@@ -32,37 +30,30 @@ namespace Exiled.CustomRoles.Commands
         public string Description { get; } = "Use your custom roles special ability, if available.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             Player player = Player.Get((CommandSender)sender);
             int abilityNumber = 0;
             if (arguments.Count > 0)
                 int.TryParse(arguments.At(0), out abilityNumber);
 
             ReadOnlyCollection<CustomRole> roles = player.GetCustomRoles();
-            if (roles.Count == 0)
-            {
+            if (roles.Count == 0) {
                 response = "You do not have any custom roles.";
 
                 return false;
             }
 
-            if (arguments.Count > 1)
-            {
+            if (arguments.Count > 1) {
                 CustomRole role = CustomRole.Get(arguments.At(1));
-                if (role == null)
-                {
+                if (role == null) {
                     response = $"The specified role {arguments.At(1)} does not exist.";
 
                     return false;
                 }
 
-                if (role.CustomAbilities.Count >= abilityNumber + 1)
-                {
-                    if (role.CustomAbilities[abilityNumber] is ActiveAbility active)
-                    {
-                        if (!active.CanUseAbility(player, out response))
-                        {
+                if (role.CustomAbilities.Count >= abilityNumber + 1) {
+                    if (role.CustomAbilities[abilityNumber] is ActiveAbility active) {
+                        if (!active.CanUseAbility(player, out response)) {
                             return false;
                         }
 
@@ -75,8 +66,7 @@ namespace Exiled.CustomRoles.Commands
 
             response = "Could not find an ability that was able to be used.";
 
-            foreach (CustomRole customRole in roles)
-            {
+            foreach (CustomRole customRole in roles) {
                 if (customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
                     continue;
 

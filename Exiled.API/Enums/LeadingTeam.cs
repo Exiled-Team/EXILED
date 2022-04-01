@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// The team that is currently leading the round.
     /// </summary>
-    public enum LeadingTeam : byte
-    {
+    public enum LeadingTeam : byte {
         /// <summary>
         /// Represents the Scientists, Guards, and NTF team.
         /// </summary>

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
-{
+namespace Exiled.Events.Patches.Events.Server {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -26,10 +25,8 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Server.ReportingCheater"/> and <see cref="Server.LocalReporting"/> events.
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.UserCode_CmdReport))]
-    internal static class Reporting
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Reporting {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(LocalReportingEventArgs));

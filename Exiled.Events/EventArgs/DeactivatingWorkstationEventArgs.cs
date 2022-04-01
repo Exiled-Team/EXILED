@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using InventorySystem.Items.Firearms.Attachments;
@@ -16,15 +15,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before deactivating a workstation.
     /// </summary>
-    public class DeactivatingWorkstationEventArgs : EventArgs
-    {
+    public class DeactivatingWorkstationEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="DeactivatingWorkstationEventArgs"/> class.
         /// </summary>
         /// <param name="controller"><inheritdoc cref="WorkstationController"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DeactivatingWorkstationEventArgs(WorkstationController controller, bool isAllowed = true)
-        {
+        public DeactivatingWorkstationEventArgs(WorkstationController controller, bool isAllowed = true) {
             WorkstationController = controller;
             IsAllowed = isAllowed;
         }

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before radio preset is changed.
     /// </summary>
-    public class ChangingRadioPresetEventArgs : EventArgs
-    {
+    public class ChangingRadioPresetEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingRadioPresetEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="oldValue"><inheritdoc cref="OldValue"/></param>
         /// <param name="newValue"><inheritdoc cref="NewValue"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingRadioPresetEventArgs(Player player, byte oldValue, byte newValue, bool isAllowed = true)
-        {
+        public ChangingRadioPresetEventArgs(Player player, byte oldValue, byte newValue, bool isAllowed = true) {
             Player = player;
             OldValue = oldValue;
             NewValue = newValue;

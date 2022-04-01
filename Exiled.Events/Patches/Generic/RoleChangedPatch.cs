@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Fixes
-{
+namespace Exiled.Events.Patches.Fixes {
     using HarmonyLib;
 
     using InventorySystem;
@@ -15,8 +14,7 @@ namespace Exiled.Events.Patches.Fixes
     /// Patches <see cref="InventoryItemProvider.RoleChanged"/> to help override in <see cref="EventArgs.ChangingRoleEventArgs.Items"/> and <see cref="EventArgs.ChangingRoleEventArgs.Ammo"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryItemProvider), nameof(InventoryItemProvider.RoleChanged))]
-    internal static class RoleChangedPatch
-    {
+    internal static class RoleChangedPatch {
         private static bool Prefix() => false;
     }
 }

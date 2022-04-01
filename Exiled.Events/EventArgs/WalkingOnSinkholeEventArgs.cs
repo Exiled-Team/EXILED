@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player walks over a sinkhole.
     /// </summary>
-    public class WalkingOnSinkholeEventArgs : EventArgs
-    {
+    public class WalkingOnSinkholeEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="WalkingOnSinkholeEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="sinkhole"><inheritdoc cref="SinkholeEnvironmentalHazard"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public WalkingOnSinkholeEventArgs(Player player, SinkholeEnvironmentalHazard sinkhole, bool isAllowed = true)
-        {
+        public WalkingOnSinkholeEventArgs(Player player, SinkholeEnvironmentalHazard sinkhole, bool isAllowed = true) {
             Player = player;
             Sinkhole = sinkhole;
             IsAllowed = isAllowed;

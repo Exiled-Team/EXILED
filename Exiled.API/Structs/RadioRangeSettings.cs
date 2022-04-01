@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Structs
-{
+namespace Exiled.API.Structs {
     /// <summary>
     /// Settings for specific radio ranges.
     /// </summary>
-    public struct RadioRangeSettings
-    {
+    public struct RadioRangeSettings {
         /// <summary>
         /// The amount of battery usage per minute while idle.
         /// </summary>

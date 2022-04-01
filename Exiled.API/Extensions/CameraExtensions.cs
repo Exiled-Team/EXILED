@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
@@ -17,8 +16,7 @@ namespace Exiled.API.Extensions
     /// Contains an extension method to get <see cref="CameraType"/> from <see cref="Camera079"/>, as well as additional methods to get the <see cref="Room"/> and <see cref="ZoneType"/> of a camera.
     /// Internal class <see cref="RegisterCameraInfoOnLevelLoad"/> to cache the <see cref="CameraType"/> and <see cref="Room"/> on level load.
     /// </summary>
-    public static class CameraExtensions
-    {
+    public static class CameraExtensions {
         private static readonly Dictionary<int, CameraType> OrderedCameraTypes = new Dictionary<int, CameraType>();
         private static readonly Dictionary<int, Room> OrderedCameraRooms = new Dictionary<int, Room>();
 
@@ -46,15 +44,13 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets all the <see cref="CameraType"/> and <see cref="Room"/> values for for the <see cref="Camera079"/> instances using <see cref="Camera079.cameraId"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
-        internal static void RegisterCameraInfoOnLevelLoad()
-        {
+        internal static void RegisterCameraInfoOnLevelLoad() {
             OrderedCameraTypes.Clear();
 
             ReadOnlyCollection<Camera079> cameras = Map.Cameras;
 
             int cameraCount = cameras.Count;
-            for (int i = 0; i < cameraCount; i++)
-            {
+            for (int i = 0; i < cameraCount; i++) {
                 Camera079 camera = cameras[i];
                 int cameraID = camera.GetInstanceID();
 

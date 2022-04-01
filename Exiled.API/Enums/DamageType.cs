@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Identifiers for types of damage.
     /// </summary>
-    public enum DamageType
-    {
+    public enum DamageType {
         /// <summary>
         /// Unknown damage source.
         /// </summary>

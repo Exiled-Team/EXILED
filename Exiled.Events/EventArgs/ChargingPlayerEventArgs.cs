@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-096 charges a player.
     /// </summary>
-    public class ChargingPlayerEventArgs : EventArgs
-    {
+    public class ChargingPlayerEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChargingPlayerEventArgs"/> class.
         /// </summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="victim"><inheritdoc cref="Victim"/></param>
         /// <param name="isTarget"><inheritdoc cref="IsTarget"/></param>
         /// <param name="damage"><inheritdoc cref="Damage"/></param>
-        public ChargingPlayerEventArgs(Scp096 scp096, Player player, Player victim, bool isTarget, float damage)
-        {
+        public ChargingPlayerEventArgs(Scp096 scp096, Player player, Player victim, bool isTarget, float damage) {
             Scp096 = scp096;
             Player = player;
             Victim = victim;

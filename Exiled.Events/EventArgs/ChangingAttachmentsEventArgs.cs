@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before changing item attachments.
     /// </summary>
-    public class ChangingAttachmentsEventArgs : ChangingAttributesEventArgs
-    {
+    public class ChangingAttachmentsEventArgs : ChangingAttributesEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingAttachmentsEventArgs"/> class.
         /// </summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="newOther"><inheritdoc cref="NewOther"/></param>
         /// <param name="isAllowed"><inheritdoc cref="ChangingAttributesEventArgs.IsAllowed"/></param>
         public ChangingAttachmentsEventArgs(Firearm item, SightType newSight, BarrelType newBarrel, OtherType newOther, bool isAllowed = true)
-            : base(item, item, isAllowed)
-        {
+            : base(item, item, isAllowed) {
             NewSight = newSight;
             NewBarrel = newBarrel;
             NewOther = newOther;

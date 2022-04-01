@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Assets._Scripts.Dissonance;
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information after a player presses the voicechat key.
     /// </summary>
-    public class VoiceChattingEventArgs : EventArgs
-    {
+    public class VoiceChattingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="VoiceChattingEventArgs"/> class.
         /// </summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="dissonanceUserSetup"><inheritdoc cref="DissonanceUserSetup"/></param>
         /// <param name="isVoiceChatting"><inheritdoc cref="IsVoiceChatting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public VoiceChattingEventArgs(Player player, Radio radio, DissonanceUserSetup dissonanceUserSetup, bool isVoiceChatting, bool isAllowed = true)
-        {
+        public VoiceChattingEventArgs(Player player, Radio radio, DissonanceUserSetup dissonanceUserSetup, bool isVoiceChatting, bool isAllowed = true) {
             Player = player;
             Radio = radio;
             DissonanceUserSetup = dissonanceUserSetup;

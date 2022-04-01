@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
-{
+namespace Exiled.Events.Patches.Events.Map {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -31,27 +30,22 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.Explode))]
-    internal static class ExplodingFragGrenade
-    {
+    internal static class ExplodingFragGrenade {
         /// <summary>
         /// Trims colliders from the given array.
         /// </summary>
         /// <param name="ev"><inheritdoc cref="ExplodingGrenadeEventArgs"/></param>
         /// <param name="colliderArray">The list of colliders to trim from.</param>
         /// <returns>An array of colliders.</returns>
-        public static Collider[] TrimColliders(ExplodingGrenadeEventArgs ev, Collider[] colliderArray)
-        {
+        public static Collider[] TrimColliders(ExplodingGrenadeEventArgs ev, Collider[] colliderArray) {
             List<Collider> colliders = new List<Collider>();
-            foreach (Collider collider in colliderArray)
-            {
+            foreach (Collider collider in colliderArray) {
                 if (collider.TryGetComponent(out IDestructible dest) &&
                     ReferenceHub.TryGetHubNetID(dest.NetworkId, out ReferenceHub hub) &&
-                    Player.Get(hub) is Player player && !ev.TargetsToAffect.Contains(player))
-                {
+                    Player.Get(hub) is Player player && !ev.TargetsToAffect.Contains(player)) {
                     colliders.Add(collider);
                 }
-                else
-                {
+                else {
                     colliders.Add(collider);
                 }
             }
@@ -59,8 +53,7 @@ namespace Exiled.Events.Patches.Events.Map
             return colliders.ToArray();
         }
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_3) + offset;

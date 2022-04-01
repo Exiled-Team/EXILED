@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Layers game respawn effects.
     /// </summary>
-    public enum RespawnEffectType : byte
-    {
+    public enum RespawnEffectType : byte {
         /// <summary>
         /// Plays the <see cref="Side.ChaosInsurgency"/> music to alive <see cref="RoleType.ClassD"/> and <see cref="Side.ChaosInsurgency"/>.
         /// </summary>

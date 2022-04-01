@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// All possible <see cref="Radio"/> ranges.
     /// </summary>
-    public enum RadioRange
-    {
+    public enum RadioRange {
         /// <summary>
         /// The radio is disabled.
         /// </summary>

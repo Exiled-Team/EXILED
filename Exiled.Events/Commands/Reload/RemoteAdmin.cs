@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Reload
-{
+namespace Exiled.Events.Commands.Reload {
     using System;
 
     using CommandSystem;
@@ -17,8 +16,7 @@ namespace Exiled.Events.Commands.Reload
     /// <summary>
     /// The reload remoteadmin command.
     /// </summary>
-    public class RemoteAdmin : ICommand
-    {
+    public class RemoteAdmin : ICommand {
         /// <summary>
         /// Gets static instance of the <see cref="RemoteAdmin"/> command.
         /// </summary>
@@ -34,10 +32,8 @@ namespace Exiled.Events.Commands.Reload
         public string Description { get; } = "Reloads remote admin configs.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ee.reloadremoteadmin"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ee.reloadremoteadmin")) {
                 response = "You can't reload remote admin configs, you don't have \"ee.reloadremoteadmin\" permission.";
                 return false;
             }

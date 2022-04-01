@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Generic
-{
+namespace Exiled.Events.Patches.Generic {
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -23,10 +22,8 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1515 // Single-line comment should be preceded by blank line
 
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.UpdateVision))]
-    internal static class ParseVisionInformation
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ParseVisionInformation {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             const int offset = -3;
             const int continueLabelOffset = -3;
 
@@ -34,8 +31,7 @@ namespace Exiled.Events.Patches.Generic
             int index = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Div);
 
             // Quick check if it's the end
-            if (index + 1 >= newInstructions.Count)
-            {
+            if (index + 1 >= newInstructions.Count) {
                 Log.Error($"Couldn't patch '{typeof(PlayableScps.Scp096).FullName}.{nameof(PlayableScps.Scp096.UpdateVision)}': invalid index - {index}");
                 ListPool<CodeInstruction>.Shared.Return(newInstructions);
                 yield break;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example.Commands
-{
+namespace Exiled.Example.Commands {
     using System;
     using System.Linq;
 
@@ -21,8 +20,7 @@ namespace Exiled.Example.Commands
     /// This is an example of how commands should be made.
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    public class Test : ICommand
-    {
+    public class Test : ICommand {
         /// <inheritdoc/>
         public string Command { get; } = "test";
 
@@ -33,8 +31,7 @@ namespace Exiled.Example.Commands
         public string Description { get; } = "A simple test command.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             Player player = Player.Get(((CommandSender)sender).SenderId);
             Log.Warn($"{player.Items.Count} -- {player.Inventory.UserInventory.Items.Count}");
             foreach (Pickup pickup in Map.Pickups)

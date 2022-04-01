@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp049
-{
+namespace Exiled.Events.Patches.Events.Scp049 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -30,10 +29,8 @@ namespace Exiled.Events.Patches.Events.Scp049
     /// Adds the <see cref="Handlers.Scp049.StartingRecall"/> and <see cref="Handlers.Scp049.FinishingRecall"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp049), nameof(Scp049.BodyCmd_ByteAndGameObject))]
-    internal static class StartingAndFinishingRecall
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class StartingAndFinishingRecall {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = -4;

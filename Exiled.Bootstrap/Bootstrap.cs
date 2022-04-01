@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Bootstrap
-{
+namespace Exiled.Bootstrap {
 #pragma warning disable SA1118
     using System;
     using System.IO;
@@ -17,8 +16,7 @@ namespace Exiled.Bootstrap
     /// <summary>
     /// The assembly loader class for Exiled.
     /// </summary>
-    public sealed class Bootstrap
-    {
+    public sealed class Bootstrap {
         /// <summary>
         /// Gets a value indicating whether exiled has already been loaded or not.
         /// </summary>
@@ -27,16 +25,13 @@ namespace Exiled.Bootstrap
         /// <summary>
         /// Internally called loading method.
         /// </summary>
-        public static void Load()
-        {
-            if (IsLoaded)
-            {
+        public static void Load() {
+            if (IsLoaded) {
                 ServerConsole.AddLog("[Exiled.Bootstrap] Exiled has already been loaded!", ConsoleColor.DarkRed);
                 return;
             }
 
-            try
-            {
+            try {
                 ServerConsole.AddLog("[Exiled.Bootstrap] Exiled is loading...", ConsoleColor.DarkRed);
 
                 string rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED");
@@ -49,20 +44,17 @@ namespace Exiled.Bootstrap
                 if (!Directory.Exists(rootPath))
                     Directory.CreateDirectory(rootPath);
 
-                if (!File.Exists(Path.Combine(rootPath, "Exiled.Loader.dll")))
-                {
+                if (!File.Exists(Path.Combine(rootPath, "Exiled.Loader.dll"))) {
                     ServerConsole.AddLog($"[Exiled.Bootstrap] Exiled.Loader.dll was not found, Exiled won't be loaded!", ConsoleColor.DarkRed);
                     return;
                 }
 
-                if (!File.Exists(Path.Combine(dependenciesPath, "Exiled.API.dll")))
-                {
+                if (!File.Exists(Path.Combine(dependenciesPath, "Exiled.API.dll"))) {
                     ServerConsole.AddLog($"[Exiled.Bootstrap] Exiled.API.dll was not found, Exiled won't be loaded!", ConsoleColor.DarkRed);
                     return;
                 }
 
-                if (!File.Exists(Path.Combine(dependenciesPath, "YamlDotNet.dll")))
-                {
+                if (!File.Exists(Path.Combine(dependenciesPath, "YamlDotNet.dll"))) {
                     ServerConsole.AddLog($"[Exiled.Bootstrap] YamlDotNet.dll was not found, Exiled won't be loaded!", ConsoleColor.DarkRed);
                     return;
                 }
@@ -83,8 +75,7 @@ namespace Exiled.Bootstrap
 
                 IsLoaded = true;
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 ServerConsole.AddLog($"[Exiled.Bootstrap] Exiled loading error: {exception}", ConsoleColor.DarkRed);
             }
         }

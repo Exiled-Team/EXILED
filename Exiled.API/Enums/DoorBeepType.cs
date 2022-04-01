@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Door beep types.
     /// </summary>
-    public enum DoorBeepType
-    {
+    public enum DoorBeepType {
         /// <summary>
         /// Permission denied beep.
         /// </summary>

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader.Features.Configs
-{
+namespace Exiled.Loader.Features.Configs {
     using System;
 
     using YamlDotNet.Core;
@@ -15,8 +14,7 @@ namespace Exiled.Loader.Features.Configs
     /// <summary>
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    public sealed class CommentsObjectDescriptor : IObjectDescriptor
-    {
+    public sealed class CommentsObjectDescriptor : IObjectDescriptor {
         private readonly IObjectDescriptor innerDescriptor;
 
         /// <summary>
@@ -24,8 +22,7 @@ namespace Exiled.Loader.Features.Configs
         /// </summary>
         /// <param name="innerDescriptor">The inner descriptor instance.</param>
         /// <param name="comment">The comment to be written.</param>
-        public CommentsObjectDescriptor(IObjectDescriptor innerDescriptor, string comment)
-        {
+        public CommentsObjectDescriptor(IObjectDescriptor innerDescriptor, string comment) {
             this.innerDescriptor = innerDescriptor;
             Comment = comment;
         }

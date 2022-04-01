@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -15,16 +14,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information when a player aims.
     /// </summary>
-    public class AimingDownSightEventArgs : EventArgs
-    {
+    public class AimingDownSightEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="AimingDownSightEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="adsIn"><inheritdoc cref="AdsIn"/></param>
         /// <param name="adsOut"><inheritdoc cref="AdsOut"/></param>
-        public AimingDownSightEventArgs(Player player, bool adsIn, bool adsOut)
-        {
+        public AimingDownSightEventArgs(Player player, bool adsIn, bool adsOut) {
             Firearm = player.CurrentItem as Firearm;
             Player = player;
             AdsIn = adsIn;

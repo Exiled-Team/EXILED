@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
 
     using Exiled.Events.Extensions;
@@ -16,8 +15,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Item related events.
     /// </summary>
-    public static class Item
-    {
+    public static class Item {
         /// <summary>
         /// Invoked before the durability of an item is changed.
         /// </summary>

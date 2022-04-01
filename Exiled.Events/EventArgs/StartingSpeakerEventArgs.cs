@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-079 uses a speaker.
     /// </summary>
-    public class StartingSpeakerEventArgs : EventArgs
-    {
+    public class StartingSpeakerEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="StartingSpeakerEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="room"><inheritdoc cref="Room"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StartingSpeakerEventArgs(Player player, Room room, float auxiliaryPowerCost, bool isAllowed = true)
-        {
+        public StartingSpeakerEventArgs(Player player, Room room, float auxiliaryPowerCost, bool isAllowed = true) {
             Player = player;
             Room = room;
             AuxiliaryPowerCost = auxiliaryPowerCost;

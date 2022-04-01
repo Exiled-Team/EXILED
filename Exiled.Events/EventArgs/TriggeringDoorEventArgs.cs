@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Features;
 
     using Interactables.Interobjects.DoorUtils;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-079 interacts with a door.
     /// </summary>
-    public class TriggeringDoorEventArgs : InteractingDoorEventArgs
-    {
+    public class TriggeringDoorEventArgs : InteractingDoorEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="TriggeringDoorEventArgs"/> class.
         /// </summary>
@@ -24,8 +22,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="InteractingDoorEventArgs.IsAllowed"/></param>
         public TriggeringDoorEventArgs(Player player, DoorVariant door, float auxiliaryPowerCost, bool isAllowed = true)
-            : base(player, door, isAllowed)
-        {
+            : base(player, door, isAllowed) {
             AuxiliaryPowerCost = auxiliaryPowerCost;
         }
 

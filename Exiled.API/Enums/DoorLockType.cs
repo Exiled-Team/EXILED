@@ -5,16 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     using System;
 
     /// <summary>
     /// All possible door locks.
     /// </summary>
     [Flags]
-    public enum DoorLockType
-    {
+    public enum DoorLockType {
         /// <summary>
         /// Unlocked.
         /// </summary>

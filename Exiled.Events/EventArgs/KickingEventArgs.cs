@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
     using System.Reflection;
 
@@ -16,8 +15,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before kicking a player from the server.
     /// </summary>
-    public class KickingEventArgs : EventArgs
-    {
+    public class KickingEventArgs : EventArgs {
         private Player target;
         private Player issuer;
         private bool isAllowed;
@@ -30,8 +28,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
         /// <param name="fullMessage"><inheritdoc cref="FullMessage"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public KickingEventArgs(Player target, Player issuer, string reason, string fullMessage, bool isAllowed = true)
-        {
+        public KickingEventArgs(Player target, Player issuer, string reason, string fullMessage, bool isAllowed = true) {
             Target = target;
             Issuer = issuer;
             Reason = reason;
@@ -42,16 +39,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the ban target.
         /// </summary>
-        public Player Target
-        {
+        public Player Target {
             get => target;
-            set
-            {
+            set {
                 if (value == null || target == value)
                     return;
 
-                if (Events.Instance.Config.ShouldLogBans && target != null)
-                {
+                if (Events.Instance.Config.ShouldLogBans && target != null) {
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name
                     + $" changed the banned player from user {target.Nickname} ({target.UserId}) to {value.Nickname} ({value.UserId})");
                 }
@@ -63,16 +57,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the ban issuer.
         /// </summary>
-        public Player Issuer
-        {
+        public Player Issuer {
             get => issuer;
-            set
-            {
+            set {
                 if (value == null || issuer == value)
                     return;
 
-                if (Events.Instance.Config.ShouldLogBans && issuer != null)
-                {
+                if (Events.Instance.Config.ShouldLogBans && issuer != null) {
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name
                                    + $" changed the ban issuer from user {issuer.Nickname} ({issuer.UserId}) to {value.Nickname} ({value.UserId})");
                 }
@@ -94,11 +85,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not action is taken against the target.
         /// </summary>
-        public bool IsAllowed
-        {
+        public bool IsAllowed {
             get => isAllowed;
-            set
-            {
+            set {
                 if (isAllowed == value)
                     return;
 
@@ -113,10 +102,8 @@ namespace Exiled.Events.EventArgs
         /// Logs the kick, anti-backdoor protection from malicious plugins.
         /// </summary>
         /// <param name="message">The message to be logged.</param>
-        protected void LogBanChange(string message)
-        {
-            lock (ServerLogs.LockObject)
-            {
+        protected void LogBanChange(string message) {
+            lock (ServerLogs.LockObject) {
                 Log.Warn($"[ANTI-BACKDOOR]: {message} - {TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz")}");
             }
 

@@ -5,17 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.GHApi.Settings
-{
+namespace Exiled.Updater.GHApi.Settings {
     using UnityEngine;
 
-    public readonly struct GetReleasesSettings
-    {
+    public readonly struct GetReleasesSettings {
         public readonly byte PerPage;
         public readonly uint Page;
 
-        public GetReleasesSettings(byte perPage, uint page)
-        {
+        public GetReleasesSettings(byte perPage, uint page) {
             PerPage = (byte)Mathf.Clamp(perPage, 1, 100);
             Page = page;
         }

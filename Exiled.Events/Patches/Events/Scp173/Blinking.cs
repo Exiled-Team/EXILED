@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp173
-{
+namespace Exiled.Events.Patches.Events.Scp173 {
 #pragma warning disable SA1118
 
     using System.Collections.Generic;
@@ -30,10 +29,8 @@ namespace Exiled.Events.Patches.Events.Scp173
     /// Adds the <see cref="Handlers.Scp173.Blinking"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.ServerHandleBlinkMessage))]
-    internal static class Blinking
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Blinking {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = -13;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand ==

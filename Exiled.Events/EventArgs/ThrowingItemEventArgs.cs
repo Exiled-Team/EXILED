@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Enums;
@@ -18,8 +17,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player throws a grenade.
     /// </summary>
-    public class ThrowingItemEventArgs : EventArgs
-    {
+    public class ThrowingItemEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ThrowingItemEventArgs"/> class.
         /// </summary>
@@ -27,8 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="request"><inheritdoc cref="RequestType"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true)
-        {
+        public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true) {
             Player = player;
             Item = (Throwable)API.Features.Items.Item.Get(item);
             RequestType = (ThrowRequest)request;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,14 +13,12 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains informations after SCP-079 recontainment.
     /// </summary>
-    public class RecontainedEventArgs : EventArgs
-    {
+    public class RecontainedEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="RecontainedEventArgs"/> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target"/></param>
-        public RecontainedEventArgs(Player target)
-        {
+        public RecontainedEventArgs(Player target) {
             Target = target;
         }
 

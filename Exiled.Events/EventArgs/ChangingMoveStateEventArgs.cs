@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before changing movement state.
     /// </summary>
-    public class ChangingMoveStateEventArgs : EventArgs
-    {
+    public class ChangingMoveStateEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingMoveStateEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="oldState"><inheritdoc cref="OldState"/></param>
         /// <param name="newState"><inheritdoc cref="NewState"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingMoveStateEventArgs(Player player, PlayerMovementState oldState, PlayerMovementState newState, bool isAllowed = true)
-        {
+        public ChangingMoveStateEventArgs(Player player, PlayerMovementState oldState, PlayerMovementState newState, bool isAllowed = true) {
             Player = player;
             OldState = oldState;
             NewState = newState;

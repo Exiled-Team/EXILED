@@ -5,16 +5,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using System.Linq;
+
     using Exiled.API.Features;
 
     /// <summary>
     /// Contains a useful extension to compare two <see cref="UserGroup"/>'s.
     /// </summary>
-    public static class UserGroupExtensions
-    {
+    public static class UserGroupExtensions {
         /// <summary>
         /// Compares two <see cref="UserGroup"/>'s for equality.
         /// </summary>
@@ -44,8 +43,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="groupName">The <see cref="string"/>.</param>
         /// <returns>The value of that group, or null if not found.</returns>
-        public static UserGroup GetValue(string groupName)
-        {
+        public static UserGroup GetValue(string groupName) {
             ServerStatic.GetPermissionsHandler().GetAllGroups().TryGetValue(groupName, out UserGroup userGroup);
             return userGroup;
         }

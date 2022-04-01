@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Enums;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information after the end of a round.
     /// </summary>
-    public class RoundEndedEventArgs : EventArgs
-    {
+    public class RoundEndedEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoundEndedEventArgs"/> class.
         /// </summary>
         /// <param name="leadingTeam"><inheritdoc cref="LeadingTeam"/></param>
         /// <param name="classList"><inheritdoc cref="ClassList"/></param>
         /// <param name="timeToRestart"><inheritdoc cref="TimeToRestart"/></param>
-        public RoundEndedEventArgs(LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, int timeToRestart)
-        {
+        public RoundEndedEventArgs(LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, int timeToRestart) {
             LeadingTeam = leadingTeam;
             ClassList = classList;
             TimeToRestart = timeToRestart;

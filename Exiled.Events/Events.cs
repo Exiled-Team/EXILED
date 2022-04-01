@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events
-{
+namespace Exiled.Events {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -24,8 +23,7 @@ namespace Exiled.Events
     /// <summary>
     /// Patch and unpatch events into the game.
     /// </summary>
-    public sealed class Events : Plugin<Config>
-    {
+    public sealed class Events : Plugin<Config> {
         private static Events instance;
 
         /// <summary>
@@ -65,8 +63,7 @@ namespace Exiled.Events
         public Harmony Harmony { get; private set; }
 
         /// <inheritdoc/>
-        public override void OnEnabled()
-        {
+        public override void OnEnabled() {
             instance = this;
             base.OnEnabled();
 
@@ -89,8 +86,7 @@ namespace Exiled.Events
         }
 
         /// <inheritdoc/>
-        public override void OnDisabled()
-        {
+        public override void OnDisabled() {
             base.OnDisabled();
 
             Unpatch();
@@ -111,29 +107,24 @@ namespace Exiled.Events
         /// <summary>
         /// Patches all events.
         /// </summary>
-        public void Patch()
-        {
-            try
-            {
+        public void Patch() {
+            try {
                 Harmony = new Harmony($"exiled.events.{++patchesCounter}");
 #if DEBUG
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                if (SafePatchCompilerMess() && PatchByAttributes())
-                {
+                if (SafePatchCompilerMess() && PatchByAttributes()) {
                     Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
                 }
-                else
-                {
+                else {
                     Log.Error($"Patching failed!");
                 }
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 Log.Error($"Patching failed!\n{exception}");
             }
         }
@@ -141,10 +132,8 @@ namespace Exiled.Events
         /// <summary>
         /// Checks the <see cref="DisabledPatchesHashSet"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
         /// </summary>
-        public void ReloadDisabledPatches()
-        {
-            foreach (MethodBase method in DisabledPatchesHashSet)
-            {
+        public void ReloadDisabledPatches() {
+            foreach (MethodBase method in DisabledPatchesHashSet) {
                 Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
 
                 Log.Info($"Unpatched {method.Name}");
@@ -154,8 +143,7 @@ namespace Exiled.Events
         /// <summary>
         /// Unpatches all events.
         /// </summary>
-        public void Unpatch()
-        {
+        public void Unpatch() {
             Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
 
             UnpatchCompilerMess();
@@ -164,33 +152,27 @@ namespace Exiled.Events
             Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
         }
 
-        private bool PatchByAttributes()
-        {
-            try
-            {
+        private bool PatchByAttributes() {
+            try {
                 Harmony.PatchAll();
 
                 Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
                 return true;
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 Log.Error($"Patching by attributes failed!\n{exception}");
                 return false;
             }
         }
 
-        private bool SafePatchCompilerMess()
-        {
-            try
-            {
+        private bool SafePatchCompilerMess() {
+            try {
                 PatchCompilerMess();
 
                 Log.Debug("Events in the inner types patched successfully!", Loader.ShouldDebugBeShown);
                 return true;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Log.Error($"Patching in the inner types failed!\n{e}");
                 return false;
             }

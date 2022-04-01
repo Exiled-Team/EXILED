@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp106
-{
+namespace Exiled.Events.Patches.Events.Scp106 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
 
@@ -28,10 +27,8 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Adds the <see cref="Handlers.Scp106.CreatingPortal"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdMakePortal))]
-    internal static class CreatingPortal
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class CreatingPortal {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset;
@@ -86,8 +83,7 @@ namespace Exiled.Events.Patches.Events.Scp106
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void SetPortal(Scp106PlayerScript script, Vector3 pos, Vector3 pos2)
-        {
+        private static void SetPortal(Scp106PlayerScript script, Vector3 pos, Vector3 pos2) {
         }
     }
 }

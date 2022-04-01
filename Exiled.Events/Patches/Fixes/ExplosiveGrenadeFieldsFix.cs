@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Fixes
-{
+namespace Exiled.Events.Patches.Fixes {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -26,10 +25,8 @@ namespace Exiled.Events.Patches.Fixes
     /// Patches <see cref="ExplosionGrenade.PlayExplosionEffects"/> to sync <see cref="ExplosiveGrenade"/> property values.
     /// </summary>
     [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PlayExplosionEffects))]
-    internal static class ExplosiveGrenadeFieldsFix
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ExplosiveGrenadeFieldsFix {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int index = 0;
             Label skipLabel = generator.DefineLabel();

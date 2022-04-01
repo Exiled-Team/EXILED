@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features
-{
+namespace Exiled.CustomRoles.API.Features {
     using System;
     using System.Collections.Generic;
 
@@ -21,8 +20,7 @@ namespace Exiled.CustomRoles.API.Features
     /// <summary>
     /// The base class for active (on-use) abilities.
     /// </summary>
-    public abstract class ActiveAbility : CustomAbility
-    {
+    public abstract class ActiveAbility : CustomAbility {
         /// <summary>
         /// Gets or sets how long the ability lasts.
         /// </summary>
@@ -55,8 +53,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Uses the ability.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
-        public void UseAbility(Player player)
-        {
+        public void UseAbility(Player player) {
             ActivePlayers.Add(player);
             LastUsed[player] = DateTime.Now;
             ShowMessage(player);
@@ -68,8 +65,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Ends the ability.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> the ability is ended for.</param>
-        public void EndAbility(Player player)
-        {
+        public void EndAbility(Player player) {
             if (!ActivePlayers.Contains(player))
                 return;
 
@@ -90,23 +86,19 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The player to check.</param>
         /// <param name="response">The response to send to the player.</param>
         /// <returns>True if the ability is usable.</returns>
-        public virtual bool CanUseAbility(Player player, out string response)
-        {
-            if (CanUseOverride != null)
-            {
+        public virtual bool CanUseAbility(Player player, out string response) {
+            if (CanUseOverride != null) {
                 response = string.Empty;
                 return CanUseOverride.Invoke();
             }
 
-            if (!LastUsed.ContainsKey(player))
-            {
+            if (!LastUsed.ContainsKey(player)) {
                 response = string.Empty;
                 return true;
             }
 
             DateTime usableTime = LastUsed[player] + TimeSpan.FromSeconds(Cooldown);
-            if (DateTime.Now > usableTime)
-            {
+            if (DateTime.Now > usableTime) {
                 response = string.Empty;
 
                 return true;
@@ -122,16 +114,14 @@ namespace Exiled.CustomRoles.API.Features
         /// Called when the ability is used.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
-        protected virtual void AbilityUsed(Player player)
-        {
+        protected virtual void AbilityUsed(Player player) {
         }
 
         /// <summary>
         /// Called when the abilities duration has ended.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> the ability has ended for.</param>
-        protected virtual void AbilityEnded(Player player)
-        {
+        protected virtual void AbilityEnded(Player player) {
         }
 
         /// <summary>

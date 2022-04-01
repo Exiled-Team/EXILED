@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader.Features
-{
+namespace Exiled.Loader.Features {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -20,10 +19,8 @@ namespace Exiled.Loader.Features
     /// <summary>
     /// This class implements all possible MultiAdmin features.
     /// </summary>
-    public static class MultiAdminFeatures
-    {
-        public enum EventType
-        {
+    public static class MultiAdminFeatures {
+        public enum EventType {
             ROUND_END,
             WAITING_FOR_PLAYERS,
             ROUND_START,
@@ -31,14 +28,12 @@ namespace Exiled.Loader.Features
             SERVER_FULL,
         }
 
-        public enum ActionType
-        {
+        public enum ActionType {
             SET_SUPPORTED_FEATURES,
         }
 
         [Flags]
-        public enum ModFeatures
-        {
+        public enum ModFeatures {
             None = 0,
 
             CustomEvents = 1 << 0,
@@ -60,19 +55,15 @@ namespace Exiled.Loader.Features
         public static readonly string MultiAdminVersion;
         public static readonly ModFeatures MultiAdminModFeatures;
 
-        static MultiAdminFeatures()
-        {
-            foreach (string startArg in Environment.GetCommandLineArgs())
-            {
-                if (startArg.StartsWith(MULTIADMIN_CONSOLE_PREFIX, StringComparison.OrdinalIgnoreCase))
-                {
+        static MultiAdminFeatures() {
+            foreach (string startArg in Environment.GetCommandLineArgs()) {
+                if (startArg.StartsWith(MULTIADMIN_CONSOLE_PREFIX, StringComparison.OrdinalIgnoreCase)) {
                     MultiAdminUsed = true;
 
                     IEnumerable<string> separatedInfo = startArg.Split(MultiAdminValueSeparator).Skip(1);
                     MultiAdminVersion = separatedInfo.ElementAtOrDefault(0);
                     string features = separatedInfo.ElementAtOrDefault(1);
-                    if (!string.IsNullOrEmpty(features) && int.TryParse(features, out int modFeatures))
-                    {
+                    if (!string.IsNullOrEmpty(features) && int.TryParse(features, out int modFeatures)) {
                         MultiAdminModFeatures = (ModFeatures)modFeatures;
                         return;
                     }
@@ -83,8 +74,7 @@ namespace Exiled.Loader.Features
             }
         }
 
-        public static bool CallEvent(EventType eventType)
-        {
+        public static bool CallEvent(EventType eventType) {
             if (!MultiAdminUsed)
                 return false;
 
@@ -95,8 +85,7 @@ namespace Exiled.Loader.Features
             return true;
         }
 
-        public static bool CallAction(ActionType actionType, object value = null)
-        {
+        public static bool CallAction(ActionType actionType, object value = null) {
             if (!MultiAdminUsed)
                 return false;
 
@@ -111,14 +100,12 @@ namespace Exiled.Loader.Features
             return true;
         }
 
-        public static string ConvertToMultiAdminAvailable(EventType eventType)
-        {
+        public static string ConvertToMultiAdminAvailable(EventType eventType) {
             string eventName = PrepareStr(eventType.ToString());
             return string.Concat(MULTIADMIN_PREFIX, MultiAdminValueSeparatorStr, eventName, MultiAdminKeySeparatorStr, MULTIADMIN_EVENT_SUFFIX);
         }
 
-        public static string ConvertToMultiAdminAvailable(ActionType actionType)
-        {
+        public static string ConvertToMultiAdminAvailable(ActionType actionType) {
             string actionName = PrepareStr(actionType.ToString());
             return string.Concat(MULTIADMIN_PREFIX, MultiAdminValueSeparatorStr, actionName);
         }

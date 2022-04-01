@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
 #pragma warning disable SA1402
     using System;
     using System.Collections.Generic;
@@ -25,13 +24,11 @@ namespace Exiled.API.Features
     /// </summary>
     /// <typeparam name="TConfig">The config type.</typeparam>
     public abstract class Plugin<TConfig> : IPlugin<TConfig>
-        where TConfig : IConfig, new()
-    {
+        where TConfig : IConfig, new() {
         /// <summary>
         /// Initializes a new instance of the <see cref="Plugin{TConfig}"/> class.
         /// </summary>
-        public Plugin()
-        {
+        public Plugin() {
             Assembly = Assembly.GetCallingAssembly();
             Name = Assembly.GetName().Name;
             Prefix = Name.ToSnakeCase();
@@ -75,8 +72,7 @@ namespace Exiled.API.Features
         public ITranslation InternalTranslation { get; protected set; }
 
         /// <inheritdoc/>
-        public virtual void OnEnabled()
-        {
+        public virtual void OnEnabled() {
             AssemblyInformationalVersionAttribute attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
             Log.Info($"{Name} v{(attribute == null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute.InformationalVersion)} by {Author} has been enabled!");
         }
@@ -88,20 +84,16 @@ namespace Exiled.API.Features
         public virtual void OnReloaded() => Log.Info($"{Name} has been reloaded!");
 
         /// <inheritdoc/>
-        public virtual void OnRegisteringCommands()
-        {
-            foreach (Type type in Assembly.GetTypes())
-            {
+        public virtual void OnRegisteringCommands() {
+            foreach (Type type in Assembly.GetTypes()) {
                 if (type.GetInterface("ICommand") != typeof(ICommand))
                     continue;
 
                 if (!Attribute.IsDefined(type, typeof(CommandHandlerAttribute)))
                     continue;
 
-                foreach (CustomAttributeData customAttributeData in type.CustomAttributes)
-                {
-                    try
-                    {
+                foreach (CustomAttributeData customAttributeData in type.CustomAttributes) {
+                    try {
                         if (customAttributeData.AttributeType != typeof(CommandHandlerAttribute))
                             continue;
 
@@ -122,8 +114,7 @@ namespace Exiled.API.Features
 
                         Commands[commandType][type] = command;
                     }
-                    catch (Exception exception)
-                    {
+                    catch (Exception exception) {
                         Log.Error($"An error has occurred while registering a command: {exception}");
                     }
                 }
@@ -131,12 +122,9 @@ namespace Exiled.API.Features
         }
 
         /// <inheritdoc/>
-        public virtual void OnUnregisteringCommands()
-        {
-            foreach (KeyValuePair<Type, Dictionary<Type, ICommand>> types in Commands)
-            {
-                foreach (ICommand command in types.Value.Values)
-                {
+        public virtual void OnUnregisteringCommands() {
+            foreach (KeyValuePair<Type, Dictionary<Type, ICommand>> types in Commands) {
+                foreach (ICommand command in types.Value.Values) {
                     if (types.Key == typeof(RemoteAdminCommandHandler))
                         CommandProcessor.RemoteAdminCommandHandler.UnregisterCommand(command);
                     else if (types.Key == typeof(GameConsoleCommandHandler))
@@ -158,13 +146,11 @@ namespace Exiled.API.Features
     /// <typeparam name="TTranslation">The translation type.</typeparam>
     public abstract class Plugin<TConfig, TTranslation> : Plugin<TConfig>
         where TConfig : IConfig, new()
-        where TTranslation : ITranslation, new()
-    {
+        where TTranslation : ITranslation, new() {
         /// <summary>
         /// Initializes a new instance of the <see cref="Plugin{TConfig, TTranslation}"/> class.
         /// </summary>
-        public Plugin()
-        {
+        public Plugin() {
             Assembly = Assembly.GetCallingAssembly();
             InternalTranslation = new TTranslation();
         }

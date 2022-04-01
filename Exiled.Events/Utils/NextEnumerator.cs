@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Utils
-{
+namespace Exiled.Events.Utils {
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -17,8 +16,7 @@ namespace Exiled.Events.Utils
     /// Very useful in patches.
     /// </summary>
     /// <typeparam name="T"><inheritdoc cref="IEnumerator{T}"/></typeparam>
-    internal class NextEnumerator<T> : IEnumerator<T>
-    {
+    internal class NextEnumerator<T> : IEnumerator<T> {
         private readonly IEnumerator<T> inner;
 
         /// <summary>
@@ -43,17 +41,14 @@ namespace Exiled.Events.Utils
         public void Dispose() => inner.Dispose();
 
         /// <inheritdoc/>
-        public void Reset()
-        {
+        public void Reset() {
             inner.Reset();
             ResetValues();
         }
 
         /// <inheritdoc/>
-        public bool MoveNext()
-        {
-            if (inner.MoveNext())
-            {
+        public bool MoveNext() {
+            if (inner.MoveNext()) {
                 Current = inner.Current;
                 inner.MoveNext();
                 NextCurrent = inner.Current;
@@ -64,8 +59,7 @@ namespace Exiled.Events.Utils
             return false;
         }
 
-        private void ResetValues()
-        {
+        private void ResetValues() {
             Current = default;
             NextCurrent = default;
         }

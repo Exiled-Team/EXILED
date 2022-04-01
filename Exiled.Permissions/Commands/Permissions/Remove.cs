@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions.Commands.Permissions
-{
+namespace Exiled.Permissions.Commands.Permissions {
     using System;
 
     using CommandSystem;
@@ -16,8 +15,7 @@ namespace Exiled.Permissions.Commands.Permissions
     /// <summary>
     /// Removes a permission from a group.
     /// </summary>
-    public class Remove : ICommand
-    {
+    public class Remove : ICommand {
         /// <inheritdoc/>
         public string Command { get; } = "remove";
 
@@ -28,36 +26,30 @@ namespace Exiled.Permissions.Commands.Permissions
         public string Description { get; } = "Adds a permission to a group";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ep.removepermission"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ep.removepermission")) {
                 response = "You can't remove a permission, you don't have \"ep.removepermission\" permission.";
                 return false;
             }
 
-            if (arguments.Count != 2)
-            {
+            if (arguments.Count != 2) {
                 response = "EP REMOVE <PERMISSION> <GROUP>";
                 return false;
             }
 
             Extensions.Permissions.Reload();
 
-            if (!Extensions.Permissions.Groups.ContainsKey(arguments.At(1)))
-            {
+            if (!Extensions.Permissions.Groups.ContainsKey(arguments.At(1))) {
                 response = $"Group {arguments.At(1)} does not exist.";
                 return false;
             }
 
             Extensions.Permissions.Groups.TryGetValue(arguments.At(1), out Features.Group group);
 
-            if (group.Permissions.Contains(arguments.At(0)))
-            {
+            if (group.Permissions.Contains(arguments.At(0))) {
                 group.Permissions.Remove(arguments.At(0));
             }
-            else
-            {
+            else {
                 response = $"Permission {arguments.At(0)} doesn't exist!";
                 return false;
             }

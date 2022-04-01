@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Fixes
-{
+namespace Exiled.Events.Patches.Fixes {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -22,10 +21,8 @@ namespace Exiled.Events.Patches.Fixes
     /// <para>Fixes <see cref="API.Features.Ragdoll"/>s not being removed from <see cref="API.Features.Map.Ragdolls"/> when they have already been cleaned up.</para>
     /// </summary>
     [HarmonyPatch(typeof(Ragdoll), nameof(Ragdoll.UpdateCleanup))]
-    internal static class RagdollCleanupFix
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class RagdollCleanupFix {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             newInstructions.InsertRange(newInstructions.Count - 1, new[]

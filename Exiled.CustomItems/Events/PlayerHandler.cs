@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems
-{
+namespace Exiled.CustomItems {
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
@@ -15,33 +14,24 @@ namespace Exiled.CustomItems
     /// <summary>
     /// Handles Player events for the CustomItem API.
     /// </summary>
-    internal sealed class PlayerHandler
-    {
+    internal sealed class PlayerHandler {
         /// <inheritdoc cref="ChangingRoleEventArgs"/>
-        public void OnChangingRole(ChangingRoleEventArgs ev)
-        {
-            if (ev.NewRole == RoleType.Spectator)
-            {
-                foreach (Player player in Player.List)
-                {
-                    if (player == ev.Player)
-                    {
+        public void OnChangingRole(ChangingRoleEventArgs ev) {
+            if (ev.NewRole == RoleType.Spectator) {
+                foreach (Player player in Player.List) {
+                    if (player == ev.Player) {
                         continue;
                     }
 
-                    if (CustomItem.TryGet(player, out CustomItem item))
-                    {
-                        if (item.ShouldMessageOnGban)
-                        {
+                    if (CustomItem.TryGet(player, out CustomItem item)) {
+                        if (item.ShouldMessageOnGban) {
                             ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{player.Nickname} (CustomItem: {item.Name})");
                         }
                     }
                 }
             }
-            else
-            {
-                foreach (Player player in Player.List)
-                {
+            else {
+                foreach (Player player in Player.List) {
                     if (player == ev.Player || player.ReferenceHub.nicknameSync.Network_displayName == null)
                         continue;
 

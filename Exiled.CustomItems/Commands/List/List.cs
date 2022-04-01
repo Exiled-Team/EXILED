@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Commands.List
-{
+namespace Exiled.CustomItems.Commands.List {
     using System;
 
     using CommandSystem;
@@ -14,8 +13,7 @@ namespace Exiled.CustomItems.Commands.List
     /// <summary>
     /// The command to list all installed items.
     /// </summary>
-    internal sealed class List : ParentCommand
-    {
+    internal sealed class List : ParentCommand {
         private List() => LoadGeneratedCommands();
 
         /// <summary>
@@ -33,15 +31,13 @@ namespace Exiled.CustomItems.Commands.List
         public override string Description { get; } = "Gets a list of all currently registered custom items.";
 
         /// <inheritdoc/>
-        public override void LoadGeneratedCommands()
-        {
+        public override void LoadGeneratedCommands() {
             RegisterCommand(Registered.Instance);
             RegisterCommand(Tracked.Instance);
         }
 
         /// <inheritdoc/>
-        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             response = $"Invalid subcommand! Available: registered, insideinventories";
             return false;
         }

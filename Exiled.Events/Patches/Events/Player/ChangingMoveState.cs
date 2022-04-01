@@ -5,12 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -25,10 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ChangingMoveState"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AnimationController), nameof(AnimationController.UserCode_CmdChangeSpeedState))]
-    internal static class ChangingMoveState
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ChangingMoveState {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingMoveStateEventArgs));

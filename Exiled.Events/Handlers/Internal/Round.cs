@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers.Internal
-{
+namespace Exiled.Events.Handlers.Internal {
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -21,24 +20,20 @@ namespace Exiled.Events.Handlers.Internal
     /// <summary>
     /// Handles some round clean-up events and some others related to players.
     /// </summary>
-    internal static class Round
-    {
+    internal static class Round {
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
-        public static void OnWaitingForPlayers()
-        {
+        public static void OnWaitingForPlayers() {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
             Item.BaseToItem.Clear();
             Pickup.BaseToItem.Clear();
             ExplosiveGrenade.GrenadeToItem.Clear();
             FlashGrenade.GrenadeToItem.Clear();
 
-            if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
-            {
+            if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart) {
                 ConfigManager.Reload();
             }
 
-            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart)
-            {
+            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart) {
                 TranslationManager.Reload();
             }
 
@@ -46,8 +41,7 @@ namespace Exiled.Events.Handlers.Internal
         }
 
         /// <inheritdoc cref="Server.OnRestartingRound"/>
-        public static void OnRestartingRound()
-        {
+        public static void OnRestartingRound() {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_END);
 
             API.Features.Scp173.TurnedPlayers.Clear();
@@ -55,14 +49,12 @@ namespace Exiled.Events.Handlers.Internal
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
-        public static void OnRoundStarted()
-        {
+        public static void OnRoundStarted() {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_START);
         }
 
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
-        public static void OnChangingRole(ChangingRoleEventArgs ev)
-        {
+        public static void OnChangingRole(ChangingRoleEventArgs ev) {
             if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))
                 return;
 

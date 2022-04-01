@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Show
-{
+namespace Exiled.Events.Commands.Show {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -24,8 +23,7 @@ namespace Exiled.Events.Commands.Show
     /// <summary>
     /// The command to show all plugins.
     /// </summary>
-    public sealed class Plugins : ICommand
-    {
+    public sealed class Plugins : ICommand {
         /// <inheritdoc/>
         public string Command { get; } = "plugins";
 
@@ -36,11 +34,9 @@ namespace Exiled.Events.Commands.Show
         public string Description { get; } = "Get all plugins, names, authors and versions";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             const string perm = "ee.showplugins";
-            if (!sender.CheckPermission(perm) && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor._roles.RaEverywhere))
-            {
+            if (!sender.CheckPermission(perm) && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor._roles.RaEverywhere)) {
                 response = $"You can't get a list of all plugins, you don't have \"{perm}\" permissions.";
                 return false;
             }
@@ -61,14 +57,12 @@ namespace Exiled.Events.Commands.Show
 
             StringBuilder AppendNewRow() => sb.AppendLine().Append("\t");
 
-            for (int z = 0; z < plugins.Count; z++)
-            {
+            for (int z = 0; z < plugins.Count; z++) {
                 IPlugin<IConfig> plugin = plugins.ElementAt(z);
 
                 sb.Append(string.IsNullOrEmpty(plugin.Name) ? "(Unknown)" : plugin.Name).Append(":");
 
-                if (!plugin.Config.IsEnabled)
-                {
+                if (!plugin.Config.IsEnabled) {
                     AppendNewRow().Append("- Disabled");
                 }
 

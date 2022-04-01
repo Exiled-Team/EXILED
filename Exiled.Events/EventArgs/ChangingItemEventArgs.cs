@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player's held item changes.
     /// </summary>
-    public class ChangingItemEventArgs : System.EventArgs
-    {
+    public class ChangingItemEventArgs : System.EventArgs {
         private Item newItem;
 
         /// <summary>
@@ -26,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="newItem"><inheritdoc cref="NewItem"/></param>
-        public ChangingItemEventArgs(Player player, ItemBase newItem)
-        {
+        public ChangingItemEventArgs(Player player, ItemBase newItem) {
             Player = player;
             this.newItem = Item.Get(newItem);
         }
@@ -40,11 +37,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the new item.
         /// </summary>
-        public Item NewItem
-        {
+        public Item NewItem {
             get => newItem;
-            set
-            {
+            set {
                 if (!Player.Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
                     throw new InvalidOperationException("You cannot change ev.NewItem to an item they do not have.");
 

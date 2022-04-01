@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions.Commands.Permissions
-{
+namespace Exiled.Permissions.Commands.Permissions {
     using System;
 
     using CommandSystem;
@@ -16,8 +15,7 @@ namespace Exiled.Permissions.Commands.Permissions
     /// <summary>
     /// Reloads all permissions.
     /// </summary>
-    public class Reload : ICommand
-    {
+    public class Reload : ICommand {
         /// <inheritdoc/>
         public string Command { get; } = "reload";
 
@@ -28,10 +26,8 @@ namespace Exiled.Permissions.Commands.Permissions
         public string Description { get; } = "Reloads all permissions";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ep.reload"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ep.reload")) {
                 response = "You can't reload permissions, you don't have \"ep.reload\" permission.";
                 return false;
             }

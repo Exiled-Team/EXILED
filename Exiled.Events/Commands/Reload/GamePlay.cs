@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Reload
-{
+namespace Exiled.Events.Commands.Reload {
     using System;
 
     using CommandSystem;
@@ -18,8 +17,7 @@ namespace Exiled.Events.Commands.Reload
     /// <summary>
     /// The reload gameplay command.
     /// </summary>
-    public class GamePlay : ICommand
-    {
+    public class GamePlay : ICommand {
         /// <summary>
         /// Gets static instance of the <see cref="GamePlay"/> command.
         /// </summary>
@@ -35,10 +33,8 @@ namespace Exiled.Events.Commands.Reload
         public string Description { get; } = "Reloads gameplay configs.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ee.reloadgameplay"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ee.reloadgameplay")) {
                 response = "You can't reload gameplay configs, you don't have \"ee.reloadgameplay\" permission.";
                 return false;
             }

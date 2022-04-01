@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Structs
-{
+namespace Exiled.API.Structs {
     using Exiled.API.Enums;
 
     /// <summary>
     /// The limit of a certain <see cref="Enums.AmmoType"/> when wearing a piece of armor.
     /// </summary>
-    public struct ArmorAmmoLimit
-    {
+    public struct ArmorAmmoLimit {
         /// <summary>
         /// The <see cref="Enums.AmmoType"/> being limited.
         /// </summary>
@@ -29,8 +27,7 @@ namespace Exiled.API.Structs
         /// </summary>
         /// <param name="type"><inheritdoc cref="AmmoType"/></param>
         /// <param name="limit"><inheritdoc cref="Limit"/></param>
-        public ArmorAmmoLimit(AmmoType type, ushort limit)
-        {
+        public ArmorAmmoLimit(AmmoType type, ushort limit) {
             AmmoType = type;
             Limit = limit;
         }

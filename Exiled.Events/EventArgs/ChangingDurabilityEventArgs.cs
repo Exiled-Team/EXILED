@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using InventorySystem.Items.Firearms;
 
     /// <summary>
     /// Contains all informations before changing item durability.
     /// </summary>
-    public class ChangingDurabilityEventArgs : ChangingAttributesEventArgs
-    {
+    public class ChangingDurabilityEventArgs : ChangingAttributesEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingDurabilityEventArgs"/> class.
         /// </summary>
@@ -21,8 +19,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="newDurability"><inheritdoc cref="NewDurability"/></param>
         /// <param name="isAllowed"><inheritdoc cref="ChangingAttributesEventArgs.IsAllowed"/></param>
         public ChangingDurabilityEventArgs(Firearm item, float newDurability, bool isAllowed = true)
-            : base(item, item, isAllowed)
-        {
+            : base(item, item, isAllowed) {
             Item = (API.Features.Items.Firearm)API.Features.Items.Item.Get(item);
             NewDurability = newDurability;
         }

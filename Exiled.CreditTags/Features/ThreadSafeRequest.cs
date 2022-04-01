@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags.Features
-{
+namespace Exiled.CreditTags.Features {
     using System;
     using System.Collections.Generic;
     using System.Net;
@@ -16,8 +15,7 @@ namespace Exiled.CreditTags.Features
 
     using UnityEngine;
 
-    internal sealed class ThreadSafeRequest
-    {
+    internal sealed class ThreadSafeRequest {
         private volatile bool done;
 
         public string Result { get; private set; }
@@ -28,17 +26,14 @@ namespace Exiled.CreditTags.Features
 
         public bool Done => done;
 
-        public static void Go(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer)
-        {
+        public static void Go(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer) {
             Timing.RunCoroutine(MakeRequest(url, errorHandler, resultHandler).CancelWith(issuer), Segment.LateUpdate);
         }
 
-        private static IEnumerator<float> MakeRequest(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler)
-        {
+        private static IEnumerator<float> MakeRequest(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler) {
             ThreadSafeRequest request = new ThreadSafeRequest();
 
-            Task.Run(() =>
-            {
+            Task.Run(() => {
                 request.Result = HttpQuery.Get(url, out bool success, out HttpStatusCode code);
                 request.Success = success;
                 request.Code = code;

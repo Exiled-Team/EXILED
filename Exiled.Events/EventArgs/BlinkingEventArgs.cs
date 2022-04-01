@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
     using System.Collections.Generic;
 
@@ -17,16 +16,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a players blink near SCP-173.
     /// </summary>
-    public class BlinkingEventArgs : EventArgs
-    {
+    public class BlinkingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="BlinkingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="targets"><inheritdoc cref="Targets"/></param>
         /// <param name="blinkPos"><inheritdoc cref="BlinkPosition"/></param>
-        public BlinkingEventArgs(Player player, List<Player> targets, Vector3 blinkPos)
-        {
+        public BlinkingEventArgs(Player player, List<Player> targets, Vector3 blinkPos) {
             Player = player;
             BlinkPosition = blinkPos;
             Targets = targets;

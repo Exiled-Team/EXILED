@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Spawn
-{
+namespace Exiled.API.Features.Spawn {
     using System;
 
     using Exiled.API.Extensions;
@@ -19,8 +18,7 @@ namespace Exiled.API.Features.Spawn
     /// <summary>
     /// Handles dynamic spawn locations.
     /// </summary>
-    public class DynamicSpawnPoint : SpawnPoint
-    {
+    public class DynamicSpawnPoint : SpawnPoint {
         /// <summary>
         /// Gets or sets the <see cref="SpawnLocation"/> for this item.
         /// </summary>
@@ -31,16 +29,14 @@ namespace Exiled.API.Features.Spawn
 
         /// <inheritdoc/>
         [YamlIgnore]
-        public override string Name
-        {
+        public override string Name {
             get => Location.ToString();
             set => throw new InvalidOperationException("You cannot change the name of a dynamic spawn location.");
         }
 
         /// <inheritdoc/>
         [YamlIgnore]
-        public override Vector3 Position
-        {
+        public override Vector3 Position {
             get => Location.GetPosition();
             set => throw new InvalidOperationException("You cannot change the spawn vector of a dynamic spawn location.");
         }

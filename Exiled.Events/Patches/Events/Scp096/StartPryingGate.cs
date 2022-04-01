@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp096
-{
+namespace Exiled.Events.Patches.Events.Scp096 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -25,10 +24,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Adds the <see cref="Handlers.Scp096.StartPryingGate"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.PryGate))]
-    internal static class StartPryingGate
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class StartPryingGate {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label returnLabel = generator.DefineLabel();

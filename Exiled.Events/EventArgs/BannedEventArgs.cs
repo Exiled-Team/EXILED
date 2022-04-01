@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after banning a player from the server.
     /// </summary>
-    public class BannedEventArgs : EventArgs
-    {
+    public class BannedEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="BannedEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="issuer">The issuer player.</param>
         /// <param name="details">The ban details.</param>
         /// <param name="type"><inheritdoc cref="Type"/></param>
-        public BannedEventArgs(Player target, Player issuer, BanDetails details, BanHandler.BanType type)
-        {
+        public BannedEventArgs(Player target, Player issuer, BanDetails details, BanHandler.BanType type) {
             Target = target;
             Details = details;
             Type = type;

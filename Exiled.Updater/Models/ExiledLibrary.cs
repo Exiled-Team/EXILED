@@ -5,26 +5,22 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.Models
-{
+namespace Exiled.Updater.Models {
     using System;
     using System.Reflection;
 
     using Version = SemVer.Version;
 
-    public readonly struct ExiledLibrary : IComparable, IComparable<ExiledLibrary>
-    {
+    public readonly struct ExiledLibrary : IComparable, IComparable<ExiledLibrary> {
         public readonly Assembly Library;
         public readonly Version Version;
 
-        public ExiledLibrary(Assembly lib)
-        {
+        public ExiledLibrary(Assembly lib) {
             Library = lib;
             Version = Version.Parse(lib.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion);
         }
 
-        public int CompareTo(object obj)
-        {
+        public int CompareTo(object obj) {
             if (obj is ExiledLibrary l)
                 return CompareTo(l);
             else

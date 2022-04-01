@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -17,22 +16,18 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information after a player used an item.
     /// </summary>
-    public class UsedItemEventArgs : EventArgs
-    {
+    public class UsedItemEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UsedItemEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        public UsedItemEventArgs(Player player, UsableItem item)
-        {
-            try
-            {
+        public UsedItemEventArgs(Player player, UsableItem item) {
+            try {
                 Player = player;
                 Item = item == null ? null : (Usable)API.Features.Items.Item.Get(item);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Log.Error($"{nameof(UsedItemEventArgs)}.ctor: {e}");
             }
         }

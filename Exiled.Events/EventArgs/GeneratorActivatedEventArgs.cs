@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using MapGeneration.Distributors;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after activating a generator.
     /// </summary>
-    public class GeneratorActivatedEventArgs : EventArgs
-    {
+    public class GeneratorActivatedEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="GeneratorActivatedEventArgs"/> class.
         /// </summary>
         /// <param name="generator"><inheritdoc cref="Generator"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public GeneratorActivatedEventArgs(Scp079Generator generator, bool isAllowed = true)
-        {
+        public GeneratorActivatedEventArgs(Scp079Generator generator, bool isAllowed = true) {
             Generator = generator;
             IsAllowed = isAllowed;
         }

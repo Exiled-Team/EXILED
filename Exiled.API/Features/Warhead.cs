@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System;
 
     /// <summary>
     /// A set of tools to easily work with the alpha warhead.
     /// </summary>
-    public static class Warhead
-    {
+    public static class Warhead {
         private static AlphaWarheadController controller;
         private static AlphaWarheadNukesitePanel sitePanel;
         private static AlphaWarheadOutsitePanel outsitePanel;
@@ -21,10 +19,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
-        public static AlphaWarheadController Controller
-        {
-            get
-            {
+        public static AlphaWarheadController Controller {
+            get {
                 if (controller == null)
                     controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
 
@@ -35,10 +31,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadNukesitePanel SitePanel
-        {
-            get
-            {
+        public static AlphaWarheadNukesitePanel SitePanel {
+            get {
                 if (sitePanel == null)
                     sitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
@@ -49,10 +43,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel
-        {
-            get
-            {
+        public static AlphaWarheadOutsitePanel OutsitePanel {
+            get {
                 if (outsitePanel == null)
                     outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
@@ -63,8 +55,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the warhead lever is enabled or not.
         /// </summary>
-        public static bool LeverStatus
-        {
+        public static bool LeverStatus {
             get => SitePanel.Networkenabled;
             set => SitePanel.Networkenabled = value;
         }
@@ -72,8 +63,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the warhead has already been activated or not.
         /// </summary>
-        public static bool IsKeycardActivated
-        {
+        public static bool IsKeycardActivated {
             get => OutsitePanel.NetworkkeycardEntered;
             set => OutsitePanel.NetworkkeycardEntered = value;
         }
@@ -91,8 +81,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the warhead detonation timer.
         /// </summary>
-        public static float DetonationTimer
-        {
+        public static float DetonationTimer {
             get => Controller.NetworktimeToDetonation;
             set => Controller.NetworktimeToDetonation = value;
         }
@@ -105,8 +94,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the warhead can be disabled or not.
         /// </summary>
-        public static bool IsLocked
-        {
+        public static bool IsLocked {
             get => Controller._isLocked;
             set => Controller._isLocked = value;
         }
@@ -119,8 +107,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts the warhead countdown.
         /// </summary>
-        public static void Start()
-        {
+        public static void Start() {
             Controller.InstantPrepare();
             Controller.StartDetonation();
         }
@@ -133,8 +120,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Detonates the warhead.
         /// </summary>
-        public static void Detonate()
-        {
+        public static void Detonate() {
             Controller.InstantPrepare();
             Controller.Detonate();
         }

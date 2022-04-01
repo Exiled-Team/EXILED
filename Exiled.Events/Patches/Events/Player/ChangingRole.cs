@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
@@ -34,10 +33,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.ChangingRole"/> and <see cref="Handlers.Player.Escaping"/> events.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassIDAdv))]
-    internal static class ChangingRole
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ChangingRole {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = 5;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
@@ -154,46 +151,37 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason)
-        {
-            try
-            {
+        private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason) {
+            try {
                 Inventory inventory = player.Inventory;
-                if (reason == CharacterClassManager.SpawnReason.Escaped && prevRole != newRole)
-                {
+                if (reason == CharacterClassManager.SpawnReason.Escaped && prevRole != newRole) {
                     List<ItemPickupBase> list = new List<ItemPickupBase>();
                     if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
                         bodyArmor.DontRemoveExcessOnDrop = true;
-                    while (inventory.UserInventory.Items.Count > 0)
-                    {
+                    while (inventory.UserInventory.Items.Count > 0) {
                         int startCount = inventory.UserInventory.Items.Count;
                         ushort key = inventory.UserInventory.Items.ElementAt(0).Key;
                         ItemPickupBase item = inventory.ServerDropItem(key);
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
-                        if (startCount == inventory.UserInventory.Items.Count)
-                        {
+                        if (startCount == inventory.UserInventory.Items.Count) {
                             inventory.UserInventory.Items.Remove(key);
                         }
-                        else
-                        {
+                        else {
                             list.Add(item);
                         }
                     }
 
                     InventoryItemProvider.PreviousInventoryPickups[player.ReferenceHub] = list;
                 }
-                else
-                {
-                    while (inventory.UserInventory.Items.Count > 0)
-                    {
+                else {
+                    while (inventory.UserInventory.Items.Count > 0) {
                         int startCount = inventory.UserInventory.Items.Count;
                         ushort key = inventory.UserInventory.Items.ElementAt(0).Key;
                         inventory.ServerRemoveItem(key, null);
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
-                        if (startCount == inventory.UserInventory.Items.Count)
-                        {
+                        if (startCount == inventory.UserInventory.Items.Count) {
                             inventory.UserInventory.Items.Remove(key);
                         }
                     }
@@ -207,8 +195,7 @@ namespace Exiled.Events.Patches.Events.Player
                 foreach (ItemType item in items)
                     InventoryItemProvider.OnItemProvided?.Invoke(player.ReferenceHub, inventory.ServerAddItem(item));
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Log.Error($"{nameof(ChangingRole)}.{nameof(ChangeInventory)}: {e}");
             }
         }

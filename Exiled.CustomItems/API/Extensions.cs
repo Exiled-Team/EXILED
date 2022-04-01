@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API
-{
+namespace Exiled.CustomItems.API {
     using System;
     using System.Collections.Generic;
 
@@ -21,32 +20,26 @@ namespace Exiled.CustomItems.API
     /// <summary>
     /// A collection of API methods.
     /// </summary>
-    public static class Extensions
-    {
+    public static class Extensions {
         /// <summary>
         /// Resets the player's inventory to the provided list of items and/or customitems names, clearing any items it already possess.
         /// </summary>
         /// <param name="player">The player to which items will be given.</param>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         /// <param name="displayMessage">Indicates a value whether <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        public static void ResetInventory(this Player player, List<string> newItems, bool displayMessage = false)
-        {
-            foreach (Item item in player.Items)
-            {
+        public static void ResetInventory(this Player player, List<string> newItems, bool displayMessage = false) {
+            foreach (Item item in player.Items) {
                 if (CustomItem.TryGet(item, out CustomItem customItem))
                     customItem.TrackedSerials.Remove(item.Serial);
             }
 
             player.ClearInventory();
 
-            foreach (string item in newItems)
-            {
-                if (Enum.TryParse(item, true, out ItemType parsedItem))
-                {
+            foreach (string item in newItems) {
+                if (Enum.TryParse(item, true, out ItemType parsedItem)) {
                     player.AddItem(parsedItem);
                 }
-                else if (!CustomItem.TryGive(player, item, displayMessage))
-                {
+                else if (!CustomItem.TryGive(player, item, displayMessage)) {
                     Log.Debug($"\"{item}\" is not a valid item name, nor a custom item name.", CustomItems.Instance.Config.Debug);
                 }
             }
@@ -56,8 +49,7 @@ namespace Exiled.CustomItems.API
         /// Registers an <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/>s.
         /// </summary>
         /// <param name="customItems"><see cref="CustomItem"/>s to be registered.</param>
-        public static void Register(this IEnumerable<CustomItem> customItems)
-        {
+        public static void Register(this IEnumerable<CustomItem> customItems) {
             if (customItems == null)
                 throw new ArgumentNullException("customItems");
 
@@ -69,8 +61,7 @@ namespace Exiled.CustomItems.API
         /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/>s.
         /// </summary>
         /// <param name="customItems"><see cref="CustomItem"/>s to be unregistered.</param>
-        public static void Unregister(this IEnumerable<CustomItem> customItems)
-        {
+        public static void Unregister(this IEnumerable<CustomItem> customItems) {
             if (customItems == null)
                 throw new ArgumentNullException("customItems");
 

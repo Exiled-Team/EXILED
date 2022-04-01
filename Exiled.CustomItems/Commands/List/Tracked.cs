@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Commands.List
-{
+namespace Exiled.CustomItems.Commands.List {
     using System;
     using System.Linq;
     using System.Text;
@@ -22,10 +21,8 @@ namespace Exiled.CustomItems.Commands.List
     using RemoteAdmin;
 
     /// <inheritdoc/>
-    internal sealed class Tracked : ICommand
-    {
-        private Tracked()
-        {
+    internal sealed class Tracked : ICommand {
+        private Tracked() {
         }
 
         /// <summary>
@@ -43,16 +40,13 @@ namespace Exiled.CustomItems.Commands.List
         public string Description { get; } = "Gets a list of custom items actually inside of players' inventories.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("customitems.list.insideinventories") && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor._roles.RaEverywhere))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("customitems.list.insideinventories") && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor._roles.RaEverywhere)) {
                 response = "Permission Denied, required: customitems.list.insideinventories";
                 return false;
             }
 
-            if (arguments.Count != 0)
-            {
+            if (arguments.Count != 0) {
                 response = "list insideinventories";
                 return false;
             }
@@ -61,8 +55,7 @@ namespace Exiled.CustomItems.Commands.List
 
             int count = 0;
 
-            foreach (CustomItem customItem in CustomItem.Registered)
-            {
+            foreach (CustomItem customItem in CustomItem.Registered) {
                 if (customItem.TrackedSerials.Count == 0)
                     continue;
 
@@ -72,8 +65,7 @@ namespace Exiled.CustomItems.Commands.List
 
                 count += customItem.TrackedSerials.Count;
 
-                foreach (int insideInventory in customItem.TrackedSerials)
-                {
+                foreach (int insideInventory in customItem.TrackedSerials) {
                     Player owner = Player.List.FirstOrDefault(player => player.Inventory.UserInventory.Items.Any(item => item.Key == insideInventory));
 
                     message.Append(insideInventory).Append(". ");

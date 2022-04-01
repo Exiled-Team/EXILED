@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Possible sight weapon modifications.
     /// </summary>
-    public enum SightType
-    {
+    public enum SightType {
         /// <summary>
         /// No sight
         /// </summary>

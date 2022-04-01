@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions.Commands.Permissions
-{
+namespace Exiled.Permissions.Commands.Permissions {
     using System;
 
     using CommandSystem;
@@ -16,8 +15,7 @@ namespace Exiled.Permissions.Commands.Permissions
     /// <summary>
     /// Adds a permission to a group.
     /// </summary>
-    public class Add : ICommand
-    {
+    public class Add : ICommand {
         /// <inheritdoc/>
         public string Command { get; } = "add";
 
@@ -28,36 +26,30 @@ namespace Exiled.Permissions.Commands.Permissions
         public string Description { get; } = "Adds a permission to a group";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ep.addpermission"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ep.addpermission")) {
                 response = "You can't add a permission, you don't have \"ep.addpermission\" permission.";
                 return false;
             }
 
-            if (arguments.Count != 2)
-            {
+            if (arguments.Count != 2) {
                 response = "EP ADD <PERMISSION> <GROUP>";
                 return false;
             }
 
             Extensions.Permissions.Reload();
 
-            if (!Extensions.Permissions.Groups.ContainsKey(arguments.At(1)))
-            {
+            if (!Extensions.Permissions.Groups.ContainsKey(arguments.At(1))) {
                 response = $"Group {arguments.At(1)} does not exist.";
                 return false;
             }
 
             Extensions.Permissions.Groups.TryGetValue(arguments.At(1), out Features.Group group);
 
-            if (!group.Permissions.Contains(arguments.At(0)))
-            {
+            if (!group.Permissions.Contains(arguments.At(0))) {
                 group.Permissions.Add(arguments.At(0));
             }
-            else
-            {
+            else {
                 response = $"Permission {arguments.At(0)} already exists!";
                 return false;
             }

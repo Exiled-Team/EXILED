@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System.Collections.Generic;
     using System.Linq;
 
@@ -22,8 +21,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room : MonoBehaviour
-    {
+    public class Room : MonoBehaviour {
         /// <summary>
         /// Gets the <see cref="Room"/> name.
         /// </summary>
@@ -62,8 +60,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the intensity of the lights in the room.
         /// </summary>
-        public float LightIntensity
-        {
+        public float LightIntensity {
             get => (float)FlickerableLightController?.Network_lightIntensityMultiplier;
             set => FlickerableLightController.Network_lightIntensityMultiplier = value;
         }
@@ -71,11 +68,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the color of the room's lights by changing the warhead color.
         /// </summary>
-        public Color Color
-        {
+        public Color Color {
             get => FlickerableLightController.WarheadLightColor;
-            set
-            {
+            set {
                 FlickerableLightController.WarheadLightColor = value;
                 FlickerableLightController.WarheadLightOverride = true;
             }
@@ -112,10 +107,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
-        public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
-        {
-            foreach (Door door in Doors)
-            {
+        public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079) {
+            foreach (Door door in Doors) {
                 door.ChangeLock(lockType);
                 door.IsOpen = false;
             }
@@ -130,8 +123,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
         /// <param name="lockType">DoorLockType of the blackout.</param>
-        public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079)
-        {
+        public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079) {
             LockDown(duration, lockType);
             TurnOffLights(duration);
         }
@@ -139,8 +131,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Unlocks all the doors in the room.
         /// </summary>
-        public void UnlockAll()
-        {
+        public void UnlockAll() {
             foreach (Door door in Doors)
                 door.Unlock();
         }
@@ -148,8 +139,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Resets the room color to default.
         /// </summary>
-        public void ResetColor()
-        {
+        public void ResetColor() {
             FlickerableLightController.WarheadLightColor = global::FlickerableLightController.DefaultWarheadColor;
             FlickerableLightController.WarheadLightOverride = false;
         }
@@ -162,13 +152,11 @@ namespace Exiled.API.Features
         /// <returns>The Room component that was instantiated onto the Game Object.</returns>
         internal static Room CreateComponent(GameObject roomGameObject) => roomGameObject.AddComponent<Room>();
 
-        private static RoomType FindType(string rawName)
-        {
+        private static RoomType FindType(string rawName) {
             // Try to remove brackets if they exist.
             rawName = rawName.RemoveBracketsOnEndOfName();
 
-            switch (rawName)
-            {
+            switch (rawName) {
                 case "LCZ_Armory":
                     return RoomType.LczArmory;
                 case "LCZ_Curve":
@@ -274,15 +262,13 @@ namespace Exiled.API.Features
             }
         }
 
-        private static ZoneType FindZone(GameObject gameObject)
-        {
+        private static ZoneType FindZone(GameObject gameObject) {
             Transform transform = gameObject.transform;
 
             if (transform.parent == null)
                 return ZoneType.Surface;
 
-            switch (transform.parent.name)
-            {
+            switch (transform.parent.name) {
                 case "HeavyRooms":
                     return ZoneType.HeavyContainment;
                 case "LightRooms":
@@ -294,21 +280,17 @@ namespace Exiled.API.Features
             }
         }
 
-        private static IEnumerable<Door> FindDoors(GameObject gameObject)
-        {
+        private static IEnumerable<Door> FindDoors(GameObject gameObject) {
             List<Door> doors = new List<Door>();
             foreach (DoorVariant doorVariant in gameObject.GetComponentsInChildren<DoorVariant>())
                 doors.Add(Door.Get(doorVariant));
             return doors;
         }
 
-        private static List<Camera079> FindCameras(GameObject gameObject)
-        {
+        private static List<Camera079> FindCameras(GameObject gameObject) {
             List<Camera079> cameraList = new List<Camera079>();
-            foreach (Camera079 camera in Map.Cameras)
-            {
-                if (camera.Room().gameObject == gameObject)
-                {
+            foreach (Camera079 camera in Map.Cameras) {
+                if (camera.Room().gameObject == gameObject) {
                     cameraList.Add(camera);
                 }
             }
@@ -316,8 +298,7 @@ namespace Exiled.API.Features
             return cameraList;
         }
 
-        private void Start()
-        {
+        private void Start() {
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
             Doors = FindDoors(gameObject);

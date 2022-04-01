@@ -7,14 +7,14 @@
 
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using Player = Exiled.Events.Handlers.Player;
@@ -24,10 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.ChangingSpectatedPlayer"/>.
     /// </summary>
     [HarmonyPatch(typeof(SpectatorManager), nameof(SpectatorManager.CurrentSpectatedPlayer), MethodType.Setter)]
-    internal static class ChangingSpectatedPlayerPatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ChangingSpectatedPlayerPatch {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             Label continueLabel = generator.DefineLabel();
             Label endLabel = generator.DefineLabel();

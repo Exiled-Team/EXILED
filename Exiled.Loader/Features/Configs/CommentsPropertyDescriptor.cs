@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader.Features.Configs
-{
+namespace Exiled.Loader.Features.Configs {
     using System;
     using System.ComponentModel;
 
@@ -16,16 +15,14 @@ namespace Exiled.Loader.Features.Configs
     /// <summary>
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    public sealed class CommentsPropertyDescriptor : IPropertyDescriptor
-    {
+    public sealed class CommentsPropertyDescriptor : IPropertyDescriptor {
         private readonly IPropertyDescriptor baseDescriptor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommentsPropertyDescriptor"/> class.
         /// </summary>
         /// <param name="baseDescriptor">The base descriptor instance.</param>
-        public CommentsPropertyDescriptor(IPropertyDescriptor baseDescriptor)
-        {
+        public CommentsPropertyDescriptor(IPropertyDescriptor baseDescriptor) {
             this.baseDescriptor = baseDescriptor;
             Name = baseDescriptor.Name;
         }
@@ -37,8 +34,7 @@ namespace Exiled.Loader.Features.Configs
         public Type Type => baseDescriptor.Type;
 
         /// <inheritdoc/>
-        public Type TypeOverride
-        {
+        public Type TypeOverride {
             get => baseDescriptor.TypeOverride;
             set => baseDescriptor.TypeOverride = value;
         }
@@ -47,8 +43,7 @@ namespace Exiled.Loader.Features.Configs
         public int Order { get; set; }
 
         /// <inheritdoc/>
-        public ScalarStyle ScalarStyle
-        {
+        public ScalarStyle ScalarStyle {
             get => baseDescriptor.ScalarStyle;
             set => baseDescriptor.ScalarStyle = value;
         }
@@ -57,21 +52,18 @@ namespace Exiled.Loader.Features.Configs
         public bool CanWrite => baseDescriptor.CanWrite;
 
         /// <inheritdoc/>
-        public void Write(object target, object value)
-        {
+        public void Write(object target, object value) {
             baseDescriptor.Write(target, value);
         }
 
         /// <inheritdoc/>
         public T GetCustomAttribute<T>()
-            where T : Attribute
-        {
+            where T : Attribute {
             return baseDescriptor.GetCustomAttribute<T>();
         }
 
         /// <inheritdoc/>
-        public IObjectDescriptor Read(object target)
-        {
+        public IObjectDescriptor Read(object target) {
             DescriptionAttribute description = baseDescriptor.GetCustomAttribute<DescriptionAttribute>();
             return description != null
                 ? new CommentsObjectDescriptor(baseDescriptor.Read(target), description.Description)

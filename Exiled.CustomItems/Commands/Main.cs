@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Commands
-{
+namespace Exiled.CustomItems.Commands {
     using System;
 
     using CommandSystem;
@@ -16,8 +15,7 @@ namespace Exiled.CustomItems.Commands
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    internal sealed class Main : ParentCommand
-    {
+    internal sealed class Main : ParentCommand {
         /// <summary>
         /// Initializes a new instance of the <see cref="Main"/> class.
         /// </summary>
@@ -33,8 +31,7 @@ namespace Exiled.CustomItems.Commands
         public override string Description { get; } = string.Empty;
 
         /// <inheritdoc/>
-        public override void LoadGeneratedCommands()
-        {
+        public override void LoadGeneratedCommands() {
             RegisterCommand(Give.Instance);
             RegisterCommand(Spawn.Instance);
             RegisterCommand(Info.Instance);
@@ -42,8 +39,7 @@ namespace Exiled.CustomItems.Commands
         }
 
         /// <inheritdoc/>
-        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             response = "Invalid subcommand! Available: give, spawn, info, list";
             return false;
         }

@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Possible other weapon modifications.
     /// </summary>
-    public enum OtherType
-    {
+    public enum OtherType {
         /// <summary>
         /// No other
         /// </summary>

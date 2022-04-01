@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Extensions
-{
+namespace Exiled.Events.Extensions {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.Extensions
     /// <summary>
     /// A set of tools to execute events safely and without breaking other plugins.
     /// </summary>
-    public static class Event
-    {
+    public static class Event {
         /// <summary>
         /// Executes all <see cref="Events.CustomEventHandler{TEventArgs}"/> listeners safely.
         /// </summary>
@@ -24,20 +22,16 @@ namespace Exiled.Events.Extensions
         /// <param name="arg">Event arg.</param>
         /// <exception cref="ArgumentNullException">Event or its arg is null.</exception>
         public static void InvokeSafely<T>(this Events.CustomEventHandler<T> ev, T arg)
-            where T : EventArgs
-        {
+            where T : EventArgs {
             if (ev == null)
                 return;
 
             string eventName = ev.GetType().FullName;
-            foreach (Events.CustomEventHandler<T> handler in ev.GetInvocationList())
-            {
-                try
-                {
+            foreach (Events.CustomEventHandler<T> handler in ev.GetInvocationList()) {
+                try {
                     handler(arg);
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     LogException(ex, handler.Method.Name, handler.Method.ReflectedType.FullName, eventName);
                 }
             }
@@ -48,27 +42,22 @@ namespace Exiled.Events.Extensions
         /// </summary>
         /// <param name="ev">Source event.</param>
         /// <exception cref="ArgumentNullException">Event is null.</exception>
-        public static void InvokeSafely(this Events.CustomEventHandler ev)
-        {
+        public static void InvokeSafely(this Events.CustomEventHandler ev) {
             if (ev == null)
                 return;
 
             string eventName = ev.GetType().FullName;
-            foreach (Events.CustomEventHandler handler in ev.GetInvocationList())
-            {
-                try
-                {
+            foreach (Events.CustomEventHandler handler in ev.GetInvocationList()) {
+                try {
                     handler();
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     LogException(ex, handler.Method.Name, handler.Method.ReflectedType?.FullName, eventName);
                 }
             }
         }
 
-        private static void LogException(Exception ex, string methodName, string sourceClassName, string eventName)
-        {
+        private static void LogException(Exception ex, string methodName, string sourceClassName, string eventName) {
             Log.Error($"Method \"{methodName}\" of the class \"{sourceClassName}\" caused an exception when handling the event \"{eventName}\"");
             Log.Error(ex);
         }

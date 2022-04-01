@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
-{
+namespace Exiled.Events.Patches.Events.Map {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -37,10 +36,8 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Handlers.Map.ChangingIntoGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(InventorySystem.Items.ThrowableProjectiles.TimedGrenadePickup), nameof(InventorySystem.Items.ThrowableProjectiles.TimedGrenadePickup.Update))]
-    internal static class ChangingIntoGrenade
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ChangingIntoGrenade {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset

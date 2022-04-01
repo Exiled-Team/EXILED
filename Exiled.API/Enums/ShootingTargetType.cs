@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Shooting target types present in the game.
     /// </summary>
-    public enum ShootingTargetType
-    {
+    public enum ShootingTargetType {
         /// <summary>
         /// Unknown target.
         /// </summary>

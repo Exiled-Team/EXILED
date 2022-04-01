@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
@@ -17,8 +16,7 @@ namespace Exiled.API.Extensions
     /// Contains an extension method to get <see cref="ElevatorType"/> from <see cref="Lift"/>.
     /// Internal class <see cref="RegisterElevatorTypesOnLevelLoad"/> to cache the <see cref="ElevatorType"/> on level load.
     /// </summary>
-    public static class LiftTypeExtension
-    {
+    public static class LiftTypeExtension {
         private static readonly Dictionary<int, ElevatorType> OrderedElevatorTypes = new Dictionary<int, ElevatorType>();
 
         /// <summary>
@@ -31,15 +29,13 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets all the <see cref="ElevatorType"/> values for the <see cref="Lift"/> instances using <see cref="Lift.elevatorName"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
-        internal static void RegisterElevatorTypesOnLevelLoad()
-        {
+        internal static void RegisterElevatorTypesOnLevelLoad() {
             OrderedElevatorTypes.Clear();
 
             ReadOnlyCollection<Lift> lifts = Map.Lifts;
 
             int liftCount = lifts.Count;
-            for (int i = 0; i < liftCount; i++)
-            {
+            for (int i = 0; i < liftCount; i++) {
                 Lift lift = lifts[i];
                 int liftID = lift.GetInstanceID();
 
@@ -49,10 +45,8 @@ namespace Exiled.API.Extensions
             }
         }
 
-        private static ElevatorType GetElevatorType(string elevatorName)
-        {
-            switch (elevatorName)
-            {
+        private static ElevatorType GetElevatorType(string elevatorName) {
+            switch (elevatorName) {
                 case "SCP-049":
                     return ElevatorType.Scp049;
                 case "GateA":

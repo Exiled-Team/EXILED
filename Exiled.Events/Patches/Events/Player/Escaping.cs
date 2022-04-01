@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -25,10 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="CharacterClassManager.UserCode_CmdRegisterEscape"/> for <see cref="Handlers.Player.Escaping"/>.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.UserCode_CmdRegisterEscape))]
-    internal static class Escaping
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Escaping {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = -1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
@@ -53,8 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Stloc, role.LocalIndex),
             });
 
-            foreach (CodeInstruction ins in newInstructions.FindAll(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))))
-            {
+            foreach (CodeInstruction ins in newInstructions.FindAll(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass)))) {
                 index = newInstructions.IndexOf(ins) - 5;
                 newInstructions.RemoveAt(index);
                 newInstructions.Insert(index, new CodeInstruction(OpCodes.Ldloc, role.LocalIndex));

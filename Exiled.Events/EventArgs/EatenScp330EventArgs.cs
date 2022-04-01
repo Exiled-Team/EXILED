@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,15 +15,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after a player has eaten Scp330.
     /// </summary>
-    public class EatenScp330EventArgs : EventArgs
-    {
+    public class EatenScp330EventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="EatenScp330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/>.</param>
         /// <param name="candy"><inheritdoc cref="Candy"/>.</param>
-        public EatenScp330EventArgs(Player player, ICandy candy)
-        {
+        public EatenScp330EventArgs(Player player, ICandy candy) {
             Player = player;
             Candy = candy;
         }

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
     using System;
 
     using Exiled.API.Features;
@@ -18,12 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
-    internal static class Destroying
-    {
-        private static void Prefix(ReferenceHub __instance)
-        {
-            try
-            {
+    internal static class Destroying {
+        private static void Prefix(ReferenceHub __instance) {
+            try {
                 // Means it's the server
                 if (!(Player.Get(__instance) is Player player))
                     return;
@@ -37,8 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (player.UserId != null)
                     Player.UserIdsCache.Remove(player.UserId);
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 Log.Error($"{typeof(Destroying).FullName}.{nameof(Prefix)}:\n{exception}");
             }
         }

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
-{
+namespace Exiled.Events.Patches.Events.Server {
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
@@ -34,29 +33,23 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Server.EndingRound"/> and <see cref="Server.RoundEnded"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.Start))]
-    internal static class RoundEnd
-    {
-        private static IEnumerator<float> Process(RoundSummary roundSummary)
-        {
+    internal static class RoundEnd {
+        private static IEnumerator<float> Process(RoundSummary roundSummary) {
             float time = Time.unscaledTime;
-            while (roundSummary != null)
-            {
+            while (roundSummary != null) {
                 yield return Timing.WaitForSeconds(2.5f);
 
                 while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || Time.unscaledTime - time < 15f || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
                     yield return Timing.WaitForOneFrame;
 
                 RoundSummary.SumInfo_ClassList newList = default;
-                foreach (KeyValuePair<GameObject, ReferenceHub> keyValuePair in ReferenceHub.GetAllHubs())
-                {
+                foreach (KeyValuePair<GameObject, ReferenceHub> keyValuePair in ReferenceHub.GetAllHubs()) {
                     if (keyValuePair.Value == null)
                         continue;
 
                     CharacterClassManager component = keyValuePair.Value.characterClassManager;
-                    if (component.Classes.CheckBounds(component.CurClass))
-                    {
-                        switch (component.CurRole.team)
-                        {
+                    if (component.Classes.CheckBounds(component.CurClass)) {
+                        switch (component.CurRole.team) {
                             case Team.SCP:
                                 if (component.CurClass == RoleType.Scp0492)
                                     newList.zombies++;
@@ -95,12 +88,10 @@ namespace Exiled.Events.Patches.Events.Server
                 float num6 = (roundSummary.classlistStart.class_ds == 0) ? 0f : (num4 / roundSummary.classlistStart.class_ds);
                 float num7 = (roundSummary.classlistStart.scientists == 0) ? 1f : (num5 / roundSummary.classlistStart.scientists);
 
-                if (newList.class_ds == 0 && num1 == 0)
-                {
+                if (newList.class_ds == 0 && num1 == 0) {
                     roundSummary.RoundEnded = true;
                 }
-                else
-                {
+                else {
                     int num8 = 0;
                     if (num1 > 0)
                         num8++;
@@ -114,17 +105,14 @@ namespace Exiled.Events.Patches.Events.Server
 
                 EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
-                if (num1 > 0)
-                {
+                if (num1 > 0) {
                     if (num5 > 0)
                         endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
                 }
-                else if (num4 > 0)
-                {
+                else if (num4 > 0) {
                     endingRoundEventArgs.LeadingTeam = LeadingTeam.ChaosInsurgency;
                 }
-                else if (num3 > 0)
-                {
+                else if (num3 > 0) {
                     endingRoundEventArgs.LeadingTeam = LeadingTeam.Anomalies;
                 }
 
@@ -132,8 +120,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                 roundSummary.RoundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
 
-                if (roundSummary.RoundEnded)
-                {
+                if (roundSummary.RoundEnded) {
                     FriendlyFireConfig.PauseDetector = true;
                     string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num6 + " | S escaped percentage: : " + num7;
                     Console.AddLog(str, Color.gray, false);
@@ -141,8 +128,7 @@ namespace Exiled.Events.Patches.Events.Server
                     yield return Timing.WaitForSeconds(1.5f);
                     int timeToRoundRestart = Mathf.Clamp(ConfigFile.ServerConfig.GetInt("auto_round_restart_time", 10), 5, 1000);
 
-                    if (roundSummary != null)
-                    {
+                    if (roundSummary != null) {
                         RoundEndedEventArgs roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
@@ -159,24 +145,18 @@ namespace Exiled.Events.Patches.Events.Server
             }
         }
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
-            foreach (CodeInstruction instruction in instructions)
-            {
-                if (instruction.opcode == OpCodes.Call)
-                {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
+            foreach (CodeInstruction instruction in instructions) {
+                if (instruction.opcode == OpCodes.Call) {
                     if (instruction.operand != null
                         && instruction.operand is MethodBase methodBase
-                        && methodBase.Name != nameof(RoundSummary._ProcessServerSideCode))
-                    {
+                        && methodBase.Name != nameof(RoundSummary._ProcessServerSideCode)) {
                         yield return instruction;
                     }
-                    else
-                    {
+                    else {
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
                         yield return new CodeInstruction(OpCodes.Ldarg_0);
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
-                        {
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) => {
                             Type[] generics = m.GetGenericArguments();
                             ParameterInfo[] paramseters = m.GetParameters();
                             return m.Name == "CancelWith"
@@ -187,8 +167,7 @@ namespace Exiled.Events.Patches.Events.Server
                         }).MakeGenericMethod(typeof(RoundSummary)));
                     }
                 }
-                else
-                {
+                else {
                     yield return instruction;
                 }
             }

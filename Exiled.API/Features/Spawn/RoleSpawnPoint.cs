@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Spawn
-{
+namespace Exiled.API.Features.Spawn {
     using System;
 
     using Exiled.API.Extensions;
@@ -18,8 +17,7 @@ namespace Exiled.API.Features.Spawn
     /// <summary>
     /// Defines a spawn point that follows a base-game role spawn point.
     /// </summary>
-    public class RoleSpawnPoint : SpawnPoint
-    {
+    public class RoleSpawnPoint : SpawnPoint {
         /// <summary>
         /// Gets or sets the role type used for this spawn.
         /// </summary>
@@ -30,16 +28,14 @@ namespace Exiled.API.Features.Spawn
 
         /// <inheritdoc/>
         [YamlIgnore]
-        public override string Name
-        {
+        public override string Name {
             get => Role.ToString();
             set => throw new InvalidOperationException("You cannot change the name of this type of SpawnPoint.");
         }
 
         /// <inheritdoc/>
         [YamlIgnore]
-        public override Vector3 Position
-        {
+        public override Vector3 Position {
             get => Role.GetRandomSpawnProperties().Item1;
             set => throw new InvalidOperationException("You cannot change the position of this type of SpawnPoint.");
         }

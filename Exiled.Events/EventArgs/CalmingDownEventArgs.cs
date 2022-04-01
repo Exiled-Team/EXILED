@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Features;
 
     using Scp096 = PlayableScps.Scp096;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-096 calms down.
     /// </summary>
-    public class CalmingDownEventArgs : EnragingEventArgs
-    {
+    public class CalmingDownEventArgs : EnragingEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="CalmingDownEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player">The player who's controlling SCP-096.</param>
         /// <param name="isAllowed">Indicates whether or not SCP-096 can calm down.</param>
         public CalmingDownEventArgs(Scp096 scp096, Player player, bool isAllowed = true)
-            : base(scp096, player, isAllowed)
-        {
+            : base(scp096, player, isAllowed) {
         }
     }
 }

@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Warhead
-{
+namespace Exiled.Events.Patches.Events.Warhead {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -23,10 +23,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the WarheadDetonated event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
-    internal static class Detonated
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Detonated {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Warhead.OnDetonated();

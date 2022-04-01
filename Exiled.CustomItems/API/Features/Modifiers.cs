@@ -5,21 +5,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.Features
-{
+namespace Exiled.CustomItems.API.Features {
     /// <summary>
     /// Weapon modifiers.
     /// </summary>
-    public struct Modifiers
-    {
+    public struct Modifiers {
         /// <summary>
         /// Initializes a new instance of the <see cref="Modifiers"/> struct.
         /// </summary>
         /// <param name="barrelType"><inheritdoc cref="BarrelType"/></param>
         /// <param name="sightType"><inheritdoc cref="SightType"/></param>
         /// <param name="otherType"><inheritdoc cref="OtherType"/></param>
-        public Modifiers(int barrelType, int sightType, int otherType)
-        {
+        public Modifiers(int barrelType, int sightType, int otherType) {
             BarrelType = barrelType;
             SightType = sightType;
             OtherType = otherType;

@@ -5,10 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags.Enums
-{
-    public enum InfoSide
-    {
+namespace Exiled.CreditTags.Enums {
+    public enum InfoSide {
         /// <summary>
         /// Uses badge.
         /// </summary>

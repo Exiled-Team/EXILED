@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
-{
+namespace Exiled.Events.Patches.Events.Server {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -22,22 +21,19 @@ namespace Exiled.Events.Patches.Events.Server
     /// Patches a method, the class in which it's defined, is compiler-generated, <see cref="CharacterClassManager"/>.
     /// Adds the WaitingForPlayers event.
     /// </summary>
-    internal static class WaitingForPlayers
-    {
+    internal static class WaitingForPlayers {
         private static readonly HarmonyMethod PatchMethod = new HarmonyMethod(typeof(WaitingForPlayers), nameof(Transpiler));
 
         private static Type type;
         private static MethodInfo method;
 
-        internal static void Patch()
-        {
+        internal static void Patch() {
             const string innerName = "<Init>d__115";
             const string methodName = "MoveNext";
 
             type = AccessTools.Inner(typeof(CharacterClassManager), innerName);
             method = type != null ? AccessTools.Method(type, methodName) : null;
-            if (type == null || method == null)
-            {
+            if (type == null || method == null) {
                 Log.Error($"Couldn't find `{innerName}::{methodName}` ({type == null}, {method == null}) inside `CharacterClassManager`: Server::WaitingForPlayers event won't fire");
                 return;
             }
@@ -45,10 +41,8 @@ namespace Exiled.Events.Patches.Events.Server
             Exiled.Events.Events.Instance.Harmony.Patch(method, transpiler: PatchMethod);
         }
 
-        internal static void Unpatch()
-        {
-            if (type != null && method != null)
-            {
+        internal static void Unpatch() {
+            if (type != null && method != null) {
                 Exiled.Events.Events.Instance.Harmony.Unpatch(method, PatchMethod.method);
 
                 type = null;
@@ -56,13 +50,10 @@ namespace Exiled.Events.Patches.Events.Server
             }
         }
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
             bool did = false;
-            foreach (CodeInstruction inst in instructions)
-            {
-                if (!did && inst.opcode == OpCodes.Ldstr && ((string)inst.operand) == "Waiting for players...")
-                {
+            foreach (CodeInstruction inst in instructions) {
+                if (!did && inst.opcode == OpCodes.Ldstr && ((string)inst.operand) == "Waiting for players...") {
                     did = true;
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnWaitingForPlayers)));
                 }

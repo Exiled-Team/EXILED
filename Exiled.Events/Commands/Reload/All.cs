@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Reload
-{
+namespace Exiled.Events.Commands.Reload {
     using System;
 
     using CommandSystem;
@@ -14,8 +13,7 @@ namespace Exiled.Events.Commands.Reload
     /// <summary>
     /// The reload configs command.
     /// </summary>
-    public class All : ICommand
-    {
+    public class All : ICommand {
         /// <summary>
         /// Gets static instance of the <see cref="All"/> command.
         /// </summary>
@@ -31,8 +29,7 @@ namespace Exiled.Events.Commands.Reload
         public string Description { get; } = "Reload all configs and plugins.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             bool success = true;
 
             if (!Configs.Instance.Execute(arguments, sender, out string responsetemp))

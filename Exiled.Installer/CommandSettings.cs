@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Installer
-{
+namespace Exiled.Installer {
     using System;
     using System.CommandLine;
     using System.CommandLine.Invocation;
@@ -17,8 +16,7 @@ namespace Exiled.Installer
 #pragma warning disable SA1401 // Fields should be private
 #pragma warning disable SA1600 // Elements should be documented
 
-    internal sealed class CommandSettings
-    {
+    internal sealed class CommandSettings {
         public static readonly RootCommand RootCommand = new RootCommand
         {
             new Option<DirectoryInfo?>(
@@ -111,8 +109,7 @@ namespace Exiled.Installer
 
         public bool Exit { get; set; }
 
-        public static async Task Parse(string[] args)
-        {
+        public static async Task Parse(string[] args) {
             RootCommand.Handler = CommandHandler.Create<CommandSettings>(async args => await Program.MainSafe(args).ConfigureAwait(false));
             RootCommand.TreatUnmatchedTokensAsErrors = false;
 

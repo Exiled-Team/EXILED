@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
@@ -22,15 +21,13 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="ExplosionGrenade"/>.
     /// </summary>
-    public class ExplosiveGrenade : Throwable
-    {
+    public class ExplosiveGrenade : Throwable {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Throwable.Base"/></param>
         public ExplosiveGrenade(ThrowableItem itemBase)
-            : base(itemBase)
-        {
+            : base(itemBase) {
             ExplosionGrenade grenade = (ExplosionGrenade)Base.Projectile;
             MaxRadius = grenade._maxRadius;
             ScpMultiplier = grenade._scpDamageMultiplier;
@@ -47,8 +44,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         public ExplosiveGrenade(ItemType type, Player player = null)
-            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
-        {
+            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true)) {
         }
 
         /// <summary>
@@ -91,8 +87,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="position">The location to spawn the grenade.</param>
         /// <param name="owner">Optional: The <see cref="Player"/> owner of the grenade.</param>
-        public void SpawnActive(Vector3 position, Player owner = null)
-        {
+        public void SpawnActive(Vector3 position, Player owner = null) {
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
@@ -109,8 +104,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <inheritdoc/>
-        public override string ToString()
-        {
+        public override string ToString() {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
         }
     }

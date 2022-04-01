@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -28,8 +27,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
-    public class Pickup
-    {
+    public class Pickup {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
@@ -41,8 +39,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
         /// <param name="pickupBase"><inheritdoc cref="Base"/></param>
-        public Pickup(ItemPickupBase pickupBase)
-        {
+        public Pickup(ItemPickupBase pickupBase) {
             Base = pickupBase;
             Serial = pickupBase.NetworkInfo.Serial == 0 ? ItemSerialGenerator.GenerateNext() : pickupBase.NetworkInfo.Serial;
             BaseToItem.Add(pickupBase, this);
@@ -52,8 +49,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
-        public Pickup(ItemType type)
-        {
+        public Pickup(ItemType type) {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
                 return;
 
@@ -65,12 +61,9 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the unique serial number for the item.
         /// </summary>
-        public ushort Serial
-        {
-            get
-            {
-                if (id == 0)
-                {
+        public ushort Serial {
+            get {
+                if (id == 0) {
                     id = ItemSerialGenerator.GenerateNext();
                     Base.Info.Serial = id;
                     Base.NetworkInfo = Base.Info;
@@ -85,11 +78,9 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the pickup's scale value.
         /// </summary>
-        public Vector3 Scale
-        {
+        public Vector3 Scale {
             get => Base.gameObject.transform.localScale;
-            set
-            {
+            set {
                 GameObject gameObject = Base.gameObject;
                 NetworkServer.UnSpawn(gameObject);
                 gameObject.transform.localScale = value;
@@ -100,11 +91,9 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the weight of the item.
         /// </summary>
-        public float Weight
-        {
+        public float Weight {
             get => Base.NetworkInfo.Weight;
-            set
-            {
+            set {
                 Base.Info.Weight = value;
                 Base.NetworkInfo = Base.Info;
             }
@@ -123,11 +112,9 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is locked (can't be picked up).
         /// </summary>
-        public bool Locked
-        {
+        public bool Locked {
             get => Base.NetworkInfo.Locked;
-            set
-            {
+            set {
                 PickupSyncInfo info = Base.Info;
                 info.Locked = value;
                 Base.NetworkInfo = info;
@@ -137,11 +124,9 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is currently in use.
         /// </summary>
-        public bool InUse
-        {
+        public bool InUse {
             get => Base.NetworkInfo.InUse;
-            set
-            {
+            set {
                 PickupSyncInfo info = Base.Info;
                 info.InUse = value;
                 Base.NetworkInfo = info;
@@ -151,11 +136,9 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the pickup position.
         /// </summary>
-        public Vector3 Position
-        {
+        public Vector3 Position {
             get => Base.NetworkInfo.Position;
-            set
-            {
+            set {
                 Base.Rb.position = value;
                 Base.transform.position = value;
                 NetworkServer.UnSpawn(Base.gameObject);
@@ -168,11 +151,9 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the pickup rotation.
         /// </summary>
-        public Quaternion Rotation
-        {
+        public Quaternion Rotation {
             get => Base.NetworkInfo.Rotation.Value;
-            set
-            {
+            set {
                 Base.Rb.rotation = value;
                 Base.transform.rotation = value;
                 NetworkServer.UnSpawn(Base.gameObject);
@@ -203,8 +184,7 @@ namespace Exiled.API.Features.Items
         public void Destroy() => Base.DestroySelf();
 
         /// <inheritdoc/>
-        public override string ToString()
-        {
+        public override string ToString() {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
         }
     }

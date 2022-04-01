@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -26,10 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="InventorySystem.Searching.AmmoSearchCompletor.Complete"/> for the <see cref="Handlers.Player.PickingUpAmmo"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.Complete))]
-    internal static class PickingUpAmmo
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class PickingUpAmmo {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse) + offset;

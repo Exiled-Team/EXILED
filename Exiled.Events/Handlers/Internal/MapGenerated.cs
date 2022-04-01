@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers.Internal
-{
+namespace Exiled.Events.Handlers.Internal {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -30,8 +29,7 @@ namespace Exiled.Events.Handlers.Internal
     /// <summary>
     /// Handles <see cref="Exiled.Events.Handlers.Map.Generated"/> event.
     /// </summary>
-    internal static class MapGenerated
-    {
+    internal static class MapGenerated {
         /// <summary>
         /// Called once the map is generated.
         /// </summary>
@@ -44,8 +42,7 @@ namespace Exiled.Events.Handlers.Internal
         /// a missed call, such as before
         /// getting the elevator type.
         /// </remarks>
-        public static void OnMapGenerated()
-        {
+        public static void OnMapGenerated() {
             Map.ClearCache();
             GenerateCache();
             LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
@@ -53,8 +50,7 @@ namespace Exiled.Events.Handlers.Internal
             Door.RegisterDoorTypesOnLevelLoad();
         }
 
-        private static void GenerateCache()
-        {
+        private static void GenerateCache() {
             GenerateRooms();
             GenerateDoors();
             GenerateCameras();
@@ -65,8 +61,7 @@ namespace Exiled.Events.Handlers.Internal
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
-        private static void GenerateRooms()
-        {
+        private static void GenerateRooms() {
             // Get bulk of rooms with sorted.
             IEnumerable<GameObject> roomObjects = Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject);
 
@@ -78,8 +73,7 @@ namespace Exiled.Events.Handlers.Internal
                 Map.RoomsValue.Add(Room.CreateComponent(roomObject));
         }
 
-        private static void GenerateDoors()
-        {
+        private static void GenerateDoors() {
             foreach (DoorVariant doorVariant in Object.FindObjectsOfType<DoorVariant>())
                 Map.DoorsValue.Add(Door.Get(doorVariant));
         }

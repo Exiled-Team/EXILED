@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp106
-{
+namespace Exiled.Events.Patches.Events.Scp106 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -28,10 +27,8 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Adds the <see cref="Scp106.Teleporting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdUsePortal))]
-    internal static class Teleporting
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Teleporting {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.

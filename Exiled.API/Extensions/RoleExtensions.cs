@@ -5,17 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using System;
+
     using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
     /// A set of extensions for <see cref="RoleType"/>.
     /// </summary>
-    public static class RoleExtensions
-    {
+    public static class RoleExtensions {
         /// <summary>
         /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>.
         /// </summary>
@@ -35,10 +35,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="team">The <see cref="Team"/> to get the <see cref="Side"/> of.</param>
         /// <returns><see cref="Side"/>.</returns>.
-        public static Side GetSide(this Team team)
-        {
-            switch (team)
-            {
+        public static Side GetSide(this Team team) {
+            switch (team) {
                 case Team.SCP:
                     return Side.Scp;
                 case Team.MTF:
@@ -59,10 +57,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">Role.</param>
         /// <returns><see cref="Team"/>.</returns>
-        public static Team GetTeam(this RoleType roleType)
-        {
-            switch (roleType)
-            {
+        public static Team GetTeam(this RoleType roleType) {
+            switch (roleType) {
                 case RoleType.ChaosConscript:
                 case RoleType.ChaosMarauder:
                 case RoleType.ChaosRepressor:
@@ -101,10 +97,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="team">Team.</param>
         /// <returns><see cref="LeadingTeam"/>.</returns>
-        public static LeadingTeam GetLeadingTeam(this Team team)
-        {
-            switch (team)
-            {
+        public static LeadingTeam GetLeadingTeam(this Team team) {
+            switch (team) {
                 case Team.CDP:
                 case Team.CHI:
                     return LeadingTeam.ChaosInsurgency;
@@ -123,8 +117,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
         /// <returns>Returns the spawn point <see cref="Vector3"/> and rotation <see cref="float"/>.</returns>
-        public static Tuple<Vector3, float> GetRandomSpawnProperties(this RoleType roleType)
-        {
+        public static Tuple<Vector3, float> GetRandomSpawnProperties(this RoleType roleType) {
             GameObject randomPosition = SpawnpointManager.GetRandomPosition(roleType);
 
             return randomPosition == null ? new Tuple<Vector3, float>(Vector3.zero, 0f) : new Tuple<Vector3, float>(randomPosition.transform.position, randomPosition.transform.rotation.eulerAngles.y);

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using global::Scp914;
 
     using UnityEngine;
@@ -16,17 +15,14 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to modify SCP-914's behaviour.
     /// </summary>
-    public static class Scp914
-    {
+    public static class Scp914 {
         private static Scp914Controller scp914Controller;
 
         /// <summary>
         /// Gets the cached <see cref="Scp914Controller"/>.
         /// </summary>
-        public static Scp914Controller Scp914Controller
-        {
-            get
-            {
+        public static Scp914Controller Scp914Controller {
+            get {
                 if (scp914Controller == null)
                     scp914Controller = Object.FindObjectOfType<Scp914Controller>();
 
@@ -37,8 +33,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets SCP-914 <see cref="Scp914KnobSetting"/>.
         /// </summary>
-        public static Scp914KnobSetting KnobStatus
-        {
+        public static Scp914KnobSetting KnobStatus {
             get => Scp914Controller.Network_knobSetting;
             set => Scp914Controller.Network_knobSetting = value;
         }
@@ -46,8 +41,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets SCP-914 config mode.
         /// </summary>
-        public static ConfigEntry<Scp914Mode> ConfigMode
-        {
+        public static ConfigEntry<Scp914Mode> ConfigMode {
             get => Scp914Controller._configMode;
             set => Scp914Controller._configMode = value;
         }

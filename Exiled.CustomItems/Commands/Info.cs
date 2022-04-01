@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Commands
-{
+namespace Exiled.CustomItems.Commands {
     using System;
     using System.Text;
 
@@ -21,10 +20,8 @@ namespace Exiled.CustomItems.Commands
     /// <summary>
     /// The command to view info about a specific item.
     /// </summary>
-    internal sealed class Info : ICommand
-    {
-        private Info()
-        {
+    internal sealed class Info : ICommand {
+        private Info() {
         }
 
         /// <summary>
@@ -42,23 +39,19 @@ namespace Exiled.CustomItems.Commands
         public string Description { get; } = "Gets more information about the specified custom item.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("customitems.info"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("customitems.info")) {
                 response = "Permission Denied, required: customitems.info";
                 return false;
             }
 
-            if (arguments.Count < 1)
-            {
+            if (arguments.Count < 1) {
                 response = "info [Custom item name/Custom item ID]";
                 return false;
             }
 
             if (!(int.TryParse(arguments.At(0), out int id) && CustomItem.TryGet(id, out CustomItem item)) &&
-                !CustomItem.TryGet(arguments.At(0), out item))
-            {
+                !CustomItem.TryGet(arguments.At(0), out item)) {
                 response = $"{arguments.At(0)} is not a valid custom item.";
                 return false;
             }

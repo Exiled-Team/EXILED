@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     /// <summary>
     /// Contains all informations before decontaminating the light containment zone.
     /// </summary>
-    public class DecontaminatingEventArgs : EventArgs
-    {
+    public class DecontaminatingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="DecontaminatingEventArgs"/> class.
         /// </summary>

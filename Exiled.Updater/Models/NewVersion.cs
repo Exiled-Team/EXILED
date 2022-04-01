@@ -5,17 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.Models
-{
+namespace Exiled.Updater.Models {
     using Exiled.Updater.GHApi.Models;
 
-    public readonly struct NewVersion
-    {
+    public readonly struct NewVersion {
         public readonly Release Release;
         public readonly ReleaseAsset Asset;
 
-        public NewVersion(Release release, ReleaseAsset asset)
-        {
+        public NewVersion(Release release, ReleaseAsset asset) {
             Release = release;
             Asset = asset;
         }

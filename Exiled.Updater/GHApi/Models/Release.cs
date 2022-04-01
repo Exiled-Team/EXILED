@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.GHApi.Models
-{
+namespace Exiled.Updater.GHApi.Models {
     using System;
     using System.Runtime.Serialization;
 
     using Utf8Json;
 
-    public readonly struct Release : IJsonSerializable
-    {
+    public readonly struct Release : IJsonSerializable {
         [DataMember(Name = "id")] public readonly int Id;
         [DataMember(Name = "tag_name")] public readonly string TagName;
         [DataMember(Name = "prerelease")] public readonly bool PreRelease;
@@ -21,8 +19,7 @@ namespace Exiled.Updater.GHApi.Models
         [DataMember(Name = "assets")] public readonly ReleaseAsset[] Assets;
 
         [SerializationConstructor]
-        public Release(int id, string tag_name, bool prerelease, DateTime created_at, ReleaseAsset[] assets)
-        {
+        public Release(int id, string tag_name, bool prerelease, DateTime created_at, ReleaseAsset[] assets) {
             Id = id;
             TagName = tag_name;
             PreRelease = prerelease;

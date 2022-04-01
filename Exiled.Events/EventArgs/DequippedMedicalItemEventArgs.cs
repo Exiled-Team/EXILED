@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after a player dequipes a medical item.
     /// </summary>
-    public class DequippedMedicalItemEventArgs : EventArgs
-    {
+    public class DequippedMedicalItemEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="DequippedMedicalItemEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        public DequippedMedicalItemEventArgs(Player player, ItemType item)
-        {
+        public DequippedMedicalItemEventArgs(Player player, ItemType item) {
             Player = player;
             Item = item;
         }

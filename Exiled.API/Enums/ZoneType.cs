@@ -5,16 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     using System;
 
     /// <summary>
     /// Facility zone types.
     /// </summary>
     [Flags]
-    public enum ZoneType
-    {
+    public enum ZoneType {
         /// <summary>
         /// The Surface Zone.
         /// </summary>

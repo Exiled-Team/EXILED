@@ -5,17 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.Commands
-{
+namespace Exiled.Updater.Commands {
     using System;
 
     using CommandSystem;
 
     [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public sealed class ForceReinstall : ICommand
-    {
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
+    public sealed class ForceReinstall : ICommand {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
             bool result = Updater.Instance.CheckUpdate(true);
             response = result ? "The update proccess has started" : "The update process has already started";
             return result;

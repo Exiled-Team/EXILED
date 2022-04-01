@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp330
-{
+namespace Exiled.Events.Patches.Events.Scp330 {
 #pragma warning disable SA1118
 
     using System.Collections.Generic;
@@ -27,10 +26,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     /// Patches the <see cref="Scp330Interobject.ServerInteract"/> method to add the <see cref="Handlers.Player.InteractingScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Interobject), nameof(Scp330Interobject.ServerInteract))]
-    internal static class InteractingScp330
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class InteractingScp330 {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             Label continueLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();

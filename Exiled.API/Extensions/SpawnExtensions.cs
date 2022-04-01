@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using Exiled.CustomItems.API;
 
     using Interactables.Interobjects.DoorUtils;
@@ -16,8 +15,7 @@ namespace Exiled.API.Extensions
     /// <summary>
     /// A set of extensions for <see cref="SpawnLocation"/>.
     /// </summary>
-    public static class SpawnExtensions
-    {
+    public static class SpawnExtensions {
         /// <summary>
         /// The names of spawn locations who's positions are on the opposite side of their door, and must be corrected.
         /// </summary>
@@ -42,8 +40,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
         /// <returns>The <see cref="Transform"/> used for that spawn location. Can be null.</returns>
-        public static Transform GetDoor(this SpawnLocation location)
-        {
+        public static Transform GetDoor(this SpawnLocation location) {
             string doorName = location.GetDoorName();
 
             if (string.IsNullOrEmpty(doorName))
@@ -57,8 +54,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
         /// <returns>The <see cref="Vector3"/> used for that spawn location. Can be <see cref="Vector3.zero"/>.</returns>
-        public static Vector3 GetPosition(this SpawnLocation location)
-        {
+        public static Vector3 GetPosition(this SpawnLocation location) {
             Transform transform = location.GetDoor();
 
             if (transform == null)
@@ -76,10 +72,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="spawnLocation">The <see cref="SpawnLocation"/>.</param>
         /// <returns>Returns the door name.</returns>
-        public static string GetDoorName(this SpawnLocation spawnLocation)
-        {
-            switch (spawnLocation)
-            {
+        public static string GetDoorName(this SpawnLocation spawnLocation) {
+            switch (spawnLocation) {
                 case SpawnLocation.Inside012:
                     return "012";
                 case SpawnLocation.Inside096:

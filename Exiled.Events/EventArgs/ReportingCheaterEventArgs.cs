@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before reporting a cheater.
     /// </summary>
-    public class ReportingCheaterEventArgs : EventArgs
-    {
+    public class ReportingCheaterEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportingCheaterEventArgs"/> class.
         /// </summary>
@@ -29,8 +27,7 @@ namespace Exiled.Events.EventArgs
             Player target,
             int serverPort,
             string reason,
-            bool isAllowed = true)
-        {
+            bool isAllowed = true) {
             Issuer = issuer;
             Target = target;
             ServerPort = serverPort;

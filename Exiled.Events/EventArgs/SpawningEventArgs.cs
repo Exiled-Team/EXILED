@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Extensions;
@@ -17,25 +16,21 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before spawning a player.
     /// </summary>
-    public class SpawningEventArgs : EventArgs
-    {
+    public class SpawningEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="roleType"><inheritdoc cref="RoleType"/></param>
-        public SpawningEventArgs(Player player, RoleType roleType)
-        {
+        public SpawningEventArgs(Player player, RoleType roleType) {
             Player = player;
             RoleType = roleType;
             (Vector3 postion, float rotation) = roleType.GetRandomSpawnProperties();
-            if (postion == Vector3.zero)
-            {
+            if (postion == Vector3.zero) {
                 Position = player.ReferenceHub.characterClassManager.DeathPosition;
                 RotationY = 0f;
             }
-            else
-            {
+            else {
                 Position = postion;
                 RotationY = rotation;
             }

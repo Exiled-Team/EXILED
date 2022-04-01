@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains informations before a report is sent to local administrators.
     /// </summary>
-    public class LocalReportingEventArgs : EventArgs
-    {
+    public class LocalReportingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalReportingEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public LocalReportingEventArgs(Player issuer, Player target, string reason, bool isAllowed = true)
-        {
+        public LocalReportingEventArgs(Player issuer, Player target, string reason, bool isAllowed = true) {
             Issuer = issuer;
             Target = target;
             Reason = reason;

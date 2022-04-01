@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
-{
+namespace Exiled.API.Features.Items {
     using Exiled.API.Enums;
 
     using InventorySystem.Items.Usables;
@@ -14,15 +13,13 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="UsableItem"/>.
     /// </summary>
-    public class Usable : Item
-    {
+    public class Usable : Item {
         /// <summary>
         /// Initializes a new instance of the <see cref="Usable"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
         public Usable(UsableItem itemBase)
-            : base(itemBase)
-        {
+            : base(itemBase) {
             Base = itemBase;
         }
 
@@ -31,8 +28,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Usable(ItemType type)
-            : this((UsableItem)Server.Host.Inventory.CreateItemInstance(type, false))
-        {
+            : this((UsableItem)Server.Host.Inventory.CreateItemInstance(type, false)) {
         }
 
         /// <inheritdoc cref="Item.Base"/>
@@ -51,8 +47,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the Weight of the item.
         /// </summary>
-        public new float Weight
-        {
+        public new float Weight {
             get => Base.Weight;
             set => Base._weight = value;
         }
@@ -65,8 +60,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long it takes to use the item.
         /// </summary>
-        public float UseTime
-        {
+        public float UseTime {
             get => Base.UseTime;
             set => Base.UseTime = value;
         }
@@ -74,8 +68,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long after using starts a player has to cancel using the item.
         /// </summary>
-        public float MaxCancellableTime
-        {
+        public float MaxCancellableTime {
             get => Base.MaxCancellableTime;
             set => Base.MaxCancellableTime = value;
         }
@@ -83,8 +76,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the cooldown between repeated uses of this item.
         /// </summary>
-        public float RemainingCooldown
-        {
+        public float RemainingCooldown {
             get => Base.RemainingCooldown;
             set => Base.RemainingCooldown = value;
         }

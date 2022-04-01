@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,16 +15,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-106 teleports using a portal.
     /// </summary>
-    public class TeleportingEventArgs : EventArgs
-    {
+    public class TeleportingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="TeleportingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="portalPosition"><inheritdoc cref="PortalPosition"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public TeleportingEventArgs(Player player, Vector3 portalPosition, bool isAllowed = true)
-        {
+        public TeleportingEventArgs(Player player, Vector3 portalPosition, bool isAllowed = true) {
             Player = player;
             PortalPosition = portalPosition;
             IsAllowed = isAllowed;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
-{
+namespace Exiled.Events.Handlers {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Handles SCP-914 related events.
     /// </summary>
-    public static class Scp914
-    {
+    public static class Scp914 {
         /// <summary>
         /// Invoked before SCP-914 upgrades a item.
         /// </summary>

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Fixes
-{
+namespace Exiled.Events.Patches.Fixes {
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -23,10 +22,8 @@ namespace Exiled.Events.Patches.Fixes
     /// Fixes if a plugin gives you an weapon that you do not have ammo for, your attachments will not correctly appear on said weapon.
     /// </summary>
     [HarmonyPatch(typeof(AttachmentsServerHandler), nameof(AttachmentsServerHandler.SetupProvidedWeapon))]
-    internal static class WeaponAttachmentDesyncFix
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class WeaponAttachmentDesyncFix {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int insetIndex = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ret);

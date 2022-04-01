@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features
-{
+namespace Exiled.CustomRoles.API.Features {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -36,8 +35,7 @@ namespace Exiled.CustomRoles.API.Features
     /// <summary>
     /// The custom role base class.
     /// </summary>
-    public abstract class CustomRole
-    {
+    public abstract class CustomRole {
         /// <summary>
         /// Gets a list of all registered custom roles.
         /// </summary>
@@ -131,8 +129,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="id">The ID of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        public static bool TryGet(int id, out CustomRole customRole)
-        {
+        public static bool TryGet(int id, out CustomRole customRole) {
             customRole = Get(id);
 
             return customRole != null;
@@ -145,8 +142,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is a null or empty string.</exception>
-        public static bool TryGet(string name, out CustomRole customRole)
-        {
+        public static bool TryGet(string name, out CustomRole customRole) {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
 
@@ -162,8 +158,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="customRoles">The custom roles the player has.</param>
         /// <returns>True if the player has custom roles.</returns>
         /// <exception cref="ArgumentNullException">If the player is null.</exception>
-        public static bool TryGet(Player player, out IReadOnlyCollection<CustomRole> customRoles)
-        {
+        public static bool TryGet(Player player, out IReadOnlyCollection<CustomRole> customRoles) {
             if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
@@ -187,12 +182,9 @@ namespace Exiled.CustomRoles.API.Features
         /// Tries to register this role.
         /// </summary>
         /// <returns>True if the role registered properly.</returns>
-        public bool TryRegister()
-        {
-            if (!Registered.Contains(this))
-            {
-                if (Registered.Any(r => r.Id == Id))
-                {
+        public bool TryRegister() {
+            if (!Registered.Contains(this)) {
+                if (Registered.Any(r => r.Id == Id)) {
                     Log.Warn($"{Name} has tried to register with the same Role ID as another role: {Id}. It will not be registered!");
 
                     return false;
@@ -215,12 +207,10 @@ namespace Exiled.CustomRoles.API.Features
         /// Tries to unregister this role.
         /// </summary>
         /// <returns>True if the role is unregistered properly.</returns>
-        public bool TryUnregister()
-        {
+        public bool TryUnregister() {
             Destroy();
 
-            if (!Registered.Remove(this))
-            {
+            if (!Registered.Remove(this)) {
                 Log.Warn($"Cannot unregister {Name} ({Id}) [{Role}], it hasn't been registered yet.");
 
                 return false;
@@ -243,30 +233,25 @@ namespace Exiled.CustomRoles.API.Features
         /// Handles setup of the role, including spawn location, inventory and registering event handlers.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to add the role to.</param>
-        public virtual void AddRole(Player player)
-        {
+        public virtual void AddRole(Player player) {
             Log.Debug($"{Name}: Adding role to {player.Nickname}.", CustomRoles.Instance.Config.Debug);
-            if (Role != RoleType.None)
-            {
+            if (Role != RoleType.None) {
                 player.SetRole(Role, SpawnReason.ForceClass, true);
             }
 
-            Timing.CallDelayed(1.5f, () =>
-            {
+            Timing.CallDelayed(1.5f, () => {
                 Vector3 pos = GetSpawnPosition();
 
                 // If the spawn pos isn't 0,0,0, We add vector3.up * 1.5 here to ensure they do not spawn inside the ground and get stuck.
                 if (pos != Vector3.zero)
                     player.Position = pos + (Vector3.up * 1.5f);
 
-                if (!KeepInventoryOnSpawn)
-                {
+                if (!KeepInventoryOnSpawn) {
                     Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.", CustomRoles.Instance.Config.Debug);
                     player.ClearInventory();
                 }
 
-                foreach (string itemName in Inventory)
-                {
+                foreach (string itemName in Inventory) {
                     Log.Debug($"{Name}: Adding {itemName} to inventory.", CustomRoles.Instance.Config.Debug);
                     TryAddItem(player, itemName);
                 }
@@ -289,13 +274,11 @@ namespace Exiled.CustomRoles.API.Features
         /// Removes the role from a specific player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
-        public virtual void RemoveRole(Player player)
-        {
+        public virtual void RemoveRole(Player player) {
             TrackedPlayers.Remove(player);
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
-            foreach (CustomAbility ability in CustomAbilities)
-            {
+            foreach (CustomAbility ability in CustomAbilities) {
                 ability.RemoveAbility(player);
             }
 
@@ -308,17 +291,14 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to try giving the item to.</param>
         /// <param name="itemName">The name of the item to try adding.</param>
         /// <returns>Whether or not the item was able to be added.</returns>
-        protected bool TryAddItem(Player player, string itemName)
-        {
-            if (CustomItem.TryGet(itemName, out CustomItem customItem))
-            {
+        protected bool TryAddItem(Player player, string itemName) {
+            if (CustomItem.TryGet(itemName, out CustomItem customItem)) {
                 customItem.Give(player);
 
                 return true;
             }
 
-            if (Enum.TryParse(itemName, out ItemType type))
-            {
+            if (Enum.TryParse(itemName, out ItemType type)) {
                 if (type.IsAmmo())
                     player.Ammo[type] = 100;
                 else
@@ -336,35 +316,28 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets a random <see cref="Vector3"/> from <see cref="SpawnProperties"/>.
         /// </summary>
         /// <returns>The chosen spawn location.</returns>
-        protected Vector3 GetSpawnPosition()
-        {
+        protected Vector3 GetSpawnPosition() {
             if (SpawnProperties == null || SpawnProperties.Count() == 0)
                 return Vector3.zero;
 
-            if (SpawnProperties.StaticSpawnPoints.Count > 0)
-            {
-                foreach ((float chance, Vector3 pos) in SpawnProperties.StaticSpawnPoints)
-                {
+            if (SpawnProperties.StaticSpawnPoints.Count > 0) {
+                foreach ((float chance, Vector3 pos) in SpawnProperties.StaticSpawnPoints) {
                     int r = Loader.Random.Next(100);
                     if (r <= chance)
                         return pos;
                 }
             }
 
-            if (SpawnProperties.DynamicSpawnPoints.Count > 0)
-            {
-                foreach ((float chance, Vector3 pos) in SpawnProperties.DynamicSpawnPoints)
-                {
+            if (SpawnProperties.DynamicSpawnPoints.Count > 0) {
+                foreach ((float chance, Vector3 pos) in SpawnProperties.DynamicSpawnPoints) {
                     int r = Loader.Random.Next(100);
                     if (r <= chance)
                         return pos;
                 }
             }
 
-            if (SpawnProperties.RoleSpawnPoints.Count > 0)
-            {
-                foreach ((float chance, Vector3 pos) in SpawnProperties.RoleSpawnPoints)
-                {
+            if (SpawnProperties.RoleSpawnPoints.Count > 0) {
+                foreach ((float chance, Vector3 pos) in SpawnProperties.RoleSpawnPoints) {
                     int r = Loader.Random.Next(100);
                     if (r <= chance)
                         return pos;
@@ -377,8 +350,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Called when the role is initialized to setup internal events.
         /// </summary>
-        protected virtual void SubscribeEvents()
-        {
+        protected virtual void SubscribeEvents() {
             Log.Debug($"{Name}: Loading events.", CustomRoles.Instance.Config.Debug);
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Dying += OnInternalDying;
@@ -387,8 +359,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Called when the role is destroyed to unsubscribe internal event handlers.
         /// </summary>
-        protected virtual void UnSubscribeEvents()
-        {
+        protected virtual void UnSubscribeEvents() {
             foreach (Player player in TrackedPlayers)
                 RemoveRole(player);
 
@@ -407,28 +378,23 @@ namespace Exiled.CustomRoles.API.Features
         /// Called after the role has been added to the player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> the role was added to.</param>
-        protected virtual void RoleAdded(Player player)
-        {
+        protected virtual void RoleAdded(Player player) {
         }
 
         /// <summary>
         /// Called 1 frame before the role is removed from the player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> the role was removed from.</param>
-        protected virtual void RoleRemoved(Player player)
-        {
+        protected virtual void RoleRemoved(Player player) {
         }
 
-        private void OnInternalChangingRole(ChangingRoleEventArgs ev)
-        {
+        private void OnInternalChangingRole(ChangingRoleEventArgs ev) {
             if (Check(ev.Player) && ((ev.NewRole == RoleType.Spectator && !KeepRoleOnDeath) || (ev.NewRole != RoleType.Spectator && ev.NewRole != Role)))
                 RemoveRole(ev.Player);
         }
 
-        private void OnInternalDying(DyingEventArgs ev)
-        {
-            if (Check(ev.Target))
-            {
+        private void OnInternalDying(DyingEventArgs ev) {
+            if (Check(ev.Target)) {
                 CustomRoles.Instance.StopRagdollPlayers.Add(ev.Target);
                 Role role = CharacterClassManager._staticClasses.SafeGet(Role);
 

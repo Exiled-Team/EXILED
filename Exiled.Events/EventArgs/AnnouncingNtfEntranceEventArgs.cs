@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     /// <summary>
     /// Contains all informations before C.A.S.S.I.E announces the NTF entrance.
     /// </summary>
-    public class AnnouncingNtfEntranceEventArgs : EventArgs
-    {
+    public class AnnouncingNtfEntranceEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingNtfEntranceEventArgs"/> class.
         /// </summary>
@@ -21,8 +19,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="unitName"><inheritdoc cref="UnitName"/></param>
         /// <param name="unitNumber"><inheritdoc cref="UnitNumber"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public AnnouncingNtfEntranceEventArgs(int scpsLeft, string unitName, int unitNumber, bool isAllowed = true)
-        {
+        public AnnouncingNtfEntranceEventArgs(int scpsLeft, string unitName, int unitNumber, bool isAllowed = true) {
             ScpsLeft = scpsLeft;
             UnitName = unitName;
             UnitNumber = unitNumber;

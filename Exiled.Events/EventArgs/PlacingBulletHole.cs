@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
 #pragma warning disable SA1401
     using System;
 
@@ -20,15 +19,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before placing a decal.
     /// </summary>
-    public class PlacingBulletHole : EventArgs
-    {
+    public class PlacingBulletHole : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="PlacingBulletHole"/> class.
         /// </summary>
         /// <param name="owner"><inheritdoc cref="Owner"/></param>
         /// <param name="hit"><inheritdoc cref="RaycastHit"/></param>
-        public PlacingBulletHole(Player owner, RaycastHit hit)
-        {
+        public PlacingBulletHole(Player owner, RaycastHit hit) {
             Owner = owner;
             Position = hit.point;
             Rotation = Quaternion.LookRotation(hit.normal);

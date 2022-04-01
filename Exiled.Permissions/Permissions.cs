@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions
-{
+namespace Exiled.Permissions {
     using System;
 
     using Exiled.API.Features;
@@ -16,8 +15,7 @@ namespace Exiled.Permissions
     /// <summary>
     /// Handles all plugin-related permissions, for executing commands, doing actions and so on.
     /// </summary>
-    public sealed class Permissions : Plugin<Config>
-    {
+    public sealed class Permissions : Plugin<Config> {
         private static Permissions instance;
 
         /// <summary>
@@ -26,22 +24,19 @@ namespace Exiled.Permissions
         public static Permissions Instance => instance;
 
         /// <inheritdoc/>
-        public override void OnEnabled()
-        {
+        public override void OnEnabled() {
             instance = this;
 
             base.OnEnabled();
 
-            Timing.CallDelayed(5f, () =>
-            {
+            Timing.CallDelayed(5f, () => {
                 Extensions.Permissions.Create();
                 Extensions.Permissions.Reload();
             });
         }
 
         /// <inheritdoc/>
-        public override void OnDisabled()
-        {
+        public override void OnDisabled() {
             base.OnDisabled();
 
             Extensions.Permissions.Groups.Clear();

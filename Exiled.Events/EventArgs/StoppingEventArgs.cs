@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before stopping the warhead.
     /// </summary>
-    public class StoppingEventArgs : EventArgs
-    {
+    public class StoppingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="StoppingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StoppingEventArgs(Player player, bool isAllowed = true)
-        {
+        public StoppingEventArgs(Player player, bool isAllowed = true) {
             Player = player ?? Server.Host;
             IsAllowed = isAllowed;
         }

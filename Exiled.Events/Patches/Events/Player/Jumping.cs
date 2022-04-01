@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -30,12 +29,10 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Jumping"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerMovementSync))]
-    internal static class Jumping
-    {
+    internal static class Jumping {
         [HarmonyPatch(nameof(PlayerMovementSync.ReceivePosition2DJump))]
         [HarmonyTranspiler]
-        private static IEnumerable<CodeInstruction> Transpiler2D(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+        private static IEnumerable<CodeInstruction> Transpiler2D(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(JumpingEventArgs));
@@ -81,8 +78,7 @@ namespace Exiled.Events.Patches.Events.Player
         }
 
         [HarmonyPatch(nameof(PlayerMovementSync.ReceivePositionJump))]
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(JumpingEventArgs));

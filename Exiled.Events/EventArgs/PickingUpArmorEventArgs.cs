@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Features;
 
     using InventorySystem.Items.Pickups;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player picks up <see cref="API.Features.Items.Armor"/>.
     /// </summary>
-    public class PickingUpArmorEventArgs : PickingUpItemEventArgs
-    {
+    public class PickingUpArmorEventArgs : PickingUpItemEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="PickingUpArmorEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="pickup"><inheritdoc cref="PickingUpItemEventArgs.Pickup"/></param>
         /// <param name="isAllowed"><inheritdoc cref="PickingUpItemEventArgs.IsAllowed"/></param>
         public PickingUpArmorEventArgs(Player player, ItemPickupBase pickup, bool isAllowed = true)
-            : base(player, pickup, isAllowed)
-        {
+            : base(player, pickup, isAllowed) {
         }
     }
 }

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Generic
-{
+namespace Exiled.Events.Patches.Generic {
 #pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
@@ -29,17 +28,14 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="RemoteAdmin.CommandProcessor.ProcessQuery"/> for command logging.
     /// </summary>
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
-    internal class CommandLogging
-    {
+    internal class CommandLogging {
         /// <summary>
         /// Logs a command to the RA log file.
         /// </summary>
         /// <param name="query">The command being logged.</param>
         /// <param name="sender">The sender of the command.</param>
-        public static void LogCommand(string query, CommandSender sender)
-        {
-            try
-            {
+        public static void LogCommand(string query, CommandSender sender) {
+            try {
                 if (query.ToUpperInvariant().StartsWith("REQUEST_DATA"))
                     return;
 
@@ -48,13 +44,11 @@ namespace Exiled.Events.Patches.Generic
                     : Server.Host;
 
                 string logMessage = string.Empty;
-                try
-                {
+                try {
                     logMessage =
                         $"[{DateTime.Now}] {(player == Server.Host ? "Server Console" : $"{player.Nickname} ({player.UserId}) {player.IPAddress}")} has run the command {query}.\n";
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player == null}\n{e}");
                 }
 
@@ -68,14 +62,12 @@ namespace Exiled.Events.Patches.Generic
                     File.Create(filePath).Close();
                 File.AppendAllText(filePath, logMessage);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender == null}\n{e}");
             }
         }
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int index = 0;
             Label continueLabel = generator.DefineLabel();

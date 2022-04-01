@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions.Commands.Permissions.Group
-{
+namespace Exiled.Permissions.Commands.Permissions.Group {
     using System;
 
     using CommandSystem;
@@ -16,8 +15,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
     /// <summary>
     /// Removes a group to permissions.
     /// </summary>
-    public class Remove : ICommand
-    {
+    public class Remove : ICommand {
         /// <inheritdoc/>
         public string Command { get; } = "remove";
 
@@ -28,20 +26,16 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         public string Description { get; } = "Removes a group from permissions.";
 
         /// <inheritdoc/>
-        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ep.removegroup"))
-            {
+        public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ep.removegroup")) {
                 response = "You can't add a new group, you don't have \"ep.removegroup\" permission.";
                 return false;
             }
 
-            if (arguments.Count == 1)
-            {
+            if (arguments.Count == 1) {
                 Permissions.Reload();
 
-                if (!Permissions.Groups.ContainsKey(arguments.At(0)))
-                {
+                if (!Permissions.Groups.ContainsKey(arguments.At(0))) {
                     response = $"Group {arguments.At(0)} does not exists.";
                     return false;
                 }
@@ -54,8 +48,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
                 response = $"Group {arguments.At(0)} has been removed.";
                 return true;
             }
-            else
-            {
+            else {
                 response = "EP GROUPS REMOVE <NAME>";
                 return false;
             }

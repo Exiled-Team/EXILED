@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers.Internal
-{
+namespace Exiled.Events.Handlers.Internal {
     using UnityEngine.SceneManagement;
 
 #pragma warning disable SA1611 // Element parameters should be documented
@@ -15,8 +14,7 @@ namespace Exiled.Events.Handlers.Internal
     /// <summary>
     /// Handles scene unload event.
     /// </summary>
-    internal static class SceneUnloaded
-    {
+    internal static class SceneUnloaded {
         /// <summary>
         /// Called once when the server changes the scene.
         /// </summary>
@@ -29,8 +27,7 @@ namespace Exiled.Events.Handlers.Internal
         /// the server accepts players' tokens before
         /// WaitForPlayers event is called.
         /// </remarks>
-        public static void OnSceneUnloaded(Scene _)
-        {
+        public static void OnSceneUnloaded(Scene _) {
             API.Features.Player.IdsCache.Clear();
             API.Features.Player.UserIdsCache.Clear();
             API.Features.Player.Dictionary.Clear();

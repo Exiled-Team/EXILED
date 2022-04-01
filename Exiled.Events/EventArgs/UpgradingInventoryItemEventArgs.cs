@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -19,8 +18,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before SCP-914 upgrades an item.
     /// </summary>
-    public class UpgradingInventoryItemEventArgs : EventArgs
-    {
+    public class UpgradingInventoryItemEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpgradingInventoryItemEventArgs"/> class.
         /// </summary>
@@ -28,8 +26,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="knobSetting"><inheritdoc cref="KnobSetting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UpgradingInventoryItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, bool isAllowed = true)
-        {
+        public UpgradingInventoryItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, bool isAllowed = true) {
             Scp914 = Exiled.API.Features.Scp914.Scp914Controller;
             Player = player;
             Item = Item.Get(item);

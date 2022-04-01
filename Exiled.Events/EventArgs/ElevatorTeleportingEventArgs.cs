@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,8 +13,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-079 changes rooms via elevator.
     /// </summary>
-    public class ElevatorTeleportingEventArgs : EventArgs
-    {
+    public class ElevatorTeleportingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ElevatorTeleportingEventArgs"/> class.
         /// </summary>
@@ -23,8 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="camera"><inheritdoc cref="Camera"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ElevatorTeleportingEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
-        {
+        public ElevatorTeleportingEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true) {
             Player = player;
             Camera = camera;
             AuxiliaryPowerCost = auxiliaryPowerCost;

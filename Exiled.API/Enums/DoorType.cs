@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
 #pragma warning disable SA1124 // Do not use regions
 
     /// <summary>
     /// Unique identifier for the different types of doors.
     /// </summary>
-    public enum DoorType
-    {
+    public enum DoorType {
         /// <summary>
         /// Represents an unknown door.
         /// </summary>

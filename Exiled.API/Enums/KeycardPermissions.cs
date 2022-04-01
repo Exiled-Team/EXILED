@@ -5,16 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     using System;
 
     /// <summary>
     /// The types of permissions assigned to keycards.
     /// </summary>
     [Flags]
-    public enum KeycardPermissions
-    {
+    public enum KeycardPermissions {
         /// <summary>
         /// No permissions.
         /// </summary>

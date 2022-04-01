@@ -5,21 +5,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags.Features
-{
+namespace Exiled.CreditTags.Features {
     /// <summary>
     /// An object representing Exiled Credit ranks.
     /// </summary>
-    public class Rank
-    {
+    public class Rank {
         /// <summary>
         /// Initializes a new instance of the <see cref="Rank"/> class.
         /// </summary>
         /// <param name="name">The name of the rank.</param>
         /// <param name="color">The name of the rank's color.</param>
         /// <param name="hexValue">The hex color value of the rank's color.</param>
-        public Rank(string name, string color, string hexValue)
-        {
+        public Rank(string name, string color, string hexValue) {
             Name = name;
             Color = color;
             HexValue = hexValue;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API
-{
+namespace Exiled.CustomRoles.API {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -19,19 +18,16 @@ namespace Exiled.CustomRoles.API
     /// <summary>
     /// A collection of API methods.
     /// </summary>
-    public static class Extensions
-    {
+    public static class Extensions {
         /// <summary>
         /// Gets a <see cref="ReadOnlyCollection{T}"/> of the player's current custom roles.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check for roles.</param>
         /// <returns>A <see cref="ReadOnlyCollection{T}"/> of all current custom roles.</returns>
-        public static ReadOnlyCollection<CustomRole> GetCustomRoles(this Player player)
-        {
+        public static ReadOnlyCollection<CustomRole> GetCustomRoles(this Player player) {
             List<CustomRole> roles = new List<CustomRole>();
 
-            foreach (CustomRole customRole in CustomRole.Registered)
-            {
+            foreach (CustomRole customRole in CustomRole.Registered) {
                 if (customRole.Check(player))
                     roles.Add(customRole);
             }
@@ -43,8 +39,7 @@ namespace Exiled.CustomRoles.API
         /// Registers an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
         /// </summary>
         /// <param name="customRoles"><see cref="CustomRole"/>s to be registered.</param>
-        public static void Register(this IEnumerable<CustomRole> customRoles)
-        {
+        public static void Register(this IEnumerable<CustomRole> customRoles) {
             if (customRoles == null)
                 throw new ArgumentNullException(nameof(customRoles));
 
@@ -56,8 +51,7 @@ namespace Exiled.CustomRoles.API
         /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
         /// </summary>
         /// <param name="customRoles"><see cref="CustomRole"/>s to be unregistered.</param>
-        public static void Unregister(this IEnumerable<CustomRole> customRoles)
-        {
+        public static void Unregister(this IEnumerable<CustomRole> customRoles) {
             if (customRoles == null)
                 throw new ArgumentNullException(nameof(customRoles));
 

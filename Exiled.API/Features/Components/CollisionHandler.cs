@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Components
-{
+namespace Exiled.API.Features.Components {
     using System;
 
     using Exiled.API.Features;
@@ -18,8 +17,7 @@ namespace Exiled.API.Features.Components
     /// <summary>
     /// Collision Handler for grenades.
     /// </summary>
-    public class CollisionHandler : MonoBehaviour
-    {
+    public class CollisionHandler : MonoBehaviour {
         private bool initialized;
 
         /// <summary>
@@ -37,17 +35,14 @@ namespace Exiled.API.Features.Components
         /// </summary>
         /// <param name="owner">The grenade owner.</param>
         /// <param name="grenade">The grenade component.</param>
-        public void Init(GameObject owner, ThrownProjectile grenade)
-        {
+        public void Init(GameObject owner, ThrownProjectile grenade) {
             Owner = owner;
             Grenade = (EffectGrenade)grenade;
             initialized = true;
         }
 
-        private void OnCollisionEnter(Collision collision)
-        {
-            try
-            {
+        private void OnCollisionEnter(Collision collision) {
+            try {
                 if (!initialized)
                     return;
                 if (Owner == null)
@@ -63,8 +58,7 @@ namespace Exiled.API.Features.Components
 
                 Grenade.TargetTime = 0.1f;
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
                 Destroy(this);
             }

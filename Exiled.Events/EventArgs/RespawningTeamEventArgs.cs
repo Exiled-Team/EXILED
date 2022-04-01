@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
     using System.Collections.Generic;
 
@@ -19,8 +18,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before spawning a wave of <see cref="SpawnableTeamType.NineTailedFox"/> or <see cref="SpawnableTeamType.ChaosInsurgency"/>.
     /// </summary>
-    public class RespawningTeamEventArgs : EventArgs
-    {
+    public class RespawningTeamEventArgs : EventArgs {
         private SpawnableTeamType nextKnownTeam;
 
         /// <summary>
@@ -30,8 +28,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="maxRespawn"><inheritdoc cref="MaximumRespawnAmount"/></param>
         /// <param name="nextKnownTeam"><inheritdoc cref="NextKnownTeam"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public RespawningTeamEventArgs(List<Player> players, int maxRespawn, SpawnableTeamType nextKnownTeam, bool isAllowed = true)
-        {
+        public RespawningTeamEventArgs(List<Player> players, int maxRespawn, SpawnableTeamType nextKnownTeam, bool isAllowed = true) {
             Players = players;
             MaximumRespawnAmount = maxRespawn;
             NextKnownTeam = nextKnownTeam;
@@ -51,11 +48,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating what the next respawnable team is.
         /// </summary>
-        public SpawnableTeamType NextKnownTeam
-        {
+        public SpawnableTeamType NextKnownTeam {
             get => nextKnownTeam;
-            set
-            {
+            set {
                 nextKnownTeam = value;
                 ReissueNextKnownTeam();
             }
@@ -71,16 +66,14 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         public SpawnableTeamHandlerBase SpawnableTeam => RespawnWaveGenerator.SpawnableTeams.TryGetValue(NextKnownTeam, out SpawnableTeamHandlerBase @base) ? @base : null;
 
-        private void ReissueNextKnownTeam()
-        {
+        private void ReissueNextKnownTeam() {
             SpawnableTeamHandlerBase @base = SpawnableTeam;
             if (@base == null)
                 return;
 
             // Refer to the game code
             int a = RespawnTickets.Singleton.GetAvailableTickets(NextKnownTeam);
-            if (a == 0)
-            {
+            if (a == 0) {
                 a = RespawnTickets.DefaultTeamAmount;
                 RespawnTickets.Singleton.GrantTickets(RespawnTickets.DefaultTeam, RespawnTickets.DefaultTeamAmount, true);
             }

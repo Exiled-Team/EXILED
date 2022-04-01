@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
-{
+namespace Exiled.Events.Patches.Events.Map {
     using System.Linq;
 
     using Exiled.Events.EventArgs;
@@ -21,10 +20,8 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.AnnouncingNtfEntrance"/> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.PlayEntranceAnnouncement))]
-    internal static class AnnouncingNtfEntrance
-    {
-        private static bool Prefix(ref string regular)
-        {
+    internal static class AnnouncingNtfEntrance {
+        private static bool Prefix(ref string regular) {
             int scpsLeft = API.Features.Player.List.Where(player => player.Team == Team.SCP && player.Role != RoleType.Scp0492).Count();
             string[] unitInformations = regular.Split('-');
 

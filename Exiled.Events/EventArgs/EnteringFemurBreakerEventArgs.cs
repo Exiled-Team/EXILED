@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player enters the femur breaker.
     /// </summary>
-    public class EnteringFemurBreakerEventArgs : EventArgs
-    {
+    public class EnteringFemurBreakerEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="EnteringFemurBreakerEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public EnteringFemurBreakerEventArgs(Player player, bool isAllowed = true)
-        {
+        public EnteringFemurBreakerEventArgs(Player player, bool isAllowed = true) {
             Player = player;
             IsAllowed = isAllowed;
         }

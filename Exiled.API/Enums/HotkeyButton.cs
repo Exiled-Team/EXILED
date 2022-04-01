@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Hotkey button types.
     /// </summary>
-    public enum HotkeyButton
-    {
+    public enum HotkeyButton {
         /// <summary>
         /// The hotkey button for selecting the keycard.
         /// </summary>

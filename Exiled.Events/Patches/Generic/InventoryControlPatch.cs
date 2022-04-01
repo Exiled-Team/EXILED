@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Generic
-{
+namespace Exiled.Events.Patches.Generic {
 #pragma warning disable SA1118
 #pragma warning disable SA1402
 #pragma warning disable SA1649
@@ -36,10 +35,8 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="InventoryExtensions.ServerAddItem"/> to help manage <see cref="API.Features.Player.Items"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerAddItem))]
-    internal static class InventoryControlAddPatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class InventoryControlAddPatch {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = -2;
             int index = newInstructions.FindIndex(i =>
@@ -73,10 +70,8 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="InventoryExtensions.ServerDropItem"/> to help manage <see cref="API.Features.Player.Items"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
-    internal static class InventoryControlRemovePatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class InventoryControlRemovePatch {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Throw) + offset;
@@ -96,21 +91,18 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void RemoveItem(Player player, ushort serial)
-        {
+        private static void RemoveItem(Player player, ushort serial) {
 #if DEBUG
             Log.Debug($"Removing item ({serial}) from a player (before null check)");
 #endif
-            if (player == null)
-            {
+            if (player == null) {
 #if DEBUG
                 Log.Debug("Attempted to remove item from null player, returning.");
 #endif
                 return;
             }
 
-            if (!player.Inventory.UserInventory.Items.ContainsKey(serial))
-            {
+            if (!player.Inventory.UserInventory.Items.ContainsKey(serial)) {
 #if DEBUG
                 Log.Debug("Attempted to remove an item the player doesn't own, returning.");
 #endif
@@ -123,10 +115,8 @@ namespace Exiled.Events.Patches.Generic
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
-            Timing.CallDelayed(0.15f, () =>
-            {
-                if (player.Inventory.UserInventory.Items.ContainsKey(serial))
-                {
+            Timing.CallDelayed(0.15f, () => {
+                if (player.Inventory.UserInventory.Items.ContainsKey(serial)) {
                     player.Inventory.UserInventory.Items.Remove(serial);
                     player.Inventory.SendItemsNextFrame = true;
 #if DEBUG

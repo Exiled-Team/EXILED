@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -25,21 +24,16 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1600 // Elements should be documented
 
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
-    internal static class Verified
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
+    internal static class Verified {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
             MethodInfo targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
             bool did = false;
 
-            using (NextEnumerator<CodeInstruction> nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator()))
-            {
-                while (nextEnumerator.MoveNext())
-                {
+            using (NextEnumerator<CodeInstruction> nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator())) {
+                while (nextEnumerator.MoveNext()) {
                     if (!did
                         && nextEnumerator.Current.opcode == OpCodes.Ldc_I4_0
-                        && nextEnumerator.NextCurrent != null && nextEnumerator.NextCurrent.opcode == OpCodes.Call && (MethodInfo)nextEnumerator.NextCurrent.operand == targetMethod)
-                    {
+                        && nextEnumerator.NextCurrent != null && nextEnumerator.NextCurrent.opcode == OpCodes.Call && (MethodInfo)nextEnumerator.NextCurrent.operand == targetMethod) {
                         did = true;
 
                         // Think I wanna have a deal with IL?
@@ -54,10 +48,8 @@ namespace Exiled.Events.Patches.Events.Player
             }
         }
 
-        private static void CallEvent(ServerRoles instance)
-        {
-            try
-            {
+        private static void CallEvent(ServerRoles instance) {
+            try {
                 Player.UnverifiedPlayers.TryGetValue(instance._hub, out Player player);
 
                 // Means the player connected before WaitingForPlayers event is fired
@@ -77,8 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 PlayerEvents.OnVerified(new VerifiedEventArgs(player));
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Log.Error($"{typeof(Verified).FullName}.{nameof(CallEvent)}:\n{ex}");
             }
         }

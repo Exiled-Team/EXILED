@@ -5,16 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.GHApi
-{
+namespace Exiled.Updater.GHApi {
     using System.Net.Http;
     using System.Threading.Tasks;
 
     using Exiled.Updater.GHApi.Models;
     using Exiled.Updater.GHApi.Settings;
 
-    public static class HttpClientExtensions
-    {
+    public static class HttpClientExtensions {
         public static async Task<Release[]> GetReleases(this HttpClient client, long repoId, GetReleasesSettings settings)
             => await ApiProvider.GetReleases(repoId, settings, client).ConfigureAwait(false);
     }

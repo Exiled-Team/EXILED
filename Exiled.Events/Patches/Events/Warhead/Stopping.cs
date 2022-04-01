@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Warhead
-{
+namespace Exiled.Events.Patches.Events.Warhead {
 #pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
@@ -29,10 +28,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the <see cref="Handlers.Warhead.Stopping"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.CancelDetonation), new Type[] { typeof(GameObject) })]
-    internal static class Stopping
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Stopping {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for "call" with method "ServerLogs::AddLog" and then add 1 to insert method after "ServerLogs::AddLog".

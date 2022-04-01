@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features.Items;
@@ -16,16 +15,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before changing item attributes.
     /// </summary>
-    public class ChangingAttributesEventArgs : EventArgs
-    {
+    public class ChangingAttributesEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingAttributesEventArgs"/> class.
         /// </summary>
         /// <param name="oldItem"><inheritdoc cref="OldItem"/></param>
         /// <param name="newItem"><inheritdoc cref="NewItem"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingAttributesEventArgs(ItemBase oldItem, ItemBase newItem, bool isAllowed = true)
-        {
+        public ChangingAttributesEventArgs(ItemBase oldItem, ItemBase newItem, bool isAllowed = true) {
             OldItem = Item.Get(oldItem);
             NewItem = Item.Get(newItem);
             IsAllowed = isAllowed;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -15,15 +14,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player's weapon is reloaded.
     /// </summary>
-    public class ReloadingWeaponEventArgs : EventArgs
-    {
+    public class ReloadingWeaponEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ReloadingWeaponEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ReloadingWeaponEventArgs(Player player, bool isAllowed = true)
-        {
+        public ReloadingWeaponEventArgs(Player player, bool isAllowed = true) {
             Firearm = player.CurrentItem as Firearm;
             Player = player;
             IsAllowed = isAllowed;

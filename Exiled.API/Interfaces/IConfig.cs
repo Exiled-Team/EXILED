@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Interfaces
-{
+namespace Exiled.API.Interfaces {
     /// <summary>
     /// Defines the contract for basic config features.
     /// </summary>
-    public interface IConfig
-    {
+    public interface IConfig {
         /// <summary>
         /// Gets or sets a value indicating whether the plugin is enabled or not.
         /// </summary>

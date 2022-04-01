@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Permissions.Commands.Permissions.Group
-{
+namespace Exiled.Permissions.Commands.Permissions.Group {
     using System;
     using System.Text;
 
@@ -17,8 +16,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
     /// <summary>
     /// Handles commands about permissions groups.
     /// </summary>
-    public class Group : ParentCommand
-    {
+    public class Group : ParentCommand {
         /// <summary>
         /// Initializes a new instance of the <see cref="Group"/> class.
         /// </summary>
@@ -34,29 +32,24 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         public override string Description { get; } = "Handles commands about permissions groups.";
 
         /// <inheritdoc/>
-        public override void LoadGeneratedCommands()
-        {
+        public override void LoadGeneratedCommands() {
             RegisterCommand(new Add());
             RegisterCommand(new Remove());
         }
 
         /// <inheritdoc/>
-        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
-        {
-            if (!sender.CheckPermission("ep.groupinfo"))
-            {
+        protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response) {
+            if (!sender.CheckPermission("ep.groupinfo")) {
                 response = "You can't see group information, you don't have \"ep.groupinfo\" permission.";
                 return false;
             }
 
-            if (arguments.Count != 1)
-            {
+            if (arguments.Count != 1) {
                 response = "- EP GROUPS <NAME>";
                 return false;
             }
 
-            if (!Permissions.Groups.ContainsKey(arguments.At(0)))
-            {
+            if (!Permissions.Groups.ContainsKey(arguments.At(0))) {
                 response = $"Group {arguments.At(0)} does not exist.";
                 return false;
             }
@@ -67,8 +60,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
             stringBuilder.AppendLine($"Group: {arguments.At(0)}");
 
-            if (group == null)
-            {
+            if (group == null) {
                 stringBuilder.AppendLine($"Group is null.");
                 response = stringBuilder.ToString();
                 return false;
@@ -76,16 +68,14 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
             stringBuilder.AppendLine($"Default: {group.IsDefault}");
 
-            if (group.Inheritance.Count != 0)
-            {
+            if (group.Inheritance.Count != 0) {
                 stringBuilder.AppendLine("Inheritance: ");
 
                 foreach (string inheritance in group.Inheritance)
                     stringBuilder.AppendLine("- " + inheritance);
             }
 
-            if (group.Inheritance.Count != 0)
-            {
+            if (group.Inheritance.Count != 0) {
                 stringBuilder.AppendLine("Permissions: ");
 
                 foreach (string permission in group.Permissions)

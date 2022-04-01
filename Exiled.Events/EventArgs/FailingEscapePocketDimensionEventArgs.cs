@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player dies from walking through an incorrect exit in the pocket dimension.
     /// </summary>
-    public class FailingEscapePocketDimensionEventArgs : EventArgs
-    {
+    public class FailingEscapePocketDimensionEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="FailingEscapePocketDimensionEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="teleporter"><inheritdoc cref="Teleporter"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public FailingEscapePocketDimensionEventArgs(Player player, PocketDimensionTeleport teleporter, bool isAllowed = true)
-        {
+        public FailingEscapePocketDimensionEventArgs(Player player, PocketDimensionTeleport teleporter, bool isAllowed = true) {
             Player = player;
             Teleporter = teleporter;
             IsAllowed = isAllowed;

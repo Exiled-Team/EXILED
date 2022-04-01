@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player interacts with SCP-330.
     /// </summary>
-    public class InteractingScp330EventArgs : EventArgs
-    {
+    public class InteractingScp330EventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractingScp330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="usage"><inheritdoc cref="UsageCount"/></param>
-        public InteractingScp330EventArgs(Player player, int usage)
-        {
+        public InteractingScp330EventArgs(Player player, int usage) {
             Player = player;
             UsageCount = usage;
             ShouldSever = usage > 2;

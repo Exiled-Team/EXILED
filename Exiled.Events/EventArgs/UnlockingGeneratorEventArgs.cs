@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -16,16 +15,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a generator is unlocked.
     /// </summary>
-    public class UnlockingGeneratorEventArgs : EventArgs
-    {
+    public class UnlockingGeneratorEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UnlockingGeneratorEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="generator"><inheritdoc cref="Generator"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UnlockingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
-        {
+        public UnlockingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true) {
             Player = player;
             Generator = generator;
             IsAllowed = isAllowed;

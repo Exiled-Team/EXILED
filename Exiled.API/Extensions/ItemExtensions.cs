@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using System.Collections.Generic;
     using System.Linq;
 
@@ -19,8 +18,7 @@ namespace Exiled.API.Extensions
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
     /// </summary>
-    public static class ItemExtensions
-    {
+    public static class ItemExtensions {
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an ammo.
         /// </summary>
@@ -91,8 +89,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="item">The <see cref="ItemType">item</see> that you want to get durability of.</param>
         /// <returns>Returns the item durability.</returns>
-        public static byte GetMaxAmmo(this ItemType item)
-        {
+        public static byte GetMaxAmmo(this ItemType item) {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
                 return 0;
 
@@ -104,10 +101,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to convert.</param>
         /// <returns>The ammo type of the given item type.</returns>
-        public static AmmoType GetAmmoType(this ItemType type)
-        {
-            switch (type)
-            {
+        public static AmmoType GetAmmoType(this ItemType type) {
+            switch (type) {
                 case ItemType.Ammo9x19:
                     return AmmoType.Nato9;
                 case ItemType.Ammo556x45:
@@ -128,10 +123,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="AmmoType"/> to convert.</param>
         /// <returns>The Item type of the specified ammo.</returns>
-        public static ItemType GetItemType(this AmmoType type)
-        {
-            switch (type)
-            {
+        public static ItemType GetItemType(this AmmoType type) {
+            switch (type) {
                 case AmmoType.Nato556:
                     return ItemType.Ammo556x45;
                 case AmmoType.Nato762:
@@ -152,10 +145,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type"><inheritdoc cref="GrenadeType"/></param>
         /// <returns><inheritdoc cref="ItemType"/></returns>
-        public static ItemType GetItemType(this GrenadeType type)
-        {
-            switch (type)
-            {
+        public static ItemType GetItemType(this GrenadeType type) {
+            switch (type) {
                 case GrenadeType.Flashbang:
                     return ItemType.GrenadeFlash;
                 case GrenadeType.Scp018:
@@ -172,8 +163,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="items">The items to convert.</param>
         /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
-        public static List<ItemType> GetItemTypes(this IEnumerable<Item> items)
-        {
+        public static List<ItemType> GetItemTypes(this IEnumerable<Item> items) {
             List<ItemType> itemTypes = new List<ItemType>();
             itemTypes.AddRange(items.Select(item => item.Type));
             return itemTypes;

@@ -5,16 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags
-{
+namespace Exiled.CreditTags {
     using System.ComponentModel;
 
     using Exiled.API.Interfaces;
     using Exiled.CreditTags.Enums;
 
     /// <inheritdoc />
-    public sealed class Config : IConfig
-    {
+    public sealed class Config : IConfig {
         /// <inheritdoc/>
         [Description("Is the plugin enabled?")]
         public bool IsEnabled { get; set; } = true;

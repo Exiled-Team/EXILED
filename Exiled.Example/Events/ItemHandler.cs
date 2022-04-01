@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example.Events
-{
+namespace Exiled.Example.Events {
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
@@ -14,17 +13,14 @@ namespace Exiled.Example.Events
     /// <summary>
     /// Handles Map events.
     /// </summary>
-    internal sealed class ItemHandler
-    {
+    internal sealed class ItemHandler {
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingDurability(ChangingDurabilityEventArgs)"/>
-        public void OnChangingDurability(ChangingDurabilityEventArgs ev)
-        {
+        public void OnChangingDurability(ChangingDurabilityEventArgs ev) {
             Log.Info($"Item {ev.OldItem.Type} durability of {(ev.OldItem is Firearm firearm ? firearm.Ammo.ToString() : "No durability.")} is changing");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingAttachments(ChangingAttachmentsEventArgs)"/>
-        public void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
-        {
+        public void OnChangingAttachments(ChangingAttachmentsEventArgs ev) {
             Log.Info($"Item {ev.NewItem.Type} attachments are changing, old ones:\n[SIGHT ({ev.OldItem.Attachments[0]})] [BARREL ({ev.OldItem.Attachments[0]})] [OTHER ({ev.OldItem.Attachments[0]})]");
         }
     }

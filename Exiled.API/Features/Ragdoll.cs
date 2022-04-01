@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -29,8 +28,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
-    public class Ragdoll
-    {
+    public class Ragdoll {
         private readonly RagDoll ragdoll;
 
         /// <summary>
@@ -39,8 +37,7 @@ namespace Exiled.API.Features
         /// <param name="player">The ragdoll's <see cref="Player">owner</see>.</param>
         /// <param name="handler">The player's <see cref="DamageHandlerBase"/>.</param>
         /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
-        public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
-        {
+        public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false) {
             GameObject model_ragdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
             if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
@@ -56,8 +53,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
         /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
-        public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
-        {
+        public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false) {
             GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
             if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
@@ -77,8 +73,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the <see cref="RagDoll"/>s clean up time.
         /// </summary>
-        public static int CleanUpTime
-        {
+        public static int CleanUpTime {
             get => _cleanupTime;
             set => _cleanupTime = value;
         }
@@ -86,8 +81,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the clean up event can be executed.
         /// </summary>
-        public static bool AllowCleanUp
-        {
+        public static bool AllowCleanUp {
             get => _cleanupEventSet;
             set => _cleanupEventSet = value;
         }
@@ -100,8 +94,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollInfo">NetworkInfo</see>.
         /// </summary>
-        public RagdollInfo NetworkInfo
-        {
+        public RagdollInfo NetworkInfo {
             get => ragdoll.NetworkInfo;
             set => ragdoll.NetworkInfo = value;
         }
@@ -129,18 +122,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether can be cleaned up.
         /// </summary>
-        public bool CanBeCleanedUp
-        {
+        public bool CanBeCleanedUp {
             get => IgnoredRagdolls.Contains(Base);
-            set
-            {
-                if (!value || IgnoredRagdolls.Contains(Base))
-                {
+            set {
+                if (!value || IgnoredRagdolls.Contains(Base)) {
                     if (!value && IgnoredRagdolls.Contains(Base))
                         IgnoredRagdolls.Remove(Base);
                 }
-                else
-                {
+                else {
                     IgnoredRagdolls.Add(Base);
                 }
             }
@@ -154,8 +143,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the ragdoll can play animations.
         /// </summary>
-        public bool AllowAnimations
-        {
+        public bool AllowAnimations {
             get => ragdoll._animationsDisabled;
             set => ragdoll._animationsDisabled = value;
         }
@@ -193,11 +181,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's position.
         /// </summary>
-        public Vector3 Position
-        {
+        public Vector3 Position {
             get => ragdoll.transform.position;
-            set
-            {
+            set {
                 Mirror.NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.position = value;
                 Mirror.NetworkServer.Spawn(GameObject);
@@ -207,11 +193,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's rotation.
         /// </summary>
-        public Quaternion Rotation
-        {
+        public Quaternion Rotation {
             get => ragdoll.transform.rotation;
-            set
-            {
+            set {
                 Mirror.NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.rotation = value;
                 Mirror.NetworkServer.Spawn(GameObject);
@@ -221,11 +205,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's scale.
         /// </summary>
-        public Vector3 Scale
-        {
+        public Vector3 Scale {
             get => ragdoll.transform.localScale;
-            set
-            {
+            set {
                 Mirror.NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.localScale = value;
                 Mirror.NetworkServer.Spawn(GameObject);
@@ -279,8 +261,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Deletes the ragdoll.
         /// </summary>
-        public void Delete()
-        {
+        public void Delete() {
             Object.Destroy(GameObject);
             Map.RagdollsValue.Remove(this);
         }

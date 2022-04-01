@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example
-{
+namespace Exiled.Example {
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Example.Events;
@@ -14,8 +13,7 @@ namespace Exiled.Example
     /// <summary>
     /// The example plugin.
     /// </summary>
-    public class Example : Plugin<Config>
-    {
+    public class Example : Plugin<Config> {
         private static readonly Example Singleton = new Example();
 
         private ServerHandler serverHandler;
@@ -26,8 +24,7 @@ namespace Exiled.Example
         private Scp914Handler scp914Handler;
         private Scp096Handler scp096Handler;
 
-        private Example()
-        {
+        private Example() {
         }
 
         /// <summary>
@@ -39,8 +36,7 @@ namespace Exiled.Example
         public override PluginPriority Priority { get; } = PluginPriority.Last;
 
         /// <inheritdoc/>
-        public override void OnEnabled()
-        {
+        public override void OnEnabled() {
             RegisterEvents();
 
             Log.Warn($"I correctly read the string config, its value is: {Config.String}");
@@ -51,8 +47,7 @@ namespace Exiled.Example
         }
 
         /// <inheritdoc/>
-        public override void OnDisabled()
-        {
+        public override void OnDisabled() {
             UnregisterEvents();
             base.OnDisabled();
         }
@@ -60,8 +55,7 @@ namespace Exiled.Example
         /// <summary>
         /// Registers the plugin events.
         /// </summary>
-        private void RegisterEvents()
-        {
+        private void RegisterEvents() {
             serverHandler = new ServerHandler();
             playerHandler = new PlayerHandler();
             warheadHandler = new WarheadHandler();
@@ -118,8 +112,7 @@ namespace Exiled.Example
         /// <summary>
         /// Unregisters the plugin events.
         /// </summary>
-        private void UnregisterEvents()
-        {
+        private void UnregisterEvents() {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= serverHandler.OnWaitingForPlayers;
             Exiled.Events.Handlers.Server.RoundStarted -= serverHandler.OnRoundStarted;
 

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -17,17 +16,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before the server spawns an item.
     /// </summary>
-    public class SpawningItemEventArgs : EventArgs
-    {
+    public class SpawningItemEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningItemEventArgs"/> class.
         /// </summary>
         /// <param name="pickupBase"><inheritdoc cref="Pickup"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SpawningItemEventArgs(ItemPickupBase pickupBase, bool isAllowed = true)
-        {
-            if (pickupBase.Info.Serial > 0)
-            {
+        public SpawningItemEventArgs(ItemPickupBase pickupBase, bool isAllowed = true) {
+            if (pickupBase.Info.Serial > 0) {
                 pickupBase.Info.Serial = 0;
                 pickupBase.NetworkInfo = pickupBase.Info;
             }

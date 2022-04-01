@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags.Enums
-{
+namespace Exiled.CreditTags.Enums {
     /// <summary>
     /// Represents all existing ranks.
     /// </summary>
-    public enum RankType
-    {
+    public enum RankType {
         /// <summary>
         /// Nothing.
         /// </summary>

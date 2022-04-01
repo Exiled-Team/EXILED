@@ -5,20 +5,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.API.Features
-{
+namespace Exiled.CustomRoles.API.Features {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Features;
+
     using YamlDotNet.Serialization;
 
     /// <summary>
     /// The custom ability base class.
     /// </summary>
-    public abstract class CustomAbility
-    {
+    public abstract class CustomAbility {
         /// <summary>
         /// Gets a list of all registered custom abilities.
         /// </summary>
@@ -54,8 +53,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="customAbility">The custom role.</param>
         /// <returns>True if the role exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is a null or empty string.</exception>
-        public static bool TryGet(string name, out CustomAbility customAbility)
-        {
+        public static bool TryGet(string name, out CustomAbility customAbility) {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
 
@@ -75,10 +73,8 @@ namespace Exiled.CustomRoles.API.Features
         /// Tries to register this ability.
         /// </summary>
         /// <returns>True if the ability registered properly.</returns>
-        public bool TryRegister()
-        {
-            if (!Registered.Contains(this))
-            {
+        public bool TryRegister() {
+            if (!Registered.Contains(this)) {
                 Registered.Add(this);
                 Init();
 
@@ -96,12 +92,10 @@ namespace Exiled.CustomRoles.API.Features
         /// Tries to unregister this ability.
         /// </summary>
         /// <returns>True if the ability is unregistered properly.</returns>
-        public bool TryUnregister()
-        {
+        public bool TryUnregister() {
             Destroy();
 
-            if (!Registered.Remove(this))
-            {
+            if (!Registered.Remove(this)) {
                 Log.Warn($"Cannot unregister {Name}, it hasn't been registered yet.");
 
                 return false;
@@ -114,8 +108,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Adds this ability to the player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to give the ability to.</param>
-        public void AddAbility(Player player)
-        {
+        public void AddAbility(Player player) {
             Players.Add(player);
             AbilityAdded(player);
         }
@@ -124,8 +117,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Removes this ability from the player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to remove this ability from.</param>
-        public void RemoveAbility(Player player)
-        {
+        public void RemoveAbility(Player player) {
             Players.Remove(player);
             AbilityRemoved(player);
         }
@@ -143,31 +135,27 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Loads the internal event handlers for the ability.
         /// </summary>
-        protected virtual void SubscribeEvents()
-        {
+        protected virtual void SubscribeEvents() {
         }
 
         /// <summary>
         /// Unloads the internal event handlers for the ability.
         /// </summary>
-        protected virtual void UnSubscribeEvents()
-        {
+        protected virtual void UnSubscribeEvents() {
         }
 
         /// <summary>
         /// Called when the ability is first added to the player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
-        protected virtual void AbilityAdded(Player player)
-        {
+        protected virtual void AbilityAdded(Player player) {
         }
 
         /// <summary>
         /// Called when the ability is being removed.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
-        protected virtual void AbilityRemoved(Player player)
-        {
+        protected virtual void AbilityRemoved(Player player) {
         }
     }
 }

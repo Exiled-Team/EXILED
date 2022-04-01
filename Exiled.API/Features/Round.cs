@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System;
 
     using GameCore;
@@ -18,8 +17,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to handle the round more easily.
     /// </summary>
-    public static class Round
-    {
+    public static class Round {
         /// <summary>
         /// Gets the time elapsed from the start of the round.
         /// </summary>
@@ -38,8 +36,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
         /// </summary>
-        public static bool IsLocked
-        {
+        public static bool IsLocked {
             get => RoundSummary.RoundLock;
             set => RoundSummary.RoundLock = value;
         }
@@ -47,8 +44,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the lobby is locked or not.
         /// </summary>
-        public static bool IsLobbyLocked
-        {
+        public static bool IsLobbyLocked {
             get => RoundStart.LobbyLock;
             set => RoundStart.LobbyLock = value;
         }
@@ -103,8 +99,7 @@ namespace Exiled.API.Features
         /// <see cref="ServerStatic.NextRoundAction.Shutdown"/> - shutdowns the server, also disconnects all players.
         /// </para>
         /// </param>
-        public static void Restart(bool fastRestart = true, bool overrideRestartAction = false, ServerStatic.NextRoundAction restartAction = ServerStatic.NextRoundAction.DoNothing)
-        {
+        public static void Restart(bool fastRestart = true, bool overrideRestartAction = false, ServerStatic.NextRoundAction restartAction = ServerStatic.NextRoundAction.DoNothing) {
             if (overrideRestartAction)
                 ServerStatic.StopNextRound = restartAction;
 
@@ -127,15 +122,12 @@ namespace Exiled.API.Features
         /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
         /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
-        public static bool ForceEnd()
-        {
-            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2)
-            {
+        public static bool ForceEnd() {
+            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2) {
                 return false;
             }
 
-            if (IsStarted && !IsLocked)
-            {
+            if (IsStarted && !IsLocked) {
                 RoundSummary.singleton.ForceEnd();
                 return true;
             }

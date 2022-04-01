@@ -5,9 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
+
     using Exiled.API.Features;
 
     using MapGeneration;
@@ -15,16 +15,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before SCP-079 lockdowns a room.
     /// </summary>
-    public class LockingDownEventArgs : EventArgs
-    {
+    public class LockingDownEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="LockingDownEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="roomIdentifier"><inheritdoc cref="RoomGameObject"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
-        public LockingDownEventArgs(Player player, RoomIdentifier roomIdentifier, float auxiliaryPowerCost)
-        {
+        public LockingDownEventArgs(Player player, RoomIdentifier roomIdentifier, float auxiliaryPowerCost) {
             Player = player;
             RoomGameObject = roomIdentifier;
             AuxiliaryPowerCost = auxiliaryPowerCost;

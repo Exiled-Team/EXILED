@@ -5,22 +5,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using Exiled.API.Features;
 
     /// <summary>
     /// Contains all player's information, after he leaves the server.
     /// </summary>
-    public class LeftEventArgs : JoinedEventArgs
-    {
+    public class LeftEventArgs : JoinedEventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="LeftEventArgs"/> class.
         /// </summary>
         /// <param name="player">The player who left the server.</param>
         public LeftEventArgs(Player player)
-            : base(player)
-        {
+            : base(player) {
         }
     }
 }

@@ -5,21 +5,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
-{
+namespace Exiled.API.Features {
     using System.ComponentModel;
 
     /// <summary>
     /// Useful class to save broadcast configs in a cleaner way.
     /// </summary>
-    public class Broadcast
-    {
+    public class Broadcast {
         /// <summary>
         /// Initializes a new instance of the <see cref="Broadcast"/> class.
         /// </summary>
         public Broadcast()
-            : this(string.Empty)
-        {
+            : this(string.Empty) {
         }
 
         /// <summary>
@@ -29,8 +26,7 @@ namespace Exiled.API.Features
         /// <param name="duration"><inheritdoc cref="Duration"/></param>
         /// <param name="show"><inheritdoc cref="Show"/></param>
         /// <param name="type"><inheritdoc cref="Type"/></param>
-        public Broadcast(string content, ushort duration = 10, bool show = true, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
-        {
+        public Broadcast(string content, ushort duration = 10, bool show = true, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal) {
             Content = content;
             Duration = duration;
             Show = show;

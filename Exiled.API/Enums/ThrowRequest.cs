@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// Possible throwable throw types.
     /// </summary>
-    public enum ThrowRequest
-    {
+    public enum ThrowRequest {
         /// <summary>
         /// Requesting to begin throwing a throwable item.
         /// </summary>

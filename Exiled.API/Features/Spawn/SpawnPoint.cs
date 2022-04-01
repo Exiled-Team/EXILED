@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Spawn
-{
+namespace Exiled.API.Features.Spawn {
     using UnityEngine;
 
     /// <summary>
     /// Defines item spawn properties.
     /// </summary>
-    public abstract class SpawnPoint
-    {
+    public abstract class SpawnPoint {
         /// <summary>
         /// Gets or sets this spawn point name.
         /// </summary>
@@ -34,8 +32,7 @@ namespace Exiled.API.Features.Spawn
         /// </summary>
         /// <param name="chance"><inheritdoc cref="Chance"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
-        public void Deconstruct(out float chance, out Vector3 position)
-        {
+        public void Deconstruct(out float chance, out Vector3 position) {
             chance = Chance;
             position = Position;
         }

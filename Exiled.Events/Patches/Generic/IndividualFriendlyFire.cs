@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Generic
-{
+namespace Exiled.Events.Patches.Generic {
 #pragma warning disable SA1118
 #pragma warning disable SA1402
 #pragma warning disable SA1649
@@ -36,8 +35,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Checks friendly fire rules.
     /// </summary>
-    public static class IndividualFriendlyFire
-    {
+    public static class IndividualFriendlyFire {
         /// <summary>
         /// Checks if there can be damage between two players, according to the FF rules.
         /// </summary>
@@ -45,8 +43,7 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="victimHub">The person being attacked.</param>
         /// <param name="attackerRole">The attackers current role.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayerFriendly(ReferenceHub attackerHub, ReferenceHub victimHub, RoleType attackerRole)
-        {
+        public static bool CheckFriendlyFirePlayerFriendly(ReferenceHub attackerHub, ReferenceHub victimHub, RoleType attackerRole) {
             if (Server.FriendlyFire)
                 return true;
             return false;
@@ -66,18 +63,14 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, bool)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })]
-    internal static class HitboxIdentityCheckFriendlyFire
-    {
-        private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig, ref bool __result)
-        {
-            try
-            {
-                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(attacker,  victim, attacker == null ? RoleType.None : attacker.characterClassManager.CurClass);
+    internal static class HitboxIdentityCheckFriendlyFire {
+        private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig, ref bool __result) {
+            try {
+                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(attacker, victim, attacker == null ? RoleType.None : attacker.characterClassManager.CurClass);
 
                 return false;
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Log.Error($"{e}");
                 return true;
             }
@@ -88,10 +81,8 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="HitboxIdentity.Damage(float, DamageHandlerBase, UnityEngine.Vector3)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.Damage))]
-    internal static class HitboxIdentityDamagePatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class HitboxIdentityDamagePatch {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder attackerDamageHandler = generator.DeclareLocal(typeof(AttackerDamageHandler));
@@ -135,10 +126,8 @@ namespace Exiled.Events.Patches.Generic
     /// </summary>
     // TODO: Re-do this
     // [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.ExplodeDestructible))]
-    internal static class ExplosionGrenadeExplodeDestructiblePatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ExplosionGrenadeExplodeDestructiblePatch {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int targetIsOwnerIndex = 5;
@@ -178,10 +167,8 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
     /// </summary>
     [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
-    internal static class FlashbangGrenadePlayExplosionEffectsPatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class FlashbangGrenadePlayExplosionEffectsPatch {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = 1;
@@ -220,10 +207,8 @@ namespace Exiled.Events.Patches.Generic
     /// </summary>
     // TODO: Re-do this
     // [HarmonyPatch(typeof(Scp018Projectile), nameof(Scp018Projectile.DetectPlayers))]
-    internal static class Scp018ProjectileDetectPlayersPatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Scp018ProjectileDetectPlayersPatch {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int referenceHubIndex = 1;

@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API
-{
+namespace Exiled.CustomItems.API {
     /// <summary>
     /// All of the valid spawn locations.
     /// </summary>
-    public enum SpawnLocation
-    {
+    public enum SpawnLocation {
         /// <summary>
         /// The inside of 012's hallway door.
         /// </summary>

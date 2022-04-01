@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before handcuffing a player.
     /// </summary>
-    public class HandcuffingEventArgs : EventArgs
-    {
+    public class HandcuffingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="HandcuffingEventArgs"/> class.
         /// </summary>
         /// <param name="cuffer"><inheritdoc cref="Cuffer"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public HandcuffingEventArgs(Player cuffer, Player target, bool isAllowed = true)
-        {
+        public HandcuffingEventArgs(Player cuffer, Player target, bool isAllowed = true) {
             Cuffer = cuffer;
             Target = target;
             IsAllowed = isAllowed;

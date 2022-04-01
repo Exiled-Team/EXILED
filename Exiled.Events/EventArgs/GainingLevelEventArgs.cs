@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-079 gains a level.
     /// </summary>
-    public class GainingLevelEventArgs : EventArgs
-    {
+    public class GainingLevelEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="GainingLevelEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="newLevel"><inheritdoc cref="NewLevel"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public GainingLevelEventArgs(Player player, int newLevel, bool isAllowed = true)
-        {
+        public GainingLevelEventArgs(Player player, int newLevel, bool isAllowed = true) {
             Player = player;
             NewLevel = newLevel;
             IsAllowed = isAllowed;

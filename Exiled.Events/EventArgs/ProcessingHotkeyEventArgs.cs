@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Enums;
@@ -15,16 +14,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before pressing a hotkey.
     /// </summary>
-    public class ProcessingHotkeyEventArgs : EventArgs
-    {
+    public class ProcessingHotkeyEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingHotkeyEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="hotkey"><inheritdoc cref="Hotkey"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ProcessingHotkeyEventArgs(Player player, HotkeyButton hotkey, bool isAllowed = true)
-        {
+        public ProcessingHotkeyEventArgs(Player player, HotkeyButton hotkey, bool isAllowed = true) {
             Player = player;
             Hotkey = hotkey;
             IsAllowed = isAllowed;

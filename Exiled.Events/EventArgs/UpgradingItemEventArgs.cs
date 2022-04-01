@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features.Items;
@@ -20,8 +19,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before SCP-914 upgrades an item.
     /// </summary>
-    public class UpgradingItemEventArgs : EventArgs
-    {
+    public class UpgradingItemEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpgradingItemEventArgs"/> class.
         /// </summary>
@@ -29,8 +27,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="newPos"><inheritdoc cref="OutputPosition"/></param>
         /// <param name="knobSetting"><inheritdoc cref="KnobSetting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UpgradingItemEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting, bool isAllowed = true)
-        {
+        public UpgradingItemEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting, bool isAllowed = true) {
             Scp914 = API.Features.Scp914.Scp914Controller;
             Item = Pickup.Get(item);
             OutputPosition = newPos;

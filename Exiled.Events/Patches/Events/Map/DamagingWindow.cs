@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
-{
+namespace Exiled.Events.Patches.Events.Map {
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -23,10 +22,8 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.DamagingWindow"/> event.
     /// </summary>
     [HarmonyPatch(typeof(BreakableWindow), nameof(BreakableWindow.ServerDamageWindow))]
-    internal static class DamagingWindow
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
+    internal static class DamagingWindow {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = 1;

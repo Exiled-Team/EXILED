@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.Features
-{
+namespace Exiled.CustomItems.API.Features {
     using System;
 
     using Exiled.API.Enums;
@@ -34,19 +33,16 @@ namespace Exiled.CustomItems.API.Features
     using Player = Exiled.API.Features.Player;
 
     /// <inheritdoc />
-    public abstract class CustomWeapon : CustomItem
-    {
+    public abstract class CustomWeapon : CustomItem {
         /// <summary>
         /// Gets or sets the weapon modifiers.
         /// </summary>
         public abstract Modifiers Modifiers { get; set; }
 
         /// <inheritdoc/>
-        public override ItemType Type
-        {
+        public override ItemType Type {
             get => base.Type;
-            set
-            {
+            set {
                 if (!value.IsWeapon())
                     throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid weapon type.");
 
@@ -65,8 +61,7 @@ namespace Exiled.CustomItems.API.Features
         public virtual byte ClipSize { get; set; }
 
         /// <inheritdoc/>
-        public override Pickup Spawn(Vector3 position)
-        {
+        public override Pickup Spawn(Vector3 position) {
             Pickup pickup = new Item(Type).Spawn(position);
             pickup.Weight = Weight;
 
@@ -75,20 +70,16 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
-        public override Pickup Spawn(Vector3 position, Item item)
-        {
-            if (item is Firearm firearm)
-            {
+        public override Pickup Spawn(Vector3 position, Item item) {
+            if (item is Firearm firearm) {
                 byte ammo = firearm.Ammo;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
                 Pickup pickup = firearm.Spawn(position);
 
                 TrackedSerials.Add(pickup.Serial);
 
-                Timing.CallDelayed(1f, () =>
-                {
-                    if (pickup.Base is FirearmPickup firearmPickup)
-                    {
+                Timing.CallDelayed(1f, () => {
+                    if (pickup.Base is FirearmPickup firearmPickup) {
                         firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
                         firearmPickup.NetworkStatus = firearmPickup.Status;
                         Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
@@ -97,19 +88,16 @@ namespace Exiled.CustomItems.API.Features
 
                 return pickup;
             }
-            else
-            {
+            else {
                 return base.Spawn(position, item);
             }
         }
 
         /// <inheritdoc/>
-        public override void Give(Player player, bool displayMessage)
-        {
+        public override void Give(Player player, bool displayMessage) {
             Item item = player.AddItem(Type);
 
-            if (item is Firearm firearm)
-            {
+            if (item is Firearm firearm) {
                 firearm.Ammo = ClipSize;
             }
 
@@ -120,8 +108,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
-        protected override void SubscribeEvents()
-        {
+        protected override void SubscribeEvents() {
             Events.Handlers.Player.ReloadingWeapon += OnInternalReloading;
             Events.Handlers.Player.Shooting += OnInternalShooting;
             Events.Handlers.Player.Shot += OnInternalShot;
@@ -131,8 +118,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
-        protected override void UnsubscribeEvents()
-        {
+        protected override void UnsubscribeEvents() {
             Events.Handlers.Player.ReloadingWeapon -= OnInternalReloading;
             Events.Handlers.Player.Shooting -= OnInternalShooting;
             Events.Handlers.Player.Shot -= OnInternalShot;
@@ -145,38 +131,33 @@ namespace Exiled.CustomItems.API.Features
         /// Handles reloading for custom weapons.
         /// </summary>
         /// <param name="ev"><see cref="ReloadingWeaponEventArgs"/>.</param>
-        protected virtual void OnReloading(ReloadingWeaponEventArgs ev)
-        {
+        protected virtual void OnReloading(ReloadingWeaponEventArgs ev) {
         }
 
         /// <summary>
         /// Handles shooting for custom weapons.
         /// </summary>
         /// <param name="ev"><see cref="ShootingEventArgs"/>.</param>
-        protected virtual void OnShooting(ShootingEventArgs ev)
-        {
+        protected virtual void OnShooting(ShootingEventArgs ev) {
         }
 
         /// <summary>
         /// Handles shot for custom weapons.
         /// </summary>
         /// <param name="ev"><see cref="ShotEventArgs"/>.</param>
-        protected virtual void OnShot(ShotEventArgs ev)
-        {
+        protected virtual void OnShot(ShotEventArgs ev) {
         }
 
         /// <summary>
         /// Handles hurting for custom weapons.
         /// </summary>
         /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
-        protected virtual void OnHurting(HurtingEventArgs ev)
-        {
+        protected virtual void OnHurting(HurtingEventArgs ev) {
             if (ev.IsAllowed)
                 ev.Amount = ev.Target.Role == RoleType.Scp106 ? Damage * 0.1f : Damage;
         }
 
-        private void OnInternalReloading(ReloadingWeaponEventArgs ev)
-        {
+        private void OnInternalReloading(ReloadingWeaponEventArgs ev) {
             if (!Check(ev.Player.CurrentItem))
                 return;
 
@@ -184,8 +165,7 @@ namespace Exiled.CustomItems.API.Features
             OnReloading(ev);
 
             Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event ended. {ev.IsAllowed}", Instance.Config.Debug);
-            if (!ev.IsAllowed)
-            {
+            if (!ev.IsAllowed) {
                 Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event turned is allowed to false, returning.", Instance.Config.Debug);
                 return;
             }
@@ -202,8 +182,7 @@ namespace Exiled.CustomItems.API.Features
 
             AmmoType ammoType = ((Firearm)ev.Player.CurrentItem).AmmoType;
 
-            if (!ev.Player.Ammo.ContainsKey(ammoType.GetItemType()))
-            {
+            if (!ev.Player.Ammo.ContainsKey(ammoType.GetItemType())) {
                 Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: {ev.Player.Nickname} does not have ammo to reload this weapon.", Instance.Config.Debug);
                 return;
             }
@@ -223,24 +202,21 @@ namespace Exiled.CustomItems.API.Features
             Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({((Firearm)ev.Player.CurrentItem).Ammo}/{ClipSize})]!", Instance.Config.Debug);
         }
 
-        private void OnInternalShooting(ShootingEventArgs ev)
-        {
+        private void OnInternalShooting(ShootingEventArgs ev) {
             if (!Check(ev.Shooter.CurrentItem))
                 return;
 
             OnShooting(ev);
         }
 
-        private void OnInternalShot(ShotEventArgs ev)
-        {
+        private void OnInternalShot(ShotEventArgs ev) {
             if (!Check(ev.Shooter.CurrentItem))
                 return;
 
             OnShot(ev);
         }
 
-        private void OnInternalHurting(HurtingEventArgs ev)
-        {
+        private void OnInternalHurting(HurtingEventArgs ev) {
             if (ev.Attacker == null || !Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || (ev.Handler.Item != null && ev.Handler.Item.Type != Type))
                 return;
 

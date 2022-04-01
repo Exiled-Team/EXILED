@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Generic
-{
+namespace Exiled.Events.Patches.Generic {
 #pragma warning disable SA1118
 #pragma warning disable SA1313
     using System.Collections.Generic;
@@ -27,10 +26,8 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
-    internal static class Scp173BeingLooked
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class Scp173BeingLooked {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = -3;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
-{
+namespace Exiled.API.Extensions {
     using System;
 
     using CustomPlayerEffects;
@@ -16,18 +15,15 @@ namespace Exiled.API.Extensions
     /// <summary>
     /// Contains an extension method to get <see cref="System.Type"/> from <see cref="EffectType"/>.
     /// </summary>
-    public static class EffectTypeExtension
-    {
+    public static class EffectTypeExtension {
         /// <summary>
         /// Gets an instance of <see cref="System.Type"/> points to an effect.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/> enum.</param>
         /// <returns>The <see cref="System.Type"/>.</returns>
-        public static Type Type(this EffectType effect)
-        {
+        public static Type Type(this EffectType effect) {
             // Recursive patterns in C# 7.3, bruh
-            switch (effect)
-            {
+            switch (effect) {
                 case EffectType.Amnesia: return typeof(Amnesia);
                 case EffectType.Asphyxiated: return typeof(Asphyxiated);
                 case EffectType.Bleeding: return typeof(Bleeding);

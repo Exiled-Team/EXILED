@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Installer
-{
+namespace Exiled.Installer {
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -25,8 +24,7 @@ namespace Exiled.Installer
 
     using Version = SemVer.Version;
 
-    internal enum PathResolution
-    {
+    internal enum PathResolution {
         UNDEFINED,
         /// <summary>
         ///     Absolute path that is routed to AppData.
@@ -38,8 +36,7 @@ namespace Exiled.Installer
         GAME
     }
 
-    internal static class Program
-    {
+    internal static class Program {
         private const long REPO_ID = 231269519;
         private const string EXILED_ASSET_NAME = "exiled.tar.gz";
         internal const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
@@ -56,20 +53,16 @@ namespace Exiled.Installer
         // Force use of LF because the file uses LF
         private static readonly Dictionary<string, string> Markup = Resources.Markup.Trim().Split('\n').ToDictionary(s => s.Split(':')[0], s => s.Split(':', 2)[1]);
 
-        private static async Task Main(string[] args)
-        {
+        private static async Task Main(string[] args) {
             Console.OutputEncoding = new UTF8Encoding(false, false);
             await CommandSettings.Parse(args).ConfigureAwait(false);
         }
 
-        internal static async Task MainSafe(CommandSettings args)
-        {
-            try
-            {
+        internal static async Task MainSafe(CommandSettings args) {
+            try {
                 Console.WriteLine(Header);
 
-                if (args.GetVersions)
-                {
+                if (args.GetVersions) {
                     var releases1 = await GetReleases().ConfigureAwait(false);
                     Console.WriteLine("--- AVAILABLE VERSIONS ---");
                     foreach (var r in releases1)
@@ -81,14 +74,12 @@ namespace Exiled.Installer
 
                 Console.WriteLine($"AppData folder: {args.AppData.FullName}");
 
-                if (!ValidateServerPath(args.Path.FullName, out var targetFilePath))
-                {
+                if (!ValidateServerPath(args.Path.FullName, out var targetFilePath)) {
                     Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in '{targetFilePath}'");
                     throw new FileNotFoundException("Check the validation of the path parameter");
                 }
 
-                if (!(args.GitHubToken is null))
-                {
+                if (!(args.GitHubToken is null)) {
                     Console.WriteLine("Token detected! Using the token...");
                     GitHubClient.Credentials = new Credentials(args.GitHubToken, AuthenticationType.Bearer);
                 }
@@ -100,8 +91,7 @@ namespace Exiled.Installer
                 var releases = await GetReleases().ConfigureAwait(false);
                 Console.WriteLine("Searching for the latest release that matches the parameters...");
 
-                if (!TryFindRelease(args, releases, out var targetRelease))
-                {
+                if (!TryFindRelease(args, releases, out var targetRelease)) {
                     Console.WriteLine("--- RELEASES ---");
                     Console.WriteLine(string.Join(Environment.NewLine, releases.Select(FormatRelease)));
                     throw new InvalidOperationException("Couldn't find release");
@@ -111,8 +101,7 @@ namespace Exiled.Installer
                 Console.WriteLine(FormatRelease(targetRelease!));
 
                 var exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(EXILED_ASSET_NAME, StringComparison.OrdinalIgnoreCase));
-                if (exiledAsset is null)
-                {
+                if (exiledAsset is null) {
                     Console.WriteLine("--- ASSETS ---");
                     Console.WriteLine(string.Join(Environment.NewLine, targetRelease.Assets.Select(FormatAsset)));
                     throw new InvalidOperationException("Couldn't find asset");
@@ -121,8 +110,7 @@ namespace Exiled.Installer
                 Console.WriteLine("Asset found!");
                 Console.WriteLine(FormatAsset(exiledAsset));
 
-                using var httpClient = new HttpClient
-                {
+                using var httpClient = new HttpClient {
                     Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload)
                 };
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
@@ -134,16 +122,14 @@ namespace Exiled.Installer
                 using var tarInputStream = new TarInputStream(gzInputStream);
 
                 TarEntry entry;
-                while (!((entry = tarInputStream.GetNextEntry()) is null))
-                {
+                while (!((entry = tarInputStream.GetNextEntry()) is null)) {
                     entry.Name = entry.Name.Replace('/', Path.DirectorySeparatorChar);
                     ProcessTarEntry(args, targetFilePath, tarInputStream, entry);
                 }
 
                 Console.WriteLine("Installation complete");
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Console.WriteLine(ex);
                 Console.WriteLine("Read the exception message, read the readme, and if you still don't understand what to do, then contact #support in our discord server with the attached screenshot of the full exception");
                 if (!args.Exit)
@@ -154,8 +140,7 @@ namespace Exiled.Installer
                 Environment.Exit(0);
         }
 
-        private static async Task<IEnumerable<Release>> GetReleases()
-        {
+        private static async Task<IEnumerable<Release>> GetReleases() {
             var releases = (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
                 .Where(r => Version.TryParse(r.TagName, out Version version)
                     && (version > VersionLimit));
@@ -166,12 +151,10 @@ namespace Exiled.Installer
         private static string FormatRelease(Release r)
             => FormatRelease(r, false);
 
-        private static string FormatRelease(Release r, bool includeAssets)
-        {
+        private static string FormatRelease(Release r, bool includeAssets) {
             var builder = new StringBuilder(30);
             builder.AppendLine($"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}");
-            if (includeAssets)
-            {
+            if (includeAssets) {
                 foreach (var asset in r.Assets)
                     builder.Append("   - ").AppendLine(FormatAsset(asset));
             }
@@ -179,38 +162,30 @@ namespace Exiled.Installer
             return builder.ToString().Trim('\r', '\n');
         }
 
-        private static string FormatAsset(ReleaseAsset a)
-        {
+        private static string FormatAsset(ReleaseAsset a) {
             return $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url} | DownloadURL: {a.BrowserDownloadUrl}";
         }
 
-        private static void ResolvePath(CommandSettings args, string filePath, out string path)
-        {
+        private static void ResolvePath(CommandSettings args, string filePath, out string path) {
             path = Path.Combine(args.AppData.FullName, filePath);
         }
 
-        private static void ProcessTarEntry(CommandSettings args, string targetFilePath, TarInputStream tarInputStream, TarEntry entry)
-        {
-            if (entry.IsDirectory)
-            {
+        private static void ProcessTarEntry(CommandSettings args, string targetFilePath, TarInputStream tarInputStream, TarEntry entry) {
+            if (entry.IsDirectory) {
                 var entries = entry.GetDirectoryEntries();
-                for (int z = 0; z < entries.Length; z++)
-                {
+                for (int z = 0; z < entries.Length; z++) {
                     ProcessTarEntry(args, targetFilePath, tarInputStream, entries[z]);
                 }
             }
-            else
-            {
+            else {
                 Console.WriteLine($"Processing '{entry.Name}'");
 
-                if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase))
-                {
+                if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase)) {
                     Console.WriteLine($"Extract for {entry.Name} is disabled");
                     return;
                 }
 
-                switch (ResolveEntry(entry))
-                {
+                switch (ResolveEntry(entry)) {
                     case PathResolution.ABSOLUTE:
                         ResolvePath(args, entry.Name, out var path);
                         ExtractEntry(tarInputStream, entry, path);
@@ -225,37 +200,31 @@ namespace Exiled.Installer
             }
         }
 
-        private static void ExtractEntry(TarInputStream tarInputStream, TarEntry entry, string path)
-        {
+        private static void ExtractEntry(TarInputStream tarInputStream, TarEntry entry, string path) {
             Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name)}' into '{path}'...");
 
             EnsureDirExists(Path.GetDirectoryName(path)!);
 
             FileStream? fs = null;
-            try
-            {
+            try {
                 fs = new FileStream(path, System.IO.FileMode.Create, FileAccess.Write, FileShare.None);
                 tarInputStream.CopyEntryContents(fs);
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Console.WriteLine("An exception occurred while trying to extract a file");
                 Console.WriteLine(ex);
             }
-            finally
-            {
+            finally {
                 fs?.Dispose();
             }
         }
 
-        internal static bool ValidateServerPath(string serverPath, out string targetFilePath)
-        {
+        internal static bool ValidateServerPath(string serverPath, out string targetFilePath) {
             targetFilePath = Path.Combine(serverPath, LinkedSubfolders, TARGET_FILE_NAME);
             return File.Exists(targetFilePath);
         }
 
-        private static void EnsureDirExists(string pathToDir)
-        {
+        private static void EnsureDirExists(string pathToDir) {
 #if DEBUG
             Console.WriteLine($"Ensuring directory path: {pathToDir}");
             Console.WriteLine($"Does it exist? - {Directory.Exists(pathToDir)}");
@@ -264,10 +233,8 @@ namespace Exiled.Installer
                 Directory.CreateDirectory(pathToDir);
         }
 
-        private static PathResolution ResolveEntry(TarEntry entry)
-        {
-            static PathResolution TryParse(string s)
-            {
+        private static PathResolution ResolveEntry(TarEntry entry) {
+            static PathResolution TryParse(string s) {
                 // We'll get UNDEFINED if it cannot be determined
                 Enum.TryParse<PathResolution>(s, true, out var result);
                 return result;
@@ -275,17 +242,14 @@ namespace Exiled.Installer
 
             var fileName = entry.Name;
             var fileInFolder = !string.IsNullOrEmpty(Path.GetDirectoryName(fileName));
-            foreach (var pair in Markup)
-            {
+            foreach (var pair in Markup) {
                 var isFolder = pair.Key.EndsWith('\\');
                 if (fileInFolder && isFolder &&
-                    pair.Key[0..^1].Equals(fileName.Substring(0, fileName.IndexOf(Path.DirectorySeparatorChar)), StringComparison.OrdinalIgnoreCase))
-                {
+                    pair.Key[0..^1].Equals(fileName.Substring(0, fileName.IndexOf(Path.DirectorySeparatorChar)), StringComparison.OrdinalIgnoreCase)) {
                     return TryParse(pair.Value);
                 }
                 else if (!fileInFolder && !isFolder &&
-                    pair.Key.Equals(fileName, StringComparison.OrdinalIgnoreCase))
-                {
+                    pair.Key.Equals(fileName, StringComparison.OrdinalIgnoreCase)) {
                     return TryParse(pair.Value);
                 }
             }
@@ -293,13 +257,11 @@ namespace Exiled.Installer
             return PathResolution.UNDEFINED;
         }
 
-        private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
-        {
+        private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release) {
             Console.WriteLine("Trying to find release..");
             Version targetVersion = args.TargetVersion != null ? new Version(args.TargetVersion) : VersionLimit;
 
-            foreach (var r in releases)
-            {
+            foreach (var r in releases) {
                 release = r;
 
                 if ((targetVersion == new Version(r.TagName)))

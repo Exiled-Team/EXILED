@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,16 +13,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-049 finishes recalling a player.
     /// </summary>
-    public class FinishingRecallEventArgs : EventArgs
-    {
+    public class FinishingRecallEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="FinishingRecallEventArgs"/> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="scp049"><inheritdoc cref="Scp049"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public FinishingRecallEventArgs(Player target, Player scp049, bool isAllowed = true)
-        {
+        public FinishingRecallEventArgs(Player target, Player scp049, bool isAllowed = true) {
             Target = target;
             Scp049 = scp049;
             IsAllowed = isAllowed;

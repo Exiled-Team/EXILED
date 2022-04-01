@@ -5,13 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
-{
+namespace Exiled.API.Enums {
     /// <summary>
     /// The unique type of elevator.
     /// </summary>
-    public enum ElevatorType : byte
-    {
+    public enum ElevatorType : byte {
         /// <summary>
         /// Unknown elevator Type.
         /// </summary>

@@ -5,17 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
+
     using Exiled.API.Features;
+
     using MapGeneration.Distributors;
 
     /// <summary>
     /// Contains all informations before a player interacts with a locker.
     /// </summary>
-    public class InteractingLockerEventArgs : EventArgs
-    {
+    public class InteractingLockerEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractingLockerEventArgs"/> class.
         /// </summary>
@@ -24,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="lockerChamber"><inheritdoc cref="Chamber"/></param>
         /// <param name="chamberId"><inheritdoc cref="ChamberId"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingLockerEventArgs(Player player, Locker locker, LockerChamber lockerChamber, byte chamberId, bool isAllowed)
-        {
+        public InteractingLockerEventArgs(Player player, Locker locker, LockerChamber lockerChamber, byte chamberId, bool isAllowed) {
             Player = player;
             Locker = locker;
             Chamber = lockerChamber;

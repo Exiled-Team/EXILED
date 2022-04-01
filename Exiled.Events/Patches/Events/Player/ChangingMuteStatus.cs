@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
-{
+namespace Exiled.Events.Patches.Events.Player {
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -26,10 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ChangingMuteStatus"/> event.
     /// </summary>
     [HarmonyPatch(typeof(DissonanceUserSetup), nameof(DissonanceUserSetup.AdministrativelyMuted), MethodType.Setter)]
-    internal static class ChangingMuteStatus
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
+    internal static class ChangingMuteStatus {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));

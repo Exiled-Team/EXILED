@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader.Features.Configs
-{
+namespace Exiled.Loader.Features.Configs {
     using System;
     using System.ComponentModel.DataAnnotations;
 
@@ -16,8 +15,7 @@ namespace Exiled.Loader.Features.Configs
     /// <summary>
     /// Basic configs validation.
     /// </summary>
-    public sealed class ValidatingNodeDeserializer : INodeDeserializer
-    {
+    public sealed class ValidatingNodeDeserializer : INodeDeserializer {
         private readonly INodeDeserializer nodeDeserializer;
 
         /// <summary>
@@ -27,10 +25,8 @@ namespace Exiled.Loader.Features.Configs
         public ValidatingNodeDeserializer(INodeDeserializer nodeDeserializer) => this.nodeDeserializer = nodeDeserializer;
 
         /// <inheritdoc/>
-        public bool Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
-        {
-            if (nodeDeserializer.Deserialize(parser, expectedType, nestedObjectDeserializer, out value))
-            {
+        public bool Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value) {
+            if (nodeDeserializer.Deserialize(parser, expectedType, nestedObjectDeserializer, out value)) {
                 Validator.ValidateObject(value, new ValidationContext(value, null, null), true);
 
                 return true;

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -17,8 +16,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before MicroHID state is changed.
     /// </summary>
-    public class ChangingMicroHIDStateEventArgs : EventArgs
-    {
+    public class ChangingMicroHIDStateEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingMicroHIDStateEventArgs"/> class.
         /// </summary>
@@ -27,8 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="oldState"><inheritdoc cref="OldState"/></param>
         /// <param name="newState"><inheritdoc cref="NewState"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingMicroHIDStateEventArgs(Player player, MicroHIDItem microHID, HidState oldState, HidState newState, bool isAllowed = true)
-        {
+        public ChangingMicroHIDStateEventArgs(Player player, MicroHIDItem microHID, HidState oldState, HidState newState, bool isAllowed = true) {
             Player = player;
             MicroHID = (MicroHid)Item.Get(microHID);
             OldState = oldState;

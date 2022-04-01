@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Item
-{/*
+namespace Exiled.Events.Patches.Events.Item {/*
 #pragma warning disable SA1118
 
     using System.Collections.Generic;

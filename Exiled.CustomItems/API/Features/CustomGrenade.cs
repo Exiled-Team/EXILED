@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.Features
-{
+namespace Exiled.CustomItems.API.Features {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -32,16 +31,13 @@ namespace Exiled.CustomItems.API.Features
     using YamlDotNet.Serialization;
 
     /// <inheritdoc />
-    public abstract class CustomGrenade : CustomItem
-    {
+    public abstract class CustomGrenade : CustomItem {
         /// <summary>
         /// Gets or sets the <see cref="ItemType"/> to use for this item.
         /// </summary>
-        public override ItemType Type
-        {
+        public override ItemType Type {
             get => base.Type;
-            set
-            {
+            set {
                 if (!value.IsThrowable())
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid grenade type.");
 
@@ -81,8 +77,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
         /// <returns>The <see cref="Pickup"/> being spawned.</returns>
-        public virtual Pickup Throw(Vector3 position, float force, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHE, Player player = null)
-        {
+        public virtual Pickup Throw(Vector3 position, float force, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHE, Player player = null) {
             if (player == null)
                 player = Server.Host;
 
@@ -90,8 +85,7 @@ namespace Exiled.CustomItems.API.Features
 
             ThrownProjectile thrownProjectile = UnityEngine.Object.Instantiate(throwable.Base.Projectile, position, throwable.Owner.CameraTransform.rotation);
             Transform transform = thrownProjectile.transform;
-            PickupSyncInfo newInfo = new PickupSyncInfo()
-            {
+            PickupSyncInfo newInfo = new PickupSyncInfo() {
                 ItemId = throwable.Type,
                 Locked = !throwable.Base._repickupable,
                 Serial = ItemSerialGenerator.GenerateNext(),
@@ -117,8 +111,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
-        protected override void SubscribeEvents()
-        {
+        protected override void SubscribeEvents() {
             Events.Handlers.Player.ThrowingItem += OnInternalThrowing;
             Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
@@ -127,8 +120,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
-        protected override void UnsubscribeEvents()
-        {
+        protected override void UnsubscribeEvents() {
             Events.Handlers.Player.ThrowingItem -= OnInternalThrowing;
             Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
@@ -140,29 +132,25 @@ namespace Exiled.CustomItems.API.Features
         /// Handles tracking thrown custom grenades.
         /// </summary>
         /// <param name="ev"><see cref="ThrowingItemEventArgs"/>.</param>
-        protected virtual void OnThrowing(ThrowingItemEventArgs ev)
-        {
+        protected virtual void OnThrowing(ThrowingItemEventArgs ev) {
         }
 
         /// <summary>
         /// Handles tracking exploded custom grenades.
         /// </summary>
         /// <param name="ev"><see cref="ExplodingGrenadeEventArgs"/>.</param>
-        protected virtual void OnExploding(ExplodingGrenadeEventArgs ev)
-        {
+        protected virtual void OnExploding(ExplodingGrenadeEventArgs ev) {
         }
 
         /// <summary>
         /// Handles the tracking of custom grenade pickups that are changed into live grenades by a frag grenade explosion.
         /// </summary>
         /// <param name="ev"><see cref="ChangingIntoGrenadeEventArgs"/>.</param>
-        protected virtual void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
-        {
+        protected virtual void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) {
         }
 
         /// <inheritdoc/>
-        protected override void OnWaitingForPlayers()
-        {
+        protected override void OnWaitingForPlayers() {
             Tracked.Clear();
 
             base.OnWaitingForPlayers();
@@ -175,14 +163,12 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>True if it is a custom grenade.</returns>
         protected bool Check(ThrownProjectile grenade) => TrackedSerials.Contains(grenade.Info.Serial);
 
-        private void OnInternalThrowing(ThrowingItemEventArgs ev)
-        {
+        private void OnInternalThrowing(ThrowingItemEventArgs ev) {
             if (!Check(ev.Player.CurrentItem))
                 return;
 
             Log.Debug($"{ev.Player.Nickname} has thrown a {Name}!", CustomItems.Instance.Config.Debug);
-            if (ev.RequestType == ThrowRequest.BeginThrow)
-            {
+            if (ev.RequestType == ThrowRequest.BeginThrow) {
                 OnThrowing(ev);
                 if (!ev.IsAllowed)
                     ev.IsAllowed = false;
@@ -191,8 +177,7 @@ namespace Exiled.CustomItems.API.Features
 
             OnThrowing(ev);
 
-            switch (ev.Item)
-            {
+            switch (ev.Item) {
                 case ExplosiveGrenade explosiveGrenade:
                     explosiveGrenade.FuseTime = FuseTime;
                     break;
@@ -202,17 +187,14 @@ namespace Exiled.CustomItems.API.Features
             }
         }
 
-        private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
-        {
-            if (Check(ev.Grenade))
-            {
+        private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev) {
+            if (Check(ev.Grenade)) {
                 Log.Debug($"A {Name} is exploding!!", CustomItems.Instance.Config.Debug);
                 OnExploding(ev);
             }
         }
 
-        private void OnInternalChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
-        {
+        private void OnInternalChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) {
             if (!Check(ev.Pickup))
                 return;
 
@@ -221,8 +203,7 @@ namespace Exiled.CustomItems.API.Features
 
             OnChangingIntoGrenade(ev);
 
-            if (ev.IsAllowed)
-            {
+            if (ev.IsAllowed) {
                 Timing.CallDelayed(0.25f, () => Throw(ev.Pickup.Position, 0f, ev.FuseTime, ev.Type));
                 ev.Pickup.Destroy();
                 ev.IsAllowed = false;

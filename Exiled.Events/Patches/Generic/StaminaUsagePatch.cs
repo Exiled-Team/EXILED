@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Generic
-{
+namespace Exiled.Events.Patches.Generic {
     using Exiled.API.Features;
 
 #pragma warning disable SA1313
@@ -17,8 +16,7 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="Stamina.ProcessStamina()"/>.
     /// </summary>
     [HarmonyPatch(typeof(Stamina), nameof(Stamina.ProcessStamina))]
-    internal class StaminaUsagePatch
-    {
+    internal class StaminaUsagePatch {
         private static bool Prefix(Stamina __instance) => Player.Get(__instance._hub)?.IsUsingStamina ?? true;
     }
 }

@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
 #pragma warning disable CS0618
     using System;
     using System.Collections.Generic;
@@ -20,15 +19,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player dies.
     /// </summary>
-    public class DyingEventArgs : EventArgs
-    {
+    public class DyingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="DyingEventArgs"/> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
-        public DyingEventArgs(Player target, DamageHandlerBase damageHandler)
-        {
+        public DyingEventArgs(Player target, DamageHandlerBase damageHandler) {
             ItemsToDrop = new List<Item>(target.Items.ToList());
             Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;

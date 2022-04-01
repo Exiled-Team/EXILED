@@ -5,8 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
-{
+namespace Exiled.Events.EventArgs {
     using System;
 
     using Exiled.API.Features;
@@ -14,15 +13,13 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player activates SCP-914.
     /// </summary>
-    public class ActivatingEventArgs : EventArgs
-    {
+    public class ActivatingEventArgs : EventArgs {
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivatingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ActivatingEventArgs(Player player, bool isAllowed = true)
-        {
+        public ActivatingEventArgs(Player player, bool isAllowed = true) {
             Player = player;
             IsAllowed = isAllowed;
         }
