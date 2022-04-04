@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Features;
+
 namespace Exiled.API.Enums
 {
     /// <summary>
@@ -38,7 +40,7 @@ namespace Exiled.API.Enums
         Scp079,
 
         /// <summary>
-        /// Represents the <see cref="Recontainer079._activatorGlass"/>.
+        /// Represents the <see cref="Recontainer.ActivatorWindow"/>.
         /// </summary>
         Scp079Trigger,
 
