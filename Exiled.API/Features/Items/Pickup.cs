@@ -131,6 +131,15 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets the previous owner of this item.
+        /// </summary>
+        public Player PreviousOwner
+        {
+            get => Player.Get(Base.PreviousOwner.Hub);
+            set => Base.PreviousOwner = value.Footprint;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the pickup is currently in use.
         /// </summary>
         public bool InUse
