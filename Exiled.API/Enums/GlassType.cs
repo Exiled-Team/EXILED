@@ -8,47 +8,47 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// Unique identifier for the different types of blood decals.
+    /// Unique identifier for the different types of Window.
     /// </summary>
     public enum GlassType
     {
         /// <summary>
-        /// Unknown.
+        /// Represents an unknown Window.
         /// </summary>
         Unknown,
 
         /// <summary>
-        /// GR18.
+        /// Represents all the Window in <see cref="RoomType.LczGlassBox"/>.
         /// </summary>
         GR18,
 
         /// <summary>
-        /// Scp049.
+        /// Represents all the Window in <see cref="RoomType.Hcz049"/>.
         /// </summary>
         Scp049,
 
         /// <summary>
-        /// MicroHid.
+        /// Represents all the Window in <see cref="RoomType.HczHid"/>.
         /// </summary>
         MicroHid,
 
         /// <summary>
-        /// Scp079.
+        /// Represents all the Window in <see cref="RoomType.Hcz079"/>.
         /// </summary>
         Scp079,
 
         /// <summary>
-        /// Scp330.
+        /// Represents the <see cref="Recontainer079._activatorGlass"/>.
         /// </summary>
         Scp079Trigger,
 
         /// <summary>
-        /// Scp330.
+        /// Represents all the Window in <see cref="RoomType.Lcz330"/>.
         /// </summary>
         Scp330,
 
         /// <summary>
-        /// PlantsRoom.
+        /// Represents all the Window in <see cref="RoomType.LczPlants"/>.
         /// </summary>
         Plants,
     }
