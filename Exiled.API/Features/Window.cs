@@ -21,8 +21,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Window"/> on the map.
         /// </summary>
-        internal static readonly List<Window> WindowValue = new List<Window>(20);
-        private static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new Dictionary<BreakableWindow, Window>();
+        internal static readonly List<Window> WindowValue = new(20);
+        private static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -149,21 +149,15 @@ namespace Exiled.API.Features
 
         private GlassType GetGlassType()
         {
-            switch (Room.Type)
+            return Room.Type switch
             {
-                case RoomType.LczGlassBox:
-                    return GlassType.GR18;
-                case RoomType.Hcz079:
-                    return GlassType.Scp079;
-                case RoomType.HczHid:
-                    return GlassType.MicroHid;
-                case RoomType.Hcz049:
-                    return GlassType.Scp049;
-                case RoomType.Lcz330:
-                    return GlassType.Scp330;
-                default:
-                    return GlassType.Unknown;
-            }
+                RoomType.LczGlassBox => GlassType.GR18,
+                RoomType.Hcz079 => GlassType.Scp079,
+                RoomType.HczHid => GlassType.MicroHid,
+                RoomType.Hcz049 => GlassType.Scp049,
+                RoomType.Lcz330 => GlassType.Scp330,
+                _ => GlassType.Unknown,
+            };
         }
     }
 }
