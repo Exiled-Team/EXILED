@@ -9,6 +9,8 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Features;
+
     using MapGeneration.Distributors;
 
     /// <summary>
@@ -23,14 +25,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public GeneratorActivatedEventArgs(Scp079Generator generator, bool isAllowed = true)
         {
-            Generator = generator;
+            Generator = Generator.Get(generator);
             IsAllowed = isAllowed;
         }
 
         /// <summary>
         /// Gets the activated generator.
         /// </summary>
-        public Scp079Generator Generator { get; }
+        public Generator Generator { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the generator can be activated or not.
