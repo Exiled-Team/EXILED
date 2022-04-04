@@ -94,26 +94,16 @@ namespace Exiled.API.Features
         {
             get
             {
-                switch (Name)
+                return Name switch
                 {
-                    case "SCP-049":
-                        return ElevatorType.Scp049;
-                    case "GateA":
-                        return ElevatorType.GateA;
-                    case "GateB":
-                        return ElevatorType.GateB;
-                    case "ElA":
-                    case "ElA2":
-                        return ElevatorType.LczA;
-                    case "ElB":
-                    case "ElB2":
-                        return ElevatorType.LczB;
-                    case "":
-                        return ElevatorType.Nuke;
-
-                    default:
-                        return ElevatorType.Unknown;
-                }
+                    "SCP-049" => ElevatorType.Scp049,
+                    "GateA" => ElevatorType.GateA,
+                    "GateB" => ElevatorType.GateB,
+                    "ElA" or "ElA2" => ElevatorType.LczA,
+                    "ElB" or "ElB2" => ElevatorType.LczB,
+                    "" => ElevatorType.Nuke,
+                    _ => ElevatorType.Unknown,
+                };
             }
         }
 

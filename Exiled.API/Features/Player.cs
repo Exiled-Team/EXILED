@@ -237,23 +237,14 @@ namespace Exiled.API.Features
                 if (index == -1)
                     return AuthenticationType.Unknown;
 
-                switch (UserId.Substring(index + 1))
+                return UserId.Substring(index + 1) switch
                 {
-                    case "steam":
-                        return AuthenticationType.Steam;
-
-                    case "discord":
-                        return AuthenticationType.Discord;
-
-                    case "northwood":
-                        return AuthenticationType.Northwood;
-
-                    case "patreon":
-                        return AuthenticationType.Patreon;
-
-                    default:
-                        return AuthenticationType.Unknown;
-                }
+                    "steam" => AuthenticationType.Steam,
+                    "discord" => AuthenticationType.Discord,
+                    "northwood" => AuthenticationType.Northwood,
+                    "patreon" => AuthenticationType.Patreon,
+                    _ => AuthenticationType.Unknown,
+                };
             }
         }
 
@@ -1897,17 +1888,11 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Throwable"/> item that was spawned.</returns>
         public Throwable ThrowGrenade(GrenadeType type, bool fullForce = true)
         {
-            Throwable throwable;
-            switch (type)
+            Throwable throwable = type switch
             {
-                case GrenadeType.Flashbang:
-                    throwable = new FlashGrenade();
-                    break;
-                default:
-                    throwable = new ExplosiveGrenade(type.GetItemType());
-                    break;
-            }
-
+                GrenadeType.Flashbang => new FlashGrenade(),
+                _ => new ExplosiveGrenade(type.GetItemType()),
+            };
             ThrowItem(throwable, fullForce);
             return throwable;
         }

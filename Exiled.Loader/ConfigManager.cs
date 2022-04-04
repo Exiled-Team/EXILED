@@ -92,13 +92,11 @@ namespace Exiled.Loader
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
         public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs = null)
         {
-            switch (Loader.Config.ConfigType)
+            return Loader.Config.ConfigType switch
             {
-                case ConfigType.Separated:
-                    return LoadSeparatedConfig(plugin);
-                default:
-                    return LoadDefaultConfig(plugin, rawConfigs);
-            }
+                ConfigType.Separated => LoadSeparatedConfig(plugin),
+                _ => LoadDefaultConfig(plugin, rawConfigs),
+            };
         }
 
         /// <summary>

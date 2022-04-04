@@ -36,15 +36,12 @@ namespace Exiled.API.Features.DamageHandlers
         {
             get
             {
-                switch (Item)
+                return Item switch
                 {
-                    case Firearm _ when ItemConversion.ContainsKey(Item.Type):
-                        return ItemConversion[Item.Type];
-                    case MicroHid _:
-                        return DamageType.MicroHid;
-                    default:
-                        return DamageType.Firearm;
-                }
+                    Firearm _ when ItemConversion.ContainsKey(Item.Type) => ItemConversion[Item.Type],
+                    MicroHid _ => DamageType.MicroHid,
+                    _ => DamageType.Firearm,
+                };
             }
         }
 

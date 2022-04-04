@@ -200,16 +200,12 @@ namespace Exiled.API.Features.Items
                 case FlashlightItem flashlight:
                     return new Flashlight(flashlight);
                 case ThrowableItem throwable:
-                    switch (throwable.Projectile)
+                    return throwable.Projectile switch
                     {
-                        case FlashbangGrenade _:
-                            return new FlashGrenade(throwable);
-                        case ExplosionGrenade _:
-                            return new ExplosiveGrenade(throwable);
-                        default:
-                            return new Throwable(throwable);
-                    }
-
+                        FlashbangGrenade _ => new FlashGrenade(throwable),
+                        ExplosionGrenade _ => new ExplosiveGrenade(throwable),
+                        _ => new Throwable(throwable),
+                    };
                 default:
                     return new Item(itemBase);
             }
@@ -245,69 +241,23 @@ namespace Exiled.API.Features.Items
         /// <returns>The <see cref="Item"/> created. This can be cast as a subclass.</returns>
         public static Item Create(ItemType type, Player owner = null)
         {
-            switch (type)
+            return type switch
             {
-                case ItemType.Adrenaline:
-                case ItemType.Medkit:
-                case ItemType.Painkillers:
-                case ItemType.SCP500:
-                case ItemType.SCP207:
-                case ItemType.SCP268:
-                    return new Usable(type);
-                case ItemType.SCP244a:
-                case ItemType.SCP244b:
-                    return new Scp244(type);
-                case ItemType.Ammo9x19:
-                case ItemType.Ammo12gauge:
-                case ItemType.Ammo44cal:
-                case ItemType.Ammo556x45:
-                case ItemType.Ammo762x39:
-                    return new Ammo(type);
-                case ItemType.Flashlight:
-                    return new Flashlight();
-                case ItemType.Radio:
-                    return new Radio();
-                case ItemType.MicroHID:
-                    return new MicroHid();
-                case ItemType.GrenadeFlash:
-                    return new FlashGrenade(owner);
-                case ItemType.GrenadeHE:
-                case ItemType.SCP018:
-                    return new ExplosiveGrenade(type, owner);
-                case ItemType.GunCrossvec:
-                case ItemType.GunLogicer:
-                case ItemType.GunRevolver:
-                case ItemType.GunShotgun:
-                case ItemType.GunAK:
-                case ItemType.GunCOM15:
-                case ItemType.GunCOM18:
-                case ItemType.GunE11SR:
-                case ItemType.GunFSP9:
-                    return new Firearm(type);
-                case ItemType.KeycardGuard:
-                case ItemType.KeycardJanitor:
-                case ItemType.KeycardO5:
-                case ItemType.KeycardScientist:
-                case ItemType.KeycardChaosInsurgency:
-                case ItemType.KeycardContainmentEngineer:
-                case ItemType.KeycardFacilityManager:
-                case ItemType.KeycardResearchCoordinator:
-                case ItemType.KeycardZoneManager:
-                case ItemType.KeycardNTFCommander:
-                case ItemType.KeycardNTFLieutenant:
-                case ItemType.KeycardNTFOfficer:
-                    return new Keycard(type);
-                case ItemType.ArmorLight:
-                case ItemType.ArmorCombat:
-                case ItemType.ArmorHeavy:
-                    return new Armor(type);
-                case ItemType.SCP330:
-                    return new Scp330();
-                case ItemType.SCP2176:
-                    return new Throwable(type);
-                default:
-                    return new Item(type);
-            }
+                ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP268 => new Usable(type),
+                ItemType.SCP244a or ItemType.SCP244b => new Scp244(type),
+                ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new Ammo(type),
+                ItemType.Flashlight => new Flashlight(),
+                ItemType.Radio => new Radio(),
+                ItemType.MicroHID => new MicroHid(),
+                ItemType.GrenadeFlash => new FlashGrenade(owner),
+                ItemType.GrenadeHE or ItemType.SCP018 => new ExplosiveGrenade(type, owner),
+                ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 => new Firearm(type),
+                ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new Keycard(type),
+                ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new Armor(type),
+                ItemType.SCP330 => new Scp330(),
+                ItemType.SCP2176 => new Throwable(type),
+                _ => new Item(type),
+            };
         }
 
         /// <summary>
@@ -343,23 +293,13 @@ namespace Exiled.API.Features.Items
                 }
                 else
                 {
-                    byte ammo;
-                    switch (Base)
+                    byte ammo = Base switch
                     {
-                        case AutomaticFirearm auto:
-                            ammo = auto._baseMaxAmmo;
-                            break;
-                        case Shotgun shotgun:
-                            ammo = shotgun._ammoCapacity;
-                            break;
-                        case Revolver revolver:
-                            ammo = revolver.AmmoManagerModule.MaxAmmo;
-                            break;
-                        default:
-                            ammo = 0;
-                            break;
-                    }
-
+                        AutomaticFirearm auto => auto._baseMaxAmmo,
+                        Shotgun shotgun => shotgun._ammoCapacity,
+                        Revolver revolver => revolver.AmmoManagerModule.MaxAmmo,
+                        _ => 0,
+                    };
                     uint code = identifiers is not null ? (uint)firearmPickup.Info.ItemId.GetBaseCode() + identifiers.GetAttachmentsCode() : firearmPickup.Status.Attachments;
                     firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, code);
                 }
@@ -397,23 +337,13 @@ namespace Exiled.API.Features.Items
                 }
                 else
                 {
-                    byte ammo;
-                    switch (Base)
+                    byte ammo = Base switch
                     {
-                        case AutomaticFirearm auto:
-                            ammo = auto._baseMaxAmmo;
-                            break;
-                        case Shotgun shotgun:
-                            ammo = shotgun._ammoCapacity;
-                            break;
-                        case Revolver _:
-                            ammo = 6;
-                            break;
-                        default:
-                            ammo = 0;
-                            break;
-                    }
-
+                        AutomaticFirearm auto => auto._baseMaxAmmo,
+                        Shotgun shotgun => shotgun._ammoCapacity,
+                        Revolver _ => 6,
+                        _ => 0,
+                    };
                     firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
                 }
 
