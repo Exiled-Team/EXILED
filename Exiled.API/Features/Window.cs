@@ -10,6 +10,7 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
 
     using UnityEngine;
 
@@ -167,7 +168,7 @@ namespace Exiled.API.Features
         {
             if (Recontainer.ActivatorWindow.Base == Base)
                 return GlassType.Scp079Trigger;
-            return Room.gameObject.name switch
+            return Room.gameObject.name.RemoveBracketsOnEndOfName() switch
             {
                 "LCZ_330" => GlassType.Scp330,
                 "LCZ_372" => GlassType.GR18,
