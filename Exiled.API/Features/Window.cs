@@ -111,7 +111,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this window is broken.
+        /// Gets or sets a value indicating whether or not this window can be broken by SCP.
         /// </summary>
         public bool DisableScpDamage
         {
