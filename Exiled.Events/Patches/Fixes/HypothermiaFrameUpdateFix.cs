@@ -38,21 +38,21 @@ namespace Exiled.Events.Patches.Fixes
 
             Label retLabel = generator.DefineLabel();
 
-            newInstructions.Insert(index, new CodeInstruction(OpCodes.Pop));
+            newInstructions.Insert(index, new(OpCodes.Pop));
 
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Conv_U1) + offset;
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Stloc_S, cachedIntensity.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, cachedIntensity.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(CustomPlayerEffects.PlayerEffect), nameof(CustomPlayerEffects.PlayerEffect.Intensity))),
-                new CodeInstruction(OpCodes.Conv_U1),
-                new CodeInstruction(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Brtrue_S, retLabel),
-                new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Ldloc_S, cachedIntensity.LocalIndex),
+                new(OpCodes.Stloc_S, cachedIntensity.LocalIndex),
+                new(OpCodes.Ldloc_S, cachedIntensity.LocalIndex),
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(CustomPlayerEffects.PlayerEffect), nameof(CustomPlayerEffects.PlayerEffect.Intensity))),
+                new(OpCodes.Conv_U1),
+                new(OpCodes.Ceq),
+                new(OpCodes.Brtrue_S, retLabel),
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Ldloc_S, cachedIntensity.LocalIndex),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);

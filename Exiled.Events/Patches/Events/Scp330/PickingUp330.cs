@@ -38,25 +38,25 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(0, new[]
             {
                 // var ev = new PickingUpScp330EventArgs(Player.Get(ply), pickup);
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpScp330EventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpScp330EventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnPickingUpScp330(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUp330))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUp330))),
 
                 // if (!ev.IsAllowed)
                 //    return false;
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpScp330EventArgs), nameof(PickingUpScp330EventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brtrue, continueLabel),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpScp330EventArgs), nameof(PickingUpScp330EventArgs.IsAllowed))),
+                new(OpCodes.Brtrue, continueLabel),
 
                 // We need to load false onto the stack before returning, since the method returns a bool.
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Ret),
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 

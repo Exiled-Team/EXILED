@@ -50,24 +50,21 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
-            Timing.CallDelayed(0.5f, () =>
-            {
-                GenerateCache();
-                Door.RegisterDoorTypesOnLevelLoad();
-            });
+            GenerateCache();
+            Door.RegisterDoorTypesOnLevelLoad();
         }
 
         private static void GenerateCache()
         {
+            GenerateTeslaGates();
             GenerateRooms();
             GenerateDoors();
             GenerateWindow();
             GenerateCameras();
-            GenerateTeslaGates();
             GenerateLifts();
             GeneratePocketTeleports();
             GenerateAttachments();
-            GenerateLockers();
+            Timing.CallDelayed(0.5f, GenerateLockers);
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
@@ -131,7 +128,7 @@ namespace Exiled.Events.Handlers.Internal
 
                 Firearm.FirearmInstances.Add(firearm);
                 uint code = 1;
-                List<AttachmentIdentifier> attachmentIdentifiers = new List<AttachmentIdentifier>();
+                List<AttachmentIdentifier> attachmentIdentifiers = new();
                 foreach (FirearmAttachment att in firearm.Attachments)
                 {
                     attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));

@@ -25,14 +25,14 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Recontainer079), nameof(Recontainer079.OnDestroy))]
     internal class DestroyRecontainerInstance
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldnull),
-                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
+                new(OpCodes.Ldnull),
+                new(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

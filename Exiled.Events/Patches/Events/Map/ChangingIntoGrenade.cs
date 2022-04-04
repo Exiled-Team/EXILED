@@ -73,39 +73,39 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(enterLabel),
 
                 // var ev = new ChangingIntoGrenadeEventArgs(ItemPickupBase);
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntoGrenadeEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntoGrenadeEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, ev.LocalIndex),
 
                 // Map.OnChangingIntoGrenade(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.OnChangingIntoGrenade))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnChangingIntoGrenade))),
 
                 // if (!ev.IsAllowed)
                 // {
                 //     this._replaceNextFrame = false;
                 //     return;
                 // }
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brtrue, dontResetLabel),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Stfld, Field(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup._replaceNextFrame))),
-                new CodeInstruction(OpCodes.Ret),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.IsAllowed))),
+                new(OpCodes.Brtrue, dontResetLabel),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Stfld, Field(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup._replaceNextFrame))),
+                new(OpCodes.Ret),
 
                 // if (!InventoryItemLoader.AvailableItems.TryGetValue(ev.Type, out itemBase) || !(itemBase is ThrowableItem throwableItem))
                 //    return;
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
-                new CodeInstruction(OpCodes.Ldloca_S, 0),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Isinst, typeof(ThrowableItem)),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_1),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
+                new(OpCodes.Ldloca_S, 0),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
+                new(OpCodes.Brfalse, returnLabel),
+                new(OpCodes.Ldloc_0),
+                new(OpCodes.Isinst, typeof(ThrowableItem)),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_1),
+                new(OpCodes.Brfalse, returnLabel),
             });
 
             offset = 4;
@@ -115,22 +115,22 @@ namespace Exiled.Events.Patches.Events.Map
             {
                 // if (thrownProjectile is TimeGrenade timeGrenade)
                 //    timeGrenade._fuseTime = ev.FuseTime;
-                new CodeInstruction(OpCodes.Stloc, thrownProjectile.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc, thrownProjectile.LocalIndex),
-                new CodeInstruction(OpCodes.Isinst, typeof(TimeGrenade)),
-                new CodeInstruction(OpCodes.Stloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse, skipFuse),
+                new(OpCodes.Stloc, thrownProjectile.LocalIndex),
+                new(OpCodes.Ldloc, thrownProjectile.LocalIndex),
+                new(OpCodes.Isinst, typeof(TimeGrenade)),
+                new(OpCodes.Stloc, timeGrenade.LocalIndex),
+                new(OpCodes.Brfalse, skipFuse),
 
-                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.FuseTime))),
-                new CodeInstruction(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
+                new(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.FuseTime))),
+                new(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
                 new CodeInstruction(OpCodes.Nop).WithLabels(skipFuse),
-                new CodeInstruction(OpCodes.Ldloc, thrownProjectile.LocalIndex),
-                new CodeInstruction(OpCodes.Dup),
+                new(OpCodes.Ldloc, thrownProjectile.LocalIndex),
+                new(OpCodes.Dup),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

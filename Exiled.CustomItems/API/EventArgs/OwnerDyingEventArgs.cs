@@ -27,11 +27,11 @@ namespace Exiled.CustomItems.API.EventArgs
         public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
             : base(ev.Target, ev.Handler.Base)
         {
-            if (item == null)
+            if (item is null)
                 Log.Warn("Item is null");
-            if (ev.Target == null)
+            if (ev.Target is null)
                 Log.Warn("Target is null");
-            if (ev.Handler.Base == null)
+            if (ev.Handler.Base is null)
                 Log.Warn("handler base is null");
             Item = item;
         }

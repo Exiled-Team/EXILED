@@ -28,7 +28,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (scp914Controller == null)
+                if (scp914Controller is null)
                     scp914Controller = Object.FindObjectOfType<Scp914Controller>();
 
                 return scp914Controller;
@@ -52,6 +52,11 @@ namespace Exiled.API.Features
             get => Scp914Controller._configMode;
             set => Scp914Controller._configMode = value;
         }
+
+        /// <summary>
+        /// Gets SCP-914's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public static GameObject GameObject => Scp914Controller.gameObject;
 
         /// <summary>
         /// Gets the position of SCP-914's intake chamber.

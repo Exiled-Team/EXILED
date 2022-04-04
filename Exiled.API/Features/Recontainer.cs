@@ -219,5 +219,10 @@ namespace Exiled.API.Features
         /// Refreshes the activator.
         /// </summary>
         public static void RefreshActivator() => Base.RefreshActivator();
+
+        /// <summary>
+        /// Breaks the glass protecting the activator button.
+        /// </summary>
+        public static void BreakGlass() => ActivatorWindow.BreakWindow();
     }
 }

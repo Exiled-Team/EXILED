@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
                             if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open))
                             {
                                 ClosingGeneratorEventArgs closingGenEvent =
-                                    new ClosingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                                    new(API.Features.Player.Get(ply), __instance);
                                 Player.OnClosingGenerator(closingGenEvent);
                                 if (!closingGenEvent.IsAllowed)
                                 {
@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
                             else
                             {
                                 OpeningGeneratorEventArgs openingGenEvent =
-                                    new OpeningGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                                    new(API.Features.Player.Get(ply), __instance);
                                 Player.OnOpeningGenerator(openingGenEvent);
                                 if (!openingGenEvent.IsAllowed)
                                 {
@@ -70,11 +70,11 @@ namespace Exiled.Events.Patches.Events.Player
                         }
 
                         bool flag =
-                            (!(ply.inventory.CurInstance != null) ||
+                            (!(ply.inventory.CurInstance is not null) ||
                              !(ply.inventory.CurInstance is KeycardItem curInstance2)
                                 ? 0
                                 : (curInstance2.Permissions.HasFlagFast(__instance._requiredPermission) ? 1 : 0)) != 0;
-                        UnlockingGeneratorEventArgs unlockingEvent = new UnlockingGeneratorEventArgs(API.Features.Player.Get(ply), __instance, flag);
+                        UnlockingGeneratorEventArgs unlockingEvent = new(API.Features.Player.Get(ply), __instance, flag);
                         Player.OnUnlockingGenerator(unlockingEvent);
 
                         if (unlockingEvent.IsAllowed)
@@ -88,7 +88,7 @@ namespace Exiled.Events.Patches.Events.Player
                         {
                             if (__instance.Activating)
                             {
-                                StoppingGeneratorEventArgs stoppingGen = new StoppingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                                StoppingGeneratorEventArgs stoppingGen = new(API.Features.Player.Get(ply), __instance);
                                 Player.OnStoppingGenerator(stoppingGen);
                                 if (!stoppingGen.IsAllowed)
                                 {
@@ -99,7 +99,7 @@ namespace Exiled.Events.Patches.Events.Player
                             else
                             {
                                 ActivatingGeneratorEventArgs activatingEvent =
-                                    new ActivatingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                                    new(API.Features.Player.Get(ply), __instance);
                                 Player.OnActivatingGenerator(activatingEvent);
                                 if (!activatingEvent.IsAllowed)
                                 {
@@ -119,7 +119,7 @@ namespace Exiled.Events.Patches.Events.Player
                     case 2:
                         if (__instance.Activating && !__instance.Engaged)
                         {
-                            StoppingGeneratorEventArgs stoppingGen = new StoppingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                            StoppingGeneratorEventArgs stoppingGen = new(API.Features.Player.Get(ply), __instance);
                             Player.OnStoppingGenerator(stoppingGen);
                             if (!stoppingGen.IsAllowed)
                             {

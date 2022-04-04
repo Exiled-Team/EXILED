@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         public RespawningTeamEventArgs(List<Player> players, int maxRespawn, SpawnableTeamType nextKnownTeam, bool isAllowed = true)
         {
             Players = players;
-            MaximumRespawnAmount = nextKnownTeam == SpawnableTeamType.ChaosInsurgency ? RespawnWaveGenerator.GetConfigLimit("maximum_CI_respawn_amount", 15) : RespawnWaveGenerator.GetConfigLimit("maximum_MTF_respawn_amount", 15);
+            MaximumRespawnAmount = Mathf.Min(maxRespawn, nextKnownTeam == SpawnableTeamType.ChaosInsurgency ? RespawnWaveGenerator.GetConfigLimit("maximum_CI_respawn_amount", 15) : RespawnWaveGenerator.GetConfigLimit("maximum_MTF_respawn_amount", 15));
             this.nextKnownTeam = nextKnownTeam;
             IsAllowed = isAllowed;
         }
@@ -74,7 +74,7 @@ namespace Exiled.Events.EventArgs
         private void ReissueNextKnownTeam()
         {
             SpawnableTeamHandlerBase @base = SpawnableTeam;
-            if (@base == null)
+            if (@base is null)
                 return;
 
             // Refer to the game code

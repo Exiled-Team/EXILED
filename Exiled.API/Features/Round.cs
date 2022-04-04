@@ -8,6 +8,9 @@
 namespace Exiled.API.Features
 {
     using System;
+    using System.Collections.Generic;
+
+    using Exiled.API.Enums;
 
     using GameCore;
 
@@ -31,7 +34,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => RoundSummary.RoundInProgress();
+        public static bool IsStarted => ReferenceHub.LocalHub is not null && RoundSummary.RoundInProgress();
 
         /// <summary>
         /// Gets a value indicating whether the round is ended or not.
@@ -90,6 +93,24 @@ namespace Exiled.API.Features
         /// Gets the number of rounds since the server started.
         /// </summary>
         public static int UptimeRounds => RoundRestart.UptimeRounds;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> indicating the sides that are currently alive.
+        /// </summary>
+        public static IEnumerable<Side> AliveSides
+        {
+            get
+            {
+                List<Side> sides = new(4);
+                foreach (Player ply in Player.Get(ply => ply.IsAlive))
+                {
+                    if (!sides.Contains(ply.Role.Side))
+                        sides.Add(ply.Role.Side);
+                }
+
+                return sides;
+            }
+        }
 
         /// <summary>
         /// Restarts the round with custom settings.

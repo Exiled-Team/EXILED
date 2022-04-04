@@ -296,7 +296,7 @@ namespace Exiled.Installer
         private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
         {
             Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
-            Version targetVersion = args.TargetVersion != null ? new Version(args.TargetVersion) : VersionLimit;
+            Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : VersionLimit;
 
             foreach (var r in releases)
             {

@@ -47,10 +47,10 @@ namespace Exiled.Events.EventArgs
             get => target;
             set
             {
-                if (value == null || target == value)
+                if (value is null || target == value)
                     return;
 
-                if (Events.Instance.Config.ShouldLogBans && target != null)
+                if (Events.Instance.Config.ShouldLogBans && target is not null)
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name, $" changed the banned player from user {target.Nickname} ({target.UserId}) to {value.Nickname} ({value.UserId})");
 
                 target = value;
@@ -65,10 +65,10 @@ namespace Exiled.Events.EventArgs
             get => issuer;
             set
             {
-                if (value == null || issuer == value)
+                if (value is null || issuer == value)
                     return;
 
-                if (Events.Instance.Config.ShouldLogBans && issuer != null)
+                if (Events.Instance.Config.ShouldLogBans && issuer is not null)
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name, $" changed the ban issuer from user {issuer.Nickname} ({issuer.UserId}) to {value.Nickname} ({value.UserId})");
 
                 issuer = value;

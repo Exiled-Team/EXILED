@@ -83,6 +83,6 @@ namespace Exiled.API.Features.DamageHandlers
         }
 
         /// <inheritdoc/>
-        public override string ToString() => $"{Target} {Damage} ({Type}) {(Attacker != null ? Attacker.Nickname : "No one")} {(Item != null ? Item.ToString() : "No item")}";
+        public override string ToString() => $"{Target} {Damage} ({Type}) {(Attacker is not null ? Attacker.Nickname : "No one")} {(Item is not null ? Item.ToString() : "No item")}";
     }
 }

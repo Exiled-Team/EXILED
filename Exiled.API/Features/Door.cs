@@ -30,10 +30,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Door"/> on the map.
         /// </summary>
-        internal static readonly List<Door> DoorsValue = new List<Door>(250);
+        internal static readonly List<Door> DoorsValue = new(250);
 
-        private static readonly Dictionary<int, DoorType> OrderedDoorTypes = new Dictionary<int, DoorType>();
-        private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new Dictionary<DoorVariant, Door>();
+        private static readonly Dictionary<int, DoorType> OrderedDoorTypes = new();
+        private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
@@ -236,7 +236,7 @@ namespace Exiled.API.Features
         public static Door Get(string name)
         {
             DoorNametagExtension.NamedDoors.TryGetValue(name, out DoorNametagExtension nameExtension);
-            return nameExtension == null ? null : Get(nameExtension.TargetDoor);
+            return nameExtension is null ? null : Get(nameExtension.TargetDoor);
         }
 
         /// <summary>
@@ -261,7 +261,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type != ZoneType.Unspecified ? Door.Get(x => (x.Room == null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : Door.DoorsValue;
+            List<Door> doors = onlyUnbroken || type != ZoneType.Unspecified ? Door.Get(x => (x.Room is null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : Door.DoorsValue;
             return doors[UnityEngine.Random.Range(0, doors.Count)];
         }
 
@@ -285,8 +285,8 @@ namespace Exiled.API.Features
         /// Locks all <see cref="Door">doors</see> in the facility.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="zoneTypes">DoorLockType of the lockdown.</param>
-        /// <param name="lockType">The <see cref="ZoneType"/>s to affect.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
         public static void LockAll(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (ZoneType zone in zoneTypes)
@@ -439,7 +439,7 @@ namespace Exiled.API.Features
 
         private DoorType GetDoorType()
         {
-            if (Nametag == null)
+            if (Nametag is null)
             {
                 string doorName = GameObject.name.GetBefore(' ');
                 switch (doorName)

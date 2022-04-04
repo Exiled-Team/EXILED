@@ -51,10 +51,10 @@ namespace Exiled.Loader.Features
         public const string MULTIADMIN_EVENT_SUFFIX = "event";
 
         public static readonly char[] MultiAdminValueSeparator = { ':' };
-        public static readonly string MultiAdminValueSeparatorStr = new string(MultiAdminValueSeparator);
+        public static readonly string MultiAdminValueSeparatorStr = new(MultiAdminValueSeparator);
 
         public static readonly char[] MultiAdminKeySeparator = { '-' };
-        public static readonly string MultiAdminKeySeparatorStr = new string(MultiAdminKeySeparator);
+        public static readonly string MultiAdminKeySeparatorStr = new(MultiAdminKeySeparator);
 
         public static readonly bool MultiAdminUsed;
         public static readonly string MultiAdminVersion;
