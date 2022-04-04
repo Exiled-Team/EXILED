@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 if (handler is AttackerDamageHandler attackerDamageHandler)
                 {
-                    PlayerDamageWindowEventArgs ev = new PlayerDamageWindowEventArgs(__instance, attackerDamageHandler.Attacker, handler, damage, __instance.CheckDamagePerms(attackerDamageHandler.Attacker.Role));
+                    PlayerDamageWindowEventArgs ev = new(__instance, attackerDamageHandler.Attacker, handler, damage, __instance.CheckDamagePerms(attackerDamageHandler.Attacker.Role));
 
                     Player.OnPlayerDamageWindow(ev);
 

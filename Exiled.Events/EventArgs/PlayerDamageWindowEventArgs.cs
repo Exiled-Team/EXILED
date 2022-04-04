@@ -11,8 +11,11 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.DamageHandlers;
 
     using PlayerStatsSystem;
+
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
     /// Contains all informations before damage is dealt to a <see cref="BreakableWindow"/>.
@@ -32,7 +35,7 @@ namespace Exiled.Events.EventArgs
             Window = Window.Get(window);
             Damage = damage;
             Player = Player.Get(player.Hub);
-            HandlerBase = handlerBase;
+            HandlerBase = new CustomDamageHandler(Player, handlerBase);
             IsAllowed = isAllowed;
         }
 
