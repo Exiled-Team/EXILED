@@ -21,7 +21,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Window"/> on the map.
         /// </summary>
-        internal static readonly List<Window> WindowValue = new(20);
+        internal static readonly List<Window> WindowValue = new(30);
         private static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
 
         /// <summary>
@@ -72,6 +72,11 @@ namespace Exiled.API.Features
             get => GameObject.transform.position;
             set => GameObject.transform.position = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not this window is breakable.
+        /// </summary>
+        public bool Is079Trigger => Recontainer.ActivatorWindow == this;
 
         /// <summary>
         /// Gets a value indicating whether or not this window is breakable.
@@ -142,20 +147,34 @@ namespace Exiled.API.Features
             : new Window(breakableWindow);
 
         /// <summary>
+        /// Break the window.
+        /// </summary>
+        public void BreakWindow() => Base.BreakWindow();
+
+        /// <summary>
         /// Damages the window.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         public void DamageWindow(float amount) => Base.ServerDamageWindow(amount);
 
+        /// <summary>
+        /// Returns the Window in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Window-related data.</returns>
+        public override string ToString() => $"{Type} {Health} {IsBroken} {DisableScpDamage}";
+
         private GlassType GetGlassType()
         {
-            return Room.Type switch
+            if (Recontainer.ActivatorWindow.Base == Base)
+                return GlassType.Scp079Trigger;
+            return Room.gameObject.name switch
             {
-                RoomType.LczGlassBox => GlassType.GR18,
-                RoomType.Hcz079 => GlassType.Scp079,
-                RoomType.HczHid => GlassType.MicroHid,
-                RoomType.Hcz049 => GlassType.Scp049,
-                RoomType.Lcz330 => GlassType.Scp330,
+                "LCZ_330" => GlassType.Scp330,
+                "LCZ_372" => GlassType.GR18,
+                "LCZ_Plants" => GlassType.Plants,
+                "HCZ_049" => GlassType.Scp049,
+                "HCZ_079" => GlassType.Scp079,
+                "HCZ_Hid" => GlassType.MicroHid,
                 _ => GlassType.Unknown,
             };
         }

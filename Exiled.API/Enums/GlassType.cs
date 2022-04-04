@@ -40,6 +40,16 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Scp330.
         /// </summary>
+        Scp079Trigger,
+
+        /// <summary>
+        /// Scp330.
+        /// </summary>
         Scp330,
+
+        /// <summary>
+        /// PlantsRoom.
+        /// </summary>
+        Plants,
     }
 }
