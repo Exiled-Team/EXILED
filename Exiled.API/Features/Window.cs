@@ -11,6 +11,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.DamageHandlers;
 
     using UnityEngine;
 
@@ -157,6 +158,16 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         public void DamageWindow(float amount) => Base.ServerDamageWindow(amount);
+
+        /// <summary>
+        /// Damages the window.
+        /// </summary>
+        /// <param name="amount">The amount of damage to deal.</param>
+        /// <param name="handler">The handler of damage.</param>
+        public void DamageWindow(float amount, DamageHandlerBase handler)
+        {
+            Base.Damage(amount, handler, Vector3.zero);
+        }
 
         /// <summary>
         /// Returns the Window in a human-readable format.
