@@ -101,7 +101,7 @@ namespace Exiled.API.Features
                     "GateB" => ElevatorType.GateB,
                     "ElA" or "ElA2" => ElevatorType.LczA,
                     "ElB" or "ElB2" => ElevatorType.LczB,
-                    "" => ElevatorType.Nuke,
+                    string.Empty => ElevatorType.Nuke,
                     _ => ElevatorType.Unknown,
                 };
             }
