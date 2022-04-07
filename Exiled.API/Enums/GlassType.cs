@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features;
-
 namespace Exiled.API.Enums
 {
+    using Exiled.API.Features;
+
     /// <summary>
     /// Unique identifier for the different types of Window.
     /// </summary>
