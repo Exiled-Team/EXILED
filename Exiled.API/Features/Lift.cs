@@ -28,6 +28,8 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<Lift> LiftsValue = new(10);
 
+        private const string EmptyString = "";
+
         private readonly List<Elevator> elevators = new();
 
         /// <summary>
@@ -90,22 +92,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
         /// </summary>
-        public ElevatorType Type
+        public ElevatorType Type => Name switch
         {
-            get
-            {
-                return Name switch
-                {
-                    "SCP-049" => ElevatorType.Scp049,
-                    "GateA" => ElevatorType.GateA,
-                    "GateB" => ElevatorType.GateB,
-                    "ElA" or "ElA2" => ElevatorType.LczA,
-                    "ElB" or "ElB2" => ElevatorType.LczB,
-                    string.Empty => ElevatorType.Nuke,
-                    _ => ElevatorType.Unknown,
-                };
-            }
-        }
+            "SCP-049" => ElevatorType.Scp049,
+            "GateA" => ElevatorType.GateA,
+            "GateB" => ElevatorType.GateB,
+            "ElA" or "ElA2" => ElevatorType.LczA,
+            "ElB" or "ElB2" => ElevatorType.LczB,
+            EmptyString => ElevatorType.Nuke,
+            _ => ElevatorType.Unknown,
+        };
 
         /// <summary>
         /// Gets a value indicating whether the lift is operative.
