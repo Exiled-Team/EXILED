@@ -70,7 +70,6 @@ namespace Exiled.API.Features
     public class Player
     {
 #pragma warning disable SA1401
-#pragma warning disable CS0618
         /// <summary>
         /// A list of the player's items.
         /// </summary>
@@ -427,7 +426,7 @@ namespace Exiled.API.Features
         /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
         public Role Role
         {
-            get => role ?? (role = Role.Create(RoleType.None, this));
+            get => role ??= Role.Create(RoleType.None, this);
             set => role = value;
         }
 

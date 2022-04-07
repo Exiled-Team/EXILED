@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-#pragma warning disable CS0618
     using System.Collections.Generic;
     using System.Linq;
 
@@ -239,26 +238,23 @@ namespace Exiled.API.Features.Items
         /// <param name="type">The <see cref="ItemType"/> of the item to create.</param>
         /// <param name="owner">The <see cref="Player"/> who owns the item by default.</param>
         /// <returns>The <see cref="Item"/> created. This can be cast as a subclass.</returns>
-        public static Item Create(ItemType type, Player owner = null)
+        public static Item Create(ItemType type, Player owner = null) => type switch
         {
-            return type switch
-            {
-                ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP268 => new Usable(type),
-                ItemType.SCP244a or ItemType.SCP244b => new Scp244(type),
-                ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new Ammo(type),
-                ItemType.Flashlight => new Flashlight(),
-                ItemType.Radio => new Radio(),
-                ItemType.MicroHID => new MicroHid(),
-                ItemType.GrenadeFlash => new FlashGrenade(owner),
-                ItemType.GrenadeHE or ItemType.SCP018 => new ExplosiveGrenade(type, owner),
-                ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 => new Firearm(type),
-                ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new Keycard(type),
-                ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new Armor(type),
-                ItemType.SCP330 => new Scp330(),
-                ItemType.SCP2176 => new Throwable(type),
-                _ => new Item(type),
-            };
-        }
+            ItemType.Adrenaline or ItemType.Medkit or ItemType.Painkillers or ItemType.SCP500 or ItemType.SCP207 or ItemType.SCP268 => new Usable(type),
+            ItemType.SCP244a or ItemType.SCP244b => new Scp244(type),
+            ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new Ammo(type),
+            ItemType.Flashlight => new Flashlight(),
+            ItemType.Radio => new Radio(),
+            ItemType.MicroHID => new MicroHid(),
+            ItemType.GrenadeFlash => new FlashGrenade(owner),
+            ItemType.GrenadeHE or ItemType.SCP018 => new ExplosiveGrenade(type, owner),
+            ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 => new Firearm(type),
+            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new Keycard(type),
+            ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new Armor(type),
+            ItemType.SCP330 => new Scp330(),
+            ItemType.SCP2176 => new Throwable(type),
+            _ => new Item(type),
+        };
 
         /// <summary>
         /// Gives this item to a <see cref="Player"/>.

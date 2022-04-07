@@ -23,10 +23,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/> enum.</param>
         /// <returns>The <see cref="System.Type"/>.</returns>
-        public static Type Type(this EffectType effect)
-        {
-            // Recursive patterns in C# 7.3, bruh
-            return effect switch
+        public static Type Type(this EffectType effect) => effect switch
             {
                 EffectType.Amnesia => typeof(Amnesia),
                 EffectType.Asphyxiated => typeof(Asphyxiated),
@@ -61,6 +58,5 @@ namespace Exiled.API.Extensions
                 // This should never happen
                 _ => throw new InvalidOperationException("Invalid effect enum provided"),
             };
-        }
     }
 }

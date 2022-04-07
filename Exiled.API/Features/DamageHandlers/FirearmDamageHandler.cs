@@ -32,18 +32,12 @@ namespace Exiled.API.Features.DamageHandlers
             : base(target, baseHandler) => Item = item;
 
         /// <inheritdoc/>
-        public override DamageType Type
+        public override DamageType Type => Item switch
         {
-            get
-            {
-                return Item switch
-                {
-                    Firearm _ when ItemConversion.ContainsKey(Item.Type) => ItemConversion[Item.Type],
-                    MicroHid _ => DamageType.MicroHid,
-                    _ => DamageType.Firearm,
-                };
-            }
-        }
+            Firearm _ when ItemConversion.ContainsKey(Item.Type) => ItemConversion[Item.Type],
+            MicroHid _ => DamageType.MicroHid,
+            _ => DamageType.Firearm,
+        };
 
         /// <summary>
         /// Gets or sets the <see cref="Items.Item"/> used by the damage handler.
