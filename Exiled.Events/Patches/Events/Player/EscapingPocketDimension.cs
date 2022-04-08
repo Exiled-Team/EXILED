@@ -27,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches the <see cref="PocketDimensionTeleport.SuccessEscape"/> method.
     /// Adds the <see cref="Exiled.Events.Handlers.Player.EscapingPocketDimension"/> event.
     /// </summary>
+    [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.SuccessEscape))]
     internal static class EscapingPocketDimension
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -34,12 +35,11 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
             Label retLabel = generator.DefineLabel();
-            int offset = -1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))) + offset;
-
-            for (int i = 0; i < 27; i++)
+            Label effectLabel = generator.DefineLabel();
+            int offset = +2;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(Vector3), nameof(Vector3.Distance))) + offset;
+            for (int i = 0; i < 28; i++)
                 newInstructions.RemoveAt(index);
-
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_1),
@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.EscapingPocketDimension))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, retLabel),
                 new(OpCodes.Ldloc, ev.LocalIndex),
@@ -59,11 +59,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.Player))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
                 new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
+                new(OpCodes.Br, effectLabel),
             });
 
+            offset = -1;
             index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))) + offset;
 
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 15; i++)
                 newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
@@ -75,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.EscapingPocketDimension))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, retLabel),
                 new(OpCodes.Ldloc, ev.LocalIndex),
@@ -83,8 +85,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.Player))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
                 new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
+                new(OpCodes.Br, effectLabel),
             });
 
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))) + offset;
+            newInstructions[index].labels.Add(effectLabel);
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
