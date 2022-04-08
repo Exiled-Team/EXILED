@@ -18,6 +18,7 @@ namespace Exiled.API.Extensions
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.Attachments.Components;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
@@ -263,7 +264,7 @@ namespace Exiled.API.Extensions
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> which contains all the firearm's attachments.</returns>
         public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this Firearm firearm)
         {
-            foreach (FirearmAttachment attachment in firearm.Attachments.Where(att => att.IsEnabled))
+            foreach (Attachment attachment in firearm.Attachments.Where(att => att.IsEnabled))
                 yield return Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment);
         }
 

@@ -19,6 +19,7 @@ namespace Exiled.Events.Handlers.Internal
     using Interactables.Interobjects.DoorUtils;
 
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.Attachments.Components;
 
     using MapGeneration;
     using MapGeneration.Distributors;
@@ -122,7 +123,7 @@ namespace Exiled.Events.Handlers.Internal
                 Firearm.FirearmInstances.Add(firearm);
                 uint code = 1;
                 List<AttachmentIdentifier> attachmentIdentifiers = new();
-                foreach (FirearmAttachment att in firearm.Attachments)
+                foreach (Attachment att in firearm.Attachments)
                 {
                     attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));
                     code *= 2U;

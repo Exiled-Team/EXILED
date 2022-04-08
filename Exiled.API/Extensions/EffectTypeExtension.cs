@@ -13,6 +13,8 @@ namespace Exiled.API.Extensions
 
     using Exiled.API.Enums;
 
+    using InventorySystem.Items.Usables.Scp244.Hypothermia;
+
     /// <summary>
     /// Contains an extension method to get <see cref="System.Type"/> from <see cref="EffectType"/>.
     /// </summary>

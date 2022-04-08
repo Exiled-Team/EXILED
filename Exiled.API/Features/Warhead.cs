@@ -147,6 +147,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shake all players, like if the warhead has been detonated.
         /// </summary>
-        public static void Shake() => Controller.RpcShake(true);
+        public static void Shake()
+        {
+            foreach (Player player in Player.List)
+                Controller.TargetRpcShake(player.Connection, false, false);
+        }
     }
 }
