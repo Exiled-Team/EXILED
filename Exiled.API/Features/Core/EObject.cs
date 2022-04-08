@@ -15,7 +15,7 @@ namespace Exiled.API.Features.Core
     using UnityEngine;
 
     /// <summary>
-    /// The base class of all RolePlus objects.
+    /// The base class of all Exiled objects.
     /// </summary>
     public abstract class EObject : TypeCastObject<EObject>
     {
