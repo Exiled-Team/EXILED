@@ -202,7 +202,7 @@ namespace Exiled.Events.Patches.Generic
                         if (target?.ReferenceHub is null)
                             continue;
 
-                        if (player.Role != RoleType.Spectator && (target.IsInvisible || PlayerCannotSee(player, target.Id)))
+                        if (player.IsAlive && (target.IsInvisible || PlayerCannotSee(player, target.Id)))
                         {
                             MakeGhost(z, __instance._transmitBuffer);
                         }
@@ -211,8 +211,8 @@ namespace Exiled.Events.Patches.Generic
                         // in client-side
                         else if (player.Role.Type == RoleType.Scp173
                             && ((!Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173
-                                    && target.Role.Type == RoleType.Tutorial)
-                                || Scp173.TurnedPlayers.Contains(target)))
+                            && target.Role.Type == RoleType.Tutorial)
+                            || Scp173.TurnedPlayers.Contains(target)))
                         {
                             RotatePlayer(z, __instance._transmitBuffer, FindLookRotation(player.Position, target.Position));
                         }
