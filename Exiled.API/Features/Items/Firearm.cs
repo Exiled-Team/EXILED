@@ -47,6 +47,7 @@ namespace Exiled.API.Features.Items
             { ItemType.GunLogicer, BaseCode.GunLogicer },
             { ItemType.GunAK, BaseCode.GunAK },
             { ItemType.GunShotgun, BaseCode.GunShotgun },
+            { ItemType.ParticleDisruptor, BaseCode.Disruptor },
         };
 
         /// <summary>

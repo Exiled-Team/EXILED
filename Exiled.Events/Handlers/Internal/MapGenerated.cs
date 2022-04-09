@@ -26,6 +26,8 @@ namespace Exiled.Events.Handlers.Internal
 
     using MEC;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using Camera = Exiled.API.Features.Camera;
@@ -51,7 +53,7 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
-            GenerateCache();
+            Timing.CallDelayed(0.25f, GenerateCache);
             Door.RegisterDoorTypesOnLevelLoad();
         }
 
@@ -64,21 +66,23 @@ namespace Exiled.Events.Handlers.Internal
             GenerateLifts();
             GeneratePocketTeleports();
             GenerateAttachments();
-            Timing.CallDelayed(0.5f, GenerateLockers);
+            GenerateLockers();
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
         private static void GenerateRooms()
         {
             // Get bulk of rooms with sorted.
-            IEnumerable<GameObject> roomObjects = Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject);
+            List<GameObject> roomObjects = ListPool<GameObject>.Shared.Rent(Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject));
 
             // If no rooms were found, it means a plugin is trying to access this before the map is created.
-            if (!roomObjects.Any())
+            if (roomObjects.Count == 0)
                 throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
 
             foreach (GameObject roomObject in roomObjects)
                 Room.RoomsValue.Add(Room.CreateComponent(roomObject));
+
+            ListPool<GameObject>.Shared.Return(roomObjects);
         }
 
         private static void GenerateDoors()
@@ -117,7 +121,7 @@ namespace Exiled.Events.Handlers.Internal
                     continue;
 
                 Item item = Item.Create(type);
-                if (!(item is Firearm firearm))
+                if (item is not Firearm firearm)
                     continue;
 
                 Firearm.FirearmInstances.Add(firearm);

@@ -38,18 +38,18 @@ namespace Exiled.API.Extensions
         /// <param name="type">The item to be checked.</param>
         /// <param name="checkMicro">Indicates whether the MicroHID item should be taken into account or not.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a weapon or not.</returns>
-        public static bool IsWeapon(this ItemType type, bool checkMicro = true) => type == ItemType.GunCrossvec ||
-            type == ItemType.GunLogicer || type == ItemType.GunRevolver || type == ItemType.GunShotgun ||
-            type == ItemType.GunAK || type == ItemType.GunCOM15 || type == ItemType.GunCOM18 ||
-            type == ItemType.GunE11SR || type == ItemType.GunFSP9 || (checkMicro && type == ItemType.MicroHID);
+        public static bool IsWeapon(this ItemType type, bool checkMicro = true) => type is ItemType.GunCrossvec
+                or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK
+                or ItemType.GunCOM15
+                or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor ||
+            (checkMicro && type == ItemType.MicroHID);
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an SCP.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
-        public static bool IsScp(this ItemType type) => type == ItemType.SCP018 || type == ItemType.SCP500 || type == ItemType.SCP268 || type == ItemType.SCP207
-            || type == ItemType.SCP244a || type == ItemType.SCP244b || type == ItemType.SCP2176;
+        public static bool IsScp(this ItemType type) => type is ItemType.SCP018 or ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP244a or ItemType.SCP244b or ItemType.SCP2176;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a throwable item.
@@ -86,10 +86,7 @@ namespace Exiled.API.Extensions
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a keycard or not.</returns>
         public static bool IsKeycard(this ItemType type) =>
-            type == ItemType.KeycardChaosInsurgency || type == ItemType.KeycardContainmentEngineer || type == ItemType.KeycardFacilityManager ||
-            type == ItemType.KeycardGuard || type == ItemType.KeycardJanitor || type == ItemType.KeycardNTFCommander ||
-            type == ItemType.KeycardNTFLieutenant || type == ItemType.KeycardO5 || type == ItemType.KeycardScientist ||
-            type == ItemType.KeycardResearchCoordinator || type == ItemType.KeycardNTFOfficer || type == ItemType.KeycardZoneManager;
+            type is ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardResearchCoordinator or ItemType.KeycardNTFOfficer or ItemType.KeycardZoneManager;
 
         /// <summary>
         /// Gets the default ammo of a weapon.
@@ -225,7 +222,7 @@ namespace Exiled.API.Extensions
 
             Firearm firearm = Firearm.FirearmInstances.FirstOrDefault(item => item.Type == type);
             if (firearm is null)
-                throw new ArgumentException("Couldn't find a Firearm instance matching the ItemType value.");
+                throw new ArgumentException($"Couldn't find a Firearm instance matching the ItemType value. {type}");
 
             firearm.Base.ApplyAttachmentsCode(code, true);
             return firearm.GetAttachmentIdentifiers();

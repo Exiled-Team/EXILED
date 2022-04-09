@@ -283,6 +283,7 @@ namespace Exiled.API.Features.Items
                 case ItemType.GunCOM18:
                 case ItemType.GunE11SR:
                 case ItemType.GunFSP9:
+                case ItemType.ParticleDisruptor:
                     return new Firearm(type);
                 case ItemType.KeycardGuard:
                 case ItemType.KeycardJanitor:
