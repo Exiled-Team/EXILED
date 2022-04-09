@@ -796,7 +796,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
-        public ZoneType Zone => CurrentRoom.Zone;
+        public ZoneType Zone => CurrentRoom?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets all currently active <see cref="PlayerEffect">status effects</see>.
