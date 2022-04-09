@@ -425,7 +425,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
         /// </summary>
-        public static event CustomEventHandler<PlayerDamageWindowEventArgs> PlayerDamageWindow;
+        public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
@@ -911,7 +911,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> damage a window.
         /// </summary>
-        /// <param name="ev">The <see cref="PlayerDamageWindowEventArgs"/> instance.</param>
-        public static void OnPlayerDamageWindow(PlayerDamageWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
+        public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
     }
 }
