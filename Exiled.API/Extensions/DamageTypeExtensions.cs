@@ -151,6 +151,8 @@ namespace Exiled.API.Extensions
                     return DamageType.Recontainment;
                 case Scp096DamageHandler _:
                     return DamageType.Scp096;
+                case MicroHidDamageHandler _:
+                    return DamageType.MicroHid;
 
                 case FirearmDamageHandler firearmDamageHandler:
                     {
