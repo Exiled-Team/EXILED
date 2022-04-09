@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="EscapingAndFailingEscapePocketDimension.cs" company="Exiled Team">
+// <copyright file="FailingEscapePocketDimension.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.EscapingPocketDimension"/> and <see cref="Handlers.Player.FailingEscapePocketDimension"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
-    internal static class EscapingAndFailingEscapePocketDimension
+    internal static class FailingEscapePocketDimension
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -53,8 +53,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, exiledPlayerLocal.LocalIndex),
-                new(OpCodes.Ldnull),
-                new(OpCodes.Call, Method(typeof(object), nameof(Equals), new[] { typeof(object), typeof(object) })),
                 new(OpCodes.Brtrue, returnLabel),
             });
 
@@ -73,44 +71,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFailingEscapePocketDimension))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(FailingEscapePocketDimensionEventArgs), nameof(FailingEscapePocketDimensionEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
-            });
-
-            // --------- EscapingPocketDimension ---------
-
-            // The index offset.
-            offset = -1;
-
-            // Find the starting index by searching for "callvirt" of "Component.GetComponent<PlayerMovementSync>()".
-            index = newInstructions.FindLastIndex(i =>
-                i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand ==
-                Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))) + offset;
-
-            // Declare EscapingPocketDimensionEventArgs local variable.
-            LocalBuilder ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
-
-            // var ev = new EscapingPocketDimensionEventArgs(API.Features.Player.Get(other.gameObject), tpPosition);
-            //
-            // Player.OnEscapingPocketDimension(ev);
-            //
-            // if (!ev.IsAllowed)
-            //  return;
-            //
-            // tpPosition = ev.TeleportPosition;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex),
-                new(OpCodes.Ldloc_S, 10),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, Constructor(typeof(EscapingPocketDimensionEventArgs), new[] { typeof(Player), typeof(Vector3), typeof(bool) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
-                new(OpCodes.Stloc_S, 10),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

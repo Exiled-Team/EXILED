@@ -110,16 +110,16 @@ namespace Exiled.Example
         public Vector3 Vector3 { get; private set; } = new(1.3f, -2.5f, 3);
 
         /// <summary>
-        /// Gets the <see cref="List{T}"/> of <see cref="AttachmentNameTranslation"/> config.
+        /// Gets the <see cref="List{T}"/> of <see cref="AttachmentName"/> config.
         /// </summary>
         [Description("This is a list of AttachmentNameTranslation config")]
-        public List<AttachmentNameTranslation> Attachments { get; private set; } = new()
+        public List<AttachmentName> Attachments { get; private set; } = new()
         {
-            AttachmentNameTranslation.AmmoCounter,
-            AttachmentNameTranslation.DotSight,
-            AttachmentNameTranslation.RifleBody,
-            AttachmentNameTranslation.RecoilReducingStock,
-            AttachmentNameTranslation.StandardMagAP,
+            AttachmentName.AmmoCounter,
+            AttachmentName.DotSight,
+            AttachmentName.RifleBody,
+            AttachmentName.RecoilReducingStock,
+            AttachmentName.StandardMagAP,
         };
     }
 }

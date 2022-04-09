@@ -388,7 +388,7 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value, null, true);
         }
 
         /// <summary>
@@ -1552,7 +1552,7 @@ namespace Exiled.API.Features
                 }
 
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                if (firearm.Base.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
+                if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
                     flags |= FirearmStatusFlags.FlashlightEnabled;
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
@@ -1730,8 +1730,7 @@ namespace Exiled.API.Features
                     }
 
                     FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                    if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages
-                        .Flashlight))
+                    if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
                         flags |= FirearmStatusFlags.FlashlightEnabled;
                     firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
                 }
