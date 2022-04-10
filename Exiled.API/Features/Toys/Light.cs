@@ -8,8 +8,11 @@
 namespace Exiled.API.Features.Toys
 {
     using System.Linq;
+
     using AdminToys;
+
     using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>

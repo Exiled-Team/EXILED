@@ -9,9 +9,13 @@ namespace Exiled.API.Features.Toys
 {
     using System;
     using System.Linq;
+
     using AdminToys;
+
     using Exiled.API.Enums;
+
     using UnityEngine;
+
     using Object = UnityEngine.Object;
 
     /// <summary>
