@@ -9,7 +9,6 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Numerics;
 
     using Exiled.API.Enums;
 
@@ -187,6 +186,20 @@ namespace Exiled.API.Features
         {
             get => Base.transform.position;
             set => Base.transform.position = value;
+        }
+
+        /// <summary>
+        /// Gets the generator transform.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets or sets the generator rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => Base.transform.rotation;
+            set => Base.transform.rotation = value;
         }
 
         /// <summary>
