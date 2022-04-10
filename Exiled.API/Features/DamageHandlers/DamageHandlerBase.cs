@@ -101,6 +101,8 @@ namespace Exiled.API.Features.DamageHandlers
                         return DamageType.Scp018;
                     case RecontainmentDamageHandler _:
                         return DamageType.Recontainment;
+                    case MicroHidDamageHandler _:
+                        return DamageType.MicroHid;
                     case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
