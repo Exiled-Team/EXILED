@@ -41,6 +41,9 @@ namespace Exiled.CustomItems
             harmony = new Harmony($"com.{nameof(CustomItems)}.galaxy119-{DateTime.Now.Ticks}");
             harmony.PatchAll();
 
+            if (!Server.HeavilyModded)
+                Server.HeavilyModded = true;
+
             base.OnEnabled();
         }
 

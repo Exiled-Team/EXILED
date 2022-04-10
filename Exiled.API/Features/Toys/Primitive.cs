@@ -9,13 +9,10 @@ namespace Exiled.API.Features.Toys
 {
     using System;
     using System.Linq;
-
     using AdminToys;
-
     using Exiled.API.Enums;
-
+    using Exiled.API.Exceptions;
     using UnityEngine;
-
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -84,6 +81,9 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
+            if (!Server.HeavilyModded)
+                throw new HeavilyModdedOperationException("Only Heavily Modded servers can spawn Primitives.");
+
             Primitive primitve = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
             primitve.AdminToyBase.transform.position = position ?? Vector3.zero;
