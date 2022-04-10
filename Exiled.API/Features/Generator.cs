@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Numerics;
+
 namespace Exiled.API.Features
 {
     using System.Collections.Generic;
@@ -177,6 +179,15 @@ namespace Exiled.API.Features
         {
             get => Base._deniedCooldownTime;
             set => Base._deniedCooldownTime = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the generator position.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => Base.transform.position;
+            set => Base.transform.position = value;
         }
 
         /// <summary>
