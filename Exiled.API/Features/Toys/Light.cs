@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Toys
     using System.Linq;
     using AdminToys;
     using Exiled.API.Enums;
-    using Exiled.API.Exceptions;
     using UnityEngine;
 
     /// <summary>
@@ -76,9 +75,6 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Light"/>.</returns>
         public static Light Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
-            if (!Server.HeavilyModded)
-                throw new HeavilyModdedOperationException("Only Heavily Modded servers can spawn Lights.");
-
             Light light = new(Object.Instantiate(ToysHelper.LightBaseObject));
 
             light.AdminToyBase.transform.position = position ?? Vector3.zero;
