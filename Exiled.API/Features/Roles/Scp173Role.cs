@@ -111,10 +111,7 @@ namespace Exiled.API.Features.Roles
         /// <returns>The tantrum's <see cref="UnityEngine.GameObject"/>, or <see langword="null"/> if it cannot be placed.</returns>
         public UnityEngine.GameObject Tantrum(bool failIfObserved = false)
         {
-            if (failIfObserved && IsObserved)
-                return null;
-
-            return Owner.PlaceTantrum();
+            return failIfObserved && IsObserved ? null : Owner.PlaceTantrum();
         }
     }
 }

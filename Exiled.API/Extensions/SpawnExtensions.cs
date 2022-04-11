@@ -46,10 +46,9 @@ namespace Exiled.API.Extensions
         {
             string doorName = location.GetDoorName();
 
-            if (string.IsNullOrEmpty(doorName))
-                return null;
-
-            return DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nametag) ? nametag.transform : null;
+            return string.IsNullOrEmpty(doorName)
+                ? null
+                : DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nametag) ? nametag.transform : null;
         }
 
         /// <summary>

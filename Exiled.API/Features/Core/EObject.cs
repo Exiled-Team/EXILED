@@ -9,24 +9,27 @@ namespace Exiled.API.Features.Core
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
 
     using UnityEngine;
+
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// The base class of all Exiled objects.
     /// </summary>
     public abstract class EObject : TypeCastObject<EObject>
     {
-        private static readonly Dictionary<Type, List<string>> InternalRegisteredTypes = new Dictionary<Type, List<string>>();
-        private static readonly List<EObject> InternalObjects = new List<EObject>();
+        private static readonly Dictionary<Type, List<string>> InternalRegisteredTypes = new();
+        private static readonly List<EObject> InternalObjects = new();
         private bool destroyedValue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EObject"/> class.
         /// </summary>
-        public EObject()
+        protected EObject()
             : base()
         {
             IsEditable = true;
@@ -40,38 +43,43 @@ namespace Exiled.API.Features.Core
         protected EObject(GameObject gameObject = null)
             : this()
         {
-            if (gameObject != null)
+            if (gameObject is not null)
                 Base = gameObject;
         }
 
         /// <summary>
+        /// Gets or sets the name of the <see cref="EObject"/> instance.
+        /// </summary>
+        public virtual string Name { get; set; }
+
+        /// <summary>
         /// Gets or sets the tag of the <see cref="EObject"/> instance.
         /// </summary>
+        [YamlIgnore]
         public string Tag { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="EObject"/> values can be edited.
         /// </summary>
+        [YamlIgnore]
         public bool IsEditable { get; set; }
 
         /// <summary>
         /// Gets or sets the base <see cref="GameObject"/>.
         /// </summary>
+        [YamlIgnore]
         public GameObject Base { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the name of the <see cref="EObject"/> instance.
-        /// </summary>
-        public string Name { get; protected set; }
 
         /// <summary>
         /// Gets all the registered <see cref="EObject"/> types.
         /// </summary>
+        [YamlIgnore]
         protected static IReadOnlyDictionary<Type, List<string>> RegisteredTypes => InternalRegisteredTypes;
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="EObject"/> containing all the active <see cref="EObject"/> instances.
         /// </summary>
+        [YamlIgnore]
         protected static IReadOnlyCollection<EObject> Objects => InternalObjects;
 
         /// <summary>
@@ -102,7 +110,7 @@ namespace Exiled.API.Features.Core
             where T : EObject
         {
             Type matching = GetEObjectTypeFromRegisteredTypes<T>(name);
-            if (matching != null)
+            if (matching is not null)
                 return matching;
 
             foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
@@ -110,13 +118,13 @@ namespace Exiled.API.Features.Core
                 if (t.Name != typeof(T).Name)
                     continue;
 
-                if (InternalRegisteredTypes[t] != null)
+                if (InternalRegisteredTypes[t] is not null)
                 {
                     InternalRegisteredTypes[t].Add(name);
                 }
                 else
                 {
-                    List<string> values = new List<string> { name, };
+                    List<string> values = new() { name, };
                     InternalRegisteredTypes.Add(t, values);
                 }
 
@@ -136,7 +144,7 @@ namespace Exiled.API.Features.Core
         public static bool RegisterEObjectType(Type type, string name, out Type registeredType)
         {
             registeredType = GetEObjectTypeFromRegisteredTypes(type, name);
-            if (registeredType != null)
+            if (registeredType is not null)
                 return false;
 
             foreach (Type t in Assembly.GetExecutingAssembly().GetTypes().Where(item => item.IsSubclassOf(typeof(EObject))))
@@ -150,7 +158,7 @@ namespace Exiled.API.Features.Core
                 }
                 else
                 {
-                    List<string> values = new List<string> { name, };
+                    List<string> values = new() { name, };
                     InternalRegisteredTypes.Add(t, values);
                 }
 
@@ -199,7 +207,7 @@ namespace Exiled.API.Features.Core
                 Assembly.GetExecutingAssembly().GetTypes()
                 .Where(t => !t.IsAbstract).ToArray() :
                 Assembly.GetExecutingAssembly().GetTypes();
-            List<int> matches = new List<int>();
+            List<int> matches = new();
             matches.AddRange(assemblyTypes.Select(type =>
             LevenshteinDistance(type.Name, name)));
             return assemblyTypes[matches.IndexOf(matches.Min())];
@@ -284,17 +292,50 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
         /// </summary>
-        /// <param name="type">The type of the <see cref="EObject"/>.</param>
-        /// <param name="gameObject"><inheritdoc cref="Base"/></param>
+        /// <typeparam name="T">The <see cref="EObject"/> type.</typeparam>
         /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static EObject NewObject(Type type, GameObject gameObject)
-        {
-            if (!(Activator.CreateInstance(type) is EObject outer))
-                return null;
+        public static T CreateDefaultSubobject<T>()
+            where T : EObject => Activator.CreateInstance(typeof(T), true) is not EObject outer ? null : outer.Cast<T>();
 
-            outer.Base = gameObject;
-            return outer;
+        /// <summary>
+        /// Creates a new instance of the <see cref="EObject"/> class.
+        /// </summary>
+        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
+        /// <param name="type">The <see cref="EObject"/> type.</param>
+        /// <returns>The new <see cref="EObject"/> instance.</returns>
+        public static T CreateDefaultSubobject<T>(Type type)
+            where T : EObject => Activator.CreateInstance(type, true) is not EObject outer ? null : outer.Cast<T>();
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="EObject"/> class.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="EObject"/> type.</typeparam>
+        /// <param name="parameters">The parameters to initialize the object.</param>
+        /// <returns>The new <see cref="EObject"/> instance.</returns>
+        public static T CreateDefaultSubobject<T>(params object[] parameters)
+            where T : EObject => Activator.CreateInstance(typeof(T), parameters) is not EObject outer ? null : outer.Cast<T>();
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="EObject"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="EObject"/> type.</param>
+        /// <param name="parameters">The parameters to initialize the object.</param>
+        /// <returns>The new <see cref="EObject"/> instance.</returns>
+        public static EObject CreateDefaultSubobject(Type type, params object[] parameters)
+        {
+            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+            return Activator.CreateInstance(type, flags, null, parameters, null) is not EObject outer ? null : outer;
         }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="EObject"/> class.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="EObject"/> type to cast.</typeparam>
+        /// <param name="type">The <see cref="EObject"/> type.</param>
+        /// <param name="parameters">The parameters to initialize the object.</param>
+        /// <returns>The new <see cref="EObject"/> instance.</returns>
+        public static T CreateDefaultSubobject<T>(Type type, params object[] parameters)
+            where T : EObject => CreateDefaultSubobject(type, parameters).Cast<T>();
 
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
@@ -306,7 +347,7 @@ namespace Exiled.API.Features.Core
         public static T CreateDefaultSubobject<T>(GameObject gameObject, string name)
             where T : EObject
         {
-            if (!(Activator.CreateInstance<T>() is EObject outer))
+            if (CreateDefaultSubobject<T>() is not EObject outer)
                 return null;
 
             outer.Base = gameObject;
@@ -325,12 +366,13 @@ namespace Exiled.API.Features.Core
         public static T CreateDefaultSubobject<T>(GameObject gameObject, string name, params object[] parameters)
             where T : EObject
         {
-            if (!(Activator.CreateInstance(typeof(T), parameters) is EObject outer))
+            object newObj = CreateDefaultSubobject<T>(parameters);
+            if (newObj is not T outer)
                 return null;
 
             outer.Base = gameObject;
             outer.Name = name;
-            return outer.Cast<T>();
+            return outer;
         }
 
         /// <summary>
@@ -344,12 +386,13 @@ namespace Exiled.API.Features.Core
         public static T CreateDefaultSubobject<T>(Type type, GameObject gameObject, string name)
             where T : EObject
         {
-            if (!(Activator.CreateInstance(type) is EObject outer))
+            object newObj = CreateDefaultSubobject<T>(type);
+            if (newObj is not T outer)
                 return null;
 
             outer.Base = gameObject;
             outer.Name = name;
-            return outer.Cast<T>();
+            return outer;
         }
 
         /// <summary>
@@ -364,12 +407,13 @@ namespace Exiled.API.Features.Core
         public static T CreateDefaultSubobject<T>(Type type, GameObject gameObject, string name, params object[] parameters)
             where T : EObject
         {
-            if (!(Activator.CreateInstance(type, parameters) is EObject outer))
+            object newObj = CreateDefaultSubobject<T>(type, parameters);
+            if (newObj is not T outer)
                 return null;
 
             outer.Base = gameObject;
             outer.Name = name;
-            return outer.Cast<T>();
+            return outer;
         }
 
         /// <summary>
@@ -381,7 +425,7 @@ namespace Exiled.API.Features.Core
         /// <returns>The new <see cref="EObject"/> instance.</returns>
         public static EObject CreateDefaultSubobject(Type type, GameObject gameObject, string name)
         {
-            if (!(Activator.CreateInstance(type) is EObject outer))
+            if (CreateDefaultSubobject(type) is not EObject outer)
                 return null;
 
             outer.Base = gameObject;
@@ -399,7 +443,7 @@ namespace Exiled.API.Features.Core
         /// <returns>The new <see cref="EObject"/> instance.</returns>
         public static EObject CreateDefaultSubobject(Type type, GameObject gameObject, string name, params object[] parameters)
         {
-            if (!(Activator.CreateInstance(type, parameters) is EObject outer))
+            if (CreateDefaultSubobject(type, parameters) is not EObject outer)
                 return null;
 
             outer.Base = gameObject;
@@ -440,8 +484,8 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>()
             where T : EObject
         {
-            List<T> objects = new List<T>();
-            foreach (EObject @object in EObject.InternalObjects)
+            List<T> objects = new();
+            foreach (EObject @object in InternalObjects)
             {
                 if (@object.Cast(out T obj))
                     objects.Add(obj);
@@ -459,8 +503,8 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>(string name)
             where T : EObject
         {
-            List<T> objects = new List<T>();
-            foreach (EObject @object in EObject.InternalObjects)
+            List<T> objects = new();
+            foreach (EObject @object in InternalObjects)
             {
                 if (@object.Cast(out T obj) && obj.Name == name)
                     objects.Add(obj);
@@ -478,9 +522,8 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsWithTagOfType<T>(string tag)
             where T : EObject
         {
-            List<T> objects = new List<T>();
-
-            foreach (EObject @object in EObject.InternalObjects)
+            List<T> objects = new();
+            foreach (EObject @object in InternalObjects)
             {
                 if (@object.Cast(out T obj) && obj.Tag.ToLower().Contains(tag))
                     objects.Add(obj);

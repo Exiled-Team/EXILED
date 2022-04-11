@@ -45,10 +45,7 @@ namespace Exiled.API.Features.Roles
             {
                 Player spectatedPlayer = Player.Get(Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
 
-                if (spectatedPlayer == Owner)
-                    return null;
-
-                return spectatedPlayer;
+                return spectatedPlayer == Owner ? null : spectatedPlayer;
             }
 
             set

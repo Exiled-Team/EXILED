@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Core
         /// Initializes a new instance of the <see cref="EActor"/> class.
         /// </summary>
         /// <param name="gameObject"><inheritdoc cref="EObject.Base"/></param>
-        public EActor(GameObject gameObject = null)
+        protected EActor(GameObject gameObject = null)
             : base(gameObject)
         {
             CanEverTick = true;
@@ -139,7 +139,7 @@ namespace Exiled.API.Features.Core
         {
             component = GetComponent<T>();
 
-            return component != null;
+            return component is not null;
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Exiled.API.Features.Core
         {
             component = GetComponent(type);
 
-            return component != null;
+            return component is not null;
         }
 
         /// <summary>

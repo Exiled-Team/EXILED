@@ -72,9 +72,7 @@ namespace Exiled.API.Features.Roles
         /// <returns><see langword="true"/> if the values are equal.</returns>
         public static bool operator ==(Role role1, Role role2)
         {
-            if (role1 is null)
-                return role2 is null;
-            return role1.Equals(role2);
+            return role1 is null ? role2 is null : role1.Equals(role2);
         }
 
         /// <summary>
@@ -85,9 +83,7 @@ namespace Exiled.API.Features.Roles
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(Role role1, Role role2)
         {
-            if (role1 is null)
-                return !(role2 is null);
-            return !role1.Equals(role2);
+            return role1 is null ? role2 is not null : !role1.Equals(role2);
         }
 
         /// <summary>

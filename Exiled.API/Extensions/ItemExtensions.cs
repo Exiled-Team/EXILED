@@ -93,13 +93,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="item">The <see cref="ItemType">item</see> that you want to get durability of.</param>
         /// <returns>Returns the item durability.</returns>
-        public static byte GetMaxAmmo(this ItemType item)
-        {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
-                return 0;
-
-            return firearm.AmmoManagerModule.MaxAmmo;
-        }
+        public static byte GetMaxAmmo(this ItemType item) =>
+             !InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || itemBase is not InventorySystem.Items.Firearms.Firearm firearm ? (byte)0 : firearm.AmmoManagerModule.MaxAmmo;
 
         /// <summary>
         /// Returns the <see cref="AmmoType"/> of the weapon is using.

@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Core
         {
             param = default;
 
-            if (!(this as T1 is T cast))
+            if (this as T1 is not T cast)
                 return false;
 
             param = cast;

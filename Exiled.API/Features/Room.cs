@@ -81,7 +81,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && !(player.CurrentRoom is null) && player.CurrentRoom.Transform == Transform);
+        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom is not null && player.CurrentRoom.Transform == Transform);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
