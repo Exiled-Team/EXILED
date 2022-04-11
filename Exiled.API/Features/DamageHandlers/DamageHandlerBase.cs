@@ -227,7 +227,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// Safely casts the damage handler to the specified <see cref="BaseHandler"/> type.
         /// </summary>
         /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
-        /// <param name="param">The cast <see cref="BaseHandler"/>.</param>
+        /// <param name="param">The casted <see cref="BaseHandler"/>.</param>
         /// <returns>A <see cref="BaseHandler"/> object.</returns>
         public bool Is<T>(out T param)
             where T : BaseHandler
@@ -245,7 +245,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// Safely casts the damage handler to the specified <see cref="DamageHandlerBase"/> type.
         /// </summary>
         /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
-        /// <param name="param">The cast <see cref="DamageHandlerBase"/>.</param>
+        /// <param name="param">The casted <see cref="DamageHandlerBase"/>.</param>
         /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
         public bool BaseIs<T>(out T param)
             where T : DamageHandlerBase
