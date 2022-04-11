@@ -9,13 +9,10 @@ namespace Exiled.API.Features.Core
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Reflection;
 
     using UnityEngine;
-
-    using YamlDotNet.Serialization;
 
     /// <summary>
     /// The base class of all Exiled objects.
@@ -55,31 +52,26 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets or sets the tag of the <see cref="EObject"/> instance.
         /// </summary>
-        [YamlIgnore]
         public string Tag { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="EObject"/> values can be edited.
         /// </summary>
-        [YamlIgnore]
         public bool IsEditable { get; set; }
 
         /// <summary>
         /// Gets or sets the base <see cref="GameObject"/>.
         /// </summary>
-        [YamlIgnore]
         public GameObject Base { get; protected set; }
 
         /// <summary>
         /// Gets all the registered <see cref="EObject"/> types.
         /// </summary>
-        [YamlIgnore]
         protected static IReadOnlyDictionary<Type, List<string>> RegisteredTypes => InternalRegisteredTypes;
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="EObject"/> containing all the active <see cref="EObject"/> instances.
         /// </summary>
-        [YamlIgnore]
         protected static IReadOnlyCollection<EObject> Objects => InternalObjects;
 
         /// <summary>
