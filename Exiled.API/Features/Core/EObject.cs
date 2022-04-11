@@ -284,32 +284,6 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
         /// </summary>
-        /// <typeparam name="T">The <see cref="EObject"/> type.</typeparam>
-        /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>()
-            where T : EObject => Activator.CreateInstance(typeof(T), true) is not EObject outer ? null : outer.Cast<T>();
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="EObject"/> class.
-        /// </summary>
-        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
-        /// <param name="type">The <see cref="EObject"/> type.</param>
-        /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>(Type type)
-            where T : EObject => Activator.CreateInstance(type, true) is not EObject outer ? null : outer.Cast<T>();
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="EObject"/> class.
-        /// </summary>
-        /// <typeparam name="T">The <see cref="EObject"/> type.</typeparam>
-        /// <param name="parameters">The parameters to initialize the object.</param>
-        /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>(params object[] parameters)
-            where T : EObject => Activator.CreateInstance(typeof(T), parameters) is not EObject outer ? null : outer.Cast<T>();
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="EObject"/> class.
-        /// </summary>
         /// <param name="type">The <see cref="EObject"/> type.</param>
         /// <param name="parameters">The parameters to initialize the object.</param>
         /// <returns>The new <see cref="EObject"/> instance.</returns>
@@ -322,12 +296,28 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
         /// </summary>
-        /// <typeparam name="T">The <see cref="EObject"/> type to cast.</typeparam>
+        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
         /// <param name="type">The <see cref="EObject"/> type.</param>
+        /// <returns>The new <see cref="EObject"/> instance.</returns>
+        public static T CreateDefaultSubobject<T>(Type type)
+            where T : EObject => CreateDefaultSubobject(type, null).Cast<T>();
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="EObject"/> class.
+        /// </summary>
+        /// <typeparam name="T">The cast <see cref="EObject"/> type.</typeparam>
+        /// <returns>The new <see cref="EObject"/> instance.</returns>
+        public static T CreateDefaultSubobject<T>()
+            where T : EObject => CreateDefaultSubobject(typeof(T), null).Cast<T>();
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="EObject"/> class.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="EObject"/> type to cast.</typeparam>
         /// <param name="parameters">The parameters to initialize the object.</param>
         /// <returns>The new <see cref="EObject"/> instance.</returns>
-        public static T CreateDefaultSubobject<T>(Type type, params object[] parameters)
-            where T : EObject => CreateDefaultSubobject(type, parameters).Cast<T>();
+        public static T CreateDefaultSubobject<T>(params object[] parameters)
+            where T : EObject => CreateDefaultSubobject(typeof(T), parameters).Cast<T>();
 
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
