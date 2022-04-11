@@ -391,11 +391,9 @@ namespace Exiled.API.Features
 
             set
             {
-                using (List<Scp079PlayerScript>.Enumerator enumerator = Scp079PlayerScript.instances.GetEnumerator())
-                {
-                    while (enumerator.MoveNext())
-                        enumerator.Current.RpcSwitchCamera(Id, true);
-                }
+                using List<Scp079PlayerScript>.Enumerator enumerator = Scp079PlayerScript.instances.GetEnumerator();
+                while (enumerator.MoveNext())
+                    enumerator.Current.RpcSwitchCamera(Id, true);
             }
         }
 
