@@ -33,11 +33,11 @@ namespace Exiled.API.Features.DamageHandlers
         public CustomDamageHandler(Player target, BaseHandler baseHandler)
             : base(target, baseHandler)
         {
-            if (Attacker != null)
+            if (Attacker is not null)
             {
                 if (Attacker.IsScp)
                     CustomBase = new ScpDamageHandler(target, baseHandler);
-                else if (Attacker.CurrentItem != null && Attacker.CurrentItem.IsWeapon &&
+                else if (Attacker.CurrentItem is not null && Attacker.CurrentItem.IsWeapon &&
                          baseHandler is BaseFirearmHandler)
                     CustomBase = new FirearmDamageHandler(Attacker.CurrentItem, target, baseHandler);
                 else
@@ -63,7 +63,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             Damage = damage;
             Type = damageType;
-            Firearm firearm = new Firearm(ItemType.GunAK)
+            Firearm firearm = new(ItemType.GunAK)
             {
                 Base =
                 {
@@ -132,7 +132,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             Ragdoll.Spawn(player, damageHandlerBase.Base);
 
-            if (damageHandlerBase.Is(out BaseAttackerHandler handler) && damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker != null)
+            if (damageHandlerBase.Is(out BaseAttackerHandler handler) && damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker is not null)
                 player.ReferenceHub.playerStats.TargetReceiveAttackerDeathReason(damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker.Nickname, damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker.Role);
             else
                 player.ReferenceHub.playerStats.TargetReceiveSpecificDeathReason(handler);

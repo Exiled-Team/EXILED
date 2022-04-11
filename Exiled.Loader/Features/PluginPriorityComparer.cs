@@ -19,7 +19,7 @@ namespace Exiled.Loader.Features
         /// <summary>
         /// Public instance.
         /// </summary>
-        public static readonly PluginPriorityComparer Instance = new PluginPriorityComparer();
+        public static readonly PluginPriorityComparer Instance = new();
 
         /// <inheritdoc/>
         public int Compare(IPlugin<IConfig> x, IPlugin<IConfig> y)

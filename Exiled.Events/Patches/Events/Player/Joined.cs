@@ -42,7 +42,11 @@ namespace Exiled.Events.Patches.Events.Player
 #endif
                 player = new API.Features.Player(hub);
 #if DEBUG
+<<<<<<< HEAD
                 API.Features.Log.Debug($"Object exists {player != null}");
+=======
+                API.Features.Log.Debug($"Object exists {player is not null}");
+>>>>>>> Exiled-Team-dev
                 API.Features.Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
 #endif
                 API.Features.Player.UnverifiedPlayers.Add(hub, player);
@@ -75,6 +79,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
+<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.isDedicatedServer))),
                 new CodeInstruction(OpCodes.Brtrue_S, cdc),
@@ -96,6 +101,29 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloca_S, out_rh),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Joined), nameof(Joined.CallEvent))),
                 new CodeInstruction(OpCodes.Pop),
+=======
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.isDedicatedServer))),
+                new(OpCodes.Brtrue_S, cdc),
+                new(OpCodes.Call, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.HostHub))),
+                new(OpCodes.Ldnull),
+                new(OpCodes.Ceq),
+                new(OpCodes.Brtrue_S, cdc),
+                new(OpCodes.Ldsfld, Field(typeof(PlayerManager), nameof(PlayerManager.localPlayer))),
+                new(OpCodes.Ldnull),
+                new(OpCodes.Ceq),
+                new(OpCodes.Brtrue_S, cdc),
+                new(OpCodes.Ldsfld, Field(typeof(PlayerManager), nameof(PlayerManager.players))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(List<GameObject>), nameof(List<GameObject>.Count))),
+                new(OpCodes.Ldsfld, Field(typeof(CustomNetworkManager), nameof(CustomNetworkManager.slots))),
+                new(OpCodes.Bge_S, je),
+                new(OpCodes.Ldc_I4_4),
+                new(OpCodes.Call, Method(typeof(MultiAdminFeatures), nameof(MultiAdminFeatures.CallEvent))),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(je),
+                new(OpCodes.Ldloca_S, out_rh),
+                new(OpCodes.Call, Method(typeof(Joined), nameof(Joined.CallEvent))),
+                new(OpCodes.Pop),
+>>>>>>> Exiled-Team-dev
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

@@ -39,7 +39,11 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets a list of all registered custom roles.
         /// </summary>
+<<<<<<< HEAD
         public static IEnumerable<CustomRole> Registered => Objects.Where(obj => obj.Cast(out CustomRole _)).Select(obj => obj.Cast<CustomRole>());
+=======
+        public static HashSet<CustomRole> Registered { get; } = new();
+>>>>>>> Exiled-Team-dev
 
         /// <summary>
         /// Gets or sets the custom RoleID of the role.
@@ -70,22 +74,22 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets all of the players currently set to this role.
         /// </summary>
         [YamlIgnore]
-        public HashSet<Player> TrackedPlayers { get; } = new HashSet<Player>();
+        public HashSet<Player> TrackedPlayers { get; } = new();
 
         /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
-        public virtual List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>();
+        public virtual List<CustomAbility> CustomAbilities { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the starting inventory for the role.
         /// </summary>
-        public virtual List<string> Inventory { get; set; } = new List<string>();
+        public virtual List<string> Inventory { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the possible spawn locations for this role.
         /// </summary>
-        public virtual SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
+        public virtual SpawnProperties SpawnProperties { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep their current inventory when gaining this role.
@@ -138,7 +142,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             customRole = Get(id);
 
-            return customRole != null;
+            return customRole is not null;
         }
 
         /// <summary>
@@ -238,7 +242,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
         public static IEnumerable<CustomRole> UnregisterRoles()
         {
-            List<CustomRole> unregisteredRoles = new List<CustomRole>();
+            List<CustomRole> unregisteredRoles = new();
 
             foreach (CustomRole customRole in Registered)
             {
@@ -257,7 +261,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
         public static IEnumerable<CustomRole> UnregisterRoles(IEnumerable<Type> targetTypes, bool isIgnored = false)
         {
-            List<CustomRole> unregisteredRoles = new List<CustomRole>();
+            List<CustomRole> unregisteredRoles = new();
 
             foreach (CustomRole customRole in Registered)
             {
@@ -293,7 +297,7 @@ namespace Exiled.CustomRoles.API.Features
 
             customRole = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
-            return customRole != null;
+            return customRole is not null;
         }
 
         /// <summary>
@@ -305,7 +309,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <exception cref="ArgumentNullException">If the player is <see langword="null"/>.</exception>
         public static bool TryGet(Player player, out IReadOnlyCollection<CustomRole> customRoles)
         {
-            if (player == null)
+            if (player is null)
                 throw new ArgumentNullException(nameof(player));
 
             List<CustomRole> tempList = ListPool<CustomRole>.Shared.Rent();
@@ -372,7 +376,7 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
             player.CustomInfo = CustomInfo;
             player.InfoArea &= ~PlayerInfoArea.Role;
-            if (CustomAbilities != null)
+            if (CustomAbilities is not null)
             {
                 foreach (CustomAbility ability in CustomAbilities)
                     ability.AddAbility(player);
@@ -502,7 +506,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>The chosen spawn location.</returns>
         protected Vector3 GetSpawnPosition()
         {
-            if (SpawnProperties == null || SpawnProperties.Count() == 0)
+            if (SpawnProperties is null || SpawnProperties.Count() == 0)
                 return Vector3.zero;
 
             if (SpawnProperties.StaticSpawnPoints.Count > 0)

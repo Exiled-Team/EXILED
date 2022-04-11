@@ -61,7 +61,11 @@ namespace Exiled.API.Features
         /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
         public static void MessageTranslated(string message, string translation, bool isHeld = false, bool isNoisy = true, bool isSubtitles = true)
         {
+<<<<<<< HEAD
             StringBuilder annoucement = new StringBuilder();
+=======
+            StringBuilder annoucement = new();
+>>>>>>> Exiled-Team-dev
             string[] cassies = message.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Count(); i++)

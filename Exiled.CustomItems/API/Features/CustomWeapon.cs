@@ -18,6 +18,7 @@ namespace Exiled.CustomItems.API.Features
 
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
 
     using MEC;
@@ -33,9 +34,13 @@ namespace Exiled.CustomItems.API.Features
     public abstract class CustomWeapon : CustomItem
     {
         /// <summary>
-        /// Gets or sets value indicating what <see cref="FirearmAttachment"/>s the weapon will have.
+        /// Gets or sets value indicating what <see cref="Attachment"/>s the weapon will have.
         /// </summary>
+<<<<<<< HEAD
         public virtual AttachmentNameTranslation[] Attachments { get; set; } = { };
+=======
+        public virtual AttachmentName[] Attachments { get; set; } = { };
+>>>>>>> Exiled-Team-dev
 
         /// <inheritdoc/>
         public override ItemType Type
@@ -65,17 +70,29 @@ namespace Exiled.CustomItems.API.Features
         {
             Item item = Item.Create(Type);
 
+<<<<<<< HEAD
             if (item == null)
+=======
+            if (item is null)
+>>>>>>> Exiled-Team-dev
             {
                 Log.Debug($"{nameof(Spawn)}: Item is null.", Instance.Config.Debug);
                 return null;
             }
 
+<<<<<<< HEAD
             if (item is Firearm firearm && Attachments != null && !Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
 
             Pickup pickup = item.Spawn(position);
             if (pickup == null)
+=======
+            if (item is Firearm firearm && Attachments is not null && !Attachments.IsEmpty())
+                firearm.AddAttachment(Attachments);
+
+            Pickup pickup = item.Spawn(position);
+            if (pickup is null)
+>>>>>>> Exiled-Team-dev
             {
                 Log.Debug($"{nameof(Spawn)}: Pickup is null.");
                 return null;
@@ -259,13 +276,21 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
+<<<<<<< HEAD
             if (ev.Attacker == null)
+=======
+            if (ev.Attacker is null)
+>>>>>>> Exiled-Team-dev
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Attacker null", Instance.Config.Debug);
                 return;
             }
 
+<<<<<<< HEAD
             if (ev.Target == null)
+=======
+            if (ev.Target is null)
+>>>>>>> Exiled-Team-dev
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: target null", Instance.Config.Debug);
                 return;
@@ -283,7 +308,11 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
+<<<<<<< HEAD
             if (ev.Handler == null)
+=======
+            if (ev.Handler is null)
+>>>>>>> Exiled-Team-dev
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler null", Instance.Config.Debug);
                 return;

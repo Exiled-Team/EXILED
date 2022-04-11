@@ -45,29 +45,29 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
 
                 // damage
-                new CodeInstruction(OpCodes.Ldarg_1),
+                new(OpCodes.Ldarg_1),
 
                 // true
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new(OpCodes.Ldc_I4_1),
 
                 // var ev = new DamagingWindowEventArgs(this, damage, true);
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingWindowEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingWindowEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Map.OnDamagingWindow(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.OnDamagingWindow))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnDamagingWindow))),
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, ret),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, ret),
 
                 // damage = ev.Damage;
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.Damage))),
-                new CodeInstruction(OpCodes.Starg_S, 1),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.Damage))),
+                new(OpCodes.Starg_S, 1),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);

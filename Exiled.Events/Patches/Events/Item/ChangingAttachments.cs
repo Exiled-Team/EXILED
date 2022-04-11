@@ -44,61 +44,68 @@ namespace Exiled.Events.Patches.Events.Item
 
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // curCode = Firearm::GetCurrentAttachmentsCode
-                new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(AttachmentsUtils), nameof(AttachmentsUtils.GetCurrentAttachmentsCode))),
-                new CodeInstruction(OpCodes.Stloc_S, curCode.LocalIndex),
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Call, Method(typeof(AttachmentsUtils), nameof(AttachmentsUtils.GetCurrentAttachmentsCode))),
+                new(OpCodes.Stloc_S, curCode.LocalIndex),
 
                 // If the Firearm::GetCurrentAttachmentsCode isn't changed, prevents the method from being executed
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
-                new CodeInstruction(OpCodes.Ldloc_S, curCode.LocalIndex),
-                new CodeInstruction(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Brtrue_S, ret),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+                new(OpCodes.Ldloc_S, curCode.LocalIndex),
+                new(OpCodes.Ceq),
+                new(OpCodes.Brtrue_S, ret),
 
                 // API::Features::Player::Get(NetworkConnection::identity::netId)
+<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
+=======
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
+>>>>>>> Exiled-Team-dev
 
                 // Item::Get(firearm)
-                new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Get))),
-                new CodeInstruction(OpCodes.Castclass, typeof(API.Features.Items.Firearm)),
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Call, Method(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Get))),
+                new(OpCodes.Castclass, typeof(API.Features.Items.Firearm)),
 
                 // AttachmentsChangeRequest::AttachmentsCode
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
 
                 // true
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new(OpCodes.Ldc_I4_1),
 
                 // ChangingAttachmentsEventArgs ev = new ChangingAttachmentsEventArgs(__ARGS__)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingAttachmentsEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingAttachmentsEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers::Item::OnChangingAttachments(ev)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingAttachments))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingAttachments))),
 
                 // ev.IsAllowed
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, ret),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, ret),
 
                 // **AttachmentsChangeRequest = ev::NewCode + curCode - ev::CurrentCode
-                new CodeInstruction(OpCodes.Ldarga_S, 1),
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.NewCode))),
-                new CodeInstruction(OpCodes.Ldloc_S, curCode.LocalIndex),
-                new CodeInstruction(OpCodes.Add),
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.CurrentCode))),
-                new CodeInstruction(OpCodes.Sub),
-                new CodeInstruction(OpCodes.Stfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+                new(OpCodes.Ldarga_S, 1),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.NewCode))),
+                new(OpCodes.Ldloc_S, curCode.LocalIndex),
+                new(OpCodes.Add),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.CurrentCode))),
+                new(OpCodes.Sub),
+                new(OpCodes.Stfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
