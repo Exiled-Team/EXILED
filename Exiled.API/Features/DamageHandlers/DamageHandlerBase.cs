@@ -86,7 +86,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             get
             {
-                if (!(damageType is DamageType.Unknown))
+                if (damageType != DamageType.Unknown)
                     return damageType;
 
                 switch (Base)
@@ -130,6 +130,8 @@ namespace Exiled.API.Features.DamageHandlers
                                 return DamageType.FriendlyFireDetector;
                             if (translation.Id == DeathTranslations.SeveredHands.Id)
                                 return DamageType.SeveredHands;
+                            if (translation.Id == DeathTranslations.Hypothermia.Id)
+                                return DamageType.Hypothermia;
 
                             Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                             break;
@@ -156,7 +158,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        internal static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
+        internal static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new()
         {
             { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
             { DeathTranslations.Bleeding, DamageType.Bleeding },
@@ -181,6 +183,7 @@ namespace Exiled.API.Features.DamageHandlers
             { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
             { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
             { DeathTranslations.MicroHID, DamageType.MicroHid },
+            { DeathTranslations.Hypothermia, DamageType.Hypothermia },
         };
 
         /// <summary>
@@ -295,7 +298,7 @@ namespace Exiled.API.Features.DamageHandlers
             /// </summary>
             /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> instance.</param>
             public static implicit operator BaseHandler.CassieAnnouncement(CassieAnnouncement cassieAnnouncement) =>
-                new BaseHandler.CassieAnnouncement()
+                new()
                 {
                     Announcement = cassieAnnouncement.Announcement,
                     SubtitleParts = cassieAnnouncement.SubtitleParts.ToArray(),
@@ -306,7 +309,7 @@ namespace Exiled.API.Features.DamageHandlers
             /// </summary>
             /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> instance.</param>
             public static implicit operator CassieAnnouncement(BaseHandler.CassieAnnouncement cassieAnnouncement) =>
-                new CassieAnnouncement(cassieAnnouncement.Announcement, cassieAnnouncement.SubtitleParts);
+                new(cassieAnnouncement.Announcement, cassieAnnouncement.SubtitleParts);
         }
     }
 }

@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using System;
+
     using System.Reflection;
 
     using MEC;
@@ -14,6 +16,8 @@ namespace Exiled.API.Features
     using Mirror;
 
     using RoundRestarting;
+
+    using UnityEngine;
 
     /// <summary>
     /// A set of tools to easily work with the server.
@@ -33,8 +37,8 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (host == null || host.ReferenceHub == null)
-                    host = PlayerManager.localPlayer != null ? new Player(PlayerManager.localPlayer) : null;
+                if (host is null || host.ReferenceHub is null)
+                    host = PlayerManager.localPlayer is not null ? new Player(PlayerManager.localPlayer) : null;
 
                 return host;
             }
@@ -47,7 +51,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (broadcast == null)
+                if (broadcast is null)
                     broadcast = PlayerManager.localPlayer.GetComponent<global::Broadcast>();
 
                 return broadcast;
@@ -61,7 +65,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (banPlayer == null)
+                if (banPlayer is null)
                     banPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
 
                 return banPlayer;
@@ -75,7 +79,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (sendSpawnMessage == null)
+                if (sendSpawnMessage is null)
                 {
                     sendSpawnMessage = typeof(NetworkServer).GetMethod(
                         "SendSpawnMessage",
@@ -115,6 +119,11 @@ namespace Exiled.API.Features
         public static ushort Port => ServerStatic.ServerPort;
 
         /// <summary>
+        /// Gets the actual ticks per second of the server.
+        /// </summary>
+        public static double Tps => Math.Round(1f / Time.smoothDeltaTime);
+
+        /// <summary>
         /// Gets or sets a value indicating whether friendly fire is enabled or not.
         /// </summary>
         public static bool FriendlyFire
@@ -135,6 +144,33 @@ namespace Exiled.API.Features
         {
             get => CustomNetworkManager.slots;
             set => CustomNetworkManager.slots = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not later join is enabled.
+        /// </summary>
+        public static bool LaterJoinEnabled
+        {
+            get => CharacterClassManager.LaterJoinEnabled;
+            set => CharacterClassManager.LaterJoinEnabled = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the late join time, in seconds. If a player joins less than this many seconds into a game, they will be given a random class.
+        /// </summary>
+        public static float LaterJoinTime
+        {
+            get => CharacterClassManager.LaterJoinTime;
+            set => CharacterClassManager.LaterJoinTime = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the spawn protection time, in seconds.
+        /// </summary>
+        public static float SpawnProtectTime
+        {
+            get => CharacterClassManager.SProtectedDuration;
+            set => CharacterClassManager.SProtectedDuration = value;
         }
 
         /// <summary>
@@ -161,7 +197,7 @@ namespace Exiled.API.Features
         /// <remarks>If the returned value is <see langword="false"/>, the server won't restart.</remarks>
         public static bool RestartRedirect(ushort redirectPort)
         {
-            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
+            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true, false));
             Timing.CallDelayed(0.5f, Restart);
 
             return true;
@@ -175,7 +211,7 @@ namespace Exiled.API.Features
         /// <remarks>If the returned value is <see langword="false"/>, the server won't shutdown.</remarks>
         public static bool ShutdownRedirect(ushort redirectPort)
         {
-            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
+            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true, false));
             Timing.CallDelayed(0.5f, Shutdown);
             return true;
         }

@@ -34,9 +34,9 @@ namespace Exiled.Events.Patches.Fixes
                 if (inst.opcode == OpCodes.Call && (MethodInfo)inst.operand == AccessTools.Method(typeof(Grenade), nameof(Grenade._Fuse)))
                 {
                     // MECExtensionMethods2.CancelWith(Grenade._Fuse(float), this.gameObject);
-                    yield return new CodeInstruction(OpCodes.Ldarg_0);
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(Component), nameof(Component.gameObject)));
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(MECExtensionMethods2), nameof(MECExtensionMethods2.CancelWith), new[] { typeof(IEnumerator<float>), typeof(GameObject) }));
+                    yield return new(OpCodes.Ldarg_0);
+                    yield return new(OpCodes.Call, AccessTools.PropertyGetter(typeof(Component), nameof(Component.gameObject)));
+                    yield return new(OpCodes.Call, AccessTools.Method(typeof(MECExtensionMethods2), nameof(MECExtensionMethods2.CancelWith), new[] { typeof(IEnumerator<float>), typeof(GameObject) }));
                 }
             }
         }

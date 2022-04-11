@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
-    /// A wrapper class for <see cref="InventorySystem.Items.MicroHID.MicroHIDItem"/>.
+    /// A wrapper class for <see cref="MicroHIDItem"/>.
     /// </summary>
     public class MicroHid : Item
     {

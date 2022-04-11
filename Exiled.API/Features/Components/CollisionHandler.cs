@@ -50,13 +50,13 @@ namespace Exiled.API.Features.Components
             {
                 if (!initialized)
                     return;
-                if (Owner == null)
+                if (Owner is null)
                     Log.Error($"Owner is null!");
-                if (Grenade == null)
+                if (Grenade is null)
                     Log.Error("Grenade is null!");
-                if (collision == null)
+                if (collision is null)
                     Log.Error("wat");
-                if (collision.gameObject == null)
+                if (collision.gameObject is null)
                     Log.Error("pepehm");
                 if (collision.gameObject == Owner || collision.gameObject.TryGetComponent<EffectGrenade>(out _))
                     return;

@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic
     using Events = Exiled.Events.Events;
 
     /// <summary>
-    /// Patches <see cref="RemoteAdmin.CommandProcessor.ProcessQuery"/> for command logging.
+    /// Patches <see cref="CommandProcessor.ProcessQuery"/> for command logging.
     /// </summary>
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
     internal class CommandLogging
@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                if (query.ToUpperInvariant().StartsWith("REQUEST_DATA"))
+                if (query.Equals("$0 1"))
                     return;
 
                 Player player = sender is PlayerCommandSender playerCommandSender
@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Generic
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player == null}\n{e}");
+                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player is null}\n{e}");
                 }
 
                 if (string.IsNullOrEmpty(logMessage))
@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Generic
             }
             catch (Exception e)
             {
-                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender == null}\n{e}");
+                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender is null}\n{e}");
             }
         }
 
@@ -79,17 +79,17 @@ namespace Exiled.Events.Patches.Generic
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int index = 0;
             Label continueLabel = generator.DefineLabel();
-            newInstructions[newInstructions.FindIndex(i => i.opcode == OpCodes.Ldarg_1)].WithLabels(continueLabel);
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.LogRaCommands))),
-                new CodeInstruction(OpCodes.Brfalse, continueLabel),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
+                new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.LogRaCommands))),
+                new(OpCodes.Brfalse, continueLabel),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

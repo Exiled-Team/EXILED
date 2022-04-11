@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="RemovingHandcuffs.cs" company="Exiled Team">
+// <copyright file="ProcessDisarmMessage.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -32,13 +32,13 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Handcuffing"/> and <see cref="Player.RemovingHandcuffs"/> events.
     /// </summary>
     [HarmonyPatch(typeof(DisarmingHandlers), nameof(DisarmingHandlers.ServerProcessDisarmMessage))]
-    internal static class RemovingHandcuffs
+    internal static class ProcessDisarmMessage
     {
         public static bool Prefix(NetworkConnection conn, DisarmMessage msg)
         {
             try
             {
-                if (!ReferenceHub.TryGetHub(conn.identity.gameObject, out ReferenceHub hub))
+                if (!DisarmingHandlers.ServerCheckCooldown(conn) || !ReferenceHub.TryGetHub(conn.identity.gameObject, out ReferenceHub hub))
                 {
                     return false;
                 }
@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!msg.PlayerIsNull)
                 {
                     Vector3 vector3 = msg.PlayerToDisarm.transform.position - hub.transform.position;
-                    if (vector3.sqrMagnitude > 20.0 || (msg.PlayerToDisarm.inventory.CurInstance != null && msg.PlayerToDisarm.inventory.CurInstance.TierFlags != ItemTierFlags.Common))
+                    if (vector3.sqrMagnitude > 20.0 || (msg.PlayerToDisarm.inventory.CurInstance is not null && msg.PlayerToDisarm.inventory.CurInstance.TierFlags != ItemTierFlags.Common))
                     {
                         return false;
                     }
@@ -73,7 +73,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else if (!flag1 & flag2 && msg.Disarm)
                 {
-                    if (msg.PlayerToDisarm.inventory.CurInstance == null || msg.PlayerToDisarm.inventory.CurInstance.CanHolster())
+                    if (msg.PlayerToDisarm.inventory.CurInstance is null || msg.PlayerToDisarm.inventory.CurInstance.CanHolster())
                     {
                         if (msg.PlayerToDisarm.characterClassManager.CurRole.team == Team.MTF && hub.characterClassManager.CurClass == RoleType.ClassD)
                         {

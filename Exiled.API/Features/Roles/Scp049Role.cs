@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using PlayableScps;
+
     using UnityEngine;
 
     /// <summary>
@@ -14,25 +16,26 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp049Role : Role
     {
-        private PlayableScps.Scp049 script;
+        private Scp049 script;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp049Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp049Role(Player player)
-        {
-            Owner = player;
-            script = player.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp049;
-        }
+        internal Scp049Role(Player player) => Owner = player;
 
         /// <inheritdoc/>
         public override Player Owner { get; }
 
         /// <summary>
+        /// Gets the <see cref="Scp049"/> player script for this role.
+        /// </summary>
+        public Scp049 Script => script ?? (script = Owner.CurrentScp as Scp049);
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-049 is currently recalling a player.
         /// </summary>
-        public bool IsRecalling => script._recallInProgressServer;
+        public bool IsRecalling => Script._recallInProgressServer;
 
         /// <summary>
         /// Gets the player that is currently being revived by SCP-049. Will be <see langword="null"/> if <see cref="IsRecalling"/> is false.
@@ -41,10 +44,10 @@ namespace Exiled.API.Features.Roles
         {
             get
             {
-                if (!IsRecalling || script._recallHubServer == null)
+                if (!IsRecalling || Script._recallHubServer is null)
                     return null;
 
-                return Player.Get(script._recallHubServer);
+                return Player.Get(Script._recallHubServer);
             }
         }
 

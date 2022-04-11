@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     using UnityEngine;
@@ -30,7 +31,7 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             Position = position;
-            Type = type;
+            Type = (BloodType)type;
             Multiplier = multiplier;
             IsAllowed = isAllowed;
         }
@@ -48,7 +49,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the blood type.
         /// </summary>
-        public int Type { get; set; }
+        public BloodType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the blood multiplier.

@@ -32,18 +32,23 @@ namespace Exiled.API.Features.Roles
         public override Player Owner { get; }
 
         /// <summary>
+        /// Gets the <see cref="Scp939"/> script for this role.
+        /// </summary>
+        public Scp939 Script => script ?? (script = Owner.ReferenceHub.scpsController.CurrentScp as Scp939);
+
+        /// <summary>
         /// Gets or sets the amount of time before SCP-939 can attack again.
         /// </summary>
         public float AttackCooldown
         {
-            get => script.CurrentBiteCooldown;
-            set => script.CurrentBiteCooldown = value;
+            get => Script.CurrentBiteCooldown;
+            set => Script.CurrentBiteCooldown = value;
         }
 
         /// <summary>
         /// Gets SCP-939's move speed.
         /// </summary>
-        public float MoveSpeed => script.GetMovementSpeed();
+        public float MoveSpeed => Script.GetMovementSpeed();
 
         /// <inheritdoc/>
         internal override RoleType RoleType { get; }

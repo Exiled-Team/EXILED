@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventorySystem.Items.ThrowableProjectiles.ThrowableItem"/> to fix fuse times being unchangeable.
+    /// Patches <see cref="ThrowableItem"/> to fix fuse times being unchangeable.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3), typeof(Vector3))]
     internal static class GrenadeFuseTimeFix
@@ -45,66 +45,66 @@ namespace Exiled.Events.Patches.Fixes
             {
                 // if (!thrownProjectils is TimeGrenade timeGrenade)
                 //    goto SKIP_LABEL
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Isinst, typeof(TimeGrenade)),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse, skipLabel),
+                new(OpCodes.Ldloc_0),
+                new(OpCodes.Isinst, typeof(TimeGrenade)),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, timeGrenade.LocalIndex),
+                new(OpCodes.Brfalse, skipLabel),
 
                 // item = Item.Get(this);
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Item), nameof(Item.Get))),
-                new CodeInstruction(OpCodes.Stloc, item.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc, item.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse, skipLabel),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get))),
+                new(OpCodes.Stloc, item.LocalIndex),
+                new(OpCodes.Ldloc, item.LocalIndex),
+                new(OpCodes.Brfalse, skipLabel),
 
                 // if (item is ExplosiveGrenade explosive)
                 //    goto NOT_EXPLOSIVE_LABEL
-                new CodeInstruction(OpCodes.Ldloc, item.LocalIndex),
-                new CodeInstruction(OpCodes.Isinst, typeof(ExplosiveGrenade)),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, explosive.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse, notExplosiveLabel),
+                new(OpCodes.Ldloc, item.LocalIndex),
+                new(OpCodes.Isinst, typeof(ExplosiveGrenade)),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, explosive.LocalIndex),
+                new(OpCodes.Brfalse, notExplosiveLabel),
 
                 // timeGrenade._fuseTime = explosive.FuseTime
-                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc, explosive.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ExplosiveGrenade), nameof(ExplosiveGrenade.FuseTime))),
-                new CodeInstruction(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ExplosiveGrenade), nameof(ExplosiveGrenade.GrenadeToItem))),
-                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Isinst, typeof(ExplosionGrenade)),
-                new CodeInstruction(OpCodes.Ldloc, explosive.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<ExplosionGrenade, ExplosiveGrenade>), nameof(Dictionary<ExplosiveGrenade, ExplosionGrenade>.Add))),
+                new(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new(OpCodes.Ldloc, explosive.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ExplosiveGrenade), nameof(ExplosiveGrenade.FuseTime))),
+                new(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
+                new(OpCodes.Call, PropertyGetter(typeof(ExplosiveGrenade), nameof(ExplosiveGrenade.GrenadeToItem))),
+                new(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new(OpCodes.Isinst, typeof(ExplosionGrenade)),
+                new(OpCodes.Ldloc, explosive.LocalIndex),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<ExplosionGrenade, ExplosiveGrenade>), nameof(Dictionary<ExplosiveGrenade, ExplosionGrenade>.Add))),
 
                 // timeGrenade.ServerActivate()
-                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
-                new CodeInstruction(OpCodes.Ret),
+                new(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
+                new(OpCodes.Ret),
 
                 // if (item is FlashGrenade flash)
                 //    goto SKIP_LABEL
                 new CodeInstruction(OpCodes.Ldloc, item.LocalIndex).WithLabels(notExplosiveLabel),
-                new CodeInstruction(OpCodes.Isinst, typeof(FlashGrenade)),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, flash.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse, skipLabel),
+                new(OpCodes.Isinst, typeof(FlashGrenade)),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, flash.LocalIndex),
+                new(OpCodes.Brfalse, skipLabel),
 
                 // timeGrenade._fuseTime = flash.FuseTime
-                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.FuseTime))),
-                new CodeInstruction(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.GrenadeToItem))),
-                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Isinst, typeof(FlashbangGrenade)),
-                new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.Add))),
+                new(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new(OpCodes.Ldloc, flash.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.FuseTime))),
+                new(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
+                new(OpCodes.Call, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.GrenadeToItem))),
+                new(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new(OpCodes.Isinst, typeof(FlashbangGrenade)),
+                new(OpCodes.Ldloc, flash.LocalIndex),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.Add))),
 
                 // timeGrenade.ServerActivate();
-                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
-                new CodeInstruction(OpCodes.Ret),
+                new(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
+                new(OpCodes.Ret),
 
                 // skips all of the above code, and runs base-game serverActivate instead.
                 new CodeInstruction(OpCodes.Nop).WithLabels(skipLabel),

@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Items
 {
     using InventorySystem.Items.ThrowableProjectiles;
 
+    using UnityEngine;
+
     /// <summary>
     /// A wrapper class for throwable items.
     /// </summary>
@@ -31,7 +33,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the throwable item. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this throwable is custom using Exiled.CustomItems.</remarks>
         internal Throwable(ItemType type, Player player = null)
-            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
+            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
         }
 
@@ -53,7 +55,12 @@ namespace Exiled.API.Features.Items
         /// Throws the item.
         /// </summary>
         /// <param name="fullForce">Whether to use full or half force.</param>
-        public void Throw(bool fullForce = true) => Base.ServerThrow(fullForce, ThrowableNetworkHandler.GetLimitedVelocity(Base.Owner.playerMovementSync.PlayerVelocity));
+        /// this.ServerThrow(projectileSettings.StartVelocity, projectileSettings.UpwardsFactor, projectileSettings.StartTorque, startVel);
+        public void Throw(bool fullForce = true)
+        {
+            ThrowableItem.ProjectileSettings settings = fullForce ? Base.FullThrowSettings : Base.WeakThrowSettings;
+            Base.ServerThrow(settings.StartVelocity, settings.UpwardsFactor, settings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(Base.Owner?.playerMovementSync.PlayerVelocity ?? Vector3.one));
+        }
 
         /// <summary>
         /// Returns the Throwable in a human readable format.

@@ -54,7 +54,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets a set of types and methods for which EXILED patches should not be run.
         /// </summary>
-        public static HashSet<MethodBase> DisabledPatchesHashSet { get; } = new HashSet<MethodBase>();
+        public static HashSet<MethodBase> DisabledPatchesHashSet { get; } = new();
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.First;

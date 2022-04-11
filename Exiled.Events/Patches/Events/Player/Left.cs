@@ -7,8 +7,10 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -17,33 +19,65 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="CustomNetworkManager.OnServerDisconnect(Mirror.NetworkConnection)"/>.
+    /// Patches <see cref="CustomNetworkManager.OnServerDisconnect(NetworkConnection)"/>.
     /// Adds the <see cref="Handlers.Player.Left"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), new[] { typeof(NetworkConnection) })]
+    [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), typeof(NetworkConnection))]
     internal static class Left
     {
-        private static void Prefix(NetworkConnection conn)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
-            {
-                // The game checks for null NetworkIdentity, do the same
-                // GameObjects don't support the null-conditional operator (?) and the null-coalescing operator (??)
-                if (conn.identity == null || conn.identity.gameObject == null)
-                    return;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-                Player player = Player.Get(conn.identity.gameObject);
-                if (player == null || player.IsHost)
-                    return;
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            LocalBuilder netIdentity = generator.DeclareLocal(typeof(NetworkIdentity));
+            LocalBuilder hub = generator.DeclareLocal(typeof(ReferenceHub));
 
-                Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) disconnected", ConsoleColor.Green);
-                Handlers.Player.OnLeft(new LeftEventArgs(player));
-            }
-            catch (Exception exception)
+            Label cdc = generator.DefineLabel();
+
+            newInstructions[0].labels.Add(cdc);
+
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                Log.Error($"{typeof(Left).FullName}.{nameof(Prefix)}:\n{exception}");
-            }
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
+                new(OpCodes.Brfalse_S, cdc),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, netIdentity.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
+                new(OpCodes.Ldloca_S, hub.LocalIndex),
+                new(OpCodes.Call, Method(typeof(ReferenceHub), nameof(ReferenceHub.TryGetHubNetID))),
+                new(OpCodes.Brfalse_S, cdc),
+                new(OpCodes.Ldloc_S, hub.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, player.LocalIndex),
+                new(OpCodes.Brfalse_S, cdc),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsHost))),
+                new(OpCodes.Brtrue_S, cdc),
+                new(OpCodes.Ldstr, "Player {0} disconnected"),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Nickname))),
+                new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object) })),
+                new(OpCodes.Ldc_I4_S, 10),
+                new(OpCodes.Call, Method(typeof(Log), nameof(Log.SendRaw), new[] { typeof(string), typeof(ConsoleColor) })),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LeftEventArgs))[0]),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnLeft))),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Server
         private static IEnumerator<float> Process(RoundSummary roundSummary)
         {
             float time = Time.unscaledTime;
-            while (roundSummary != null)
+            while (roundSummary is not null)
             {
                 yield return Timing.WaitForSeconds(2.5f);
 
@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Server
                 RoundSummary.SumInfo_ClassList newList = default;
                 foreach (KeyValuePair<GameObject, ReferenceHub> keyValuePair in ReferenceHub.GetAllHubs())
                 {
-                    if (keyValuePair.Value == null)
+                    if (keyValuePair.Value is null)
                         continue;
 
                     CharacterClassManager component = keyValuePair.Value.characterClassManager;
@@ -112,7 +112,7 @@ namespace Exiled.Events.Patches.Events.Server
                         roundSummary.RoundEnded = true;
                 }
 
-                EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
+                EndingRoundEventArgs endingRoundEventArgs = new(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
                 {
@@ -141,9 +141,9 @@ namespace Exiled.Events.Patches.Events.Server
                     yield return Timing.WaitForSeconds(1.5f);
                     int timeToRoundRestart = Mathf.Clamp(ConfigFile.ServerConfig.GetInt("auto_round_restart_time", 10), 5, 1000);
 
-                    if (roundSummary != null)
+                    if (roundSummary is not null)
                     {
-                        RoundEndedEventArgs roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
+                        RoundEndedEventArgs roundEndedEventArgs = new(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
@@ -165,17 +165,16 @@ namespace Exiled.Events.Patches.Events.Server
             {
                 if (instruction.opcode == OpCodes.Call)
                 {
-                    if (instruction.operand != null
-                        && instruction.operand is MethodBase methodBase
+                    if (instruction.operand is MethodBase methodBase
                         && methodBase.Name != nameof(RoundSummary._ProcessServerSideCode))
                     {
                         yield return instruction;
                     }
                     else
                     {
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
-                        yield return new CodeInstruction(OpCodes.Ldarg_0);
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
+                        yield return new(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
+                        yield return new(OpCodes.Ldarg_0);
+                        yield return new(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
                         {
                             Type[] generics = m.GetGenericArguments();
                             ParameterInfo[] paramseters = m.GetParameters();

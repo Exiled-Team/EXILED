@@ -20,12 +20,12 @@ namespace Exiled.API.Features.DamageHandlers
     /// <summary>
     /// A wrapper to easily manipulate the behavior of <see cref="BaseHandler"/>.
     /// </summary>
-    public abstract class DamageHandler : DamageHandlerBase
+    public class DamageHandler : DamageHandlerBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DamageHandler"/> class.
         /// </summary>
-        protected DamageHandler()
+        public DamageHandler()
         {
         }
 
@@ -34,7 +34,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         /// <param name="target">The target to be set.</param>
         /// <param name="attacker">The attacker to be set.</param>
-        protected DamageHandler(Player target, Player attacker)
+        public DamageHandler(Player target, Player attacker)
         {
             Target = target;
             Attacker = attacker;
@@ -47,7 +47,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         /// <param name="target">The target to be set.</param>
         /// <param name="baseHandler"><inheritdoc cref="DamageHandlerBase.Base"/></param>
-        protected DamageHandler(Player target, BaseHandler baseHandler)
+        public DamageHandler(Player target, BaseHandler baseHandler)
             : base(baseHandler)
         {
             Target = target;
@@ -165,6 +165,6 @@ namespace Exiled.API.Features.DamageHandlers
         }
 
         /// <inheritdoc/>
-        public override string ToString() => $"{Target} {Damage} ({Type}) {(Attacker != null ? Attacker.Nickname : "No one")}";
+        public override string ToString() => $"{Target} {Damage} ({Type}) {(Attacker is not null ? Attacker.Nickname : "No one")}";
     }
 }

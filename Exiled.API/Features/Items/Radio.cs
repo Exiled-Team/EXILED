@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
 
     /// <summary>
-    /// A wrapper class for <see cref="InventorySystem.Items.Radio.RadioItem"/>.
+    /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
     public class Radio : Item
     {
@@ -64,7 +64,7 @@ namespace Exiled.API.Features.Items
         public RadioRangeSettings RangeSettings
         {
             get =>
-                new RadioRangeSettings
+                new()
                 {
                     IdleUsage = Base.Ranges[(int)Range].MinuteCostWhenIdle,
                     TalkingUsage = Base.Ranges[(int)Range].MinuteCostWhenTalking,

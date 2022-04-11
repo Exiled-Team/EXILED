@@ -45,7 +45,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
                     continue;
                 }
 
-                if (!parser.TryConsume<Scalar>(out Scalar scalar) || !float.TryParse(scalar.Value, NumberStyles.Float, CultureInfo.GetCultureInfo("en-US"), out float coordinate))
+                if (!parser.TryConsume(out Scalar scalar) || !float.TryParse(scalar.Value, NumberStyles.Float, CultureInfo.GetCultureInfo("en-US"), out float coordinate))
                 {
                     ListPool<object>.Shared.Return(coordinates);
                     throw new InvalidDataException($"Invalid float value.");
@@ -64,7 +64,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         /// <inheritdoc/>
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
-            Dictionary<string, float> coordinates = new Dictionary<string, float>(4);
+            Dictionary<string, float> coordinates = new(4);
 
             if (value is Vector2 vector2)
             {
