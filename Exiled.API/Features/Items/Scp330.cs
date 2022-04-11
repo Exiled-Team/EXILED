@@ -115,7 +115,7 @@ namespace Exiled.API.Features.Items
                 }
             }
 
-            List<Pickup> pickups = new();
+            List<Pickup> pickups = new List<Pickup>();
 
             if (count > 1 && !dropIndividual)
             {

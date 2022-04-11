@@ -25,17 +25,17 @@ namespace Exiled.Permissions.Features
         /// <summary>
         /// Gets or sets the group inheritance.
         /// </summary>
-        public List<string> Inheritance { get; set; } = new();
+        public List<string> Inheritance { get; set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the group permissions.
         /// </summary>
-        public List<string> Permissions { get; set; } = new();
+        public List<string> Permissions { get; set; } = new List<string>();
 
         /// <summary>
         /// Gets the combined permissions of the group plus all inherited groups.
         /// </summary>
         [YamlIgnore]
-        public List<string> CombinedPermissions { get; internal set; } = new();
+        public List<string> CombinedPermissions { get; internal set; } = new List<string>();
     }
 }

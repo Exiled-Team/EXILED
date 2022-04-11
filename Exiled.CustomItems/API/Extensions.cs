@@ -54,7 +54,7 @@ namespace Exiled.CustomItems.API
         /// <param name="customItems"><see cref="CustomItem"/>s to be registered.</param>
         public static void Register(this IEnumerable<CustomItem> customItems)
         {
-            if (customItems is null)
+            if (customItems == null)
                 throw new ArgumentNullException("customItems");
 
             foreach (CustomItem customItem in customItems)
@@ -73,7 +73,7 @@ namespace Exiled.CustomItems.API
         /// <param name="customItems"><see cref="CustomItem"/>s to be unregistered.</param>
         public static void Unregister(this IEnumerable<CustomItem> customItems)
         {
-            if (customItems is null)
+            if (customItems == null)
                 throw new ArgumentNullException("customItems");
 
             foreach (CustomItem customItem in customItems)

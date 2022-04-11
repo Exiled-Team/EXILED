@@ -53,40 +53,40 @@ namespace Exiled.Events.Patches.Events.Player
             //   return;
             //
             // num = ev.Drain;
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 // this
-                new(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0),
 
                 // Player.Get(base.Owner)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(RadioItem), nameof(RadioItem.Owner))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(RadioItem), nameof(RadioItem.Owner))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // num
-                new(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_0),
 
                 // true
-                new(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // var ev = new UsingRadioBatteryEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingRadioBatteryEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingRadioBatteryEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnUsingRadioBattery(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingRadioBattery))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingRadioBattery))),
 
                 // if (!ev.IsAllowed)
                 //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
                 // num = ev.Drain
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.Drain))),
-                new(OpCodes.Stloc_0),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.Drain))),
+                new CodeInstruction(OpCodes.Stloc_0),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

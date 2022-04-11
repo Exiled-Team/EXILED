@@ -31,9 +31,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label retLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -43,17 +42,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTogglingNoClip))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, retLabel),
-=======
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingNoClipEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTogglingNoClip))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
->>>>>>> Exiled-Team-dev
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);

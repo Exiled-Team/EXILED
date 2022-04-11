@@ -44,20 +44,20 @@ namespace Exiled.Events.Patches.Events.Scp330
             {
                 // var ev = new InteractingScp330EventArgs(Player.Get(ply), num);
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.InInteractingScp330(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingScp330))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingScp330))),
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
             });
 
             // if (num > 2)  ->   if (ev.ShouldSever)
@@ -67,11 +67,11 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.RemoveRange(index, 3);
 
             // Add our new instructions.
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
-                new(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
+                new CodeInstruction(OpCodes.Brfalse, continueLabel),
             });
 
             // Find the instruction the base-code if check points to when false, and add our own label.

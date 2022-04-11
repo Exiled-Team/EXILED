@@ -23,13 +23,13 @@ namespace Exiled.Events.Commands.Reload
         /// <summary>
         /// Gets static instance of the <see cref="Configs"/> command.
         /// </summary>
-        public static Configs Instance { get; } = new();
+        public static Configs Instance { get; } = new Configs();
 
         /// <inheritdoc/>
         public string Command { get; } = "configs";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "cfgs" };
+        public string[] Aliases { get; } = new string[] { "cfgs" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reload plugin configs.";

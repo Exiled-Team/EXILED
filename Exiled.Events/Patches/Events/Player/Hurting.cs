@@ -48,9 +48,9 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player = Player.Get(this._hub)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Stloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
 
                 // if (handler is RecontainmentDamageHandler)
                 // {
@@ -60,34 +60,34 @@ namespace Exiled.Events.Patches.Events.Player
                 //        return;
                 //    }
                 // }
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Isinst, typeof(RecontainmentDamageHandler)),
-                new(OpCodes.Brfalse, notRecontainment),
-                new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
-                new(OpCodes.Ldc_I4_7),
-                new(OpCodes.Ceq),
-                new(OpCodes.Brfalse, notRecontainment),
-                new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RecontainedEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnRecontained))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Isinst, typeof(RecontainmentDamageHandler)),
+                new CodeInstruction(OpCodes.Brfalse, notRecontainment),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
+                new CodeInstruction(OpCodes.Ldc_I4_7),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Brfalse, notRecontainment),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RecontainedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnRecontained))),
 
                 // var ev = new HurtingEventArgs(player, handler)
                 new CodeInstruction(OpCodes.Ldloc, player.LocalIndex).WithLabels(notRecontainment),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, hurtingEv.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, hurtingEv.LocalIndex),
 
                 // Handlers.Player.OnHurting(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurting))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurting))),
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, ret),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, ret),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);

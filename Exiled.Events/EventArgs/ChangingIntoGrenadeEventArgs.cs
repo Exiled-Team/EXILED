@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="pickup">The <see cref="Pickup"/> being changed.</param>
         public ChangingIntoGrenadeEventArgs(TimedGrenadePickup pickup)
         {
-            if (pickup is null)
+            if (pickup == null)
                 Log.Error($"{nameof(ChangingIntoGrenadeEventArgs)}: Pickup is null!");
             Pickup = Pickup.Get(pickup);
             Type = pickup.Info.ItemId;

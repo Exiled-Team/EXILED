@@ -76,59 +76,59 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloc_S, 9).MoveLabelsFrom(newInstructions[index]),
 
                 // request
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1),
 
                 // request.Data.Position (readerStartPosition)
-                new(OpCodes.Dup),
-                new(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.Data))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(NetDataReader), nameof(NetDataReader.Position))),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.Data))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetDataReader), nameof(NetDataReader.Position))),
 
                 // b3 (flags)
-                new(OpCodes.Ldloc_S, 11),
+                new CodeInstruction(OpCodes.Ldloc_S, 11),
 
                 // text2 (country)
-                new(OpCodes.Ldloc_S, 12),
+                new CodeInstruction(OpCodes.Ldloc_S, 12),
 
                 // true
-                new(OpCodes.Ldloc_S, 27),
+                new CodeInstruction(OpCodes.Ldloc_S, 27),
 
                 // var ev = new PreAuthenticatingEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnPreAuthenticating(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPreAuthenticating))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPreAuthenticating))),
 
                 // if (!ev.IsAllowed)
                 // {
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, elseLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.ServerFull))),
-                new(OpCodes.Brtrue, fullRejectLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brtrue_S, elseLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.ServerFull))),
+                new CodeInstruction(OpCodes.Brtrue, fullRejectLabel),
 
                 // var failedMessage = string.Format($"Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin.", text, request.RemoteEndPoint);
-                new(OpCodes.Ldstr, "Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin."),
-                new(OpCodes.Ldloc_S, 9),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.RemoteEndPoint))),
-                new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object), typeof(object) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, failedMessage.LocalIndex),
+                new CodeInstruction(OpCodes.Ldstr, "Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin."),
+                new CodeInstruction(OpCodes.Ldloc_S, 9),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.RemoteEndPoint))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object), typeof(object) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, failedMessage.LocalIndex),
 
                 // ServerConsole.AddLog(failedMessage, ConsoleColor.Gray)
-                new(OpCodes.Ldc_I4_7),
-                new(OpCodes.Call, Method(typeof(ServerConsole), nameof(ServerConsole.AddLog))),
+                new CodeInstruction(OpCodes.Ldc_I4_7),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ServerConsole), nameof(ServerConsole.AddLog))),
 
                 // ServerLogs.AddLog(ServerLogs.Modules.Networking, failedMessage, ServerLogs.ServerLogType.ConnectionUpdate, false)
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ldloc_S, failedMessage.LocalIndex),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Call, Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))),
-                new(OpCodes.Br_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldloc_S, failedMessage.LocalIndex),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))),
+                new CodeInstruction(OpCodes.Br_S, returnLabel),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

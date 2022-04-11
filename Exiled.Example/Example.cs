@@ -16,7 +16,7 @@ namespace Exiled.Example
     /// </summary>
     public class Example : Plugin<Config>
     {
-        private static readonly Example Singleton = new();
+        private static readonly Example Singleton = new Example();
 
         private ServerHandler serverHandler;
         private PlayerHandler playerHandler;

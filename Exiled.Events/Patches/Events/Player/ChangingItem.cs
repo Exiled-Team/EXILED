@@ -48,27 +48,27 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(this._hub);
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // ib2
-                new(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Ldloc_1),
 
                 // var ev = new ChangingItemEventArgs(Player, ItemBase)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingItemEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingItemEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnChangingItem(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingItem))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingItem))),
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
-                // if (ev.NewItem is null)
+                // if (ev.NewItem == null)
                 // {
                 //    ip2 = null;
                 //    itermSerial = 0;
@@ -78,19 +78,19 @@ namespace Exiled.Events.Patches.Events.Player
                 //    ip2 = ev.NewItem.Base;
                 //    itemSerial = ev.NewItem.Serial;
                 // }
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.NewItem))),
-                new(OpCodes.Brfalse, nullLable),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.NewItem))),
-                new(OpCodes.Dup),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Base))),
-                new(OpCodes.Stloc_1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Serial))),
-                new(OpCodes.Starg, 1),
-                new(OpCodes.Br, continueLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.NewItem))),
+                new CodeInstruction(OpCodes.Brfalse, nullLable),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.NewItem))),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Base))),
+                new CodeInstruction(OpCodes.Stloc_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Serial))),
+                new CodeInstruction(OpCodes.Starg, 1),
+                new CodeInstruction(OpCodes.Br, continueLabel),
                 new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(nullLable),
-                new(OpCodes.Starg, 1),
+                new CodeInstruction(OpCodes.Starg, 1),
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 

@@ -75,7 +75,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        internal static Dictionary<ItemType, DamageType> ItemConversion { get; } = new()
+        internal static Dictionary<ItemType, DamageType> ItemConversion { get; } = new Dictionary<ItemType, DamageType>
         {
             { ItemType.GunCrossvec, DamageType.Crossvec },
             { ItemType.GunLogicer, DamageType.Logicer },
@@ -98,6 +98,6 @@ namespace Exiled.API.Features.DamageHandlers
         }
 
         /// <inheritdoc/>
-        public override string ToString() => $"{Target} {Damage} ({Type}) {(Attacker is not null ? Attacker.Nickname : "No one")} {(Item is not null ? Item.ToString() : "No item")}";
+        public override string ToString() => $"{Target} {Damage} ({Type}) {(Attacker != null ? Attacker.Nickname : "No one")} {(Item != null ? Item.ToString() : "No item")}";
     }
 }

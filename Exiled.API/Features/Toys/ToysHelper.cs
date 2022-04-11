@@ -29,7 +29,7 @@ namespace Exiled.API.Features.Toys
         {
             get
             {
-                if (primitiveBaseObject is null)
+                if (primitiveBaseObject == null)
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
@@ -52,7 +52,7 @@ namespace Exiled.API.Features.Toys
         {
             get
             {
-                if (lightBaseObject is null)
+                if (lightBaseObject == null)
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
@@ -75,7 +75,7 @@ namespace Exiled.API.Features.Toys
         {
             get
             {
-                if (sportShootingTargetObject is null)
+                if (sportShootingTargetObject == null)
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
@@ -98,7 +98,7 @@ namespace Exiled.API.Features.Toys
         {
             get
             {
-                if (dboyShootingTargetObject is null)
+                if (dboyShootingTargetObject == null)
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
@@ -121,7 +121,7 @@ namespace Exiled.API.Features.Toys
         {
             get
             {
-                if (binaryShootingTargetObject is null)
+                if (binaryShootingTargetObject == null)
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {

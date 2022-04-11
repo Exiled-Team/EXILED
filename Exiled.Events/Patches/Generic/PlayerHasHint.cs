@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Generic
     internal static class PlayerHasHint
     {
         // Creating a list for coroutine check
-        private static Dictionary<Player, CoroutineHandle> playerHasHintCoroutines = new();
+        private static Dictionary<Player, CoroutineHandle> playerHasHintCoroutines = new Dictionary<Player, CoroutineHandle>();
 
         private static void Postfix(HintDisplay __instance, Hint hint)
         {
@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Generic
             yield return Timing.WaitForSeconds(duration);
 
             // If player gameobject doesn't exists, break the coroutine
-            if (player.GameObject is null)
+            if (player.GameObject == null)
                 yield break;
 
             player.HasHint = false;

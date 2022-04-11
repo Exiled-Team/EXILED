@@ -24,7 +24,7 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ExplodingGrenadeEventArgs : EventArgs
     {
-        private static Dictionary<Type, GrenadeType> grenadeDictionary = new()
+        private static Dictionary<Type, GrenadeType> grenadeDictionary = new Dictionary<Type, GrenadeType>()
         {
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
             { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs
                     continue;
 
                 Player player = Player.Get(hub);
-                if (player is null)
+                if (player == null)
                     continue;
 
                 if (!TargetsToAffect.Contains(player))

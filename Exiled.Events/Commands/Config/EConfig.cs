@@ -26,7 +26,7 @@ namespace Exiled.Events.Commands.Config
         public override string Command { get; } = "econfig";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = new[] { "ecfg" };
+        public override string[] Aliases { get; } = new string[] { "ecfg" };
 
         /// <inheritdoc/>
         public override string Description { get; } = "Changes from one config distribution to another one.";

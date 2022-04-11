@@ -21,11 +21,11 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!__instance.CanInteract || elevator is null)
+                if (!__instance.CanInteract || elevator == null)
                     return false;
 
                 Lift component = elevator.GetComponent<Lift>();
-                if (component is null)
+                if (component == null)
                     return false;
 
                 foreach (Lift.Elevator elevator1 in component.elevators)
@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
                     if (!__instance.ChckDis(elevator1.door.transform.position))
                         continue;
 
-                    InteractingElevatorEventArgs interactingEventArgs = new(API.Features.Player.Get(__instance._hub), elevator1, component);
+                    InteractingElevatorEventArgs interactingEventArgs = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance._hub), elevator1, component);
                     Handlers.Player.OnInteractingElevator(interactingEventArgs);
 
                     if (interactingEventArgs.IsAllowed)

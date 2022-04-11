@@ -29,7 +29,7 @@ namespace Exiled.CustomRoles.Commands
         /// <summary>
         /// Gets the <see cref="Info"/> instance.
         /// </summary>
-        public static Info Instance { get; } = new();
+        public static Info Instance { get; } = new Info();
 
         /// <inheritdoc/>
         public string Command { get; } = "info";

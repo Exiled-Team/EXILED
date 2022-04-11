@@ -33,7 +33,7 @@ namespace Exiled.CustomRoles.Commands
         /// <summary>
         /// Gets the <see cref="Give"/> command instance.
         /// </summary>
-        public static Give Instance { get; } = new();
+        public static Give Instance { get; } = new Give();
 
         /// <inheritdoc/>
         public string Command { get; } = "give";

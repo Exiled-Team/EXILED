@@ -27,7 +27,7 @@ namespace Exiled.API.Features.Toys
     /// </summary>
     public class ShootingTargetToy : AdminToy
     {
-        private static readonly Dictionary<string, ShootingTargetType> TypeLookup = new()
+        private static readonly Dictionary<string, ShootingTargetType> TypeLookup = new Dictionary<string, ShootingTargetType>()
         {
             { "sportTargetPrefab", ShootingTargetType.Sport },
             { "dboyTargetPrefab", ShootingTargetType.ClassD },
@@ -205,7 +205,7 @@ namespace Exiled.API.Features.Toys
         public static ShootingTargetToy Get(ShootingTarget shootingTarget)
         {
             AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == shootingTarget);
-            return adminToy is not null ? adminToy as ShootingTargetToy : new ShootingTargetToy(shootingTarget);
+            return adminToy != null ? adminToy as ShootingTargetToy : new ShootingTargetToy(shootingTarget);
         }
 
         /// <summary>

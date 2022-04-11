@@ -37,8 +37,8 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (host is null || host.ReferenceHub is null)
-                    host = PlayerManager.localPlayer is not null ? new Player(PlayerManager.localPlayer) : null;
+                if (host == null || host.ReferenceHub == null)
+                    host = PlayerManager.localPlayer != null ? new Player(PlayerManager.localPlayer) : null;
 
                 return host;
             }
@@ -51,7 +51,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (broadcast is null)
+                if (broadcast == null)
                     broadcast = PlayerManager.localPlayer.GetComponent<global::Broadcast>();
 
                 return broadcast;
@@ -65,7 +65,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (banPlayer is null)
+                if (banPlayer == null)
                     banPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
 
                 return banPlayer;
@@ -79,7 +79,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (sendSpawnMessage is null)
+                if (sendSpawnMessage == null)
                 {
                     sendSpawnMessage = typeof(NetworkServer).GetMethod(
                         "SendSpawnMessage",

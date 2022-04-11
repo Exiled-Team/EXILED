@@ -84,7 +84,7 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
-            Primitive primitve = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+            Primitive primitve = new Primitive(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
             primitve.AdminToyBase.transform.position = position ?? Vector3.zero;
             primitve.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
@@ -104,7 +104,7 @@ namespace Exiled.API.Features.Toys
         public static Primitive Get(PrimitiveObjectToy primitveObjectToy)
         {
             AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == primitveObjectToy);
-            return adminToy is not null ? adminToy as Primitive : new Primitive(primitveObjectToy);
+            return adminToy != null ? adminToy as Primitive : new Primitive(primitveObjectToy);
         }
 
         private void RefreshCollidable()

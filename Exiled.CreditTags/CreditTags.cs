@@ -27,7 +27,7 @@ namespace Exiled.CreditTags
     {
         private const string Url = "https://exiled.host/utilities/checkcredits.php";
 
-        private static readonly CreditTags Singleton = new();
+        private static readonly CreditTags Singleton = new CreditTags();
 
         private CreditsHandler handler;
 
@@ -46,7 +46,7 @@ namespace Exiled.CreditTags
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of Exiled Credit ranks.
         /// </summary>
-        internal Dictionary<RankType, Rank> Ranks { get; } = new()
+        internal Dictionary<RankType, Rank> Ranks { get; } = new Dictionary<RankType, Rank>
         {
             [RankType.Dev] = new Rank("Exiled Developer", "aqua", "00FFFF"),
             [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "FF0090"),
@@ -58,7 +58,7 @@ namespace Exiled.CreditTags
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of recently cached userIds and their ranks.
         /// </summary>
-        internal Dictionary<string, RankType> RankCache { get; } = new();
+        internal Dictionary<string, RankType> RankCache { get; } = new Dictionary<string, RankType>();
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -126,7 +126,7 @@ namespace Exiled.CreditTags
                 bool canReceiveCreditBadge = force ||
                                              (((string.IsNullOrEmpty(player.RankName) &&
                                                 string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge)) ||
-                                               Config.BadgeOverride) && player.GlobalBadge is null);
+                                               Config.BadgeOverride) && player.GlobalBadge == null);
                 bool canReceiveCreditCustomInfo =
                     string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride;
 

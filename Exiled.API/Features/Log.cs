@@ -137,7 +137,7 @@ namespace Exiled.API.Features
         /// <example> For example:
         /// <code>
         ///     Player ply = Player.Get(2);
-        ///     Log.Assert(ply is not null, "The player with the id 2 is null");
+        ///     Log.Assert(ply != null, "The player with the id 2 is null");
         /// </code>
         /// results in it logging an error if the player is null and not continuing.
         /// </example>

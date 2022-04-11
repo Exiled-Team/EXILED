@@ -22,17 +22,17 @@ namespace Exiled.API.Features.Spawn
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of possible dynamic spawn points.
         /// </summary>
-        public List<DynamicSpawnPoint> DynamicSpawnPoints { get; set; } = new();
+        public List<DynamicSpawnPoint> DynamicSpawnPoints { get; set; } = new List<DynamicSpawnPoint>();
 
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of possible static spawn points.
         /// </summary>
-        public List<StaticSpawnPoint> StaticSpawnPoints { get; set; } = new();
+        public List<StaticSpawnPoint> StaticSpawnPoints { get; set; } = new List<StaticSpawnPoint>();
 
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of possible role-based spawn points.
         /// </summary>
-        public List<RoleSpawnPoint> RoleSpawnPoints { get; set; } = new();
+        public List<RoleSpawnPoint> RoleSpawnPoints { get; set; } = new List<RoleSpawnPoint>();
 
         /// <summary>
         /// Counts how many spawn points are in this instance.

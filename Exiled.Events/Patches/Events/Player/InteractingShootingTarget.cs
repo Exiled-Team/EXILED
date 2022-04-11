@@ -53,53 +53,53 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(ReferenceHub)
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // this
-                new(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0),
 
                 // colliderId (ShootingTargetButton)
-                new(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldarg_2),
 
                 // GetNextValue(buttonPressed, ShootingTargetButton.DecreaseHp, BaseTarget._maxHp)
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(BaseTarget), nameof(BaseTarget._maxHp))),
-                new(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(InteractingShootingTarget.GetNextValue))),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(BaseTarget), nameof(BaseTarget._maxHp))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(InteractingShootingTarget.GetNextValue))),
 
                 // GetNextValue(buttonPressed, ShootingTargetButton.DecreaseResetTime, BaseTarget._autoDestroyTime)
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldc_I4_3),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(BaseTarget), nameof(BaseTarget._autoDestroyTime))),
-                new(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(InteractingShootingTarget.GetNextValue))),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldc_I4_3),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(BaseTarget), nameof(BaseTarget._autoDestroyTime))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(InteractingShootingTarget.GetNextValue))),
 
                 // true
-                new(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // var ev = new InteractingShootingTargetEventArgs(Player, BaseTarget, ShootingTargetButton, MaxHp, ResetTime, true)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingShootingTargetEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingShootingTargetEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // OnInteractingShootingTarget(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingShootingTarget))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingShootingTarget))),
 
                 // if (!ev.IsAllowed)
                 //   CheckMaxHp
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, setMaxHpLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, setMaxHpLabel),
             });
 
             offset = 1;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Destroy))) + offset;
-            newInstructions[index] = new(OpCodes.Br, setMaxHpLabel);
+            newInstructions[index] = new CodeInstruction(OpCodes.Br, setMaxHpLabel);
 
             offset = 1;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(BaseTarget), "set_Network_syncMode")) + offset;
-            newInstructions[index] = new(OpCodes.Br, setMaxHpLabel);
+            newInstructions[index] = new CodeInstruction(OpCodes.Br, setMaxHpLabel);
 
             offset = -5;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(BaseTarget), nameof(BaseTarget.RpcSendInfo))) + offset;
@@ -110,15 +110,15 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // BaseTarget.MaxHp = ev.NewMaxHp
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(setMaxHpLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.NewMaxHp))),
-                new(OpCodes.Stfld, Field(typeof(BaseTarget), nameof(BaseTarget._maxHp))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.NewMaxHp))),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(BaseTarget), nameof(BaseTarget._maxHp))),
 
                 // BaseTarget._autoDestroyTime = ev.NewAutoResetTime
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.NewAutoResetTime))),
-                new(OpCodes.Stfld, Field(typeof(BaseTarget), nameof(BaseTarget._autoDestroyTime))),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.NewAutoResetTime))),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(BaseTarget), nameof(BaseTarget._autoDestroyTime))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

@@ -30,10 +30,10 @@ namespace Exiled.API.Extensions
     /// </summary>
     public static class MirrorExtensions
     {
-        private static readonly Dictionary<Type, MethodInfo> WriterExtensionsValue = new();
-        private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new();
-        private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new(WriterExtensionsValue);
-        private static readonly ReadOnlyDictionary<string, ulong> ReadOnlySyncVarDirtyBitsValue = new(SyncVarDirtyBitsValue);
+        private static readonly Dictionary<Type, MethodInfo> WriterExtensionsValue = new Dictionary<Type, MethodInfo>();
+        private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new Dictionary<string, ulong>();
+        private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new ReadOnlyDictionary<Type, MethodInfo>(WriterExtensionsValue);
+        private static readonly ReadOnlyDictionary<string, ulong> ReadOnlySyncVarDirtyBitsValue = new ReadOnlyDictionary<string, ulong>(SyncVarDirtyBitsValue);
         private static MethodInfo setDirtyBitsMethodInfoValue = null;
         private static MethodInfo sendSpawnMessageMethodInfoValue = null;
 
@@ -77,10 +77,10 @@ namespace Exiled.API.Extensions
                         .Where(m => m.Name.StartsWith("Network")))
                     {
                         MethodInfo setMethod = property.GetSetMethod();
-                        if (setMethod is null)
+                        if (setMethod == null)
                             continue;
                         MethodBody methodBody = setMethod.GetMethodBody();
-                        if (methodBody is null)
+                        if (methodBody == null)
                             continue;
                         byte[] bytecodes = methodBody.GetILAsByteArray();
                         if (!SyncVarDirtyBitsValue.ContainsKey($"{property.Name}"))
@@ -99,7 +99,7 @@ namespace Exiled.API.Extensions
         {
             get
             {
-                if (setDirtyBitsMethodInfoValue is null)
+                if (setDirtyBitsMethodInfoValue == null)
                 {
                     setDirtyBitsMethodInfoValue = typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
                 }
@@ -115,7 +115,7 @@ namespace Exiled.API.Extensions
         {
             get
             {
-                if (sendSpawnMessageMethodInfoValue is null)
+                if (sendSpawnMessageMethodInfoValue == null)
                 {
                     sendSpawnMessageMethodInfoValue = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
                 }
@@ -128,7 +128,7 @@ namespace Exiled.API.Extensions
         /// Shaking target <see cref="Player"/> window.
         /// </summary>
         /// <param name="player">Target to shake.</param>
-        public static void Shake(this Player player) => SendFakeTargetRpc(player, AlphaWarheadController.Host.netIdentity, typeof(AlphaWarheadController), nameof(AlphaWarheadController.TargetRpcShake), false);
+        public static void Shake(this Player player) => SendFakeTargetRpc(player, AlphaWarheadController.Host.netIdentity, typeof(AlphaWarheadController), nameof(AlphaWarheadController.RpcShake), false);
 
         /// <summary>
         /// Play beep sound to <see cref="Player"/>.
@@ -154,7 +154,7 @@ namespace Exiled.API.Extensions
         /// <param name="audioClipId">GunAudioMessage's audioClipId to set (default = 0).</param>
         public static void PlayGunSound(this Player player, Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0)
         {
-            GunAudioMessage message = new()
+            GunAudioMessage message = new GunAudioMessage
             {
                 Weapon = itemType,
                 AudioClipId = audioClipId,
@@ -230,7 +230,7 @@ namespace Exiled.API.Extensions
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = new();
+            StringBuilder annoucement = new StringBuilder();
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Count(); i++)
@@ -280,7 +280,7 @@ namespace Exiled.API.Extensions
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
                 targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
-                WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
+                WriterExtensions[value.GetType()]?.Invoke(null, new object[] { targetWriter, value });
             }
 
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
@@ -312,9 +312,9 @@ namespace Exiled.API.Extensions
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
 
             foreach (object value in values)
-                WriterExtensions[value.GetType()].Invoke(null, new[] { writer, value });
+                WriterExtensions[value.GetType()].Invoke(null, new object[] { writer, value });
 
-            RpcMessage msg = new()
+            RpcMessage msg = new RpcMessage
             {
                 netId = behaviorOwner.netId,
                 componentIndex = GetComponentIndex(behaviorOwner, targetType),
@@ -363,7 +363,7 @@ namespace Exiled.API.Extensions
         {
             customAction.Invoke(identity);
 
-            ObjectDestroyMessage objectDestroyMessage = new()
+            ObjectDestroyMessage objectDestroyMessage = new ObjectDestroyMessage
             {
                 netId = identity.netId,
             };
@@ -406,7 +406,7 @@ namespace Exiled.API.Extensions
             int position2 = owner.Position;
 
             // Write custom sync data
-            if (customSyncObject is not null)
+            if (customSyncObject != null)
                 customSyncObject.Invoke(owner);
             else
                 behaviour.SerializeObjectsDelta(owner);

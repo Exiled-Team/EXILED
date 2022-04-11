@@ -26,7 +26,7 @@ namespace Exiled.Events.Extensions
         public static void InvokeSafely<T>(this Events.CustomEventHandler<T> ev, T arg)
             where T : EventArgs
         {
-            if (ev is null)
+            if (ev == null)
                 return;
 
             string eventName = ev.GetType().FullName;
@@ -50,7 +50,7 @@ namespace Exiled.Events.Extensions
         /// <exception cref="ArgumentNullException">Event is <see langword="null"/>.</exception>
         public static void InvokeSafely(this Events.CustomEventHandler ev)
         {
-            if (ev is null)
+            if (ev == null)
                 return;
 
             string eventName = ev.GetType().FullName;

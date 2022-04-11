@@ -46,52 +46,52 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(ReferenceHub)
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // IsTails = Random.value >= 5
-                new(OpCodes.Call, PropertyGetter(typeof(Random), nameof(Random.value))),
-                new(OpCodes.Ldc_R4, 0.5f),
-                new(OpCodes.Clt_Un),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Random), nameof(Random.value))),
+                new CodeInstruction(OpCodes.Ldc_R4, 0.5f),
+                new CodeInstruction(OpCodes.Clt_Un),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ceq),
 
-                new(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // var ev = FlippingCoinEventArgs(Player, IsTails, true)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FlippingCoinEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(FlippingCoinEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // OnFlippingCoin(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFlippingCoin))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFlippingCoin))),
 
                 // if (ev.IsAllowed)
                 //   return
-                new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
                 // Item.SerialNumber
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory))),
-                new(OpCodes.Ldflda, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.CurItem))),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Items.ItemIdentifier), nameof(InventorySystem.Items.ItemIdentifier.SerialNumber))),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory))),
+                new CodeInstruction(OpCodes.Ldflda, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.CurItem))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(InventorySystem.Items.ItemIdentifier), nameof(InventorySystem.Items.ItemIdentifier.SerialNumber))),
 
                 // ev.IsTails
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsTails))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsTails))),
 
                 // new CoinFlipMessage(SerialNumber, IsTails)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CoinNetworkHandler.CoinFlipMessage))[0]),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(CoinNetworkHandler.CoinFlipMessage))[0]),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
 
                 // NetworkServer.SendToAll<CoinFlipMessage>(CoinFlipMessage, 0, false)
-                new(OpCodes.Call, Method(typeof(NetworkServer), nameof(NetworkServer.SendToAll), null, new[] { typeof(CoinNetworkHandler.CoinFlipMessage) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(NetworkServer), nameof(NetworkServer.SendToAll), null, new[] { typeof(CoinNetworkHandler.CoinFlipMessage) })),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

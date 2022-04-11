@@ -33,20 +33,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of an object.
         /// </summary>
-<<<<<<< HEAD
         public bool IsInsideObject => Script.ObjectCurrentlyIn != null;
-=======
-        public bool IsInsideObject => Script.ObjectCurrentlyIn is not null;
->>>>>>> Exiled-Team-dev
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of a door.
         /// </summary>
-<<<<<<< HEAD
         public bool IsInsideDoor => Script.DoorCurrentlyIn != null;
-=======
-        public bool IsInsideDoor => Script.DoorCurrentlyIn is not null;
->>>>>>> Exiled-Team-dev
 
         /// <summary>
         /// Gets the door that SCP-106 is currently inside of.

@@ -32,14 +32,14 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
                 // Handlers.Player.OnInteracted(new InteractedEventArgs(API.Features.Player.Get(this.gameObject)));
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(PlayerInteract), nameof(PlayerInteract.gameObject))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractedEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteracted))),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlayerInteract), nameof(PlayerInteract.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteracted))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

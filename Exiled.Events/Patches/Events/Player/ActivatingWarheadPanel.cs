@@ -33,18 +33,12 @@ namespace Exiled.Events.Patches.Events.Player
 
             const int offset = 0;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brfalse_S) + offset;
-<<<<<<< HEAD
-
-            LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
-=======
->>>>>>> Exiled-Team-dev
 
             LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 // new ActivatingWarheadPanelEventArgs(_hub, isAllowed);
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Stloc_S, isAllowed.LocalIndex),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
@@ -58,21 +52,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // Load IsAllowed for the original code to evaluate
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
-=======
-                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
-                new(OpCodes.Dup),
-
-                // Player.OnActivatingWarheadPanel(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
-
-                // Load IsAllowed for the original code to evaluate
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
->>>>>>> Exiled-Team-dev
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

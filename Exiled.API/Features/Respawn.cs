@@ -56,7 +56,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the actual <see cref="RespawnEffectsController"/>.
         /// </summary>
-        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller is not null);
+        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller != null);
 
         /// <summary>
         /// Play an effect when a certain class spawns.
@@ -85,7 +85,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Summons the NTF chopper.
         /// </summary>
-        public static void SummonNtfChopper() => PlayEffects(new[] { RespawnEffectType.SummonNtfChopper });
+        public static void SummonNtfChopper() => PlayEffects(new RespawnEffectType[] { RespawnEffectType.SummonNtfChopper });
 
         /// <summary>
         /// Summons the <see cref="Side.ChaosInsurgency"/> van.
@@ -93,13 +93,13 @@ namespace Exiled.API.Features
         /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
         public static void SummonChaosInsurgencyVan(bool playMusic = true)
         {
-            PlayEffects(playMusic ? new[]
+            PlayEffects(playMusic ? new RespawnEffectType[]
             {
                 RespawnEffectType.PlayChaosInsurgencyMusic,
                 RespawnEffectType.SummonChaosInsurgencyVan,
             }
             :
-            new[]
+            new RespawnEffectType[]
             {
                 RespawnEffectType.SummonChaosInsurgencyVan,
             });

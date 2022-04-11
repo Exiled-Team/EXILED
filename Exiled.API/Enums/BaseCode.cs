@@ -56,10 +56,5 @@ namespace Exiled.API.Enums
         /// The Shotgun's base code.
         /// </summary>
         GunShotgun = 37,
-
-        /// <summary>
-        /// The Disruptor's base code.
-        /// </summary>
-        Disruptor = 1,
     }
 }

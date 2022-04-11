@@ -47,46 +47,46 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Pop),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShootingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShooting))),
+                new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShootingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShooting))),
 
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.IsAllowed))),
-                new(OpCodes.Stloc_S, cmp.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Stloc_S, cmp.LocalIndex),
 
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.Shooter))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.CurrentItem))),
-                new(OpCodes.Stloc_S, firearm.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.Shooter))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.CurrentItem))),
+                new CodeInstruction(OpCodes.Stloc_S, firearm.LocalIndex),
 
-                new(OpCodes.Ldloc_S, cmp.LocalIndex),
-                new(OpCodes.Brtrue_S, jcc),
-                new(OpCodes.Ldloc_S, firearm.LocalIndex),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Br_S, returnLabelModAmmo),
+                new CodeInstruction(OpCodes.Ldloc_S, cmp.LocalIndex),
+                new CodeInstruction(OpCodes.Brtrue_S, jcc),
+                new CodeInstruction(OpCodes.Ldloc_S, firearm.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Br_S, returnLabelModAmmo),
 
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(jcc),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.ShotMessage))),
-                new(OpCodes.Starg, 1),
-                new(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.ShotMessage))),
+                new CodeInstruction(OpCodes.Starg, 1),
+                new CodeInstruction(OpCodes.Ldloc_1),
             });
 
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, cmp.LocalIndex).WithLabels(returnLabelModAmmo),
-                new(OpCodes.Brtrue_S, returnLabel),
-                new(OpCodes.Ldloc_S, firearm.LocalIndex),
-                new(OpCodes.Dup),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Ammo))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Add),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Firearm), nameof(Firearm.Ammo))),
+                new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, firearm.LocalIndex),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Ammo))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Add),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(Firearm), nameof(Firearm.Ammo))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

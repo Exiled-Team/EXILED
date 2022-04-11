@@ -34,11 +34,11 @@ namespace Exiled.Loader
                 Log.Info($"Loading plugin translations... ({Loader.Config.ConfigType})");
 
                 Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
-                SortedDictionary<string, ITranslation> deserializedTranslations = new(StringComparer.Ordinal);
+                SortedDictionary<string, ITranslation> deserializedTranslations = new SortedDictionary<string, ITranslation>(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
-                    if (plugin.InternalTranslation is null)
+                    if (plugin.InternalTranslation == null)
                         continue;
 
                     deserializedTranslations.Add(plugin.Prefix, plugin.LoadTranslation(rawDeserializedTranslations));
@@ -141,7 +141,7 @@ namespace Exiled.Loader
         {
             try
             {
-                if (translations is null || translations.Count == 0)
+                if (translations == null || translations.Count == 0)
                     return false;
 
                 if (Loader.Config.ConfigType == ConfigType.Default)
@@ -212,7 +212,7 @@ namespace Exiled.Loader
         /// <returns>The <see cref="ITranslation"/> of the desired plugin.</returns>
         private static ITranslation LoadDefaultTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations)
         {
-            if (rawTranslations is null)
+            if (rawTranslations == null)
             {
                 rawTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
             }

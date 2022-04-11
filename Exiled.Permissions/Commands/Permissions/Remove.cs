@@ -22,7 +22,7 @@ namespace Exiled.Permissions.Commands.Permissions
         public string Command { get; } = "remove";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "rmv" };
+        public string[] Aliases { get; } = new string[] { "rmv" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Adds a permission to a group";

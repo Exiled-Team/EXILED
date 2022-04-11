@@ -43,9 +43,9 @@ namespace Exiled.Events.Patches.Fixes
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096._targets))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Count))),
-                new(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096._targets))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Count))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -83,16 +83,16 @@ namespace Exiled.Events.Patches.Fixes
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Brtrue_S, continueLabel),
+                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
 
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096._targets))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Count))),
-                new(OpCodes.Brtrue, continueLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_R4, 0.0f),
-                new(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
-                new(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096._targets))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Count))),
+                new CodeInstruction(OpCodes.Brtrue, continueLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldc_R4, 0.0f),
+                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
+                new CodeInstruction(OpCodes.Ret),
             });
 
             newInstructions[newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldsfld)].WithLabels(continueLabel);

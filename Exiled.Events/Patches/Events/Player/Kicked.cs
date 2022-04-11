@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="ServerConsole.Disconnect(GameObject, string)"/>.
     /// Adds the <see cref="Handlers.Player.Kicked"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.Disconnect), typeof(GameObject), typeof(string))]
+    [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.Disconnect), new[] { typeof(GameObject), typeof(string) })]
     internal static class Kicked
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -38,13 +38,13 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
 
             // Handlers.Player.OnKicked(new KickedEventArgs(Player.Get(player), message))
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(KickedEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnKicked))),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(KickedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnKicked))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

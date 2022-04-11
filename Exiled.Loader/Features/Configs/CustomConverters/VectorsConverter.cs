@@ -64,7 +64,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         /// <inheritdoc/>
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
-            Dictionary<string, float> coordinates = new(4);
+            Dictionary<string, float> coordinates = new Dictionary<string, float>(4);
 
             if (value is Vector2 vector2)
             {

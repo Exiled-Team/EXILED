@@ -64,7 +64,7 @@ namespace Exiled.API.Features.Items
         public RadioRangeSettings RangeSettings
         {
             get =>
-                new()
+                new RadioRangeSettings
                 {
                     IdleUsage = Base.Ranges[(int)Range].MinuteCostWhenIdle,
                     TalkingUsage = Base.Ranges[(int)Range].MinuteCostWhenTalking,

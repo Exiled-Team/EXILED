@@ -44,11 +44,7 @@ namespace Exiled.API.Features.Roles
         {
             get
             {
-<<<<<<< HEAD
                 if (!IsRecalling || Script._recallHubServer == null)
-=======
-                if (!IsRecalling || Script._recallHubServer is null)
->>>>>>> Exiled-Team-dev
                     return null;
 
                 return Player.Get(Script._recallHubServer);

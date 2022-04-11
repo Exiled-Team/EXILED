@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp096
         /// The hashset of already charged players.
         /// Prevents double calling on the same player.
         /// </summary>
-        public static readonly HashSet<ReferenceHub> ChargedPlayers = new();
+        public static readonly HashSet<ReferenceHub> ChargedPlayers = new HashSet<ReferenceHub>();
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -56,42 +56,42 @@ namespace Exiled.Events.Patches.Events.Scp096
             {
                 // if (!ChargedPlayers.Add(target))
                 //    return;
-                new(OpCodes.Stloc, contains.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc, contains.LocalIndex),
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(ChargingPlayer), nameof(ChargedPlayers))).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(ChargedPlayers.Add))),
-                new(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(ChargedPlayers.Add))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
                 // var ev = new ChargingPlayerEventArgs(this, Player.Get(this.Hub), target, this._targets.Contains(target), damage)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096._targets))),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Contains))),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChargingPlayerEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096._targets))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Contains))),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChargingPlayerEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Scp096.OnChargingPlayer(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp096), nameof(Handlers.Scp096.OnChargingPlayer))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp096), nameof(Handlers.Scp096.OnChargingPlayer))),
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
                 // damage = ev.Damage
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.Damage))),
-                new(OpCodes.Stloc_0),
-                new(OpCodes.Ldloc, contains.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.Damage))),
+                new CodeInstruction(OpCodes.Stloc_0),
+                new CodeInstruction(OpCodes.Ldloc, contains.LocalIndex),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -113,10 +113,10 @@ namespace Exiled.Events.Patches.Events.Scp096
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // ChargePlayers.Clear();
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
-                new(OpCodes.Ldsfld, Field(typeof(ChargingPlayer), nameof(ChargingPlayer.ChargedPlayers))),
-                new(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(ChargingPlayer.ChargedPlayers.Clear))),
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(ChargingPlayer), nameof(ChargingPlayer.ChargedPlayers))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(ChargingPlayer.ChargedPlayers.Clear))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

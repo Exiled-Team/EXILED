@@ -53,59 +53,58 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(this._hub)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, player.LocalIndex),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Player.Role.Type))),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ceq),
-                new(OpCodes.Brtrue, returnLabel),
-                new(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Player.Role.Type))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
 
                 // id
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1),
 
                 // lite
-                new(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldarg_2),
 
                 // escape
-                new(OpCodes.Ldarg_3),
+                new CodeInstruction(OpCodes.Ldarg_3),
 
                 // var ev = new ChangingRoleEventArgs(player, id, lite, escape)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRoleEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRoleEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnChangingRole(ev)
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingRole))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingRole))),
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
                 // id = ev.NewRole;
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
-                new(OpCodes.Starg, 1),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
+                new CodeInstruction(OpCodes.Starg, 1),
 
                 // lite = ev.Lite
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Lite))),
-                new(OpCodes.Starg, 2),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Lite))),
+                new CodeInstruction(OpCodes.Starg, 2),
 
                 // escape = ev.IsEscaped
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
-                new(OpCodes.Starg, 3),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
+                new CodeInstruction(OpCodes.Starg, 3),
 
                 // ev.Player.MaxHealth = this.Classes.SafeGet(ev.NewRole)
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.Classes))),
@@ -119,61 +118,42 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
-=======
-                new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.Classes))),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(RoleExtensionMethods), nameof(RoleExtensionMethods.SafeGet), new[] { typeof(Role[]), typeof(RoleType) })),
-                new(OpCodes.Ldfld, Field(typeof(Role), nameof(Role.maxHP))),
-                new(OpCodes.Call, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.MaxHealth))),
-
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
-                new(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
->>>>>>> Exiled-Team-dev
             });
 
             offset = 0;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo method && method.DeclaringType == typeof(CharacterClassManager.ClassChangedAdvanced)) + offset;
             newInstructions[index + 1].labels.Add(liteLabel);
-<<<<<<< HEAD
             newInstructions.InsertRange(index + 1, new[]
-=======
-            newInstructions.InsertRange(index + 1, new CodeInstruction[]
->>>>>>> Exiled-Team-dev
             {
                 // if (ev.Lite)
                 //    break;
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Lite))),
-                new(OpCodes.Brtrue, liteLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Lite))),
+                new CodeInstruction(OpCodes.Brtrue, liteLabel),
 
                 // player
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
 
                 // items
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
 
                 // ammo
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Ammo))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Ammo))),
 
                 // prevRole
-                new(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_0),
 
                 // newRole
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1),
 
                 // reason
-                new(OpCodes.Ldarg_3),
+                new CodeInstruction(OpCodes.Ldarg_3),
 
                 // ChangingRole.ChangeInventory(ev.Player, ev.Items, ev.Ammo, curClass, id, reason);
-                new(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
             });
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
@@ -192,7 +172,7 @@ namespace Exiled.Events.Patches.Events.Player
                 Inventory inventory = player.Inventory;
                 if (reason == CharacterClassManager.SpawnReason.Escaped && prevRole != newRole)
                 {
-                    List<ItemPickupBase> list = new();
+                    List<ItemPickupBase> list = new List<ItemPickupBase>();
                     if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
                         bodyArmor.DontRemoveExcessOnDrop = true;
                     while (inventory.UserInventory.Items.Count > 0)

@@ -29,10 +29,10 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
-                new(OpCodes.Ldnull),
-                new(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
+                new CodeInstruction(OpCodes.Ldnull),
+                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

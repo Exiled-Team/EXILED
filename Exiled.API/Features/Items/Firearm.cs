@@ -19,7 +19,6 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
-    using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
 
@@ -31,7 +30,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Firearm"/> which contains all the existing firearms based on all the <see cref="ItemType"/>s.
         /// </summary>
-        internal static readonly List<Firearm> FirearmInstances = new();
+        internal static readonly List<Firearm> FirearmInstances = new List<Firearm>();
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{TKey, TValue}"/> which contains all pairs for <see cref="ItemType"/> and <see cref="Enums.BaseCode"/>.
@@ -47,7 +46,6 @@ namespace Exiled.API.Features.Items
             { ItemType.GunLogicer, BaseCode.GunLogicer },
             { ItemType.GunAK, BaseCode.GunAK },
             { ItemType.GunShotgun, BaseCode.GunShotgun },
-            { ItemType.ParticleDisruptor, BaseCode.Disruptor },
         };
 
         /// <summary>
@@ -97,7 +95,7 @@ namespace Exiled.API.Features.Items
             {
                 IEnumerable<KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>> playerPreferences =
                     AttachmentsServerHandler.PlayerPreferences.Where(
-                        kvp => kvp.Key is not null).Select(
+                        kvp => kvp.Key != null).Select(
                         (KeyValuePair<ReferenceHub, Dictionary<ItemType, uint>> keyValuePair) =>
                 {
                     return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(
@@ -107,7 +105,7 @@ namespace Exiled.API.Features.Items
                             kvp => kvp.Key.GetAttachmentIdentifiers(kvp.Value).ToArray()));
                 });
 
-                return playerPreferences.Where(kvp => kvp.Key is not null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                return playerPreferences.Where(kvp => kvp.Key != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
         }
 
@@ -146,9 +144,9 @@ namespace Exiled.API.Features.Items
         public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
 
         /// <summary>
-        /// Gets the <see cref="Attachment"/>s of the firearm.
+        /// Gets the <see cref="FirearmAttachment"/>s of the firearm.
         /// </summary>
-        public Attachment[] Attachments => Base.Attachments;
+        public FirearmAttachment[] Attachments => Base.Attachments;
 
         /// <summary>
         /// Gets the <see cref="AttachmentIdentifier"/>s of the firearm.
@@ -195,7 +193,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
         /// </summary>
-        internal static Dictionary<ItemType, AttachmentIdentifier[]> AvailableAttachmentsValue { get; } = new();
+        internal static Dictionary<ItemType, AttachmentIdentifier[]> AvailableAttachmentsValue { get; } = new Dictionary<ItemType, AttachmentIdentifier[]>();
 
         /// <summary>
         /// Adds a <see cref="AttachmentIdentifier"/> to the firearm.
@@ -205,7 +203,7 @@ namespace Exiled.API.Features.Items
         {
             uint toRemove = 0;
             uint code = 1;
-            foreach (Attachment attachment in Base.Attachments)
+            foreach (FirearmAttachment attachment in Base.Attachments)
             {
                 if (attachment.Name == identifier.Name && attachment.IsEnabled)
                 {
@@ -225,10 +223,10 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Adds a <see cref="Attachment"/> of the specified <see cref="AttachmentName"/> to the firearm.
+        /// Adds a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentNameTranslation"/> to the firearm.
         /// </summary>
-        /// <param name="attachmentName">The <see cref="AttachmentName"/> to add.</param>
-        public void AddAttachment(AttachmentName attachmentName) => AddAttachment(new AttachmentIdentifier(attachmentName));
+        /// <param name="attachmentName">The <see cref="AttachmentNameTranslation"/> to add.</param>
+        public void AddAttachment(AttachmentNameTranslation attachmentName) => AddAttachment(new AttachmentIdentifier(attachmentName));
 
         /// <summary>
         /// Adds a <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to the firearm.
@@ -241,12 +239,12 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Adds a <see cref="IEnumerable{T}"/> of <see cref="AttachmentName"/> to the firearm.
+        /// Adds a <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> to the firearm.
         /// </summary>
-        /// <param name="attachmentNames">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentName"/> to add.</param>
-        public void AddAttachment(IEnumerable<AttachmentName> attachmentNames)
+        /// <param name="attachmentNames">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> to add.</param>
+        public void AddAttachment(IEnumerable<AttachmentNameTranslation> attachmentNames)
         {
-            foreach (AttachmentName attachmentName in attachmentNames)
+            foreach (AttachmentNameTranslation attachmentName in attachmentNames)
                 AddAttachment(new AttachmentIdentifier(attachmentName));
         }
 
@@ -268,12 +266,12 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Removes a <see cref="Attachment"/> of the specified <see cref="AttachmentName"/> from the firearm.
+        /// Removes a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentNameTranslation"/> from the firearm.
         /// </summary>
-        /// <param name="attachmentName">The <see cref="AttachmentName"/> to remove.</param>
-        public void RemoveAttachment(AttachmentName attachmentName)
+        /// <param name="attachmentName">The <see cref="AttachmentNameTranslation"/> to remove.</param>
+        public void RemoveAttachment(AttachmentNameTranslation attachmentName)
         {
-            Attachment firearmAttachment = Attachments.FirstOrDefault(att => att.Name == attachmentName && att.IsEnabled);
+            FirearmAttachment firearmAttachment = Attachments.FirstOrDefault(att => att.Name == attachmentName && att.IsEnabled);
 
             if (firearmAttachment is null)
                 return;
@@ -284,12 +282,12 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Removes a <see cref="Attachment"/> of the specified <see cref="AttachmentSlot"/> from the firearm.
+        /// Removes a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentSlot"/> from the firearm.
         /// </summary>
         /// <param name="attachmentSlot">The <see cref="AttachmentSlot"/> to remove.</param>
         public void RemoveAttachment(AttachmentSlot attachmentSlot)
         {
-            Attachment firearmAttachment = Attachments.FirstOrDefault(att => att.Slot == attachmentSlot && att.IsEnabled);
+            FirearmAttachment firearmAttachment = Attachments.FirstOrDefault(att => att.Slot == attachmentSlot && att.IsEnabled);
 
             if (firearmAttachment is null)
                 return;
@@ -310,17 +308,17 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Removes a list of <see cref="Attachment"/> of the specified <see cref="IEnumerable{T}"/> of <see cref="AttachmentName"/> from the firearm.
+        /// Removes a list of <see cref="FirearmAttachment"/> of the specified <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> from the firearm.
         /// </summary>
-        /// <param name="attachmentNames">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentName"/> to remove.</param>
-        public void RemoveAttachment(IEnumerable<AttachmentName> attachmentNames)
+        /// <param name="attachmentNames">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> to remove.</param>
+        public void RemoveAttachment(IEnumerable<AttachmentNameTranslation> attachmentNames)
         {
-            foreach (AttachmentName attachmentName in attachmentNames)
+            foreach (AttachmentNameTranslation attachmentName in attachmentNames)
                 RemoveAttachment(attachmentName);
         }
 
         /// <summary>
-        /// Removes a list of <see cref="Attachment"/> of the specified <see cref="IEnumerable{T}"/> of <see cref="AttachmentSlot"/> from the firearm.
+        /// Removes a list of <see cref="FirearmAttachment"/> of the specified <see cref="IEnumerable{T}"/> of <see cref="AttachmentSlot"/> from the firearm.
         /// </summary>
         /// <param name="attachmentSlots">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentSlot"/> to remove.</param>
         public void RemoveAttachment(IEnumerable<AttachmentSlot> attachmentSlots)
@@ -335,19 +333,19 @@ namespace Exiled.API.Features.Items
         public void ClearAttachments() => Base.ApplyAttachmentsCode((uint)BaseCode, true);
 
         /// <summary>
-        /// Gets a <see cref="Attachment"/> of the specified <see cref="AttachmentIdentifier"/>.
+        /// Gets a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentIdentifier"/>.
         /// </summary>
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to check.</param>
-        /// <returns>The corresponding <see cref="Attachment"/>.</returns>
-        public Attachment GetAttachment(AttachmentIdentifier identifier) => Attachments.FirstOrDefault(attachment => attachment == identifier);
+        /// <returns>The corresponding <see cref="FirearmAttachment"/>.</returns>
+        public FirearmAttachment GetAttachment(AttachmentIdentifier identifier) => Attachments.FirstOrDefault(attachment => attachment == identifier);
 
         /// <summary>
-        /// Tries to get a <see cref="Attachment"/> of the specified <see cref="AttachmentIdentifier"/>.
+        /// Tries to get a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentIdentifier"/>.
         /// </summary>
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to check.</param>
-        /// <param name="firearmAttachment">The corresponding <see cref="Attachment"/>.</param>
-        /// <returns>A value indicating whether or not the firearm has the specified <see cref="Attachment"/>.</returns>
-        public bool TryGetAttachment(AttachmentIdentifier identifier, out Attachment firearmAttachment)
+        /// <param name="firearmAttachment">The corresponding <see cref="FirearmAttachment"/>.</param>
+        /// <returns>A value indicating whether or not the firearm has the specified <see cref="FirearmAttachment"/>.</returns>
+        public bool TryGetAttachment(AttachmentIdentifier identifier, out FirearmAttachment firearmAttachment)
         {
             firearmAttachment = default;
 
@@ -360,16 +358,16 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Tries to get a <see cref="Attachment"/> of the specified <see cref="AttachmentName"/>.
+        /// Tries to get a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentNameTranslation"/>.
         /// </summary>
-        /// <param name="attachmentName">The <see cref="AttachmentName"/> to check.</param>
-        /// <param name="firearmAttachment">The corresponding <see cref="Attachment"/>.</param>
-        /// <returns>A value indicating whether or not the firearm has the specified <see cref="Attachment"/>.</returns>
-        public bool TryGetAttachment(AttachmentName attachmentName, out Attachment firearmAttachment)
+        /// <param name="attachmentName">The <see cref="AttachmentNameTranslation"/> to check.</param>
+        /// <param name="firearmAttachment">The corresponding <see cref="FirearmAttachment"/>.</param>
+        /// <returns>A value indicating whether or not the firearm has the specified <see cref="FirearmAttachment"/>.</returns>
+        public bool TryGetAttachment(AttachmentNameTranslation attachmentName, out FirearmAttachment firearmAttachment)
         {
             firearmAttachment = default;
 
-            if (Attachments.All(attachment => attachment.Name != attachmentName))
+            if (!Attachments.Any(attachment => attachment.Name == attachmentName))
                 return false;
 
             firearmAttachment = GetAttachment(new AttachmentIdentifier(attachmentName));

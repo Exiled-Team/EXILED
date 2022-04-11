@@ -52,7 +52,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets the list of current Item Managers.
         /// </summary>
-        public static HashSet<CustomItem> Registered { get; } = new();
+        public static HashSet<CustomItem> Registered { get; } = new HashSet<CustomItem>();
 
         /// <summary>
         /// Gets or sets the custom ItemID of the item.
@@ -98,7 +98,7 @@ namespace Exiled.CustomItems.API.Features
         /// Gets the list of custom items inside players' inventory being tracked as the current item.
         /// </summary>
         [YamlIgnore]
-        public HashSet<int> TrackedSerials { get; } = new();
+        public HashSet<int> TrackedSerials { get; } = new HashSet<int>();
 
         /// <summary>
         /// Gets a value indicating whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
@@ -130,7 +130,7 @@ namespace Exiled.CustomItems.API.Features
         {
             customItem = Get(id);
 
-            return customItem is not null;
+            return customItem != null;
         }
 
         /// <summary>
@@ -141,12 +141,12 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(string name, out CustomItem customItem)
         {
-            if (name is null)
+            if (name == null)
                 throw new ArgumentNullException(nameof(name));
 
             customItem = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
-            return customItem is not null;
+            return customItem != null;
         }
 
         /// <summary>
@@ -157,12 +157,12 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out CustomItem customItem)
         {
-            if (player is null)
+            if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Check(player.CurrentItem));
 
-            return customItem is not null;
+            return customItem != null;
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out IEnumerable<CustomItem> customItems)
         {
-            if (player is null)
+            if (player == null)
                 throw new ArgumentNullException(nameof(player));
 
             customItems = Registered?.Where(tempCustomItem => player.Items.Any(item => tempCustomItem.Check(item)));
@@ -191,7 +191,7 @@ namespace Exiled.CustomItems.API.Features
         {
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(item.Serial));
 
-            return customItem is not null;
+            return customItem != null;
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace Exiled.CustomItems.API.Features
         {
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(pickup.Serial));
 
-            return customItem is not null;
+            return customItem != null;
         }
 
         /// <summary>
@@ -375,7 +375,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all unregistered <see cref="CustomItem"/>'s.</returns>
         public static IEnumerable<CustomItem> UnregisterItems()
         {
-            List<CustomItem> unregisteredItems = new();
+            List<CustomItem> unregisteredItems = new List<CustomItem>();
 
             foreach (CustomItem customItem in Registered)
             {
@@ -394,7 +394,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all unregistered <see cref="CustomItem"/>'s.</returns>
         public static IEnumerable<CustomItem> UnregisterItems(IEnumerable<Type> targetTypes, bool isIgnored = false)
         {
-            List<CustomItem> unregisteredItems = new();
+            List<CustomItem> unregisteredItems = new List<CustomItem>();
 
             foreach (CustomItem customItem in Registered)
             {
@@ -501,11 +501,7 @@ namespace Exiled.CustomItems.API.Features
                 {
                     for (int i = 0; i < 50; i++)
                     {
-<<<<<<< HEAD
                         if (Map.Lockers == null)
-=======
-                        if (Map.Lockers is null)
->>>>>>> Exiled-Team-dev
                         {
                             Log.Debug($"{nameof(Spawn)}: Locker list is null.", Instance.Config.Debug);
                             continue;
@@ -515,31 +511,19 @@ namespace Exiled.CustomItems.API.Features
                             Map.Lockers[
                                 Loader.Random.Next(Map.Lockers.Count)];
 
-<<<<<<< HEAD
                         if (locker == null)
-=======
-                        if (locker is null)
->>>>>>> Exiled-Team-dev
                         {
                             Log.Debug($"{nameof(Spawn)}: Selected locker is null.", Instance.Config.Debug);
                             continue;
                         }
 
-<<<<<<< HEAD
                         if (locker.Loot == null)
-=======
-                        if (locker.Loot is null)
->>>>>>> Exiled-Team-dev
                         {
                             Log.Debug($"{nameof(Spawn)}: Invalid locker location. Attempting to find a new one..", Instance.Config.Debug);
                             continue;
                         }
 
-<<<<<<< HEAD
                         if (locker.Chambers == null)
-=======
-                        if (locker.Chambers is null)
->>>>>>> Exiled-Team-dev
                         {
                             Log.Debug($"{nameof(Spawn)}: Locker chambers is null", Instance.Config.Debug);
                             continue;
@@ -547,11 +531,7 @@ namespace Exiled.CustomItems.API.Features
 
                         LockerChamber chamber = locker.Chambers[Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
 
-<<<<<<< HEAD
                         if (chamber == null)
-=======
-                        if (chamber is null)
->>>>>>> Exiled-Team-dev
                         {
                             Log.Debug($"{nameof(Spawn)}: chamber is null", Instance.Config.Debug);
                             continue;
@@ -590,7 +570,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         public virtual void SpawnAll()
         {
-            if (SpawnProperties is null)
+            if (SpawnProperties == null)
                 return;
 
             // This will go over each spawn property type (static, dynamic and role) to try and spawn the item.
@@ -672,14 +652,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(Item item) => item is not null && TrackedSerials.Contains(item.Serial);
-
-        /// <summary>
-        /// Checks the specified player's current item to see if it is a custom item.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> who's current item should be checked.</param>
-        /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(Player player) => Check(player?.CurrentItem);
+        public virtual bool Check(Item item) => item != null && TrackedSerials.Contains(item.Serial);
 
         /// <summary>
         /// Checks the specified player's current item to see if it is a custom item.
@@ -880,7 +853,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Item"/> created.</returns>
         protected Item CreateCorrectItem(ItemBase itemBase = null)
         {
-            if (itemBase is null)
+            if (itemBase == null)
                 itemBase = Server.Host.Inventory.CreateItemInstance(Type, false);
             return Item.Get(itemBase);
         }
@@ -996,7 +969,7 @@ namespace Exiled.CustomItems.API.Features
             }
 
             Pickup pickup = Spawn(ev.Player, ev.Item);
-            if (pickup.Base.Rb is not null && ev.IsThrown)
+            if (pickup.Base.Rb != null && ev.IsThrown)
             {
                 Vector3 vector = (ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity / 3f) + (ev.Player.ReferenceHub.PlayerCameraReference.forward * 6f * (Mathf.Clamp01(Mathf.InverseLerp(7f, 0.1f, pickup.Base.Rb.mass)) + 0.3f));
                 vector.x = Mathf.Max(Mathf.Abs(ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity.x), Mathf.Abs(vector.x)) * (float)((vector.x < 0f) ? -1 : 1);

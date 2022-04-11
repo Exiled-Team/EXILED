@@ -28,7 +28,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (scp914Controller is null)
+                if (scp914Controller == null)
                     scp914Controller = Object.FindObjectOfType<Scp914Controller>();
 
                 return scp914Controller;

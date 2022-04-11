@@ -26,9 +26,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Lift"/>s on the map.
         /// </summary>
-        internal static readonly List<Lift> LiftsValue = new(10);
+        internal static readonly List<Lift> LiftsValue = new List<Lift>(10);
 
-        private readonly List<Elevator> elevators = new();
+        private readonly List<Elevator> elevators = new List<Elevator>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Lift"/> class.
