@@ -116,7 +116,7 @@ namespace Exiled.Events.Handlers.Internal
                     continue;
 
                 Item item = Item.Create(type);
-                if (!(item is Firearm firearm))
+                if (item is not Firearm firearm)
                     continue;
 
                 Firearm.FirearmInstances.Add(firearm);

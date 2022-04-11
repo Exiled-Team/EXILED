@@ -251,111 +251,60 @@ namespace Exiled.API.Features
             // Try to remove brackets if they exist.
             rawName = rawName.RemoveBracketsOnEndOfName();
 
-            switch (rawName)
+            return rawName switch
             {
-                case "LCZ_Armory":
-                    return RoomType.LczArmory;
-                case "LCZ_Curve":
-                    return RoomType.LczCurve;
-                case "LCZ_Straight":
-                    return RoomType.LczStraight;
-                case "LCZ_330":
-                    return RoomType.Lcz330;
-                case "LCZ_914":
-                    return RoomType.Lcz914;
-                case "LCZ_Crossing":
-                    return RoomType.LczCrossing;
-                case "LCZ_TCross":
-                    return RoomType.LczTCross;
-                case "LCZ_Cafe":
-                    return RoomType.LczCafe;
-                case "LCZ_Plants":
-                    return RoomType.LczPlants;
-                case "LCZ_Toilets":
-                    return RoomType.LczToilets;
-                case "LCZ_Airlock":
-                    return RoomType.LczAirlock;
-                case "LCZ_173":
-                    return RoomType.Lcz173;
-                case "LCZ_ClassDSpawn":
-                    return RoomType.LczClassDSpawn;
-                case "LCZ_ChkpB":
-                    return RoomType.LczChkpB;
-                case "LCZ_372":
-                    return RoomType.LczGlassBox;
-                case "LCZ_ChkpA":
-                    return RoomType.LczChkpA;
-                case "HCZ_079":
-                    return RoomType.Hcz079;
-                case "HCZ_EZ_Checkpoint":
-                    return RoomType.HczEzCheckpoint;
-                case "HCZ_Room3ar":
-                    return RoomType.HczArmory;
-                case "HCZ_Testroom":
-                    return RoomType.Hcz939;
-                case "HCZ_Hid":
-                    return RoomType.HczHid;
-                case "HCZ_049":
-                    return RoomType.Hcz049;
-                case "HCZ_ChkpA":
-                    return RoomType.HczChkpA;
-                case "HCZ_Crossing":
-                    return RoomType.HczCrossing;
-                case "HCZ_106":
-                    return RoomType.Hcz106;
-                case "HCZ_Nuke":
-                    return RoomType.HczNuke;
-                case "HCZ_Tesla":
-                    return RoomType.HczTesla;
-                case "HCZ_Servers":
-                    return RoomType.HczServers;
-                case "HCZ_ChkpB":
-                    return RoomType.HczChkpB;
-                case "HCZ_Room3":
-                    return RoomType.HczTCross;
-                case "HCZ_457":
-                    return RoomType.Hcz096;
-                case "HCZ_Curve":
-                    return RoomType.HczCurve;
-                case "HCZ_Straight":
-                    return RoomType.HczStraight;
-                case "EZ_Endoof":
-                    return RoomType.EzVent;
-                case "EZ_Intercom":
-                    return RoomType.EzIntercom;
-                case "EZ_GateA":
-                    return RoomType.EzGateA;
-                case "EZ_PCs_small":
-                    return RoomType.EzDownstairsPcs;
-                case "EZ_Curve":
-                    return RoomType.EzCurve;
-                case "EZ_PCs":
-                    return RoomType.EzPcs;
-                case "EZ_Crossing":
-                    return RoomType.EzCrossing;
-                case "EZ_CollapsedTunnel":
-                    return RoomType.EzCollapsedTunnel;
-                case "EZ_Smallrooms2":
-                    return RoomType.EzConference;
-                case "EZ_Straight":
-                    return RoomType.EzStraight;
-                case "EZ_Cafeteria":
-                    return RoomType.EzCafeteria;
-                case "EZ_upstairs":
-                    return RoomType.EzUpstairsPcs;
-                case "EZ_GateB":
-                    return RoomType.EzGateB;
-                case "EZ_Shelter":
-                    return RoomType.EzShelter;
-                case "EZ_ThreeWay":
-                    return RoomType.EzTCross;
-                case "PocketWorld":
-                    return RoomType.Pocket;
-                case "Outside":
-                    return RoomType.Surface;
-                default:
-                    return RoomType.Unknown;
-            }
+                "LCZ_Armory" => RoomType.LczArmory,
+                "LCZ_Curve" => RoomType.LczCurve,
+                "LCZ_Straight" => RoomType.LczStraight,
+                "LCZ_330" => RoomType.Lcz330,
+                "LCZ_914" => RoomType.Lcz914,
+                "LCZ_Crossing" => RoomType.LczCrossing,
+                "LCZ_TCross" => RoomType.LczTCross,
+                "LCZ_Cafe" => RoomType.LczCafe,
+                "LCZ_Plants" => RoomType.LczPlants,
+                "LCZ_Toilets" => RoomType.LczToilets,
+                "LCZ_Airlock" => RoomType.LczAirlock,
+                "LCZ_173" => RoomType.Lcz173,
+                "LCZ_ClassDSpawn" => RoomType.LczClassDSpawn,
+                "LCZ_ChkpB" => RoomType.LczChkpB,
+                "LCZ_372" => RoomType.LczGlassBox,
+                "LCZ_ChkpA" => RoomType.LczChkpA,
+                "HCZ_079" => RoomType.Hcz079,
+                "HCZ_EZ_Checkpoint" => RoomType.HczEzCheckpoint,
+                "HCZ_Room3ar" => RoomType.HczArmory,
+                "HCZ_Testroom" => RoomType.Hcz939,
+                "HCZ_Hid" => RoomType.HczHid,
+                "HCZ_049" => RoomType.Hcz049,
+                "HCZ_ChkpA" => RoomType.HczChkpA,
+                "HCZ_Crossing" => RoomType.HczCrossing,
+                "HCZ_106" => RoomType.Hcz106,
+                "HCZ_Nuke" => RoomType.HczNuke,
+                "HCZ_Tesla" => RoomType.HczTesla,
+                "HCZ_Servers" => RoomType.HczServers,
+                "HCZ_ChkpB" => RoomType.HczChkpB,
+                "HCZ_Room3" => RoomType.HczTCross,
+                "HCZ_457" => RoomType.Hcz096,
+                "HCZ_Curve" => RoomType.HczCurve,
+                "HCZ_Straight" => RoomType.HczStraight,
+                "EZ_Endoof" => RoomType.EzVent,
+                "EZ_Intercom" => RoomType.EzIntercom,
+                "EZ_GateA" => RoomType.EzGateA,
+                "EZ_PCs_small" => RoomType.EzDownstairsPcs,
+                "EZ_Curve" => RoomType.EzCurve,
+                "EZ_PCs" => RoomType.EzPcs,
+                "EZ_Crossing" => RoomType.EzCrossing,
+                "EZ_CollapsedTunnel" => RoomType.EzCollapsedTunnel,
+                "EZ_Smallrooms2" => RoomType.EzConference,
+                "EZ_Straight" => RoomType.EzStraight,
+                "EZ_Cafeteria" => RoomType.EzCafeteria,
+                "EZ_upstairs" => RoomType.EzUpstairsPcs,
+                "EZ_GateB" => RoomType.EzGateB,
+                "EZ_Shelter" => RoomType.EzShelter,
+                "EZ_ThreeWay" => RoomType.EzTCross,
+                "PocketWorld" => RoomType.Pocket,
+                "Outside" => RoomType.Surface,
+                _ => RoomType.Unknown,
+            };
         }
 
         private static ZoneType FindZone(GameObject gameObject)
@@ -365,17 +314,13 @@ namespace Exiled.API.Features
             if (transform.parent is null)
                 return ZoneType.Surface;
 
-            switch (transform.parent.name)
+            return transform.parent.name switch
             {
-                case "HeavyRooms":
-                    return ZoneType.HeavyContainment;
-                case "LightRooms":
-                    return ZoneType.LightContainment;
-                case "EntranceRooms":
-                    return ZoneType.Entrance;
-                default:
-                    return transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
-            }
+                "HeavyRooms" => ZoneType.HeavyContainment,
+                "LightRooms" => ZoneType.LightContainment,
+                "EntranceRooms" => ZoneType.Entrance,
+                _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
+            };
         }
 
         private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController)

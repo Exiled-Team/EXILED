@@ -236,7 +236,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             param = default;
 
-            if (!(Base is T cast))
+            if (Base is not T cast)
                 return false;
 
             param = cast;
@@ -254,7 +254,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             param = default;
 
-            if (!(this is T cast))
+            if (this is not T cast)
                 return false;
 
             param = cast;

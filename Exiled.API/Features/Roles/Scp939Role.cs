@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp939"/> script for this role.
         /// </summary>
-        public Scp939 Script => script ?? (script = Owner.ReferenceHub.scpsController.CurrentScp as Scp939);
+        public Scp939 Script => script ??= Owner.ReferenceHub.scpsController.CurrentScp as Scp939;
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-939 can attack again.
