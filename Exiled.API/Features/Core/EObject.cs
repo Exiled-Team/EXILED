@@ -575,6 +575,61 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
+        /// Destroys all the active <see cref="EObject"/> instances of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
+        public static void DestroyActiveObjectsOfType<T>()
+            where T : EObject
+        {
+            foreach (EObject @object in InternalObjects)
+            {
+                if (@object.Cast(out T obj))
+                    obj.Destroy();
+            }
+        }
+
+        /// <summary>
+        /// Destroys an active <see cref="EObject"/> instance of type <typeparamref name="T"/> given the specified <see cref="GameObject"/>.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
+        /// <param name="gameObject">The <see cref="GameObject"/> belonging to the object.</param>
+        /// <returns><see langword="true"/> if the object was destroyed; otherwise, <see langword="false"/>.</returns>
+        public static bool DestroyActiveObject<T>(GameObject gameObject)
+            where T : EObject
+        {
+            foreach (EObject @object in InternalObjects)
+            {
+                if (@object.Cast(out T obj) && obj.Base == gameObject)
+                {
+                    obj.Destroy();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Destroys an active <see cref="EObject"/> instance given the specified <see cref="GameObject"/>.
+        /// </summary>
+/// <param name="type">The type of the object.</param>
+        /// <param name="gameObject">The <see cref="GameObject"/> belonging to the object.</param>
+        /// <returns><see langword="true"/> if the object was destroyed; otherwise, <see langword="false"/>.</returns>        
+        public static bool DestroyActiveObject(Type type, GameObject gameObject)
+        {
+            foreach (EObject @object in InternalObjects)
+            {
+                if (@object.GetType() == type && @object.Base == gameObject)
+                {
+                    @object.Destroy();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Destroys the current <see cref="EObject"/> instance.
         /// </summary>
         public void Destroy()
