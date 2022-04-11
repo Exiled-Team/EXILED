@@ -15,7 +15,7 @@ namespace Exiled.API.Features.Core
     using UnityEngine;
 
     /// <summary>
-    /// Actor is the base class for a <see cref="EObject"/> that can be placed or spawned in-game.
+    /// <see cref="EActor"/> is the base class for a <see cref="EObject"/> used along with an in-game <see cref="GameObject"/>.
     /// </summary>
     public abstract class EActor : EObject
     {

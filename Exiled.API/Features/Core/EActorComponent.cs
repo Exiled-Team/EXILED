@@ -8,7 +8,7 @@
 namespace Exiled.API.Features.Core
 {
     /// <summary>
-    /// <see cref="EActorComponent"/> is the base class for <see cref="EActorComponent"/> instances which need to be managed internally.
+    /// <see cref="EActorComponent"/> is the base class for <see cref="EActor"/> components.
     /// </summary>
     public abstract class EActorComponent : EActor
     {
@@ -24,12 +24,12 @@ namespace Exiled.API.Features.Core
         /// Initializes a new instance of the <see cref="EActorComponent"/> class.
         /// </summary>
         /// <param name="root"><inheritdoc cref="RootComponent"/></param>
-        public EActorComponent(EActorComponent root)
+        public EActorComponent(EActor root)
             : this() => RootComponent = root;
 
         /// <summary>
         /// Gets or sets the root <see cref="EActorComponent"/>.
         /// </summary>
-        public abstract EActorComponent RootComponent { get; protected set; }
+        public abstract EActor RootComponent { get; protected set; }
     }
 }
