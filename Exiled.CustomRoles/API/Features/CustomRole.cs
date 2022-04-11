@@ -16,6 +16,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
@@ -33,12 +34,12 @@ namespace Exiled.CustomRoles.API.Features
     /// <summary>
     /// The custom role base class.
     /// </summary>
-    public abstract class CustomRole
+    public abstract class CustomRole : EActor
     {
         /// <summary>
         /// Gets a list of all registered custom roles.
         /// </summary>
-        public static HashSet<CustomRole> Registered { get; } = new();
+        public static IEnumerable<CustomRole> Registered => Objects.Where(obj => obj.Cast(out CustomRole _)).Select(obj => obj.Cast<CustomRole>());
 
         /// <summary>
         /// Gets or sets the custom RoleID of the role.
@@ -54,11 +55,6 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets or sets the max <see cref="Player.Health"/> for the role.
         /// </summary>
         public abstract int MaxHealth { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of this role.
-        /// </summary>
-        public abstract string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the description of this role.
@@ -329,16 +325,6 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool Check(Player player) => TrackedPlayers.Contains(player);
 
         /// <summary>
-        /// Initializes this role manager.
-        /// </summary>
-        public virtual void Init() => SubscribeEvents();
-
-        /// <summary>
-        /// Destroys this role manager.
-        /// </summary>
-        public virtual void Destroy() => UnsubscribeEvents();
-
-        /// <summary>
         /// Handles setup of the role, including spawn location, inventory and registering event handlers.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to add the role to.</param>
@@ -424,26 +410,26 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>True if the role registered properly.</returns>
         internal bool TryRegister()
         {
-            if (!Registered.Contains(this))
+            if (Registered.Any(r => r.Id == Id))
             {
-                if (Registered.Any(r => r.Id == Id))
-                {
-                    Log.Warn($"{Name} has tried to register with the same Role ID as another role: {Id}. It will not be registered!");
+                Log.Warn($"{Name} has tried to register with the same Role ID as another role: {Id}. It will not be registered!");
 
-                    return false;
-                }
-
-                Registered.Add(this);
-                Init();
-
-                Log.Debug($"{Name} ({Id}) has been successfully registered.", CustomRoles.Instance.Config.Debug);
-
-                return true;
+                return false;
             }
 
-            Log.Warn($"Couldn't register {Name} ({Id}) [{Role}] as it already exists.");
+            if (!RegisterEObjectType(GetType(), Name, out Type type))
+            {
+                Log.Warn($"Couldn't register {Name} ({Id}) [{Role}] as it already exists.");
 
-            return false;
+                return false;
+            }
+
+            RegisterEObjectType(GetType(), Name, out _);
+            CreateDefaultSubobject(GetType(), null, Name);
+
+            Log.Debug($"{Name} ({Id}) has been successfully registered.", CustomRoles.Instance.Config.Debug);
+
+            return true;
         }
 
         /// <summary>
@@ -454,7 +440,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             Destroy();
 
-            if (!Registered.Remove(this))
+            if (!UnregisterEObjectType(GetType()))
             {
                 Log.Warn($"Cannot unregister {Name} ({Id}) [{Role}], it hasn't been registered yet.");
 
@@ -492,6 +478,22 @@ namespace Exiled.CustomRoles.API.Features
             Log.Warn($"{Name}: {nameof(TryAddItem)}: {itemName} is not a valid ItemType or Custom Item name.");
 
             return false;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnBeginPlay()
+        {
+            base.OnBeginPlay();
+
+            SubscribeEvents();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnEndPlay()
+        {
+            base.OnEndPlay();
+
+            UnsubscribeEvents();
         }
 
         /// <summary>
