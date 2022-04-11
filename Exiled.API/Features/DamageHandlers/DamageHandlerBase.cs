@@ -158,7 +158,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        internal static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
+        internal static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new()
         {
             { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
             { DeathTranslations.Bleeding, DamageType.Bleeding },
@@ -227,7 +227,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// Safely casts the damage handler to the specified <see cref="BaseHandler"/> type.
         /// </summary>
         /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
-        /// <param name="param">The cast <see cref="BaseHandler"/>.</param>
+        /// <param name="param">The casted <see cref="BaseHandler"/>.</param>
         /// <returns>A <see cref="BaseHandler"/> object.</returns>
         public bool Is<T>(out T param)
             where T : BaseHandler
@@ -245,7 +245,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// Safely casts the damage handler to the specified <see cref="DamageHandlerBase"/> type.
         /// </summary>
         /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
-        /// <param name="param">The cast <see cref="DamageHandlerBase"/>.</param>
+        /// <param name="param">The casted <see cref="DamageHandlerBase"/>.</param>
         /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
         public bool BaseIs<T>(out T param)
             where T : DamageHandlerBase
@@ -298,7 +298,7 @@ namespace Exiled.API.Features.DamageHandlers
             /// </summary>
             /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> instance.</param>
             public static implicit operator BaseHandler.CassieAnnouncement(CassieAnnouncement cassieAnnouncement) =>
-                new BaseHandler.CassieAnnouncement()
+                new()
                 {
                     Announcement = cassieAnnouncement.Announcement,
                     SubtitleParts = cassieAnnouncement.SubtitleParts.ToArray(),
@@ -309,7 +309,7 @@ namespace Exiled.API.Features.DamageHandlers
             /// </summary>
             /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> instance.</param>
             public static implicit operator CassieAnnouncement(BaseHandler.CassieAnnouncement cassieAnnouncement) =>
-                new CassieAnnouncement(cassieAnnouncement.Announcement, cassieAnnouncement.SubtitleParts);
+                new(cassieAnnouncement.Announcement, cassieAnnouncement.SubtitleParts);
         }
     }
 }

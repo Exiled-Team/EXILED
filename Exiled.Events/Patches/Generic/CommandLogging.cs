@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Generic
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player == null}\n{e}");
+                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player is null}\n{e}");
                 }
 
                 if (string.IsNullOrEmpty(logMessage))
@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Generic
             }
             catch (Exception e)
             {
-                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender == null}\n{e}");
+                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender is null}\n{e}");
             }
         }
 
@@ -82,13 +82,13 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.LogRaCommands))),
-                new CodeInstruction(OpCodes.Brfalse, continueLabel),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
+                new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.LogRaCommands))),
+                new(OpCodes.Brfalse, continueLabel),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 

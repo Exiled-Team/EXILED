@@ -22,17 +22,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Player"/> which contains all the players ignored by LureSubjectContainer.
         /// </summary>
-        public static HashSet<Player> IgnoredPlayers { get; set; } = new HashSet<Player>();
+        public static HashSet<Player> IgnoredPlayers { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="RoleType"/> which contains all the roles ignored by LureSubjectContainer.
         /// </summary>
-        public static List<RoleType> IgnoredRoles { get; set; } = new List<RoleType> { RoleType.Spectator };
+        public static List<RoleType> IgnoredRoles { get; set; } = new() { RoleType.Spectator };
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Team"/> which contains all the teams ignored by LureSubjectContainer.
         /// </summary>
-        public static List<Team> IgnoredTeams { get; set; } = new List<Team> { Team.SCP };
+        public static List<Team> IgnoredTeams { get; set; } = new() { Team.SCP };
 
         /// <summary>
         /// Gets the base <see cref="LureSubjectContainer"/>.

@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => RoundSummary.RoundInProgress();
+        public static bool IsStarted => ReferenceHub.LocalHub is not null && RoundSummary.RoundInProgress();
 
         /// <summary>
         /// Gets a value indicating whether the round is ended or not.
@@ -101,7 +101,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                List<Side> sides = new List<Side>(4);
+                List<Side> sides = new(4);
                 foreach (Player ply in Player.Get(ply => ply.IsAlive))
                 {
                     if (!sides.Contains(ply.Role.Side))

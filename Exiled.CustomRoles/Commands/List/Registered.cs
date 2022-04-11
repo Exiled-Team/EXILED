@@ -28,7 +28,7 @@ namespace Exiled.CustomRoles.Commands.List
         /// <summary>
         /// Gets the command instance.
         /// </summary>
-        public static Registered Instance { get; } = new Registered();
+        public static Registered Instance { get; } = new();
 
         /// <inheritdoc/>
         public string Command { get; } = "registered";
@@ -48,7 +48,7 @@ namespace Exiled.CustomRoles.Commands.List
                 return false;
             }
 
-            if (CustomRole.Registered.Count() == 0)
+            if (CustomRole.Registered.Count == 0)
             {
                 response = "There are no custom roles currently on this server.";
                 return false;
@@ -56,7 +56,7 @@ namespace Exiled.CustomRoles.Commands.List
 
             StringBuilder builder = StringBuilderPool.Shared.Rent().AppendLine();
 
-            builder.Append("[Registered custom roles (").Append(CustomRole.Registered.Count()).AppendLine(")]");
+            builder.Append("[Registered custom roles (").Append(CustomRole.Registered.Count).AppendLine(")]");
 
             foreach (CustomRole role in CustomRole.Registered.OrderBy(r => r.Id))
                 builder.Append('[').Append(role.Id).Append(". ").Append(role.Name).Append(" (").Append(role.Role).Append(')').AppendLine("]");

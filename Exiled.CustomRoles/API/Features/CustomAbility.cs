@@ -33,7 +33,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets a list of all registered custom abilities.
         /// </summary>
-        public static HashSet<CustomAbility> Registered { get; } = new HashSet<CustomAbility>();
+        public static HashSet<CustomAbility> Registered { get; } = new();
 
         /// <summary>
         /// Gets or sets the name of the ability.
@@ -49,7 +49,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets all players who have this ability.
         /// </summary>
         [YamlIgnore]
-        public HashSet<Player> Players { get; } = new HashSet<Player>();
+        public HashSet<Player> Players { get; } = new();
 
         /// <summary>
         /// Gets the <see cref="Type"/> for this ability.
@@ -78,7 +78,7 @@ namespace Exiled.CustomRoles.API.Features
 
             customAbility = Get(name);
 
-            return customAbility != null;
+            return customAbility is not null;
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all unregistered <see cref="CustomAbility"/>'s.</returns>
         public static IEnumerable<CustomAbility> UnregisterAbilities()
         {
-            List<CustomAbility> unregisteredAbilities = new List<CustomAbility>();
+            List<CustomAbility> unregisteredAbilities = new();
 
             foreach (CustomAbility customAbility in Registered)
             {
@@ -185,7 +185,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all unregistered <see cref="CustomAbility"/>'s.</returns>
         public static IEnumerable<CustomAbility> UnregisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false)
         {
-            List<CustomAbility> unregisteredAbilities = new List<CustomAbility>();
+            List<CustomAbility> unregisteredAbilities = new();
 
             foreach (CustomAbility customAbility in Registered)
             {

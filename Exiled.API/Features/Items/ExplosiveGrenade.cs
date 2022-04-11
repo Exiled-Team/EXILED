@@ -49,7 +49,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         internal ExplosiveGrenade(ItemType type, Player player = null)
-            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
+            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
         }
 
@@ -86,7 +86,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets all the currently known <see cref="EffectGrenade"/>:<see cref="Throwable"/> items.
         /// </summary>
-        internal static Dictionary<ExplosionGrenade, ExplosiveGrenade> GrenadeToItem { get; set; } = new Dictionary<ExplosionGrenade, ExplosiveGrenade>();
+        internal static Dictionary<ExplosionGrenade, ExplosiveGrenade> GrenadeToItem { get; set; } = new();
 
         /// <summary>
         /// Spawns an active grenade on the map at the specified location.
@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Items
             grenade._deafenedDuration = DeafenDuration;
             grenade._concussedDuration = ConcussDuration;
             grenade._fuseTime = FuseTime;
-            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub);
+            grenade.PreviousOwner = new Footprint(owner is not null ? owner.ReferenceHub : Server.Host.ReferenceHub);
             NetworkServer.Spawn(grenade.gameObject);
             grenade.ServerActivate();
         }

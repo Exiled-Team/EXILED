@@ -42,12 +42,12 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemBase, Item> BaseToItem = new Dictionary<ItemBase, Item>();
+        internal static readonly Dictionary<ItemBase, Item> BaseToItem = new();
 
         /// <summary>
         /// A dictionary of all <see cref="Serial"/>s that have been assigned to an item.
         /// </summary>
-        internal static readonly Dictionary<ushort, Item> SerialToItem = new Dictionary<ushort, Item>();
+        internal static readonly Dictionary<ushort, Item> SerialToItem = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
@@ -168,7 +168,7 @@ namespace Exiled.API.Features.Items
         /// <returns>The item wrapper for the given <see cref="ItemBase"/>.</returns>
         public static Item Get(ItemBase itemBase)
         {
-            if (itemBase == null)
+            if (itemBase is null)
                 return null;
 
             if (BaseToItem.TryGetValue(itemBase, out Item item))
@@ -218,23 +218,23 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Creates a new <see cref="Item"/> with the proper inherited subclass.
         /// <para>
-        /// Based on the <paramref name="type"/>, the returned <see cref="Item"/> can be cast into a subclass to gain more control over the object.
-        /// <br />- Usable items (Adrenaline, Medkit, Painkillers, SCP-207, SCP-268, and SCP-500) should be cast to the <see cref="Usable"/> class.
-        /// <br />- All valid ammo should be cast to the <see cref="Ammo"/> class.
-        /// <br />- All valid firearms (not including the Micro HID) should be cast to the <see cref="Firearm"/> class.
-        /// <br />- All valid keycards should be cast to the <see cref="Keycard"/> class.
-        /// <br />- All valid armor should be cast to the <see cref="Armor"/> class.
-        /// <br />- Explosive grenades and SCP-018 should be cast to the <see cref="ExplosiveGrenade"/> class.
-        /// <br />- Flash grenades should be cast to the <see cref="FlashGrenade"/> class.
-        /// <br />- SCP-2176 can be cast to the <see cref="Throwable"/> class.
+        /// Based on the <paramref name="type"/>, the returned <see cref="Item"/> can be casted into a subclass to gain more control over the object.
+        /// <br />- Usable items (Adrenaline, Medkit, Painkillers, SCP-207, SCP-268, and SCP-500) should be casted to the <see cref="Usable"/> class.
+        /// <br />- All valid ammo should be casted to the <see cref="Ammo"/> class.
+        /// <br />- All valid firearms (not including the Micro HID) should be casted to the <see cref="Firearm"/> class.
+        /// <br />- All valid keycards should be casted to the <see cref="Keycard"/> class.
+        /// <br />- All valid armor should be casted to the <see cref="Armor"/> class.
+        /// <br />- Explosive grenades and SCP-018 should be casted to the <see cref="ExplosiveGrenade"/> class.
+        /// <br />- Flash grenades should be casted to the <see cref="FlashGrenade"/> class.
+        /// <br />- SCP-2176 can be casted to the <see cref="Throwable"/> class.
         /// </para>
         /// <para>
         /// <br />The following have their own respective classes:
-        /// <br />- Flashlights can be cast to <see cref="Flashlight"/>.
-        /// <br />- Radios can be cast to <see cref="Radio"/>.
-        /// <br />- The Micro HID can be cast to <see cref="MicroHid"/>.
-        /// <br />- SCP-244 A and B variants can be cast to <see cref="Scp244"/>.
-        /// <br />- SCP-330 can be cast to <see cref="Scp330"/>.
+        /// <br />- Flashlights can be casted to <see cref="Flashlight"/>.
+        /// <br />- Radios can be casted to <see cref="Radio"/>.
+        /// <br />- The Micro HID can be casted to <see cref="MicroHid"/>.
+        /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244"/>.
+        /// <br />- SCP-330 can be casted to <see cref="Scp330"/>.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Item"/> class.
@@ -283,6 +283,7 @@ namespace Exiled.API.Features.Items
                 case ItemType.GunCOM18:
                 case ItemType.GunE11SR:
                 case ItemType.GunFSP9:
+                case ItemType.ParticleDisruptor:
                     return new Firearm(type);
                 case ItemType.KeycardGuard:
                 case ItemType.KeycardJanitor:
@@ -336,7 +337,7 @@ namespace Exiled.API.Features.Items
             {
                 if (this is Firearm firearm)
                 {
-                    if (identifiers != null)
+                    if (identifiers is not null)
                         firearm.AddAttachment(identifiers);
 
                     firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
@@ -360,7 +361,7 @@ namespace Exiled.API.Features.Items
                             break;
                     }
 
-                    uint code = identifiers != null ? (uint)firearmPickup.Info.ItemId.GetBaseCode() + identifiers.GetAttachmentsCode() : firearmPickup.Status.Attachments;
+                    uint code = identifiers is not null ? (uint)firearmPickup.Info.ItemId.GetBaseCode() + identifiers.GetAttachmentsCode() : firearmPickup.Status.Attachments;
                     firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, code);
                 }
 

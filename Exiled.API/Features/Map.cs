@@ -46,22 +46,22 @@ namespace Exiled.API.Features
         /// <summary>
         /// A list of <see cref="Locker"/>s on the map.
         /// </summary>
-        internal static readonly List<Locker> LockersValue = new List<Locker>(250);
+        internal static readonly List<Locker> LockersValue = new(250);
 
         /// <summary>
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
         /// </summary>
-        internal static readonly List<PocketDimensionTeleport> TeleportsValue = new List<PocketDimensionTeleport>(8);
+        internal static readonly List<PocketDimensionTeleport> TeleportsValue = new(8);
 
         /// <summary>
         /// A list of <see cref="Ragdoll"/>s on the map.
         /// </summary>
-        internal static readonly List<Ragdoll> RagdollsValue = new List<Ragdoll>();
+        internal static readonly List<Ragdoll> RagdollsValue = new();
 
         /// <summary>
         /// A list of <see cref="AdminToy"/>s on the map.
         /// </summary>
-        internal static readonly List<AdminToy> ToysValue = new List<AdminToy>();
+        internal static readonly List<AdminToy> ToysValue = new();
 
         private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
@@ -70,7 +70,7 @@ namespace Exiled.API.Features
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
-        private static System.Random random = new System.Random();
+        private static System.Random random = new();
 
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
@@ -94,7 +94,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                List<Pickup> pickups = new List<Pickup>();
+                List<Pickup> pickups = new();
                 foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>())
                 {
                     if (Pickup.Get(itemPickupBase) is Pickup pickup)
@@ -164,10 +164,10 @@ namespace Exiled.API.Features
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
-            if (room == null)
+            if (room is null)
             {
                 // Then try for objects that aren't children, like players and pickups.
-                Ray ray = new Ray(objectInRoom.transform.position, Vector3.down);
+                Ray ray = new(objectInRoom.transform.position, Vector3.down);
 
                 if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                     return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
@@ -184,7 +184,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
         /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcast.</param>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
         public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
@@ -210,7 +210,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shows a hint to all <see cref="Player">players</see>.
         /// </summary>
-        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
+        /// <param name="message">The message that will be broadcasted (supports Unity Rich Text formatting).</param>
         /// <param name="duration">The duration in seconds.</param>
         public static void ShowHint(string message, float duration)
         {
@@ -242,7 +242,7 @@ namespace Exiled.API.Features
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
-                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room != null && zoneTypes.HasFlag(room.Zone)))
+                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room is not null && zoneTypes.HasFlag(room.Zone)))
                     controller.ServerFlickerLights(duration);
             }
         }

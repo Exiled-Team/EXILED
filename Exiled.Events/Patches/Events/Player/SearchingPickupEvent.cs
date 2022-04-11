@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 SearchRequest request = __instance.SessionPipe.Request;
 
-                SearchingPickupEventArgs ev = new SearchingPickupEventArgs(Player.Get(__instance.Hub), request.Target, request.Body, SearchCompletor.FromPickup(__instance, request.Target, __instance.ServerMaxRayDistanceSqr), request.Target.SearchTime);
+                SearchingPickupEventArgs ev = new(Player.Get(__instance.Hub), request.Target, request.Body, SearchCompletor.FromPickup(__instance, request.Target, __instance.ServerMaxRayDistanceSqr), request.Target.SearchTimeForPlayer(__instance.Hub));
                 Handlers.Player.OnSearchPickupRequest(ev);
 
                 completor = ev.SearchCompletor;
@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
-                session = new SearchSession?(body);
+                session = body;
                 __result = true;
                 return false;
             }

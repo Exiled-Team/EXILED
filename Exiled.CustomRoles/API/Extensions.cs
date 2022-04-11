@@ -26,7 +26,7 @@ namespace Exiled.CustomRoles.API
         /// <returns>A <see cref="ReadOnlyCollection{T}"/> of all current custom roles.</returns>
         public static ReadOnlyCollection<CustomRole> GetCustomRoles(this Player player)
         {
-            List<CustomRole> roles = new List<CustomRole>();
+            List<CustomRole> roles = new();
 
             foreach (CustomRole customRole in CustomRole.Registered)
             {
@@ -43,7 +43,7 @@ namespace Exiled.CustomRoles.API
         /// <param name="customRoles"><see cref="CustomRole"/>s to be registered.</param>
         public static void Register(this IEnumerable<CustomRole> customRoles)
         {
-            if (customRoles == null)
+            if (customRoles is null)
                 throw new ArgumentNullException(nameof(customRoles));
 
             foreach (CustomRole customItem in customRoles)
@@ -68,7 +68,7 @@ namespace Exiled.CustomRoles.API
         /// <param name="customRoles"><see cref="CustomRole"/>s to be unregistered.</param>
         public static void Unregister(this IEnumerable<CustomRole> customRoles)
         {
-            if (customRoles == null)
+            if (customRoles is null)
                 throw new ArgumentNullException(nameof(customRoles));
 
             foreach (CustomRole customItem in customRoles)
