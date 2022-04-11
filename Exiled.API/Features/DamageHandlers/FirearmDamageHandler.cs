@@ -86,6 +86,7 @@ namespace Exiled.API.Features.DamageHandlers
             { ItemType.GunCOM18, DamageType.Com18 },
             { ItemType.GunFSP9, DamageType.Fsp9 },
             { ItemType.GunE11SR, DamageType.E11Sr },
+            { ItemType.ParticleDisruptor, DamageType.ParticleDisruptor },
         };
 
         /// <inheritdoc/>
