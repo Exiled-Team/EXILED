@@ -155,6 +155,11 @@ namespace Exiled.API.Features
         public Dictionary<ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
 
         /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="EActor"/> containing all the player's components.
+        /// </summary>
+        public IReadOnlyCollection<EActor> Components => components;
+
+        /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public GameObject GameObject { get; private set; }
