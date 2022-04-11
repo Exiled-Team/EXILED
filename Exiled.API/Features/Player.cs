@@ -2415,6 +2415,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Tries to get a component from the player.
+        /// </summary>
+        /// <typeparam name="T">The cast <typeparamref name="T"/> <see cref="EActor"/>.</typeparam>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to get.</param>
+        /// <param name="component">The found component.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetComponent<T>(Type type, out T component)
+            where T : EActor
+        {
+            component = GetComponent<T>(type);
+
+            return component is not null;
+        }
+
+        /// <summary>
         /// Checks if the player has an active component.
         /// </summary>
         /// <typeparam name="T">The <see cref="EActor"/> to look for.</typeparam>

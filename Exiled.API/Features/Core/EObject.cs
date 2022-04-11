@@ -477,6 +477,25 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
+        /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/> filtered based on a predicate.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <typeparamref name="T"/>[] containing all the matching results.</returns>
+        public static T[] FindActiveObjectsOfType<T>(Func<EObject, bool> predicate)
+            where T : EObject
+        {
+            List<T> objects = new();
+            foreach (EObject @object in InternalObjects.Where(predicate))
+            {
+                if (@object.Cast(out T obj))
+                    objects.Add(obj);
+            }
+
+            return objects.ToArray();
+        }
+
+        /// <summary>
         /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
@@ -507,6 +526,47 @@ namespace Exiled.API.Features.Core
             foreach (EObject @object in InternalObjects)
             {
                 if (@object.Cast(out T obj) && obj.Name == name)
+                    objects.Add(obj);
+            }
+
+            return objects.ToArray();
+        }
+
+        /// <summary>
+        /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
+        /// <param name="type">The <see cref="EObject"/> type.</param>
+        /// <returns>A <typeparamref name="T"/>[] containing all the matching results.</returns>
+        public static T[] FindActiveObjectsOfType<T>(Type type)
+            where T : EObject
+        {
+            List<T> objects = new();
+            foreach (EObject @object in InternalObjects.Where(obj => obj.GetType() == type))
+            {
+                if (@object.Cast(out T obj))
+                    objects.Add(obj);
+            }
+
+            return objects.ToArray();
+        }
+
+        /// <summary>
+        /// Finds all the active <see cref="EObject"/> instances of type <typeparamref name="T"/> filtered based on a predicate.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> type to look for.</typeparam>
+        /// <param name="type">The <see cref="EObject"/> type.</param>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <typeparamref name="T"/>[] containing all the matching results.</returns>
+        public static T[] FindActiveObjectsOfType<T>(Type type, Func<EObject, bool> predicate)
+            where T : EObject
+        {
+            List<T> objects = new();
+            foreach (EObject @object in InternalObjects
+                .Where(obj => obj.GetType() == type)
+                .Where(predicate))
+            {
+                if (@object.Cast(out T obj))
                     objects.Add(obj);
             }
 
