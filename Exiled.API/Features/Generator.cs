@@ -176,17 +176,12 @@ namespace Exiled.API.Features
         public float DeniedUnlockCooldown
         {
             get => Base._deniedCooldownTime;
-            set => Base._deniedCooldownTime = value;
         }
 
         /// <summary>
-        /// Gets or sets the generator position.
+        /// Gets the generator position.
         /// </summary>
-        public Vector3 Position
-        {
-            get => Base.transform.position;
-            set => Base.transform.position = value;
-        }
+        public Vector3 Position => Base.transform.position;
 
         /// <summary>
         /// Gets the generator transform.
@@ -194,13 +189,9 @@ namespace Exiled.API.Features
         public Transform Transform => Base.transform;
 
         /// <summary>
-        /// Gets or sets the generator rotation.
+        /// Gets the generator rotation.
         /// </summary>
-        public Quaternion Rotation
-        {
-            get => Base.transform.rotation;
-            set => Base.transform.rotation = value;
-        }
+        public Quaternion Rotation => Base.transform.rotation;
 
         /// <summary>
         /// Gets or sets the required permissions to interact with the generator.
