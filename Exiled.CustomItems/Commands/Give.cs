@@ -97,7 +97,7 @@ namespace Exiled.CustomItems.Commands
                     response = $"Custom item {item.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";
                     return true;
                 default:
-                    if (!(Player.Get(identifier) is Player player))
+                    if (Player.Get(identifier) is not Player player)
                     {
                         response = $"Unable to find player: {identifier}.";
                         return false;

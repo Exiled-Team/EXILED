@@ -102,6 +102,8 @@ namespace Exiled.API.Features.DamageHandlers
                         return DamageType.Scp018;
                     case RecontainmentDamageHandler _:
                         return DamageType.Recontainment;
+                    case MicroHidDamageHandler _:
+                        return DamageType.MicroHid;
                     case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
@@ -179,7 +181,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             param = default;
 
-            if (!(Base is T cast))
+            if (Base is not T cast)
                 return false;
 
             param = cast;
@@ -197,7 +199,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             param = default;
 
-            if (!(this is T cast))
+            if (this is not T cast)
                 return false;
 
             param = cast;

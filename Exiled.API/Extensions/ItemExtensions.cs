@@ -69,7 +69,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an utilty item or not.</returns>
-        public static bool IsUtility(this ItemType type) => /*type == ItemType.Disarmer ||*/ type == ItemType.Flashlight || type == ItemType.Radio;
+        public static bool IsUtility(this ItemType type) => type == ItemType.Flashlight || type == ItemType.Radio;
 
         /// <summary>
         /// Check if a <see cref="ItemType"/> is an armor item.
@@ -84,11 +84,13 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a keycard or not.</returns>
-        public static bool IsKeycard(this ItemType type) =>
-            type == ItemType.KeycardChaosInsurgency || type == ItemType.KeycardContainmentEngineer || type == ItemType.KeycardFacilityManager ||
-            type == ItemType.KeycardGuard || type == ItemType.KeycardJanitor || type == ItemType.KeycardNTFCommander ||
-            type == ItemType.KeycardNTFLieutenant || type == ItemType.KeycardO5 || type == ItemType.KeycardScientist ||
-            type == ItemType.KeycardResearchCoordinator || type == ItemType.KeycardNTFOfficer || type == ItemType.KeycardZoneManager;
+        public static bool IsKeycard(this ItemType type) => type switch
+        {
+            ItemType.KeycardJanitor or ItemType.KeycardScientist or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or
+            ItemType.KeycardGuard or ItemType.KeycardNTFOfficer or ItemType.KeycardContainmentEngineer or ItemType.KeycardNTFLieutenant or
+            ItemType.KeycardNTFCommander or ItemType.KeycardFacilityManager or ItemType.KeycardChaosInsurgency or ItemType.KeycardO5 => true,
+            _ => false,
+        };
 
         /// <summary>
         /// Gets the default ammo of a weapon.
@@ -97,7 +99,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the item durability.</returns>
         public static byte GetMaxAmmo(this ItemType item)
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || itemBase is not InventorySystem.Items.Firearms.Firearm firearm)
                 return 0;
 
             return firearm.AmmoManagerModule.MaxAmmo;
@@ -108,96 +110,58 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to convert.</param>
         /// <returns>The given weapon's AmmoType.</returns>
-        public static AmmoType GetWeaponAmmoType(this ItemType type)
+        public static AmmoType GetWeaponAmmoType(this ItemType type) => type switch
         {
-            switch (type)
-            {
-                case ItemType.GunCOM15:
-                case ItemType.GunCOM18:
-                case ItemType.GunCrossvec:
-                case ItemType.GunFSP9:
-                    return AmmoType.Nato9;
-                case ItemType.GunE11SR:
-                    return AmmoType.Nato556;
-                case ItemType.GunAK:
-                case ItemType.GunLogicer:
-                    return AmmoType.Nato762;
-                case ItemType.GunRevolver:
-                    return AmmoType.Ammo44Cal;
-                case ItemType.GunShotgun:
-                    return AmmoType.Ammo12Gauge;
-                default:
-                    return AmmoType.None;
-            }
-        }
+            ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunCrossvec or ItemType.GunFSP9 => AmmoType.Nato9,
+            ItemType.GunE11SR => AmmoType.Nato556,
+            ItemType.GunAK or ItemType.GunLogicer => AmmoType.Nato762,
+            ItemType.GunRevolver => AmmoType.Ammo44Cal,
+            ItemType.GunShotgun => AmmoType.Ammo12Gauge,
+            _ => AmmoType.None,
+        };
 
         /// <summary>
         /// Converts a valid ammo <see cref="ItemType"/> into an <see cref="AmmoType"/>.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to convert.</param>
         /// <returns>The ammo type of the given item type.</returns>
-        public static AmmoType GetAmmoType(this ItemType type)
+        public static AmmoType GetAmmoType(this ItemType type) => type switch
         {
-            switch (type)
-            {
-                case ItemType.Ammo9x19:
-                    return AmmoType.Nato9;
-                case ItemType.Ammo556x45:
-                    return AmmoType.Nato556;
-                case ItemType.Ammo762x39:
-                    return AmmoType.Nato762;
-                case ItemType.Ammo12gauge:
-                    return AmmoType.Ammo12Gauge;
-                case ItemType.Ammo44cal:
-                    return AmmoType.Ammo44Cal;
-                default:
-                    return AmmoType.None;
-            }
-        }
+            ItemType.Ammo9x19 => AmmoType.Nato9,
+            ItemType.Ammo556x45 => AmmoType.Nato556,
+            ItemType.Ammo762x39 => AmmoType.Nato762,
+            ItemType.Ammo12gauge => AmmoType.Ammo12Gauge,
+            ItemType.Ammo44cal => AmmoType.Ammo44Cal,
+            _ => AmmoType.None,
+        };
 
         /// <summary>
         /// Converts an <see cref="AmmoType"/> into it's corresponding <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type">The <see cref="AmmoType"/> to convert.</param>
         /// <returns>The Item type of the specified ammo.</returns>
-        public static ItemType GetItemType(this AmmoType type)
+        public static ItemType GetItemType(this AmmoType type) => type switch
         {
-            switch (type)
-            {
-                case AmmoType.Nato556:
-                    return ItemType.Ammo556x45;
-                case AmmoType.Nato762:
-                    return ItemType.Ammo762x39;
-                case AmmoType.Nato9:
-                    return ItemType.Ammo9x19;
-                case AmmoType.Ammo12Gauge:
-                    return ItemType.Ammo12gauge;
-                case AmmoType.Ammo44Cal:
-                    return ItemType.Ammo44cal;
-                default:
-                    return ItemType.None;
-            }
-        }
+            AmmoType.Nato556 => ItemType.Ammo556x45,
+            AmmoType.Nato762 => ItemType.Ammo762x39,
+            AmmoType.Nato9 => ItemType.Ammo9x19,
+            AmmoType.Ammo12Gauge => ItemType.Ammo12gauge,
+            AmmoType.Ammo44Cal => ItemType.Ammo44cal,
+            _ => ItemType.None,
+        };
 
         /// <summary>
         /// Converts a <see cref="GrenadeType"/> into the corresponding <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type">The <see cref="GrenadeType"/> to convert.</param>
         /// <returns>The Item type of the specified grenade.</returns>
-        public static ItemType GetItemType(this GrenadeType type)
+        public static ItemType GetItemType(this GrenadeType type) => type switch
         {
-            switch (type)
-            {
-                case GrenadeType.Flashbang:
-                    return ItemType.GrenadeFlash;
-                case GrenadeType.Scp018:
-                    return ItemType.SCP018;
-                case GrenadeType.FragGrenade:
-                    return ItemType.GrenadeHE;
-                default:
-                    return ItemType.None;
-            }
-        }
+            GrenadeType.Flashbang => ItemType.GrenadeFlash,
+            GrenadeType.Scp018 => ItemType.SCP018,
+            GrenadeType.FragGrenade => ItemType.GrenadeHE,
+            _ => ItemType.None,
+        };
 
         /// <summary>
         /// Converts a <see cref="IEnumerable{T}"/> of <see cref="Item"/>s into the corresponding <see cref="IEnumerable{T}"/> of <see cref="ItemType"/>s.

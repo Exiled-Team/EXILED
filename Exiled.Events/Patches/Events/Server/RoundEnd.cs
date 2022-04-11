@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
-#pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
     using System.Reflection;
