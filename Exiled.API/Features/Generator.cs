@@ -176,6 +176,7 @@ namespace Exiled.API.Features
         public float DeniedUnlockCooldown
         {
             get => Base._deniedCooldownTime;
+            set => Base._deniedCooldownTime = value;
         }
 
         /// <summary>
