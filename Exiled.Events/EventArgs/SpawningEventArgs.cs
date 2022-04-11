@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
             if (postion == Vector3.zero)
             {
                 Position = player.ReferenceHub.characterClassManager.DeathPosition;
-                RotationY = new PlayerMovementSync.PlayerRotation(0f, 0f);
+                RotationY = 0f;
             }
             else
             {
                 Position = postion;
-                RotationY = new PlayerMovementSync.PlayerRotation(0f, rotation);
+                RotationY = rotation;
             }
         }
 
@@ -59,6 +59,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the rotation y axis of the player.
         /// </summary>
-        public PlayerMovementSync.PlayerRotation RotationY { get; set; }
+        public float RotationY { get; set; }
     }
 }

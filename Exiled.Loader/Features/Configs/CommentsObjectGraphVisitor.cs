@@ -29,7 +29,7 @@ namespace Exiled.Loader.Features.Configs
         /// <inheritdoc/>
         public override bool EnterMapping(IPropertyDescriptor key, IObjectDescriptor value, IEmitter context)
         {
-            if (value is CommentsObjectDescriptor commentsDescriptor && commentsDescriptor.Comment is not null)
+            if (value is CommentsObjectDescriptor commentsDescriptor && commentsDescriptor.Comment != null)
             {
                 context.Emit(new Comment(commentsDescriptor.Comment, false));
             }

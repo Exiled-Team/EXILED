@@ -22,7 +22,7 @@ namespace Exiled.Events.Commands.Config
         /// <summary>
         /// Gets static instance of the <see cref="Split"/> command.
         /// </summary>
-        public static Split Instance { get; } = new();
+        public static Split Instance { get; } = new Split();
 
         /// <inheritdoc/>
         public string Command { get; } = "split";

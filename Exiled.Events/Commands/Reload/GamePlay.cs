@@ -23,13 +23,13 @@ namespace Exiled.Events.Commands.Reload
         /// <summary>
         /// Gets static instance of the <see cref="GamePlay"/> command.
         /// </summary>
-        public static GamePlay Instance { get; } = new();
+        public static GamePlay Instance { get; } = new GamePlay();
 
         /// <inheritdoc/>
         public string Command { get; } = "gameplay";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "gm" };
+        public string[] Aliases { get; } = new string[] { "gm" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reloads gameplay configs.";

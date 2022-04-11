@@ -32,29 +32,29 @@ namespace Exiled.Events.Patches.Events.Server
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
-                new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
-                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShowDebugLine))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShowDebugLine))),
             });
 
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse);
 
-            newInstructions.InsertRange(index + 1, new CodeInstruction[]
+            newInstructions.InsertRange(index + 1, new[]
             {
                 // ServerStatic.StopNextRound == 1 (restarting)
-                new(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ceq),
 
                 // if (prev) -> goto normal round restart
-                new(OpCodes.Brtrue, newInstructions[index].operand),
+                new CodeInstruction(OpCodes.Brtrue, newInstructions[index].operand),
 
                 // ShouldServerRestart()
-                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
 
                 // if (prev) -> goto normal round restart
-                new(OpCodes.Brtrue, newInstructions[index].operand),
+                new CodeInstruction(OpCodes.Brtrue, newInstructions[index].operand),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

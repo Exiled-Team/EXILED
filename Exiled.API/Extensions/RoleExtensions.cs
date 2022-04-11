@@ -127,7 +127,7 @@ namespace Exiled.API.Extensions
         {
             GameObject randomPosition = SpawnpointManager.GetRandomPosition(roleType);
 
-            return randomPosition is null ? new Tuple<Vector3, float>(Vector3.zero, 0f) : new Tuple<Vector3, float>(randomPosition.transform.position, randomPosition.transform.rotation.eulerAngles.y);
+            return randomPosition == null ? new Tuple<Vector3, float>(Vector3.zero, 0f) : new Tuple<Vector3, float>(randomPosition.transform.position, randomPosition.transform.rotation.eulerAngles.y);
         }
     }
 }

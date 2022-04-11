@@ -42,7 +42,7 @@ namespace Exiled.Updater
 
         public const long REPOID = 231269519;
 
-        public static Updater Instance { get; } = new();
+        public static Updater Instance { get; } = new Updater();
 
         public static readonly string InstallerAssetNameLinux = "Exiled.Installer-Linux";
         public static readonly string InstallerAssetNameWin = "Exiled.Installer-Win.exe";
@@ -94,7 +94,7 @@ namespace Exiled.Updater
 
                 var proxyEnabled = (int)Microsoft.Win32.Registry.GetValue(keyName, "ProxyEnable", 0);
                 var strProxy = (string)Microsoft.Win32.Registry.GetValue(keyName, "ProxyServer", null);
-                if (proxyEnabled > 0 && strProxy is null)
+                if (proxyEnabled > 0 && strProxy == null)
                 {
                     Log.Info("HttpProxy detected, bypassing...");
                     Microsoft.Win32.Registry.SetValue(keyName, "ProxyEnable", 0);
@@ -108,7 +108,7 @@ namespace Exiled.Updater
 
         private HttpClient CreateHttpClient()
         {
-            HttpClient client = new()
+            HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(480),
             };
@@ -122,7 +122,7 @@ namespace Exiled.Updater
         {
             _stage = Stage.Start;
 
-            Thread updateThread = new(() =>
+            Thread updateThread = new Thread(() =>
             {
                 using (HttpClient client = CreateHttpClient())
                 {
@@ -268,7 +268,7 @@ namespace Exiled.Updater
 
         private ExiledLibrary FindSmallestExiledVersion() => GetExiledLibs().Min();
 
-        private bool OneOfExiledIsPrerelease() => GetExiledLibs().Any(l => l.Version.PreRelease is not null);
+        private bool OneOfExiledIsPrerelease() => GetExiledLibs().Any(l => l.Version.PreRelease != null);
 
         private IEnumerable<ExiledLibrary> GetExiledLibs()
         {
@@ -298,7 +298,7 @@ namespace Exiled.Updater
                         LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
 
                     using (Stream installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
-                    using (FileStream fs = new(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    using (FileStream fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
                     {
                         installerStream.CopyToAsync(fs).ConfigureAwait(false).GetAwaiter().GetResult();
                     }
@@ -311,7 +311,7 @@ namespace Exiled.Updater
                         Log.Error("Couldn't find the downloaded installer!");
                     }
 
-                    ProcessStartInfo startInfo = new()
+                    ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         WorkingDirectory = serverPath,
                         FileName = installerPath,

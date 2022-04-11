@@ -28,7 +28,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         public override string Command { get; } = "groups";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = new[] { "grps" };
+        public override string[] Aliases { get; } = new string[] { "grps" };
 
         /// <inheritdoc/>
         public override string Description { get; } = "Handles commands about permissions groups.";
@@ -63,11 +63,11 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
             Permissions.Groups.TryGetValue(arguments.At(0), out Features.Group group);
 
-            StringBuilder stringBuilder = new();
+            StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.AppendLine($"Group: {arguments.At(0)}");
 
-            if (group is null)
+            if (group == null)
             {
                 stringBuilder.AppendLine($"Group is null.");
                 response = stringBuilder.ToString();

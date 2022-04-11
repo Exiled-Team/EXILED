@@ -47,26 +47,26 @@ namespace Exiled.Events.Patches.Events.Scp079
             Label returnLabel = generator.DefineLabel();
 
             // var ev = new GainingExperienceEventArgs(Player.Get(this.gameObject), type, (float)details, true)
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
                 // Player.Get(this.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // type
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1),
 
                 // (float)details
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Conv_R4),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Conv_R4),
 
                 // true
-                new(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // var ev = new GainingExperienceEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingExperienceEventArgs))[0]),
-                new(OpCodes.Stloc_S, gainingExperienceEv.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingExperienceEventArgs))[0]),
+                new CodeInstruction(OpCodes.Stloc_S, gainingExperienceEv.LocalIndex),
             });
 
             #region ExpGainType.KillAssist and ExpGainType.PocketAssist
@@ -83,9 +83,9 @@ namespace Exiled.Events.Patches.Events.Scp079
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Callvirt, PropertySetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
-                new(OpCodes.Br_S, continueLabel),
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Br_S, continueLabel),
             });
 
             #endregion
@@ -100,12 +100,12 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // ev.Amount = num3
             // goto continueLabel
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Callvirt, PropertySetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
-                new(OpCodes.Br_S, continueLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Br_S, continueLabel),
             });
 
             #endregion
@@ -120,7 +120,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             (MethodInfo)instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
 
             // goto continueLabel
-            newInstructions.Insert(index, new(OpCodes.Br_S, continueLabel));
+            newInstructions.Insert(index, new CodeInstruction(OpCodes.Br_S, continueLabel));
 
             #endregion
 
@@ -134,26 +134,26 @@ namespace Exiled.Events.Patches.Events.Scp079
             {
                 // Handlers.Scp079.OnGainingExperience(ev);
                 new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex).WithLabels(continueLabel).MoveLabelsFrom(newInstructions[newInstructions.Count - 1]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnGainingExperience))),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnGainingExperience))),
 
                 // if (!ev.IsAllowed)
                 //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
                 // if (ev.Amount <= 0)
                 //   return;
-                new(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
-                new(OpCodes.Ldc_R4, 0f),
-                new(OpCodes.Ble_Un_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Ldc_R4, 0f),
+                new CodeInstruction(OpCodes.Ble_Un_S, returnLabel),
 
                 // this.AddExperience(ev.Amount);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
-                new(OpCodes.Call, Method(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.AddExperience))),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.AddExperience))),
                 new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
             });
 

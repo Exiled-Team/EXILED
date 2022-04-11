@@ -30,9 +30,9 @@ namespace Exiled.Events.Patches.Events.Warhead
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Warhead.OnDetonated();
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
-                new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnDetonated))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnDetonated))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

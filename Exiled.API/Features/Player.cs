@@ -75,17 +75,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// A list of the player's items.
         /// </summary>
-        internal readonly List<Item> ItemsValue = new(8);
+        internal readonly List<Item> ItemsValue = new List<Item>(8);
 #pragma warning restore SA1401
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
-<<<<<<< HEAD
         private HashSet<EActor> components = new HashSet<EActor>();
-=======
->>>>>>> Exiled-Team-dev
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -117,7 +114,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new(20);
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>(20);
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -127,12 +124,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
         /// </summary>
-        public static Dictionary<string, Player> UserIdsCache { get; } = new(20);
+        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>(20);
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their ids.
         /// </summary>
-        public static Dictionary<int, Player> IdsCache { get; } = new(20);
+        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
         /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
@@ -318,7 +315,7 @@ namespace Exiled.API.Features
         /// Data saved with session variables is not being saved on player disconnect. If the data must be saved after the player's disconnects, a database must be used instead.
         /// </para>
         /// </summary>
-        public Dictionary<string, object> SessionVariables { get; } = new();
+        public Dictionary<string, object> SessionVariables { get; } = new Dictionary<string, object>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is invisible.
@@ -333,7 +330,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is fully connected to the server.
         /// </summary>
-        public bool IsConnected => GameObject is not null;
+        public bool IsConnected => GameObject != null;
 
         /// <summary>
         /// Gets a list of player ids who can't see the player.
@@ -384,7 +381,7 @@ namespace Exiled.API.Features
                     }
                 }
 
-                if (value is not null)
+                if (value != null)
                 {
                     Inventory.SetDisarmedStatus(value.Inventory);
                     new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
@@ -398,7 +395,7 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, null, true);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
         }
 
         /// <summary>
@@ -454,7 +451,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is cuffed.
         /// </summary>
         /// <remarks>Players can be cuffed without another player being the cuffer.</remarks>
-        public bool IsCuffed => Cuffer is not null;
+        public bool IsCuffed => Cuffer != null;
 
         /// <summary>
         /// Gets a value indicating whether the player is reloading a weapon.
@@ -566,11 +563,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank.
         /// </summary>
-<<<<<<< HEAD
         public bool IsHuman => Role != null && Role.Is(out HumanRole _);
-=======
-        public bool IsHuman => Role is not null && Role.Is(out HumanRole _);
->>>>>>> Exiled-Team-dev
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
@@ -767,7 +760,7 @@ namespace Exiled.API.Features
 
             set
             {
-                if (value is null || value.Type == ItemType.None)
+                if (value == null || value.Type == ItemType.None)
                 {
                     Inventory.ServerSelectItem(0);
                 }
@@ -949,7 +942,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="Footprinting.Footprint"/>.
         /// </summary>
-        public Footprint Footprint => new(ReferenceHub);
+        public Footprint Footprint => new Footprint(ReferenceHub);
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is spawn protected.
@@ -963,7 +956,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
-        internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new();
+        internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
@@ -1012,7 +1005,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="global::ReferenceHub"/>.</param>
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
-        public static Player Get(ReferenceHub referenceHub) => referenceHub is null ? null : Get(referenceHub.gameObject);
+        public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
@@ -1042,7 +1035,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
-            if (gameObject is null)
+            if (gameObject == null)
                 return null;
 
             Dictionary.TryGetValue(gameObject, out Player player);
@@ -1057,7 +1050,7 @@ namespace Exiled.API.Features
         /// <returns>Returns the player found or <see langword="null"/> if not found.</returns>
         public static Player Get(int id)
         {
-            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub is not null)
+            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub != null)
                 return player;
 
             foreach (Player playerFound in Dictionary.Values)
@@ -1085,7 +1078,7 @@ namespace Exiled.API.Features
                 if (string.IsNullOrWhiteSpace(args))
                     return null;
 
-                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub is not null)
+                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null)
                     return playerFound;
 
                 if (int.TryParse(args, out int id))
@@ -1109,7 +1102,7 @@ namespace Exiled.API.Features
 
                     foreach (Player player in Dictionary.Values)
                     {
-                        if (!player.IsVerified || player.Nickname is null)
+                        if (!player.IsVerified || player.Nickname == null)
                             continue;
 
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
@@ -1126,7 +1119,7 @@ namespace Exiled.API.Features
                     }
                 }
 
-                if (playerFound is not null)
+                if (playerFound != null)
                     UserIdsCache[args] = playerFound;
 
                 return playerFound;
@@ -1198,7 +1191,7 @@ namespace Exiled.API.Features
         /// <param name="cuffer">The cuffer player.</param>
         public void Handcuff(Player cuffer)
         {
-            if (cuffer?.ReferenceHub is null)
+            if (cuffer?.ReferenceHub == null)
                 return;
 
             if (!IsCuffed && Vector3.Distance(Position, cuffer.Position) <= 130f)
@@ -1295,7 +1288,7 @@ namespace Exiled.API.Features
             }
             else
             {
-                if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
+                if (CurrentItem != null && CurrentItem.Serial == item.Serial)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
                 Inventory.UserInventory.Items.Remove(item.Serial);
@@ -1556,7 +1549,7 @@ namespace Exiled.API.Features
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
             if (item is Firearm firearm)
             {
-                if (identifiers is not null)
+                if (identifiers != null)
                 {
                     firearm.AddAttachment(identifiers);
                 }
@@ -1566,7 +1559,7 @@ namespace Exiled.API.Features
                 }
 
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
+                if (firearm.Base.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
                     flags |= FirearmStatusFlags.FlashlightEnabled;
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
@@ -1582,7 +1575,7 @@ namespace Exiled.API.Features
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
         public IEnumerable<Item> AddItem(ItemType itemType, int amount)
         {
-            List<Item> items = new(amount > 0 ? amount : 0);
+            List<Item> items = new List<Item>(amount > 0 ? amount : 0);
             if (amount > 0)
             {
                 for (int i = 0; i < amount; i++)
@@ -1601,7 +1594,7 @@ namespace Exiled.API.Features
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
         public IEnumerable<Item> AddItem(ItemType itemType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            List<Item> items = new(amount > 0 ? amount : 0);
+            List<Item> items = new List<Item>(amount > 0 ? amount : 0);
             if (amount > 0)
             {
                 IEnumerable<AttachmentIdentifier> attachmentIdentifiers = identifiers.ToList();
@@ -1621,8 +1614,8 @@ namespace Exiled.API.Features
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
         public IEnumerable<Item> AddItem(IEnumerable<ItemType> items)
         {
-            List<ItemType> enumeratedItems = new(items);
-            List<Item> returnedItems = new(enumeratedItems.Count);
+            List<ItemType> enumeratedItems = new List<ItemType>(items);
+            List<Item> returnedItems = new List<Item>(enumeratedItems.Count);
 
             foreach (ItemType type in enumeratedItems)
                 returnedItems.Add(AddItem(type));
@@ -1637,7 +1630,7 @@ namespace Exiled.API.Features
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
         public IEnumerable<Item> AddItem(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> items)
         {
-            List<Item> returnedItems = new(items.Count);
+            List<Item> returnedItems = new List<Item>(items.Count);
 
             foreach (KeyValuePair<ItemType, IEnumerable<AttachmentIdentifier>> item in items)
                 returnedItems.Add(AddItem(item.Key, item.Value));
@@ -1653,7 +1646,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item.Base is null)
+                if (item.Base == null)
                     item = new Item(item.Type);
 
                 AddItem(item.Base, item);
@@ -1673,10 +1666,10 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item.Base is null)
+                if (item.Base == null)
                     item = new Item(item.Type);
 
-                if (item is Firearm firearm && identifiers is not null)
+                if (item is Firearm firearm && identifiers != null)
                     firearm.AddAttachment(identifiers);
 
                 AddItem(item.Base, item);
@@ -1704,11 +1697,7 @@ namespace Exiled.API.Features
         {
             Item item = Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
 
-<<<<<<< HEAD
             if (item is Firearm firearm && identifiers != null)
-=======
-            if (item is Firearm firearm && identifiers is not null)
->>>>>>> Exiled-Team-dev
                 firearm.AddAttachment(identifiers);
 
             return item;
@@ -1724,7 +1713,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item is null)
+                if (item == null)
                     item = Item.Get(itemBase);
 
                 int ammo = -1;
@@ -1735,7 +1724,7 @@ namespace Exiled.API.Features
 
                 itemBase.Owner = ReferenceHub;
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
-                if (itemBase.PickupDropModel is not null)
+                if (itemBase.PickupDropModel != null)
                 {
                     itemBase.OnAdded(itemBase.PickupDropModel);
                 }
@@ -1748,7 +1737,8 @@ namespace Exiled.API.Features
                     }
 
                     FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                    if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
+                    if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages
+                        .Flashlight))
                         flags |= FirearmStatusFlags.FlashlightEnabled;
                     firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
                 }
@@ -1886,7 +1876,7 @@ namespace Exiled.API.Features
             {
                 foreach (Item item in newItems)
                 {
-                    AddItem(item.Base is null ? new Item(item.Type) : item);
+                    AddItem(item.Base == null ? new Item(item.Type) : item);
                 }
             }
         }
@@ -2129,7 +2119,7 @@ namespace Exiled.API.Features
         {
             playerEffect = GetEffect(effect);
 
-            return playerEffect is not null;
+            return playerEffect != null;
         }
 
         /// <summary>
@@ -2315,11 +2305,7 @@ namespace Exiled.API.Features
                 randomObject = pickups[Random.Range(0, pickups.Count)];
             }
 
-<<<<<<< HEAD
             if (randomObject == null)
-=======
-            if (randomObject is null)
->>>>>>> Exiled-Team-dev
             {
                 Log.Warn($"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
                 return;
@@ -2329,7 +2315,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-<<<<<<< HEAD
         /// Adds a component to the player.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to be added.</typeparam>
@@ -2424,11 +2409,5 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
         public override string ToString() => $"{Id} {Nickname} {UserId} {(Role == null ? "No role" : Role.ToString())} {Role?.Team}";
-=======
-        /// Returns the player in a human-readable format.
-        /// </summary>
-        /// <returns>A string containing Player-related data.</returns>
-        public override string ToString() => $"{Id} {Nickname} {UserId} {(Role is null ? "No role" : Role.ToString())} {Role?.Team}";
->>>>>>> Exiled-Team-dev
     }
 }

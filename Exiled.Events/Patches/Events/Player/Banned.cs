@@ -36,16 +36,12 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder issuingPlayer = generator.DeclareLocal(typeof(Player));
 
-<<<<<<< HEAD
             newInstructions.InsertRange(0, new[]
-=======
-            newInstructions.InsertRange(0, new CodeInstruction[]
->>>>>>> Exiled-Team-dev
             {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Issuer))),
-                new(OpCodes.Call, Method(typeof(Banned), nameof(Banned.GetBanningPlayer))),
-                new(OpCodes.Stloc, issuingPlayer.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Issuer))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Banned), nameof(Banned.GetBanningPlayer))),
+                new CodeInstruction(OpCodes.Stloc, issuingPlayer.LocalIndex),
             });
 
             int offset = -6;
@@ -53,16 +49,16 @@ namespace Exiled.Events.Patches.Events.Player
                 i.opcode == OpCodes.Call && (MethodInfo)i.operand ==
                 Method(typeof(FileManager), nameof(FileManager.AppendFile))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Id))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(string) })),
-                new(OpCodes.Ldloc, issuingPlayer.LocalIndex),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(BannedEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnBanned))),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Id))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(string) })),
+                new CodeInstruction(OpCodes.Ldloc, issuingPlayer.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(BannedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnBanned))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

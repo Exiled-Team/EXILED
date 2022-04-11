@@ -158,7 +158,7 @@ namespace Exiled.API.Features.Items
         {
             get
             {
-                List<ArmorAmmoLimit> limits = new();
+                List<ArmorAmmoLimit> limits = new List<ArmorAmmoLimit>();
                 for (int i = 0; i < Base.AmmoLimits.Length; i++)
                 {
                     limits.Add(new ArmorAmmoLimit(Base.AmmoLimits[i].AmmoType.GetAmmoType(), Base.AmmoLimits[i].Limit));

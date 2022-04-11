@@ -24,7 +24,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
         /// </summary>
-        internal static readonly List<Generator> GeneratorValues = new();
+        internal static readonly List<Generator> GeneratorValues = new List<Generator>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Generator"/> class.

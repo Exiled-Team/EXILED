@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Fixes
     /// Patches <see cref="CustomReasonDamageHandler(string, float, string)"/>.
     /// <br>Fixes a NullReferenceException caused by <see cref="Subtitles.SubtitlePart"/>[] initialization.</br>
     /// </summary>
-    [HarmonyPatch(typeof(CustomReasonDamageHandler), MethodType.Constructor, typeof(string), typeof(float), typeof(string))]
+    [HarmonyPatch(typeof(CustomReasonDamageHandler), MethodType.Constructor, new[] { typeof(string), typeof(float), typeof(string) })]
     internal static class CustomReasonDamageHandlerFix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Fixes
 
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
 
-            newInstructions.Insert(index, new(OpCodes.Ret));
+            newInstructions.Insert(index, new CodeInstruction(OpCodes.Ret));
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

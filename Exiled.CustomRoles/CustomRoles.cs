@@ -50,7 +50,7 @@ namespace Exiled.CustomRoles
         /// <summary>
         /// Gets a list of players to stop spawning ragdolls for.
         /// </summary>
-        internal List<Player> StopRagdollPlayers { get; } = new();
+        internal List<Player> StopRagdollPlayers { get; } = new List<Player>();
 
         /// <inheritdoc/>
         public override void OnEnabled()

@@ -44,60 +44,55 @@ namespace Exiled.Events.Patches.Events.Server
             newInstructions.InsertRange(index, new[]
             {
                 // List<Player> players = GetPlayers(list1);
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetPlayers))),
-=======
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetPlayers))),
->>>>>>> Exiled-Team-dev
 
                 // num
-                new(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldloc_3),
 
                 // this.NextKnownTeam
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
-                new(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // var ev = new RespawningTeamEventArgs(players, num, this.NextKnownTeam)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RespawningTeamEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RespawningTeamEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Server.OnRespawningTeam(ev)
-                new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRespawningTeam))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRespawningTeam))),
 
                 // if (!ev.IsAllowed)
                 // {
                 //    this.NextKnownTeam = SpawnableTeam.None;
                 //    return;
                 // }
-                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue, continueLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Stfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
-                new(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brtrue, continueLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
+                new CodeInstruction(OpCodes.Ret),
 
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(continueLabel),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
 
                 // num = ev.MaximumRespawnAmount
-                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.MaximumRespawnAmount))),
-                new(OpCodes.Stloc_3),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.MaximumRespawnAmount))),
+                new CodeInstruction(OpCodes.Stloc_3),
 
                 // spawnableTeamHandler = ev.SpawnableTeam
-                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnableTeam))),
-                new(OpCodes.Stloc_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnableTeam))),
+                new CodeInstruction(OpCodes.Stloc_0),
 
                 // list1 = GetHubs(ev.Players)
-                new(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.Players))),
-                new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetHubs))),
-                new(OpCodes.Stloc_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.Players))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetHubs))),
+                new CodeInstruction(OpCodes.Stloc_1),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

@@ -31,7 +31,7 @@ namespace Exiled.CustomItems.Commands
         /// <summary>
         /// Gets the <see cref="Info"/> instance.
         /// </summary>
-        public static Spawn Instance { get; } = new();
+        public static Spawn Instance { get; } = new Spawn();
 
         /// <inheritdoc/>
         public string Command { get; } = "spawn";

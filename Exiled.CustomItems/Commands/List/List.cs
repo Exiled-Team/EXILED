@@ -21,7 +21,7 @@ namespace Exiled.CustomItems.Commands.List
         /// <summary>
         /// Gets the <see cref="Info"/> instance.
         /// </summary>
-        public static List Instance { get; } = new();
+        public static List Instance { get; } = new List();
 
         /// <inheritdoc/>
         public override string Command { get; } = "list";

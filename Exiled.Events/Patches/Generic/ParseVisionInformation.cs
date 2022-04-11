@@ -60,24 +60,24 @@ namespace Exiled.Events.Patches.Generic
                 // if (characterClassManager.CurClass == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096)
                 //      continue;
                 // START
-                new(OpCodes.Ldloc_S, 4),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
-                new(OpCodes.Ldc_I4_S, (sbyte)RoleType.Tutorial),
-                new(OpCodes.Bne_Un_S, secondCheckPointer),
+                new CodeInstruction(OpCodes.Ldloc_S, 4),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
+                new CodeInstruction(OpCodes.Ldc_I4_S, (sbyte)RoleType.Tutorial),
+                new CodeInstruction(OpCodes.Bne_Un_S, secondCheckPointer),
 
-                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
-                new(OpCodes.Brfalse_S, continueLabel),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
+                new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
                 // END
                 // if (API.Features.Scp096.TurnedPlayers.Contains(Player.Get(referenceHub)))
                 //      continue;
                 // START
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.TurnedPlayers))).WithLabels(secondCheckPointer),
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
-                new(OpCodes.Brtrue_S, continueLabel),
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
+                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
                 // END
             });
 

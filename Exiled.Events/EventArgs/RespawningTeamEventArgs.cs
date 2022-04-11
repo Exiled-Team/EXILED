@@ -74,7 +74,7 @@ namespace Exiled.Events.EventArgs
         private void ReissueNextKnownTeam()
         {
             SpawnableTeamHandlerBase @base = SpawnableTeam;
-            if (@base is null)
+            if (@base == null)
                 return;
 
             // Refer to the game code

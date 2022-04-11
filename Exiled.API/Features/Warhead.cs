@@ -25,7 +25,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (controller is null)
+                if (controller == null)
                     controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
 
                 return controller;
@@ -39,7 +39,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (sitePanel is null)
+                if (sitePanel == null)
                     sitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
                 return sitePanel;
@@ -53,7 +53,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (outsitePanel is null)
+                if (outsitePanel == null)
                     outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
                 return outsitePanel;
@@ -147,10 +147,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shake all players, like if the warhead has been detonated.
         /// </summary>
-        public static void Shake()
-        {
-            foreach (Player player in Player.List)
-                Controller.TargetRpcShake(player.Connection, false, false);
-        }
+        public static void Shake() => Controller.RpcShake(true);
     }
 }

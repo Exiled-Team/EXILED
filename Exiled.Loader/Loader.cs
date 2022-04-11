@@ -73,12 +73,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the plugins list.
         /// </summary>
-        public static SortedSet<IPlugin<IConfig>> Plugins { get; } = new(PluginPriorityComparer.Instance);
-
-        /// <summary>
-        /// Gets a dictionary that pairs assemblies with their associated plugins.
-        /// </summary>
-        public static Dictionary<Assembly, IPlugin<IConfig>> PluginAssemblies { get; } = new();
+        public static SortedSet<IPlugin<IConfig>> Plugins { get; } = new SortedSet<IPlugin<IConfig>>(PluginPriorityComparer.Instance);
 
         /// <summary>
         /// Gets a dictionary that pairs assemblies with their associated plugins.
@@ -88,12 +83,12 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets a dictionary containing the file paths of assemblies.
         /// </summary>
-        public static Dictionary<Assembly, string> Locations { get; } = new();
+        public static Dictionary<Assembly, string> Locations { get; } = new Dictionary<Assembly, string>();
 
         /// <summary>
         /// Gets the initialized global random class.
         /// </summary>
-        public static Random Random { get; } = new();
+        public static Random Random { get; } = new Random();
 
         /// <summary>
         /// Gets the version of the assembly.
@@ -103,7 +98,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the configs of the plugin manager.
         /// </summary>
-        public static Config Config { get; } = new();
+        public static Config Config { get; } = new Config();
 
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
@@ -113,7 +108,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets plugin dependencies.
         /// </summary>
-        public static List<Assembly> Dependencies { get; } = new();
+        public static List<Assembly> Dependencies { get; } = new List<Assembly>();
 
         /// <summary>
         /// Gets or sets the serializer for configs and translations.
@@ -186,7 +181,7 @@ namespace Exiled.Loader
             {
                 Assembly assembly = LoadAssembly(assemblyPath);
 
-                if (assembly is null)
+                if (assembly == null)
                     continue;
 
                 Locations[assembly] = assemblyPath;
@@ -201,7 +196,7 @@ namespace Exiled.Loader
 
                 IPlugin<IConfig> plugin = CreatePlugin(assembly);
 
-                if (plugin is null)
+                if (plugin == null)
                     continue;
 
                 PluginAssemblies.Add(assembly, plugin);
@@ -256,7 +251,7 @@ namespace Exiled.Loader
                     IPlugin<IConfig> plugin = null;
 
                     ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
-                    if (constructor is not null)
+                    if (constructor != null)
                     {
                         Log.Debug("Public default constructor found, creating instance...", ShouldDebugBeShown);
 
@@ -268,11 +263,11 @@ namespace Exiled.Loader
 
                         object value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
 
-                        if (value is not null)
+                        if (value != null)
                             plugin = value as IPlugin<IConfig>;
                     }
 
-                    if (plugin is null)
+                    if (plugin == null)
                     {
                         Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
 
@@ -518,7 +513,7 @@ namespace Exiled.Loader
                 {
                     Assembly assembly = LoadAssembly(dependency);
 
-                    if (assembly is null)
+                    if (assembly == null)
                         continue;
 
                     Locations[assembly] = dependency;

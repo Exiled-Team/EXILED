@@ -22,7 +22,7 @@ namespace Exiled.Events.Commands.Config
         /// <summary>
         /// Gets static instance of the <see cref="Merge"/> command.
         /// </summary>
-        public static Merge Instance { get; } = new();
+        public static Merge Instance { get; } = new Merge();
 
         /// <inheritdoc/>
         public string Command { get; } = "merge";

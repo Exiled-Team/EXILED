@@ -31,21 +31,13 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(codeInstructions);
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(0, new[]
             {
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Generator), nameof(Generator.GeneratorValues))),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Generator), nameof(Generator.Get), new[] { typeof(Scp079Generator) })),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<Generator>), nameof(List<Generator>.Remove))),
                 new CodeInstruction(OpCodes.Pop),
-=======
-                new(OpCodes.Ldsfld, Field(typeof(Generator), nameof(Generator.GeneratorValues))),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Generator), nameof(Generator.Get), new[] { typeof(Scp079Generator) })),
-                new(OpCodes.Callvirt, Method(typeof(List<Generator>), nameof(List<Generator>.Remove))),
-                new(OpCodes.Pop),
->>>>>>> Exiled-Team-dev
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

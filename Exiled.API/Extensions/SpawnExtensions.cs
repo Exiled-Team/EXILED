@@ -61,7 +61,7 @@ namespace Exiled.API.Extensions
         {
             Transform transform = location.GetDoor();
 
-            if (transform is null)
+            if (transform == null)
                 return default;
 
             // Returns a value that is offset from the door's location.

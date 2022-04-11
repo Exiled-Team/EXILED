@@ -20,17 +20,17 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
     using YamlDotNet.Serialization;
 
     /// <summary>
-    /// Converts a <see cref="IEnumerable{T}"/> of <see cref="AttachmentName"/> to Yaml configs and vice versa.
+    /// Converts a <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> to Yaml configs and vice versa.
     /// </summary>
     public sealed class AttachmentIdentifiersConverter : IYamlTypeConverter
     {
         /// <inheritdoc/>
-        public bool Accepts(Type type) => type == typeof(AttachmentName);
+        public bool Accepts(Type type) => type == typeof(AttachmentNameTranslation);
 
         /// <inheritdoc/>
         public object ReadYaml(IParser parser, Type type)
         {
-            if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentName name))
+            if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentNameTranslation name))
                 throw new InvalidDataException($"Invalid AttachmentNameTranslation value: {scalar.Value}.");
 
             return Enum.Parse(type, name.ToString());
@@ -39,9 +39,9 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         /// <inheritdoc/>
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
-            AttachmentName name = default;
+            AttachmentNameTranslation name = default;
 
-            if (value is AttachmentName locAttachment)
+            if (value is AttachmentNameTranslation locAttachment)
                 name = locAttachment;
 
             emitter.Emit(new Scalar(name.ToString()));

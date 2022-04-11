@@ -31,7 +31,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Room"/>s on the map.
         /// </summary>
-        internal static readonly List<Room> RoomsValue = new(250);
+        internal static readonly List<Room> RoomsValue = new List<Room>(250);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
@@ -362,7 +362,7 @@ namespace Exiled.API.Features
         {
             Transform transform = gameObject.transform;
 
-            if (transform.parent is null)
+            if (transform.parent == null)
                 return ZoneType.Surface;
 
             switch (transform.parent.name)
@@ -387,9 +387,10 @@ namespace Exiled.API.Features
 
             if (Scp079Interactable.InteractablesByRoomId.ContainsKey(RoomIdentifier.UniqueId))
             {
-                foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[RoomIdentifier.UniqueId])
+                foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[
+                    gameObject.GetComponent<RoomIdentifier>().UniqueId])
                 {
-                    if (scp079Interactable is not null)
+                    if (scp079Interactable != null)
                     {
                         switch (scp079Interactable.type)
                         {
@@ -425,7 +426,7 @@ namespace Exiled.API.Features
                 }
             }
 
-            if (flickerableLightController is null && gameObject.transform.position.y > 900)
+            if (flickerableLightController == null && gameObject.transform.position.y > 900)
             {
                 flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
             }
@@ -441,11 +442,7 @@ namespace Exiled.API.Features
             Doors = doors;
             Cameras = Camera.Get(cameras);
             TeslaGate = teslagate;
-<<<<<<< HEAD
             if (flickerableLightController == null)
-=======
-            if (flickerableLightController is null)
->>>>>>> Exiled-Team-dev
             {
                 if (!gameObject.TryGetComponent(out flickerableLightController))
                     flickerableLightController = gameObject.AddComponent<FlickerableLightController>();

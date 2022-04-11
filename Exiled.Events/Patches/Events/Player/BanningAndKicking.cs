@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="BanPlayer.BanUser(GameObject, long, string, string, bool)"/>.
     /// Adds the <see cref="Handlers.Player.Banning"/> and <see cref="Handlers.Player.Kicking"/>events.
     /// </summary>
-    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), typeof(GameObject), typeof(long), typeof(string), typeof(string), typeof(bool))]
+    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(long), typeof(string), typeof(string), typeof(bool) })]
     internal static class BanningAndKicking
     {
         private static bool Prefix(GameObject user, long duration, string reason, string issuer, bool isGlobalBan)
@@ -71,11 +71,7 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     if (duration > 0)
                     {
-<<<<<<< HEAD
                         BanningEventArgs ev = new BanningEventArgs(targetPlayer, issuerPlayer, duration, reason, message);
-=======
-                        BanningEventArgs ev = new(targetPlayer, issuerPlayer, duration, reason, message);
->>>>>>> Exiled-Team-dev
                         Handlers.Player.OnBanning(ev);
 
                         if (!ev.IsAllowed)
@@ -92,7 +88,7 @@ namespace Exiled.Events.Patches.Events.Player
                         long banExpieryTime = TimeBehaviour.GetBanExpirationTime((uint)duration);
                         try
                         {
-                            if (userId is not null && !isGlobalBan)
+                            if (userId != null && !isGlobalBan)
                             {
                                 BanHandler.IssueBan(
                                     new BanDetails
@@ -150,11 +146,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                     else if (duration == 0)
                     {
-<<<<<<< HEAD
                         KickingEventArgs ev = new KickingEventArgs(targetPlayer, issuerPlayer, reason, message);
-=======
-                        KickingEventArgs ev = new(targetPlayer, issuerPlayer, reason, message);
->>>>>>> Exiled-Team-dev
                         Handlers.Player.OnKicking(ev);
 
                         if (!ev.IsAllowed)

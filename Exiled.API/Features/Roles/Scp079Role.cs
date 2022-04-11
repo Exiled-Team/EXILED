@@ -47,7 +47,7 @@ namespace Exiled.API.Features.Roles
             get => Owner.ReferenceHub.scp079PlayerScript?.abilities;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript is not null)
+                if (Owner.ReferenceHub.scp079PlayerScript != null)
                     Owner.ReferenceHub.scp079PlayerScript.abilities = value;
             }
         }
@@ -60,7 +60,7 @@ namespace Exiled.API.Features.Roles
             get => Owner.ReferenceHub.scp079PlayerScript?.levels;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript is not null)
+                if (Owner.ReferenceHub.scp079PlayerScript != null)
                     Owner.ReferenceHub.scp079PlayerScript.levels = value;
             }
         }
@@ -73,7 +73,7 @@ namespace Exiled.API.Features.Roles
             get => Owner.ReferenceHub.scp079PlayerScript?.Speaker;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript is not null)
+                if (Owner.ReferenceHub.scp079PlayerScript != null)
                     Owner.ReferenceHub.scp079PlayerScript.Speaker = value;
             }
         }
@@ -86,7 +86,7 @@ namespace Exiled.API.Features.Roles
             get => Owner.ReferenceHub.scp079PlayerScript?.lockedDoors;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript is not null)
+                if (Owner.ReferenceHub.scp079PlayerScript != null)
                     Owner.ReferenceHub.scp079PlayerScript.lockedDoors = value;
             }
         }
@@ -96,10 +96,10 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Experience
         {
-            get => Owner.ReferenceHub.scp079PlayerScript is not null ? Owner.ReferenceHub.scp079PlayerScript.Exp : float.NaN;
+            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Exp : float.NaN;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript is null)
+                if (Owner.ReferenceHub.scp079PlayerScript == null)
                     return;
 
                 Owner.ReferenceHub.scp079PlayerScript.Exp = value;
@@ -112,10 +112,10 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public byte Level
         {
-            get => Owner.ReferenceHub.scp079PlayerScript is not null ? Owner.ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
+            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript is null || Owner.ReferenceHub.scp079PlayerScript.Lvl == value)
+                if (Owner.ReferenceHub.scp079PlayerScript == null || Owner.ReferenceHub.scp079PlayerScript.Lvl == value)
                     return;
 
                 Owner.ReferenceHub.scp079PlayerScript.ForceLevel(value, true);
@@ -127,10 +127,10 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float MaxEnergy
         {
-            get => Owner.ReferenceHub.scp079PlayerScript is not null ? Owner.ReferenceHub.scp079PlayerScript.NetworkmaxMana : float.NaN;
+            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.NetworkmaxMana : float.NaN;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript is null)
+                if (Owner.ReferenceHub.scp079PlayerScript == null)
                     return;
 
                 Owner.ReferenceHub.scp079PlayerScript.NetworkmaxMana = value;
@@ -143,10 +143,10 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Energy
         {
-            get => Owner.ReferenceHub.scp079PlayerScript is not null ? Owner.ReferenceHub.scp079PlayerScript.Mana : float.NaN;
+            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Mana : float.NaN;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript is null)
+                if (Owner.ReferenceHub.scp079PlayerScript == null)
                     return;
 
                 Owner.ReferenceHub.scp079PlayerScript.Mana = value;

@@ -25,7 +25,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="TeslaGate"/> on the map.
         /// </summary>
-        internal static readonly List<TeslaGate> TeslasValue = new(10);
+        internal static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
@@ -41,17 +41,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Player"/> which contains all the players ignored by tesla gates.
         /// </summary>
-        public static HashSet<Player> IgnoredPlayers { get; set; } = new();
+        public static HashSet<Player> IgnoredPlayers { get; set; } = new HashSet<Player>();
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="RoleType"/> which contains all the roles ignored by tesla gates.
         /// </summary>
-        public static List<RoleType> IgnoredRoles { get; set; } = new();
+        public static List<RoleType> IgnoredRoles { get; set; } = new List<RoleType>();
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Team"/> which contains all the teams ignored by tesla gates.
         /// </summary>
-        public static List<Team> IgnoredTeams { get; set; } = new();
+        public static List<Team> IgnoredTeams { get; set; } = new List<Team>();
 
         /// <summary>
         /// Gets the base <see cref="BaseTeslaGate"/>.

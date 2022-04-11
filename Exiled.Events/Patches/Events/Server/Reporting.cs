@@ -40,9 +40,8 @@ namespace Exiled.Events.Patches.Events.Server
 
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldloc_2),
@@ -59,24 +58,6 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.Reason))),
                 new CodeInstruction(OpCodes.Starg_S, 2),
-=======
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LocalReportingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, mem_0x01.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Server), nameof(Handlers.Server.OnLocalReporting))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, ret),
-                new(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.Reason))),
-                new(OpCodes.Starg_S, 2),
->>>>>>> Exiled-Team-dev
             });
 
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
@@ -84,7 +65,6 @@ namespace Exiled.Events.Patches.Events.Server
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_3).MoveLabelsFrom(newInstructions[index]),
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -101,24 +81,6 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReportingCheaterEventArgs), nameof(ReportingCheaterEventArgs.Reason))),
                 new CodeInstruction(OpCodes.Starg_S, 2),
-=======
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldsfld, Field(typeof(ServerConsole), nameof(ServerConsole.Port))),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReportingCheaterEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, mem_0x02.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Server), nameof(Handlers.Server.OnReportingCheater))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ReportingCheaterEventArgs), nameof(ReportingCheaterEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, ret),
-                new(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ReportingCheaterEventArgs), nameof(ReportingCheaterEventArgs.Reason))),
-                new(OpCodes.Starg_S, 2),
->>>>>>> Exiled-Team-dev
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);

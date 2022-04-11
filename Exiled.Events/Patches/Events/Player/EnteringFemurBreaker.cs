@@ -43,9 +43,8 @@ namespace Exiled.Events.Patches.Events.Player
             //
             // if (!ev.IsAllowed)
             //     return;
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.gameObject))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
@@ -55,17 +54,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnEnteringFemurBreaker))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringFemurBreakerEventArgs), nameof(EnteringFemurBreakerEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-=======
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Call, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.gameObject))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringFemurBreakerEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnEnteringFemurBreaker))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringFemurBreakerEventArgs), nameof(EnteringFemurBreakerEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
->>>>>>> Exiled-Team-dev
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

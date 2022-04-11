@@ -47,22 +47,18 @@ namespace Exiled.Events.Patches.Generic
                 i.opcode == OpCodes.Callvirt &&
                 (MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(inv._hub)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // itemInstance
-<<<<<<< HEAD
                 new CodeInstruction(OpCodes.Ldloc_1),
-=======
-                new(OpCodes.Ldloc_1),
->>>>>>> Exiled-Team-dev
 
                 // AddItem(player, itemInstance)
-                new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -91,10 +87,10 @@ namespace Exiled.Events.Patches.Generic
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -108,7 +104,7 @@ namespace Exiled.Events.Patches.Generic
 #if DEBUG
             Log.Debug($"Removing item ({serial}) from a player (before null check)");
 #endif
-            if (player is null)
+            if (player == null)
             {
 #if DEBUG
                 Log.Debug("Attempted to remove item from null player, returning.");
