@@ -2263,12 +2263,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Teleports player to a random object of a specific type.
         /// </summary>
-        /// <param name="type">Object for teleport.</param>
-        public void RandomTeleport(Type type)
+        /// <param name="objectType">Object for teleport.</param>
+        public void RandomTeleport(Type objectType)
         {
             object randomObject = null;
 
-            switch (type.Name)
+            switch (objectType.Name)
             {
                 case nameof(Door):
                     randomObject = Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)];
@@ -2310,7 +2310,7 @@ namespace Exiled.API.Features
 
             if (randomObject is null)
             {
-                Log.Warn($"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
+                Log.Warn($"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {objectType}");
                 return;
             }
 
