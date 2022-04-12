@@ -39,6 +39,8 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables.Scp330;
 
+    using MapGeneration.Distributors;
+
     using MEC;
 
     using Mirror;
@@ -2234,13 +2236,13 @@ namespace Exiled.API.Features
                 case Ragdoll ragdoll:
                     Teleport(ragdoll.Position + Vector3.up);
                     break;
-				case Locker locker:
-				    Teleport(locker.transform.position + Vector3.up);
-					break;
-				case LockerChamber chamber:
+                case Locker locker:
+                    Teleport(locker.transform.position + Vector3.up);
+                    break;
+                case LockerChamber chamber:
                     Teleport(chamber._spawnpoint.position + Vector3.up);
                     break;
-				case Generator generator:
+                case Generator generator:
                     Teleport(generator.Position + Vector3.up);
                     break;
             }
@@ -2291,18 +2293,17 @@ namespace Exiled.API.Features
                 randomObject = Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)];
             }
             else if (type == typeof(Locker))
-			{
-				randomObject = Map.GetRandomLocker();
-			}
-			else if (type == typeof(LockerChamber))
             {
-                var chambers = Map.GetRandomLocker().Chambers;
+                randomObject = Map.GetRandomLocker();
+            }
+            else if (type == typeof(LockerChamber))
+            {
+                LockerChamber[] chambers = Map.GetRandomLocker().Chambers;
                 randomObject = chambers[Random.Range(0, chambers.Count())];
             }
-			else if (type == typeof(Generator))
+            else if (type == typeof(Generator))
             {
-                var generators = Generator.GeneratorValues;
-                randomObject = generators[Random.Range(0, generators.Count)];
+                randomObject = Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)];
             }
 
             if (randomObject is null)
