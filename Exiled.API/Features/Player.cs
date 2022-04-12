@@ -2279,61 +2279,51 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Teleports the player to a random object.
-        /// </summary>
-        /// <param name="types">The list of object types to choose from.</param>
-        public void RandomTeleport(IEnumerable<Type> types)
-        {
-            Type[] array = types as Type[] ?? types.ToArray();
-            if (array.Length == 0)
-                return;
-            RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
-        }
-
-        /// <summary>
         /// Teleports player to a random object of a specific type.
         /// </summary>
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
             object randomObject = null;
-            if (type == typeof(Door))
+
+            switch (type.Name)
             {
-                randomObject = Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)];
-            }
-            else if (type == typeof(Room))
-            {
-                randomObject = Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)];
-            }
-            else if (type == typeof(TeslaGate))
-            {
-                randomObject = TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)];
-            }
-            else if (type == typeof(Player))
-            {
-                randomObject = Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count));
-            }
-            else if (type == typeof(Pickup))
-            {
-                ReadOnlyCollection<Pickup> pickups = Map.Pickups;
-                randomObject = pickups[Random.Range(0, pickups.Count)];
-            }
-            else if (type == typeof(Ragdoll))
-            {
-                randomObject = Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)];
-            }
-            else if (type == typeof(Locker))
-            {
-                randomObject = Map.GetRandomLocker();
-            }
-            else if (type == typeof(LockerChamber))
-            {
-                LockerChamber[] chambers = Map.GetRandomLocker().Chambers;
-                randomObject = chambers[Random.Range(0, chambers.Count())];
-            }
-            else if (type == typeof(Generator))
-            {
-                randomObject = Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)];
+                case nameof(Door):
+                    randomObject = Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)];
+                    break;
+
+                case nameof(Room):
+                    randomObject = Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)];
+                    break;
+
+                case nameof(TeslaGate):
+                    randomObject = TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)];
+                    break;
+
+                case nameof(Player):
+                    randomObject = Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count));
+                    break;
+
+                case nameof(Pickup):
+                    randomObject = Map.Pickups[Random.Range(0, Map.Pickups.Count)];
+                    break;
+
+                case nameof(Ragdoll):
+                    randomObject = Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)];
+                    break;
+
+                case nameof(Locker):
+                    randomObject = Map.GetRandomLocker();
+                    break;
+
+                case nameof(LockerChamber):
+                    LockerChamber[] chambers = Map.GetRandomLocker().Chambers;
+                    randomObject = chambers[Random.Range(0, chambers.Length)];
+                    break;
+
+                case nameof(Generator):
+                    randomObject = Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)];
+                    break;
             }
 
             if (randomObject is null)
@@ -2344,6 +2334,18 @@ namespace Exiled.API.Features
             }
 
             Teleport(randomObject);
+        }
+
+        /// <summary>
+        /// Teleports the player to a random object.
+        /// </summary>
+        /// <param name="types">The list of object types to choose from.</param>
+        public void RandomTeleport(IEnumerable<Type> types)
+        {
+            Type[] array = types as Type[] ?? types.ToArray();
+            if (array.Length == 0)
+                return;
+            RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
         }
 
         /// <summary>
