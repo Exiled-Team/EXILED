@@ -7,16 +7,15 @@
 
 namespace Exiled.CustomItems.API.EventArgs
 {
+    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
-
-    using PlayerStatsSystem;
 
     using Item = Exiled.API.Features.Items.Item;
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Exiled.API.Features.Player"/> dies.
+    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> dies.
     /// </summary>
     public class OwnerDyingEventArgs : DyingEventArgs
     {
@@ -26,19 +25,14 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
         public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
-            : this(item, ev.Target, ev.Handler.Base)
+            : base(ev.Target, ev.Handler.Base)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OwnerDyingEventArgs"/> class.
-        /// </summary>
-        /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="target"><inheritdoc cref="DyingEventArgs.Target"/></param>
-        /// <param name="damageHandler"><inheritdoc cref="DyingEventArgs.DamageHandler"/></param>
-        public OwnerDyingEventArgs(Item item, Player target, DamageHandlerBase damageHandler)
-            : base(target, damageHandler)
-        {
+            if (item is null)
+                Log.Warn("Item is null");
+            if (ev.Target is null)
+                Log.Warn("Target is null");
+            if (ev.Handler.Base is null)
+                Log.Warn("handler base is null");
             Item = item;
         }
 

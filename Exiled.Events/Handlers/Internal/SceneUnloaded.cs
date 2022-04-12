@@ -34,6 +34,7 @@ namespace Exiled.Events.Handlers.Internal
             API.Features.Player.IdsCache.Clear();
             API.Features.Player.UserIdsCache.Clear();
             API.Features.Player.Dictionary.Clear();
+            API.Features.Map.ToysValue.Clear();
         }
     }
 }

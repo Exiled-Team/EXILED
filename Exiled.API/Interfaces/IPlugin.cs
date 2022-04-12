@@ -73,6 +73,16 @@ namespace Exiled.API.Interfaces
         ITranslation InternalTranslation { get; }
 
         /// <summary>
+        /// Gets the plugin config path.
+        /// </summary>
+        string ConfigPath { get; }
+
+        /// <summary>
+        /// Gets the plugin translation path.
+        /// </summary>
+        string TranslationPath { get; }
+
+        /// <summary>
         /// Fired after enabling the plugin.
         /// </summary>
         void OnEnabled();

@@ -10,12 +10,15 @@ namespace Exiled.CustomItems.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Spawn;
+    using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
     using Exiled.Events.EventArgs;
     using Exiled.Loader;
@@ -49,7 +52,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets the list of current Item Managers.
         /// </summary>
-        public static HashSet<CustomItem> Registered { get; } = new HashSet<CustomItem>();
+        public static HashSet<CustomItem> Registered { get; } = new();
 
         /// <summary>
         /// Gets or sets the custom ItemID of the item.
@@ -95,10 +98,10 @@ namespace Exiled.CustomItems.API.Features
         /// Gets the list of custom items inside players' inventory being tracked as the current item.
         /// </summary>
         [YamlIgnore]
-        public HashSet<int> TrackedSerials { get; } = new HashSet<int>();
+        public HashSet<int> TrackedSerials { get; } = new();
 
         /// <summary>
-        /// Gets a value indicating whether whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
+        /// Gets a value indicating whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
         /// </summary>
         [YamlIgnore]
         public virtual bool ShouldMessageOnGban { get; } = false;
@@ -107,59 +110,59 @@ namespace Exiled.CustomItems.API.Features
         /// Gets a <see cref="CustomItem"/> with a specific ID.
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search, null if not registered.</returns>
+        /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
         public static CustomItem Get(int id) => Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Id == id);
 
         /// <summary>
         /// Gets a <see cref="CustomItem"/> with a specific name.
         /// </summary>
         /// <param name="name">The <see cref="CustomItem"/> name.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search, null if not registered.</returns>
+        /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
         public static CustomItem Get(string name) => Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Name == name);
 
         /// <summary>
         /// Tries to get a <see cref="CustomItem"/> with a specific ID.
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID to look for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, null if not registered.</param>
+        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(int id, out CustomItem customItem)
         {
             customItem = Get(id);
 
-            return customItem != null;
+            return customItem is not null;
         }
 
         /// <summary>
         /// Tries to get a <see cref="CustomItem"/> with a specific name.
         /// </summary>
         /// <param name="name">The <see cref="CustomItem"/> name to look for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, null if not registered.</param>
+        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(string name, out CustomItem customItem)
         {
-            if (name == null)
+            if (name is null)
                 throw new ArgumentNullException(nameof(name));
 
             customItem = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
-            return customItem != null;
+            return customItem is not null;
         }
 
         /// <summary>
         /// Tries to get the player's current <see cref="CustomItem"/> in their hand.
         /// </summary>
-        /// <param name="player">The <see cref="Exiled.API.Features.Player"/> to check.</param>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <param name="customItem">The <see cref="CustomItem"/> in their hand.</param>
-        /// <returns>Returns a value indicating whether the <see cref="Exiled.API.Features.Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
+        /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out CustomItem customItem)
         {
-            if (player == null)
+            if (player is null)
                 throw new ArgumentNullException(nameof(player));
 
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Check(player.CurrentItem));
 
-            return customItem != null;
+            return customItem is not null;
         }
 
         /// <summary>
@@ -170,7 +173,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out IEnumerable<CustomItem> customItems)
         {
-            if (player == null)
+            if (player is null)
                 throw new ArgumentNullException(nameof(player));
 
             customItems = Registered?.Where(tempCustomItem => player.Items.Any(item => tempCustomItem.Check(item)));
@@ -188,7 +191,7 @@ namespace Exiled.CustomItems.API.Features
         {
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(item.Serial));
 
-            return customItem != null;
+            return customItem is not null;
         }
 
         /// <summary>
@@ -201,7 +204,7 @@ namespace Exiled.CustomItems.API.Features
         {
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(pickup.Serial));
 
-            return customItem != null;
+            return customItem is not null;
         }
 
         /// <summary>
@@ -277,51 +280,147 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Registers a <see cref="CustomItem"/>.
+        /// Registers all the <see cref="CustomItem"/>'s present in the current assembly.
         /// </summary>
-        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was registered or not.</returns>
-        public bool TryRegister()
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all registered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> RegisterItems(bool skipReflection = false, object overrideClass = null)
         {
-            if (!Registered.Contains(this))
+            List<CustomItem> items = new();
+            Assembly assembly = Assembly.GetCallingAssembly();
+            foreach (Type type in assembly.GetTypes())
             {
-                if (Registered.Any(customItem => customItem.Id == Id))
+                if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null)
+                    continue;
+
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomItemAttribute), true))
                 {
-                    Log.Warn($"{Name} has tried to register with the same custom item ID as another item: {Id}. It will not be registered.");
+                    CustomItem customItem = null;
 
-                    return false;
+                    if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                    {
+                        IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+
+                        foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
+                        {
+                            if (property.PropertyType != type)
+                                continue;
+
+                            customItem = property.GetValue(overrideClass ?? plugin.Config) as CustomItem;
+                        }
+                    }
+
+                    if (customItem is null)
+                        customItem = (CustomItem)Activator.CreateInstance(type);
+
+                    if (customItem.Type == ItemType.None)
+                        customItem.Type = ((CustomItemAttribute)attribute).ItemType;
+
+                    if (customItem.TryRegister())
+                        items.Add(customItem);
                 }
-
-                Registered.Add(this);
-
-                Init();
-
-                Log.Debug($"{Name} ({Id}) [{Type}] has been successfully registered.", Instance.Config.Debug);
-
-                return true;
             }
 
-            Log.Warn($"Couldn't register {Name} ({Id}) [{Type}] as it already exists.");
-
-            return false;
+            return items;
         }
 
         /// <summary>
-        /// Tries to unregister a <see cref="CustomItem"/>.
+        /// Registers all the <see cref="CustomItem"/>'s present in the current assembly.
         /// </summary>
-        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was unregistered or not.</returns>
-        public bool TryUnregister()
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="System.Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all registered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> RegisterItems(IEnumerable<Type> targetTypes, bool isIgnored = false, bool skipReflection = false, object overrideClass = null)
         {
-            Destroy();
-
-            if (!Registered.Remove(this))
+            List<CustomItem> items = new();
+            Assembly assembly = Assembly.GetCallingAssembly();
+            foreach (Type type in assembly.GetTypes())
             {
-                Log.Warn($"Cannot unregister {Name} ({Id}) [{Type}], it hasn't been registered yet.");
+                if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null ||
+                    (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
+                    continue;
 
-                return false;
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomItemAttribute), true))
+                {
+                    CustomItem customItem = null;
+
+                    if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                    {
+                        IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+
+                        foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
+                        {
+                            if (property.PropertyType != type)
+                                continue;
+
+                            customItem = property.GetValue(overrideClass ?? plugin.Config) as CustomItem;
+                            break;
+                        }
+                    }
+
+                    if (customItem is null)
+                        customItem = (CustomItem)Activator.CreateInstance(type);
+
+                    if (customItem.Type == ItemType.None)
+                        customItem.Type = ((CustomItemAttribute)attribute).ItemType;
+
+                    if (customItem.TryRegister())
+                        items.Add(customItem);
+                }
             }
 
-            return true;
+            return items;
         }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomItem"/>'s present in the current assembly.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all unregistered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> UnregisterItems()
+        {
+            List<CustomItem> unregisteredItems = new();
+
+            foreach (CustomItem customItem in Registered)
+            {
+                customItem.TryUnregister();
+                unregisteredItems.Add(customItem);
+            }
+
+            return unregisteredItems;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomItem"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="System.Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all unregistered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> UnregisterItems(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        {
+            List<CustomItem> unregisteredItems = new();
+
+            foreach (CustomItem customItem in Registered)
+            {
+                if ((targetTypes.Contains(customItem.GetType()) && isIgnored) || (!targetTypes.Contains(customItem.GetType()) && !isIgnored))
+                    continue;
+
+                customItem.TryUnregister();
+                unregisteredItems.Add(customItem);
+            }
+
+            return unregisteredItems;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomItem"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetItems">The <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> containing the target items.</param>
+        /// <param name="isIgnored">A value indicating whether the target items should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all unregistered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> UnregisterItems(IEnumerable<CustomItem> targetItems, bool isIgnored = false) => UnregisterItems(targetItems.Select(x => x.GetType()), isIgnored);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific location.
@@ -408,16 +507,41 @@ namespace Exiled.CustomItems.API.Features
                 {
                     for (int i = 0; i < 50; i++)
                     {
+                        if (Map.Lockers is null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: Locker list is null.", Instance.Config.Debug);
+                            continue;
+                        }
+
                         Locker locker =
                             Map.Lockers[
                                 Loader.Random.Next(Map.Lockers.Count)];
-                        if (locker.Loot == null)
+
+                        if (locker is null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: Selected locker is null.", Instance.Config.Debug);
+                            continue;
+                        }
+
+                        if (locker.Loot is null)
                         {
                             Log.Debug($"{nameof(Spawn)}: Invalid locker location. Attempting to find a new one..", Instance.Config.Debug);
                             continue;
                         }
 
+                        if (locker.Chambers is null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: Locker chambers is null", Instance.Config.Debug);
+                            continue;
+                        }
+
                         LockerChamber chamber = locker.Chambers[Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
+
+                        if (chamber is null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: chamber is null", Instance.Config.Debug);
+                            continue;
+                        }
 
                         Vector3 position = chamber._spawnpoint.transform.position;
                         Spawn(position);
@@ -452,7 +576,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         public virtual void SpawnAll()
         {
-            if (SpawnProperties == null)
+            if (SpawnProperties is null)
                 return;
 
             // This will go over each spawn property type (static, dynamic and role) to try and spawn the item.
@@ -476,15 +600,25 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
         public virtual void Give(Player player, Item item, bool displayMessage = true)
         {
-            Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
+            try
+            {
+                Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
 
-            player.AddItem(item);
+                player.AddItem(item);
 
-            if (!TrackedSerials.Contains(item.Serial))
-                TrackedSerials.Add(item.Serial);
+                Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.", Instance.Config.Debug);
+                if (!TrackedSerials.Contains(item.Serial))
+                    TrackedSerials.Add(item.Serial);
 
-            if (displayMessage)
-                ShowPickedUpMessage(player);
+                if (displayMessage)
+                    ShowPickedUpMessage(player);
+
+                Timing.CallDelayed(0.05f, () => OnAcquired(player));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(Give)}: {e}");
+            }
         }
 
         /// <summary>
@@ -524,10 +658,64 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(Item item) => item != null && TrackedSerials.Contains(item.Serial);
+        public virtual bool Check(Item item) => item is not null && TrackedSerials.Contains(item.Serial);
+
+        /// <summary>
+        /// Checks the specified player's current item to see if it is a custom item.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> who's current item should be checked.</param>
+        /// <returns>True if it is a custom item.</returns>
+        public virtual bool Check(Player player) => Check(player?.CurrentItem);
 
         /// <inheritdoc/>
         public override string ToString() => $"[{Name} ({Type}) | {Id}] {Description}";
+
+        /// <summary>
+        /// Registers a <see cref="CustomItem"/>.
+        /// </summary>
+        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was registered or not.</returns>
+        internal bool TryRegister()
+        {
+            if (!Registered.Contains(this))
+            {
+                if (Registered.Any(customItem => customItem.Id == Id))
+                {
+                    Log.Warn($"{Name} has tried to register with the same custom item ID as another item: {Id}. It will not be registered.");
+
+                    return false;
+                }
+
+                Registered.Add(this);
+
+                Init();
+
+                Log.Debug($"{Name} ({Id}) [{Type}] has been successfully registered.", Instance.Config.Debug);
+
+                return true;
+            }
+
+            Log.Warn($"Couldn't register {Name} ({Id}) [{Type}] as it already exists.");
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to unregister a <see cref="CustomItem"/>.
+        /// </summary>
+        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was unregistered or not.</returns>
+        internal bool TryUnregister()
+        {
+            Destroy();
+
+            if (!Registered.Remove(this))
+            {
+                Log.Warn($"Cannot unregister {Name} ({Id}) [{Type}], it hasn't been registered yet.");
+
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Called after the manager is initialized, to allow loading of special event handlers.
@@ -625,8 +813,16 @@ namespace Exiled.CustomItems.API.Features
         {
         }
 
-        /// <inheritdoc cref="OnUpgrading(Exiled.CustomItems.API.EventArgs.UpgradingEventArgs)"/>
-        protected virtual void OnUpgrading(Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs ev)
+        /// <inheritdoc cref="OnUpgrading(UpgradingEventArgs)"/>
+        protected virtual void OnUpgrading(API.EventArgs.UpgradingItemEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Called anytime the item enters a player's inventory by any means.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
+        protected virtual void OnAcquired(Player player)
         {
         }
 
@@ -663,7 +859,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Item"/> created.</returns>
         protected Item CreateCorrectItem(ItemBase itemBase = null)
         {
-            if (itemBase == null)
+            if (itemBase is null)
                 itemBase = Server.Host.Inventory.CreateItemInstance(Type, false);
             return Item.Get(itemBase);
         }
@@ -779,7 +975,7 @@ namespace Exiled.CustomItems.API.Features
             }
 
             Pickup pickup = Spawn(ev.Player, ev.Item);
-            if (pickup.Base.Rb != null && ev.IsThrown)
+            if (pickup.Base.Rb is not null && ev.IsThrown)
             {
                 Vector3 vector = (ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity / 3f) + (ev.Player.ReferenceHub.PlayerCameraReference.forward * 6f * (Mathf.Clamp01(Mathf.InverseLerp(7f, 0.1f, pickup.Base.Rb.mass)) + 0.3f));
                 vector.x = Mathf.Max(Mathf.Abs(ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity.x), Mathf.Abs(vector.x)) * (float)((vector.x < 0f) ? -1 : 1);
@@ -808,6 +1004,8 @@ namespace Exiled.CustomItems.API.Features
 
             if (!TrackedSerials.Contains(ev.Pickup.Serial))
                 TrackedSerials.Add(ev.Pickup.Serial);
+
+            Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player));
         }
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
@@ -835,10 +1033,10 @@ namespace Exiled.CustomItems.API.Features
                 return;
 
             ev.IsAllowed = false;
-            OnUpgrading(new Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
+            OnUpgrading(new API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
         }
 
-        private void OnInternalUpgradingItem(Exiled.Events.EventArgs.UpgradingItemEventArgs ev)
+        private void OnInternalUpgradingItem(Events.EventArgs.UpgradingItemEventArgs ev)
         {
             if (!Check(ev.Item))
                 return;

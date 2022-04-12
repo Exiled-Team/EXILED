@@ -42,7 +42,7 @@ namespace Exiled.API.Features
         public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
         {
             GameObject model_ragdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
-            if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            if (model_ragdoll is null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, model_ragdoll.transform.localPosition, model_ragdoll.transform.localRotation);
             this.ragdoll = ragdoll;
@@ -59,7 +59,7 @@ namespace Exiled.API.Features
         public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
         {
             GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
-            if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            if (model_ragdoll is null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = ragdollInfo;
             this.ragdoll = ragdoll;
@@ -98,6 +98,11 @@ namespace Exiled.API.Features
         public RagDoll Base => ragdoll;
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollInfo">NetworkInfo</see>.
         /// </summary>
         public RagdollInfo NetworkInfo
@@ -122,22 +127,21 @@ namespace Exiled.API.Features
         public DeathAnimation[] DeathAnimations => ragdoll.AllDeathAnimations;
 
         /// <summary>
-        /// Gets a value indicating whether the ragdoll has been already cleaned up.
+        /// Gets a value indicating whether or not the ragdoll has been already cleaned up.
         /// </summary>
         public bool IsCleanedUp => ragdoll._cleanedUp;
 
         /// <summary>
-        /// Gets or sets a value indicating whether can be cleaned up.
+        /// Gets or sets a value indicating whether or not the ragdoll can be cleaned up.
         /// </summary>
         public bool CanBeCleanedUp
         {
             get => IgnoredRagdolls.Contains(Base);
             set
             {
-                if (!value || IgnoredRagdolls.Contains(Base))
+                if (!value)
                 {
-                    if (!value && IgnoredRagdolls.Contains(Base))
-                        IgnoredRagdolls.Remove(Base);
+                    IgnoredRagdolls.Remove(Base);
                 }
                 else
                 {
@@ -147,7 +151,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the ragdoll is currently playing animations.
+        /// Gets a value indicating whether or not the ragdoll is currently playing animations.
         /// </summary>
         public bool IsPlayingAnimations => ragdoll._playingLocalAnims;
 
@@ -166,14 +170,14 @@ namespace Exiled.API.Features
         public string Name => ragdoll.name;
 
         /// <summary>
-        /// Gets the ragdoll's GameObject.
-        /// </summary>
-        public GameObject GameObject => ragdoll.gameObject;
-
-        /// <summary>
-        /// Gets the owner <see cref="Player"/>. Can be null if the ragdoll does not have an owner.
+        /// Gets the owner <see cref="Player"/>. Can be <see langword="null"/> if the ragdoll does not have an owner.
         /// </summary>
         public Player Owner => Player.Get(ragdoll.Info.OwnerHub);
+
+        /// <summary>
+        /// Gets the time that the ragdoll was spawned.
+        /// </summary>
+        public DateTime CreationTime => new((long)NetworkInfo.CreationTime);
 
         /// <summary>
         /// Gets the <see cref="RoleType"/> of the ragdoll.
@@ -186,7 +190,7 @@ namespace Exiled.API.Features
         public bool AllowRecall => NetworkInfo.ExistenceTime > Scp049.ReviveEligibilityDuration;
 
         /// <summary>
-        /// Gets the <see cref="Room"/> the ragdoll is located in.
+        /// Gets the <see cref="Features.Room"/> the ragdoll is located in.
         /// </summary>
         public Room Room => Map.FindParentRoom(GameObject);
 
@@ -198,9 +202,9 @@ namespace Exiled.API.Features
             get => ragdoll.transform.position;
             set
             {
-                Mirror.NetworkServer.UnSpawn(GameObject);
+                NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.position = value;
-                Mirror.NetworkServer.Spawn(GameObject);
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -212,9 +216,9 @@ namespace Exiled.API.Features
             get => ragdoll.transform.rotation;
             set
             {
-                Mirror.NetworkServer.UnSpawn(GameObject);
+                NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.rotation = value;
-                Mirror.NetworkServer.Spawn(GameObject);
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -226,9 +230,9 @@ namespace Exiled.API.Features
             get => ragdoll.transform.localScale;
             set
             {
-                Mirror.NetworkServer.UnSpawn(GameObject);
+                NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.localScale = value;
-                Mirror.NetworkServer.Spawn(GameObject);
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -240,7 +244,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="RagDoll"/>'s that will be ignored by clean up event.
         /// </summary>
-        internal static HashSet<RagDoll> IgnoredRagdolls { get; set; } = new HashSet<RagDoll>();
+        internal static HashSet<RagDoll> IgnoredRagdolls { get; set; } = new();
 
         /// <summary>
         /// Gets the <see cref="Ragdoll"/> belonging to the <see cref="RagDoll"/>, if any.

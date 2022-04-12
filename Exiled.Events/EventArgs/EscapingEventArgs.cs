@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs
             Player = player;
             if (player.IsCuffed)
             {
-                switch (player.Team)
+                switch (player.Role.Team)
                 {
                     case Team.CDP:
                         NewRole = RoleType.NtfPrivate;
@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs
             }
             else
             {
-                switch (player.Team)
+                switch (player.Role.Team)
                 {
                     case Team.CDP:
                         NewRole = RoleType.ChaosConscript;

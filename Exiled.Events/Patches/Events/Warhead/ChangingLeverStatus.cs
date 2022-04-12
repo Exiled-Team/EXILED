@@ -36,18 +36,18 @@ namespace Exiled.Events.Patches.Events.Warhead
 
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(AlphaWarheadNukesitePanel), nameof(AlphaWarheadNukesitePanel.Networkenabled))),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingLeverStatusEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnChangingLeverStatus))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingLeverStatusEventArgs), nameof(ChangingLeverStatusEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_0),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Call, PropertyGetter(typeof(AlphaWarheadNukesitePanel), nameof(AlphaWarheadNukesitePanel.Networkenabled))),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingLeverStatusEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnChangingLeverStatus))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingLeverStatusEventArgs), nameof(ChangingLeverStatusEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, returnLabel),
             });
 
             offset = 10;
@@ -58,10 +58,10 @@ namespace Exiled.Events.Patches.Events.Warhead
 
             newInstructions[index].MoveLabelsTo(newInstructions[moveIndex]);
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

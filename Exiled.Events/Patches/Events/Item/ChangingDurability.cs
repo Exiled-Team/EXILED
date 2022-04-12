@@ -6,9 +6,8 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Item
-{/*
+{
 #pragma warning disable SA1118
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -16,63 +15,77 @@ namespace Exiled.Events.Patches.Events.Item
 
     using HarmonyLib;
 
-    using Mirror;
+    using InventorySystem.Items.Firearms;
 
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
+    using Firearm = InventorySystem.Items.Firearms.Firearm;
+
     /// <summary>
-    /// Patches <see cref="Inventory.SyncListItemInfo.ModifyDuration(int, float)"/>.
+    /// Patches <see cref="Firearm.Status"/>.
     /// Adds the <see cref="Handlers.Item.ChangingDurability"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory.SyncListItemInfo), nameof(Inventory.SyncListItemInfo.ModifyDuration))]
+    [HarmonyPatch(typeof(Firearm), nameof(Firearm.Status), MethodType.Setter)]
     internal static class ChangingDurability
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // The index offset.
-            const int offset = 0;
+            const int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse_S) + offset;
 
-            // Search for the last "ldloca.s".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloca_S) + offset;
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingDurabilityEventArgs));
+            LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(byte));
 
-            // Set the return label to the last instruction.
-            var returnLabel = generator.DefineLabel();
+            Label cdc = generator.DefineLabel();
+            Label jmp = generator.DefineLabel();
+            Label jcc = generator.DefineLabel();
 
-            // Declare ChangingDurabilityEventArgs, to be able to store its instance with "stloc.1".
-            var ev = generator.DeclareLocal(typeof(ChangingDurabilityEventArgs));
+            newInstructions[index].labels.Add(cdc);
 
-            // var ev = new ChangingDurabilityEventArgs(item, newDurability, true);
-            //
-            // Handlers.Item.OnChangingDurability(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return;
-            //
-            // base[index] = ev.Item;
-            //
-            // return;
             newInstructions.InsertRange(index, new[]
             {
-                 new CodeInstruction(OpCodes.Ldloc_S, 0),
-                 new CodeInstruction(OpCodes.Ldarg_2),
-                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingDurabilityEventArgs))[0]),
-                 new CodeInstruction(OpCodes.Dup),
-                 new CodeInstruction(OpCodes.Dup),
-                 new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingDurability))),
-                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.IsAllowed))),
-                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                 new CodeInstruction(OpCodes.Ldarg_0),
-                 new CodeInstruction(OpCodes.Ldarg_1),
-                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.NewItem))),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(SyncList<Inventory.SyncItemInfo>), "set_Item")),
-                 new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
+                new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
+                new(OpCodes.Ceq),
+                new(OpCodes.Brtrue_S, cdc),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Owner))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Dup),
+                new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
+                new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingDurabilityEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingDurability))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, jmp),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.NewDurability))),
+                new(OpCodes.Br_S, jcc),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jmp),
+                new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
+                new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex).WithLabels(jcc),
+                new(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Flags))),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Attachments))),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FirearmStatus))[0]),
+                new(OpCodes.Starg_S, 1),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -80,5 +93,5 @@ namespace Exiled.Events.Patches.Events.Item
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-    }*/
+    }
 }

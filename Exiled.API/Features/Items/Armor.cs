@@ -11,18 +11,12 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Structs;
 
-    using InventorySystem;
-    using InventorySystem.Items;
     using InventorySystem.Items.Armor;
-    using InventorySystem.Items.Usables;
 
     using NorthwoodLib.Pools;
-
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -32,7 +26,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Armor"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="BodyArmor"/> class.</param>
         public Armor(BodyArmor itemBase)
             : base(itemBase)
         {
@@ -42,13 +36,15 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Armor"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Item.Type"/></param>
-        public Armor(ItemType type)
+        /// <param name="type">The <see cref="ItemType"/> of the armor.</param>
+        internal Armor(ItemType type)
             : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="BodyArmor"/> that this class is encapsulating.
+        /// </summary>
         public new BodyArmor Base { get; }
 
         /// <summary>
@@ -158,11 +154,11 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.
         /// </summary>
-        public List<ArmorAmmoLimit> AmmoLimits
+        public IEnumerable<ArmorAmmoLimit> AmmoLimits
         {
             get
             {
-                List<ArmorAmmoLimit> limits = new List<ArmorAmmoLimit>();
+                List<ArmorAmmoLimit> limits = new();
                 for (int i = 0; i < Base.AmmoLimits.Length; i++)
                 {
                     limits.Add(new ArmorAmmoLimit(Base.AmmoLimits[i].AmmoType.GetAmmoType(), Base.AmmoLimits[i].Limit));
@@ -174,9 +170,9 @@ namespace Exiled.API.Features.Items
             set
             {
                 List<BodyArmor.ArmorAmmoLimit> limits = ListPool<BodyArmor.ArmorAmmoLimit>.Shared.Rent();
-                for (int i = 0; i < value.Count; i++)
+                for (int i = 0; i < value.Count(); i++)
                 {
-                    ArmorAmmoLimit limit = value[i];
+                    ArmorAmmoLimit limit = value.ElementAt(i);
                     limits.Add(new BodyArmor.ArmorAmmoLimit
                     {
                         AmmoType = limit.AmmoType.GetItemType(),

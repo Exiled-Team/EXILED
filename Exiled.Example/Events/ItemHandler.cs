@@ -7,8 +7,9 @@
 
 namespace Exiled.Example.Events
 {
+    using System.Linq;
+
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
 
     /// <summary>
@@ -19,13 +20,22 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingDurability(ChangingDurabilityEventArgs)"/>
         public void OnChangingDurability(ChangingDurabilityEventArgs ev)
         {
-            Log.Info($"Item {ev.OldItem.Type} durability of {(ev.OldItem is Firearm firearm ? firearm.Ammo.ToString() : "No durability.")} is changing");
+            Log.Info($"Durability of {ev.Firearm.Type} ({ev.OldDurability}) is changing. New durability: {ev.NewDurability}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingAttachments(ChangingAttachmentsEventArgs)"/>
         public void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
         {
-            Log.Info($"Item {ev.NewItem.Type} attachments are changing, old ones:\n[SIGHT ({ev.OldItem.Attachments[0]})] [BARREL ({ev.OldItem.Attachments[0]})] [OTHER ({ev.OldItem.Attachments[0]})]");
+            string oldAttachments = ev.CurrentAttachmentIdentifiers.Aggregate(string.Empty, (current, attachmentIdentifier) => current + $"{attachmentIdentifier.Name}\n");
+            string newAttachments = ev.NewAttachmentIdentifiers.Aggregate(string.Empty, (current, attachmentIdentifier) => current + $"{attachmentIdentifier.Name}\n");
+
+            Log.Info($"Item {ev.Firearm.Type} attachments are changing. Old attachments:\n{oldAttachments} - New Attachments:\n{newAttachments}");
+        }
+
+        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnReceivingPreference(ReceivingPreferenceEventArgs)"/>
+        public void OnReceivingPreference(ReceivingPreferenceEventArgs ev)
+        {
+            Log.Info($"Receiving a preference from {ev.Player.Nickname} - Item: {ev.Item}");
         }
     }
 }

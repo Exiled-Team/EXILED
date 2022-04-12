@@ -6,15 +6,18 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Item
-{/*
+{
 #pragma warning disable SA1118
-
+    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
+
+    using InventorySystem.Items.Firearms.Attachments;
 
     using Mirror;
 
@@ -23,64 +26,87 @@ namespace Exiled.Events.Patches.Events.Item
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Inventory.SyncListItemInfo.ModifyAttachments(int, int, int, int)"/>.
+    /// Patches <see cref="AttachmentsServerHandler.ServerReceiveChangeRequest(NetworkConnection, AttachmentsChangeRequest)"/>.
     /// Adds the <see cref="Handlers.Item.ChangingAttachments"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory.SyncListItemInfo), nameof(Inventory.SyncListItemInfo.ModifyAttachments))]
+    [HarmonyPatch(typeof(AttachmentsServerHandler), nameof(AttachmentsServerHandler.ServerReceiveChangeRequest))]
     internal static class ChangingAttachments
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // The index offset.
-            const int offset = 0;
+            const int offset = -3;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_1) + offset;
 
-            // Search for the first "ldloca.s".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloca_S) + offset;
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingAttachmentsEventArgs));
+            LocalBuilder curCode = generator.DeclareLocal(typeof(uint));
 
-            // Set the return label to the last instruction.
-            var returnLabel = generator.DefineLabel();
+            Label ret = generator.DefineLabel();
 
-            // Declare ChangingDurabilityEventArgs, to be able to store its instance with "stloc.1".
-            var ev = generator.DeclareLocal(typeof(ChangingAttachmentsEventArgs));
-
-            // var ev = new ChangingAttachmentsEventArgs(item, sight, barrel, other, true);
-            //
-            // Handlers.Player.OnChangingAttachments(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return;
-            //
-            // base[index] = ev.Item;
-            //
-            // return;
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                 new CodeInstruction(OpCodes.Ldloc_S, 0),
-                 new CodeInstruction(OpCodes.Ldarg_2),
-                 new CodeInstruction(OpCodes.Ldarg_3),
-                 new CodeInstruction(OpCodes.Ldarg_S, 4),
-                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingAttachmentsEventArgs))[0]),
-                 new CodeInstruction(OpCodes.Dup),
-                 new CodeInstruction(OpCodes.Dup),
-                 new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingAttachments))),
-                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.IsAllowed))),
-                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                 new CodeInstruction(OpCodes.Ldarg_0),
-                 new CodeInstruction(OpCodes.Ldarg_1),
-                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.NewItem))),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(SyncList<Inventory.SyncItemInfo>), "set_Item")),
-                 new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
+                // curCode = Firearm::GetCurrentAttachmentsCode
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Call, Method(typeof(AttachmentsUtils), nameof(AttachmentsUtils.GetCurrentAttachmentsCode))),
+                new(OpCodes.Stloc_S, curCode.LocalIndex),
+
+                // If the Firearm::GetCurrentAttachmentsCode isn't changed, prevents the method from being executed
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+                new(OpCodes.Ldloc_S, curCode.LocalIndex),
+                new(OpCodes.Ceq),
+                new(OpCodes.Brtrue_S, ret),
+
+                // API::Features::Player::Get(NetworkConnection::identity::netId)
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
+
+                // Item::Get(firearm)
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Call, Method(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Get))),
+                new(OpCodes.Castclass, typeof(API.Features.Items.Firearm)),
+
+                // AttachmentsChangeRequest::AttachmentsCode
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+
+                // true
+                new(OpCodes.Ldc_I4_1),
+
+                // ChangingAttachmentsEventArgs ev = new ChangingAttachmentsEventArgs(__ARGS__)
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingAttachmentsEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                // Handlers::Item::OnChangingAttachments(ev)
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingAttachments))),
+
+                // ev.IsAllowed
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, ret),
+
+                // **AttachmentsChangeRequest = ev::NewCode + curCode - ev::CurrentCode
+                new(OpCodes.Ldarga_S, 1),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.NewCode))),
+                new(OpCodes.Ldloc_S, curCode.LocalIndex),
+                new(OpCodes.Add),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.CurrentCode))),
+                new(OpCodes.Sub),
+                new(OpCodes.Stfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-    }*/
+    }
 }

@@ -8,8 +8,10 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+    using System.Linq;
 
     using Exiled.API.Features;
+    using Exiled.API.Structs;
 
     /// <summary>
     /// Contains all information before a player interacts with an elevator.
@@ -23,12 +25,11 @@ namespace Exiled.Events.EventArgs
         /// <param name="elevator"><inheritdoc cref="Elevator"/></param>
         /// <param name="lift"><inheritdoc cref="Type"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingElevatorEventArgs(Player player, Lift.Elevator elevator, Lift lift, bool isAllowed = true)
+        public InteractingElevatorEventArgs(Player player, global::Lift.Elevator elevator, global::Lift lift, bool isAllowed = true)
         {
-            Lift = lift;
-            Status = lift.status;
+            Lift = Lift.Get(lift);
             Player = player;
-            Elevator = elevator;
+            Elevator = Lift.Elevators.FirstOrDefault(elev => elev.Base == elevator);
             IsAllowed = isAllowed;
         }
 
@@ -38,19 +39,14 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Lift.Elevator"/> instance.
+        /// Gets the <see cref="API.Structs.Elevator"/> instance.
         /// </summary>
-        public Lift.Elevator Elevator { get; }
+        public Elevator Elevator { get; }
 
         /// <summary>
-        /// Gets the <see cref="global::Lift"/> instance.
+        /// Gets the <see cref="Lift"/> instance.
         /// </summary>
         public Lift Lift { get; }
-
-        /// <summary>
-        /// Gets the <see cref="global::Lift"/>'s current <see cref="Lift.Status"/>.
-        /// </summary>
-        public Lift.Status Status { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with the elevator.

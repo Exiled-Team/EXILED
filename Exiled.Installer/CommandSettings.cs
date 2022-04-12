@@ -19,7 +19,7 @@ namespace Exiled.Installer
 
     internal sealed class CommandSettings
     {
-        public static readonly RootCommand RootCommand = new RootCommand
+        public static readonly RootCommand RootCommand = new()
         {
             new Option<DirectoryInfo?>(
                 new[] { "-p", "--path" },
@@ -37,9 +37,9 @@ namespace Exiled.Installer
                     else if (!Directory.Exists(path))
                         parsed.ErrorMessage = "Directory doesn't exist!";
                     else if (!Program.ValidateServerPath(path, out var targetFilePath))
-                        parsed.ErrorMessage = $"Couldn't find '{Program.TARGET_FILE_NAME}' in '{targetFilePath}'";
+                        parsed.ErrorMessage = $"Couldn't find '{Program.TargetFileName}' in '{targetFilePath}'";
 
-                    return new DirectoryInfo(path); // return for default value
+                    return new(path); // return for default value
                 },
                 isDefault: true,
                 description: "Path to the folder with the SL server")
@@ -62,7 +62,7 @@ namespace Exiled.Installer
                         return null;
                     }
 
-                    return new DirectoryInfo(path);
+                    return new(path);
                 },
                 isDefault: true,
                 description: "Forces the folder to be the AppData folder (useful for containers when pterodactyl runs as root)")

@@ -7,27 +7,7 @@
 
 namespace Exiled.Example.Events
 {
-    using System;
-
-    using CameraShaking;
-
-    using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
-
-    using InventorySystem;
-    using InventorySystem.Items;
-    using InventorySystem.Items.Coin;
-    using InventorySystem.Items.Firearms;
-
-    using MEC;
-
-    using UnityEngine;
-
-    using Firearm = Exiled.API.Features.Items.Firearm;
-    using Object = UnityEngine.Object;
-    using Random = UnityEngine.Random;
 
     /// <summary>
     /// Handles server-related events.

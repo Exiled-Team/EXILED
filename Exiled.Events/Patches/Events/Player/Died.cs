@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -20,8 +19,6 @@ namespace Exiled.Events.Patches.Events.Player
     using NorthwoodLib.Pools;
 
     using PlayerStatsSystem;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -37,30 +34,36 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             Label ret = generator.DefineLabel();
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            LocalBuilder oldRole = generator.DeclareLocal(typeof(RoleType));
 
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DyingEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDying))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, ret),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, player.LocalIndex),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DyingEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDying))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse, ret),
+                new(OpCodes.Ldloc, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
+                new(OpCodes.Stloc, oldRole.LocalIndex),
             });
 
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret);
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DiedEventArgs))[0]),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDied))),
+                new(OpCodes.Ldloc, player.LocalIndex),
+                new(OpCodes.Ldloc, oldRole.LocalIndex),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DiedEventArgs))[0]),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDied))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);

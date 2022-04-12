@@ -48,12 +48,12 @@ namespace Exiled.API.Enums
         Bleeding,
 
         /// <summary>
-        /// Damage dealt by a <see cref="API.Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
+        /// Damage dealt by a <see cref="Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
         /// </summary>
         Firearm,
 
         /// <summary>
-        /// Damage dealt by a <see cref="API.Features.Items.MicroHid"/>.
+        /// Damage dealt by a <see cref="Features.Items.MicroHid"/>.
         /// </summary>
         MicroHid,
 
@@ -78,7 +78,7 @@ namespace Exiled.API.Enums
         Scp018,
 
         /// <summary>
-        /// Damage dealt by SCP-207.
+        /// <see cref="EffectType.Scp207"/>.
         /// </summary>
         Scp207,
 
@@ -191,5 +191,15 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.GunE11SR"/>.
         /// </summary>
         E11Sr,
+
+        /// <summary>
+        /// <see cref="EffectType.Hypothermia"/>.
+        /// </summary>
+        Hypothermia,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.ParticleDisruptor"/>.
+        /// </summary>
+        ParticleDisruptor,
     }
 }

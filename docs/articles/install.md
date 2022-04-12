@@ -1,10 +1,15 @@
-# Installing EXILED
+---
+uid: install
+---
+> [!NOTE]
+> This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the [](xref:plugin_structure) tutorial if you are unfamiliar with setting up a plugin using EXILED.
 
-**This guide assumes you have already installed the SCP: SL dedicated server. If you have not done this, please follow the guide [here.](https://en.scpslgame.com/index.php?title=Guide:Hosting_a_server)**
+
+# Installing EXILED
 
 ## Windows installation
 
-Download `Exiled.Installer-Win.exe` from [here](https://github.com/galaxy119/EXILED/releases).
+Download `Exiled.Installer-Win.exe` from [here](https://github.com/Exiled-Team/EXILED/releases).
 
 Move it into your server directory and double click the .exe.
 

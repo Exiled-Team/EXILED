@@ -7,23 +7,15 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Enums;
 
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
 
-    using MapGeneration.Distributors;
-
     using Mirror;
 
     using UnityEngine;
-
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
@@ -33,14 +25,14 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new Dictionary<ItemPickupBase, Pickup>();
+        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new();
 
         private ushort id;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
-        /// <param name="pickupBase"><inheritdoc cref="Base"/></param>
+        /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         public Pickup(ItemPickupBase pickupBase)
         {
             Base = pickupBase;
@@ -51,7 +43,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Type"/></param>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         public Pickup(ItemType type)
         {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
@@ -61,6 +53,11 @@ namespace Exiled.API.Features.Items
             Serial = itemBase.PickupDropModel.NetworkInfo.Serial;
             BaseToItem.Add(itemBase.PickupDropModel, this);
         }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the unique serial number for the item.
@@ -87,13 +84,12 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public Vector3 Scale
         {
-            get => Base.gameObject.transform.localScale;
+            get => GameObject.transform.localScale;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.localScale = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.localScale = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -135,6 +131,15 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets the previous owner of this item.
+        /// </summary>
+        public Player PreviousOwner
+        {
+            get => Player.Get(Base.PreviousOwner.Hub);
+            set => Base.PreviousOwner = value.Footprint;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the pickup is currently in use.
         /// </summary>
         public bool InUse
@@ -158,8 +163,8 @@ namespace Exiled.API.Features.Items
             {
                 Base.Rb.position = value;
                 Base.transform.position = value;
-                NetworkServer.UnSpawn(Base.gameObject);
-                NetworkServer.Spawn(Base.gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                NetworkServer.Spawn(GameObject);
 
                 Base.RefreshPositionAndRotation();
             }
@@ -175,8 +180,8 @@ namespace Exiled.API.Features.Items
             {
                 Base.Rb.rotation = value;
                 Base.transform.rotation = value;
-                NetworkServer.UnSpawn(Base.gameObject);
-                NetworkServer.Spawn(Base.gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                NetworkServer.Spawn(GameObject);
 
                 Base.RefreshPositionAndRotation();
             }
@@ -193,7 +198,7 @@ namespace Exiled.API.Features.Items
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> to convert into a <see cref="Pickup"/>.</param>
         /// <returns>The <see cref="Pickup"/> wrapper for the given <see cref="ItemPickupBase"/>.</returns>
         public static Pickup Get(ItemPickupBase pickupBase) =>
-            pickupBase == null ? null :
+            pickupBase is null ? null :
             BaseToItem.ContainsKey(pickupBase) ? BaseToItem[pickupBase] :
             new Pickup(pickupBase);
 
@@ -202,7 +207,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public void Destroy() => Base.DestroySelf();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Pickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Pickup-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";

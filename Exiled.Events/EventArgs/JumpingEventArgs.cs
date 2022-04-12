@@ -11,8 +11,6 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
-    using Mirror;
-
     using UnityEngine;
 
     /// <summary>

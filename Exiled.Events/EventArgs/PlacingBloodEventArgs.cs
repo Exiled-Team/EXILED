@@ -9,12 +9,13 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before a player places blood.
+    /// Contains all informations before placing a blood decal.
     /// </summary>
     public class PlacingBloodEventArgs : EventArgs
     {
@@ -30,7 +31,7 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             Position = position;
-            Type = type;
+            Type = (BloodType)type;
             Multiplier = multiplier;
             IsAllowed = isAllowed;
         }
@@ -48,7 +49,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the blood type.
         /// </summary>
-        public int Type { get; set; }
+        public BloodType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the blood multiplier.

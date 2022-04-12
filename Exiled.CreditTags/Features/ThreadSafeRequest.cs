@@ -35,7 +35,7 @@ namespace Exiled.CreditTags.Features
 
         private static IEnumerator<float> MakeRequest(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler)
         {
-            ThreadSafeRequest request = new ThreadSafeRequest();
+            ThreadSafeRequest request = new();
 
             Task.Run(() =>
             {

@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs
         public float Duration { get; set; } = 0.0f;
 
         /// <summary>
-        /// Gets or sets the value of the new state of the effect. Setting this to 0 is the same as setting IsAllowed to false.
+        /// Gets or sets the value of the new state of the effect. Setting this to <c>0</c> is the same as setting IsAllowed to <see langword="false"/>.
         /// </summary>
         public byte State
         {

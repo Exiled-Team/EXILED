@@ -35,20 +35,20 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(WalkingOnSinkholeEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnWalkingOnSinkhole))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(WalkingOnSinkholeEventArgs), nameof(WalkingOnSinkholeEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(WalkingOnSinkholeEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnWalkingOnSinkhole))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(WalkingOnSinkholeEventArgs), nameof(WalkingOnSinkholeEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, returnLabel),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -16,7 +16,7 @@ namespace Exiled.Example
     /// </summary>
     public class Example : Plugin<Config>
     {
-        private static readonly Example Singleton = new Example();
+        private static readonly Example Singleton = new();
 
         private ServerHandler serverHandler;
         private PlayerHandler playerHandler;
@@ -109,6 +109,7 @@ namespace Exiled.Example
 
             Exiled.Events.Handlers.Item.ChangingDurability += itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments += itemHandler.OnChangingAttachments;
+            Exiled.Events.Handlers.Item.ReceivingPreference += itemHandler.OnReceivingPreference;
 
             Exiled.Events.Handlers.Scp914.UpgradingItem += scp914Handler.OnUpgradingItem;
 
@@ -150,6 +151,7 @@ namespace Exiled.Example
 
             Exiled.Events.Handlers.Item.ChangingDurability -= itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments -= itemHandler.OnChangingAttachments;
+            Exiled.Events.Handlers.Item.ReceivingPreference -= itemHandler.OnReceivingPreference;
 
             Exiled.Events.Handlers.Scp914.UpgradingItem -= scp914Handler.OnUpgradingItem;
 

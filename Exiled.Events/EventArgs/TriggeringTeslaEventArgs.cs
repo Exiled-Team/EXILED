@@ -20,17 +20,13 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="TriggeringTeslaEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="tesla"><inheritdoc cref="Tesla"/></param>
-        /// <param name="isInHurtingRange"><inheritdoc cref="IsInHurtingRange"/></param>
-        /// <param name="isTriggerable"><inheritdoc cref="IsTriggerable"/></param>
-        /// <param name="isInIdleRange"><inheritdoc cref="IsInIdleRange"/></param>
-        public TriggeringTeslaEventArgs(Player player, TeslaGate tesla, bool isInHurtingRange, bool isTriggerable, bool isInIdleRange = true)
+        /// <param name="teslaGate"><inheritdoc cref="Tesla"/></param>
+        public TriggeringTeslaEventArgs(Player player, TeslaGate teslaGate)
         {
             Player = player;
-            Tesla = tesla;
-            IsInHurtingRange = isInHurtingRange;
-            IsTriggerable = isTriggerable;
-            IsInIdleRange = isInIdleRange;
+            Tesla = teslaGate;
+            IsInHurtingRange = Tesla.PlayerInHurtRange(player);
+            IsTriggerable = Tesla.PlayerInTriggerRange(player);
         }
 
         /// <summary>
@@ -56,6 +52,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the is going to be idle.
         /// </summary>
-        public bool IsInIdleRange { get; set; }
+        public bool IsInIdleRange { get; set; } = true;
     }
 }

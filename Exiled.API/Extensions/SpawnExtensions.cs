@@ -41,7 +41,7 @@ namespace Exiled.API.Extensions
         /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.
         /// </summary>
         /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
-        /// <returns>The <see cref="Transform"/> used for that spawn location. Can be null.</returns>
+        /// <returns>The <see cref="Transform"/> used for that spawn location. Can be <see langword="null"/>.</returns>
         public static Transform GetDoor(this SpawnLocation location)
         {
             string doorName = location.GetDoorName();
@@ -61,7 +61,7 @@ namespace Exiled.API.Extensions
         {
             Transform transform = location.GetDoor();
 
-            if (transform == null)
+            if (transform is null)
                 return default;
 
             // Returns a value that is offset from the door's location.
@@ -76,69 +76,37 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="spawnLocation">The <see cref="SpawnLocation"/>.</param>
         /// <returns>Returns the door name.</returns>
-        public static string GetDoorName(this SpawnLocation spawnLocation)
+        public static string GetDoorName(this SpawnLocation spawnLocation) => spawnLocation switch
         {
-            switch (spawnLocation)
-            {
-                case SpawnLocation.Inside012:
-                    return "012";
-                case SpawnLocation.Inside096:
-                    return "096";
-                case SpawnLocation.Inside914:
-                    return "914";
-                case SpawnLocation.InsideHid:
-                    return "HID";
-                case SpawnLocation.InsideGr18:
-                    return "GR18";
-                case SpawnLocation.InsideGateA:
-                    return "GATE_A";
-                case SpawnLocation.InsideGateB:
-                    return "GATE_B";
-                case SpawnLocation.InsideLczWc:
-                    return "LCZ_WC";
-                case SpawnLocation.InsideHidLeft:
-                    return "HID_LEFT";
-                case SpawnLocation.InsideLczCafe:
-                    return "LCZ_CAFE";
-                case SpawnLocation.Inside173Gate:
-                    return "173_GATE";
-                case SpawnLocation.InsideIntercom:
-                    return "INTERCOM";
-                case SpawnLocation.InsideHidRight:
-                    return "HID_RIGHT";
-                case SpawnLocation.Inside079First:
-                    return "079_FIRST";
-                case SpawnLocation.Inside012Bottom:
-                    return "012_BOTTOM";
-                case SpawnLocation.Inside012Locker:
-                    return "012_LOCKER";
-                case SpawnLocation.Inside049Armory:
-                    return "049_ARMORY";
-                case SpawnLocation.Inside173Armory:
-                    return "173_ARMORY";
-                case SpawnLocation.Inside173Bottom:
-                    return "173_BOTTOM";
-                case SpawnLocation.InsideLczArmory:
-                    return "LCZ_ARMORY";
-                case SpawnLocation.InsideHczArmory:
-                    return "HCZ_ARMORY";
-                case SpawnLocation.InsideNukeArmory:
-                    return "NUKE_ARMORY";
-                case SpawnLocation.InsideSurfaceNuke:
-                    return "SURFACE_NUKE";
-                case SpawnLocation.Inside079Secondary:
-                    return "079_SECOND";
-                case SpawnLocation.Inside173Connector:
-                    return "173_CONNECTOR";
-                case SpawnLocation.InsideServersBottom:
-                    return "SERVERS_BOTTOM";
-                case SpawnLocation.InsideEscapePrimary:
-                    return "ESCAPE_PRIMARY";
-                case SpawnLocation.InsideEscapeSecondary:
-                    return "ESCAPE_SECONDARY";
-                default:
-                    return default;
-            }
-        }
+            SpawnLocation.Inside012 => "012",
+            SpawnLocation.Inside096 => "096",
+            SpawnLocation.Inside914 => "914",
+            SpawnLocation.InsideHid => "HID",
+            SpawnLocation.InsideGr18 => "GR18",
+            SpawnLocation.InsideGateA => "GATE_A",
+            SpawnLocation.InsideGateB => "GATE_B",
+            SpawnLocation.InsideLczWc => "LCZ_WC",
+            SpawnLocation.InsideHidLeft => "HID_LEFT",
+            SpawnLocation.InsideLczCafe => "LCZ_CAFE",
+            SpawnLocation.Inside173Gate => "173_GATE",
+            SpawnLocation.InsideIntercom => "INTERCOM",
+            SpawnLocation.InsideHidRight => "HID_RIGHT",
+            SpawnLocation.Inside079First => "079_FIRST",
+            SpawnLocation.Inside012Bottom => "012_BOTTOM",
+            SpawnLocation.Inside012Locker => "012_LOCKER",
+            SpawnLocation.Inside049Armory => "049_ARMORY",
+            SpawnLocation.Inside173Armory => "173_ARMORY",
+            SpawnLocation.Inside173Bottom => "173_BOTTOM",
+            SpawnLocation.InsideLczArmory => "LCZ_ARMORY",
+            SpawnLocation.InsideHczArmory => "HCZ_ARMORY",
+            SpawnLocation.InsideNukeArmory => "NUKE_ARMORY",
+            SpawnLocation.InsideSurfaceNuke => "SURFACE_NUKE",
+            SpawnLocation.Inside079Secondary => "079_SECOND",
+            SpawnLocation.Inside173Connector => "173_CONNECTOR",
+            SpawnLocation.InsideServersBottom => "SERVERS_BOTTOM",
+            SpawnLocation.InsideEscapePrimary => "ESCAPE_PRIMARY",
+            SpawnLocation.InsideEscapeSecondary => "ESCAPE_SECONDARY",
+            _ => default,
+        };
     }
 }

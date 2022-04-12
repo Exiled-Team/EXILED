@@ -30,24 +30,29 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
             const int offset = 0;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_0) + offset;
-            Label returnLabel = generator.DefineLabel();
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brfalse_S) + offset;
 
-            newInstructions.InsertRange(index, new[]
+            LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-            });
+                // new ActivatingWarheadPanelEventArgs(_hub, isAllowed);
+                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
+                new(OpCodes.Dup),
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+                // Player.OnActivatingWarheadPanel(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
+
+                // Load IsAllowed for the original code to evaluate
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
+            });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

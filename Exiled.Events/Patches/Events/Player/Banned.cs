@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -34,33 +33,32 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            int offset = 0;
-            int index = 0 + offset;
+
             LocalBuilder issuingPlayer = generator.DeclareLocal(typeof(Player));
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Issuer))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Banned), nameof(Banned.GetBanningPlayer))),
-                new CodeInstruction(OpCodes.Stloc, issuingPlayer.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Issuer))),
+                new(OpCodes.Call, Method(typeof(Banned), nameof(Banned.GetBanningPlayer))),
+                new(OpCodes.Stloc, issuingPlayer.LocalIndex),
             });
 
-            offset = -6;
-            index = newInstructions.FindIndex(i =>
+            int offset = -6;
+            int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Call && (MethodInfo)i.operand ==
                 Method(typeof(FileManager), nameof(FileManager.AppendFile))) + offset;
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Id))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(string) })),
-                new CodeInstruction(OpCodes.Ldloc, issuingPlayer.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(BannedEventArgs))[0]),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnBanned))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Id))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(string) })),
+                new(OpCodes.Ldloc, issuingPlayer.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(BannedEventArgs))[0]),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnBanned))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

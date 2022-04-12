@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Features
 {
-    using System;
+    using UnityEngine;
 
     /// <summary>
     /// A set of tools to easily work with the alpha warhead.
@@ -25,7 +25,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (controller == null)
+                if (controller is null)
                     controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
 
                 return controller;
@@ -39,7 +39,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (sitePanel == null)
+                if (sitePanel is null)
                     sitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
                 return sitePanel;
@@ -53,12 +53,17 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (outsitePanel == null)
+                if (outsitePanel is null)
                     outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
                 return outsitePanel;
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="GameObject"/> of the warhead lever.
+        /// </summary>
+        public static GameObject Lever => sitePanel.lever.gameObject;
 
         /// <summary>
         /// Gets or sets a value indicating whether the warhead lever is enabled or not.
@@ -122,7 +127,7 @@ namespace Exiled.API.Features
         public static void Start()
         {
             Controller.InstantPrepare();
-            Controller.StartDetonation();
+            Controller.StartDetonation(false);
         }
 
         /// <summary>
@@ -142,6 +147,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shake all players, like if the warhead has been detonated.
         /// </summary>
-        public static void Shake() => Controller.RpcShake(true);
+        public static void Shake()
+        {
+            foreach (Player player in Player.List)
+                Controller.TargetRpcShake(player.Connection, false, false);
+        }
     }
 }

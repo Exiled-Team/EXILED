@@ -7,12 +7,14 @@
 
 namespace Exiled.Events.EventArgs
 {
-#pragma warning disable CS0618
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.DamageHandlers;
 
-    using PlayerStatsSystem;
+    using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
+    using CustomAttackerHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
     /// Contains all informations before C.A.S.S.I.E announces an SCP termination.
@@ -29,8 +31,8 @@ namespace Exiled.Events.EventArgs
         {
             Player = scp;
             Role = scp.ReferenceHub.characterClassManager.CurRole;
-            Handler = new DamageHandler(scp, damageHandlerBase);
-            Killer = damageHandlerBase is AttackerDamageHandler attackerDamageHandler ? API.Features.Player.Get(attackerDamageHandler.Attacker.Hub) : null;
+            Handler = new CustomDamageHandler(scp, damageHandlerBase);
+            Killer = Handler.BaseIs(out CustomAttackerHandler customAttackerHandler) ? customAttackerHandler.Attacker : null;
             TerminationCause = damageHandlerBase.CassieDeathAnnouncement.Announcement;
             IsAllowed = isAllowed;
         }
@@ -51,15 +53,9 @@ namespace Exiled.Events.EventArgs
         public Role Role { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="DamageHandlerBase"/>.
+        /// Gets or sets the <see cref="CustomDamageHandler"/>.
         /// </summary>
-        [Obsolete("Use AnnouncingScpTerminationEventArgs.Handler")]
-        public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
-
-        /// <summary>
-        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
-        /// </summary>
-        public DamageHandler Handler { get; set; }
+        public CustomDamageHandler Handler { get; set; }
 
         /// <summary>
         /// Gets or sets the termination cause.

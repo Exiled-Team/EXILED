@@ -29,16 +29,17 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
-    using Events = Exiled.Events.Events;
     using Inventory = InventorySystem.Inventory;
 
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerAddItem"/> to help manage <see cref="API.Features.Player.Items"/>.
+    /// Patches <see cref="InventoryExtensions.ServerAddItem"/> to help manage <see cref="Player.Items"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerAddItem))]
     internal static class InventoryControlAddPatch
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(
+            IEnumerable<CodeInstruction> instructions,
+            ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = -2;
@@ -46,18 +47,18 @@ namespace Exiled.Events.Patches.Generic
                 i.opcode == OpCodes.Callvirt &&
                 (MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded))) + offset;
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // Player.Get(inv._hub)
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // itemInstance
-                new CodeInstruction(OpCodes.Ldloc_1),
+                new(OpCodes.Ldloc_1),
 
                 // AddItem(player, itemInstance)
-                new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
+                new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -70,12 +71,14 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerDropItem"/> to help manage <see cref="API.Features.Player.Items"/>.
+    /// Patches <see cref="InventoryExtensions.ServerDropItem"/> to help manage <see cref="Player.Items"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
     internal static class InventoryControlRemovePatch
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(
+            IEnumerable<CodeInstruction> instructions,
+            ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 1;
@@ -84,10 +87,10 @@ namespace Exiled.Events.Patches.Generic
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
+                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -101,7 +104,7 @@ namespace Exiled.Events.Patches.Generic
 #if DEBUG
             Log.Debug($"Removing item ({serial}) from a player (before null check)");
 #endif
-            if (player == null)
+            if (player is null)
             {
 #if DEBUG
                 Log.Debug("Attempted to remove item from null player, returning.");
@@ -117,9 +120,10 @@ namespace Exiled.Events.Patches.Generic
                 return;
             }
 #if DEBUG
-            Log.Debug($"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+            Log.Debug(
+                    $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
             foreach (Item item in player.Items)
-                Log.Debug($"{item.Type} ({item.Serial})");
+                    Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
@@ -135,9 +139,10 @@ namespace Exiled.Events.Patches.Generic
                 }
 #if DEBUG
                 Log.Debug($"Item ({serial}) removed from {player.Nickname}");
-                Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                Log.Debug(
+                        $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
                 foreach (Item item in player.Items)
-                    Log.Debug($"{item.Type} ({item.Serial})");
+                        Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             });
         }

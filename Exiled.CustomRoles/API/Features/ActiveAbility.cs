@@ -14,8 +14,6 @@ namespace Exiled.CustomRoles.API.Features
 
     using MEC;
 
-    using UnityEngine;
-
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -43,13 +41,13 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets the last time this ability was used.
         /// </summary>
         [YamlIgnore]
-        public Dictionary<Player, DateTime> LastUsed { get; } = new Dictionary<Player, DateTime>();
+        public Dictionary<Player, DateTime> LastUsed { get; } = new();
 
         /// <summary>
         /// Gets all players actively using this ability.
         /// </summary>
         [YamlIgnore]
-        public HashSet<Player> ActivePlayers { get; } = new HashSet<Player>();
+        public HashSet<Player> ActivePlayers { get; } = new();
 
         /// <summary>
         /// Uses the ability.
@@ -92,7 +90,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>True if the ability is usable.</returns>
         public virtual bool CanUseAbility(Player player, out string response)
         {
-            if (CanUseOverride != null)
+            if (CanUseOverride is not null)
             {
                 response = string.Empty;
                 return CanUseOverride.Invoke();

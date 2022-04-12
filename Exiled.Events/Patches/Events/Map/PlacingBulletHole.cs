@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -42,22 +41,22 @@ namespace Exiled.Events.Patches.Events.Map
             Label returnLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(EventArgs.PlacingBulletHole));
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.Hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldarg_2),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EventArgs.PlacingBulletHole))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.OnPlacingBulletHole))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.PlacingBulletHole), nameof(EventArgs.PlacingBulletHole.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.Hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_2),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EventArgs.PlacingBulletHole))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnPlacingBulletHole))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.PlacingBulletHole), nameof(EventArgs.PlacingBulletHole.IsAllowed))),
+                new(OpCodes.Brfalse, returnLabel),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

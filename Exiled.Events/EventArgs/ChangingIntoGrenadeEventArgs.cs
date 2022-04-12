@@ -9,11 +9,9 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -27,7 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="pickup">The <see cref="Pickup"/> being changed.</param>
         public ChangingIntoGrenadeEventArgs(TimedGrenadePickup pickup)
         {
-            if (pickup == null)
+            if (pickup is null)
                 Log.Error($"{nameof(ChangingIntoGrenadeEventArgs)}: Pickup is null!");
             Pickup = Pickup.Get(pickup);
             Type = pickup.Info.ItemId;

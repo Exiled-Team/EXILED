@@ -14,10 +14,6 @@ namespace Exiled.CustomItems.API
     using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
 
-    using Interactables.Interobjects.DoorUtils;
-
-    using UnityEngine;
-
     /// <summary>
     /// A collection of API methods.
     /// </summary>
@@ -29,7 +25,7 @@ namespace Exiled.CustomItems.API
         /// <param name="player">The player to which items will be given.</param>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         /// <param name="displayMessage">Indicates a value whether <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        public static void ResetInventory(this Player player, List<string> newItems, bool displayMessage = false)
+        public static void ResetInventory(this Player player, IEnumerable<string> newItems, bool displayMessage = false)
         {
             foreach (Item item in player.Items)
             {
@@ -58,7 +54,7 @@ namespace Exiled.CustomItems.API
         /// <param name="customItems"><see cref="CustomItem"/>s to be registered.</param>
         public static void Register(this IEnumerable<CustomItem> customItems)
         {
-            if (customItems == null)
+            if (customItems is null)
                 throw new ArgumentNullException("customItems");
 
             foreach (CustomItem customItem in customItems)
@@ -66,16 +62,28 @@ namespace Exiled.CustomItems.API
         }
 
         /// <summary>
+        /// Registers a <see cref="CustomItem"/>.
+        /// </summary>
+        /// <param name="item">The <see cref="CustomItem"/> to be registered.</param>
+        public static void Register(this CustomItem item) => item.TryRegister();
+
+        /// <summary>
         /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/>s.
         /// </summary>
         /// <param name="customItems"><see cref="CustomItem"/>s to be unregistered.</param>
         public static void Unregister(this IEnumerable<CustomItem> customItems)
         {
-            if (customItems == null)
+            if (customItems is null)
                 throw new ArgumentNullException("customItems");
 
             foreach (CustomItem customItem in customItems)
                 customItem.TryUnregister();
         }
+
+        /// <summary>
+        /// Unregisters a <see cref="CustomItem"/>.
+        /// </summary>
+        /// <param name="item">The <see cref="CustomItem"/> to be unregistered.</param>
+        public static void Unregister(this CustomItem item) => item.TryUnregister();
     }
 }

@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1600
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -22,8 +23,6 @@ namespace Exiled.Events.Patches.Events.Player
     using PlayerAPI = Exiled.API.Features.Player;
     using PlayerEvents = Exiled.Events.Handlers.Player;
 
-#pragma warning disable SA1600 // Elements should be documented
-
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
     internal static class Verified
     {
@@ -32,23 +31,23 @@ namespace Exiled.Events.Patches.Events.Player
             MethodInfo targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
             bool did = false;
 
-            using (NextEnumerator<CodeInstruction> nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator()))
+            using (NextEnumerator<CodeInstruction> nextEnumerator = new(instructions.GetEnumerator()))
             {
                 while (nextEnumerator.MoveNext())
                 {
                     if (!did
                         && nextEnumerator.Current.opcode == OpCodes.Ldc_I4_0
-                        && nextEnumerator.NextCurrent != null && nextEnumerator.NextCurrent.opcode == OpCodes.Call && (MethodInfo)nextEnumerator.NextCurrent.operand == targetMethod)
+                        && nextEnumerator.NextCurrent is not null && nextEnumerator.NextCurrent.opcode == OpCodes.Call && (MethodInfo)nextEnumerator.NextCurrent.operand == targetMethod)
                     {
                         did = true;
 
                         // Think I wanna have a deal with IL?
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Verified), nameof(CallEvent)));
-                        yield return new CodeInstruction(OpCodes.Ldarg_0);
+                        yield return new(OpCodes.Call, AccessTools.Method(typeof(Verified), nameof(CallEvent)));
+                        yield return new(OpCodes.Ldarg_0);
                     }
 
                     yield return nextEnumerator.Current;
-                    if (nextEnumerator.NextCurrent != null)
+                    if (nextEnumerator.NextCurrent is not null)
                         yield return nextEnumerator.NextCurrent;
                 }
             }
@@ -58,12 +57,12 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                Player.UnverifiedPlayers.TryGetValue(instance._hub, out Player player);
+                PlayerAPI.UnverifiedPlayers.TryGetValue(instance._hub, out PlayerAPI player);
 
                 // Means the player connected before WaitingForPlayers event is fired
                 // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
                 // Blame NorthWood
-                if (player == null)
+                if (player is null)
                     Joined.CallEvent(instance._hub, out player);
 
 #if DEBUG

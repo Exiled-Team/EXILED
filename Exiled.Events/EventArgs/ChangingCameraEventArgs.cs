@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs
         public ChangingCameraEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
-            Camera = camera;
+            Camera = API.Features.Camera.Get(camera);
             AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = isAllowed;
         }
@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the camera SCP-079 will be moved to.
         /// </summary>
-        public Camera079 Camera { get; set; }
+        public Camera Camera { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of auxiliary power that will be required to switch cameras.
@@ -48,8 +48,8 @@ namespace Exiled.Events.EventArgs
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can switch cameras.
-        /// Defaults to a value describing whether or not SCP-079 has enough auxiliary power to switch.
-        /// Can be set to true to allow a switch regardless of SCP-079's auxiliary power amount.
+        /// <para>Defaults to a value describing whether or not SCP-079 has enough auxiliary power to switch.</para>
+        /// <br>Can be set to <see langword="true"/> to allow a switch regardless of SCP-079's auxiliary power amount.</br>
         /// </summary>
         public bool IsAllowed { get; set; }
     }

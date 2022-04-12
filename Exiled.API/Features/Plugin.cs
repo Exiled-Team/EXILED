@@ -61,7 +61,7 @@ namespace Exiled.API.Features
         public virtual Version RequiredExiledVersion { get; } = typeof(IPlugin<>).Assembly.GetName().Version;
 
         /// <inheritdoc/>
-        public Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; } = new Dictionary<Type, Dictionary<Type, ICommand>>()
+        public Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; } = new()
         {
             { typeof(RemoteAdminCommandHandler), new Dictionary<Type, ICommand>() },
             { typeof(GameConsoleCommandHandler), new Dictionary<Type, ICommand>() },
@@ -69,16 +69,22 @@ namespace Exiled.API.Features
         };
 
         /// <inheritdoc/>
-        public TConfig Config { get; } = new TConfig();
+        public TConfig Config { get; } = new();
 
         /// <inheritdoc/>
         public ITranslation InternalTranslation { get; protected set; }
 
         /// <inheritdoc/>
+        public string ConfigPath => Paths.GetConfigPath(Prefix);
+
+        /// <inheritdoc/>
+        public string TranslationPath => Paths.GetTranslationPath(Prefix);
+
+        /// <inheritdoc/>
         public virtual void OnEnabled()
         {
             AssemblyInformationalVersionAttribute attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-            Log.Info($"{Name} v{(attribute == null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute.InformationalVersion)} by {Author} has been enabled!");
+            Log.Info($"{Name} v{(Version is not null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)} by {Author} has been enabled!");
         }
 
         /// <inheritdoc/>

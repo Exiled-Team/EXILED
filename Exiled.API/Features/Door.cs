@@ -7,8 +7,10 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -25,31 +27,47 @@ namespace Exiled.API.Features
     /// </summary>
     public class Door
     {
-        private static readonly Dictionary<int, DoorType> OrderedDoorTypes = new Dictionary<int, DoorType>();
-        private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new Dictionary<DoorVariant, Door>();
+        /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="Door"/> on the map.
+        /// </summary>
+        internal static readonly List<Door> DoorsValue = new(250);
+
+        private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
-        /// <param name="door"><inheritdoc cref="Base"/></param>
+        /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         public Door(DoorVariant door)
         {
             DoorVariantToDoor.Add(door, this);
             Base = door;
             Room = door.GetComponentInParent<Room>();
+            Type = GetDoorType();
         }
 
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
+        /// </summary>
+        public static IEnumerable<Door> List => DoorsValue.AsReadOnly();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
+        /// </summary>
         /// <summary>
         /// Gets the base-game <see cref="DoorVariant"/> for this door.
         /// </summary>
         public DoorVariant Base { get; }
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the door.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
         /// Gets the <see cref="DoorType"/>.
         /// </summary>
-        public DoorType Type => OrderedDoorTypes.TryGetValue(Base.GetInstanceID(), out DoorType doorType)
-            ? doorType
-            : DoorType.UnknownDoor;
+        public DoorType Type { get; }
 
         /// <summary>
         /// Gets the <see cref="Room"/>.
@@ -70,13 +88,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Position
         {
-            get => Base.gameObject.transform.position;
+            get => GameObject.transform.position;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.position = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.position = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -172,13 +189,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Quaternion Rotation
         {
-            get => Base.gameObject.transform.rotation;
+            get => GameObject.transform.rotation;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.rotation = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.rotation = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -187,24 +203,124 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Scale
         {
-            get => Base.gameObject.transform.localScale;
+            get => GameObject.transform.localScale;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.localScale = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.localScale = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
         /// <summary>
+        /// Gets the door's <see cref="ZoneType"/>.
+        /// </summary>
+        public ZoneType Zone => Room.Get(room => room.Doors.Contains(this)).FirstOrDefault().Zone;
+
+        /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
         /// </summary>
-        /// <param name="doorVariant"><inheritdoc cref="Base"/></param>
-        /// <returns><inheritdoc cref="Door"/></returns>
+        /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
+        /// <returns>A <see cref="Door"/> wrapper object.</returns>
         public static Door Get(DoorVariant doorVariant) => DoorVariantToDoor.ContainsKey(doorVariant)
             ? DoorVariantToDoor[doorVariant]
             : new Door(doorVariant);
+
+        /// <summary>
+        /// Gets a <see cref="Door"/> given the specified name.
+        /// </summary>
+        /// <param name="name">The name to search for.</param>
+        /// <returns>The <see cref="Door"/> with the given name or <see langword="null"/> if not found.</returns>
+        public static Door Get(string name)
+        {
+            DoorNametagExtension.NamedDoors.TryGetValue(name, out DoorNametagExtension nameExtension);
+            return nameExtension is null ? null : Get(nameExtension.TargetDoor);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<Door> Get(Func<Door, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> given the specified <see cref="DoorType"/>.
+        /// </summary>
+        /// <param name="doorType">The <see cref="DoorType"/> to search for.</param>
+        /// <returns>The <see cref="IEnumerable{T}"/> of <see cref="Door"/> with the given <see cref="DoorType"/> or <see langword="null"/> if not found.</returns>
+        public static IEnumerable<Door> Get(DoorType doorType) => Get(door => door.Type == doorType);
+
+        /// <summary>
+        /// Gets a random <see cref="Door"/>.
+        /// </summary>
+        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
+        /// <param name="onlyUnbroken">A value indicating whether it filters broken doors.</param>
+        /// <returns><see cref="Door"/> object.</returns>
+        public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
+        {
+            List<Door> doors = onlyUnbroken || type != ZoneType.Unspecified ? Door.Get(x => (x.Room is null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : Door.DoorsValue;
+            return doors[UnityEngine.Random.Range(0, doors.Count)];
+        }
+
+        /// <summary>
+        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public static void LockAll(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Door door in Get(door => zoneType != ZoneType.Unspecified && door.Zone == zoneType))
+            {
+                door.IsOpen = false;
+                door.ChangeLock(lockType);
+                MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+            }
+        }
+
+        /// <summary>
+        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public static void LockAll(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                LockAll(duration, zone, lockType);
+        }
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        public static void UnlockAll()
+        {
+            foreach (Door door in List)
+                door.ChangeLock(DoorLockType.None);
+        }
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        public static void UnlockAll(ZoneType zoneType) => UnlockAll(door => door.Zone == zoneType);
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void UnlockAll(IEnumerable<ZoneType> zoneTypes) => UnlockAll(door => zoneTypes.Contains(door.Zone));
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        public static void UnlockAll(Func<Door, bool> predicate)
+        {
+            foreach (Door door in Get(predicate))
+                door.ChangeLock(DoorLockType.None);
+        }
 
         /// <summary>
         /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
@@ -255,7 +371,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks the door with the given lock type.
         /// </summary>
-        /// <param name="lockType"><inheritdoc cref="DoorLockType"/></param>
+        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
         public void ChangeLock(DoorLockType lockType)
         {
             if (lockType == DoorLockType.None)
@@ -282,130 +398,84 @@ namespace Exiled.API.Features
         public void Unlock() => ChangeLock(DoorLockType.None);
 
         /// <summary>
-        /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
+        /// Unlocks and clears all active locks on the door after a specified length of time.
         /// </summary>
-        internal static void RegisterDoorTypesOnLevelLoad()
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="flagsToUnlock">The door.</param>
+        public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+
+        /// <summary>
+        /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
+        /// </summary>
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="flagsToUnlock">The door.</param>
+        public void Lock(float time, DoorLockType flagsToUnlock)
         {
-            OrderedDoorTypes.Clear();
-            ReadOnlyCollection<Door> doors = Map.Doors;
-
-            int doorCount = doors.Count;
-            for (int i = 0; i < doorCount; i++)
-            {
-                Door door = doors[i];
-                int doorID = door.InstanceId;
-
-                DoorType doorType = door.GetDoorType();
-
-                OrderedDoorTypes.Add(doorID, doorType);
-            }
+            ChangeLock(flagsToUnlock);
+            DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
         }
 
         private DoorType GetDoorType()
         {
-            if (Nametag == null)
+            if (Nametag is null)
             {
-                string doorName = Base.gameObject.name.GetBefore(' ');
-                switch (doorName)
+                string doorName = GameObject.name.GetBefore(' ');
+                return doorName switch
                 {
-                    case "LCZ":
-                        return DoorType.LightContainmentDoor;
-                    case "HCZ":
-                        return DoorType.HeavyContainmentDoor;
-                    case "EZ":
-                        return DoorType.EntranceDoor;
-                    case "Prison":
-                        return DoorType.PrisonDoor;
-                    default:
-                        return DoorType.UnknownDoor;
-                }
+                    "LCZ" => DoorType.LightContainmentDoor,
+                    "HCZ" => DoorType.HeavyContainmentDoor,
+                    "EZ" => DoorType.EntranceDoor,
+                    "Prison" => DoorType.PrisonDoor,
+                    _ => DoorType.UnknownDoor,
+                };
             }
 
-            switch (Nametag.RemoveBracketsOnEndOfName())
+            return Nametag.RemoveBracketsOnEndOfName() switch
             {
                 // Doors contains the DoorNameTagExtension component
-                case "CHECKPOINT_LCZ_A":
-                    return DoorType.CheckpointLczA;
-                case "CHECKPOINT_EZ_HCZ":
-                    return DoorType.CheckpointEntrance;
-                case "CHECKPOINT_LCZ_B":
-                    return DoorType.CheckpointLczB;
-                case "106_PRIMARY":
-                    return DoorType.Scp106Primary;
-                case "106_SECONDARY":
-                    return DoorType.Scp106Secondary;
-                case "106_BOTTOM":
-                    return DoorType.Scp106Bottom;
-                case "ESCAPE_PRIMARY":
-                    return DoorType.EscapePrimary;
-                case "ESCAPE_SECONDARY":
-                    return DoorType.EscapeSecondary;
-                case "INTERCOM":
-                    return DoorType.Intercom;
-                case "NUKE_ARMORY":
-                    return DoorType.NukeArmory;
-                case "LCZ_ARMORY":
-                    return DoorType.LczArmory;
-                case "012":
-                    return DoorType.Scp012;
-                case "SURFACE_NUKE":
-                    return DoorType.NukeSurface;
-                case "HID":
-                    return DoorType.HID;
-                case "HCZ_ARMORY":
-                    return DoorType.HczArmory;
-                case "096":
-                    return DoorType.Scp096;
-                case "049_ARMORY":
-                    return DoorType.Scp049Armory;
-                case "914":
-                    return DoorType.Scp914;
-                case "GATE_A":
-                    return DoorType.GateA;
-                case "079_FIRST":
-                    return DoorType.Scp079First;
-                case "GATE_B":
-                    return DoorType.GateB;
-                case "079_SECOND":
-                    return DoorType.Scp079Second;
-                case "012_LOCKER":
-                    return DoorType.Scp012Locker;
-                case "SERVERS_BOTTOM":
-                    return DoorType.ServersBottom;
-                case "173_CONNECTOR":
-                    return DoorType.Scp173Connector;
-                case "LCZ_WC":
-                    return DoorType.LczWc;
-                case "HID_RIGHT":
-                    return DoorType.HIDRight;
-                case "012_BOTTOM":
-                    return DoorType.Scp012Bottom;
-                case "HID_LEFT":
-                    return DoorType.HIDLeft;
-                case "173_ARMORY":
-                    return DoorType.Scp173Armory;
-                case "173_GATE":
-                    return DoorType.Scp173Gate;
-                case "GR18":
-                    return DoorType.GR18;
-                case "SURFACE_GATE":
-                    return DoorType.SurfaceGate;
+                "CHECKPOINT_LCZ_A" => DoorType.CheckpointLczA,
+                "CHECKPOINT_EZ_HCZ" => DoorType.CheckpointEntrance,
+                "CHECKPOINT_LCZ_B" => DoorType.CheckpointLczB,
+                "106_PRIMARY" => DoorType.Scp106Primary,
+                "106_SECONDARY" => DoorType.Scp106Secondary,
+                "106_BOTTOM" => DoorType.Scp106Bottom,
+                "ESCAPE_PRIMARY" => DoorType.EscapePrimary,
+                "ESCAPE_SECONDARY" => DoorType.EscapeSecondary,
+                "INTERCOM" => DoorType.Intercom,
+                "NUKE_ARMORY" => DoorType.NukeArmory,
+                "LCZ_ARMORY" => DoorType.LczArmory,
+                "SURFACE_NUKE" => DoorType.NukeSurface,
+                "HID" => DoorType.HID,
+                "HCZ_ARMORY" => DoorType.HczArmory,
+                "096" => DoorType.Scp096,
+                "049_ARMORY" => DoorType.Scp049Armory,
+                "914" => DoorType.Scp914,
+                "GATE_A" => DoorType.GateA,
+                "079_FIRST" => DoorType.Scp079First,
+                "GATE_B" => DoorType.GateB,
+                "079_SECOND" => DoorType.Scp079Second,
+                "SERVERS_BOTTOM" => DoorType.ServersBottom,
+                "173_CONNECTOR" => DoorType.Scp173Connector,
+                "LCZ_WC" => DoorType.LczWc,
+                "HID_RIGHT" => DoorType.HIDRight,
+                "HID_LEFT" => DoorType.HIDLeft,
+                "173_ARMORY" => DoorType.Scp173Armory,
+                "173_GATE" => DoorType.Scp173Gate,
+                "GR18" => DoorType.GR18,
+                "SURFACE_GATE" => DoorType.SurfaceGate,
+                "330" => DoorType.Scp330,
+                "330_CHAMBER" => DoorType.Scp330Chamber,
 
                 // Doors spawned by the DoorSpawnPoint component
-                case "LCZ_CAFE":
-                    return DoorType.LczCafe;
-                case "173_BOTTOM":
-                    return DoorType.Scp173Bottom;
+                "LCZ_CAFE" => DoorType.LczCafe,
+                "173_BOTTOM" => DoorType.Scp173Bottom,
 
                 // Doors contains the Door component,
                 // also gameobject names
-                case "LightContainmentDoor":
-                    return DoorType.LightContainmentDoor;
-                case "EntrDoor":
-                    return DoorType.EntranceDoor;
-                default:
-                    return DoorType.UnknownDoor;
-            }
+                "LightContainmentDoor" => DoorType.LightContainmentDoor,
+                "EntrDoor" => DoorType.EntranceDoor,
+                _ => DoorType.UnknownDoor,
+            };
         }
     }
 }

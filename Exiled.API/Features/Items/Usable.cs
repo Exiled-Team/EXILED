@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Exiled.API.Enums;
-
     using InventorySystem.Items.Usables;
 
     /// <summary>
@@ -19,7 +17,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Usable"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="UsableItem"/> class.</param>
         public Usable(UsableItem itemBase)
             : base(itemBase)
         {
@@ -29,13 +27,15 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Usable"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Item.Type"/></param>
-        public Usable(ItemType type)
+        /// <param name="type">The <see cref="ItemType"/> of the usable item.</param>
+        internal Usable(ItemType type)
             : this((UsableItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="UsableItem"/> that this class is encapsulating.
+        /// </summary>
         public new UsableItem Base { get; }
 
         /// <summary>
