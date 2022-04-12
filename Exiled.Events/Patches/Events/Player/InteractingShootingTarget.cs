@@ -132,19 +132,14 @@ namespace Exiled.Events.Patches.Events.Player
             if (targetButton != buttonPressed && (targetButton - 1) != buttonPressed)
                 return curValue;
 
-            switch ((BaseTarget.TargetButton)buttonPressed)
+            return (BaseTarget.TargetButton)buttonPressed switch
             {
-                case BaseTarget.TargetButton.IncreaseHP:
-                    return Mathf.Clamp(curValue * 2, 1, 256);
-                case BaseTarget.TargetButton.DecreaseHP:
-                    return curValue / 2;
-                case BaseTarget.TargetButton.IncreaseResetTime:
-                    return Mathf.Clamp(curValue + 1, 0, 10);
-                case BaseTarget.TargetButton.DecreaseResetTime:
-                    return Mathf.Clamp(curValue - 1, 0, 10);
-                default:
-                    return curValue;
-            }
+                BaseTarget.TargetButton.IncreaseHP => Mathf.Clamp(curValue * 2, 1, 256),
+                BaseTarget.TargetButton.DecreaseHP => curValue / 2,
+                BaseTarget.TargetButton.IncreaseResetTime => Mathf.Clamp(curValue + 1, 0, 10),
+                BaseTarget.TargetButton.DecreaseResetTime => Mathf.Clamp(curValue - 1, 0, 10),
+                _ => curValue,
+            };
         }
     }
 }

@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                         bool flag =
                             (!(ply.inventory.CurInstance is not null) ||
-                             !(ply.inventory.CurInstance is KeycardItem curInstance2)
+                             ply.inventory.CurInstance is not KeycardItem curInstance2
                                 ? 0
                                 : (curInstance2.Permissions.HasFlagFast(__instance._requiredPermission) ? 1 : 0)) != 0;
                         UnlockingGeneratorEventArgs unlockingEvent = new(API.Features.Player.Get(ply), __instance, flag);

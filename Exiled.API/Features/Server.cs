@@ -174,6 +174,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the server is marked as Heavily Modded.
+        /// <remarks>
+        /// Read the VSR for more info about its usage.
+        /// </remarks>
+        /// </summary>
+        public static bool IsHeavilyModded
+        {
+            get => CustomNetworkManager.HeavilyModded;
+            set => CustomNetworkManager.HeavilyModded = value;
+        }
+
+        /// <summary>
         /// Restarts the server, reconnects all players.
         /// </summary>
         public static void Restart()

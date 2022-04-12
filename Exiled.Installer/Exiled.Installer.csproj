@@ -20,6 +20,8 @@
     <Version>3.2.2</Version>
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <Configurations>Debug;Release;Programs</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Release'">

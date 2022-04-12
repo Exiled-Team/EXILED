@@ -26,7 +26,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnGeneratorActivated(GeneratorActivatedEventArgs)"/>
         public void OnGeneratorActivated(GeneratorActivatedEventArgs ev)
         {
-            Log.Info($"A generator has been activated in {ev.Generator.gameObject.GetComponent<Room>().Name}!");
+            Log.Info($"A generator has been activated in {ev.Generator.Room.Type}!");
         }
     }
 }

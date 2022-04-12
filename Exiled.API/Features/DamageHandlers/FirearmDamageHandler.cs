@@ -10,6 +10,7 @@ namespace Exiled.API.Features.DamageHandlers
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
     using PlayerStatsSystem;
@@ -32,21 +33,12 @@ namespace Exiled.API.Features.DamageHandlers
             : base(target, baseHandler) => Item = item;
 
         /// <inheritdoc/>
-        public override DamageType Type
+        public override DamageType Type => Item switch
         {
-            get
-            {
-                switch (Item)
-                {
-                    case Firearm _ when ItemConversion.ContainsKey(Item.Type):
-                        return ItemConversion[Item.Type];
-                    case MicroHid _:
-                        return DamageType.MicroHid;
-                    default:
-                        return DamageType.Firearm;
-                }
-            }
-        }
+            Firearm _ when DamageTypeExtensions.ItemConversion.ContainsKey(Item.Type) => DamageTypeExtensions.ItemConversion[Item.Type],
+            MicroHid _ => DamageType.MicroHid,
+            _ => DamageType.Firearm,
+        };
 
         /// <summary>
         /// Gets or sets the <see cref="Items.Item"/> used by the damage handler.
@@ -71,22 +63,6 @@ namespace Exiled.API.Features.DamageHandlers
         /// Gets a value indicating whether the human hitboxes should be used.
         /// </summary>
         public bool UseHumanHitboxes => As<BaseFirearmHandler>()._useHumanHitboxes;
-
-        /// <summary>
-        /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
-        /// </summary>
-        internal static Dictionary<ItemType, DamageType> ItemConversion { get; } = new()
-        {
-            { ItemType.GunCrossvec, DamageType.Crossvec },
-            { ItemType.GunLogicer, DamageType.Logicer },
-            { ItemType.GunRevolver, DamageType.Revolver },
-            { ItemType.GunShotgun, DamageType.Shotgun },
-            { ItemType.GunAK, DamageType.AK },
-            { ItemType.GunCOM15, DamageType.Com15 },
-            { ItemType.GunCOM18, DamageType.Com18 },
-            { ItemType.GunFSP9, DamageType.Fsp9 },
-            { ItemType.GunE11SR, DamageType.E11Sr },
-        };
 
         /// <inheritdoc/>
         public override void ProcessDamage(Player player)

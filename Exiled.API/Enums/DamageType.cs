@@ -196,5 +196,10 @@ namespace Exiled.API.Enums
         /// <see cref="EffectType.Hypothermia"/>.
         /// </summary>
         Hypothermia,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.ParticleDisruptor"/>.
+        /// </summary>
+        ParticleDisruptor,
     }
 }
