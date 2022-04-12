@@ -32,7 +32,10 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<Door> DoorsValue = new(250);
 
-        private static readonly Dictionary<int, DoorType> OrderedDoorTypes = new();
+        /// <summary>
+        /// A <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Door"/>'s <see cref="DoorType"/>.
+        /// </summary>
+        internal static readonly Dictionary<int, DoorType> OrderedDoorTypes = new();
         private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
         /// <summary>
