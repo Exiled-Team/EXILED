@@ -63,7 +63,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets or sets a value whether or not to allow friendly fire with this weapon on FF-enabled servers.
         /// </summary>
-        public virtual bool AllowFF { get; set; }
+        public virtual bool FriendlyFire { get; set; }
 
         /// <inheritdoc/>
         public override Pickup Spawn(Vector3 position)
