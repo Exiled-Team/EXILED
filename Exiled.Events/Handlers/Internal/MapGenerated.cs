@@ -54,7 +54,6 @@ namespace Exiled.Events.Handlers.Internal
         {
             Map.ClearCache();
             Timing.CallDelayed(0.25f, GenerateCache);
-            Door.RegisterDoorTypesOnLevelLoad();
         }
 
         private static void GenerateCache()

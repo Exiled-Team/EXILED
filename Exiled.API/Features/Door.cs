@@ -44,6 +44,7 @@ namespace Exiled.API.Features
             DoorVariantToDoor.Add(door, this);
             Base = door;
             Room = door.GetComponentInParent<Room>();
+            OrderedDoorTypes.Add(InstanceId, GetDoorType());
         }
 
         /// <summary>
@@ -415,26 +416,6 @@ namespace Exiled.API.Features
         {
             ChangeLock(flagsToUnlock);
             DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
-        }
-
-        /// <summary>
-        /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
-        /// </summary>
-        internal static void RegisterDoorTypesOnLevelLoad()
-        {
-            OrderedDoorTypes.Clear();
-            Door[] doors = List.ToArray();
-
-            int doorCount = doors.Length;
-            for (int i = 0; i < doorCount; i++)
-            {
-                Door door = doors[i];
-                int doorID = door.InstanceId;
-
-                DoorType doorType = door.GetDoorType();
-
-                OrderedDoorTypes.Add(doorID, doorType);
-            }
         }
 
         private DoorType GetDoorType()
