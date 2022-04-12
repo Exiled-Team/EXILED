@@ -612,9 +612,9 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Destroys an active <see cref="EObject"/> instance given the specified <see cref="GameObject"/>.
         /// </summary>
-/// <param name="type">The type of the object.</param>
+        /// <param name="type">The type of the object.</param>
         /// <param name="gameObject">The <see cref="GameObject"/> belonging to the object.</param>
-        /// <returns><see langword="true"/> if the object was destroyed; otherwise, <see langword="false"/>.</returns>        
+        /// <returns><see langword="true"/> if the object was destroyed; otherwise, <see langword="false"/>.</returns>
         public static bool DestroyActiveObject(Type type, GameObject gameObject)
         {
             foreach (EObject @object in InternalObjects)
