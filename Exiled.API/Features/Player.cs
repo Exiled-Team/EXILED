@@ -2459,6 +2459,7 @@ namespace Exiled.API.Features
                 ? components.Any(comp => type.IsSubclassOf(comp.GetType()))
                 : components.Any(comp => type == comp.GetType());
 
+        /// <summary>
         /// Teleports the player to a random object.
         /// </summary>
         /// <param name="types">The list of object types to choose from.</param>
