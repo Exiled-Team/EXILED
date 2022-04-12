@@ -84,7 +84,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new Dictionary<ItemType, DamageType>
+        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new()
         {
             { ItemType.GunCrossvec, DamageType.Crossvec },
             { ItemType.GunLogicer, DamageType.Logicer },
@@ -95,6 +95,7 @@ namespace Exiled.API.Extensions
             { ItemType.GunCOM18, DamageType.Com18 },
             { ItemType.GunFSP9, DamageType.Fsp9 },
             { ItemType.GunE11SR, DamageType.E11Sr },
+            { ItemType.MicroHID, DamageType.MicroHid },
         };
 
         /// <summary>
@@ -104,10 +105,7 @@ namespace Exiled.API.Extensions
         /// <param name="checkMicro">Indicates whether the MicroHid damage type should be taken into account or not.</param>
         /// <returns>Returns whether the <see cref="DamageType"/> is caused by weapon or not.</returns>
         public static bool IsWeapon(this DamageType type, bool checkMicro = true)
-            => type == DamageType.Crossvec || type == DamageType.Logicer ||
-               type == DamageType.Revolver || type == DamageType.Shotgun ||
-               type == DamageType.AK || type == DamageType.Com15 || type == DamageType.Com18 ||
-               type == DamageType.E11Sr || type == DamageType.Fsp9 || (checkMicro && type == DamageType.MicroHid);
+            => type is DamageType.Crossvec or DamageType.Logicer or DamageType.Revolver or DamageType.Shotgun or DamageType.AK or DamageType.Com15 or DamageType.Com18 or DamageType.E11Sr or DamageType.Fsp9 || (checkMicro && type == DamageType.MicroHid);
 
         /// <summary>
         /// Check if a <see cref="DamageType">damage type</see> is caused by SCP.
@@ -116,10 +114,7 @@ namespace Exiled.API.Extensions
         /// <param name="checkItems">Indicates whether the SCP-items damage types should be taken into account or not.</param>
         /// <returns>Returns whether the <see cref="DamageType"/> is caused by SCP or not.</returns>
         public static bool IsScp(this DamageType type, bool checkItems = true)
-            => type == DamageType.Scp || type == DamageType.Scp049 ||
-               type == DamageType.Scp096 || type == DamageType.Scp106 ||
-               type == DamageType.Scp173 || type == DamageType.Scp939 ||
-               type == DamageType.Scp0492 || (checkItems && (type == DamageType.Scp018 || type == DamageType.Scp207));
+            => type is DamageType.Scp or DamageType.Scp049 or DamageType.Scp096 or DamageType.Scp106 or DamageType.Scp173 or DamageType.Scp939 or DamageType.Scp0492 || (checkItems && (type == DamageType.Scp018 || type == DamageType.Scp207));
 
         /// <summary>
         /// Check if a <see cref="DamageType">damage type</see> is caused by status effect.
@@ -127,8 +122,7 @@ namespace Exiled.API.Extensions
         /// <param name="type">The damage type to be checked.</param>
         /// <returns>Returns whether the <see cref="DamageType"/> is caused by status effect or not.</returns>
         public static bool IsStatusEffect(this DamageType type)
-            => type == DamageType.Asphyxiation || type == DamageType.Poison ||
-               type == DamageType.Bleeding || type == DamageType.Scp207 || type == DamageType.Hypothermia;
+            => type is DamageType.Asphyxiation or DamageType.Poison or DamageType.Bleeding or DamageType.Scp207 or DamageType.Hypothermia;
 
         /// <summary>
         /// Gets the <see cref="DamageType"/> of an <see cref="DamageHandlerBase"/>s.
@@ -155,35 +149,31 @@ namespace Exiled.API.Extensions
                     return DamageType.MicroHid;
 
                 case FirearmDamageHandler firearmDamageHandler:
-                    {
-                        if (ItemConversion.ContainsKey(firearmDamageHandler.WeaponType))
-                            return ItemConversion[firearmDamageHandler.WeaponType];
-
-                        return DamageType.Firearm;
-                    }
+                {
+                    return ItemConversion.ContainsKey(firearmDamageHandler.WeaponType) ? ItemConversion[firearmDamageHandler.WeaponType] : DamageType.Firearm;
+                }
 
                 case ScpDamageHandler scpDamageHandler:
-                    {
-                        DeathTranslation translation = DeathTranslations.TranslationsById[scpDamageHandler._translationId];
-                        if (translation.Id == DeathTranslations.PocketDecay.Id)
-                            return DamageType.Scp106;
+                {
+                    DeathTranslation translation = DeathTranslations.TranslationsById[scpDamageHandler._translationId];
+                    if (translation.Id == DeathTranslations.PocketDecay.Id)
+                        return DamageType.Scp106;
 
-                        if (TranslationIdConversion.ContainsKey(translation.Id))
-                            return TranslationIdConversion[translation.Id];
-
-                        return DamageType.Scp;
-                    }
+                    return TranslationIdConversion.ContainsKey(translation.Id)
+                        ? TranslationIdConversion[translation.Id]
+                        : DamageType.Scp;
+                }
 
                 case UniversalDamageHandler universal:
-                    {
-                        DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+                {
+                    DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
 
-                        if (TranslationIdConversion.ContainsKey(translation.Id))
-                            return TranslationIdConversion[translation.Id];
+                    if (TranslationIdConversion.ContainsKey(translation.Id))
+                        return TranslationIdConversion[translation.Id];
 
-                        Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
-                        return DamageType.Unknown;
-                    }
+                    Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
+                    return DamageType.Unknown;
+                }
             }
 
             return DamageType.Unknown;
