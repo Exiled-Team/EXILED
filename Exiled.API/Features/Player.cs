@@ -2301,13 +2301,16 @@ namespace Exiled.API.Features
                 }),
                 _ => null,
             };
-
+            
             if (randomObject is null)
             {
                 Log.Warn(
                     $"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
                 return;
             }
+            
+            if (randomObject is Func<LockerChamber> func)
+                randomObject = func.Target;
 
             Teleport(randomObject);
         }
