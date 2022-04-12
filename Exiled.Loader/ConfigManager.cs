@@ -90,16 +90,11 @@ namespace Exiled.Loader
         /// <param name="plugin">The plugin which config will be loaded.</param>
         /// <param name="rawConfigs">The raw configs to detect if the plugin already has generated configs.</param>
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
-        public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs = null)
+        public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs = null) => Loader.Config.ConfigType switch
         {
-            switch (Loader.Config.ConfigType)
-            {
-                case ConfigType.Separated:
-                    return LoadSeparatedConfig(plugin);
-                default:
-                    return LoadDefaultConfig(plugin, rawConfigs);
-            }
-        }
+            ConfigType.Separated => LoadSeparatedConfig(plugin),
+            _ => LoadDefaultConfig(plugin, rawConfigs),
+        };
 
         /// <summary>
         /// Loads the config of a plugin using the default distribution.

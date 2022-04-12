@@ -70,7 +70,6 @@ namespace Exiled.API.Features
     public class Player
     {
 #pragma warning disable SA1401
-#pragma warning disable CS0618
         /// <summary>
         /// A list of the player's items.
         /// </summary>
@@ -237,23 +236,14 @@ namespace Exiled.API.Features
                 if (index == -1)
                     return AuthenticationType.Unknown;
 
-                switch (UserId.Substring(index + 1))
+                return UserId.Substring(index + 1) switch
                 {
-                    case "steam":
-                        return AuthenticationType.Steam;
-
-                    case "discord":
-                        return AuthenticationType.Discord;
-
-                    case "northwood":
-                        return AuthenticationType.Northwood;
-
-                    case "patreon":
-                        return AuthenticationType.Patreon;
-
-                    default:
-                        return AuthenticationType.Unknown;
-                }
+                    "steam" => AuthenticationType.Steam,
+                    "discord" => AuthenticationType.Discord,
+                    "northwood" => AuthenticationType.Northwood,
+                    "patreon" => AuthenticationType.Patreon,
+                    _ => AuthenticationType.Unknown,
+                };
             }
         }
 
@@ -430,7 +420,7 @@ namespace Exiled.API.Features
         /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
         public Role Role
         {
-            get => role ?? (role = Role.Create(RoleType.None, this));
+            get => role ??= Role.Create(RoleType.None, this);
             set => role = value;
         }
 
@@ -790,7 +780,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
-        public ZoneType Zone => CurrentRoom.Zone;
+        public ZoneType Zone => CurrentRoom?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets all currently active <see cref="PlayerEffect">status effects</see>.
@@ -1890,17 +1880,11 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Throwable"/> item that was spawned.</returns>
         public Throwable ThrowGrenade(GrenadeType type, bool fullForce = true)
         {
-            Throwable throwable;
-            switch (type)
+            Throwable throwable = type switch
             {
-                case GrenadeType.Flashbang:
-                    throwable = new FlashGrenade();
-                    break;
-                default:
-                    throwable = new ExplosiveGrenade(type.GetItemType());
-                    break;
-            }
-
+                GrenadeType.Flashbang => new FlashGrenade(),
+                _ => new ExplosiveGrenade(type.GetItemType()),
+            };
             ThrowItem(throwable, fullForce);
             return throwable;
         }
@@ -2247,6 +2231,9 @@ namespace Exiled.API.Features
                 case Pickup pickup:
                     Teleport(pickup.Position + Vector3.up);
                     break;
+                case Ragdoll ragdoll:
+                    Teleport(ragdoll.Position + Vector3.up);
+                    break;
             }
         }
 
@@ -2289,6 +2276,10 @@ namespace Exiled.API.Features
             {
                 ReadOnlyCollection<Pickup> pickups = Map.Pickups;
                 randomObject = pickups[Random.Range(0, pickups.Count)];
+            }
+            else if (type == typeof(Ragdoll))
+            {
+                randomObject = Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)];
             }
 
             if (randomObject is null)

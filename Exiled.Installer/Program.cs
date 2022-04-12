@@ -46,11 +46,11 @@ namespace Exiled.Installer
 
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar.ToString(), TargetSubfolders);
-        private static readonly Version VersionLimit = new Version("2.0.0");
+        private static readonly Version VersionLimit = new("2.0.0");
         private static readonly uint SecondsWaitForDownload = 480;
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
-        private static readonly GitHubClient GitHubClient = new GitHubClient(
+        private static readonly GitHubClient GitHubClient = new(
             new ProductHeaderValue(Header));
 
         // Force use of LF because the file uses LF
