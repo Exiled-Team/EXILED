@@ -388,27 +388,21 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, null, true);
-        }
-
-        /// <summary>
-        /// Gets or sets the player's rotations.
-        /// </summary>
-        /// <returns>Returns a <see cref="Vector2"/> representing the rotation of the player.</returns>
-        public Vector2 Rotations
-        {
-            get => ReferenceHub.playerMovementSync.RotationSync;
-            set => ReferenceHub.playerMovementSync.RotationSync = value;
+            set => ReferenceHub.playerMovementSync.OverridePosition(value);
         }
 
         /// <summary>
         /// Gets or sets the player's rotation.
         /// </summary>
-        /// <returns>Returns the direction he's looking at, useful for Raycasts.</returns>
-        public Vector3 Rotation
+        /// <returns>Returns the direction the player is looking at.</returns>
+        public Vector2 Rotation
         {
-            get => ReferenceHub.PlayerCameraReference.forward;
-            set => ReferenceHub.PlayerCameraReference.forward = value;
+            get => ReferenceHub.playerMovementSync.RotationSync;
+            set
+            {
+                ReferenceHub.playerMovementSync.NetworkRotationSync = value;
+                ReferenceHub.playerMovementSync.ForceRotation(new PlayerMovementSync.PlayerRotation(value.x, value.y));
+            }
         }
 
         /// <summary>
