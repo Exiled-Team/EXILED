@@ -2249,17 +2249,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Teleports the player to a random object.
+        /// Teleports player to a random object of a specific type.
         /// </summary>
-        /// <param name="types">The list of object types to choose from.</param>
-        public void RandomTeleport(IEnumerable<Type> types)
-        {
-            Type[] array = types as Type[] ?? types.ToArray();
-            if (array.Length == 0)
-                return;
-            RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
-        }
-
+        /// <param name="objectType">Object for teleport.</param>
         public void RandomTeleport(Type objectType)
         {
             object randomObject = null;
@@ -2311,6 +2303,18 @@ namespace Exiled.API.Features
             }
 
             Teleport(randomObject);
+        }
+
+        /// <summary>
+        /// Teleports the player to a random object.
+        /// </summary>
+        /// <param name="types">The list of object types to choose from.</param>
+        public void RandomTeleport(IEnumerable<Type> types)
+        {
+            Type[] array = types as Type[] ?? types.ToArray();
+            if (array.Length == 0)
+                return;
+            RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
         }
 
         /// <summary>
