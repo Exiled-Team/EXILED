@@ -2260,10 +2260,6 @@ namespace Exiled.API.Features
             RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
         }
 
-        /// <summary>
-        /// Teleports player to a random object of a specific type.
-        /// </summary>
-        /// <param name="objectType">Object for teleport.</param>
         public void RandomTeleport(Type objectType)
         {
             object randomObject = null;
