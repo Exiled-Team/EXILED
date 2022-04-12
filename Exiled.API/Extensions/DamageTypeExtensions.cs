@@ -22,7 +22,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation.Id"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = new Dictionary<byte, DamageType>
+        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = new()
         {
             { DeathTranslations.Asphyxiated.Id, DamageType.Asphyxiation },
             { DeathTranslations.Bleeding.Id, DamageType.Bleeding },

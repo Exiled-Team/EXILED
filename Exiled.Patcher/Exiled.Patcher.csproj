@@ -19,6 +19,10 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
 
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
+
+    <Configurations>Debug;Release;Programs</Configurations>
+
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <Import Project="../EXILED.props" />
