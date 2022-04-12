@@ -59,6 +59,7 @@ namespace Exiled.API.Extensions
                 case EffectType.Visual173Blink: return typeof(Visuals173Blink);
                 case EffectType.Vitality: return typeof(Vitality);
                 case EffectType.Hypothermia: return typeof(Hypothermia);
+                case EffectType.Scp1853: return typeof(Scp1853);
             }
 
             // This should never happen
