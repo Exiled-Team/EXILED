@@ -693,7 +693,9 @@ namespace Exiled.API.Features
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = value;
 
-                ActiveArtificialHealthProcesses.First().CurrentAmount = value;
+                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
+                if (ahp is not null)
+                    ahp.CurrentAmount = value;
             }
         }
 
@@ -709,7 +711,9 @@ namespace Exiled.API.Features
                 if (!ActiveArtificialHealthProcesses.Any())
                     AddAhp(value);
 
-                ActiveArtificialHealthProcesses.First().Limit = value;
+                AhpStat.AhpProcess ahp = ActiveArtificialHealthProcesses.FirstOrDefault();
+                if (ahp is not null)
+                    ahp.Limit = value;
             }
         }
 
@@ -985,8 +989,17 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="global::ReferenceHub"/>.</param>
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
-        public static Player Get(ReferenceHub referenceHub) =>
-            referenceHub?.gameObject is null ? null : Get(referenceHub.gameObject);
+        public static Player Get(ReferenceHub referenceHub)
+        {
+            try
+            {
+                return referenceHub?.gameObject is null ? null : Get(referenceHub.gameObject);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.

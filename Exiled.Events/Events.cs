@@ -76,13 +76,12 @@ namespace Exiled.Events
             watch.Stop();
             Log.Info($"Patching completed in {watch.Elapsed}");
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
-            MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
+            MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
-            Handlers.Map.Generated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
             ServerConsole.ReloadServerName();
         }

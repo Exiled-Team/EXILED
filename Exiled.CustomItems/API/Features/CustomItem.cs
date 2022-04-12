@@ -47,7 +47,7 @@ namespace Exiled.CustomItems.API.Features
     /// </summary>
     public abstract class CustomItem
     {
-        private ItemType type;
+        private ItemType type = ItemType.None;
 
         /// <summary>
         /// Gets the list of current Item Managers.

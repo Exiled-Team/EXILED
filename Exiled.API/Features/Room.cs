@@ -250,7 +250,6 @@ namespace Exiled.API.Features
         {
             // Try to remove brackets if they exist.
             rawName = rawName.RemoveBracketsOnEndOfName();
-
             return rawName switch
             {
                 "LCZ_Armory" => RoomType.LczArmory,
@@ -384,7 +383,7 @@ namespace Exiled.API.Features
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);

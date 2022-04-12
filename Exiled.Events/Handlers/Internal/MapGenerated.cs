@@ -30,6 +30,7 @@ namespace Exiled.Events.Handlers.Internal
 
     using UnityEngine;
 
+    using Broadcast = Broadcast;
     using Camera = Exiled.API.Features.Camera;
     using Object = UnityEngine.Object;
 
@@ -58,6 +59,9 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateCache()
         {
+            Server.Host = new Player(PlayerManager.localPlayer);
+            Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
+            Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
             GenerateTeslaGates();
             GenerateDoors();
             GenerateCameras();
@@ -68,7 +72,8 @@ namespace Exiled.Events.Handlers.Internal
             GenerateAttachments();
             GenerateLockers();
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
-            Handlers.Server.OnWaitingForPlayers();
+            Handlers.Map.OnGenerated();
+            Timing.CallDelayed(0.1f, Handlers.Server.OnWaitingForPlayers);
         }
 
         private static void GenerateRooms()
