@@ -433,6 +433,9 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>True if the role registered properly.</returns>
         internal bool TryRegister()
         {
+            if (!CustomRoles.Instance.Config.IsEnabled)
+                return false;
+
             if (!Registered.Contains(this))
             {
                 if (Registered.Any(r => r.Id == Id))

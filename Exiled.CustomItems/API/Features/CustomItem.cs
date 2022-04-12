@@ -676,8 +676,13 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was registered or not.</returns>
         internal bool TryRegister()
         {
+            if (!Instance.Config.IsEnabled)
+                return false;
+
+            Log.Debug($"Trying to register {Name} ({Id}).", Instance.Config.Debug);
             if (!Registered.Contains(this))
             {
+                Log.Debug("Registered items doesn't contain this item yet..", Instance.Config.Debug);
                 if (Registered.Any(customItem => customItem.Id == Id))
                 {
                     Log.Warn($"{Name} has tried to register with the same custom item ID as another item: {Id}. It will not be registered.");
@@ -685,6 +690,7 @@ namespace Exiled.CustomItems.API.Features
                     return false;
                 }
 
+                Log.Debug("Adding item to registered list..", Instance.Config.Debug);
                 Registered.Add(this);
 
                 Init();
