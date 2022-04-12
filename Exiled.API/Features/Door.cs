@@ -32,10 +32,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<Door> DoorsValue = new(250);
 
-        /// <summary>
-        /// A <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Door"/>'s <see cref="DoorType"/>.
-        /// </summary>
-        internal static readonly Dictionary<int, DoorType> OrderedDoorTypes = new();
         private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
         /// <summary>
@@ -47,7 +43,7 @@ namespace Exiled.API.Features
             DoorVariantToDoor.Add(door, this);
             Base = door;
             Room = door.GetComponentInParent<Room>();
-            OrderedDoorTypes.Add(InstanceId, GetDoorType());
+            Type = GetDoorType();
         }
 
         /// <summary>
@@ -71,9 +67,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="DoorType"/>.
         /// </summary>
-        public DoorType Type => OrderedDoorTypes.TryGetValue(Base.GetInstanceID(), out DoorType doorType)
-            ? doorType
-            : DoorType.UnknownDoor;
+        public DoorType Type { get; }
 
         /// <summary>
         /// Gets the <see cref="Room"/>.

@@ -354,7 +354,6 @@ namespace Exiled.API.Features
         {
             Room.RoomsValue.Clear();
             Door.DoorsValue.Clear();
-            Door.OrderedDoorTypes.Clear();
             Camera.CamerasValue.Clear();
             Lift.LiftsValue.Clear();
             TeslaGate.TeslasValue.Clear();
