@@ -34,6 +34,7 @@ namespace Exiled.CustomRoles
         {
             Loader.Deserializer = new DeserializerBuilder()
                 .WithTypeConverter(new VectorsConverter())
+                .WithTypeConverter(new ColorConverter())
                 .WithTypeConverter(new AttachmentIdentifiersConverter())
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .WithNodeDeserializer(inner => new AbstractClassNodeTypeResolver(inner, new AggregateExpectationTypeResolver<CustomAbility>(UnderscoredNamingConvention.Instance)), s => s.InsteadOf<ObjectNodeDeserializer>())
