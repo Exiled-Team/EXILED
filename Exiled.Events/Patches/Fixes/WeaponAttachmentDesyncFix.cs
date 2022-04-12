@@ -52,7 +52,7 @@ namespace Exiled.Events.Patches.Fixes
             newInstructions.AddRange(new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0).WithLabels(insertLabel),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Items.Firearms.Firearm), nameof(InventorySystem.Items.Firearms.Firearm.CombinedAttachments))),
+                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Items.Firearms.Firearm), nameof(InventorySystem.Items.Firearms.Firearm.Attachments))),
                 new(OpCodes.Ldfld, Field(typeof(AttachmentSettings), nameof(AttachmentSettings.AdditionalPros))),
                 new(OpCodes.Ldc_I4_2),
                 new(OpCodes.Call, Method(typeof(AttachmentsUtils), nameof(AttachmentsUtils.HasFlagFast), new[] { typeof(AttachmentDescriptiveAdvantages), typeof(AttachmentDescriptiveAdvantages) })),

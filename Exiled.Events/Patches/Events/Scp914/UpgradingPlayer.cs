@@ -27,6 +27,8 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using NorthwoodLib.Pools;
 
+    using UnityEngine;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
@@ -38,26 +40,16 @@ namespace Exiled.Events.Patches.Events.Scp914
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            int offset = 0;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldarg_0) + offset;
+            int index = 0;
             Label returnLabel = generator.DefineLabel();
             LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
-            int removalOffset = -9;
-            int removalIndex = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + removalOffset;
-            for (int i = 0; i < 10; i++)
-            {
-                newInstructions.RemoveAt(removalIndex);
-            }
+            for (int i = 0; i < 12; i++)
+                newInstructions.RemoveAt(index);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                // curSetting = setting;
-                new(OpCodes.Ldarg, 4),
-                new(OpCodes.Stloc, curSetting.LocalIndex),
-
                 // Player.Get(ply)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
@@ -103,20 +95,21 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.KnobSetting))),
                 new(OpCodes.Starg, 4),
 
+                // curSetting = setting;
+                new(OpCodes.Ldarg, 4),
+                new(OpCodes.Stloc, curSetting.LocalIndex),
+
                 // ply.playerMovementSync.OverridePosition(ev.OutputPosition);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))),
+                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.Player))),
                 new(OpCodes.Ldloc, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.OutputPosition))),
-                new(OpCodes.Ldc_R4, 0.0f),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Callvirt, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))),
+                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
             });
 
-            offset = -4;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(Scp914ItemProcessor), nameof(Scp914ItemProcessor.OnInventoryItemUpgraded))) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld);
             Label continueLabel = generator.DefineLabel();
-            newInstructions[index + 5].labels.Add(continueLabel);
+            newInstructions[index + 13].labels.Add(continueLabel);
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
             newInstructions.InsertRange(index, new CodeInstruction[]
@@ -130,7 +123,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // ItemBase item = GetItem
-                new(OpCodes.Ldloc, 6),
+                new(OpCodes.Ldloc, 7),
 
                 // setting
                 new(OpCodes.Ldarg, 4),

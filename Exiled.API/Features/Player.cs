@@ -378,27 +378,21 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
-        }
-
-        /// <summary>
-        /// Gets or sets the player's rotations.
-        /// </summary>
-        /// <returns>Returns a <see cref="Vector2"/> representing the rotation of the player.</returns>
-        public Vector2 Rotations
-        {
-            get => ReferenceHub.playerMovementSync.RotationSync;
-            set => ReferenceHub.playerMovementSync.RotationSync = value;
+            set => ReferenceHub.playerMovementSync.OverridePosition(value);
         }
 
         /// <summary>
         /// Gets or sets the player's rotation.
         /// </summary>
-        /// <returns>Returns the direction he's looking at, useful for Raycasts.</returns>
-        public Vector3 Rotation
+        /// <returns>Returns the direction the player is looking at.</returns>
+        public Vector2 Rotation
         {
-            get => ReferenceHub.PlayerCameraReference.forward;
-            set => ReferenceHub.PlayerCameraReference.forward = value;
+            get => ReferenceHub.playerMovementSync.RotationSync;
+            set
+            {
+                ReferenceHub.playerMovementSync.NetworkRotationSync = value;
+                ReferenceHub.playerMovementSync.ForceRotation(new PlayerMovementSync.PlayerRotation(value.x, value.y));
+            }
         }
 
         /// <summary>
@@ -1346,7 +1340,7 @@ namespace Exiled.API.Features
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
         public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "") =>
-            Hurt(new CustomReasonDamageHandler(CustomHandlerBase.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, amount, cassieAnnouncement));
+            Hurt(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, amount, cassieAnnouncement));
 
         /// <summary>
         /// Hurts the player.
@@ -1379,7 +1373,7 @@ namespace Exiled.API.Features
             if (Role.Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(CustomHandlerBase.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, float.MaxValue, cassieAnnouncement));
         }
 
         /// <summary>
@@ -1542,7 +1536,7 @@ namespace Exiled.API.Features
                 }
 
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                if (firearm.Base.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
+                if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
                     flags |= FirearmStatusFlags.FlashlightEnabled;
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
@@ -1720,8 +1714,7 @@ namespace Exiled.API.Features
                     }
 
                     FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                    if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages
-                        .Flashlight))
+                    if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
                         flags |= FirearmStatusFlags.FlashlightEnabled;
                     firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
                 }
@@ -2238,6 +2231,9 @@ namespace Exiled.API.Features
                 case Pickup pickup:
                     Teleport(pickup.Position + Vector3.up);
                     break;
+                case Ragdoll ragdoll:
+                    Teleport(ragdoll.Position + Vector3.up);
+                    break;
             }
         }
 
@@ -2280,6 +2276,10 @@ namespace Exiled.API.Features
             {
                 ReadOnlyCollection<Pickup> pickups = Map.Pickups;
                 randomObject = pickups[Random.Range(0, pickups.Count)];
+            }
+            else if (type == typeof(Ragdoll))
+            {
+                randomObject = Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)];
             }
 
             if (randomObject is null)

@@ -13,6 +13,8 @@ namespace Exiled.API.Extensions
 
     using Exiled.API.Enums;
 
+    using InventorySystem.Items.Usables.Scp244.Hypothermia;
+
     /// <summary>
     /// Contains an extension method to get <see cref="System.Type"/> from <see cref="EffectType"/>.
     /// </summary>
@@ -54,6 +56,7 @@ namespace Exiled.API.Extensions
                 EffectType.Visual173Blink => typeof(Visuals173Blink),
                 EffectType.Vitality => typeof(Vitality),
                 EffectType.Hypothermia => typeof(Hypothermia),
+                EffectType.Scp1853 => typeof(Scp1853),
 
                 // This should never happen
                 _ => throw new InvalidOperationException("Invalid effect enum provided"),

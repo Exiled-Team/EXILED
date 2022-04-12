@@ -180,6 +180,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the generator position.
+        /// </summary>
+        public Vector3 Position => Base.transform.position;
+
+        /// <summary>
+        /// Gets the generator transform.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets the generator rotation.
+        /// </summary>
+        public Quaternion Rotation => Base.transform.rotation;
+
+        /// <summary>
         /// Gets or sets the required permissions to interact with the generator.
         /// </summary>
         public KeycardPermissions KeycardPermissions

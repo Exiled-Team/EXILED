@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1118
 
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using CustomPlayerEffects;
@@ -34,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Beq_S) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(ReceivingEffectEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             Label returnLabel = generator.DefineLabel();
@@ -93,5 +94,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
+
+        private static void LogThing(byte old, byte @new) => Log.Warn($"Old: {old} New: {@new}");
     }
 }
