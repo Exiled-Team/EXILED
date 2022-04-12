@@ -12,6 +12,7 @@ namespace Exiled.CustomRoles.API
     using System.Collections.ObjectModel;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Core;
     using Exiled.CustomRoles.API.Features;
 
     /// <summary>
@@ -28,9 +29,9 @@ namespace Exiled.CustomRoles.API
         {
             List<CustomRole> roles = new();
 
-            foreach (CustomRole customRole in CustomRole.Registered)
+            foreach (EActor component in player.Components)
             {
-                if (customRole.Check(player))
+                if (component.Cast(out CustomRole customRole))
                     roles.Add(customRole);
             }
 
@@ -38,23 +39,23 @@ namespace Exiled.CustomRoles.API
         }
 
         /// <summary>
-        /// Registers an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
+        /// Registers an <see cref="IEnumerable{T}"/> of <see cref="CustomRoleBlueprint"/>s.
         /// </summary>
-        /// <param name="customRoles"><see cref="CustomRole"/>s to be registered.</param>
-        public static void Register(this IEnumerable<CustomRole> customRoles)
+        /// <param name="blueprints"><see cref="CustomRoleBlueprint"/>s to be registered.</param>
+        public static void Register(this IEnumerable<CustomRoleBlueprint> blueprints)
         {
-            if (customRoles is null)
-                throw new ArgumentNullException(nameof(customRoles));
+            if (blueprints is null)
+                throw new ArgumentNullException(nameof(blueprints));
 
-            foreach (CustomRole customItem in customRoles)
-                customItem.TryRegister();
+            foreach (CustomRoleBlueprint blueprint in blueprints)
+                blueprint.TryRegister();
         }
 
         /// <summary>
-        /// Registers a <see cref="CustomRole"/>.
+        /// Registers a <see cref="CustomRoleBlueprint"/>.
         /// </summary>
-        /// <param name="role"><see cref="CustomRole"/> to be registered.</param>
-        public static void Register(this CustomRole role) => role.TryRegister();
+        /// <param name="blueprint"><see cref="CustomRoleBlueprint"/> to be registered.</param>
+        public static void Register(this CustomRoleBlueprint blueprint) => blueprint.TryRegister();
 
         /// <summary>
         /// Registers a <see cref="CustomAbility"/>.
@@ -63,23 +64,23 @@ namespace Exiled.CustomRoles.API
         public static void Register(this CustomAbility ability) => ability.TryRegister();
 
         /// <summary>
-        /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
+        /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomRoleBlueprint"/>s.
         /// </summary>
-        /// <param name="customRoles"><see cref="CustomRole"/>s to be unregistered.</param>
-        public static void Unregister(this IEnumerable<CustomRole> customRoles)
+        /// <param name="blueprints"><see cref="CustomRoleBlueprint"/>s to be unregistered.</param>
+        public static void Unregister(this IEnumerable<CustomRoleBlueprint> blueprints)
         {
-            if (customRoles is null)
-                throw new ArgumentNullException(nameof(customRoles));
+            if (blueprints is null)
+                throw new ArgumentNullException(nameof(blueprints));
 
-            foreach (CustomRole customItem in customRoles)
-                customItem.TryUnregister();
+            foreach (CustomRoleBlueprint blueprint in blueprints)
+                blueprint.TryUnregister();
         }
 
         /// <summary>
-        /// Unregisters a <see cref="CustomRole"/>.
+        /// Unregisters a <see cref="CustomRoleBlueprint"/>.
         /// </summary>
-        /// <param name="role"><see cref="CustomRole"/> to be unregistered.</param>
-        public static void Unregister(this CustomRole role) => role.TryUnregister();
+        /// <param name="blueprint"><see cref="CustomRoleBlueprint"/> to be unregistered.</param>
+        public static void Unregister(this CustomRoleBlueprint blueprint) => blueprint.TryUnregister();
 
         /// <summary>
         /// Unregisters a <see cref="CustomAbility"/>.

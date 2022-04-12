@@ -9,6 +9,7 @@ namespace Exiled.CustomRoles.Commands
 {
     using System;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using CommandSystem;
 
@@ -49,17 +50,17 @@ namespace Exiled.CustomRoles.Commands
 
             if (arguments.Count > 1)
             {
-                CustomRole role = CustomRole.Get(arguments.At(1));
-                if (role is null)
+                CustomRoleBlueprint blueprint = CustomRoleBlueprint.Get(arguments.At(1));
+                if (blueprint is null)
                 {
                     response = $"The specified role {arguments.At(1)} does not exist.";
 
                     return false;
                 }
 
-                if (role.CustomAbilities.Count >= abilityNumber + 1)
+                if (blueprint.CustomAbilities.Count >= abilityNumber + 1)
                 {
-                    if (role.CustomAbilities[abilityNumber] is ActiveAbility active)
+                    if (blueprint.CustomAbilities[abilityNumber] is ActiveAbility active)
                     {
                         if (!active.CanUseAbility(player, out response))
                         {
@@ -75,9 +76,9 @@ namespace Exiled.CustomRoles.Commands
 
             response = "Could not find an ability that was able to be used.";
 
-            foreach (CustomRole customRole in roles)
+            foreach (CustomRoleBlueprint blueprint in roles.Select(r => r.Blueprint))
             {
-                if (customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
+                if (blueprint.CustomAbilities.Count < abilityNumber + 1 || !(blueprint.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
                     continue;
 
                 activeAbility.UseAbility(player);

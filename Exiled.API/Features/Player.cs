@@ -2443,6 +2443,26 @@ namespace Exiled.API.Features
         /// <summary>
         /// Checks if the player has an active component.
         /// </summary>
+        /// <typeparam name="T">The <see cref="EActor"/> to look for.</typeparam>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="depthInheritance">A value indicating whether subclasses should be considered.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasComponent<T>(Func<T, bool> predicate, bool depthInheritance = false)
+            where T : EActor
+        {
+            List<T> comps = new();
+            foreach (T component in components.Where(comp => typeof(T).IsSubclassOf(comp.GetType())))
+            {
+                if (component.Cast(out T outer))
+                    comps.Add(outer);
+            }
+
+            return depthInheritance ? comps.Where(predicate).Any() : comps.Where(predicate).Any(comp => typeof(T) == comp.GetType());
+        }
+
+        /// <summary>
+        /// Checks if the player has an active component.
+        /// </summary>
         /// <param name="type">The <see cref="EActor"/> to look for.</param>
         /// <param name="depthInheritance">A value indicating whether subclasses should be considered.</param>
         /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>

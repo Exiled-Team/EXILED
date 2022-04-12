@@ -48,7 +48,7 @@ namespace Exiled.CustomRoles.Commands.List
                 return false;
             }
 
-            if (CustomRole.Registered.Count == 0)
+            if (CustomRoleBlueprint.Registered.Count == 0)
             {
                 response = "There are no custom roles currently on this server.";
                 return false;
@@ -56,10 +56,10 @@ namespace Exiled.CustomRoles.Commands.List
 
             StringBuilder builder = StringBuilderPool.Shared.Rent().AppendLine();
 
-            builder.Append("[Registered custom roles (").Append(CustomRole.Registered.Count).AppendLine(")]");
+            builder.Append("[Registered custom roles (").Append(CustomRoleBlueprint.Registered.Count).AppendLine(")]");
 
-            foreach (CustomRole role in CustomRole.Registered.OrderBy(r => r.Id))
-                builder.Append('[').Append(role.Id).Append(". ").Append(role.Name).Append(" (").Append(role.Role).Append(')').AppendLine("]");
+            foreach (CustomRoleBlueprint blueprint in CustomRoleBlueprint.Registered.OrderBy(r => r.Id))
+                builder.Append('[').Append(blueprint.Id).Append(". ").Append(blueprint.Name).Append(" (").Append(blueprint.Role).Append(')').AppendLine("]");
 
             response = StringBuilderPool.Shared.ToStringReturn(builder);
             return true;

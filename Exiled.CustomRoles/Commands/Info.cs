@@ -55,20 +55,19 @@ namespace Exiled.CustomRoles.Commands
                 return false;
             }
 
-            if (!(int.TryParse(arguments.At(0), out int id) && CustomRole.TryGet(id, out CustomRole role)) &&
-                !CustomRole.TryGet(arguments.At(0), out role))
+            if (!(int.TryParse(arguments.At(0), out int id) && CustomRoleBlueprint.TryGet(id, out CustomRoleBlueprint blueprint)) &&
+                !CustomRoleBlueprint.TryGet(arguments.At(0), out blueprint))
             {
                 response = $"{arguments.At(0)} is not a valid custom role.";
                 return false;
             }
 
             StringBuilder builder = StringBuilderPool.Shared.Rent().AppendLine();
-
-            builder.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(role.Name)
-                .Append("</color> <color=#05C4E8>(").Append(role.Id).Append(")</color>")
-                .Append("- ").AppendLine(role.Description)
-                .AppendLine(role.Role.ToString())
-                .Append("- Health: ").AppendLine(role.MaxHealth.ToString()).AppendLine();
+            builder.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(blueprint.Name)
+                .Append("</color> <color=#05C4E8>(").Append(blueprint.Id).Append(")</color>")
+                .Append("- ").AppendLine(blueprint.Description)
+                .AppendLine(blueprint.Role.ToString())
+                .Append("- Health: ").AppendLine(blueprint.MaxHealth.ToString()).AppendLine();
 
             response = StringBuilderPool.Shared.ToStringReturn(builder);
             return true;

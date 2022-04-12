@@ -59,7 +59,7 @@ namespace Exiled.CustomRoles.Commands
                 return false;
             }
 
-            if (!CustomRole.TryGet(arguments.At(0), out CustomRole role))
+            if (!CustomRoleBlueprint.TryGet(arguments.At(0), out CustomRoleBlueprint role))
             {
                 response = $"Custom role {arguments.At(0)} not found!";
                 return false;
@@ -71,7 +71,7 @@ namespace Exiled.CustomRoles.Commands
                 {
                     Player player = Player.Get(playerCommandSender);
 
-                    role.AddRole(player);
+                    player.AddComponent(role.Component);
                     response = $"{role.Name} given to {player.Nickname}.";
                     return true;
                 }
@@ -89,7 +89,7 @@ namespace Exiled.CustomRoles.Commands
                     List<Player> players = ListPool<Player>.Shared.Rent(Player.List);
 
                     foreach (Player player in players)
-                        role.AddRole(player);
+                        player.AddComponent(role.Component);
 
                     response = $"Custom role {role.Name} given to all players.";
                     return true;
@@ -100,7 +100,7 @@ namespace Exiled.CustomRoles.Commands
                         return false;
                     }
 
-                    role.AddRole(ply);
+                    ply.AddComponent(role.Component);
                     response = $"{role.Name} given to {ply.Nickname}.";
                     return true;
             }

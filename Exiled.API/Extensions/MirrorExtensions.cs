@@ -297,7 +297,7 @@ namespace Exiled.API.Extensions
         /// <param name="behaviorOwner"><see cref="NetworkIdentity"/> of object that owns <see cref="NetworkBehaviour"/>.</param>
         /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
-        public static void ResyncSyncVar(NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{propertyName}"] });
+        public static void ResyncSyncVar(this NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{propertyName}"] });
 
         /// <summary>
         /// Send fake values to client's <see cref="ClientRpcAttribute"/>.
@@ -307,7 +307,7 @@ namespace Exiled.API.Extensions
         /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
         /// <param name="rpcName">Property name starting with Rpc.</param>
         /// <param name="values">Values of send to target.</param>
-        public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
+        public static void SendFakeTargetRpc(this Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
 
@@ -344,7 +344,7 @@ namespace Exiled.API.Extensions
         ///  });
         /// </code>
         /// </example>
-        public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
+        public static void SendFakeSyncObject(this Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
         {
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
@@ -359,7 +359,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="identity">Target object.</param>
         /// <param name="customAction">Edit function.</param>
-        public static void EditNetworkObject(NetworkIdentity identity, Action<NetworkIdentity> customAction)
+        public static void EditNetworkObject(this NetworkIdentity identity, Action<NetworkIdentity> customAction)
         {
             customAction.Invoke(identity);
 
@@ -375,13 +375,13 @@ namespace Exiled.API.Extensions
         }
 
         // Get components index in identity.(private)
-        private static int GetComponentIndex(NetworkIdentity identity, Type type)
+        private static int GetComponentIndex(this NetworkIdentity identity, Type type)
         {
             return Array.FindIndex(identity.NetworkBehaviours, (x) => x.GetType() == type);
         }
 
         // Make custom writer(private)
-        private static void MakeCustomSyncWriter(NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer)
+        private static void MakeCustomSyncWriter(this NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer)
         {
             byte behaviorDirty = 0;
             NetworkBehaviour behaviour = null;
