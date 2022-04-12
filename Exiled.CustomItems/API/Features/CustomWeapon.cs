@@ -60,6 +60,11 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         public virtual byte ClipSize { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value whether or not to allow friendly fire with this weapon on FF-enabled servers.
+        /// </summary>
+        public virtual bool AllowFF { get; set; }
+
         /// <inheritdoc/>
         public override Pickup Spawn(Vector3 position)
         {
@@ -298,6 +303,12 @@ namespace Exiled.CustomItems.API.Features
             if (!Check(firearmDamageHandler.Item))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: type != type", Instance.Config.Debug);
+                return;
+            }
+
+            if (Server.FriendlyFire && !AllowFF && ev.Attacker.Role.Team == ev.Target.Role.Team)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: FF is disabled for this weapon!", Instance.Config.Debug);
                 return;
             }
 
