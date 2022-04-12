@@ -2284,47 +2284,23 @@ namespace Exiled.API.Features
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
-            object randomObject = null;
-
-            switch (type.Name)
+            object randomObject = type.Name switch 
             {
-                case nameof(Door):
-                    randomObject = Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)];
-                    break;
-
-                case nameof(Room):
-                    randomObject = Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)];
-                    break;
-
-                case nameof(TeslaGate):
-                    randomObject = TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)];
-                    break;
-
-                case nameof(Player):
-                    randomObject = Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count));
-                    break;
-
-                case nameof(Pickup):
-                    randomObject = Map.Pickups[Random.Range(0, Map.Pickups.Count)];
-                    break;
-
-                case nameof(Ragdoll):
-                    randomObject = Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)];
-                    break;
-
-                case nameof(Locker):
-                    randomObject = Map.GetRandomLocker();
-                    break;
-
-                case nameof(LockerChamber):
+                nameof(Door) => Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)],
+                nameof(Features.Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
+                nameof(Tesla) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
+                nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
+                nameof(Pickup) => Map.Pickups[Random.Range(0, Map.Pickups.Count)],
+                nameof(Ragdoll) => Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)],
+                nameof(Locker) => Map.GetRandomLocker(),
+                nameof(Generator) => Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)],
+                nameof(LockerChamber) => new Func<LockerChamber>(delegate
+                {
                     LockerChamber[] chambers = Map.GetRandomLocker().Chambers;
-                    randomObject = chambers[Random.Range(0, chambers.Length)];
-                    break;
-
-                case nameof(Generator):
-                    randomObject = Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)];
-                    break;
-            }
+                    return chambers[Random.Range(0, chambers.Length)];
+                }),
+                _ => null,
+            };
 
             if (randomObject is null)
             {
