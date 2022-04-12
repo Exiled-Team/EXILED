@@ -355,6 +355,7 @@ namespace Exiled.API.Features
             Room.RoomsValue.Clear();
             Door.DoorsValue.Clear();
             Camera.CamerasValue.Clear();
+            Window.WindowValue.Clear();
             Lift.LiftsValue.Clear();
             TeslaGate.TeslasValue.Clear();
             Generator.GeneratorValues.Clear();
