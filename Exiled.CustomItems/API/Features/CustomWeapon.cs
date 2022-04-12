@@ -306,7 +306,7 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (!AllowFF && ev.Attacker.Role.Team == ev.Target.Role.Team)
+            if (!FriendlyFire && ev.Attacker.Role.Team == ev.Target.Role.Team)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: FF is disabled for this weapon!", Instance.Config.Debug);
                 return;
