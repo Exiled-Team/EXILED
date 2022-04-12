@@ -2238,6 +2238,9 @@ namespace Exiled.API.Features
                 case Pickup pickup:
                     Teleport(pickup.Position + Vector3.up);
                     break;
+                case Ragdoll ragdoll:
+                    Teleport(ragdoll.Position + Vector3.up);
+                    break;
             }
         }
 
@@ -2283,8 +2286,7 @@ namespace Exiled.API.Features
             }
             else if (type == typeof(Ragdoll))
             {
-                ReadOnlyCollection<Ragdoll> ragdolls = Map.Ragdolls;
-                randomObject = ragdolls[Random.Range(0, ragdolls.Count)];
+                randomObject = Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)];
             }
 
             if (randomObject is null)
