@@ -2284,11 +2284,11 @@ namespace Exiled.API.Features
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
-            object randomObject = type.Name switch 
+            object randomObject = type.Name switch
             {
                 nameof(Door) => Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)],
-                nameof(Features.Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
-                nameof(Tesla) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
+                nameof(Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
+                nameof(TeslaGate) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
                 nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
                 nameof(Pickup) => Map.Pickups[Random.Range(0, Map.Pickups.Count)],
                 nameof(Ragdoll) => Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)],
@@ -2301,16 +2301,16 @@ namespace Exiled.API.Features
                 }),
                 _ => null,
             };
-            
-            if (randomObject is null)
+
+            switch (randomObject)
             {
-                Log.Warn(
-                    $"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
-                return;
+                case null:
+                    Log.Warn($"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
+                    return;
+                case Func<LockerChamber> func:
+                    randomObject = func.Target;
+                    break;
             }
-            
-            if (randomObject is Func<LockerChamber> func)
-                randomObject = func.Target;
 
             Teleport(randomObject);
         }
