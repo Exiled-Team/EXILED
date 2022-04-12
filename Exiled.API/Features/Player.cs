@@ -2281,7 +2281,7 @@ namespace Exiled.API.Features
                 ReadOnlyCollection<Pickup> pickups = Map.Pickups;
                 randomObject = pickups[Random.Range(0, pickups.Count)];
             }
-            else if (type == typeof(Ragdoll)) 
+            else if (type == typeof(Ragdoll))
             {
                 ReadOnlyCollection<Ragdoll> ragdolls = Map.Ragdolls;
                 randomObject = ragdolls[Random.Range(0, ragdolls.Count)];
