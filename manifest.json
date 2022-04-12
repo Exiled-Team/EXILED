@@ -2343,7 +2343,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.CustomRoles.html",
-          "hash": "D64u+igLsoMZA38CmFYnkJkk1iMMsCo7XMwhB2WZikM="
+          "hash": "jucK9PqAZuw2w8eKs/K3QLbqFCmMgai/HiyVvLoc9QU="
         }
       },
       "is_incremental": false,
@@ -4595,6 +4595,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html",
+          "hash": "fSu3LiXZ5e1Vh02Jg+01ezazdeaKqdife/qSFPNnRto="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter.yml",
       "output": {
         ".html": {
@@ -4611,7 +4623,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.CustomConverters.html",
-          "hash": "f2Xu1LtLsFfKC78ThlxqTqRnzSvFLVFvgxmrcuoO00o="
+          "hash": "7RYCEV3G8kjML0B4IUVaLC1HY22k3LOTJv83A9cBpwY="
         }
       },
       "is_incremental": false,
@@ -4731,7 +4743,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Loader.TOKEN_ELEVATION_TYPE.html",
-          "hash": "T+b4sZwHpdD8q+xnXsWeBhr0p0uREEL3YrbiBkEAXIE="
+          "hash": "i9x9uecvku+YSfG8eU94tSWD3au800TOuyKyKQ8DG2A="
         }
       },
       "is_incremental": false,
@@ -4743,7 +4755,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Loader.TOKEN_INFORMATION_CLASS.html",
-          "hash": "BEiNKMdJYVkZxt/KsNNTO+xsajVB12bzo3GqsFNyyoc="
+          "hash": "30+TkU7FCtIPcl7LLnjSl/CNrPvD823sCkQiRYXbvUs="
         }
       },
       "is_incremental": false,
@@ -4755,7 +4767,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Loader.html",
-          "hash": "Axy+goDWgBBZQz9RZD9Py1AvPzPDJNlYip2SZ9AEPIA="
+          "hash": "2fVBZCg9J2FL1etBe7KY54r4k6DvuzFsmHpbgH/SGPs="
         }
       },
       "is_incremental": false,
@@ -4995,7 +5007,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "Tvt1ZvYDdQiYZFcqfVn1MH1ligbCx4Kpo4XHGfK0rdo="
+          "hash": "bmxsSAejMhWBngsKLRsnK0HSe/xXQLeW/WrFg+1U0uY="
         }
       },
       "is_incremental": false,
@@ -5032,7 +5044,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": true,
           "incrementalPhase": "build",
-          "total_file_count": 403,
+          "total_file_count": 404,
           "skipped_file_count": 163
         },
         "ResourceDocumentProcessor": {

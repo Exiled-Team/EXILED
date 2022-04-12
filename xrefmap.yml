@@ -35040,6 +35040,51 @@ references:
   isSpec: "True"
   fullName: Exiled.Loader.Features.Configs.CustomConverters.AttachmentIdentifiersConverter.WriteYaml
   nameWithType: AttachmentIdentifiersConverter.WriteYaml
+- uid: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter
+  name: ColorConverter
+  href: api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html
+  commentId: T:Exiled.Loader.Features.Configs.CustomConverters.ColorConverter
+  fullName: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter
+  nameWithType: ColorConverter
+- uid: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.Accepts(System.Type)
+  name: Accepts(Type)
+  href: api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html#Exiled_Loader_Features_Configs_CustomConverters_ColorConverter_Accepts_System_Type_
+  commentId: M:Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.Accepts(System.Type)
+  fullName: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.Accepts(System.Type)
+  nameWithType: ColorConverter.Accepts(Type)
+- uid: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.Accepts*
+  name: Accepts
+  href: api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html#Exiled_Loader_Features_Configs_CustomConverters_ColorConverter_Accepts_
+  commentId: Overload:Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.Accepts
+  isSpec: "True"
+  fullName: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.Accepts
+  nameWithType: ColorConverter.Accepts
+- uid: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.ReadYaml(IParser,System.Type)
+  name: ReadYaml(IParser, Type)
+  href: api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html#Exiled_Loader_Features_Configs_CustomConverters_ColorConverter_ReadYaml_IParser_System_Type_
+  commentId: M:Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.ReadYaml(IParser,System.Type)
+  fullName: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.ReadYaml(IParser, System.Type)
+  nameWithType: ColorConverter.ReadYaml(IParser, Type)
+- uid: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.ReadYaml*
+  name: ReadYaml
+  href: api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html#Exiled_Loader_Features_Configs_CustomConverters_ColorConverter_ReadYaml_
+  commentId: Overload:Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.ReadYaml
+  isSpec: "True"
+  fullName: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.ReadYaml
+  nameWithType: ColorConverter.ReadYaml
+- uid: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.WriteYaml(IEmitter,System.Object,System.Type)
+  name: WriteYaml(IEmitter, Object, Type)
+  href: api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html#Exiled_Loader_Features_Configs_CustomConverters_ColorConverter_WriteYaml_IEmitter_System_Object_System_Type_
+  commentId: M:Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.WriteYaml(IEmitter,System.Object,System.Type)
+  fullName: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.WriteYaml(IEmitter, System.Object, System.Type)
+  nameWithType: ColorConverter.WriteYaml(IEmitter, Object, Type)
+- uid: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.WriteYaml*
+  name: WriteYaml
+  href: api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html#Exiled_Loader_Features_Configs_CustomConverters_ColorConverter_WriteYaml_
+  commentId: Overload:Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.WriteYaml
+  isSpec: "True"
+  fullName: Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.WriteYaml
+  nameWithType: ColorConverter.WriteYaml
 - uid: Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter
   name: VectorsConverter
   href: api/Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter.html
