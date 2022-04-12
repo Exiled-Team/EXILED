@@ -87,7 +87,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the activator's window.
         /// </summary>
-        public static BreakableWindow ActivatorWindow => Base._activatorGlass;
+        public static Window ActivatorWindow => Window.Get(Base._activatorGlass);
 
         /// <summary>
         /// Gets the activator's position.
