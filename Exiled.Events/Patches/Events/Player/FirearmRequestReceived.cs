@@ -39,12 +39,14 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingWeaponFlashlightEventArgs));
+            LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
 
             int offset = -2;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
             (MethodInfo)instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryReload))) + offset;
 
             Label returnLabel = generator.DefineLabel();
+            Label skipAdsLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {
@@ -97,10 +99,15 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, player.LocalIndex),
+                new(OpCodes.Brfalse_S, skipAdsLabel),
+                new(OpCodes.Ldloc, player.LocalIndex),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnAimingDownSight))),
+                new CodeInstruction(OpCodes.Nop).WithLabels(skipAdsLabel),
             });
 
             offset = -3;
