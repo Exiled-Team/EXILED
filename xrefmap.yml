@@ -20572,6 +20572,19 @@ references:
   isSpec: "True"
   fullName: Exiled.CustomRoles.API.Features.CustomRole.AddRole
   nameWithType: CustomRole.AddRole
+- uid: Exiled.CustomRoles.API.Features.CustomRole.Ammo
+  name: Ammo
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_Ammo
+  commentId: P:Exiled.CustomRoles.API.Features.CustomRole.Ammo
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.Ammo
+  nameWithType: CustomRole.Ammo
+- uid: Exiled.CustomRoles.API.Features.CustomRole.Ammo*
+  name: Ammo
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_Ammo_
+  commentId: Overload:Exiled.CustomRoles.API.Features.CustomRole.Ammo
+  isSpec: "True"
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.Ammo
+  nameWithType: CustomRole.Ammo
 - uid: Exiled.CustomRoles.API.Features.CustomRole.Check(Exiled.API.Features.Player)
   name: Check(Player)
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_Check_Exiled_API_Features_Player_
