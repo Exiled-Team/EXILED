@@ -156,5 +156,10 @@ namespace Exiled.API.Enums
         /// Cause the player to slowly take damage by Hyporthermia.
         /// </summary>
         Hypothermia,
+
+        /// <summary>
+        /// Cause the player more effective for fight.
+        /// </summary>
+        Scp1853,
     }
 }

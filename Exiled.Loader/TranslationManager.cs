@@ -69,16 +69,11 @@ namespace Exiled.Loader
         /// <param name="plugin">The plugin which its translation has to be loaded.</param>
         /// <param name="rawTranslations">The raw translations to check whether or not the plugin already has a translation config.</param>
         /// <returns>The <see cref="ITranslation"/> of the desired plugin.</returns>
-        public static ITranslation LoadTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations = null)
+        public static ITranslation LoadTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations = null) => Loader.Config.ConfigType switch
         {
-            switch (Loader.Config.ConfigType)
-            {
-                case ConfigType.Separated:
-                    return plugin.LoadSeparatedTranslation();
-                default:
-                    return plugin.LoadDefaultTranslation(rawTranslations);
-            }
-        }
+            ConfigType.Separated => plugin.LoadSeparatedTranslation(),
+            _ => plugin.LoadDefaultTranslation(rawTranslations),
+        };
 
         /// <summary>
         /// Reads, Loads and Saves plugin translations.

@@ -94,7 +94,7 @@ namespace Exiled.CustomRoles.Commands
                     response = $"Custom role {role.Name} given to all players.";
                     return true;
                 default:
-                    if (!(Player.Get(identifier) is Player ply))
+                    if (Player.Get(identifier) is not Player ply)
                     {
                         response = $"Unable to find a player: {identifier}";
                         return false;

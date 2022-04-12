@@ -178,7 +178,7 @@ namespace Exiled.Updater
                     else
                     {
                         Log.Info($"Found asset - Name: {asset.Name} | Size: {asset.Size} Download: {asset.BrowserDownloadUrl}");
-                        newVersion = new NewVersion(targetRelease, asset);
+                        newVersion = new(targetRelease, asset);
                         return true;
                     }
                 }

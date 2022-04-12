@@ -90,32 +90,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
         /// </summary>
-        public ElevatorType Type
+        #pragma warning disable SA1122
+        public ElevatorType Type => Name switch
         {
-            get
-            {
-                switch (Name)
-                {
-                    case "SCP-049":
-                        return ElevatorType.Scp049;
-                    case "GateA":
-                        return ElevatorType.GateA;
-                    case "GateB":
-                        return ElevatorType.GateB;
-                    case "ElA":
-                    case "ElA2":
-                        return ElevatorType.LczA;
-                    case "ElB":
-                    case "ElB2":
-                        return ElevatorType.LczB;
-                    case "":
-                        return ElevatorType.Nuke;
-
-                    default:
-                        return ElevatorType.Unknown;
-                }
-            }
-        }
+            "SCP-049" => ElevatorType.Scp049,
+            "GateA" => ElevatorType.GateA,
+            "GateB" => ElevatorType.GateB,
+            "ElA" or "ElA2" => ElevatorType.LczA,
+            "ElB" or "ElB2" => ElevatorType.LczB,
+            "" => ElevatorType.Nuke,
+            _ => ElevatorType.Unknown,
+        };
+        #pragma warning restore SA1122
 
         /// <summary>
         /// Gets a value indicating whether the lift is operative.

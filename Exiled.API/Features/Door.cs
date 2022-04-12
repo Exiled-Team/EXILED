@@ -32,7 +32,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<Door> DoorsValue = new(250);
 
-        private static readonly Dictionary<int, DoorType> OrderedDoorTypes = new();
         private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
         /// <summary>
@@ -44,6 +43,7 @@ namespace Exiled.API.Features
             DoorVariantToDoor.Add(door, this);
             Base = door;
             Room = door.GetComponentInParent<Room>();
+            Type = GetDoorType();
         }
 
         /// <summary>
@@ -67,9 +67,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="DoorType"/>.
         /// </summary>
-        public DoorType Type => OrderedDoorTypes.TryGetValue(Base.GetInstanceID(), out DoorType doorType)
-            ? doorType
-            : DoorType.UnknownDoor;
+        public DoorType Type { get; }
 
         /// <summary>
         /// Gets the <see cref="Room"/>.
@@ -417,129 +415,67 @@ namespace Exiled.API.Features
             DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
         }
 
-        /// <summary>
-        /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
-        /// </summary>
-        internal static void RegisterDoorTypesOnLevelLoad()
-        {
-            OrderedDoorTypes.Clear();
-            Door[] doors = List.ToArray();
-
-            int doorCount = doors.Length;
-            for (int i = 0; i < doorCount; i++)
-            {
-                Door door = doors[i];
-                int doorID = door.InstanceId;
-
-                DoorType doorType = door.GetDoorType();
-
-                OrderedDoorTypes.Add(doorID, doorType);
-            }
-        }
-
         private DoorType GetDoorType()
         {
             if (Nametag is null)
             {
                 string doorName = GameObject.name.GetBefore(' ');
-                switch (doorName)
+                return doorName switch
                 {
-                    case "LCZ":
-                        return DoorType.LightContainmentDoor;
-                    case "HCZ":
-                        return DoorType.HeavyContainmentDoor;
-                    case "EZ":
-                        return DoorType.EntranceDoor;
-                    case "Prison":
-                        return DoorType.PrisonDoor;
-                    default:
-                        return DoorType.UnknownDoor;
-                }
+                    "LCZ" => DoorType.LightContainmentDoor,
+                    "HCZ" => DoorType.HeavyContainmentDoor,
+                    "EZ" => DoorType.EntranceDoor,
+                    "Prison" => DoorType.PrisonDoor,
+                    _ => DoorType.UnknownDoor,
+                };
             }
 
-            switch (Nametag.RemoveBracketsOnEndOfName())
+            return Nametag.RemoveBracketsOnEndOfName() switch
             {
                 // Doors contains the DoorNameTagExtension component
-                case "CHECKPOINT_LCZ_A":
-                    return DoorType.CheckpointLczA;
-                case "CHECKPOINT_EZ_HCZ":
-                    return DoorType.CheckpointEntrance;
-                case "CHECKPOINT_LCZ_B":
-                    return DoorType.CheckpointLczB;
-                case "106_PRIMARY":
-                    return DoorType.Scp106Primary;
-                case "106_SECONDARY":
-                    return DoorType.Scp106Secondary;
-                case "106_BOTTOM":
-                    return DoorType.Scp106Bottom;
-                case "ESCAPE_PRIMARY":
-                    return DoorType.EscapePrimary;
-                case "ESCAPE_SECONDARY":
-                    return DoorType.EscapeSecondary;
-                case "INTERCOM":
-                    return DoorType.Intercom;
-                case "NUKE_ARMORY":
-                    return DoorType.NukeArmory;
-                case "LCZ_ARMORY":
-                    return DoorType.LczArmory;
-                case "SURFACE_NUKE":
-                    return DoorType.NukeSurface;
-                case "HID":
-                    return DoorType.HID;
-                case "HCZ_ARMORY":
-                    return DoorType.HczArmory;
-                case "096":
-                    return DoorType.Scp096;
-                case "049_ARMORY":
-                    return DoorType.Scp049Armory;
-                case "914":
-                    return DoorType.Scp914;
-                case "GATE_A":
-                    return DoorType.GateA;
-                case "079_FIRST":
-                    return DoorType.Scp079First;
-                case "GATE_B":
-                    return DoorType.GateB;
-                case "079_SECOND":
-                    return DoorType.Scp079Second;
-                case "SERVERS_BOTTOM":
-                    return DoorType.ServersBottom;
-                case "173_CONNECTOR":
-                    return DoorType.Scp173Connector;
-                case "LCZ_WC":
-                    return DoorType.LczWc;
-                case "HID_RIGHT":
-                    return DoorType.HIDRight;
-                case "HID_LEFT":
-                    return DoorType.HIDLeft;
-                case "173_ARMORY":
-                    return DoorType.Scp173Armory;
-                case "173_GATE":
-                    return DoorType.Scp173Gate;
-                case "GR18":
-                    return DoorType.GR18;
-                case "SURFACE_GATE":
-                    return DoorType.SurfaceGate;
-                case "330":
-                    return DoorType.Scp330;
-                case "330_CHAMBER":
-                    return DoorType.Scp330Chamber;
+                "CHECKPOINT_LCZ_A" => DoorType.CheckpointLczA,
+                "CHECKPOINT_EZ_HCZ" => DoorType.CheckpointEntrance,
+                "CHECKPOINT_LCZ_B" => DoorType.CheckpointLczB,
+                "106_PRIMARY" => DoorType.Scp106Primary,
+                "106_SECONDARY" => DoorType.Scp106Secondary,
+                "106_BOTTOM" => DoorType.Scp106Bottom,
+                "ESCAPE_PRIMARY" => DoorType.EscapePrimary,
+                "ESCAPE_SECONDARY" => DoorType.EscapeSecondary,
+                "INTERCOM" => DoorType.Intercom,
+                "NUKE_ARMORY" => DoorType.NukeArmory,
+                "LCZ_ARMORY" => DoorType.LczArmory,
+                "SURFACE_NUKE" => DoorType.NukeSurface,
+                "HID" => DoorType.HID,
+                "HCZ_ARMORY" => DoorType.HczArmory,
+                "096" => DoorType.Scp096,
+                "049_ARMORY" => DoorType.Scp049Armory,
+                "914" => DoorType.Scp914,
+                "GATE_A" => DoorType.GateA,
+                "079_FIRST" => DoorType.Scp079First,
+                "GATE_B" => DoorType.GateB,
+                "079_SECOND" => DoorType.Scp079Second,
+                "SERVERS_BOTTOM" => DoorType.ServersBottom,
+                "173_CONNECTOR" => DoorType.Scp173Connector,
+                "LCZ_WC" => DoorType.LczWc,
+                "HID_RIGHT" => DoorType.HIDRight,
+                "HID_LEFT" => DoorType.HIDLeft,
+                "173_ARMORY" => DoorType.Scp173Armory,
+                "173_GATE" => DoorType.Scp173Gate,
+                "GR18" => DoorType.GR18,
+                "SURFACE_GATE" => DoorType.SurfaceGate,
+                "330" => DoorType.Scp330,
+                "330_CHAMBER" => DoorType.Scp330Chamber,
 
                 // Doors spawned by the DoorSpawnPoint component
-                case "LCZ_CAFE":
-                    return DoorType.LczCafe;
-                case "173_BOTTOM":
-                    return DoorType.Scp173Bottom;
+                "LCZ_CAFE" => DoorType.LczCafe,
+                "173_BOTTOM" => DoorType.Scp173Bottom,
 
                 // Doors contains the Door component,
                 // also gameobject names
-                case "LightContainmentDoor":
-                    return DoorType.LightContainmentDoor;
-                case "EntrDoor":
-                    return DoorType.EntranceDoor;
-                default:
-                    return DoorType.UnknownDoor;
-            }
+                "LightContainmentDoor" => DoorType.LightContainmentDoor,
+                "EntrDoor" => DoorType.EntranceDoor,
+                _ => DoorType.UnknownDoor,
+            };
         }
     }
 }

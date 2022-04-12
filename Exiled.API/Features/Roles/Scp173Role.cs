@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp173"/> script for the role.
         /// </summary>
-        public Scp173 Script => script ?? (script = Owner.CurrentScp as Scp173);
+        public Scp173 Script => script ??= Owner.CurrentScp as Scp173;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-173 is currently being viewed by one or more players.

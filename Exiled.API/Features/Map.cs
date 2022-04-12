@@ -212,7 +212,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message that will be broadcasted (supports Unity Rich Text formatting).</param>
         /// <param name="duration">The duration in seconds.</param>
-        public static void ShowHint(string message, float duration)
+        public static void ShowHint(string message, float duration = 3f)
         {
             foreach (Player player in Player.List)
                 player.ShowHint(message, duration);
@@ -355,6 +355,7 @@ namespace Exiled.API.Features
             Room.RoomsValue.Clear();
             Door.DoorsValue.Clear();
             Camera.CamerasValue.Clear();
+            Window.WindowValue.Clear();
             Lift.LiftsValue.Clear();
             TeslaGate.TeslasValue.Clear();
             Generator.GeneratorValues.Clear();
