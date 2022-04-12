@@ -61,7 +61,7 @@ namespace Exiled.CustomItems.API.Features
         public virtual byte ClipSize { get; set; }
 
         /// <summary>
-        /// Gets or sets a value whether or not to allow friendly fire with this weapon on FF-enabled servers.
+        /// Gets or sets a value indicating whether or not to allow friendly fire with this weapon on FF-enabled servers.
         /// </summary>
         public virtual bool FriendlyFire { get; set; }
 
