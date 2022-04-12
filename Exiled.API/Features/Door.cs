@@ -32,7 +32,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<Door> DoorsValue = new(250);
 
-        private static readonly Dictionary<int, DoorType> OrderedDoorTypes = new();
         private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
         /// <summary>
@@ -44,6 +43,7 @@ namespace Exiled.API.Features
             DoorVariantToDoor.Add(door, this);
             Base = door;
             Room = door.GetComponentInParent<Room>();
+            Type = GetDoorType();
         }
 
         /// <summary>
@@ -67,9 +67,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="DoorType"/>.
         /// </summary>
-        public DoorType Type => OrderedDoorTypes.TryGetValue(Base.GetInstanceID(), out DoorType doorType)
-            ? doorType
-            : DoorType.UnknownDoor;
+        public DoorType Type { get; }
 
         /// <summary>
         /// Gets the <see cref="Room"/>.
@@ -415,26 +413,6 @@ namespace Exiled.API.Features
         {
             ChangeLock(flagsToUnlock);
             DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
-        }
-
-        /// <summary>
-        /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
-        /// </summary>
-        internal static void RegisterDoorTypesOnLevelLoad()
-        {
-            OrderedDoorTypes.Clear();
-            Door[] doors = List.ToArray();
-
-            int doorCount = doors.Length;
-            for (int i = 0; i < doorCount; i++)
-            {
-                Door door = doors[i];
-                int doorID = door.InstanceId;
-
-                DoorType doorType = door.GetDoorType();
-
-                OrderedDoorTypes.Add(doorID, doorType);
-            }
         }
 
         private DoorType GetDoorType()

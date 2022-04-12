@@ -104,7 +104,7 @@ namespace Exiled.Events.Patches.Events.Player
                 List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
                 int offset = 1;
-                int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_S) + offset;
+                int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
 
                 LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
 
@@ -121,10 +121,10 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldloc_2),
 
                     // component (IDestructible)
-                    new(OpCodes.Ldloc, 4),
+                    new(OpCodes.Ldloc, 3),
 
                     // damage
-                    new(OpCodes.Ldloc, 5),
+                    new(OpCodes.Ldloc, 4),
 
                     // var ev = new ShotEventArgs(player, distance, component, damage)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShotEventArgs))[0]),

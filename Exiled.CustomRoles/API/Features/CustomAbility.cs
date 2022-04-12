@@ -89,7 +89,8 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
         public static IEnumerable<CustomAbility> RegisterAbilities(bool skipReflection = false, object overrideClass = null)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            List<CustomAbility> abilities = new();
+            Assembly assembly = Assembly.GetCallingAssembly();
             foreach (Type type in assembly.GetTypes())
             {
                 if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null)
@@ -116,8 +117,10 @@ namespace Exiled.CustomRoles.API.Features
                     customAbility = (CustomAbility)Activator.CreateInstance(type);
 
                 if (customAbility.TryRegister())
-                    yield return customAbility;
+                    abilities.Add(customAbility);
             }
+
+            return abilities;
         }
 
         /// <summary>
@@ -130,7 +133,8 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
         public static IEnumerable<CustomAbility> RegisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false, bool skipReflection = false, object overrideClass = null)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            List<CustomAbility> abilities = new();
+            Assembly assembly = Assembly.GetCallingAssembly();
             foreach (Type type in assembly.GetTypes())
             {
                 if ((type.BaseType != typeof(CustomAbility) && !type.IsSubclassOf(typeof(CustomAbility))) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
@@ -156,8 +160,10 @@ namespace Exiled.CustomRoles.API.Features
                     customAbility = (CustomAbility)Activator.CreateInstance(type);
 
                 if (customAbility.TryRegister())
-                    yield return customAbility;
+                    abilities.Add(customAbility);
             }
+
+            return abilities;
         }
 
         /// <summary>

@@ -287,7 +287,8 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all registered <see cref="CustomItem"/>'s.</returns>
         public static IEnumerable<CustomItem> RegisterItems(bool skipReflection = false, object overrideClass = null)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            List<CustomItem> items = new();
+            Assembly assembly = Assembly.GetCallingAssembly();
             foreach (Type type in assembly.GetTypes())
             {
                 if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null)
@@ -317,9 +318,11 @@ namespace Exiled.CustomItems.API.Features
                         customItem.Type = ((CustomItemAttribute)attribute).ItemType;
 
                     if (customItem.TryRegister())
-                        yield return customItem;
+                        items.Add(customItem);
                 }
             }
+
+            return items;
         }
 
         /// <summary>
@@ -332,7 +335,8 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all registered <see cref="CustomItem"/>'s.</returns>
         public static IEnumerable<CustomItem> RegisterItems(IEnumerable<Type> targetTypes, bool isIgnored = false, bool skipReflection = false, object overrideClass = null)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
+            List<CustomItem> items = new();
+            Assembly assembly = Assembly.GetCallingAssembly();
             foreach (Type type in assembly.GetTypes())
             {
                 if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null ||
@@ -364,9 +368,11 @@ namespace Exiled.CustomItems.API.Features
                         customItem.Type = ((CustomItemAttribute)attribute).ItemType;
 
                     if (customItem.TryRegister())
-                        yield return customItem;
+                        items.Add(customItem);
                 }
             }
+
+            return items;
         }
 
         /// <summary>

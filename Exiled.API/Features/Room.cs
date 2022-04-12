@@ -332,8 +332,7 @@ namespace Exiled.API.Features
 
             if (Scp079Interactable.InteractablesByRoomId.ContainsKey(RoomIdentifier.UniqueId))
             {
-                foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[
-                    gameObject.GetComponent<RoomIdentifier>().UniqueId])
+                foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[RoomIdentifier.UniqueId])
                 {
                     if (scp079Interactable is not null)
                     {
