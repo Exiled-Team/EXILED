@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class TriggeringTeslaEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.2.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_TriggeringTeslaEventArgs__ctor_Exiled_API_Features_Player_TeslaGate_System_Boolean_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.TriggeringTeslaEventArgs.%23ctor(Exiled.API.Features.Player%2CTeslaGate%2CSystem.Boolean%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_TriggeringTeslaEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_TeslaGate_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.TriggeringTeslaEventArgs.%23ctor(Exiled.API.Features.Player%2CExiled.API.Features.TeslaGate)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L27">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L24">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs__ctor_Exiled_API_Features_Player_TeslaGate_System_Boolean_System_Boolean_System_Boolean_" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.#ctor(Exiled.API.Features.Player,TeslaGate,System.Boolean,System.Boolean,System.Boolean)">TriggeringTeslaEventArgs(Player, TeslaGate, Boolean, Boolean, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_TeslaGate_" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.TeslaGate)">TriggeringTeslaEventArgs(Player, TeslaGate)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.html">TriggeringTeslaEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TriggeringTeslaEventArgs(Player player, TeslaGate tesla, bool isInHurtingRange, bool isTriggerable, bool isInIdleRange = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public TriggeringTeslaEventArgs(Player player, TeslaGate teslaGate)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,24 +159,9 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.TriggeringTeslaEventArgs.Player"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">TeslaGate</span></td>
-        <td><span class="parametername">tesla</span></td>
+        <td><a class="xref" href="Exiled.API.Features.TeslaGate.html">TeslaGate</a></td>
+        <td><span class="parametername">teslaGate</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.TriggeringTeslaEventArgs.Tesla"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isInHurtingRange</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInHurtingRange"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isTriggerable</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsTriggerable"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isInIdleRange</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInIdleRange"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -187,7 +172,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsInHurtingRange.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInHurtingRange%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L49">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L45">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsInHurtingRange_" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInHurtingRange*"></a>
   <h4 id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsInHurtingRange" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInHurtingRange">IsInHurtingRange</h4>
@@ -218,7 +203,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsInIdleRange.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInIdleRange%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L59">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L55">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsInIdleRange_" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInIdleRange*"></a>
   <h4 id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsInIdleRange" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsInIdleRange">IsInIdleRange</h4>
@@ -249,7 +234,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsTriggerable.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsTriggerable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L54">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L50">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsTriggerable_" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsTriggerable*"></a>
   <h4 id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_IsTriggerable" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.IsTriggerable">IsTriggerable</h4>
@@ -280,7 +265,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_TriggeringTeslaEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.TriggeringTeslaEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L39">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L35">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_Player_" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_Player" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.Player">Player</h4>
@@ -311,7 +296,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_TriggeringTeslaEventArgs_Tesla.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.TriggeringTeslaEventArgs.Tesla%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L44">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/TriggeringTeslaEventArgs.cs/#L40">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_Tesla_" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.Tesla*"></a>
   <h4 id="Exiled_Events_EventArgs_TriggeringTeslaEventArgs_Tesla" data-uid="Exiled.Events.EventArgs.TriggeringTeslaEventArgs.Tesla">Tesla</h4>
@@ -332,7 +317,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">TeslaGate</span></td>
+        <td><a class="xref" href="Exiled.API.Features.TeslaGate.html">TeslaGate</a></td>
         <td></td>
       </tr>
     </tbody>

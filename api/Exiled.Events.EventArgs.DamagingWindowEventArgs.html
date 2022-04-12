@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DamagingWindowEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.2.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DamagingWindowEventArgs__ctor_BreakableWindow_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DamagingWindowEventArgs.%23ctor(BreakableWindow%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DamagingWindowEventArgs__ctor_BreakableWindow_System_Single_PlayerStatsSystem_DamageHandlerBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DamagingWindowEventArgs.%23ctor(BreakableWindow%2CSystem.Single%2CPlayerStatsSystem.DamageHandlerBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L22">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L27">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DamagingWindowEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_DamagingWindowEventArgs__ctor_BreakableWindow_System_Single_" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.#ctor(BreakableWindow,System.Single)">DamagingWindowEventArgs(BreakableWindow, Single)</h4>
+  <h4 id="Exiled_Events_EventArgs_DamagingWindowEventArgs__ctor_BreakableWindow_System_Single_PlayerStatsSystem_DamageHandlerBase_" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.#ctor(BreakableWindow,System.Single,PlayerStatsSystem.DamageHandlerBase)">DamagingWindowEventArgs(BreakableWindow, Single, DamageHandlerBase)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.DamagingWindowEventArgs.html">DamagingWindowEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DamagingWindowEventArgs(BreakableWindow window, float damage)</code></pre>
+    <pre><code class="lang-csharp hljs">public DamagingWindowEventArgs(BreakableWindow window, float damage, DamageHandlerBase handler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -161,7 +161,13 @@
       <tr>
         <td><span class="xref">System.Single</span></td>
         <td><span class="parametername">damage</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DamagingWindowEventArgs.Damage"></inheritdoc></td>
+        <td><p>The damage being dealt.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
+        <td><span class="parametername">handler</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DamagingWindowEventArgs.Handler"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -169,19 +175,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DamagingWindowEventArgs_Damage.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DamagingWindowEventArgs.Damage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DamagingWindowEventArgs_Handler.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DamagingWindowEventArgs.Handler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L36">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L42">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_DamagingWindowEventArgs_Damage_" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.Damage*"></a>
-  <h4 id="Exiled_Events_EventArgs_DamagingWindowEventArgs_Damage" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.Damage">Damage</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the damage the window will receive.</p>
+  <a id="Exiled_Events_EventArgs_DamagingWindowEventArgs_Handler_" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.Handler*"></a>
+  <h4 id="Exiled_Events_EventArgs_DamagingWindowEventArgs_Handler" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.Handler">Handler</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the Damage handler for this event.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float Damage { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public DamageHandler Handler { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -193,7 +199,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Single</span></td>
+        <td><a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html">DamageHandler</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DamagingWindowEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DamagingWindowEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L47">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_DamagingWindowEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.IsAllowed*"></a>
+  <h4 id="Exiled_Events_EventArgs_DamagingWindowEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.IsAllowed">IsAllowed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the window can be broken.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAllowed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -203,16 +240,16 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DamagingWindowEventArgs_Window.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DamagingWindowEventArgs.Window%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L31">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L37">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DamagingWindowEventArgs_Window_" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.Window*"></a>
   <h4 id="Exiled_Events_EventArgs_DamagingWindowEventArgs_Window" data-uid="Exiled.Events.EventArgs.DamagingWindowEventArgs.Window">Window</h4>
-  <div class="markdown level1 summary"><p>Gets the <span class="xref">BreakableWindow</span> object that is damaged.</p>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.Events.EventArgs.DamagingWindowEventArgs.html#Exiled_Events_EventArgs_DamagingWindowEventArgs_Window">Window</a> object that is damaged.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public BreakableWindow Window { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Window Window { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -224,7 +261,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">BreakableWindow</span></td>
+        <td><a class="xref" href="Exiled.API.Features.Window.html">Window</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -244,7 +281,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DamagingWindowEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DamagingWindowEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DamagingWindowEventArgs.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

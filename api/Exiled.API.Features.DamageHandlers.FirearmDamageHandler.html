@@ -1,0 +1,506 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class FirearmDamageHandler
+   | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class FirearmDamageHandler
+   | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler">
+  
+  
+  <h1 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler" class="text-break">Class FirearmDamageHandler
+  </h1>
+  <div class="markdown level0 summary"><p>A wrapper to easily manipulate the behavior of <span class="xref">PlayerStatsSystem.DamageHandlerBase</span>.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html">DamageHandlerBase</a></div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html">DamageHandler</a></div>
+    <div class="level3"><a class="xref" href="Exiled.API.Features.DamageHandlers.AttackerDamageHandler.html">AttackerDamageHandler</a></div>
+    <div class="level4"><span class="xref">FirearmDamageHandler</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.AttackerDamageHandler.html#Exiled_API_Features_DamageHandlers_AttackerDamageHandler_ForceFullFriendlyFire">AttackerDamageHandler.ForceFullFriendlyFire</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.AttackerDamageHandler.html#Exiled_API_Features_DamageHandlers_AttackerDamageHandler_IsSuicide">AttackerDamageHandler.IsSuicide</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.AttackerDamageHandler.html#Exiled_API_Features_DamageHandlers_AttackerDamageHandler_AllowSelfDamage">AttackerDamageHandler.AllowSelfDamage</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.AttackerDamageHandler.html#Exiled_API_Features_DamageHandlers_AttackerDamageHandler_IsFriendlyFire">AttackerDamageHandler.IsFriendlyFire</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_Target">DamageHandler.Target</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_Attacker">DamageHandler.Attacker</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_TargetFootprint">DamageHandler.TargetFootprint</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_AttackerFootprint">DamageHandler.AttackerFootprint</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_Damage">DamageHandler.Damage</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_StartVelocity">DamageHandler.StartVelocity</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_DealtHealthDamage">DamageHandler.DealtHealthDamage</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_AbsorbedAhpDamage">DamageHandler.AbsorbedAhpDamage</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_ApplyDamage_Exiled_API_Features_Player_">DamageHandler.ApplyDamage(Player)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_Base">DamageHandlerBase.Base</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_CassieDeathAnnouncement">DamageHandlerBase.CassieDeathAnnouncement</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_ServerLogsText">DamageHandlerBase.ServerLogsText</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_DeathTranslation">DamageHandlerBase.DeathTranslation</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_As__1">DamageHandlerBase.As&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_BaseAs__1">DamageHandlerBase.BaseAs&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_Is__1___0__">DamageHandlerBase.Is&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_BaseIs__1___0__">DamageHandlerBase.BaseIs&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Features.DamageHandlers.html">Exiled.API.Features.DamageHandlers</a></h6>
+  <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
+  <h5 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class FirearmDamageHandler : AttackerDamageHandler</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler__ctor_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler.%23ctor(Exiled.API.Features.Items.Item%2CExiled.API.Features.Player%2CPlayerStatsSystem.DamageHandlerBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L32">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler__ctor_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.#ctor*"></a>
+  <h4 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler__ctor_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.#ctor(Exiled.API.Features.Items.Item,Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)">FirearmDamageHandler(Item, Player, DamageHandlerBase)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.html">FirearmDamageHandler</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FirearmDamageHandler(Item item, Player target, DamageHandlerBase baseHandler)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td><span class="parametername">item</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a> to be set.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>The target to be set.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
+        <td><span class="parametername">baseHandler</span></td>
+        <td><inheritdoc cref="P:Exiled.API.Features.DamageHandlers.DamageHandlerBase.Base"></inheritdoc></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Hitbox.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Hitbox%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L51">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Hitbox_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Hitbox*"></a>
+  <h4 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Hitbox" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Hitbox">Hitbox</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">HitboxType</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HitboxType Hitbox { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">HitboxType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Item.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L46">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Item_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Item*"></a>
+  <h4 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Item" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Item">Item</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a> used by the damage handler.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Item Item { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Penetration.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Penetration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L60">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Penetration_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Penetration*"></a>
+  <h4 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Penetration" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Penetration">Penetration</h4>
+  <div class="markdown level1 summary"><p>Gets the penetration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Penetration { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L36">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Type_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Type*"></a>
+  <h4 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_Type" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.Type">Type</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override DamageType Type { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandlerBase.html#Exiled_API_Features_DamageHandlers_DamageHandlerBase_Type">DamageHandlerBase.Type</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler_UseHumanHitboxes.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler.UseHumanHitboxes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L65">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_UseHumanHitboxes_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.UseHumanHitboxes*"></a>
+  <h4 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_UseHumanHitboxes" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.UseHumanHitboxes">UseHumanHitboxes</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the human hitboxes should be used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool UseHumanHitboxes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler_ProcessDamage_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler.ProcessDamage(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L68">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_ProcessDamage_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.ProcessDamage*"></a>
+  <h4 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_ProcessDamage_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.ProcessDamage(Exiled.API.Features.Player)">ProcessDamage(Player)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void ProcessDamage(Player player)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td><span class="parametername">player</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.DamageHandlers.AttackerDamageHandler.html#Exiled_API_Features_DamageHandlers_AttackerDamageHandler_ProcessDamage_Exiled_API_Features_Player_">AttackerDamageHandler.ProcessDamage(Player)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L77">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_ToString_" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.ToString*"></a>
+  <h4 id="Exiled_API_Features_DamageHandlers_FirearmDamageHandler_ToString" data-uid="Exiled.API.Features.DamageHandlers.FirearmDamageHandler.ToString">ToString()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html#Exiled_API_Features_DamageHandlers_DamageHandler_ToString">DamageHandler.ToString()</a></div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_DamageHandlers_FirearmDamageHandler.md&amp;value=---%0Auid%3A%20Exiled.API.Features.DamageHandlers.FirearmDamageHandler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/DamageHandlers/FirearmDamageHandler.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

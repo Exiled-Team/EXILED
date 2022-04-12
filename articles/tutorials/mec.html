@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>MEC (More Effective Coroutines) | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="MEC (More Effective Coroutines) | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../../docs/articles/toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="mec">
+
+<div class="NOTE"><h5>Note</h5><p>Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the <a class="xref" href="plugin-structure.html">Plugin Structure</a> tutorial if you are unfamiliar with setting up a plugin using EXILED.</p>
+</div>
+<h1 id="mec-more-effective-coroutines">MEC (More Effective Coroutines)</h1>
+<p>If you are unfamiliar with MEC, this will be a very brief and simple primer to get you started. <strong>MEC Coroutines</strong> are basically timed methods, that support waiting periods of time before continuing execution, without interrupting/sleeping the main game thread. MEC coroutines are safe to use with Unity, unlike traditional threading, which <em>will</em> crash the server.</p>
+<p>MEC is useful for plugins which require a pre-defined timeout between execution. As an example, an automatic nuke plugin would want to pause for a certain amount of seconds before activating the warhead. A supply drop plugin would want to wait in certain intervals before executing a supply drop. Both of these are possible with MEC.</p>
+<h2 id="setup">Setup</h2>
+<p>Unlike other API provided by SCP:SL, MEC requires a reference to the <code>Assembly-CSharp-firstpass</code> DLL file. After referencing this file, a <code>using MEC;</code> statement allows MEC to be used.</p>
+<h2 id="coroutine">Coroutine</h2>
+<p>MEC offers <a href="http://trinary.tech/category/mec/free/">tons of features</a> for controlling threads. For this tutorial, we are going to look at two of them: coroutines, and delayed calls. A coroutine is a method that is executed by MEC and supports delays. These methods must return type <code>IEnumerator&lt;float&gt;</code> and must be called by <code>Timing.RunCoroutine(Method())</code>. An example can be seen below, using an infinite loop with a 5 second delay.</p>
+<pre><code class="lang-cs">using MEC;
+using Exiled.API.Features;
+
+public void SomeMethod()
+{
+    Timing.RunCoroutine(MyCoroutine());
+}
+
+public IEnumerator&lt;float&gt; MyCoroutine()
+{
+    for (;;) //repeat the loop infinitely
+    {
+        Log.Info(&quot;Hey, I&#39;m a infinite loop!&quot;); //Call Log.Info to print a line to the game console/server logs.
+        yield return Timing.WaitForSeconds(5f); //Tells the coroutine to wait 5 seconds before continuing. Since this is at the end of the loop, it effectively stalls the loop from repeating for 5 seconds.
+    }
+}
+</code></pre><p>This example prints, &quot;Hey, I&#39;m an infinite loop!&quot; every 5 seconds infinitely. Coroutines can have multiple <code>yield return</code> statements.</p>
+<h2 id="delayed-calls">Delayed Calls</h2>
+<p>A simpler method of running an action after a delay is using <code>Timing.CallDelayed(float, Action)</code>, which executes code after a given number of seconds passes. This method does not require a coroutine to be created, hence why it&#39;s useful. An example can be seen below, logging a message 5 seconds after the method is called.</p>
+<pre><code class="lang-cs">using MEC;
+using Exiled.API.Features;
+
+public void SomeMethod()
+{
+    Timing.CallDelayed(5f, () =&gt; // Execute the provided method 5 seconds late.
+    {
+        Log.Info(&quot;This log was printed 5 seconds late!&quot;);
+    })
+}
+</code></pre><p>It is <strong><em>strongly</em></strong> recommended that you do some googling, or ask around <strong><a href="https://discord.gg/PyUkWTg">in the EXILED Discord server</a></strong> if you are unfamiliar with MEC and would like to learn more, get advice, or need help. Questions, no matter how &#39;stupid&#39; they are, will always be answered as helpfully and clearly as possible for plugin developers to excel. Better code is better for everyone.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/dev/docs/articles/tutorials/mec.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

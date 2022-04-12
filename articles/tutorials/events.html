@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Events: What are they? | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Events: What are they? | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../../docs/articles/toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="events">
+
+<div class="NOTE"><h5>Note</h5><p>Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the <a class="xref" href="plugin-structure.html">Plugin Structure</a> tutorial if you are unfamiliar with setting up a plugin using EXILED.</p>
+</div>
+<h1 id="events-what-are-they">Events: What are they?</h1>
+<p><strong>Events</strong> play a key role in the EXILED framework and all of the plugins utilizing it. Almost every plugin created using the EXILED framework uses events in one way or another. So, what are they? An event is a simple way of being informed when <em>something</em> happens. Events range from the round ending, to a player throwing an item or opening a door, to even SCP-096 being enraged! Events allow you to attach code that executes when something occurs before, during, or at the conclusion of a round.</p>
+<p>For example, say that you have the following method.</p>
+<pre><code class="lang-cs">public void OnDead()
+{
+    // Show hint to player.
+}
+</code></pre><p>With EXILED, it is possible to achieve the desired result: Showing a hint to a player who dies.</p>
+<h2 id="event-structure">Event structure</h2>
+<p>The EXILED framework consists of two different types of events: Events that can be disallowed, and those that cannot. Events that can be disallowed can prevent certain events from happening; as an example, preventing a player from dying when they normally should. The ability to prevent certain events from happening is what gives EXILED its beauty.</p>
+<p>All events are part of a static class called a <strong>handler</strong>. All handlers can be found in the <code>Exiled.Events</code> namespace. Every handler is related to a specific feature in the game (eg. <code>Exiled.Events.Scp096</code> contains SCP-096 related events).</p>
+<p>Almost all events have a corresponding <strong>event argument</strong> class. The event argument provides the data of an event, as well as the ability to prevent it from occurring. All event arguments can be found in the <code>Exiled.Events.EventArgs</code> namespace, and all event arguments inherit from <code>System.EventArgs</code>.</p>
+<h3 id="example-enraging-event">Example: Enraging event</h3>
+<p>The following is the structure of the <code>Exiled.Events.EventArgs.EnragingEventArgs</code>.</p>
+<pre><code class="lang-cs">public class EnragingEventArgs : System.EventArgs
+{
+    // Note: Constructor omitted.
+    public Scp096 Scp096 { get; } // The SCP-096 instance.
+    public Player Player { get; } // The player controlling SCP-096.
+    public bool IsAllowed { get; set; } // Whether or not SCP-096 can be enraged.
+}
+</code></pre><p>Notice the <code>IsAllowed</code> property of the event. This property, which defaults to <code>true</code>, can be set to <code>false</code> to prevent SCP-096 from being enraged. For most events that can be disallowed, <code>IsAllowed</code> is set to <code>true</code> by default, and plugins can set it to <code>false</code> to prevent the event from occurring. However, in some cases, <code>IsAllowed</code> defaults to false and plugins can set it to <code>true</code> to <em>allow</em> the event to occur. An example of this behavior is the <code>InteractingDoor</code> event. <code>IsAllowed</code> will default to <code>false</code> in this event if a player cannot open a door, however plugins may set it to <code>true</code> to allow the player to open it regardless.</p>
+<h2 id="connecting-events">Connecting events</h2>
+<p>Events can be connected and disconnected by using the <code>+=</code> and <code>-=</code> operators. These can be used in the plugin&#39;s <code>OnEnabled</code> and <code>OnDisabled</code> methods, respectively.</p>
+<pre><code class="lang-cs">// Base plugin class
+// This example assumes a method called &quot;OnEnraging&quot; exists in this class. For best practice, you should create a new class to handle events.
+using Exiled.Events;
+
+public override void OnEnabled()
+{
+    Scp096.Enraging += OnEnraging; // Scp096 is the event handler, while Enraging is the name of the event. The += operator connects this event to the provided method.
+}
+
+public override void OnDisabled()
+{
+    Scp096.Enraging -= OnEnraging; // The -= operator disconnects this event from the provided method.
+}
+
+// Some other class
+using Exiled.Events.EventArgs;
+
+public void OnEnraging(EnragingEventArgs ev) // ev is the arguments for the event. Every event has a different argument class with different parameters, so make sure to check its documentation.
+{
+    Log.Info(ev.Player.Nickname + &quot; has just been enraged!&quot;);
+}
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/dev/docs/articles/tutorials/events.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Plugin Structure | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Plugin Structure | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.2.0">
+    
+    <link rel="shortcut icon" href="../../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../../docs/articles/toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../assets/Exiled_Icon_50x50.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="plugin_structure">
+
+<div class="NOTE"><h5>Note</h5><p>This tutorial assumes that you are familiar with C#.</p>
+</div>
+<h1 id="plugin-structure">Plugin Structure</h1>
+<p>In order to be loaded onto the framework, <em>every</em> plugin must follow a certain structure and inherit from certain members. If this is not achieved, the plugin will not execute. This tutorial will explain the proper setup for a plugin on the EXILED framework.</p>
+<h2 id="plugin-core">Plugin Core</h2>
+<p>Every plugin must have a .cs file that consists of the plugin class itself. This file (and the class itself) are typically simply named &quot;Plugin&quot;; however, any name is appropriate for the main plugin class. This example will use &quot;Plugin&quot; as the name of the class.</p>
+<p>After the main file is created, the Plugin class must be declared as a plugin, so that the EXILED framework loads it. This can be done by inheriting the <code>Plugin&lt;IConfig&gt;</code> class, provided in the <code>Exiled.API.Features</code> namespace.</p>
+<p>The following example shows how to properly inherit the class. However, notice the <code>Config</code> class inside of the angled brackets. This class must be created and must inherit from <code>IConfig</code>, which is part of the <code>Exiled.API.Interfaces</code> namespace. Upon the creation of the Config class, the interface will require you to add an <code>IsEnabled</code> property.</p>
+<pre><code class="lang-cs">namespace MyPluginNamespace
+{
+    using Exiled.API.Features;
+
+    public class Plugin : Plugin&lt;Config&gt;
+    {
+        // This plugin will now be recognized by the EXILED framework!
+    }
+
+    // It is strongly encouraged to create a separate file for your Config class.
+    using Exiled.API.Interfaces;
+
+    public class Config : IConfig
+    {
+        public bool IsEnabled { get; set; }
+    }
+}
+</code></pre><p>By creating the <code>Config</code> class and including it in the angled brackets, the rest of the plugin&#39;s code, as well as the EXILED framework, will recognize that the class resembles configuration for server owners. For more information about setting up configuration, see the Configuration section below.</p>
+<h2 id="onenabled-and-ondisabled">OnEnabled and OnDisabled</h2>
+<p>The plugin is now successfully loaded onto the framework. However, it doesn&#39;t actually do anything; no functionality has been assigned. The <code>Plugin&lt;IConfig&gt;</code> class provides two overridable methods in order to give the plugin functionality: <code>OnEnabled</code> and <code>OnDisabled</code>. These two methods do exactly as they sound: Execute when the plugin is enabled/loaded, and when it is disabled.</p>
+<p>The following example shows how to utilize these methods to send a message to the console.</p>
+<pre><code class="lang-cs">namespace MyPluginNamespace
+{
+    using Exiled.API.Features;
+
+    public class Plugin : Plugin&lt;Config&gt;
+    {
+        public override void OnEnabled()
+        {
+            Log.Info(&quot;My plugin has been enabled!&quot;);
+        }
+
+        public override void OnDisabled()
+        {
+            Log.Info(&quot;My plugin has been disabled!&quot;);
+        }
+    }
+
+    // Config.cs file
+    using Exiled.API.Interfaces;
+
+    public class Config : IConfig
+    {
+        public bool IsEnabled { get; set; }
+    }
+}
+</code></pre><p>All of the code for the plugin <em>must</em> be enabled in the OnEnabled method, and <em>must</em> be disabled on the OnDisabled method. It is important that these two methods execute as expected, because server hosts can enable and disable plugins as much as they&#39;d like, and the plugin <em>must</em> be able to respond to these changes appropriately.</p>
+<h2 id="plugin-data">Plugin Data</h2>
+<p>In order for a plugin to be submitted for public use, the plugin must override three properties: <code>Name</code>, <code>Author</code>, and <code>Version</code>. The first two are strings, whereas the last one is a <code>Version</code> class (<code>using System;</code> is required).</p>
+<p>The following example shows how to properly override this data.</p>
+<pre><code class="lang-cs">namespace MyPluginNamespace
+{
+    using System;
+    using Exiled.API.Features;
+
+    public class Plugin : Plugin&lt;Config&gt;
+    {
+        public override string Name =&gt; &quot;My Awesome Plugin&quot;;
+        public override string Author =&gt; &quot;MyName&quot;;
+        public override Version Version =&gt; new Version(1, 0, 0);
+    }
+
+    // ...
+}
+</code></pre><h2 id="configuration">Configuration</h2>
+<p>This section is related to creating and reading the value of configuration.</p>
+<h3 id="creating-configs">Creating Configs</h3>
+<p>A lot of plugins provide configuration to allow the server hosts to change various features of the plugin. Luckily, creating configuration is very simple.</p>
+<p>To start, take a look at your Config.cs file.</p>
+<pre><code class="lang-cs">namespace MyPluginNamespace
+{
+    using Exiled.API.Interfaces;
+
+    public class Config : IConfig
+    {
+        public bool IsEnabled { get; set; }
+    }
+}
+</code></pre><p>There is currently one config, called <code>IsEnabled</code>. As stated above, this config is required and cannot be removed. However, more config can be added. The YAML serialization allows almost any type to be added and still work, including bools, ints, arrays of anything, enums, and even whole classes!</p>
+<p>In the following example, a config file with three configs is created.</p>
+<pre><code class="lang-cs">namespace MyPluginNamespace
+{
+    using Exiled.API.Interfaces;
+
+    public class Config : IConfig
+    {
+        public bool IsEnabled { get; set; }
+        public bool MyBoolConfig { get; set; }
+        public string MyStringConfig { get; set; }
+        public int MyIntConfig { get; set; } = 5; // Set to 5 by default.
+    }
+}
+</code></pre><p>To server hosts, the functionality of these configs might be confusing at first. So, the <code>System.ComponentModel.DescriptionAttribute</code> can be used to provide a description for each config!</p>
+<pre><code class="lang-cs">namespace MyPluginNamespace
+{
+    using System.ComponentModel;
+    using Exiled.API.Interfaces;
+
+    public class Config : IConfig
+    {
+        [Description(&quot;Whether or not the plugin is enabled.&quot;)]
+        public bool IsEnabled { get; set; }
+
+        [Description(&quot;Config that must be true or false!&quot;)]
+        public bool MyBoolConfig { get; set; }
+
+        [Description(&quot;Config that must be a string!&quot;)]
+        public string MyStringConfig { get; set; }
+
+        [Description(&quot;Config that must be a number! Defaults to 5.&quot;)]
+        public int MyIntConfig { get; set; } = 5;
+    }
+}
+</code></pre><h3 id="reading-configs">Reading Configs</h3>
+<div class="NOTE"><h5>Note</h5><p>You do not need to read the value of the <code>IsEnabled</code> config; EXILED will automatically prevent your plugin from executing if its <code>IsEnabled</code> config is set to false.</p>
+</div>
+<p>Reading configuration is more simple than creating it. The base <code>Plugin&lt;IConfig&gt;</code> class provides a property, called <code>Config</code>, which can be used to access these values.</p>
+<p>In the following example, our config from the previous class is displayed when the plugin starts.</p>
+<pre><code class="lang-cs">namespace MyPluginNamespace
+{
+    using Exiled.API.Features;
+
+    public class Plugin : Plugin&lt;Config&gt;
+    {
+        public override void OnEnabled()
+        {
+            Log.Info(&quot;Boolean config: &quot; + Config.MyBoolConfig);
+            Log.Info(&quot;String config: &quot; + Config.MyStringConfig);
+            Log.Info(&quot;Int config: &quot; + Config.MyIntConfig);
+        }
+    }
+
+    // Config.cs file
+    using System.ComponentModel;
+    using Exiled.API.Interfaces;
+
+    public class Config : IConfig
+    {
+        [Description(&quot;Whether or not the plugin is enabled.&quot;)]
+        public bool IsEnabled { get; set; }
+
+        [Description(&quot;Config that must be true or false!&quot;)]
+        public bool MyBoolConfig { get; set; }
+
+        [Description(&quot;Config that must be a string!&quot;)]
+        public string MyStringConfig { get; set; }
+
+        [Description(&quot;Config that must be a number! Defaults to 5.&quot;)]
+        public int MyIntConfig { get; set; } = 5;
+    }
+}
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/dev/docs/articles/tutorials/plugin-structure.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

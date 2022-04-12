@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Log
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.2.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -125,10 +125,71 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Assert_System_Boolean_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Assert(System.Boolean%2CSystem.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L148">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Log_Assert_" data-uid="Exiled.API.Features.Log.Assert*"></a>
+  <h4 id="Exiled_API_Features_Log_Assert_System_Boolean_System_Object_" data-uid="Exiled.API.Features.Log.Assert(System.Boolean,System.Object)">Assert(Boolean, Object)</h4>
+  <div class="markdown level1 summary"><p>Sends an <a class="xref" href="Exiled.API.Features.Log.html#Exiled_API_Features_Log_Error_System_Object_">Error(Object)</a> with the provided message if the condition is false and stops the execution.
+<example> For example:<p>
+<pre><code>    Player ply = Player.Get(2);
+    Log.Assert(ply is not null, &quot;The player with the id 2 is null&quot;);</code></pre>
+<p>results in it logging an error if the player is null and not continuing.
+</example></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Assert(bool condition, object message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">condition</span></td>
+        <td><p>The conditional expression to evaluate. If the condition is true it will continue.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The information message. The error and exception will show this message.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Exception</span></td>
+        <td><p>If the condition is false. It throws an exception stopping the execution.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Debug_System_Object_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Debug(System.Object%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L31">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L37">View Source</a>
   </span>
   <a id="Exiled_API_Features_Log_Debug_" data-uid="Exiled.API.Features.Log.Debug*"></a>
   <h4 id="Exiled_API_Features_Log_Debug_System_Object_System_Boolean_" data-uid="Exiled.API.Features.Log.Debug(System.Object,System.Boolean)">Debug(Object, Boolean)</h4>
@@ -166,10 +227,124 @@ Server must have exiled_debug config enabled.</p>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Error_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Error(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Debug_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Debug(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L49">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Log_Debug_" data-uid="Exiled.API.Features.Log.Debug*"></a>
+  <h4 id="Exiled_API_Features_Log_Debug_System_String_System_Boolean_" data-uid="Exiled.API.Features.Log.Debug(System.String,System.Boolean)">Debug(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Sends a <span class="xref">Discord.LogLevel.Debug</span> level messages to the game console.
+Server must have exiled_debug config enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Debug(string message, bool canBeSent = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be sent.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">canBeSent</span></td>
+        <td><p>Indicates whether the log can be sent or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_DebugObject__1___0_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.DebugObject%60%601(%60%600%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L63">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Log_DebugObject_" data-uid="Exiled.API.Features.Log.DebugObject*"></a>
+  <h4 id="Exiled_API_Features_Log_DebugObject__1___0_System_Boolean_" data-uid="Exiled.API.Features.Log.DebugObject``1(``0,System.Boolean)">DebugObject&lt;T&gt;(T, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Sends a <span class="xref">Discord.LogLevel.Debug</span> level messages to the game console.
+Server must have exiled_debug config enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T DebugObject&lt;T&gt;(T object, bool canBeSent = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">object</span></td>
+        <td><p>The object to be logged and returned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">canBeSent</span></td>
+        <td><p>Indicates whether the log can be sent or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>Returns the <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> object inputted in <code data-dev-comment-type="paramref" class="paramref">object</code>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The inputted object&apos;s type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Error_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Error(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L89">View Source</a>
   </span>
   <a id="Exiled_API_Features_Log_Error_" data-uid="Exiled.API.Features.Log.Error*"></a>
   <h4 id="Exiled_API_Features_Log_Error_System_Object_" data-uid="Exiled.API.Features.Log.Error(System.Object)">Error(Object)</h4>
@@ -194,6 +369,42 @@ It&apos;s recommended to send any messages in the catch block of a try/catch as 
     <tbody>
       <tr>
         <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be sent.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Error_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Error(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L97">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Log_Error_" data-uid="Exiled.API.Features.Log.Error*"></a>
+  <h4 id="Exiled_API_Features_Log_Error_System_String_" data-uid="Exiled.API.Features.Log.Error(System.String)">Error(String)</h4>
+  <div class="markdown level1 summary"><p>Sends a <span class="xref">Discord.LogLevel.Error</span> level messages to the game console.
+This should be used to send errors only.
+It&apos;s recommended to send any messages in the catch block of a try/catch as errors with the exception string.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Error(string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">message</span></td>
         <td><p>The message to be sent.</p>
 </td>
@@ -236,10 +447,44 @@ It&apos;s recommended to send any messages in the catch block of a try/catch as 
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Info_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Info(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L29">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Log_Info_" data-uid="Exiled.API.Features.Log.Info*"></a>
+  <h4 id="Exiled_API_Features_Log_Info_System_String_" data-uid="Exiled.API.Features.Log.Info(System.String)">Info(String)</h4>
+  <div class="markdown level1 summary"><p>Sends a <span class="xref">Discord.LogLevel.Info</span> level messages to the game console.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Info(string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be sent.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Send_System_Object_Discord_LogLevel_System_ConsoleColor_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Send(System.Object%2CDiscord.LogLevel%2CSystem.ConsoleColor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L57">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L105">View Source</a>
   </span>
   <a id="Exiled_API_Features_Log_Send_" data-uid="Exiled.API.Features.Log.Send*"></a>
   <h4 id="Exiled_API_Features_Log_Send_System_Object_Discord_LogLevel_System_ConsoleColor_" data-uid="Exiled.API.Features.Log.Send(System.Object,Discord.LogLevel,System.ConsoleColor)">Send(Object, LogLevel, ConsoleColor)</h4>
@@ -282,10 +527,56 @@ It&apos;s recommended to send any messages in the catch block of a try/catch as 
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Send_System_String_Discord_LogLevel_System_ConsoleColor_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Send(System.String%2CDiscord.LogLevel%2CSystem.ConsoleColor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L116">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Log_Send_" data-uid="Exiled.API.Features.Log.Send*"></a>
+  <h4 id="Exiled_API_Features_Log_Send_System_String_Discord_LogLevel_System_ConsoleColor_" data-uid="Exiled.API.Features.Log.Send(System.String,Discord.LogLevel,System.ConsoleColor)">Send(String, LogLevel, ConsoleColor)</h4>
+  <div class="markdown level1 summary"><p>Sends a log message to the game console.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Send(string message, LogLevel level, ConsoleColor color = ConsoleColor.Gray)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be sent.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Discord.LogLevel</span></td>
+        <td><span class="parametername">level</span></td>
+        <td><p>The message level of importance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ConsoleColor</span></td>
+        <td><span class="parametername">color</span></td>
+        <td><p>The message color.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_SendRaw_System_Object_System_ConsoleColor_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.SendRaw(System.Object%2CSystem.ConsoleColor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L67">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L126">View Source</a>
   </span>
   <a id="Exiled_API_Features_Log_SendRaw_" data-uid="Exiled.API.Features.Log.SendRaw*"></a>
   <h4 id="Exiled_API_Features_Log_SendRaw_System_Object_System_ConsoleColor_" data-uid="Exiled.API.Features.Log.SendRaw(System.Object,System.ConsoleColor)">SendRaw(Object, ConsoleColor)</h4>
@@ -322,10 +613,50 @@ It&apos;s recommended to send any messages in the catch block of a try/catch as 
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_SendRaw_System_String_System_ConsoleColor_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.SendRaw(System.String%2CSystem.ConsoleColor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L133">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Log_SendRaw_" data-uid="Exiled.API.Features.Log.SendRaw*"></a>
+  <h4 id="Exiled_API_Features_Log_SendRaw_System_String_System_ConsoleColor_" data-uid="Exiled.API.Features.Log.SendRaw(System.String,System.ConsoleColor)">SendRaw(String, ConsoleColor)</h4>
+  <div class="markdown level1 summary"><p>Sends a raw log message to the game console.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void SendRaw(string message, ConsoleColor color)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be sent.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ConsoleColor</span></td>
+        <td><span class="parametername">color</span></td>
+        <td><p>The <span class="xref">System.ConsoleColor</span> of the message.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Warn_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Warn(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L75">View Source</a>
   </span>
   <a id="Exiled_API_Features_Log_Warn_" data-uid="Exiled.API.Features.Log.Warn*"></a>
   <h4 id="Exiled_API_Features_Log_Warn_System_Object_" data-uid="Exiled.API.Features.Log.Warn(System.Object)">Warn(Object)</h4>
@@ -348,6 +679,40 @@ It&apos;s recommended to send any messages in the catch block of a try/catch as 
     <tbody>
       <tr>
         <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">message</span></td>
+        <td><p>The message to be sent.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Log_Warn_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Log.Warn(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Log.cs/#L81">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Log_Warn_" data-uid="Exiled.API.Features.Log.Warn*"></a>
+  <h4 id="Exiled_API_Features_Log_Warn_System_String_" data-uid="Exiled.API.Features.Log.Warn(System.String)">Warn(String)</h4>
+  <div class="markdown level1 summary"><p>Sends a <span class="xref">Discord.LogLevel.Warn</span> level messages to the game console.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Warn(string message)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
         <td><span class="parametername">message</span></td>
         <td><p>The message to be sent.</p>
 </td>

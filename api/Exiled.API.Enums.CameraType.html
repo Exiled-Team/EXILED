@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Enum CameraType
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.2.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -113,6 +113,11 @@
 </td>
       </tr>
       <tr>
+        <td id="Exiled_API_Enums_CameraType_Corner">Corner</td>
+        <td><p>A corner, zone unknown (either LCZ, HCZ, or EZ).</p>
+</td>
+      </tr>
+      <tr>
         <td id="Exiled_API_Enums_CameraType_EscapeZone">EscapeZone</td>
         <td><p>Represents the ESCAPE ZONE camera (facing toward the ESCAPE door).</p>
 </td>
@@ -123,8 +128,13 @@
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_EzChkpHcz">EzChkpHcz</td>
-        <td><p>Represents the camera facing toward the heavy containment zone checkpoint (in EZ).</p>
+        <td id="Exiled_API_Enums_CameraType_EzCorner">EzCorner</td>
+        <td><p>Represents a camera in an EZ corner.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_EzEntrance">EzEntrance</td>
+        <td><p>Represents the camera facing toward the entrance zone checkpoint (in HCZ).</p>
 </td>
       </tr>
       <tr>
@@ -135,6 +145,11 @@
       <tr>
         <td id="Exiled_API_Enums_CameraType_EzGateB">EzGateB</td>
         <td><p>Represents the camera inside of Gate B (entrance zone).</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_EzHall">EzHall</td>
+        <td><p>Represents a camera in an EZ hallway.</p>
 </td>
       </tr>
       <tr>
@@ -153,13 +168,38 @@
 </td>
       </tr>
       <tr>
+        <td id="Exiled_API_Enums_CameraType_EzOffice">EzOffice</td>
+        <td><p>Represents a camera inside of an EZ office.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_EzTIntersection">EzTIntersection</td>
+        <td><p>Represents a camera in an EZ T-Intersection.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_EzXIntersection">EzXIntersection</td>
+        <td><p>Represents a camera in an EZ X-Intersection.</p>
+</td>
+      </tr>
+      <tr>
         <td id="Exiled_API_Enums_CameraType_GateA">GateA</td>
-        <td><p>Represents the camera outside of the Gate A elevator (surface).</p>
+        <td><p>An unspecified camera related to Gate A - Either the camera in EZ, or the closest camera to the elevator on the surface.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_GateB">GateB</td>
+        <td><p>An unspecified camera related to Gate B - Either the camera in EZ, or the camera near the surface gate on the surface.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_Hallway">Hallway</td>
+        <td><p>A hallway, zone unknown (either LCZ or HCZ).</p>
 </td>
       </tr>
       <tr>
         <td id="Exiled_API_Enums_CameraType_Hcz049Armory">Hcz049Armory</td>
-        <td><p>Represents the camera that faces toward the 049_ARMORY door.</p>
+        <td><p>Represents the camera that faces toward the <code>049_ARMORY</code> <a class="xref" href="Exiled.API.Features.Door.html">Door</a>.</p>
 </td>
       </tr>
       <tr>
@@ -169,7 +209,12 @@
       </tr>
       <tr>
         <td id="Exiled_API_Enums_CameraType_Hcz049Hall">Hcz049Hall</td>
-        <td><p>Represents the camera in the SCP-049 <span class="xref">Lift</span> hallway that is not in front of the elevator.</p>
+        <td><p>Represents one of the four cameras found in the hallway leading to SCP-049&apos;s containment chamber, and the SCP-049 armory.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_Hcz079Control">Hcz079Control</td>
+        <td><p>Represents the camera inside SCP-079&apos;s control room.</p>
 </td>
       </tr>
       <tr>
@@ -178,7 +223,7 @@
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_Hcz079Interior">Hcz079Interior</td>
+        <td id="Exiled_API_Enums_CameraType_Hcz079Main">Hcz079Main</td>
         <td><p>Represents the camera inside SCP-079&apos;s containment chamber.</p>
 </td>
       </tr>
@@ -228,8 +273,13 @@
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_HczAChkp">HczAChkp</td>
-        <td><p>Represents the camera facing the LCZ/HCZ A checkpoint, on the Heavy Containment side.</p>
+        <td id="Exiled_API_Enums_CameraType_HczAEntrance">HczAEntrance</td>
+        <td><p>Represents the camera facing the LCZ/HCZ A checkpoint, on the Light Containment side.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_HczALifts">HczALifts</td>
+        <td><p>Represents the camera in the LCZ A <span class="xref">Lift</span> in HCZ.</p>
 </td>
       </tr>
       <tr>
@@ -238,13 +288,28 @@
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_HczBChkp">HczBChkp</td>
-        <td><p>Represents the camera facing the LCZ/HCZ B checkpoint, on the Heavy Containment side.</p>
+        <td id="Exiled_API_Enums_CameraType_HczBEntrance">HczBEntrance</td>
+        <td><p>Represents the camera facing the LCZ/HCZ B checkpoint, on the Light Containment side.</p>
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_HczChkpEz">HczChkpEz</td>
-        <td><p>Represents the camera facing toward the entrance zone checkpoint (in HCZ).</p>
+        <td id="Exiled_API_Enums_CameraType_HczBLifts">HczBLifts</td>
+        <td><p>Represents the camera in the LCZ B <span class="xref">Lift</span> in heavy.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_HczCorner">HczCorner</td>
+        <td><p>Represents a camera in a HCZ corner.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_HczEntrance">HczEntrance</td>
+        <td><p>Represents the camera facing toward the heavy containment zone checkpoint (in EZ).</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_HczHall">HczHall</td>
+        <td><p>Represents a camera in a HCZ hallway.</p>
 </td>
       </tr>
       <tr>
@@ -273,6 +338,16 @@
 </td>
       </tr>
       <tr>
+        <td id="Exiled_API_Enums_CameraType_HczTeslaGate">HczTeslaGate</td>
+        <td><p>Represents a camera placed next to an HCZ tesla gate.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_HczTIntersection">HczTIntersection</td>
+        <td><p>Represents a camera in a HCZ T-Intersection.</p>
+</td>
+      </tr>
+      <tr>
         <td id="Exiled_API_Enums_CameraType_HczWarheadArmory">HczWarheadArmory</td>
         <td><p>Represents the camera inside the alpha warhead armory.</p>
 </td>
@@ -293,32 +368,27 @@
 </td>
       </tr>
       <tr>
+        <td id="Exiled_API_Enums_CameraType_HczXIntersection">HczXIntersection</td>
+        <td><p>Represents a camera in a HCZ X-Intersection.</p>
+</td>
+      </tr>
+      <tr>
         <td id="Exiled_API_Enums_CameraType_Helipad">Helipad</td>
         <td><p>Represents the HELIPAD camera.</p>
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_Lcz012">Lcz012</td>
-        <td><p>Represents the camera outside of SCP-012&apos;s room</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Exiled_API_Enums_CameraType_Lcz012Bottom">Lcz012Bottom</td>
-        <td><p>Represents the camera at the bottom of SCP-012&apos;s containment chamber.</p>
-</td>
-      </tr>
-      <tr>
         <td id="Exiled_API_Enums_CameraType_Lcz173Armory">Lcz173Armory</td>
-        <td><p>Represents the camera outside the 173_ARMORY door.</p>
+        <td><p>Represents the camera outside the <code>173_ARMORY</code> door.</p>
 </td>
       </tr>
       <tr>
         <td id="Exiled_API_Enums_CameraType_Lcz173Bottom">Lcz173Bottom</td>
-        <td><p>Represents the camera above the 173_BOTTOM door.</p>
+        <td><p>Represents the camera above the <code>173_BOTTOM</code> door.</p>
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_Lcz173Containment">Lcz173Containment</td>
+        <td id="Exiled_API_Enums_CameraType_Lcz173Chamber">Lcz173Chamber</td>
         <td><p>Represents the camera inside of SCP-173&apos;s containment chamber.</p>
 </td>
       </tr>
@@ -328,8 +398,18 @@
 </td>
       </tr>
       <tr>
+        <td id="Exiled_API_Enums_CameraType_Lcz330Chamber">Lcz330Chamber</td>
+        <td><p>Represents the camera inside SCP-330&apos;s containment chamber.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_Lcz330Hall">Lcz330Hall</td>
+        <td><p>Represents the camera inside the hall leading to SCP-330&apos;s containment chamber.</p>
+</td>
+      </tr>
+      <tr>
         <td id="Exiled_API_Enums_CameraType_Lcz914">Lcz914</td>
-        <td><p>Represents the camera inside SCP-914.</p>
+        <td><p>Represents the camera inside SCP-914&apos;s containment chamber.</p>
 </td>
       </tr>
       <tr>
@@ -338,17 +418,17 @@
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_LczAChkp">LczAChkp</td>
-        <td><p>Represents the camera facing the LCZ/HCZ A checkpoint, on the Light Containment side.</p>
+        <td id="Exiled_API_Enums_CameraType_LczAEntrance">LczAEntrance</td>
+        <td><p>Represents the camera facing the LCZ/HCZ A checkpoint, on the Heavy Containment side.</p>
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_LczAHeavy">LczAHeavy</td>
-        <td><p>Represents the camera in the LCZ A <span class="xref">Lift</span> in HCZ.</p>
+        <td id="Exiled_API_Enums_CameraType_LczAirlock">LczAirlock</td>
+        <td><p>Represents a camera inside of an LCZ airlock.</p>
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_LczALight">LczALight</td>
+        <td id="Exiled_API_Enums_CameraType_LczALifts">LczALifts</td>
         <td><p>Represents the camera in the LCZ A <span class="xref">Lift</span> in LCZ.</p>
 </td>
       </tr>
@@ -358,23 +438,18 @@
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_LczBChkp">LczBChkp</td>
-        <td><p>Represents the camera facing the LCZ/HCZ B checkpoint, on the Light Containment side.</p>
+        <td id="Exiled_API_Enums_CameraType_LczBEntrance">LczBEntrance</td>
+        <td><p>Represents the camera facing the LCZ/HCZ B checkpoint, on the Heavy Containment side.</p>
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_LczBHeavy">LczBHeavy</td>
-        <td><p>Represents the camera in the LCZ B <span class="xref">Lift</span> in heavy.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Exiled_API_Enums_CameraType_LczBLight">LczBLight</td>
+        <td id="Exiled_API_Enums_CameraType_LczBLifts">LczBLifts</td>
         <td><p>Represents the camera in the LCZ B <span class="xref">Lift</span> in LCZ.</p>
 </td>
       </tr>
       <tr>
         <td id="Exiled_API_Enums_CameraType_LczCafe">LczCafe</td>
-        <td><p>Represents the LCZ cafe.</p>
+        <td><p>Represents the LCZ cafe/office, also known as PC-15.</p>
 </td>
       </tr>
       <tr>
@@ -383,13 +458,43 @@
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_LczGlassBox">LczGlassBox</td>
+        <td id="Exiled_API_Enums_CameraType_LczCorner">LczCorner</td>
+        <td><p>Represents a camera in a LCZ corner.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_LczGlassRoom">LczGlassRoom</td>
         <td><p>Represents the camera inside SCP-372&apos;s containment room.</p>
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_LczPlants">LczPlants</td>
-        <td><p>Represents the plant room in LCZ.</p>
+        <td id="Exiled_API_Enums_CameraType_LczGreenhouse">LczGreenhouse</td>
+        <td><p>Represents the greenhouse room in LCZ.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_LczHall">LczHall</td>
+        <td><p>Represents a camera in a LCZ hallway.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_LczTIntersection">LczTIntersection</td>
+        <td><p>Represents a camera in a LCZ T-Intersection.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_LczWC">LczWC</td>
+        <td><p>Represents the camera inside the WC hallway.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_LczXIntersection">LczXIntersection</td>
+        <td><p>Represents a camera in a LCZ X-Intersection.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_Office">Office</td>
+        <td><p>An office, zone unknown (either LCZ or EZ).</p>
 </td>
       </tr>
       <tr>
@@ -403,6 +508,16 @@
 </td>
       </tr>
       <tr>
+        <td id="Exiled_API_Enums_CameraType_SurfaceGateA">SurfaceGateA</td>
+        <td><p>Represents the camera outside of the Gate A elevator (surface).</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_CameraType_TIntersection">TIntersection</td>
+        <td><p>A T-insection, zone unknown (either LCZ or HCZ).</p>
+</td>
+      </tr>
+      <tr>
         <td id="Exiled_API_Enums_CameraType_Tower">Tower</td>
         <td><p>Represents the camera on the tower at Gate A.</p>
 </td>
@@ -413,8 +528,8 @@
 </td>
       </tr>
       <tr>
-        <td id="Exiled_API_Enums_CameraType_WC">WC</td>
-        <td><p>Represents the camera inside the WC hallway.</p>
+        <td id="Exiled_API_Enums_CameraType_XIntersection">XIntersection</td>
+        <td><p>An X-intersection, zone unknown (either LCZ or HCZ).</p>
 </td>
       </tr>
     </tbody>

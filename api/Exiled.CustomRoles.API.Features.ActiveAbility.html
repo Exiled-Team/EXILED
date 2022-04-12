@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ActiveAbility
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.2.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -107,16 +107,28 @@
       <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_Players">CustomAbility.Players</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_AbilityType">CustomAbility.AbilityType</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_Get_System_String_">CustomAbility.Get(String)</a>
     </div>
     <div>
       <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_TryGet_System_String_Exiled_CustomRoles_API_Features_CustomAbility__">CustomAbility.TryGet(String, CustomAbility)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_TryRegister">CustomAbility.TryRegister()</a>
+      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_RegisterAbilities_System_Boolean_System_Object_">CustomAbility.RegisterAbilities(Boolean, Object)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_TryUnregister">CustomAbility.TryUnregister()</a>
+      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_RegisterAbilities_System_Collections_Generic_IEnumerable_System_Type__System_Boolean_System_Boolean_System_Object_">CustomAbility.RegisterAbilities(IEnumerable&lt;Type&gt;, Boolean, Boolean, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_UnregisterAbilities">CustomAbility.UnregisterAbilities()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_UnregisterAbilities_System_Collections_Generic_IEnumerable_System_Type__System_Boolean_">CustomAbility.UnregisterAbilities(IEnumerable&lt;Type&gt;, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_UnregisterAbilities_System_Collections_Generic_IEnumerable_Exiled_CustomRoles_API_Features_CustomAbility__System_Boolean_">CustomAbility.UnregisterAbilities(IEnumerable&lt;CustomAbility&gt;, Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_AddAbility_Exiled_API_Features_Player_">CustomAbility.AddAbility(Player)</a>
@@ -134,7 +146,7 @@
       <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_SubscribeEvents">CustomAbility.SubscribeEvents()</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_UnSubscribeEvents">CustomAbility.UnSubscribeEvents()</a>
+      <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_UnsubscribeEvents">CustomAbility.UnsubscribeEvents()</a>
     </div>
     <div>
       <a class="xref" href="Exiled.CustomRoles.API.Features.CustomAbility.html#Exiled_CustomRoles_API_Features_CustomAbility_AbilityAdded_Exiled_API_Features_Player_">CustomAbility.AbilityAdded(Player)</a>
@@ -177,7 +189,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_ActivePlayers.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.ActivePlayers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L51">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L49">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_ActivePlayers_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.ActivePlayers*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_ActivePlayers" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.ActivePlayers">ActivePlayers</h4>
@@ -208,7 +220,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_CanUseOverride.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.CanUseOverride%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L39">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L37">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_CanUseOverride_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.CanUseOverride*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_CanUseOverride" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.CanUseOverride">CanUseOverride</h4>
@@ -239,7 +251,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_Cooldown.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.Cooldown%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L34">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L32">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_Cooldown_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.Cooldown*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_Cooldown" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.Cooldown">Cooldown</h4>
@@ -270,7 +282,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_Duration.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.Duration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L29">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L27">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_Duration_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.Duration*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_Duration" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.Duration">Duration</h4>
@@ -301,7 +313,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_LastUsed.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.LastUsed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L45">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L43">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_LastUsed_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.LastUsed*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_LastUsed" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.LastUsed">LastUsed</h4>
@@ -334,7 +346,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_AbilityEnded_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.AbilityEnded(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L133">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L131">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_AbilityEnded_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.AbilityEnded*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_AbilityEnded_Exiled_API_Features_Player_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.AbilityEnded(Exiled.API.Features.Player)">AbilityEnded(Player)</h4>
@@ -368,7 +380,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_AbilityUsed_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.AbilityUsed(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L125">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L123">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_AbilityUsed_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.AbilityUsed*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_AbilityUsed_Exiled_API_Features_Player_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.AbilityUsed(Exiled.API.Features.Player)">AbilityUsed(Player)</h4>
@@ -402,7 +414,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_CanUseAbility_Exiled_API_Features_Player_System_String__.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.CanUseAbility(Exiled.API.Features.Player%2CSystem.String%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L93">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L91">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_CanUseAbility_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.CanUseAbility*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_CanUseAbility_Exiled_API_Features_Player_System_String__" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.CanUseAbility(Exiled.API.Features.Player,System.String@)">CanUseAbility(Player, out String)</h4>
@@ -458,7 +470,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_Check_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.Check(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L85">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L83">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_Check_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.Check*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_Check_Exiled_API_Features_Player_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.Check(Exiled.API.Features.Player)">Check(Player)</h4>
@@ -510,7 +522,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_EndAbility_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.EndAbility(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L71">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L69">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_EndAbility_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.EndAbility*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_EndAbility_Exiled_API_Features_Player_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.EndAbility(Exiled.API.Features.Player)">EndAbility(Player)</h4>
@@ -544,7 +556,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_ShowMessage_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.ShowMessage(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L141">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L139">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_ShowMessage_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.ShowMessage*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_ShowMessage_Exiled_API_Features_Player_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.ShowMessage(Exiled.API.Features.Player)">ShowMessage(Player)</h4>
@@ -578,7 +590,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility_UseAbility_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility.UseAbility(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L58">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L56">View Source</a>
   </span>
   <a id="Exiled_CustomRoles_API_Features_ActiveAbility_UseAbility_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.UseAbility*"></a>
   <h4 id="Exiled_CustomRoles_API_Features_ActiveAbility_UseAbility_Exiled_API_Features_Player_" data-uid="Exiled.CustomRoles.API.Features.ActiveAbility.UseAbility(Exiled.API.Features.Player)">UseAbility(Player)</h4>
@@ -609,6 +621,12 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Extensions.html#Exiled_CustomRoles_API_Extensions_Register_Exiled_CustomRoles_API_Features_CustomAbility_">Extensions.Register(CustomAbility)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.CustomRoles.API.Extensions.html#Exiled_CustomRoles_API_Extensions_Unregister_Exiled_CustomRoles_API_Features_CustomAbility_">Extensions.Unregister(CustomAbility)</a>
+  </div>
+  <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
@@ -622,7 +640,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomRoles_API_Features_ActiveAbility.md&amp;value=---%0Auid%3A%20Exiled.CustomRoles.API.Features.ActiveAbility%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L24" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomRoles/API/Features/ActiveAbility.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class CustomWeapon
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.2.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -154,10 +154,19 @@
       <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryGive_Exiled_API_Features_Player_System_Int32_System_Boolean_">CustomItem.TryGive(Player, Int32, Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryRegister">CustomItem.TryRegister()</a>
+      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_RegisterItems_System_Boolean_System_Object_">CustomItem.RegisterItems(Boolean, Object)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryUnregister">CustomItem.TryUnregister()</a>
+      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_RegisterItems_System_Collections_Generic_IEnumerable_System_Type__System_Boolean_System_Boolean_System_Object_">CustomItem.RegisterItems(IEnumerable&lt;Type&gt;, Boolean, Boolean, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_UnregisterItems">CustomItem.UnregisterItems()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_UnregisterItems_System_Collections_Generic_IEnumerable_System_Type__System_Boolean_">CustomItem.UnregisterItems(IEnumerable&lt;Type&gt;, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_UnregisterItems_System_Collections_Generic_IEnumerable_Exiled_CustomItems_API_Features_CustomItem__System_Boolean_">CustomItem.UnregisterItems(IEnumerable&lt;CustomItem&gt;, Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Spawn_System_Single_System_Single_System_Single_">CustomItem.Spawn(Single, Single, Single)</a>
@@ -196,6 +205,9 @@
       <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Check_Exiled_API_Features_Items_Item_">CustomItem.Check(Item)</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Check_Exiled_API_Features_Player_">CustomItem.Check(Player)</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_ToString">CustomItem.ToString()</a>
     </div>
     <div>
@@ -224,6 +236,9 @@
     </div>
     <div>
       <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_OnUpgrading_Exiled_CustomItems_API_EventArgs_UpgradingItemEventArgs_">CustomItem.OnUpgrading(UpgradingItemEventArgs)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_OnAcquired_Exiled_API_Features_Player_">CustomItem.OnAcquired(Player)</a>
     </div>
     <div>
       <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_OnWaitingForPlayers">CustomItem.OnWaitingForPlayers()</a>
@@ -266,10 +281,41 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_Attachments.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.Attachments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L39">View Source</a>
+  </span>
+  <a id="Exiled_CustomItems_API_Features_CustomWeapon_Attachments_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Attachments*"></a>
+  <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_Attachments" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Attachments">Attachments</h4>
+  <div class="markdown level1 summary"><p>Gets or sets value indicating what <span class="xref">InventorySystem.Items.Firearms.Attachments.Components.Attachment</span>s the weapon will have.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual AttachmentName[] Attachments { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.Firearms.Attachments.AttachmentName</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_ClipSize.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.ClipSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L65">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L62">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_ClipSize_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.ClipSize*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_ClipSize" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.ClipSize">ClipSize</h4>
@@ -300,7 +346,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_Damage.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.Damage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L60">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L57">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_Damage_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Damage*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_Damage" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Damage">Damage</h4>
@@ -328,19 +374,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_Modifiers.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.Modifiers%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_FriendlyFire.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.FriendlyFire%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L42">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L67">View Source</a>
   </span>
-  <a id="Exiled_CustomItems_API_Features_CustomWeapon_Modifiers_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Modifiers*"></a>
-  <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_Modifiers" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Modifiers">Modifiers</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the weapon modifiers.</p>
+  <a id="Exiled_CustomItems_API_Features_CustomWeapon_FriendlyFire_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.FriendlyFire*"></a>
+  <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_FriendlyFire" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.FriendlyFire">FriendlyFire</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not to allow friendly fire with this weapon on FF-enabled servers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Modifiers Modifiers { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool FriendlyFire { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -352,7 +398,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.CustomItems.API.Features.Modifiers.html">Modifiers</a></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -362,7 +408,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_Type.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L45">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L42">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_Type_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Type*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_Type" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Type">Type</h4>
@@ -396,7 +442,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_Give_Exiled_API_Features_Player_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.Give(Exiled.API.Features.Player%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L107">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L128">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_Give_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Give*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_Give_Exiled_API_Features_Player_System_Boolean_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Give(Exiled.API.Features.Player,System.Boolean)">Give(Player, Boolean)</h4>
@@ -404,7 +450,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override void Give(Player player, bool displayMessage)</code></pre>
+    <pre><code class="lang-csharp hljs">public override void Give(Player player, bool displayMessage = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -435,7 +481,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_OnHurting_Exiled_Events_EventArgs_HurtingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.OnHurting(Exiled.Events.EventArgs.HurtingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L172">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L196">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_OnHurting_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.OnHurting*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_OnHurting_Exiled_Events_EventArgs_HurtingEventArgs_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.OnHurting(Exiled.Events.EventArgs.HurtingEventArgs)">OnHurting(HurtingEventArgs)</h4>
@@ -469,7 +515,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_OnReloading_Exiled_Events_EventArgs_ReloadingWeaponEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.OnReloading(Exiled.Events.EventArgs.ReloadingWeaponEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L148">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L172">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_OnReloading_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.OnReloading*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_OnReloading_Exiled_Events_EventArgs_ReloadingWeaponEventArgs_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.OnReloading(Exiled.Events.EventArgs.ReloadingWeaponEventArgs)">OnReloading(ReloadingWeaponEventArgs)</h4>
@@ -503,7 +549,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_OnShooting_Exiled_Events_EventArgs_ShootingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.OnShooting(Exiled.Events.EventArgs.ShootingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L156">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L180">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_OnShooting_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.OnShooting*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_OnShooting_Exiled_Events_EventArgs_ShootingEventArgs_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.OnShooting(Exiled.Events.EventArgs.ShootingEventArgs)">OnShooting(ShootingEventArgs)</h4>
@@ -537,7 +583,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_OnShot_Exiled_Events_EventArgs_ShotEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.OnShot(Exiled.Events.EventArgs.ShotEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L164">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L188">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_OnShot_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.OnShot*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_OnShot_Exiled_Events_EventArgs_ShotEventArgs_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.OnShot(Exiled.Events.EventArgs.ShotEventArgs)">OnShot(ShotEventArgs)</h4>
@@ -571,7 +617,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_Spawn_UnityEngine_Vector3_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L68">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L70">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_Spawn_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Spawn*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_Spawn_UnityEngine_Vector3_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3)">Spawn(Vector3)</h4>
@@ -620,7 +666,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_Spawn_UnityEngine_Vector3_Exiled_API_Features_Items_Item_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3%2CExiled.API.Features.Items.Item)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L78">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L97">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_Spawn_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Spawn*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_Spawn_UnityEngine_Vector3_Exiled_API_Features_Items_Item_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3,Exiled.API.Features.Items.Item)">Spawn(Vector3, Item)</h4>
@@ -674,7 +720,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_SubscribeEvents.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.SubscribeEvents%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L123">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L147">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_SubscribeEvents_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.SubscribeEvents*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_SubscribeEvents" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.SubscribeEvents">SubscribeEvents()</h4>
@@ -691,7 +737,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon_UnsubscribeEvents.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon.UnsubscribeEvents%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L134">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L158">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_Features_CustomWeapon_UnsubscribeEvents_" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.UnsubscribeEvents*"></a>
   <h4 id="Exiled_CustomItems_API_Features_CustomWeapon_UnsubscribeEvents" data-uid="Exiled.CustomItems.API.Features.CustomWeapon.UnsubscribeEvents">UnsubscribeEvents()</h4>
@@ -704,6 +750,12 @@
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_UnsubscribeEvents">CustomItem.UnsubscribeEvents()</a></div>
   <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.CustomItems.API.Extensions.html#Exiled_CustomItems_API_Extensions_Register_Exiled_CustomItems_API_Features_CustomItem_">Extensions.Register(CustomItem)</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.CustomItems.API.Extensions.html#Exiled_CustomItems_API_Extensions_Unregister_Exiled_CustomItems_API_Features_CustomItem_">Extensions.Unregister(CustomItem)</a>
+  </div>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
@@ -718,7 +770,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_Features_CustomWeapon.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.Features.CustomWeapon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L37" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/Features/CustomWeapon.cs/#L34" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

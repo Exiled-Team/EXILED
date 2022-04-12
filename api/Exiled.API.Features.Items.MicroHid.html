@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class MicroHid
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.2.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -104,7 +104,34 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Type">Item.Type</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Category">Item.Category</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Weight">Item.Weight</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsAmmo">Item.IsAmmo</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsArmor">Item.IsArmor</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsKeycard">Item.IsKeycard</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsMedical">Item.IsMedical</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsScp">Item.IsScp</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsThrowable">Item.IsThrowable</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUtility">Item.IsUtility</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsWeapon">Item.IsWeapon</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Owner">Item.Owner</a>
@@ -113,10 +140,19 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_InventorySystem_Items_ItemBase_">Item.Get(ItemBase)</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Create_ItemType_Exiled_API_Features_Player_">Item.Create(ItemType, Player)</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Give_Exiled_API_Features_Player_">Item.Give(Player)</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Item.Spawn(Vector3, Quaternion, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_">Item.Spawn(Vector3, Quaternion)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_">Item.Spawn(Vector3)</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -150,7 +186,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_MicroHid__ctor_InventorySystem_Items_MicroHID_MicroHIDItem_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.MicroHid.%23ctor(InventorySystem.Items.MicroHID.MicroHIDItem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L23">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L21">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_MicroHid__ctor_" data-uid="Exiled.API.Features.Items.MicroHid.#ctor*"></a>
   <h4 id="Exiled_API_Features_Items_MicroHid__ctor_InventorySystem_Items_MicroHID_MicroHIDItem_" data-uid="Exiled.API.Features.Items.MicroHid.#ctor(InventorySystem.Items.MicroHID.MicroHIDItem)">MicroHid(MicroHIDItem)</h4>
@@ -174,40 +210,8 @@
       <tr>
         <td><span class="xref">InventorySystem.Items.MicroHID.MicroHIDItem</span></td>
         <td><span class="parametername">itemBase</span></td>
-        <td><inheritdoc cref="P:Exiled.API.Features.Items.MicroHid.Base"></inheritdoc></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_MicroHid__ctor_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.MicroHid.%23ctor(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L33">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Items_MicroHid__ctor_" data-uid="Exiled.API.Features.Items.MicroHid.#ctor*"></a>
-  <h4 id="Exiled_API_Features_Items_MicroHid__ctor_ItemType_" data-uid="Exiled.API.Features.Items.MicroHid.#ctor(ItemType)">MicroHid(ItemType)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Items.MicroHid.html">MicroHid</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MicroHid(ItemType type)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ItemType</span></td>
-        <td><span class="parametername">type</span></td>
-        <td><inheritdoc cref="P:Exiled.API.Features.Items.MicroHid.Base"></inheritdoc></td>
+        <td><p>The base <span class="xref">InventorySystem.Items.MicroHID.MicroHIDItem</span> class.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -218,7 +222,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_MicroHid_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.MicroHid.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L50">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L47">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_MicroHid_Base_" data-uid="Exiled.API.Features.Items.MicroHid.Base*"></a>
   <h4 id="Exiled_API_Features_Items_MicroHid_Base" data-uid="Exiled.API.Features.Items.MicroHid.Base">Base</h4>
@@ -249,7 +253,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_MicroHid_Energy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.MicroHid.Energy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L38">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_MicroHid_Energy_" data-uid="Exiled.API.Features.Items.MicroHid.Energy*"></a>
   <h4 id="Exiled_API_Features_Items_MicroHid_Energy" data-uid="Exiled.API.Features.Items.MicroHid.Energy">Energy</h4>
@@ -280,7 +284,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_MicroHid_State.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.MicroHid.State%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L55">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L52">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_MicroHid_State_" data-uid="Exiled.API.Features.Items.MicroHid.State*"></a>
   <h4 id="Exiled_API_Features_Items_MicroHid_State" data-uid="Exiled.API.Features.Items.MicroHid.State">State</h4>
@@ -313,7 +317,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_MicroHid_Fire.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.MicroHid.Fire%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L64">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L61">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_MicroHid_Fire_" data-uid="Exiled.API.Features.Items.MicroHid.Fire*"></a>
   <h4 id="Exiled_API_Features_Items_MicroHid_Fire" data-uid="Exiled.API.Features.Items.MicroHid.Fire">Fire()</h4>
@@ -333,7 +337,8 @@
   </span>
   <a id="Exiled_API_Features_Items_MicroHid_ToString_" data-uid="Exiled.API.Features.Items.MicroHid.ToString*"></a>
   <h4 id="Exiled_API_Features_Items_MicroHid_ToString" data-uid="Exiled.API.Features.Items.MicroHid.ToString">ToString()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Returns the MicroHid in a human readable format.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -350,7 +355,8 @@
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
-        <td></td>
+        <td><p>A string containing MicroHid-related data.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -371,7 +377,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_MicroHid.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.MicroHid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/MicroHid.cs/#L15" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DiedEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.59.0.0">
+    <meta name="generator" content="docfx 2.59.2.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DiedEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DiedEventArgs.%23ctor(Exiled.API.Features.Player%2CPlayerStatsSystem.DamageHandlerBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DiedEventArgs__ctor_Exiled_API_Features_Player_RoleType_PlayerStatsSystem_DamageHandlerBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DiedEventArgs.%23ctor(Exiled.API.Features.Player%2CRoleType%2CPlayerStatsSystem.DamageHandlerBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L27">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L30">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DiedEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.DiedEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_DiedEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_" data-uid="Exiled.Events.EventArgs.DiedEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)">DiedEventArgs(Player, DamageHandlerBase)</h4>
+  <h4 id="Exiled_Events_EventArgs_DiedEventArgs__ctor_Exiled_API_Features_Player_RoleType_PlayerStatsSystem_DamageHandlerBase_" data-uid="Exiled.Events.EventArgs.DiedEventArgs.#ctor(Exiled.API.Features.Player,RoleType,PlayerStatsSystem.DamageHandlerBase)">DiedEventArgs(Player, RoleType, DamageHandlerBase)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.DiedEventArgs.html">DiedEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DiedEventArgs(Player target, DamageHandlerBase damageHandler)</code></pre>
+    <pre><code class="lang-csharp hljs">public DiedEventArgs(Player target, RoleType targetOldRole, DamageHandlerBase damageHandler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,9 +159,15 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.DiedEventArgs.Target"></inheritdoc></td>
       </tr>
       <tr>
+        <td><span class="xref">RoleType</span></td>
+        <td><span class="parametername">targetOldRole</span></td>
+        <td><p>Target&apos;s old <span class="xref">RoleType</span>.</p>
+</td>
+      </tr>
+      <tr>
         <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
         <td><span class="parametername">damageHandler</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DiedEventArgs.DamageHandler"></inheritdoc></td>
+        <td><inheritdoc cref="T:Exiled.API.Features.DamageHandlers.DamageHandler"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -169,51 +175,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DiedEventArgs_DamageHandler.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DiedEventArgs.DamageHandler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L47">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_DiedEventArgs_DamageHandler_" data-uid="Exiled.Events.EventArgs.DiedEventArgs.DamageHandler*"></a>
-  <h4 id="Exiled_Events_EventArgs_DiedEventArgs_DamageHandler" data-uid="Exiled.Events.EventArgs.DiedEventArgs.DamageHandler">DamageHandler</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">PlayerStatsSystem.DamageHandlerBase</span>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use DiedEventArgs.Handler&quot;, true)]
-public DamageHandlerBase DamageHandler { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DiedEventArgs_Handler.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DiedEventArgs.Handler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L53">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L51">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DiedEventArgs_Handler_" data-uid="Exiled.Events.EventArgs.DiedEventArgs.Handler*"></a>
   <h4 id="Exiled_Events_EventArgs_DiedEventArgs_Handler" data-uid="Exiled.Events.EventArgs.DiedEventArgs.Handler">Handler</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Exiled.API.Features.DamageHandler.html">DamageHandler</a>.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Exiled.API.Features.DamageHandlers.DamageHandler.html">DamageHandler</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DamageHandler Handler { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public CustomDamageHandler Handler { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -225,7 +199,7 @@ public DamageHandlerBase DamageHandler { get; set; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Features.DamageHandler.html">DamageHandler</a></td>
+        <td><a class="xref" href="Exiled.API.Features.DamageHandlers.CustomDamageHandler.html">CustomDamageHandler</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -235,7 +209,7 @@ public DamageHandlerBase DamageHandler { get; set; }</code></pre>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DiedEventArgs_Killer.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DiedEventArgs.Killer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L37">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L41">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DiedEventArgs_Killer_" data-uid="Exiled.Events.EventArgs.DiedEventArgs.Killer*"></a>
   <h4 id="Exiled_Events_EventArgs_DiedEventArgs_Killer" data-uid="Exiled.Events.EventArgs.DiedEventArgs.Killer">Killer</h4>
@@ -266,7 +240,7 @@ public DamageHandlerBase DamageHandler { get; set; }</code></pre>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DiedEventArgs_Target.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DiedEventArgs.Target%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L42">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L46">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DiedEventArgs_Target_" data-uid="Exiled.Events.EventArgs.DiedEventArgs.Target*"></a>
   <h4 id="Exiled_Events_EventArgs_DiedEventArgs_Target" data-uid="Exiled.Events.EventArgs.DiedEventArgs.Target">Target</h4>
@@ -292,6 +266,37 @@ public DamageHandlerBase DamageHandler { get; set; }</code></pre>
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DiedEventArgs_TargetOldRole.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DiedEventArgs.TargetOldRole%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L56">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_DiedEventArgs_TargetOldRole_" data-uid="Exiled.Events.EventArgs.DiedEventArgs.TargetOldRole*"></a>
+  <h4 id="Exiled_Events_EventArgs_DiedEventArgs_TargetOldRole" data-uid="Exiled.Events.EventArgs.DiedEventArgs.TargetOldRole">TargetOldRole</h4>
+  <div class="markdown level1 summary"><p>Gets the old <span class="xref">RoleType</span> from the killed player.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RoleType TargetOldRole { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RoleType</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -307,7 +312,7 @@ public DamageHandlerBase DamageHandler { get; set; }</code></pre>
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DiedEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DiedEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DiedEventArgs.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
