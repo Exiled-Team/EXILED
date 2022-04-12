@@ -334,38 +334,46 @@ namespace Exiled.API.Features
             {
                 foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[RoomIdentifier.UniqueId])
                 {
-                    if (scp079Interactable is not null)
+                    try
                     {
-                        switch (scp079Interactable.type)
+                        if (scp079Interactable is not null)
                         {
-                            case Scp079Interactable.InteractableType.Door:
+                            switch (scp079Interactable.type)
                             {
-                                if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                    doors.Add(Door.Get(doorVariant));
-                                break;
-                            }
+                                case Scp079Interactable.InteractableType.Door:
+                                {
+                                    if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
+                                        doors.Add(Door.Get(doorVariant));
+                                    break;
+                                }
 
-                            case Scp079Interactable.InteractableType.Camera:
-                            {
-                                if (scp079Interactable.TryGetComponent(out Camera079 camera))
-                                    cameraList.Add(camera);
-                                break;
-                            }
+                                case Scp079Interactable.InteractableType.Camera:
+                                {
+                                    if (scp079Interactable.TryGetComponent(out Camera079 camera))
+                                        cameraList.Add(camera);
+                                    break;
+                                }
 
-                            case Scp079Interactable.InteractableType.LightController:
-                            {
-                                if (scp079Interactable.TryGetComponent(out FlickerableLightController lightController))
-                                    flickerableLightController = lightController;
-                                break;
-                            }
+                                case Scp079Interactable.InteractableType.LightController:
+                                {
+                                    if (scp079Interactable.TryGetComponent(
+                                            out FlickerableLightController lightController))
+                                        flickerableLightController = lightController;
+                                    break;
+                                }
 
-                            case Scp079Interactable.InteractableType.Tesla:
-                            {
-                                if (scp079Interactable.TryGetComponent(out global::TeslaGate tesla))
-                                    teslaGate = TeslaGate.Get(tesla);
-                                break;
+                                case Scp079Interactable.InteractableType.Tesla:
+                                {
+                                    if (scp079Interactable.TryGetComponent(out global::TeslaGate tesla))
+                                        teslaGate = TeslaGate.Get(tesla);
+                                    break;
+                                }
                             }
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"{nameof(FindObjectsInRoom)}: Exception cause {e.Message}\n{scp079Interactable is null} {scp079Interactable?.type is null}");
                     }
                 }
             }

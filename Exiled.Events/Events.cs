@@ -76,14 +76,13 @@ namespace Exiled.Events
             watch.Stop();
             Log.Info($"Patching completed in {watch.Elapsed}");
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
+            MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
 
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
             Handlers.Map.Generated += Handlers.Internal.MapGenerated.OnMapGenerated;
-
-            MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
 
             ServerConsole.ReloadServerName();
         }
@@ -120,7 +119,7 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                if (SafePatchCompilerMess() && PatchByAttributes())
+                if (PatchByAttributes())
                 {
                     Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
                 }
@@ -157,8 +156,6 @@ namespace Exiled.Events
         public void Unpatch()
         {
             Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
-
-            UnpatchCompilerMess();
             Harmony.UnpatchAll();
 
             Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
@@ -179,25 +176,5 @@ namespace Exiled.Events
                 return false;
             }
         }
-
-        private bool SafePatchCompilerMess()
-        {
-            try
-            {
-                PatchCompilerMess();
-
-                Log.Debug("Events in the inner types patched successfully!", Loader.ShouldDebugBeShown);
-                return true;
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Patching in the inner types failed!\n{e}");
-                return false;
-            }
-        }
-
-        private void PatchCompilerMess() => WaitingForPlayers.Patch();
-
-        private void UnpatchCompilerMess() => WaitingForPlayers.Unpatch();
     }
 }

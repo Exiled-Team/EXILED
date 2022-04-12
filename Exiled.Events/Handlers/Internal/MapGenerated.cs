@@ -59,15 +59,16 @@ namespace Exiled.Events.Handlers.Internal
         private static void GenerateCache()
         {
             GenerateTeslaGates();
-            GenerateRooms();
             GenerateDoors();
-            GenerateWindow();
             GenerateCameras();
+            GenerateRooms();
+            GenerateWindow();
             GenerateLifts();
             GeneratePocketTeleports();
             GenerateAttachments();
             GenerateLockers();
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
+            Handlers.Server.OnWaitingForPlayers();
         }
 
         private static void GenerateRooms()

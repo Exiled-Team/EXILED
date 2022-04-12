@@ -380,7 +380,7 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value);
+            set => ReferenceHub.playerMovementSync.ForcePosition(value);
         }
 
         /// <summary>
@@ -986,7 +986,7 @@ namespace Exiled.API.Features
         /// <param name="referenceHub">The player's <see cref="global::ReferenceHub"/>.</param>
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(ReferenceHub referenceHub) =>
-            referenceHub is null ? null : Get(referenceHub.gameObject);
+            referenceHub?.gameObject is null ? null : Get(referenceHub.gameObject);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
