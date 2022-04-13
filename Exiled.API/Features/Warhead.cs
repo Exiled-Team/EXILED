@@ -14,7 +14,6 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Warhead
     {
-        private static AlphaWarheadController controller;
         private static AlphaWarheadNukesitePanel sitePanel;
         private static AlphaWarheadOutsitePanel outsitePanel;
 
