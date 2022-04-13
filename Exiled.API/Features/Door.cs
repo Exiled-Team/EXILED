@@ -426,6 +426,8 @@ namespace Exiled.API.Features
                     "HCZ" => DoorType.HeavyContainmentDoor,
                     "EZ" => DoorType.EntranceDoor,
                     "Prison" => DoorType.PrisonDoor,
+                    "914" => DoorType.Scp914Door,
+                    "Unsecured" => DoorType.Scp049Gate,
                     _ => DoorType.UnknownDoor,
                 };
             }
@@ -449,7 +451,7 @@ namespace Exiled.API.Features
                 "HCZ_ARMORY" => DoorType.HczArmory,
                 "096" => DoorType.Scp096,
                 "049_ARMORY" => DoorType.Scp049Armory,
-                "914" => DoorType.Scp914,
+                "914" => DoorType.Scp914Gate,
                 "GATE_A" => DoorType.GateA,
                 "079_FIRST" => DoorType.Scp079First,
                 "GATE_B" => DoorType.GateB,
@@ -461,10 +463,11 @@ namespace Exiled.API.Features
                 "HID_LEFT" => DoorType.HIDLeft,
                 "173_ARMORY" => DoorType.Scp173Armory,
                 "173_GATE" => DoorType.Scp173Gate,
-                "GR18" => DoorType.GR18,
+                "GR18" => DoorType.GR18Gate,
                 "SURFACE_GATE" => DoorType.SurfaceGate,
                 "330" => DoorType.Scp330,
                 "330_CHAMBER" => DoorType.Scp330Chamber,
+                "GR18_INNER" => DoorType.GR18Inner,
 
                 // Doors spawned by the DoorSpawnPoint component
                 "LCZ_CAFE" => DoorType.LczCafe,
