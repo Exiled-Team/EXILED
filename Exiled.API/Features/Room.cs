@@ -181,7 +181,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Room"/> object.</returns>
         public static Room Random(ZoneType zoneType = ZoneType.Unspecified)
         {
-            List<Room> rooms = zoneType != ZoneType.Unspecified ? Get(r => r.Zone == zoneType).ToList() : RoomsValue;
+            List<Room> rooms = zoneType is not ZoneType.Unspecified ? Get(r => r.Zone == zoneType).ToList() : RoomsValue;
             return rooms[UnityEngine.Random.Range(0, rooms.Count)];
         }
 
