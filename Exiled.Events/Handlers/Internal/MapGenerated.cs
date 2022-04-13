@@ -59,7 +59,6 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateCache()
         {
-            Warhead.Controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
             Server.Host = new Player(PlayerManager.localPlayer);
             Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
             Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
