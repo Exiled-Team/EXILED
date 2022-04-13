@@ -29,6 +29,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
+                if (!Round.IsStarted)
+                    return false;
+
                 if (TeslaGate.TeslasValue.Count == 0)
                     return true;
                 foreach (BaseTeslaGate baseTeslaGate in __instance.TeslaGates)

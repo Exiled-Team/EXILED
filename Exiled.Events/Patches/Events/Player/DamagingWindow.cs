@@ -45,12 +45,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                // player = Player.Get(attackerDamageHandler.Hub);
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
                 // this
                 new(OpCodes.Ldarg_0),
 

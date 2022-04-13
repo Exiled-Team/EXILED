@@ -53,12 +53,12 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, exiledPlayerLocal.LocalIndex),
-                new(OpCodes.Brtrue, returnLabel),
+                new(OpCodes.Brfalse, returnLabel),
             });
 
             // ----------- FailingEscapePocketDimension-------------
             int offset = 2;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld && (FieldInfo)i.operand ==
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldsfld && (FieldInfo)i.operand ==
                 Field(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.DebugBool))) + offset;
 
             newInstructions.InsertRange(index, new[]

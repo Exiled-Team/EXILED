@@ -209,6 +209,7 @@ namespace Exiled.Events.Patches.Generic
                         // Rotate the player because
                         // those movement checks are
                         // in client-side
+                        /*
                         else if (player.Role.Type == RoleType.Scp173
                             && ((!Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173
                             && target.Role.Type == RoleType.Tutorial)
@@ -216,6 +217,7 @@ namespace Exiled.Events.Patches.Generic
                         {
                             RotatePlayer(z, __instance._transmitBuffer, FindLookRotation(player.Position, target.Position));
                         }
+                        */
                     }
 
                     if (player.ReferenceHub.characterClassManager.netIdentity is not null)

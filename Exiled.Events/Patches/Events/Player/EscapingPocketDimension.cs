@@ -54,11 +54,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, retLabel),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))),
                 new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Dup),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.Player))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
-                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
+                new(OpCodes.Callvirt, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ForcePosition), new[] { typeof(Vector3) })),
                 new(OpCodes.Br, effectLabel),
             });
 
@@ -80,11 +80,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, retLabel),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))),
                 new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Dup),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.Player))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
-                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
+                new(OpCodes.Callvirt, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ForcePosition), new[] { typeof(Vector3) })),
                 new(OpCodes.Br, effectLabel),
             });
 

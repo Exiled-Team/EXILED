@@ -8,6 +8,7 @@
 namespace Exiled.CustomItems.API.Features
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -47,7 +48,7 @@ namespace Exiled.CustomItems.API.Features
     /// </summary>
     public abstract class CustomItem
     {
-        private ItemType type;
+        private ItemType type = ItemType.None;
 
         /// <summary>
         /// Gets the list of current Item Managers.
@@ -297,22 +298,45 @@ namespace Exiled.CustomItems.API.Features
                 foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomItemAttribute), true))
                 {
                     CustomItem customItem = null;
+                    bool flag = false;
 
                     if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
                     {
                         IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
-
                         foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
                         {
                             if (property.PropertyType != type)
+                            {
+                                if (property.GetValue(overrideClass ?? plugin.Config) is IEnumerable enumerable)
+                                {
+                                    List<CustomItem> list = enumerable.Cast<CustomItem>().ToList();
+                                    foreach (CustomItem item in list)
+                                    {
+                                        if (item.GetType() != type)
+                                            break;
+
+                                        if (item.Type == ItemType.None)
+                                            item.Type = ((CustomItemAttribute)attribute).ItemType;
+
+                                        if (!item.TryRegister())
+                                            continue;
+
+                                        flag = true;
+                                        items.Add(item);
+                                    }
+                                }
+
                                 continue;
+                            }
 
                             customItem = property.GetValue(overrideClass ?? plugin.Config) as CustomItem;
                         }
                     }
 
-                    if (customItem is null)
-                        customItem = (CustomItem)Activator.CreateInstance(type);
+                    if (flag)
+                        continue;
+
+                    customItem ??= (CustomItem)Activator.CreateInstance(type);
 
                     if (customItem.Type == ItemType.None)
                         customItem.Type = ((CustomItemAttribute)attribute).ItemType;
@@ -676,8 +700,13 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was registered or not.</returns>
         internal bool TryRegister()
         {
+            if (!Instance.Config.IsEnabled)
+                return false;
+
+            Log.Debug($"Trying to register {Name} ({Id}).", Instance.Config.Debug);
             if (!Registered.Contains(this))
             {
+                Log.Debug("Registered items doesn't contain this item yet..", Instance.Config.Debug);
                 if (Registered.Any(customItem => customItem.Id == Id))
                 {
                     Log.Warn($"{Name} has tried to register with the same custom item ID as another item: {Id}. It will not be registered.");
@@ -685,6 +714,7 @@ namespace Exiled.CustomItems.API.Features
                     return false;
                 }
 
+                Log.Debug("Adding item to registered list..", Instance.Config.Debug);
                 Registered.Add(this);
 
                 Init();

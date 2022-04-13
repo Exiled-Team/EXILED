@@ -173,41 +173,29 @@ namespace Exiled.API.Features.Items
             if (BaseToItem.TryGetValue(itemBase, out Item item))
                 return item;
 
-            switch (itemBase)
+            return itemBase switch
             {
-                case InventorySystem.Items.Firearms.Firearm firearm:
-                    return new Firearm(firearm);
-                case KeycardItem keycard:
-                    return new Keycard(keycard);
-                case UsableItem usable:
+                InventorySystem.Items.Firearms.Firearm firearm => new Firearm(firearm),
+                KeycardItem keycard => new Keycard(keycard),
+                UsableItem usable => usable switch
                 {
-                    if (usable is Scp330Bag scp330Bag)
-                        return new Scp330(scp330Bag);
-                    else if (usable is Scp244Item scp244Item)
-                        return new Scp244(scp244Item);
-                    return new Usable(usable);
-                }
-
-                case RadioItem radio:
-                    return new Radio(radio);
-                case MicroHIDItem micro:
-                    return new MicroHid(micro);
-                case BodyArmor armor:
-                    return new Armor(armor);
-                case AmmoItem ammo:
-                    return new Ammo(ammo);
-                case FlashlightItem flashlight:
-                    return new Flashlight(flashlight);
-                case ThrowableItem throwable:
-                    return throwable.Projectile switch
-                    {
-                        FlashbangGrenade _ => new FlashGrenade(throwable),
-                        ExplosionGrenade _ => new ExplosiveGrenade(throwable),
-                        _ => new Throwable(throwable),
-                    };
-                default:
-                    return new Item(itemBase);
-            }
+                    Scp330Bag scp330Bag => new Scp330(scp330Bag),
+                    Scp244Item scp244Item => new Scp244(scp244Item),
+                    _ => new Usable(usable)
+                },
+                RadioItem radio => new Radio(radio),
+                MicroHIDItem micro => new MicroHid(micro),
+                BodyArmor armor => new Armor(armor),
+                AmmoItem ammo => new Ammo(ammo),
+                FlashlightItem flashlight => new Flashlight(flashlight),
+                ThrowableItem throwable => throwable.Projectile switch
+                {
+                    FlashbangGrenade _ => new FlashGrenade(throwable),
+                    ExplosionGrenade _ => new ExplosiveGrenade(throwable),
+                    _ => new Throwable(throwable),
+                },
+                _ => new Item(itemBase)
+            };
         }
 
         /// <summary>

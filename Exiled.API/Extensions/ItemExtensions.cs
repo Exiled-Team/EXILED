@@ -30,7 +30,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="item">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an ammo or not.</returns>
-        public static bool IsAmmo(this ItemType item) => item == ItemType.Ammo9x19 || item == ItemType.Ammo12gauge || item == ItemType.Ammo44cal || item == ItemType.Ammo556x45 || item == ItemType.Ammo762x39;
+        public static bool IsAmmo(this ItemType item) => item is ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a weapon.
@@ -38,11 +38,14 @@ namespace Exiled.API.Extensions
         /// <param name="type">The item to be checked.</param>
         /// <param name="checkMicro">Indicates whether the MicroHID item should be taken into account or not.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a weapon or not.</returns>
-        public static bool IsWeapon(this ItemType type, bool checkMicro = true) => type is ItemType.GunCrossvec
-                or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK
-                or ItemType.GunCOM15
-                or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor ||
-            (checkMicro && type == ItemType.MicroHID);
+        public static bool IsWeapon(this ItemType type, bool checkMicro = true) => type switch
+        {
+            ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK
+                or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9
+                or ItemType.ParticleDisruptor => true,
+            ItemType.MicroHID when checkMicro => true,
+            _ => false
+        };
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an SCP.
@@ -56,29 +59,28 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a throwable item or not.</returns>
-        public static bool IsThrowable(this ItemType type) => type == ItemType.SCP018 || type == ItemType.GrenadeHE || type == ItemType.GrenadeFlash || type == ItemType.SCP2176;
+        public static bool IsThrowable(this ItemType type) => type is ItemType.SCP018 or ItemType.GrenadeHE or ItemType.GrenadeFlash or ItemType.SCP2176;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a medical item.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a medical item or not.</returns>
-        public static bool IsMedical(this ItemType type) => type == ItemType.Painkillers || type == ItemType.Medkit || type == ItemType.SCP500 || type == ItemType.Adrenaline;
+        public static bool IsMedical(this ItemType type) => type is ItemType.Painkillers or ItemType.Medkit or ItemType.SCP500 or ItemType.Adrenaline;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a utility item.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an utilty item or not.</returns>
-        public static bool IsUtility(this ItemType type) => type == ItemType.Flashlight || type == ItemType.Radio;
+        public static bool IsUtility(this ItemType type) => type is ItemType.Flashlight or ItemType.Radio;
 
         /// <summary>
         /// Check if a <see cref="ItemType"/> is an armor item.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an armor or not.</returns>
-        public static bool IsArmor(this ItemType type) => type == ItemType.ArmorCombat || type == ItemType.ArmorHeavy ||
-                                                          type == ItemType.ArmorLight;
+        public static bool IsArmor(this ItemType type) => type is ItemType.ArmorCombat or ItemType.ArmorHeavy or ItemType.ArmorLight;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a keycard.
