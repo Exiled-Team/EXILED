@@ -5,6 +5,8 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Exiled.Events</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Configurations>Debug;Release;Programs</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <Import Project="../EXILED.props" />

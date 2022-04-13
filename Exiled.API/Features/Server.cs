@@ -24,53 +24,23 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Server
     {
-        private static Player host;
-        private static global::Broadcast broadcast;
-        private static BanPlayer banPlayer;
         private static MethodInfo sendSpawnMessage;
 
         /// <summary>
         /// Gets the player's host of the server.
         /// Might be <see langword="null"/> when called when the server isn't loaded.
         /// </summary>
-        public static Player Host
-        {
-            get
-            {
-                if (host is null || host.ReferenceHub is null)
-                    host = PlayerManager.localPlayer is not null ? new Player(PlayerManager.localPlayer) : null;
-
-                return host;
-            }
-        }
+        public static Player Host { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="Broadcast"/> component.
         /// </summary>
-        public static global::Broadcast Broadcast
-        {
-            get
-            {
-                if (broadcast is null)
-                    broadcast = PlayerManager.localPlayer.GetComponent<global::Broadcast>();
-
-                return broadcast;
-            }
-        }
+        public static global::Broadcast Broadcast { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="BanPlayer"/> component.
         /// </summary>
-        public static BanPlayer BanPlayer
-        {
-            get
-            {
-                if (banPlayer is null)
-                    banPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
-
-                return banPlayer;
-            }
-        }
+        public static BanPlayer BanPlayer { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
@@ -233,6 +203,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="command">The command to be run.</param>
         /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
-        public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender ?? host.Sender);
+        public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender ?? Host.Sender);
     }
 }

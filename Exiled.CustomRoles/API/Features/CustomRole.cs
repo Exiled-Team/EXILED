@@ -87,6 +87,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual List<string> Inventory { get; set; } = new();
 
         /// <summary>
+        /// Gets or sets the starting ammo for the role.
+        /// </summary>
+        public virtual Dictionary<AmmoType, ushort> Ammo { get; set; } = new();
+
+        /// <summary>
         /// Gets or sets the possible spawn locations for this role.
         /// </summary>
         public virtual SpawnProperties SpawnProperties { get; set; } = new();
@@ -386,6 +391,12 @@ namespace Exiled.CustomRoles.API.Features
                     TryAddItem(player, itemName);
                 }
 
+                foreach (AmmoType ammo in Ammo.Keys)
+                {
+                    Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.", CustomRoles.Instance.Config.Debug);
+                    player.SetAmmo(ammo, Ammo[ammo]);
+                }
+
                 Log.Debug($"{Name}: Setting health values.", CustomRoles.Instance.Config.Debug);
                 player.Health = MaxHealth;
                 player.MaxHealth = MaxHealth;
@@ -433,6 +444,9 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>True if the role registered properly.</returns>
         internal bool TryRegister()
         {
+            if (!CustomRoles.Instance.Config.IsEnabled)
+                return false;
+
             if (!Registered.Contains(this))
             {
                 if (Registered.Any(r => r.Id == Id))

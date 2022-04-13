@@ -362,6 +362,7 @@ namespace Exiled.API.Features
             TeleportsValue.Clear();
             LockersValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+            Scp079Interactable.InteractablesByRoomId.Clear();
         }
     }
 }
