@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
     /// </summary>
-    [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
+    // [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
     internal static class Scp173BeingLooked
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
