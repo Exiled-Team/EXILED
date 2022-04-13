@@ -99,7 +99,11 @@ namespace Exiled.API.Features
         public static bool FriendlyFire
         {
             get => ServerConsole.FriendlyFire;
-            set => ServerConsole.FriendlyFire = value;
+            set
+            {
+                ServerConsole.FriendlyFire = value;
+                ServerConfigSynchronizer.Singleton.RefreshMainBools();
+            }
         }
 
         /// <summary>
