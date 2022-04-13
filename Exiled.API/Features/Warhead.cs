@@ -30,7 +30,7 @@ namespace Exiled.API.Features
             get
             {
                 if (sitePanel is null)
-                    sitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
+                    sitePanel = Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
                 return sitePanel;
             }
@@ -44,7 +44,7 @@ namespace Exiled.API.Features
             get
             {
                 if (outsitePanel is null)
-                    outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
+                    outsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
                 return outsitePanel;
             }
@@ -109,7 +109,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the warhead can be started or not.
         /// </summary>
-        public static bool CanBeStarted => AlphaWarheadController.Host.CanDetonate;
+        public static bool CanBeStarted => Controller.CanDetonate;
 
         /// <summary>
         /// Starts the warhead countdown.
