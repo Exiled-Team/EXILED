@@ -245,11 +245,11 @@ namespace Exiled.API.Features
         public static IEnumerable<Door> Get(Func<Door, bool> predicate) => List.Where(predicate);
 
         /// <summary>
-        /// Gets a <see cref="Door"/> given by the specified <see cref="DoorType"/>.
+        /// Gets a <see cref="Door"/> given the specified <see cref="DoorType"/>.
         /// </summary>
         /// <param name="doorType">The <see cref="DoorType"/> to search for.</param>
         /// <returns>The <see cref="Door"/> with the given <see cref="DoorType"/> or <see langword="null"/> if not found.</returns>
-        public static Door Get(DoorType doorType) => Get(door => door.Type == doorType).FirstOrDefault();
+        public static Door Get(DoorType doorType) => List.FirstOrDefault(x => x.Type == doorType);
 
         /// <summary>
         /// Gets a random <see cref="Door"/>.
@@ -259,7 +259,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type != ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorsValue;
+            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorsValue;
             return doors[UnityEngine.Random.Range(0, doors.Count)];
         }
 
@@ -271,7 +271,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">DoorLockType of the lockdown.</param>
         public static void LockAll(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Get(door => zoneType != ZoneType.Unspecified && door.Zone == zoneType))
+            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && door.Zone == zoneType))
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);

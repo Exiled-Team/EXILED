@@ -25,30 +25,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadNukesitePanel SitePanel
-        {
-            get
-            {
-                if (sitePanel is null)
-                    sitePanel = Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
-
-                return sitePanel;
-            }
-        }
+        public static AlphaWarheadNukesitePanel SitePanel => sitePanel ??= Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel
-        {
-            get
-            {
-                if (outsitePanel is null)
-                    outsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
-
-                return outsitePanel;
-            }
-        }
+        public static AlphaWarheadOutsitePanel OutsitePanel => outsitePanel ??= Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> of the warhead lever.
