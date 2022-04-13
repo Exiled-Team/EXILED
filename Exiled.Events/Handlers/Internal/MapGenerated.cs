@@ -58,6 +58,8 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateCache()
         {
+            Warhead.Controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
+            
             GenerateTeslaGates();
             GenerateRooms();
             GenerateDoors();
