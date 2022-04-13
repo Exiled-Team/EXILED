@@ -21,16 +21,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
-        public static AlphaWarheadController Controller
-        {
-            get
-            {
-                if (controller is null)
-                    controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
-
-                return controller;
-            }
-        }
+        public static AlphaWarheadController Controller { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
