@@ -94,7 +94,9 @@ namespace Exiled.Events.Patches.Events.Server
                 float num6 = (roundSummary.classlistStart.class_ds == 0) ? 0f : (num4 / roundSummary.classlistStart.class_ds);
                 float num7 = (roundSummary.classlistStart.scientists == 0) ? 1f : (num5 / roundSummary.classlistStart.scientists);
 
-                if (newList.class_ds == 0 && num1 == 0)
+                RoundSummary.SurvivingSCPs = newList.scps_except_zombies;
+
+                if (newList.class_ds <= 0 && num1 <= 0)
                 {
                     roundSummary.RoundEnded = true;
                 }
@@ -114,18 +116,11 @@ namespace Exiled.Events.Patches.Events.Server
                 EndingRoundEventArgs endingRoundEventArgs = new(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
-                {
-                    if (num5 > 0)
-                        endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
-                }
-                else if (num4 > 0)
-                {
-                    endingRoundEventArgs.LeadingTeam = LeadingTeam.ChaosInsurgency;
-                }
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedScientists >= RoundSummary.EscapedClassD ? LeadingTeam.FacilityForces : LeadingTeam.Draw;
                 else if (num3 > 0)
-                {
-                    endingRoundEventArgs.LeadingTeam = LeadingTeam.Anomalies;
-                }
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD > RoundSummary.SurvivingSCPs ? LeadingTeam.ChaosInsurgency : (RoundSummary.SurvivingSCPs > RoundSummary.EscapedScientists ? LeadingTeam.Anomalies : LeadingTeam.Draw);
+                else if (num2 > 0)
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists ? LeadingTeam.ChaosInsurgency : LeadingTeam.Draw;
 
                 Server.OnEndingRound(endingRoundEventArgs);
 
