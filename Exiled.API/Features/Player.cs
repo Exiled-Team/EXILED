@@ -459,7 +459,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is jumping.
         /// </summary>
-        public bool IsJumping => ReferenceHub.fpc.isJumping;
+        public bool IsJumping { get; internal set; }
 
         /// <summary>
         /// Gets a value indicating whether the player is sprinting.
