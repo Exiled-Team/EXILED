@@ -8,18 +8,12 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1118
-#pragma warning disable SA1313
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
-
-    using Exiled.API.Features;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
-
-    using static Exiled.Events.Events;
 
     using static HarmonyLib.AccessTools;
 
@@ -33,40 +27,33 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int offset = -3;
+            int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Beq_S) + offset;
+            int curIdx = index;
 
-            // Search for the only "HashSet<ReferenceHub>.Add()".
-            int index = newInstructions.FindLastIndex(instruction =>
-                instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand ==
-                Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Add))) + offset;
+            Label cdc = generator.DefineLabel();
+            Label jne = generator.DefineLabel();
 
-            // Declare Player, to be able to store its instance with "stloc.2".
-            LocalBuilder player = generator.DeclareLocal(typeof(Player));
-
-            // Define the continue label and add it.
-            Label continueLabel = generator.DefineLabel();
-            newInstructions[index + 5].labels.Add(continueLabel);
-
-            // Player player = Player.Get(gameObject);
-            //
-            // if (player is null || (player.Role == RoleType.Tutorial && Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
-            //   continue;
+            newInstructions[index].labels.Add(cdc);
+            offset = -4;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse) + offset;
+            newInstructions[index].labels.Add(jne);
+            index = curIdx;
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, player.LocalIndex),
-                new(OpCodes.Brfalse_S, continueLabel),
-                new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
+                new CodeInstruction(OpCodes.Ldloc_S, 4),
+                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
                 new(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
-                new(OpCodes.Ceq),
-                new(OpCodes.Brtrue_S, continueLabel),
-                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
-                new(OpCodes.Brfalse_S, continueLabel),
+                new(OpCodes.Bne_Un_S, cdc),
+                new(OpCodes.Call, PropertyGetter(typeof(API.Features.Scp173), nameof(API.Features.Scp173.TurnedPlayers))),
+                new(OpCodes.Ldloc_3),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Callvirt, Method(typeof(HashSet<API.Features.Player>), nameof(HashSet<API.Features.Player>.Contains))),
+                new(OpCodes.Brtrue_S, jne),
+                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Exiled.Events.Events.Config.CanTutorialBlockScp173))),
+                new(OpCodes.Brfalse_S, jne),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
