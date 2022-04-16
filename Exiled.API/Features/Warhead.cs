@@ -25,30 +25,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadNukesitePanel SitePanel
-        {
-            get
-            {
-                if (sitePanel is null)
-                    sitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
-
-                return sitePanel;
-            }
-        }
+        public static AlphaWarheadNukesitePanel SitePanel => sitePanel ??= Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel
-        {
-            get
-            {
-                if (outsitePanel is null)
-                    outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
-
-                return outsitePanel;
-            }
-        }
+        public static AlphaWarheadOutsitePanel OutsitePanel => outsitePanel ??= Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> of the warhead lever.
@@ -109,7 +91,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the warhead can be started or not.
         /// </summary>
-        public static bool CanBeStarted => AlphaWarheadController.Host.CanDetonate;
+        public static bool CanBeStarted => Controller.CanDetonate;
 
         /// <summary>
         /// Starts the warhead countdown.
