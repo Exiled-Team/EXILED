@@ -309,7 +309,13 @@ namespace Exiled.CustomItems.API.Features
                             {
                                 if (property.GetValue(overrideClass ?? plugin.Config) is IEnumerable enumerable)
                                 {
-                                    List<CustomItem> list = enumerable.Cast<CustomItem>().ToList();
+                                    List<CustomItem> list = new();
+                                    foreach (object item in enumerable)
+                                    {
+                                        if (item is CustomItem ci)
+                                            list.Add(ci);
+                                    }
+
                                     foreach (CustomItem item in list)
                                     {
                                         if (item.GetType() != type)
