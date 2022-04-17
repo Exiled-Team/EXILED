@@ -12,7 +12,7 @@ public static class Installer
     public static void Run()
     {
         // Detect if EXILED is installed
-        // if (^ == true)
+        // if (^ == false)
         //     Install(); & return
         //
         // CheckUpdates();
