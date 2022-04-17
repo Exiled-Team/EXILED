@@ -29,6 +29,10 @@ namespace Exiled.Events.Patches.Generic
 
         private static void Postfix(HintDisplay __instance, Hint hint)
         {
+            // Instance can be null when player leaves and then reconnects to the server
+            if (__instance is null)
+                return;
+
             // Try to get the player, if it doesn't exist, just return
             if (__instance.gameObject is null || !(Player.Get(__instance.gameObject) is Player player))
                 return;
