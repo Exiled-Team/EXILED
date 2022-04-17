@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using InventorySystem.Items.Usables.Scp330;
+
     /// <summary>
     /// Contains all information before a player interacts with SCP-330.
     /// </summary>
@@ -20,10 +22,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="InteractingScp330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="candy"><inheritdoc cref="Candy"/></param>
         /// <param name="usage"><inheritdoc cref="UsageCount"/></param>
-        public InteractingScp330EventArgs(Player player, int usage)
+        public InteractingScp330EventArgs(Player player, CandyKindID candy, int usage)
         {
             Player = player;
+            Candy = candy;
             UsageCount = usage;
             ShouldSever = usage >= 2;
         }
@@ -37,6 +41,11 @@ namespace Exiled.Events.EventArgs
         /// Gets a value indicating how many times this player has interacted with SCP-330.
         /// </summary>
         public int UsageCount { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the player's has takes.
+        /// </summary>
+        public CandyKindID Candy { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's hands should get severed.

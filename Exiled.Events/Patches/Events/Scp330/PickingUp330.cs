@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="Scp330Bag.ServerProcessPickup"/> method to add the <see cref="Handlers.Player.PickingUpScp330"/> event.
+    /// Patches the <see cref="Scp330Bag.ServerProcessPickup"/> method to add the <see cref="Handlers.Scp330.PickingUpScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup))]
     internal static class PickingUp330
@@ -46,8 +46,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
 
-                // Handlers.Player.OnPickingUpScp330(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUp330))),
+                // Handlers.Scp330.OnPickingUpScp330(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnPickingUp330))),
 
                 // if (!ev.IsAllowed)
                 //    return false;

@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="Scp330Interobject.ServerInteract"/> method to add the <see cref="Handlers.Player.InteractingScp330"/> event.
+    /// Patches the <see cref="Scp330Interobject.ServerInteract"/> method to add the <see cref="Handlers.Scp330.InteractingScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Interobject), nameof(Scp330Interobject.ServerInteract))]
     internal static class InteractingScp330
@@ -51,8 +51,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
 
-                // Handlers.Player.InInteractingScp330(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingScp330))),
+                // Handlers.Scp330.InInteractingScp330(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnInteractingScp330))),
 
                 // if (!ev.IsAllowed)
                 //    return;
