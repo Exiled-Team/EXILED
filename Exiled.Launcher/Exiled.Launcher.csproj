@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PlatformTarget>x64</PlatformTarget>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+
+    <AssemblyName>Exiled.Launcher</AssemblyName>
+    <AssemblyName Condition="'$(RuntimeIdentifier)' == 'linux-x64'">$(AssemblyName)-Linux</AssemblyName>
+    <AssemblyName Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(AssemblyName)-Win</AssemblyName>
+
+    <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
+    <Configurations>Debug;Release;Programs</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <Company>Exiled Team</Company>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) == 'Release'">
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+  </PropertyGroup>
+
+</Project>
