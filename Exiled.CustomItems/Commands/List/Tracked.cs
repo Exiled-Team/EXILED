@@ -31,7 +31,7 @@ namespace Exiled.CustomItems.Commands.List
         /// <summary>
         /// Gets the command instance.
         /// </summary>
-        public static Tracked Instance { get; } = new Tracked();
+        public static Tracked Instance { get; } = new();
 
         /// <inheritdoc/>
         public string Command { get; } = "insideinventories";
@@ -78,7 +78,7 @@ namespace Exiled.CustomItems.Commands.List
 
                     message.Append(insideInventory).Append(". ");
 
-                    if (owner == null)
+                    if (owner is null)
                         message.AppendLine("Nobody");
                     else
                         message.Append(owner.Nickname).Append(" (").Append(owner.UserId).Append(") (").Append(owner.Id).Append(") [").Append(owner.Role).AppendLine("]");

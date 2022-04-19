@@ -25,7 +25,7 @@ namespace Exiled.Loader
         /// <returns>The path of the assembly or <see langword="null"/>.</returns>
         public static string GetPath(this Assembly assembly)
         {
-            if (assembly == null)
+            if (assembly is null)
                 throw new ArgumentNullException(nameof(assembly));
 
             Loader.Locations.TryGetValue(assembly, out string path);
@@ -40,7 +40,7 @@ namespace Exiled.Loader
         /// <returns>The path of the plugin or <see langword="null"/>.</returns>
         public static string GetPath(this IPlugin<IConfig> plugin)
         {
-            if (plugin == null)
+            if (plugin is null)
                 throw new ArgumentNullException(nameof(plugin));
 
             return plugin.Assembly.GetPath();

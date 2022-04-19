@@ -46,22 +46,22 @@ namespace Exiled.API.Features
         /// <summary>
         /// A list of <see cref="Locker"/>s on the map.
         /// </summary>
-        internal static readonly List<Locker> LockersValue = new List<Locker>(250);
+        internal static readonly List<Locker> LockersValue = new(250);
 
         /// <summary>
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
         /// </summary>
-        internal static readonly List<PocketDimensionTeleport> TeleportsValue = new List<PocketDimensionTeleport>(8);
+        internal static readonly List<PocketDimensionTeleport> TeleportsValue = new(8);
 
         /// <summary>
         /// A list of <see cref="Ragdoll"/>s on the map.
         /// </summary>
-        internal static readonly List<Ragdoll> RagdollsValue = new List<Ragdoll>();
+        internal static readonly List<Ragdoll> RagdollsValue = new();
 
         /// <summary>
         /// A list of <see cref="AdminToy"/>s on the map.
         /// </summary>
-        internal static readonly List<AdminToy> ToysValue = new List<AdminToy>();
+        internal static readonly List<AdminToy> ToysValue = new();
 
         private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
@@ -70,7 +70,7 @@ namespace Exiled.API.Features
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
-        private static System.Random random = new System.Random();
+        private static System.Random random = new();
 
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
@@ -94,7 +94,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                List<Pickup> pickups = new List<Pickup>();
+                List<Pickup> pickups = new();
                 foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>())
                 {
                     if (Pickup.Get(itemPickupBase) is Pickup pickup)
@@ -116,20 +116,6 @@ namespace Exiled.API.Features
         public static ReadOnlyCollection<AdminToy> Toys => ReadOnlyToysValue;
 
         /// <summary>
-        /// Gets the current state of the intercom.
-        /// </summary>
-        public static Intercom.State IntercomState => Intercom.host.IntercomState;
-
-        /// <summary>
-        /// Gets or sets the content of the intercom.
-        /// </summary>
-        public static string IntercomContent
-        {
-            get => Intercom.host.CustomContent;
-            set => Intercom.host.CustomContent = value;
-        }
-
-        /// <summary>
         /// Gets or sets the current seed of the map.
         /// </summary>
         public static int Seed
@@ -141,16 +127,6 @@ namespace Exiled.API.Features
                     MapGeneration.SeedSynchronizer._singleton.Network_syncSeed = value;
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the intercom is currently being used.
-        /// </summary>
-        public static bool IntercomInUse => IntercomState == Intercom.State.Transmitting || IntercomState == Intercom.State.TransmittingBypass || IntercomState == Intercom.State.AdminSpeaking;
-
-        /// <summary>
-        /// Gets the <see cref="Player"/> that is using the intercom. Will be <see langword="null"/> if <see cref="IntercomInUse"/> is <see langword="false"/>.
-        /// </summary>
-        public static Player IntercomSpeaker => Player.Get(Intercom.host.speaker);
 
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
@@ -188,10 +164,10 @@ namespace Exiled.API.Features
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
-            if (room == null)
+            if (room is null)
             {
                 // Then try for objects that aren't children, like players and pickups.
-                Ray ray = new Ray(objectInRoom.transform.position, Vector3.down);
+                Ray ray = new(objectInRoom.transform.position, Vector3.down);
 
                 if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                     return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
@@ -236,7 +212,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message that will be broadcasted (supports Unity Rich Text formatting).</param>
         /// <param name="duration">The duration in seconds.</param>
-        public static void ShowHint(string message, float duration)
+        public static void ShowHint(string message, float duration = 3f)
         {
             foreach (Player player in Player.List)
                 player.ShowHint(message, duration);
@@ -266,7 +242,7 @@ namespace Exiled.API.Features
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
-                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room != null && zoneTypes.HasFlag(room.Zone)))
+                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room is not null && zoneTypes.HasFlag(room.Zone)))
                     controller.ServerFlickerLights(duration);
             }
         }
@@ -356,13 +332,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Plays the intercom's sound.
-        /// </summary>
-        /// <param name="start">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
-        /// <param name="transmitterId">Sets the transmitterId.</param>
-        public static void PlayIntercomSound(bool start, int transmitterId = 0) => Intercom.host.RpcPlaySound(start, transmitterId);
-
-        /// <summary>
         /// Places a blood decal.
         /// </summary>
         /// <param name="position">The position of the blood decal.</param>
@@ -386,12 +355,14 @@ namespace Exiled.API.Features
             Room.RoomsValue.Clear();
             Door.DoorsValue.Clear();
             Camera.CamerasValue.Clear();
+            Window.WindowValue.Clear();
             Lift.LiftsValue.Clear();
             TeslaGate.TeslasValue.Clear();
             Generator.GeneratorValues.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+            Scp079Interactable.InteractablesByRoomId.Clear();
         }
     }
 }

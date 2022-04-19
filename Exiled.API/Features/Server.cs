@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using System;
+
     using System.Reflection;
 
     using MEC;
@@ -15,58 +17,30 @@ namespace Exiled.API.Features
 
     using RoundRestarting;
 
+    using UnityEngine;
+
     /// <summary>
     /// A set of tools to easily work with the server.
     /// </summary>
     public static class Server
     {
-        private static Player host;
-        private static global::Broadcast broadcast;
-        private static BanPlayer banPlayer;
         private static MethodInfo sendSpawnMessage;
 
         /// <summary>
         /// Gets the player's host of the server.
         /// Might be <see langword="null"/> when called when the server isn't loaded.
         /// </summary>
-        public static Player Host
-        {
-            get
-            {
-                if (host == null || host.ReferenceHub == null)
-                    host = PlayerManager.localPlayer != null ? new Player(PlayerManager.localPlayer) : null;
-
-                return host;
-            }
-        }
+        public static Player Host { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="Broadcast"/> component.
         /// </summary>
-        public static global::Broadcast Broadcast
-        {
-            get
-            {
-                if (broadcast == null)
-                    broadcast = PlayerManager.localPlayer.GetComponent<global::Broadcast>();
-
-                return broadcast;
-            }
-        }
+        public static global::Broadcast Broadcast { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="BanPlayer"/> component.
         /// </summary>
-        public static BanPlayer BanPlayer
-        {
-            get
-            {
-                if (banPlayer == null)
-                    banPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
-
-                return banPlayer;
-            }
-        }
+        public static BanPlayer BanPlayer { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
@@ -75,7 +49,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (sendSpawnMessage == null)
+                if (sendSpawnMessage is null)
                 {
                     sendSpawnMessage = typeof(NetworkServer).GetMethod(
                         "SendSpawnMessage",
@@ -115,6 +89,11 @@ namespace Exiled.API.Features
         public static ushort Port => ServerStatic.ServerPort;
 
         /// <summary>
+        /// Gets the actual ticks per second of the server.
+        /// </summary>
+        public static double Tps => Math.Round(1f / Time.smoothDeltaTime);
+
+        /// <summary>
         /// Gets or sets a value indicating whether friendly fire is enabled or not.
         /// </summary>
         public static bool FriendlyFire
@@ -135,6 +114,45 @@ namespace Exiled.API.Features
         {
             get => CustomNetworkManager.slots;
             set => CustomNetworkManager.slots = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not later join is enabled.
+        /// </summary>
+        public static bool LaterJoinEnabled
+        {
+            get => CharacterClassManager.LaterJoinEnabled;
+            set => CharacterClassManager.LaterJoinEnabled = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the late join time, in seconds. If a player joins less than this many seconds into a game, they will be given a random class.
+        /// </summary>
+        public static float LaterJoinTime
+        {
+            get => CharacterClassManager.LaterJoinTime;
+            set => CharacterClassManager.LaterJoinTime = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the spawn protection time, in seconds.
+        /// </summary>
+        public static float SpawnProtectTime
+        {
+            get => CharacterClassManager.SProtectedDuration;
+            set => CharacterClassManager.SProtectedDuration = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the server is marked as Heavily Modded.
+        /// <remarks>
+        /// Read the VSR for more info about its usage.
+        /// </remarks>
+        /// </summary>
+        public static bool IsHeavilyModded
+        {
+            get => CustomNetworkManager.HeavilyModded;
+            set => CustomNetworkManager.HeavilyModded = value;
         }
 
         /// <summary>
@@ -185,6 +203,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="command">The command to be run.</param>
         /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
-        public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender ?? host.Sender);
+        public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender ?? Host.Sender);
     }
 }

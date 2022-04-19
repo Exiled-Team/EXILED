@@ -54,12 +54,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets base items that the player will receive. (Changing this will overwrite their current inventory if Lite is true!).
         /// </summary>
-        public List<ItemType> Items { get; } = new List<ItemType>();
+        public List<ItemType> Items { get; } = new();
 
         /// <summary>
         /// Gets the base ammo values for the new role. (Changing this will overwrite their current inventory if Lite is true!).
         /// </summary>
-        public Dictionary<ItemType, ushort> Ammo { get; } = new Dictionary<ItemType, ushort>();
+        public Dictionary<ItemType, ushort> Ammo { get; } = new();
 
         /// <summary>
         /// Gets or sets the reason for their class change.

@@ -39,15 +39,13 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ret) + 1;
 
             CodeInstruction firstLabel = new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]);
-            newInstructions[index].WithLabels(endLabel);
+            newInstructions[index].labels.Add(endLabel);
 
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
+            newInstructions.InsertRange(index, new[]
+            {
                     /*
                      *  var player = Player.Get(__instance._hub);
-                     *  if (player != null)
+                     *  if (player is not null)
                      *  {
                      *      var ev = new ChangingSpectatedPlayerEventArgs(player, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value));
                      *
@@ -59,64 +57,62 @@ namespace Exiled.Events.Patches.Events.Player
                      *  }
                      */
 
-                    // var player = Player.Get(__instance._hub);
-                    firstLabel,
-                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._hub))),
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
-                    new CodeInstruction(OpCodes.Dup),
+                // var player = Player.Get(__instance._hub);
+                firstLabel,
+                new(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._hub))),
+                new(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
 
-                    // if (player != null)
-                    new CodeInstruction(OpCodes.Stloc, player),
-                    new CodeInstruction(OpCodes.Brfalse_S, endLabel),
-                    new CodeInstruction(OpCodes.Ldloc, player),
+                // if (player is not null)
+                new(OpCodes.Stloc, player),
+                new(OpCodes.Brfalse_S, endLabel),
+                new(OpCodes.Ldloc, player),
 
-                    // Player.Get(__instance.CurrentSpectatedPlayer)
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
+                // Player.Get(__instance.CurrentSpectatedPlayer)
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
+                new(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    // Player.Get(value)
-                    new CodeInstruction(OpCodes.Ldarg_1),
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
+                // Player.Get(value)
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    // var ev = new ChangingSpectatedPlayerEventArgs(player, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value))
-                    new CodeInstruction(OpCodes.Ldc_I4_1),
-                    new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(ChangingSpectatedPlayerEventArgs))[0]),
-                    new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Stloc, ev),
+                // var ev = new ChangingSpectatedPlayerEventArgs(player, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value))
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(ChangingSpectatedPlayerEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup), new(OpCodes.Stloc, ev),
 
-                    // Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer(ev);
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.OnChangingSpectatedPlayer))),
+                // Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer(ev);
+                new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.OnChangingSpectatedPlayer))),
 
-                    // if(!ev.IsAllowed) return;
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.IsAllowed))),
-                    new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
-                    new CodeInstruction(OpCodes.Ret),
+                // if(!ev.IsAllowed) return;
+                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.IsAllowed))),
+                new(OpCodes.Brtrue_S, continueLabel),
+                new(OpCodes.Ret),
 
-                    // ev.NewTarget;
-                    new CodeInstruction(OpCodes.Ldloc, ev).WithLabels(continueLabel),
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.NewTarget))),
+                // ev.NewTarget;
+                new CodeInstruction(OpCodes.Ldloc, ev).WithLabels(continueLabel),
+                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.NewTarget))),
 
-                    // if(ev.NewTarget == null)
-                    new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Brtrue_S, elseLabel),
+                // if(ev.NewTarget is null)
+                new(OpCodes.Dup),
+                new(OpCodes.Brtrue_S, elseLabel),
 
-                    // value = ev.Player.ReferenceHub;
-                    new CodeInstruction(OpCodes.Pop),
-                    new CodeInstruction(OpCodes.Ldloc, ev),
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.Player))),
+                // value = ev.Player.ReferenceHub;
+                new(OpCodes.Pop),
+                new(OpCodes.Ldloc, ev),
+                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.Player))),
 
-                    // value = ev.NewTarget.ReferenceHub;
-                    new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.ReferenceHub))).WithLabels(elseLabel),
-                    new CodeInstruction(OpCodes.Starg_S, 1),
-                });
+                // value = ev.NewTarget.ReferenceHub;
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.ReferenceHub))).WithLabels(elseLabel),
+                new(OpCodes.Starg_S, 1),
+            });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            yield break;
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Exiled.Loader
                 Log.Info($"Loading plugin configs... ({Loader.Config.ConfigType})");
 
                 Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
-                SortedDictionary<string, IConfig> deserializedConfigs = new SortedDictionary<string, IConfig>(StringComparer.Ordinal);
+                SortedDictionary<string, IConfig> deserializedConfigs = new(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
@@ -90,16 +90,11 @@ namespace Exiled.Loader
         /// <param name="plugin">The plugin which config will be loaded.</param>
         /// <param name="rawConfigs">The raw configs to detect if the plugin already has generated configs.</param>
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
-        public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs = null)
+        public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs = null) => Loader.Config.ConfigType switch
         {
-            switch (Loader.Config.ConfigType)
-            {
-                case ConfigType.Separated:
-                    return LoadSeparatedConfig(plugin);
-                default:
-                    return LoadDefaultConfig(plugin, rawConfigs);
-            }
-        }
+            ConfigType.Separated => LoadSeparatedConfig(plugin),
+            _ => LoadDefaultConfig(plugin, rawConfigs),
+        };
 
         /// <summary>
         /// Loads the config of a plugin using the default distribution.
@@ -109,7 +104,7 @@ namespace Exiled.Loader
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
         public static IConfig LoadDefaultConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs)
         {
-            if (rawConfigs == null)
+            if (rawConfigs is null)
             {
                 rawConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
             }
@@ -227,7 +222,7 @@ namespace Exiled.Loader
         {
             try
             {
-                if (configs == null || configs.Count == 0)
+                if (configs is null || configs.Count == 0)
                     return false;
 
                 if (Loader.Config.ConfigType == ConfigType.Default)
@@ -296,8 +291,8 @@ namespace Exiled.Loader
         public static void ReloadRemoteAdmin()
         {
             ServerStatic.RolesConfig = new YamlConfig(ServerStatic.RolesConfigPath);
-            ServerStatic.SharedGroupsConfig = (GameCore.ConfigSharing.Paths[4] == null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[4] + "shared_groups.txt");
-            ServerStatic.SharedGroupsMembersConfig = (GameCore.ConfigSharing.Paths[5] == null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[5] + "shared_groups_members.txt");
+            ServerStatic.SharedGroupsConfig = (GameCore.ConfigSharing.Paths[4] is null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[4] + "shared_groups.txt");
+            ServerStatic.SharedGroupsMembersConfig = (GameCore.ConfigSharing.Paths[5] is null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[5] + "shared_groups_members.txt");
             ServerStatic.PermissionsHandler = new PermissionsHandler(ref ServerStatic.RolesConfig, ref ServerStatic.SharedGroupsConfig, ref ServerStatic.SharedGroupsMembersConfig);
             ServerStatic.GetPermissionsHandler().RefreshPermissions();
 

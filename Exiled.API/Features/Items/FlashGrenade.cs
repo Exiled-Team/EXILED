@@ -46,7 +46,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         internal FlashGrenade(Player player = null)
-            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.GrenadeFlash, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.GrenadeFlash, true))
+            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.GrenadeFlash, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.GrenadeFlash, true))
         {
         }
 
@@ -73,7 +73,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets all the currently known <see cref="EffectGrenade"/>:<see cref="Throwable"/> items.
         /// </summary>
-        internal static Dictionary<FlashbangGrenade, FlashGrenade> GrenadeToItem { get; set; } = new Dictionary<FlashbangGrenade, FlashGrenade>();
+        internal static Dictionary<FlashbangGrenade, FlashGrenade> GrenadeToItem { get; set; } = new();
 
         /// <summary>
         /// Spawns an active grenade on the map at the specified location.
@@ -86,7 +86,7 @@ namespace Exiled.API.Features.Items
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
             FlashbangGrenade grenade = (FlashbangGrenade)Object.Instantiate(Base.Projectile, position, Quaternion.identity);
-            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub);
+            grenade.PreviousOwner = new Footprint(owner is not null ? owner.ReferenceHub : Server.Host.ReferenceHub);
             grenade._blindingOverDistance = BlindCurve;
             grenade._surfaceZoneDistanceIntensifier = SurfaceDistanceIntensifier;
             grenade._deafenDurationOverDistance = DeafenCurve;

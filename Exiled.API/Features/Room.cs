@@ -31,7 +31,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Room"/>s on the map.
         /// </summary>
-        internal static readonly List<Room> RoomsValue = new List<Room>(250);
+        internal static readonly List<Room> RoomsValue = new(250);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
@@ -42,6 +42,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Room"/> name.
         /// </summary>
         public string Name => name;
+
+        /// <summary>
+        /// Gets the <see cref="Room"/> <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => gameObject;
 
         /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.Transform"/>.
@@ -76,7 +81,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom.Transform == Transform);
+        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && !(player.CurrentRoom is null) && player.CurrentRoom.Transform == Transform);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
@@ -181,8 +186,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks all the doors in the room.
         /// </summary>
-        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent lockdown.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
+        /// <seealso cref="Door.LockAll(float, ZoneType, DoorLockType)"/>
+        /// <seealso cref="Door.LockAll(float, IEnumerable{ZoneType}, DoorLockType)"/>
         public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Doors)
@@ -199,8 +206,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks all the doors and turns off all lights in the room.
         /// </summary>
-        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent blackout.</param>
         /// <param name="lockType">DoorLockType of the blackout.</param>
+        /// <seealso cref="Map.TurnOffAllLights(float, ZoneType)"/>
+        /// <seealso cref="Map.TurnOffAllLights(float, IEnumerable{ZoneType})"/>
         public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             LockDown(duration, lockType);
@@ -210,6 +219,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Unlocks all the doors in the room.
         /// </summary>
+        /// <seealso cref="Door.UnlockAll()"/>
+        /// <seealso cref="Door.UnlockAll(ZoneType)"/>
+        /// <seealso cref="Door.UnlockAll(IEnumerable{ZoneType})"/>
+        /// <seealso cref="Door.UnlockAll(Func{Door, bool})"/>
         public void UnlockAll()
         {
             foreach (Door door in Doors)
@@ -237,191 +250,150 @@ namespace Exiled.API.Features
         {
             // Try to remove brackets if they exist.
             rawName = rawName.RemoveBracketsOnEndOfName();
-
-            switch (rawName)
+            return rawName switch
             {
-                case "LCZ_Armory":
-                    return RoomType.LczArmory;
-                case "LCZ_Curve":
-                    return RoomType.LczCurve;
-                case "LCZ_Straight":
-                    return RoomType.LczStraight;
-                case "LCZ_330":
-                    return RoomType.Lcz330;
-                case "LCZ_914":
-                    return RoomType.Lcz914;
-                case "LCZ_Crossing":
-                    return RoomType.LczCrossing;
-                case "LCZ_TCross":
-                    return RoomType.LczTCross;
-                case "LCZ_Cafe":
-                    return RoomType.LczCafe;
-                case "LCZ_Plants":
-                    return RoomType.LczPlants;
-                case "LCZ_Toilets":
-                    return RoomType.LczToilets;
-                case "LCZ_Airlock":
-                    return RoomType.LczAirlock;
-                case "LCZ_173":
-                    return RoomType.Lcz173;
-                case "LCZ_ClassDSpawn":
-                    return RoomType.LczClassDSpawn;
-                case "LCZ_ChkpB":
-                    return RoomType.LczChkpB;
-                case "LCZ_372":
-                    return RoomType.LczGlassBox;
-                case "LCZ_ChkpA":
-                    return RoomType.LczChkpA;
-                case "HCZ_079":
-                    return RoomType.Hcz079;
-                case "HCZ_EZ_Checkpoint":
-                    return RoomType.HczEzCheckpoint;
-                case "HCZ_Room3ar":
-                    return RoomType.HczArmory;
-                case "HCZ_Testroom":
-                    return RoomType.Hcz939;
-                case "HCZ_Hid":
-                    return RoomType.HczHid;
-                case "HCZ_049":
-                    return RoomType.Hcz049;
-                case "HCZ_ChkpA":
-                    return RoomType.HczChkpA;
-                case "HCZ_Crossing":
-                    return RoomType.HczCrossing;
-                case "HCZ_106":
-                    return RoomType.Hcz106;
-                case "HCZ_Nuke":
-                    return RoomType.HczNuke;
-                case "HCZ_Tesla":
-                    return RoomType.HczTesla;
-                case "HCZ_Servers":
-                    return RoomType.HczServers;
-                case "HCZ_ChkpB":
-                    return RoomType.HczChkpB;
-                case "HCZ_Room3":
-                    return RoomType.HczTCross;
-                case "HCZ_457":
-                    return RoomType.Hcz096;
-                case "HCZ_Curve":
-                    return RoomType.HczCurve;
-                case "HCZ_Straight":
-                    return RoomType.HczStraight;
-                case "EZ_Endoof":
-                    return RoomType.EzVent;
-                case "EZ_Intercom":
-                    return RoomType.EzIntercom;
-                case "EZ_GateA":
-                    return RoomType.EzGateA;
-                case "EZ_PCs_small":
-                    return RoomType.EzDownstairsPcs;
-                case "EZ_Curve":
-                    return RoomType.EzCurve;
-                case "EZ_PCs":
-                    return RoomType.EzPcs;
-                case "EZ_Crossing":
-                    return RoomType.EzCrossing;
-                case "EZ_CollapsedTunnel":
-                    return RoomType.EzCollapsedTunnel;
-                case "EZ_Smallrooms2":
-                    return RoomType.EzConference;
-                case "EZ_Straight":
-                    return RoomType.EzStraight;
-                case "EZ_Cafeteria":
-                    return RoomType.EzCafeteria;
-                case "EZ_upstairs":
-                    return RoomType.EzUpstairsPcs;
-                case "EZ_GateB":
-                    return RoomType.EzGateB;
-                case "EZ_Shelter":
-                    return RoomType.EzShelter;
-                case "EZ_ThreeWay":
-                    return RoomType.EzTCross;
-                case "PocketWorld":
-                    return RoomType.Pocket;
-                case "Outside":
-                    return RoomType.Surface;
-                default:
-                    return RoomType.Unknown;
-            }
+                "LCZ_Armory" => RoomType.LczArmory,
+                "LCZ_Curve" => RoomType.LczCurve,
+                "LCZ_Straight" => RoomType.LczStraight,
+                "LCZ_330" => RoomType.Lcz330,
+                "LCZ_914" => RoomType.Lcz914,
+                "LCZ_Crossing" => RoomType.LczCrossing,
+                "LCZ_TCross" => RoomType.LczTCross,
+                "LCZ_Cafe" => RoomType.LczCafe,
+                "LCZ_Plants" => RoomType.LczPlants,
+                "LCZ_Toilets" => RoomType.LczToilets,
+                "LCZ_Airlock" => RoomType.LczAirlock,
+                "LCZ_173" => RoomType.Lcz173,
+                "LCZ_ClassDSpawn" => RoomType.LczClassDSpawn,
+                "LCZ_ChkpB" => RoomType.LczChkpB,
+                "LCZ_372" => RoomType.LczGlassBox,
+                "LCZ_ChkpA" => RoomType.LczChkpA,
+                "HCZ_079" => RoomType.Hcz079,
+                "HCZ_EZ_Checkpoint" => RoomType.HczEzCheckpoint,
+                "HCZ_Room3ar" => RoomType.HczArmory,
+                "HCZ_Testroom" => RoomType.Hcz939,
+                "HCZ_Hid" => RoomType.HczHid,
+                "HCZ_049" => RoomType.Hcz049,
+                "HCZ_ChkpA" => RoomType.HczChkpA,
+                "HCZ_Crossing" => RoomType.HczCrossing,
+                "HCZ_106" => RoomType.Hcz106,
+                "HCZ_Nuke" => RoomType.HczNuke,
+                "HCZ_Tesla" => RoomType.HczTesla,
+                "HCZ_Servers" => RoomType.HczServers,
+                "HCZ_ChkpB" => RoomType.HczChkpB,
+                "HCZ_Room3" => RoomType.HczTCross,
+                "HCZ_457" => RoomType.Hcz096,
+                "HCZ_Curve" => RoomType.HczCurve,
+                "HCZ_Straight" => RoomType.HczStraight,
+                "EZ_Endoof" => RoomType.EzVent,
+                "EZ_Intercom" => RoomType.EzIntercom,
+                "EZ_GateA" => RoomType.EzGateA,
+                "EZ_PCs_small" => RoomType.EzDownstairsPcs,
+                "EZ_Curve" => RoomType.EzCurve,
+                "EZ_PCs" => RoomType.EzPcs,
+                "EZ_Crossing" => RoomType.EzCrossing,
+                "EZ_CollapsedTunnel" => RoomType.EzCollapsedTunnel,
+                "EZ_Smallrooms2" => RoomType.EzConference,
+                "EZ_Straight" => RoomType.EzStraight,
+                "EZ_Cafeteria" => RoomType.EzCafeteria,
+                "EZ_upstairs" => RoomType.EzUpstairsPcs,
+                "EZ_GateB" => RoomType.EzGateB,
+                "EZ_Shelter" => RoomType.EzShelter,
+                "EZ_ThreeWay" => RoomType.EzTCross,
+                "PocketWorld" => RoomType.Pocket,
+                "Outside" => RoomType.Surface,
+                _ => RoomType.Unknown,
+            };
         }
 
         private static ZoneType FindZone(GameObject gameObject)
         {
             Transform transform = gameObject.transform;
 
-            if (transform.parent == null)
+            if (transform.parent is null)
                 return ZoneType.Surface;
 
-            switch (transform.parent.name)
+            return transform.parent.name switch
             {
-                case "HeavyRooms":
-                    return ZoneType.HeavyContainment;
-                case "LightRooms":
-                    return ZoneType.LightContainment;
-                case "EntranceRooms":
-                    return ZoneType.Entrance;
-                default:
-                    return transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
-            }
+                "HeavyRooms" => ZoneType.HeavyContainment,
+                "LightRooms" => ZoneType.LightContainment,
+                "EntranceRooms" => ZoneType.Entrance,
+                _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
+            };
         }
 
-        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out FlickerableLightController flickerableLightController)
+        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController)
         {
             cameraList = new List<Camera079>();
             doors = new List<Door>();
+            teslaGate = null;
             flickerableLightController = null;
 
             if (Scp079Interactable.InteractablesByRoomId.ContainsKey(RoomIdentifier.UniqueId))
             {
-                foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[
-                    gameObject.GetComponent<RoomIdentifier>().UniqueId])
+                foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[RoomIdentifier.UniqueId])
                 {
-                    if (scp079Interactable != null)
+                    try
                     {
-                        switch (scp079Interactable.type)
+                        if (scp079Interactable is not null)
                         {
-                            case Scp079Interactable.InteractableType.Door:
+                            switch (scp079Interactable.type)
                             {
-                                if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                    doors.Add(Door.Get(doorVariant));
-                                break;
-                            }
+                                case Scp079Interactable.InteractableType.Door:
+                                {
+                                    if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
+                                        doors.Add(Door.Get(doorVariant));
+                                    break;
+                                }
 
-                            case Scp079Interactable.InteractableType.Camera:
-                            {
-                                if (scp079Interactable.TryGetComponent(out Camera079 camera))
-                                    cameraList.Add(camera);
-                                break;
-                            }
+                                case Scp079Interactable.InteractableType.Camera:
+                                {
+                                    if (scp079Interactable.TryGetComponent(out Camera079 camera))
+                                        cameraList.Add(camera);
+                                    break;
+                                }
 
-                            case Scp079Interactable.InteractableType.LightController:
-                            {
-                                if (scp079Interactable.TryGetComponent(out FlickerableLightController lightController))
-                                    flickerableLightController = lightController;
-                                break;
+                                case Scp079Interactable.InteractableType.LightController:
+                                {
+                                    if (scp079Interactable.TryGetComponent(
+                                            out FlickerableLightController lightController))
+                                        flickerableLightController = lightController;
+                                    break;
+                                }
+
+                                case Scp079Interactable.InteractableType.Tesla:
+                                {
+                                    if (scp079Interactable.TryGetComponent(out global::TeslaGate tesla))
+                                        teslaGate = TeslaGate.Get(tesla);
+                                    break;
+                                }
                             }
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error($"{nameof(FindObjectsInRoom)}: Exception cause {e.Message}\n{scp079Interactable is null} {scp079Interactable?.type is null}");
                     }
                 }
             }
 
-            if (flickerableLightController == null && gameObject.transform.position.y > 900)
+            if (flickerableLightController is null && gameObject.transform.position.y > 900)
             {
                 flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
             }
         }
 
-        private void Start()
+        private void Awake()
         {
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
-            TeslaGate = gameObject.GetComponentInChildren<TeslaGate>();
 
-            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
+            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
             Doors = doors;
             Cameras = Camera.Get(cameras);
-            if (flickerableLightController == null)
+            TeslaGate = teslagate;
+            if (flickerableLightController is null)
             {
                 if (!gameObject.TryGetComponent(out flickerableLightController))
                     flickerableLightController = gameObject.AddComponent<FlickerableLightController>();

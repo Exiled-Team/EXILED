@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="LoaderMessages.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -81,18 +81,15 @@ namespace Exiled.Loader.Features
         /// <returns>The correspondent loader message.</returns>
         public static string GetMessage()
         {
-            if (Loader.Random.NextDouble() <= 0.14)
+            if (Loader.Random.NextDouble() <= 0.07)
                 return EasterEgg;
 
-            switch (DateTime.Today.Month)
+            return DateTime.Today.Month switch
             {
-                case 12:
-                    return Christmas;
-                case 10:
-                    return Halloween;
-                default:
-                    return Default;
-            }
+                12 => Christmas,
+                10 => Halloween,
+                _ => Default,
+            };
         }
     }
 }

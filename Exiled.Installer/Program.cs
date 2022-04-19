@@ -46,11 +46,11 @@ namespace Exiled.Installer
 
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar.ToString(), TargetSubfolders);
-        private static readonly Version VersionLimit = new Version("2.0.0");
+        private static readonly Version VersionLimit = new("2.0.0");
         private static readonly uint SecondsWaitForDownload = 480;
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
-        private static readonly GitHubClient GitHubClient = new GitHubClient(
+        private static readonly GitHubClient GitHubClient = new(
             new ProductHeaderValue(Header));
 
         // Force use of LF because the file uses LF
@@ -296,7 +296,7 @@ namespace Exiled.Installer
         private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
         {
             Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
-            Version targetVersion = args.TargetVersion != null ? new Version(args.TargetVersion) : VersionLimit;
+            Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : VersionLimit;
 
             foreach (var r in releases)
             {

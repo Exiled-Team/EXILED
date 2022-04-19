@@ -18,6 +18,7 @@ namespace Exiled.CustomItems.API.Features
 
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
 
     using MEC;
@@ -33,9 +34,9 @@ namespace Exiled.CustomItems.API.Features
     public abstract class CustomWeapon : CustomItem
     {
         /// <summary>
-        /// Gets or sets value indicating what <see cref="FirearmAttachment"/>s the weapon will have.
+        /// Gets or sets value indicating what <see cref="Attachment"/>s the weapon will have.
         /// </summary>
-        public virtual AttachmentNameTranslation[] Attachments { get; set; } = { };
+        public virtual AttachmentName[] Attachments { get; set; } = { };
 
         /// <inheritdoc/>
         public override ItemType Type
@@ -43,7 +44,7 @@ namespace Exiled.CustomItems.API.Features
             get => base.Type;
             set
             {
-                if (!value.IsWeapon())
+                if (!value.IsWeapon() && value != ItemType.None)
                     throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid weapon type.");
 
                 base.Type = value;
@@ -60,22 +61,27 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         public virtual byte ClipSize { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether or not to allow friendly fire with this weapon on FF-enabled servers.
+        /// </summary>
+        public virtual bool FriendlyFire { get; set; }
+
         /// <inheritdoc/>
         public override Pickup Spawn(Vector3 position)
         {
             Item item = Item.Create(Type);
 
-            if (item == null)
+            if (item is null)
             {
                 Log.Debug($"{nameof(Spawn)}: Item is null.", Instance.Config.Debug);
                 return null;
             }
 
-            if (item is Firearm firearm && Attachments != null && !Attachments.IsEmpty())
+            if (item is Firearm firearm && Attachments is not null && !Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
 
             Pickup pickup = item.Spawn(position);
-            if (pickup == null)
+            if (pickup is null)
             {
                 Log.Debug($"{nameof(Spawn)}: Pickup is null.");
                 return null;
@@ -195,7 +201,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
         {
-            if (!Check(ev.Player.CurrentItem))
+            if (!Check(ev.Firearm))
                 return;
 
             Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Reloading weapon. Calling external reload event..", Instance.Config.Debug);
@@ -259,27 +265,21 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null)
+            if (ev.Attacker is null)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Attacker null", Instance.Config.Debug);
                 return;
             }
 
-            if (ev.Target == null)
+            if (ev.Target is null)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: target null", Instance.Config.Debug);
                 return;
             }
 
-            if (ev.Attacker.CurrentItem == null)
-            {
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: CurItem null", Instance.Config.Debug);
-                return;
-            }
-
             if (!Check(ev.Attacker.CurrentItem))
             {
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: !Check() {ev.Attacker.CurrentItem.Serial}", Instance.Config.Debug);
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: !Check()", Instance.Config.Debug);
                 return;
             }
 
@@ -289,21 +289,27 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (ev.Handler == null)
+            if (ev.Handler is null)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler null", Instance.Config.Debug);
                 return;
             }
 
-            if (!ev.Handler.BaseIs(out FirearmDamageHandler firearmDamageHandler))
+            if (!ev.Handler.CustomBase.BaseIs(out FirearmDamageHandler firearmDamageHandler))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler not firearm", Instance.Config.Debug);
                 return;
             }
 
-            if (firearmDamageHandler.Item.Type != Type)
+            if (!Check(firearmDamageHandler.Item))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: type != type", Instance.Config.Debug);
+                return;
+            }
+
+            if (!FriendlyFire && ev.Attacker.Role.Team == ev.Target.Role.Team)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: FF is disabled for this weapon!", Instance.Config.Debug);
                 return;
             }
 

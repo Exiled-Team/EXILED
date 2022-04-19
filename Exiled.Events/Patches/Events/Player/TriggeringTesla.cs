@@ -9,23 +9,14 @@ namespace Exiled.Events.Patches.Events.Player
 {
     using System;
 #pragma warning disable SA1313
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
-
     using UnityEngine;
 
-    using static HarmonyLib.AccessTools;
-
     using BaseTeslaGate = TeslaGate;
-    using Player = Exiled.API.Features.Player;
 
     /// <summary>
     /// Patches <see cref="TeslaGateController.FixedUpdate"/>.
@@ -38,6 +29,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
+                if (!Round.IsStarted)
+                    return false;
+
                 if (TeslaGate.TeslasValue.Count == 0)
                     return true;
                 foreach (BaseTeslaGate baseTeslaGate in __instance.TeslaGates)
@@ -60,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Player
                         if (!teslaGate.CanBeIdle(player))
                             continue;
 
-                        TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(player, teslaGate);
+                        TriggeringTeslaEventArgs ev = new(player, teslaGate);
                         Handlers.Player.OnTriggeringTesla(ev);
 
                         if (ev.IsTriggerable && !isTriggerable)
@@ -81,7 +75,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {e}\n{e.StackTrace}");
                 return true;
             }
         }

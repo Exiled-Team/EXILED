@@ -24,7 +24,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
         /// </summary>
-        internal static readonly List<Generator> GeneratorValues = new List<Generator>();
+        internal static readonly List<Generator> GeneratorValues = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Generator"/> class.
@@ -178,6 +178,21 @@ namespace Exiled.API.Features
             get => Base._deniedCooldownTime;
             set => Base._deniedCooldownTime = value;
         }
+
+        /// <summary>
+        /// Gets the generator position.
+        /// </summary>
+        public Vector3 Position => Base.transform.position;
+
+        /// <summary>
+        /// Gets the generator transform.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets the generator rotation.
+        /// </summary>
+        public Quaternion Rotation => Base.transform.rotation;
 
         /// <summary>
         /// Gets or sets the required permissions to interact with the generator.

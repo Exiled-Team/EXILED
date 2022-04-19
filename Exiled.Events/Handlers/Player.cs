@@ -423,6 +423,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SearchingPickupEventArgs> SearchingPickup;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
+        /// </summary>
+        public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
+
+        /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -672,19 +677,19 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a door.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
         public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with an elevator.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="InteractingElevatorEventArgs"/> instance.</param>
         public static void OnInteractingElevator(InteractingElevatorEventArgs ev) => InteractingElevator.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a locker.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="InteractingLockerEventArgs"/> instance.</param>
         public static void OnInteractingLocker(InteractingLockerEventArgs ev) => InteractingLocker.InvokeSafely(ev);
 
         /// <summary>
@@ -898,9 +903,15 @@ namespace Exiled.Events.Handlers
         public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> interacts with a Pickup.
+        /// Called before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
         /// <param name="ev">The <see cref="SearchingPickupEventArgs"/> instance.</param>
         public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> damage a window.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
+        public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
     }
 }

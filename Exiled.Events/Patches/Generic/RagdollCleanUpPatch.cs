@@ -32,12 +32,12 @@ namespace Exiled.Events.Patches.Generic
 
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Ragdoll), nameof(Ragdoll.IgnoredRagdolls))),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<global::Ragdoll>), nameof(HashSet<global::Ragdoll>.Contains))),
-                new CodeInstruction(OpCodes.Brtrue_S, ret),
+                new(OpCodes.Call, PropertyGetter(typeof(Ragdoll), nameof(Ragdoll.IgnoredRagdolls))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, Method(typeof(HashSet<global::Ragdoll>), nameof(HashSet<global::Ragdoll>.Contains))),
+                new(OpCodes.Brtrue_S, ret),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);

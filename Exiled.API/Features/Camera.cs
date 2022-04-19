@@ -25,9 +25,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Camera"/>s on the map.
         /// </summary>
-        internal static readonly List<Camera> CamerasValue = new List<Camera>(250);
+        internal static readonly List<Camera> CamerasValue = new(250);
 
-        private static readonly Dictionary<string, CameraType> NameToCameraType = new Dictionary<string, CameraType>
+        private static readonly Dictionary<string, CameraType> NameToCameraType = new()
         {
             // Light Containment
             ["173 chamber"] = CameraType.Lcz173Chamber,
@@ -169,7 +169,7 @@ namespace Exiled.API.Features
             {
                 string cameraName = Name.ToLower();
 
-                if (Room == null)
+                if (Room is null)
                     return NameToCameraType.ContainsKey(cameraName) ? NameToCameraType[cameraName] : CameraType.Unknown;
 
                 switch (cameraName)
@@ -379,7 +379,7 @@ namespace Exiled.API.Features
                 {
                     while (enumerator.MoveNext())
                     {
-                        if (enumerator.Current.currentCamera == null || enumerator.Current.currentCamera != Base)
+                        if (enumerator.Current.currentCamera is null || enumerator.Current.currentCamera != Base)
                             continue;
 
                         return true;
@@ -391,11 +391,9 @@ namespace Exiled.API.Features
 
             set
             {
-                using (List<Scp079PlayerScript>.Enumerator enumerator = Scp079PlayerScript.instances.GetEnumerator())
-                {
-                    while (enumerator.MoveNext())
-                        enumerator.Current.RpcSwitchCamera(Id, true);
-                }
+                using List<Scp079PlayerScript>.Enumerator enumerator = Scp079PlayerScript.instances.GetEnumerator();
+                while (enumerator.MoveNext())
+                    enumerator.Current.RpcSwitchCamera(Id, true);
             }
         }
 

@@ -64,5 +64,10 @@ namespace Exiled.API.Enums
         /// Isloation.
         /// </summary>
         Isolation = 256, // 0x0100
+
+        /// <summary>
+        /// Locked down by SCP-2176.
+        /// </summary>
+        Lockdown2176 = 512,
     }
 }

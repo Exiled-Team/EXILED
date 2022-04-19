@@ -78,7 +78,7 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Light"/>.</returns>
         public static Light Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
-            Light light = new Light(Object.Instantiate(ToysHelper.LightBaseObject));
+            Light light = new(Object.Instantiate(ToysHelper.LightBaseObject));
 
             light.AdminToyBase.transform.position = position ?? Vector3.zero;
             light.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
@@ -98,7 +98,7 @@ namespace Exiled.API.Features.Toys
         public static Light Get(LightSourceToy lightSourceToy)
         {
             AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == lightSourceToy);
-            return adminToy != null ? adminToy as Light : new Light(lightSourceToy);
+            return adminToy is not null ? adminToy as Light : new Light(lightSourceToy);
         }
     }
 }

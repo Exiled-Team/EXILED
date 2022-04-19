@@ -162,32 +162,18 @@ namespace Exiled.API.Features.Roles
         /// <param name="type">The RoleType.</param>
         /// <param name="player">The Player.</param>
         /// <returns>A role.</returns>
-        internal static Role Create(RoleType type, Player player)
+        internal static Role Create(RoleType type, Player player) => type switch
         {
-            switch (type)
-            {
-                case RoleType.Scp049:
-                    return new Scp049Role(player);
-                case RoleType.Scp0492:
-                    return new Scp0492Role(player);
-                case RoleType.Scp079:
-                    return new Scp079Role(player);
-                case RoleType.Scp096:
-                    return new Scp096Role(player);
-                case RoleType.Scp106:
-                    return new Scp106Role(player);
-                case RoleType.Scp173:
-                    return new Scp173Role(player);
-                case RoleType.Scp93953:
-                case RoleType.Scp93989:
-                    return new Scp939Role(player, type);
-                case RoleType.Spectator:
-                    return new SpectatorRole(player);
-                case RoleType.None:
-                    return new NoneRole(player);
-                default:
-                    return new HumanRole(player, type);
-            }
-        }
+            RoleType.Scp049 => new Scp049Role(player),
+            RoleType.Scp0492 => new Scp0492Role(player),
+            RoleType.Scp079 => new Scp079Role(player),
+            RoleType.Scp096 => new Scp096Role(player),
+            RoleType.Scp106 => new Scp106Role(player),
+            RoleType.Scp173 => new Scp173Role(player),
+            RoleType.Scp93953 or RoleType.Scp93989 => new Scp939Role(player, type),
+            RoleType.Spectator => new SpectatorRole(player),
+            RoleType.None => new NoneRole(player),
+            _ => new HumanRole(player, type),
+        };
     }
 }

@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
     /// </summary>
-    [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
+    // [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
     internal static class Scp173BeingLooked
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -49,24 +49,24 @@ namespace Exiled.Events.Patches.Generic
 
             // Player player = Player.Get(gameObject);
             //
-            // if (player == null || (player.Role == RoleType.Tutorial && Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
+            // if (player is null || (player.Role == RoleType.Tutorial && Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
             //   continue;
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldloc_3),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, player.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
-                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
-                new CodeInstruction(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
-                new CodeInstruction(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
-                new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
+                new(OpCodes.Ldloc_3),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, player.LocalIndex),
+                new(OpCodes.Brfalse_S, continueLabel),
+                new(OpCodes.Ldloc, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
+                new(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
+                new(OpCodes.Ceq),
+                new(OpCodes.Brtrue_S, continueLabel),
+                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
+                new(OpCodes.Brfalse_S, continueLabel),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

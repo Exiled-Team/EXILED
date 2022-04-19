@@ -47,18 +47,18 @@ namespace Exiled.Events.Patches.Generic
                 i.opcode == OpCodes.Callvirt &&
                 (MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded))) + offset;
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // Player.Get(inv._hub)
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // itemInstance
-                new CodeInstruction(OpCodes.Ldloc_1),
+                new(OpCodes.Ldloc_1),
 
                 // AddItem(player, itemInstance)
-                new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
+                new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -87,10 +87,10 @@ namespace Exiled.Events.Patches.Generic
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
+                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -102,12 +102,12 @@ namespace Exiled.Events.Patches.Generic
         private static void RemoveItem(Player player, ushort serial)
         {
 #if DEBUG
-                Log.Debug($"Removing item ({serial}) from a player (before null check)");
+            Log.Debug($"Removing item ({serial}) from a player (before null check)");
 #endif
-            if (player == null)
+            if (player is null)
             {
 #if DEBUG
-                    Log.Debug("Attempted to remove item from null player, returning.");
+                Log.Debug("Attempted to remove item from null player, returning.");
 #endif
                 return;
             }
@@ -115,14 +115,14 @@ namespace Exiled.Events.Patches.Generic
             if (!player.Inventory.UserInventory.Items.ContainsKey(serial))
             {
 #if DEBUG
-                    Log.Debug("Attempted to remove an item the player doesn't own, returning.");
+                Log.Debug("Attempted to remove an item the player doesn't own, returning.");
 #endif
                 return;
             }
 #if DEBUG
-                Log.Debug(
+            Log.Debug(
                     $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
-                foreach (Item item in player.Items)
+            foreach (Item item in player.Items)
                     Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
@@ -134,14 +134,14 @@ namespace Exiled.Events.Patches.Generic
                     player.Inventory.UserInventory.Items.Remove(serial);
                     player.Inventory.SendItemsNextFrame = true;
 #if DEBUG
-                        Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
+                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
 #endif
                 }
 #if DEBUG
-                    Log.Debug($"Item ({serial}) removed from {player.Nickname}");
-                    Log.Debug(
+                Log.Debug($"Item ({serial}) removed from {player.Nickname}");
+                Log.Debug(
                         $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
-                    foreach (Item item in player.Items)
+                foreach (Item item in player.Items)
                         Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             });
