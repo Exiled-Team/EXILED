@@ -41,7 +41,7 @@ namespace Exiled.API.Features
         public static uint NtfTickets
         {
             get => (uint)RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.NineTailedFox);
-            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.NineTailedFox] = (int)value;
+            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.NineTailedFox] = Mathf.Max(0, (int)value);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Exiled.API.Features
         public static uint ChaosTickets
         {
             get => (uint)RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);
-            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.ChaosInsurgency] = (int)value;
+            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.ChaosInsurgency] = Mathf.Max(0, (int)value);
         }
 
         /// <summary>
