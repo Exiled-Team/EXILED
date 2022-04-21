@@ -14,7 +14,6 @@ namespace Exiled.Events
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.Events.Patches.Events.Server;
     using Exiled.Loader;
 
     using HarmonyLib;

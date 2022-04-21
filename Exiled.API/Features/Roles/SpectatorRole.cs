@@ -37,27 +37,14 @@ namespace Exiled.API.Features.Roles
         public TimeSpan DeadTime => DateTime.UtcNow - DeathTime;
 
         /// <summary>
-        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
+        /// Gets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
         /// </summary>
         public Player SpectatedPlayer
         {
             get
             {
                 Player spectatedPlayer = Player.Get(Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
-
-                if (spectatedPlayer == Owner)
-                    return null;
-
-                return spectatedPlayer;
-            }
-
-            set
-            {
-                if (Owner.IsAlive)
-                    throw new InvalidOperationException("The spectated player cannot be set on an alive player.");
-
-                Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
-                Owner.ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
+                return spectatedPlayer != Owner ? spectatedPlayer : null;
             }
         }
 
