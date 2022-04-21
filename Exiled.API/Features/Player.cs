@@ -911,7 +911,7 @@ namespace Exiled.API.Features
                 {
                     Player spectator = Get(referenceHub);
 
-                    if (spectator == this || spectator.IsDead)
+                    if (spectator.IsDead)
                         yield return spectator;
                 }
             }
