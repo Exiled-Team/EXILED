@@ -7,19 +7,31 @@
 
 namespace Exiled.Events.Patches.Events.Scp330
 {
+    using System;
 #pragma warning disable SA1118
+#pragma warning disable SA1313
 
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using CustomPlayerEffects;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+
+    using Footprinting;
 
     using HarmonyLib;
 
     using Interactables.Interobjects;
 
+    using InventorySystem;
+    using InventorySystem.Items.Usables.Scp330;
+    using InventorySystem.Searching;
+
     using NorthwoodLib.Pools;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -29,62 +41,82 @@ namespace Exiled.Events.Patches.Events.Scp330
     [HarmonyPatch(typeof(Scp330Interobject), nameof(Scp330Interobject.ServerInteract))]
     internal static class InteractingScp330
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(Scp330Interobject __instance, ReferenceHub ply, byte colliderId)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            Label continueLabel = generator.DefineLabel();
-            Label returnLabel = generator.DefineLabel();
-            LocalBuilder ev = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
-
-            // Find the only ldnull and insert our event code 2 instructions above it.
-            int offset = -1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldnull) + offset;
-
-            newInstructions.InsertRange(index, new[]
+            try
             {
-                // var ev = new InteractingScp330EventArgs(Player.Get(ply), num);
-                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                if (!ply.characterClassManager.IsHuman())
+                    return false;
 
-                // Handlers.Scp330.InInteractingScp330(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnInteractingScp330))),
+                Footprint footprint = new(ply);
+                float num = 0.1f;
+                int num2 = 0;
+                foreach (Footprint footprint2 in __instance._takenCandies)
+                {
+                    if (footprint2.Equals(footprint))
+                    {
+                        num = Mathf.Min(num, (float)footprint2.Stopwatch.Elapsed.TotalSeconds);
+                        num2++;
+                    }
+                }
 
-                // if (!ev.IsAllowed)
-                //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-            });
+                InteractingScp330EventArgs ev = new(Player.Get(ply), Scp330Candies.GetRandom(), num2);
+                Handlers.Scp330.OnInteractingScp330(ev);
 
-            // if (num > 2)  ->   if (ev.ShouldSever)
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_2);
+                if (num < 0.1f || !ev.IsAllowed)
+                    return false;
 
-            // Remove existing if check instructions
-            newInstructions.RemoveRange(index, 3);
+                if (!ServerProcessPickup(ply, null, ev.Candy, out Scp330Bag x))
+                {
+                    Scp330SearchCompletor.ShowOverloadHint(ply, x != null);
+                    return false;
+                }
 
-            // Add our new instructions.
-            newInstructions.InsertRange(index, new CodeInstruction[]
+                __instance.RpcMakeSound();
+                if (ev.ShouldSever)
+                {
+                    ply.playerEffectsController.EnableEffect<SeveredHands>(0f, false);
+                    return false;
+                }
+
+                __instance._takenCandies.Add(footprint);
+                return false;
+            }
+            catch (Exception ex)
             {
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
-                new(OpCodes.Brfalse, continueLabel),
-            });
+                Log.Error($"{typeof(InteractingScp330).FullName}.{nameof(Prefix)}:\n{ex}");
+                return true;
+            }
+        }
 
-            // Find the instruction the base-code if check points to when false, and add our own label.
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldarg_0);
-            newInstructions[index].labels.Add(continueLabel);
+        private static bool ServerProcessPickup(ReferenceHub ply, Scp330Pickup pickup, CandyKindID candy, out Scp330Bag bag)
+        {
+            if (!Scp330Bag.TryGetBag(ply, out bag))
+            {
+                ushort num = pickup is null ? ushort.MinValue : pickup.Info.Serial;
+                return ply.inventory.ServerAddItem(ItemType.SCP330, num, pickup) != null;
+            }
 
-            // Add a return label to the end of the method.
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+            bool result = false;
+            if (pickup is null)
+            {
+                result = bag.TryAddSpecific(candy);
+            }
+            else
+            {
+                while (pickup.StoredCandies.Count > 0 && bag.TryAddSpecific(pickup.StoredCandies[0]))
+                {
+                    result = true;
+                    pickup.StoredCandies.RemoveAt(0);
+                }
+            }
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            if (bag.AcquisitionAlreadyReceived)
+            {
+                bag.ServerRefreshBag();
+            }
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            return result;
         }
     }
 }
