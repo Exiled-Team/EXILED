@@ -412,13 +412,13 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
-        [Obsolete("Use API.Features.Scp330.PickingUpScp330", true)]
+        [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
         public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
-        [Obsolete("Use API.Features.Scp330.InteractingScp330", true)]
+        [Obsolete("Use Handlers.Scp330.InteractingScp330", true)]
         public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
 
         /// <summary>
@@ -898,14 +898,14 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
-        [Obsolete("Use API.Features.Scp330.OnPickingUp330", true)]
+        [Obsolete("Use Handlers.Scp330.OnPickingUp330", true)]
         public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
-        [Obsolete("Use API.Features.Scp330.OnInteractingScp330", true)]
+        [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
         public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
 
         /// <summary>
