@@ -20,19 +20,19 @@ namespace Exiled.API.Enums
         UnknownDoor = 0,
 
         /// <summary>
-        /// Represents the 012 door.
+        /// Represents the 914 door.
         /// </summary>
-        Scp012,
+        Scp914Door,
 
         /// <summary>
-        /// Represents the 012_BOTTOM door.
+        /// Represents the GR18_INNER door.
         /// </summary>
-        Scp012Bottom,
+        GR18Inner,
 
         /// <summary>
-        /// Represents the 012_LOCKER door.
+        /// Represents the Unsecured door.
         /// </summary>
-        Scp012Locker,
+        Scp049Gate,
 
         /// <summary>
         /// Represents the 049_ARMORY door.
@@ -92,12 +92,12 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the GR18 door.
         /// </summary>
-        GR18,
+        GR18Gate,
 
         /// <summary>
         /// Represents the 914 door.
         /// </summary>
-        Scp914,
+        Scp914Gate,
 
         /// <summary>
         /// Represents the CHECKPOINT_ENT door.

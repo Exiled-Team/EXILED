@@ -2255,6 +2255,9 @@ namespace Exiled.API.Features
         {
             switch (obj)
             {
+                case Camera camera:
+                    Teleport(camera.Position + Vector3.down);
+                    break;
                 case Door door:
                     Teleport(door.Position + Vector3.up);
                     break;
@@ -2299,6 +2302,7 @@ namespace Exiled.API.Features
         {
             object randomObject = type.Name switch
             {
+                nameof(Camera) => Camera.CamerasValue[Random.Range(0, Camera.CamerasValue.Count)],
                 nameof(Door) => Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)],
                 nameof(Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
                 nameof(TeslaGate) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
