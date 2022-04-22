@@ -33,6 +33,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DamagingScp244EventArgs> DamagingScp244;
 
         /// <summary>
+        /// Invoked before an Scp244 open because the angle was too low.
+        /// </summary>
+        public static event CustomEventHandler<OpeningScp244EventArgs> OpeningScp244;
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up an item.
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpScp244EventArgs"/> instance.</param>
@@ -49,5 +54,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingScp244EventArgs"/> instance.</param>
         public static void OnDamagingScp244(DamagingScp244EventArgs ev) => DamagingScp244.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before Scp244 open because the angle was too low.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingScp244EventArgs"/> instance.</param>
+        public static void OnOpeningScp244(OpeningScp244EventArgs ev) => OpeningScp244.InvokeSafely(ev);
     }
 }

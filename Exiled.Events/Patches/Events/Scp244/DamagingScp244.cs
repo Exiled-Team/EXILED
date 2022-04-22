@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.Damage))]
     internal static class DamagingScp244
     {
-        private static bool Prefix(Scp244DeployablePickup __instance, bool __result,float damage, DamageHandlerBase handler, Vector3 exactHitPos)
+        private static bool Prefix(Scp244DeployablePickup __instance, bool __result, float damage, DamageHandlerBase handler, Vector3 exactHitPos)
         {
             try
             {

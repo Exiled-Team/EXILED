@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     /// <summary>
     /// Patches <see cref="Scp244DeployablePickup.UpdateRange"/>.
-    /// Adds the <see cref="Handlers.Scp244."/> event.
+    /// Adds the <see cref="Handlers.Scp244.OpeningScp244"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]
     internal static class UpdateScp244
@@ -47,11 +47,15 @@ namespace Exiled.Events.Patches.Events.Scp244
                     return false;
                 }
 
-                // Put a new event for know if the jar should open or not
-                if (__instance.State == Scp244State.Idle && Vector3.Dot(__instance.transform.up, Vector3.up) < __instance._activationDot)
+                if (__instance.State == Scp244State.Idle)
                 {
-                    __instance.State = Scp244State.Active;
-                    __instance._lifeTime.Restart();
+                    OpeningScp244EventArgs ev = new(__instance, Vector3.Dot(__instance.transform.up, Vector3.up) < __instance._activationDot);
+                    Handlers.Scp244.OnOpeningScp244(ev);
+                    if (ev.IsAllowed)
+                    {
+                        __instance.State = Scp244State.Active;
+                        __instance._lifeTime.Restart();
+                    }
                 }
 
                 float num = (__instance.State == Scp244State.Active) ? __instance.TimeToGrow : (-__instance._timeToDecay);
@@ -67,6 +71,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 {
                     NetworkServer.Destroy(__instance.gameObject);
                 }
+
                 return false;
             }
             catch (Exception ex)
