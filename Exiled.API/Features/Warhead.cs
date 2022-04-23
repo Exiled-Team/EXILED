@@ -64,11 +64,13 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (!LeverStatus && !IsInProgress)
-                    return WarheadStatus.NotArmed;
+                if (!IsInProgress)
+                {
+                    if (!LeverStatus)
+                        return WarheadStatus.NotArmed;
 
-                if (LeverStatus && !IsInProgress)
                     return WarheadStatus.Armed;
+                }
 
                 if (!IsDetonated)
                     return WarheadStatus.InProgress;
