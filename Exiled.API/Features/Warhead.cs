@@ -81,12 +81,9 @@ namespace Exiled.API.Features
                 switch (value)
                 {
                     case WarheadStatus.NotArmed:
-                        Stop();
-                        LeverStatus = false;
-                        break;
-
                     case WarheadStatus.Armed:
-                        LeverStatus = true;
+                        Stop();
+                        LeverStatus = value is WarheadStatus.Armed;
                         break;
 
                     case WarheadStatus.InProgress:
