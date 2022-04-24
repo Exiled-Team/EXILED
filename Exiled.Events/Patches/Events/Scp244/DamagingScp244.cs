@@ -47,20 +47,9 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label normalProcessing = generator.DefineLabel();
 
             int offset = -4;
-            int injectionPoint = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Sub);
-            int index = injectionPoint + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Sub) + offset;
 
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
-
-            //Type genenericException = typeof(Exception);
-            //ConstructorInfo exCtorInfo = genenericException.GetConstructor(
-            //                  new Type[]
-            //                  {typeof(string)});
-            //MethodInfo exToStrMI = genenericException.GetMethod("ToString");
-            //MethodInfo writeLineMI = typeof(Console).GetMethod("WriteLine",
-            //                  new Type[]
-            //                  {typeof(string),
-            //             typeof(object)});
 
             Label returnLabel = generator.DefineLabel();
 
@@ -160,12 +149,6 @@ namespace Exiled.Events.Patches.Events.Scp244
                 yield return newInstructions[z];
             }
 
-            int count = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count}");
-                count++;
-            }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
