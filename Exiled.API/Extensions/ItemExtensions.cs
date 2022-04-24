@@ -10,15 +10,18 @@ namespace Exiled.API.Extensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
     using Exiled.API.Structs;
-
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
+    using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Firearms.Modules;
+
+    using Firearm = Features.Items.Firearm;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
@@ -104,8 +107,46 @@ namespace Exiled.API.Extensions
         {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || itemBase is not InventorySystem.Items.Firearms.Firearm firearm)
                 return 0;
+            return firearm switch
+            {
+                AutomaticFirearm auto => auto._baseMaxAmmo,
+                Shotgun shotgun => shotgun._ammoCapacity,
+                ParticleDisruptor => 5,
+                _ => 6,
+            };
+        }
 
-            return firearm.AmmoManagerModule.MaxAmmo;
+        /// <summary>
+        /// Gets the default ammo of a weapon.
+        /// </summary>
+        /// <param name="item">The <see cref="ItemType">item</see> that you want to get durability of.</param>
+        /// <returns>Returns the item durability.</returns>
+        public static byte GetMaxAmmo(this Pickup item)
+        {
+            if (item.Base is not FirearmPickup firearm)
+                return 0;
+            byte ammo = GetMaxAmmo(item.Type);
+
+            if (firearm.Status.Flags.HasFlag(FirearmStatusFlags.Chambered))
+                ammo++;
+
+            AttachmentParameterDefinition definitionOfParam = AttachmentsUtils.GetDefinitionOfParam((int)AttachmentParam.MagazineCapacityModifier);
+            float num = definitionOfParam.DefaultValue;
+            item.Type.GetAttachmentIdentifiers(firearm.Status.Attachments);
+            Exiled.API.Features.Log.Info($"ammo {ammo} and attachementcount {firearm.Status.Attachments}");
+
+            // num2 should be all the Attachment[] on the firearm.
+            /*for (int i = 0; i < num2; i++)
+            {
+                Attachment attachment = test[i];
+                if (attachment.IsEnabled && attachment.TryGetValue((int)AttachmentParam.MagazineCapacityModifier, out float paraValue))
+                {
+                    num = AttachmentsUtils.MixValue(num, paraValue, definitionOfParam.MixingMode);
+                }
+            }*/
+
+            ammo += (byte)AttachmentsUtils.ClampValue(num, definitionOfParam);
+            return ammo;
         }
 
         /// <summary>
