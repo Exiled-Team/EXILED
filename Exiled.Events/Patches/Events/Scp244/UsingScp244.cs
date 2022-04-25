@@ -136,5 +136,4 @@ namespace Exiled.Events.Patches.Events.Scp244
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-
 }
