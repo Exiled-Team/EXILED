@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs
         public DyingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
             Handler = new CustomDamageHandler(target, damageHandler);
-            ItemsToDrop = new List<Item>(target.Items.ToList());
+            ItemsToDrop = target.ResetInventory(target.Items.ToList());
             Killer = Handler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Target = target;
         }
