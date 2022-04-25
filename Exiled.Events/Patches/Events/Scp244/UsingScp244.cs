@@ -89,7 +89,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
                 new CodeInstruction(OpCodes.Ret),
 
-                // Good route of is allowed being true 
+                // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
                 new CodeInstruction(OpCodes.Leave_S, normalProcessing),
 

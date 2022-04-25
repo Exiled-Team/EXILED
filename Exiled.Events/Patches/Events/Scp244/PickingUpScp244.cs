@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // Load arg 0 (No param, instance of object) EStack[Scp244SearchCompletor Instance]
                 new CodeInstruction(OpCodes.Ldarg_0),
 
-                // Load the field within the instance, since no get; set; we can use Field. 
+                // Load the field within the instance, since no get; set; we can use Field.
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Hub))),
 
                  // Using Owner call Player.Get static method with it (Reference hub) and get a Player back
@@ -89,7 +89,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
                 new CodeInstruction(OpCodes.Ret),
 
-                // Good route of is allowed being true 
+                // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
                 new CodeInstruction(OpCodes.Leave_S, normalProcessing),
 

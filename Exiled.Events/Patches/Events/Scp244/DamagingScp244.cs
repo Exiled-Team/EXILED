@@ -29,6 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patches <see cref="Scp244DeployablePickup.Damage"/> to add missing logic to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
@@ -49,7 +50,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             int index = injectionPoint + offset;
 
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
-
 
             // Our Catch (Try wrapper) block
             ExceptionBlock catchBlock = new(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
@@ -106,7 +106,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ret),
 
-                // Good route of is allowed being true 
+                // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
                 new CodeInstruction(OpCodes.Leave_S, normalProcessing),
 
@@ -138,7 +138,6 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithBlocks(exceptionEnd),
 
                 new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
-
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

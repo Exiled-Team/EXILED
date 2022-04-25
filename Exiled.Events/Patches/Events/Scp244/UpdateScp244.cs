@@ -29,6 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
@@ -158,7 +159,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
                 new CodeInstruction(OpCodes.Ret),
 
-                // Good route of is allowed being true 
+                // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
                 new CodeInstruction(OpCodes.Leave_S, normalProcessing),
 
