@@ -39,84 +39,93 @@ namespace Exiled.Events.Patches.Events.Scp330
     /// Patches the <see cref="Scp330Interobject.ServerInteract"/> method to add the <see cref="Handlers.Scp330.InteractingScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Interobject), nameof(Scp330Interobject.ServerInteract))]
+
     internal static class InteractingScp330
     {
-        private static bool Prefix(Scp330Interobject __instance, ReferenceHub ply, byte colliderId)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            Label returnFalse = generator.DefineLabel();
+            Label continueProcessing = generator.DefineLabel();
+
+            LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
+
+
+            // Remove first isHuman check
+            newInstructions.RemoveRange(0, 5);
+
+            int offset = -3;
+            int index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (!ply.characterClassManager.IsHuman())
-                    return false;
+                // Load arg 0 (No param, instance of object) EStack[ReferenceHub Instance]
+                new CodeInstruction(OpCodes.Ldarg_1),
 
-                Footprint footprint = new(ply);
-                float num = 0.1f;
-                int num2 = 0;
-                foreach (Footprint footprint2 in __instance._takenCandies)
-                {
-                    if (footprint2.Equals(footprint))
-                    {
-                        num = Mathf.Min(num, (float)footprint2.Stopwatch.Elapsed.TotalSeconds);
-                        num2++;
-                    }
-                }
+                // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Player ]
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                InteractingScp330EventArgs ev = new(Player.Get(ply), Scp330Candies.GetRandom(), num2);
-                Handlers.Scp330.OnInteractingScp330(ev);
+                // Get random candy EStack[Player, Candy]
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp330Candies), nameof(Scp330Candies.GetRandom))),
 
-                if (num < 0.1f || !ev.IsAllowed)
-                    return false;
+                // num2 EStack[Player, Candy, num2]
+                new CodeInstruction(OpCodes.Ldloc_2),
 
-                if (!ServerProcessPickup(ply, null, ev.Candy, out Scp330Bag x))
-                {
-                    Scp330SearchCompletor.ShowOverloadHint(ply, x != null);
-                    return false;
-                }
+                // EStack[Player, Candy, num2, ReferenceHub Instance]
+                new CodeInstruction(OpCodes.Ldarg_1),
 
-                __instance.RpcMakeSound();
-                if (ev.ShouldSever)
-                {
-                    ply.playerEffectsController.EnableEffect<SeveredHands>(0f, false);
-                    return false;
-                }
+                // EStack[Player, Candy, num2, characterClassManager]
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.characterClassManager))),
 
-                __instance._takenCandies.Add(footprint);
-                return false;
-            }
-            catch (Exception ex)
+                // EStack[Player, Candy, num2, IsHuman]
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(CharacterClassManager), nameof(CharacterClassManager.IsHuman))),
+
+                // Pass all 4 variables to InteractingScp330EventArgs  New Object, get a new object in return EStack[InteractingScp330EventArgs  Instance]
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
+
+                 // Copy it for later use again EStack[InteractingScp330EventArgs Instance, InteractingScp330EventArgs Instance]
+                new CodeInstruction(OpCodes.Dup),
+
+                // Call Method on Instance EStack[DamagingScp244EventArgs Instance] (pops off so that's why we needed to dup)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnInteractingScp330))),
+
+                // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
+
+                // If isAllowed = 1, jump to continue route, otherwise, return occurs below
+                new CodeInstruction(OpCodes.Brtrue, continueProcessing),
+
+                // False Route
+                new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
+                new CodeInstruction(OpCodes.Ret),
+
+                // Good route of is allowed being true 
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+            });
+
+            //int overwriteOffset = 0;
+            //int overwriteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + overwriteOffset;
+
+            //int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret);
+            //newInstructions.RemoveRange(overwriteIndex, nextReturn);
+
+            for (int z = 0; z < newInstructions.Count; z++)
             {
-                Log.Error($"{typeof(InteractingScp330).FullName}.{nameof(Prefix)}:\n{ex}");
-                return true;
-            }
-        }
-
-        private static bool ServerProcessPickup(ReferenceHub ply, Scp330Pickup pickup, CandyKindID candy, out Scp330Bag bag)
-        {
-            if (!Scp330Bag.TryGetBag(ply, out bag))
-            {
-                ushort num = pickup is null ? ushort.MinValue : pickup.Info.Serial;
-                return ply.inventory.ServerAddItem(ItemType.SCP330, num, pickup) != null;
-            }
-
-            bool result = false;
-            if (pickup is null)
-            {
-                result = bag.TryAddSpecific(candy);
-            }
-            else
-            {
-                while (pickup.StoredCandies.Count > 0 && bag.TryAddSpecific(pickup.StoredCandies[0]))
-                {
-                    result = true;
-                    pickup.StoredCandies.RemoveAt(0);
-                }
-            }
-
-            if (bag.AcquisitionAlreadyReceived)
-            {
-                bag.ServerRefreshBag();
+                yield return newInstructions[z];
             }
 
-            return result;
+            Log.Info($" Index {index} ");
+
+            int count = 0;
+            int il_pos = 0;
+            foreach (CodeInstruction instr in newInstructions)
+            {
+                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} size {instr.opcode.Size} and {il_pos}");
+                il_pos += instr.opcode.Size;
+                count++;
+            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

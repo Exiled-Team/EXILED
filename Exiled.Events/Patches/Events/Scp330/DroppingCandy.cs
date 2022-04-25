@@ -48,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
-            Label normalProcessing = generator.DefineLabel();
+
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
 
             int offset = -3;
@@ -110,21 +110,13 @@ namespace Exiled.Events.Patches.Events.Scp330
             int jumpOverOffset = 1;
             int jumpOverIndex = newInstructions.FindLastIndex(instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
 
-            //newInstructions.InsertRange(jumpOverIndex, new[]
-            //{
-            //    new CodeInstruction(OpCodes.Br, normalProcessing),
-            //});
-
+            // Remove TryRemove candy logic since we did it earlier. 
             newInstructions.RemoveRange(jumpOverIndex, 6);
 
-            //int skipOverOffset = 3;
-            //int skipOverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove)))) + skipOverOffset;
             int CandyKindID = 4;
 
             newInstructions.InsertRange(jumpOverIndex, new[]
             {
-                new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
-
                 // EStack[DroppingUpScp330EventArgs Instance]
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
 
@@ -134,7 +126,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 // EStack[]
                 new CodeInstruction(OpCodes.Stloc, CandyKindID),
 
-                // EStack[Candy]
+                // EStack[Candy] (Next instruction is a brtrue)
                 new CodeInstruction(OpCodes.Ldloc, CandyKindID),
             });
 
@@ -143,16 +135,6 @@ namespace Exiled.Events.Patches.Events.Scp330
                 yield return newInstructions[z];
             }
 
-            Log.Info($" Index {index} jumpOverIndex {jumpOverIndex} skipOverIndex {0}");
-
-            int count = 0;
-            int il_pos = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} size {instr.opcode.Size} and {il_pos}");
-                il_pos += instr.opcode.Size;
-                count++;
-            }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
