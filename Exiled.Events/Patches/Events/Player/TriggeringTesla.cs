@@ -80,7 +80,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                     if (inIdleRange != teslaGate.IsIdling)
                         teslaGate.IsIdling = inIdleRange;
-
                 }
 
                 return false;
