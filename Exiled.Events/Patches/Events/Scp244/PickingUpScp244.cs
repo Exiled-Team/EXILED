@@ -36,7 +36,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label returnFalse = generator.DefineLabel();
-
             Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
 
@@ -44,7 +43,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
-
 
             // Our Catch (Try wrapper) block
             ExceptionBlock catchBlock = new ExceptionBlock(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
@@ -139,13 +137,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
-            }
-
-            int count = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count}");
-                count++;
             }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
