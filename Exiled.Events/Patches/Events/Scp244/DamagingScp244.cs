@@ -21,9 +21,6 @@ namespace Exiled.Events.Patches.Events.Scp244
     using InventorySystem;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Searching;
-
-    using NorthwoodLib.Pools;
-
     using PlayerStatsSystem;
 
     using UnityEngine;
@@ -151,6 +148,4 @@ namespace Exiled.Events.Patches.Events.Scp244
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-
-
 }

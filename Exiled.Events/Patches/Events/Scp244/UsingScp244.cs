@@ -51,16 +51,7 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             // Our Exception handling end
             ExceptionBlock exceptionEnd = new ExceptionBlock(ExceptionBlockType.EndExceptionBlock);
-
-            /*
-             * PickingUpScp244EventArgs ev = new(Player.Get(__instance.Hub), scp244DeployablePickup);
-                Handlers.Scp244.OnPickingUpScp244(ev);
-                if (!ev.IsAllowed)
-                {
-                    return false;
-                }
-            */
-#pragma warning disable SA1118 // Parameter should not span multiple lines
+          sable SA1118 // Parameter should not span multiple lines
             newInstructions.InsertRange(index, new[]
             {
                 // Load a try wrapper at start
@@ -148,5 +139,4 @@ namespace Exiled.Events.Patches.Events.Scp244
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-
 }
