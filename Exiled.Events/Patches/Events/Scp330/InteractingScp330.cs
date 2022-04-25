@@ -107,7 +107,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             int overwriteOffset = 1;
             int overwriteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + overwriteOffset;
 
-            int includeSameLine = 2;
+            int includeSameLine = -2;
             int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
             Log.Info($"overwriteIndex {overwriteIndex} and nextReturn {nextReturn} and {newInstructions.Count}");
             newInstructions.RemoveRange(overwriteIndex, newInstructions.Count - nextReturn);
@@ -116,7 +116,6 @@ namespace Exiled.Events.Patches.Events.Scp330
             {
                 yield return newInstructions[z];
             }
-
 
             Log.Info($" Index {index} ");
 
