@@ -30,15 +30,13 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using static HarmonyLib.AccessTools;
     /// <summary>
-    /// Patches <see cref="DamagingScp244Patch.Damage"/> to add <see cref="Damage"/>s to the <see cref="Scp244DeployablePickup"/>.
+    /// Patches <see cref="Scp244DeployablePickup.Damage"/> to add missing logic to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.Damage))]
     internal static class DamagingScp244Patch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-
-
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label returnFalse = generator.DefineLabel();
@@ -47,11 +45,11 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label normalProcessing = generator.DefineLabel();
 
             int offset = -4;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Sub) + offset;
+            int injectionPoint = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Sub);
+            int index = injectionPoint + offset;
 
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
 
-            Label returnLabel = generator.DefineLabel();
 
             // Our Catch (Try wrapper) block
             ExceptionBlock catchBlock = new ExceptionBlock(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
@@ -111,7 +109,7 @@ namespace Exiled.Events.Patches.Events.Scp244
 
                 // Good route of is allowed being true 
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
-                new CodeInstruction(OpCodes.Leave_S, returnLabel),
+                new CodeInstruction(OpCodes.Leave_S, normalProcessing),
 
                 // Load generic exception
                 new CodeInstruction(OpCodes.Ldloc, exceptionObject),
@@ -140,9 +138,10 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // End exception block, continue thereafter (Do you want an immediate return?)
                 new CodeInstruction(OpCodes.Nop).WithBlocks(exceptionEnd),
 
+                new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
+
             });
 
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
