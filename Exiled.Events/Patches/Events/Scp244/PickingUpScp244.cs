@@ -42,23 +42,9 @@ namespace Exiled.Events.Patches.Events.Scp244
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
-            LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
-
-            // Our Catch (Try wrapper) block
-            ExceptionBlock catchBlock = new ExceptionBlock(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
-
-            // Our Exception handling start
-            ExceptionBlock exceptionStart = new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock, typeof(Exception));
-
-            // Our Exception handling end
-            ExceptionBlock exceptionEnd = new ExceptionBlock(ExceptionBlockType.EndExceptionBlock);
-
 #pragma warning disable SA1118 // Parameter should not span multiple lines
             newInstructions.InsertRange(index, new[]
             {
-                // Load a try wrapper at start
-                new CodeInstruction(OpCodes.Nop).WithBlocks(exceptionStart),
-
                 // Load arg 0 (No param, instance of object) EStack[Scp244SearchCompletor Instance]
                 new CodeInstruction(OpCodes.Ldarg_0),
 
@@ -92,40 +78,7 @@ namespace Exiled.Events.Patches.Events.Scp244
 
                 // Good route of is allowed being true 
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
-                new CodeInstruction(OpCodes.Leave_S, normalProcessing),
-
-                // Load generic exception
-                new CodeInstruction(OpCodes.Ldloc, exceptionObject),
-
-                // Throw generic
-                new CodeInstruction(OpCodes.Throw),
-
-                // Start our catch block
-                new CodeInstruction(OpCodes.Nop).WithBlocks(catchBlock),
-
-                // Load the exception from stack
-                new CodeInstruction(OpCodes.Stloc, exceptionObject.LocalIndex),
-
-                // Load string with format
-                new CodeInstruction(OpCodes.Ldstr, "PickingUpScp244EventArgs failed because of {0}"),
-
-                // Load exception
-                new CodeInstruction(OpCodes.Ldloc, exceptionObject.LocalIndex),
-
-                // Call format on string with object to get new string
-                new CodeInstruction(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object) })),
-
-                // Load error
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Error), new[] { typeof(string) })),
-
-                // End exception block, continue thereafter (Do you want an immediate return?)
-                new CodeInstruction(OpCodes.Nop).WithBlocks(exceptionEnd),
-
-                new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
             });
-
-
-
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
