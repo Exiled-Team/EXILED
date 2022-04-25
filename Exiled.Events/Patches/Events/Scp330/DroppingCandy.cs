@@ -64,9 +64,11 @@ namespace Exiled.Events.Patches.Events.Scp330
                     Weight = scp330Bag.Weight,
                     Position = referenceHub.PlayerCameraReference.transform.position,
                 };
-                DroppingUpScp330EventArgs ev = new(Player.Get(referenceHub), scp330Bag, scp330Bag.TryRemove(msg.CandyID));
 
-                if (referenceHub.inventory.ServerCreatePickup(scp330Bag, psi, true) is not Scp330Pickup scp330Pickup)
+                DroppingUpScp330EventArgs ev = new(Player.Get(referenceHub), scp330Bag, scp330Bag.TryRemove(msg.CandyID));
+                Handlers.Scp330.OnDroppingUpScp330(ev);
+
+                if (!ev.IsAllowed || referenceHub.inventory.ServerCreatePickup(scp330Bag, psi, true) is not Scp330Pickup scp330Pickup)
                     return false;
 
                 scp330Pickup.PreviousOwner = new(referenceHub);
