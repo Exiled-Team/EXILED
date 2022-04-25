@@ -9,9 +9,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
     using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -28,18 +25,26 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using UnityEngine;
 
-    using static HarmonyLib.AccessTools;
     /// <summary>
-    /// Patches <see cref="Scp244DeployablePickup.Damage"/> to add missing logic to the <see cref="Scp244DeployablePickup"/>.
+    /// Patches <see cref="Scp244DeployablePickup.Damage"/>.
+    /// Adds the <see cref="Handlers.Scp244.PickingUpScp244"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.Damage))]
-    internal static class DamagingScp244Patch
+    internal static class DamagingScp244
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(Scp244DeployablePickup __instance, bool __result, float damage, DamageHandlerBase handler, Vector3 exactHitPos)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            try
+            {
+                if (__instance._health <= 0f || __instance.ModelDestroyed
+                    || __instance.State == Scp244State.Destroyed)
+                {
+                    __result = false;
+                    return false;
+                }
 
-            Label returnFalse = generator.DefineLabel();
+                DamagingScp244EventArgs ev = new(__instance, damage, handler);
+                Handlers.Scp244.OnDamagingScp244(ev);
 
             Label continueProcessing = generator.DefineLabel();
 
@@ -99,10 +104,9 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
-                yield return newInstructions[z];
+                Log.Error($"{typeof(DamagingScp244).FullName}.{nameof(Prefix)}:\n{ex}");
+                return true;
             }
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

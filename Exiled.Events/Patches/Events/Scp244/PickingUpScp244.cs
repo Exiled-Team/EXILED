@@ -9,8 +9,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
     using System;
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -21,19 +19,21 @@ namespace Exiled.Events.Patches.Events.Scp244
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Searching;
 
-    using NorthwoodLib.Pools;
-
-    using static HarmonyLib.AccessTools;
-
     /// <summary>
-    /// Patches <see cref="Scp244SearchCompletor"/> to add missing event handler to the <see cref="Scp244SearchCompletor"/>.
+    /// Patches <see cref="Scp244SearchCompletor.Complete"/>.
+    /// Adds the <see cref="Handlers.Scp244.PickingUpScp244"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Complete))]
-    internal static class Scp244SearchCompletorPatch
+    internal static class PickingUpScp244
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(Scp244SearchCompletor __instance)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            try
+            {
+                if (__instance.TargetPickup is not Scp244DeployablePickup scp244DeployablePickup)
+                {
+                    return false;
+                }
 
             Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
@@ -81,10 +81,9 @@ namespace Exiled.Events.Patches.Events.Scp244
             });
             for (int z = 0; z < newInstructions.Count; z++)
             {
-                yield return newInstructions[z];
+                Log.Error($"{typeof(PickingUpScp244).FullName}.{nameof(Prefix)}:\n{ex}");
+                return true;
             }
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

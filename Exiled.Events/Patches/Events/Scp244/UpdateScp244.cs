@@ -24,27 +24,42 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using Mirror;
 
-    using NorthwoodLib.Pools;
-
     using UnityEngine;
 
-    using static HarmonyLib.AccessTools;
     /// <summary>
-    /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
+    /// Patches <see cref="Scp244DeployablePickup.UpdateRange"/>.
+    /// Adds the <see cref="Handlers.Scp244.OpeningScp244"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]
-    internal static class Scp244DeployablePickupPatch
+    internal static class UpdateScp244
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(Scp244DeployablePickup __instance)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            try
+            {
+                if (__instance.ModelDestroyed && __instance._visibleModel.activeSelf)
+                {
+                    __instance.Rb.constraints = RigidbodyConstraints.FreezeAll;
+                    __instance._visibleModel.SetActive(false);
+                }
 
-            Label returnFalse = generator.DefineLabel();
-            Label continueProcessing = generator.DefineLabel();
-            Label normalProcessing = generator.DefineLabel();
+                if (!NetworkServer.active)
+                {
+                    __instance.CurrentSizePercent = __instance._syncSizePercent;
+                    __instance.CurrentSizePercent /= 255f;
+                    return false;
+                }
 
-            int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+                if (__instance.State == Scp244State.Idle)
+                {
+                    OpeningScp244EventArgs ev = new(__instance, Vector3.Dot(__instance.transform.up, Vector3.up) < __instance._activationDot);
+                    Handlers.Scp244.OnOpeningScp244(ev);
+                    if (ev.IsAllowed)
+                    {
+                        __instance.State = Scp244State.Active;
+                        __instance._lifeTime.Restart();
+                    }
+                }
 
             int continueOffset = 0;
             int continueIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
@@ -147,9 +162,12 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
             });
 
-            for (int z = 0; z < newInstructions.Count; z++)
+                return false;
+            }
+            catch (Exception ex)
             {
-                yield return newInstructions[z];
+                Log.Error($"{typeof(UsingScp244).FullName}.{nameof(Prefix)}:\n{ex}");
+                return true;
             }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

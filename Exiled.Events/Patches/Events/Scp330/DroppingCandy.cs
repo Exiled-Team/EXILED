@@ -122,6 +122,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
                 //  EStack[DroppingUpScp330EventArgs.Candy]
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.Candy))),
+                Handlers.Scp330.OnDroppingUpScp330(ev);
 
                 // EStack[]
                 new CodeInstruction(OpCodes.Stloc, CandyKindID),

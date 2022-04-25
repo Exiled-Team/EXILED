@@ -9,8 +9,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
     using System;
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -22,17 +20,14 @@ namespace Exiled.Events.Patches.Events.Scp244
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Searching;
 
-    using NorthwoodLib.Pools;
-
-    using static HarmonyLib.AccessTools;
-
     /// <summary>
-    /// Patches <see cref="Scp244Item"/> to add missing event handler to the <see cref="Scp244Item.ServerOnUsingCompleted"/>.
+    /// Patches <see cref="Scp244SearchCompletor.Complete"/>.
+    /// Adds the <see cref="Handlers.Scp244.PickingUpScp244"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp244Item), nameof(Scp244Item.ServerOnUsingCompleted))]
-    internal static class UsingScp244Patch
+    internal static class UsingScp244
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(Scp244Item __instance)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 

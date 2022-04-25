@@ -24,12 +24,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="candy"><inheritdoc cref="Candy"/></param>
         /// <param name="usage"><inheritdoc cref="UsageCount"/></param>
-        public InteractingScp330EventArgs(Player player, CandyKindID candy, int usage)
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public InteractingScp330EventArgs(Player player, CandyKindID candy, int usage, bool isAllowed)
         {
             Player = player;
             Candy = candy;
             UsageCount = usage;
             ShouldSever = usage >= 2;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
