@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp330
 {
     using System;
+#pragma warning disable SA1118
 #pragma warning disable SA1313
 
     using System.Collections.Generic;
