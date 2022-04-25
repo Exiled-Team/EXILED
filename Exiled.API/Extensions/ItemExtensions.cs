@@ -20,8 +20,7 @@ namespace Exiled.API.Extensions
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
-
-    using Firearm = Features.Items.Firearm;
+    using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
