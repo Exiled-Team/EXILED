@@ -189,26 +189,24 @@ namespace Exiled.Events.Patches.Events.Scp244
 
                 // End exception block, continue thereafter (Do you want an immediate return?)
                 new CodeInstruction(OpCodes.Nop).WithBlocks(exceptionEnd),
-
-                new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
             });
 
             // Jumping over original NW logic. 
             newInstructions.InsertRange(continueIndex, new[]
             {
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
-            int count = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count}");
-                count++;
-            }
+            //int count = 0;
+            //foreach (CodeInstruction instr in newInstructions)
+            //{
+            //    Log.Info($"Current op code: {instr.opcode} and index {count}");
+            //    count++;
+            //}
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
