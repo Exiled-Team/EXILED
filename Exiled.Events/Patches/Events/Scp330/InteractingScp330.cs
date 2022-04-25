@@ -104,16 +104,19 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
             });
 
-            //int overwriteOffset = 0;
-            //int overwriteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + overwriteOffset;
+            int overwriteOffset = 1;
+            int overwriteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + overwriteOffset;
 
-            //int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret);
-            //newInstructions.RemoveRange(overwriteIndex, nextReturn);
+            int includeSameLine = 2;
+            int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
+            Log.Info($"overwriteIndex {overwriteIndex} and nextReturn {nextReturn} and {newInstructions.Count}");
+            newInstructions.RemoveRange(overwriteIndex, newInstructions.Count - nextReturn);
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
+
 
             Log.Info($" Index {index} ");
 
@@ -125,6 +128,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 il_pos += instr.opcode.Size;
                 count++;
             }
+
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
