@@ -44,9 +44,6 @@ namespace Exiled.Events.Patches.Events.Scp330
         {
             try
             {
-                if (!ply.characterClassManager.IsHuman())
-                    return false;
-
                 Footprint footprint = new(ply);
                 float num = 0.1f;
                 int num2 = 0;
@@ -59,10 +56,13 @@ namespace Exiled.Events.Patches.Events.Scp330
                     }
                 }
 
-                InteractingScp330EventArgs ev = new(Player.Get(ply), Scp330Candies.GetRandom(), num2);
+                if (num < 0.1f)
+                    return false;
+
+                InteractingScp330EventArgs ev = new(Player.Get(ply), Scp330Candies.GetRandom(), num2, ply.characterClassManager.IsHuman());
                 Handlers.Scp330.OnInteractingScp330(ev);
 
-                if (num < 0.1f || !ev.IsAllowed)
+                if (!ev.IsAllowed)
                     return false;
 
                 if (!ServerProcessPickup(ply, null, ev.Candy, out Scp330Bag x))
