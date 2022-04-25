@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="handler"><inheritdoc cref="Handler"/></param>
         public DamagingScp244EventArgs(Scp244DeployablePickup scp244, float damage, DamageHandlerBase handler)
         {
-            IsAllowed = handler is not ExplosionDamageHandler;
+            IsAllowed = handler is ExplosionDamageHandler;
             Scp244 = scp244;
             Handler = new(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler);
             Handler.Damage = damage;
