@@ -40,8 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
 
-            int offset = -3;
-            int index = newInstructions.FindIndex(instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + offset;
+            int index = 0;
 
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
 

@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived"/> method to add the <see cref="Handlers.Scp330.DroppingUpScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]
-    internal static class Scp330NetworkHandlerPatch
+    internal static class DroppingCandy
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -49,8 +49,10 @@ namespace Exiled.Events.Patches.Events.Scp330
             Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
+            LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
 
-            int index = 0;
+            int offset = -3;
+            int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory)))) + offset;
 
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
 
@@ -77,32 +79,41 @@ namespace Exiled.Events.Patches.Events.Scp330
                 // Load a try wrapper at start
                 new CodeInstruction(OpCodes.Nop).WithBlocks(exceptionStart),
 
-                // Load arg 0 (No param, instance of object) EStack[Scp244Item Instance]
-                new CodeInstruction(OpCodes.Ldarg_0),
+                // Load arg 0 (No param, instance of object) EStack[Referencehub Instance]
+                new CodeInstruction(OpCodes.Ldloc_0),
 
-                // Load arg 0 (No param, instance of object) EStack[Scp244Item Instance, Scp244Item Instance]
-                new CodeInstruction(OpCodes.Ldarg_0),
-
-                // Load the field within the instance, since no get; set; we can use Field. EStack[Scp244Item Instance, Scp244Item.Owner]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler))),
-
-                // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Scp244Item Instance, Player ]
+                // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Player]
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // Add isAllowed = true EStack[Scp244Item Instance, Player, true]
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                // Load arg 0 (No param, instance of object) EStack[Player Instance, Scp330Bag Instance]
+                new CodeInstruction(OpCodes.Ldloc_1),
 
-                // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[PickingUpScp244EventArgs Instance]
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingScp244EventArgs))[0]),
+                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance]
+                new CodeInstruction(OpCodes.Ldloc_1),
 
-                // Copy it for later use again EStack[DamagingScp244EventArgs Instance, DamagingScp244EventArgs Instance]
-                new CodeInstruction(OpCodes.Dup),
+                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance, SelectScp330Message Msg]
+                new CodeInstruction(OpCodes.Ldarg_1),
+
+                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance, CandyID]
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(SelectScp330Message), nameof(SelectScp330Message.CandyID))),
+
+                // EStack[Player Instance, Scp330Bag Instance, CandyKindID]
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
+
+                // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[DroppingUpScp330EventArgs Instance]
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingUpScp330EventArgs))[0]),
+
+                new CodeInstruction(OpCodes.Stloc, eventHandler.LocalIndex),
+
+                new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
 
                 // Call Method on Instance EStack[DamagingScp244EventArgs Instance] (pops off so that's why we needed to dup)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnUsingScp244))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingUpScp330))),
+
+                new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
 
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.IsAllowed))),
 
                 // If isAllowed = 1, jump to continue route, otherwise, false return occurs below
                 new CodeInstruction(OpCodes.Brtrue, continueProcessing),
@@ -145,11 +156,18 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
             });
 
+            int jumpOverOffset = 1;
+            int jumpOverIndex = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
+
+            int skipOverOffset = 3;
+            int skipOverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove)))) + skipOverOffset;
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
+
+            Log.Info($" Index {index} jumpOverIndex {jumpOverIndex} skipOverIndex {skipOverIndex}");
 
             int count = 0;
             foreach (CodeInstruction instr in newInstructions)
