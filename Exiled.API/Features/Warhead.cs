@@ -65,17 +65,9 @@ namespace Exiled.API.Features
             get
             {
                 if (!IsInProgress)
-                {
-                    if (!LeverStatus)
-                        return WarheadStatus.NotArmed;
+                    return LeverStatus ? WarheadStatus.Armed : WarheadStatus.NotArmed;
 
-                    return WarheadStatus.Armed;
-                }
-
-                if (!IsDetonated)
-                    return WarheadStatus.InProgress;
-
-                return WarheadStatus.Detonated;
+                return IsDetonated ? WarheadStatus.Detonated : WarheadStatus.InProgress;
             }
 
             set
