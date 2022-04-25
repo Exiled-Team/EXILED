@@ -176,7 +176,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Stloc, exceptionObject.LocalIndex),
 
                 // Load string with format
-                new CodeInstruction(OpCodes.Ldstr, "Scp244DeployablePickupArgs failed because of {0}"),
+                new CodeInstruction(OpCodes.Ldstr, "Scp244DeployablePickup failed because of {0}"),
 
                 // Load exception
                 new CodeInstruction(OpCodes.Ldloc, exceptionObject.LocalIndex),
@@ -201,12 +201,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             {
                 yield return newInstructions[z];
             }
-            //int count = 0;
-            //foreach (CodeInstruction instr in newInstructions)
-            //{
-            //    Log.Info($"Current op code: {instr.opcode} and index {count}");
-            //    count++;
-            //}
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }

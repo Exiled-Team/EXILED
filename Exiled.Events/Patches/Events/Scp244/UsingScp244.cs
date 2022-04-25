@@ -18,6 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using HarmonyLib;
 
     using InventorySystem;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Searching;
 
@@ -39,7 +40,8 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
 
-            int index = 0;
+            int offset = -3;
+            int index = newInstructions.FindIndex(instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + offset;
 
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
 
@@ -52,14 +54,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             // Our Exception handling end
             ExceptionBlock exceptionEnd = new ExceptionBlock(ExceptionBlockType.EndExceptionBlock);
 
-            /*
-             * PickingUpScp244EventArgs ev = new(Player.Get(__instance.Hub), scp244DeployablePickup);
-                Handlers.Scp244.OnPickingUpScp244(ev);
-                if (!ev.IsAllowed)
-                {
-                    return false;
-                }
-            */
 #pragma warning disable SA1118 // Parameter should not span multiple lines
             newInstructions.InsertRange(index, new[]
             {
@@ -67,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithBlocks(exceptionStart),
 
                 // Load arg 0 (No param, instance of object) EStack[Scp244Item Instance]
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc_0),
 
                 // Load arg 0 (No param, instance of object) EStack[Scp244Item Instance, Scp244Item Instance]
                 new CodeInstruction(OpCodes.Ldarg_0),
@@ -75,9 +69,10 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // Load the field within the instance, since no get; set; we can use Field. EStack[Scp244Item Instance, Scp244Item.Owner]
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Scp244Item), nameof(Scp244Item.Owner))),
 
-                 // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Scp244Item Instance, Player ]
+                // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Scp244Item Instance, Player ]
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // Add isAllowed = true EStack[Scp244Item Instance, Player, true]
                 new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[PickingUpScp244EventArgs Instance]
@@ -137,13 +132,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
-            }
-
-            int count = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count}");
-                count++;
             }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
