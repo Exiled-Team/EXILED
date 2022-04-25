@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Scp244
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -21,6 +21,9 @@ namespace Exiled.Events.Patches.Events.Scp244
     using InventorySystem;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Searching;
+
+    using NorthwoodLib.Pools;
+
     using PlayerStatsSystem;
 
     using UnityEngine;
@@ -30,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     /// Patches <see cref="Scp244DeployablePickup.Damage"/> to add missing logic to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.Damage))]
-    internal static class DamagingScp244Patch
+    internal static class DamagingScp244
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -49,15 +52,14 @@ namespace Exiled.Events.Patches.Events.Scp244
 
 
             // Our Catch (Try wrapper) block
-            ExceptionBlock catchBlock = new ExceptionBlock(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
+            ExceptionBlock catchBlock = new(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
 
             // Our Exception handling start
-            ExceptionBlock exceptionStart = new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock, typeof(Exception));
+            ExceptionBlock exceptionStart = new(ExceptionBlockType.BeginExceptionBlock, typeof(Exception));
 
             // Our Exception handling end
-            ExceptionBlock exceptionEnd = new ExceptionBlock(ExceptionBlockType.EndExceptionBlock);
+            ExceptionBlock exceptionEnd = new(ExceptionBlockType.EndExceptionBlock);
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
             newInstructions.InsertRange(index, new[]
             {
                 // Load a try wrapper at start
@@ -138,7 +140,6 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
 
             });
-
 
             for (int z = 0; z < newInstructions.Count; z++)
             {

@@ -7,12 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Scp244
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection.Emit;
-  
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]
-    internal static class Scp244DeployablePickupPatch
+    internal static class UpdateScp244
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -52,13 +52,13 @@ namespace Exiled.Events.Patches.Events.Scp244
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
 
             // Our Catch (Try wrapper) block
-            ExceptionBlock catchBlock = new ExceptionBlock(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
+            ExceptionBlock catchBlock = new(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
 
             // Our Exception handling start
-            ExceptionBlock exceptionStart = new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock, typeof(Exception));
+            ExceptionBlock exceptionStart = new(ExceptionBlockType.BeginExceptionBlock, typeof(Exception));
 
             // Our Exception handling end
-            ExceptionBlock exceptionEnd = new ExceptionBlock(ExceptionBlockType.EndExceptionBlock);
+            ExceptionBlock exceptionEnd = new(ExceptionBlockType.EndExceptionBlock);
 
             /*
              * PickingUpScp244EventArgs ev = new(Player.Get(__instance.Hub), scp244DeployablePickup);
@@ -68,7 +68,6 @@ namespace Exiled.Events.Patches.Events.Scp244
                     return false;
                 }
             */
-#pragma warning disable SA1118 // Parameter should not span multiple lines
             newInstructions.InsertRange(index, new[]
             {
                 // Load a try wrapper at start
@@ -191,7 +190,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithBlocks(exceptionEnd),
             });
 
-            // Jumping over original NW logic. 
+            // Jumping over original NW logic.
             newInstructions.InsertRange(continueIndex, new[]
             {
                 new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
@@ -201,12 +200,7 @@ namespace Exiled.Events.Patches.Events.Scp244
             {
                 yield return newInstructions[z];
             }
-            //int count = 0;
-            //foreach (CodeInstruction instr in newInstructions)
-            //{
-            //    Log.Info($"Current op code: {instr.opcode} and index {count}");
-            //    count++;
-            //}
+
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }

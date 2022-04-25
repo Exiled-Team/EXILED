@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Scp244
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     /// Patches <see cref="Scp244Item"/> to add missing event handler to the <see cref="Scp244Item.ServerOnUsingCompleted"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244Item), nameof(Scp244Item.ServerOnUsingCompleted))]
-    internal static class UsingScp244Patch
+    internal static class UsingScp244
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -44,14 +44,13 @@ namespace Exiled.Events.Patches.Events.Scp244
             LocalBuilder exceptionObject = generator.DeclareLocal(typeof(Exception));
 
             // Our Catch (Try wrapper) block
-            ExceptionBlock catchBlock = new ExceptionBlock(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
+            ExceptionBlock catchBlock = new(ExceptionBlockType.BeginCatchBlock, typeof(Exception));
 
             // Our Exception handling start
-            ExceptionBlock exceptionStart = new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock, typeof(Exception));
+            ExceptionBlock exceptionStart = new(ExceptionBlockType.BeginExceptionBlock, typeof(Exception));
 
             // Our Exception handling end
-            ExceptionBlock exceptionEnd = new ExceptionBlock(ExceptionBlockType.EndExceptionBlock);
-          sable SA1118 // Parameter should not span multiple lines
+            ExceptionBlock exceptionEnd = new(ExceptionBlockType.EndExceptionBlock);
             newInstructions.InsertRange(index, new[]
             {
                 // Load a try wrapper at start
@@ -124,7 +123,6 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
             });
 
-
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
@@ -136,6 +134,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 Log.Info($"Current op code: {instr.opcode} and index {count}");
                 count++;
             }
+
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
