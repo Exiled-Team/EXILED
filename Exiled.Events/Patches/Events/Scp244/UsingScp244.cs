@@ -47,38 +47,38 @@ namespace Exiled.Events.Patches.Events.Scp244
             {
 
                 // Load arg 0 (No param, instance of object) EStack[Scp244Item Instance]
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_0),
 
                 // Load arg 0 (No param, instance of object) EStack[Scp244Item Instance, Scp244Item Instance]
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_0),
 
                 // Load the field within the instance, since no get; set; we can use Field. EStack[Scp244Item Instance, Scp244Item.Owner]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Scp244Item), nameof(Scp244Item.Owner))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp244Item), nameof(Scp244Item.Owner))),
 
                 // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Scp244Item Instance, Player ]
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // Add isAllowed = true EStack[Scp244Item Instance, Player, true]
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new(OpCodes.Ldc_I4_1),
 
                 // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[PickingUpScp244EventArgs Instance]
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingScp244EventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingScp244EventArgs))[0]),
 
                 // Copy it for later use again EStack[DamagingScp244EventArgs Instance, DamagingScp244EventArgs Instance]
-                new CodeInstruction(OpCodes.Dup),
+                new(OpCodes.Dup),
 
                 // Call Method on Instance EStack[DamagingScp244EventArgs Instance] (pops off so that's why we needed to dup)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnUsingScp244))),
+                new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnUsingScp244))),
 
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
 
                 // If isAllowed = 1, jump to continue route, otherwise, false return occurs below
-                new CodeInstruction(OpCodes.Brtrue, continueProcessing),
+                new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
                 new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
-                new CodeInstruction(OpCodes.Ret),
+                new(OpCodes.Ret),
 
                 // Good route of is allowed being true 
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),

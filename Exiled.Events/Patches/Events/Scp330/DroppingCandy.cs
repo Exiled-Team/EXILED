@@ -60,50 +60,50 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(index, new[]
             {
                 // Load arg 0 (No param, instance of object) EStack[Referencehub Instance]
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new(OpCodes.Ldloc_0),
 
                 // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Player]
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // Load arg 0 (No param, instance of object) EStack[Player Instance, Scp330Bag Instance]
-                new CodeInstruction(OpCodes.Ldloc_1),
+                new(OpCodes.Ldloc_1),
 
                 // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance]
-                new CodeInstruction(OpCodes.Ldloc_1),
+                new(OpCodes.Ldloc_1),
 
                 // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance, SelectScp330Message Msg]
-                new CodeInstruction(OpCodes.Ldarg_1),
+                new(OpCodes.Ldarg_1),
 
                 // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance, CandyID]
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(SelectScp330Message), nameof(SelectScp330Message.CandyID))),
+                new(OpCodes.Ldfld, Field(typeof(SelectScp330Message), nameof(SelectScp330Message.CandyID))),
 
                 // EStack[Player Instance, Scp330Bag Instance, CandyKindID]
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
+                new(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
 
                 // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[DroppingUpScp330EventArgs Instance]
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingUpScp330EventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingUpScp330EventArgs))[0]),
 
                 // EStack[]
-                new CodeInstruction(OpCodes.Stloc, eventHandler.LocalIndex),
+                new(OpCodes.Stloc, eventHandler.LocalIndex),
 
                 // EStack[DroppingUpScp330EventArgs Instance]
-                new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
+                new(OpCodes.Ldloc, eventHandler.LocalIndex),
 
                 // Call Method on Instance EStack[] (pops off so that's why we needed to dup)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingUpScp330))),
+                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingUpScp330))),
 
                 // EStack[DroppingUpScp330EventArgs Instance]
-                new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
+                new(OpCodes.Ldloc, eventHandler.LocalIndex),
 
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.IsAllowed))),
 
                 // If isAllowed = 1, jump to continue route, otherwise, false return occurs below // EStack[]
-                new CodeInstruction(OpCodes.Brtrue, continueProcessing),
+                new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
                 new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
-                new CodeInstruction(OpCodes.Ret),
+                new(OpCodes.Ret),
 
                 // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
@@ -124,13 +124,13 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
 
                 // EStack[DroppingUpScp330EventArgs.Candy]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.Candy))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.Candy))),
 
                 // EStack[] (The next two lines technically are not needed if I reduce the range from 6 to 4, but I had issues, tiny brain moments.)
-                new CodeInstruction(OpCodes.Stloc, candyKindID),
+                new(OpCodes.Stloc, candyKindID),
 
                 // EStack[Candy] (Next instruction is a brtrue)
-                new CodeInstruction(OpCodes.Ldloc, candyKindID),
+                new(OpCodes.Ldloc, candyKindID),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

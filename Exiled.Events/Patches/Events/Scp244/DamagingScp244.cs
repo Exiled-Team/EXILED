@@ -56,45 +56,45 @@ namespace Exiled.Events.Patches.Events.Scp244
             {
 
                 // Load instance of Scp244DeployablePickup EStack[Scp244DeployablePickup Instance]
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new (OpCodes.Ldarg_0),
 
                 // Load Field (Because of get; set; it's property getter) of instance EStack[Scp244Deployable.State]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
+                new (OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
 
                 // Load value 2 (Enum of Scp244State.Destroyed) EStack[Scp244Deployable.State, 2]
-                new CodeInstruction(OpCodes.Ldc_I4_2),
+                new (OpCodes.Ldc_I4_2),
 
                 // Jump to return false label EStack[]
-                new CodeInstruction(OpCodes.Beq, returnFalse),
+                new (OpCodes.Beq, returnFalse),
 
                 // Continue processing, and load arg 0 (instance) again EStack[Scp244DeployablePickup Instance]
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new (OpCodes.Ldarg_0),
 
                 // Load arg 1 (param 0) EStack[Scp244DeployablePickup Instance, Float damage]
-                new CodeInstruction(OpCodes.Ldarg_1),
+                new (OpCodes.Ldarg_1),
 
                 // Load arg 2 (param 1) EStack[Scp244DeployablePickup Instance, Float damage, DamageHandleBase handler]
-                new CodeInstruction(OpCodes.Ldarg_2),
+                new (OpCodes.Ldarg_2),
 
                 // Pass all 3 variables to DamageScp244 New Object, get a new object in return EStack[DamagingScp244EventArgs Instance] (Handler determins allowed??)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingScp244EventArgs))[0]),
+                new (OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingScp244EventArgs))[0]),
 
                 // Copy it for later use again EStack[DamagingScp244EventArgs Instance, DamagingScp244EventArgs Instance]
-                new CodeInstruction(OpCodes.Dup),
+                new (OpCodes.Dup),
 
                 // Call Method on Instance EStack[DamagingScp244EventArgs Instance] (pops off so that's why we needed to dup)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnDamagingScp244))),
+                new (OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnDamagingScp244))),
 
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
+                new (OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
 
                 // If isAllowed = 1, jump to continue route, otherwise, false return occurs below
-                new CodeInstruction(OpCodes.Brtrue, continueProcessing),
+                new (OpCodes.Brtrue, continueProcessing),
 
                 // False Route
                 new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Ret),
+                new (OpCodes.Ldc_I4_0),
+                new (OpCodes.Ret),
 
                 // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),

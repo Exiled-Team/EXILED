@@ -56,18 +56,18 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 we're at the start"),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
             });
             newInstructions.InsertRange(newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) - 3, new[]
             {
                 new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 Before our check "),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
             });
 
             newInstructions.InsertRange(newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + 1, new[]
             {
                 new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 we're at the num < 0.1f return "),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
             });
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
@@ -76,47 +76,47 @@ namespace Exiled.Events.Patches.Events.Scp330
             // start of function and that's the ONLY one getting called. Seems possible its the same.
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 "),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+                new(OpCodes.Ldstr, "Woahhhh InteractingScp330 "),
+                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
                 // Load arg 0 (No param, instance of object) EStack[ReferenceHub Instance]
-                new CodeInstruction(OpCodes.Ldarg_1),
+                new(OpCodes.Ldarg_1),
 
                 // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Player ]
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // Get random candy EStack[Player, Candy]
-                new CodeInstruction(OpCodes.Call, Method(typeof(Scp330Candies), nameof(Scp330Candies.GetRandom))),
+                new(OpCodes.Call, Method(typeof(Scp330Candies), nameof(Scp330Candies.GetRandom))),
 
                 // num2 EStack[Player, Candy, num2]
-                new CodeInstruction(OpCodes.Ldloc_2),
+                new(OpCodes.Ldloc_2),
 
                 // EStack[Player, Candy, num2, ReferenceHub Instance]
-                new CodeInstruction(OpCodes.Ldarg_1),
+                new(OpCodes.Ldarg_1),
 
                 // EStack[Player, Candy, num2, characterClassManager]
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.characterClassManager))),
+                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.characterClassManager))),
 
                 // EStack[Player, Candy, num2, IsHuman]
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(CharacterClassManager), nameof(CharacterClassManager.IsHuman))),
+                new(OpCodes.Callvirt, Method(typeof(CharacterClassManager), nameof(CharacterClassManager.IsHuman))),
 
                 // Pass all 4 variables to InteractingScp330EventArgs  New Object, get a new object in return EStack[InteractingScp330EventArgs  Instance]
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
 
                  // Copy it for later use again EStack[InteractingScp330EventArgs Instance, InteractingScp330EventArgs Instance]
-                new CodeInstruction(OpCodes.Dup),
+                new(OpCodes.Dup),
 
                 // Call Method on Instance EStack[DamagingScp244EventArgs Instance] (pops off so that's why we needed to dup)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnInteractingScp330))),
+                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnInteractingScp330))),
 
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
 
                 // If isAllowed = 1, jump to continue route, otherwise, return occurs below
-                new CodeInstruction(OpCodes.Brtrue, continueProcessing),
+                new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
                 new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
-                new CodeInstruction(OpCodes.Ret),
+                new(OpCodes.Ret),
 
                 // Good route of is allowed being true 
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
