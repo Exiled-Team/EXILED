@@ -45,6 +45,7 @@ namespace Exiled.Events.Patches.Events.Scp244
 
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
+            // Confirmed this works thus far.
             newInstructions.RemoveRange(0, 5);
 
             int offset = -4;
@@ -95,10 +96,8 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ret),
 
-                // Good route of is allowed being true 
+                // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
-                //new CodeInstruction(OpCodes.Ldstr, "Woahhhh we were allowed"),
-                //new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

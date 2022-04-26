@@ -51,17 +51,33 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
 
-
             // Remove first isHuman check
             newInstructions.RemoveRange(0, 5);
+            newInstructions.InsertRange(0, new[]
+            {
+                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 we're at the start"),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+            });
+            newInstructions.InsertRange(newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) - 3, new[]
+            {
+                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 Before our check "),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+            });
 
+            newInstructions.InsertRange(newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + 1, new[]
+            {
+                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 we're at the num < 0.1f return "),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+            });
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
 
-
-
+            // I can't confirmed this works thus far. I don't seem to know how to get this to get called. Unless its the same as Scp244 where the event dies but.. I inserted call at
+            // start of function and that's the ONLY one getting called. Seems possible its the same.
             newInstructions.InsertRange(index, new[]
             {
+                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 "),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
                 // Load arg 0 (No param, instance of object) EStack[ReferenceHub Instance]
                 new CodeInstruction(OpCodes.Ldarg_1),
 
@@ -116,6 +132,17 @@ namespace Exiled.Events.Patches.Events.Scp330
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
+            }
+
+            Log.Info($" Index {index} overwriteIndex {overwriteIndex} nextReturn {nextReturn} ");
+
+            int count = 0;
+            int il_pos = 0;
+            foreach (CodeInstruction instr in newInstructions)
+            {
+                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
+                il_pos += instr.opcode.Size;
+                count++;
             }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

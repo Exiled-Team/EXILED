@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]
-    internal static class Scp244DeployablePickupPatch
+    internal static class UpdateScp244
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -42,14 +42,21 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
+#pragma warning disable SA1118 // Parameter should not span multiple lines
 
-            int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            int offset = 2;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
 
             int continueOffset = 0;
             int continueIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
+            /*
+             *                 new CodeInstruction(OpCodes.Ldstr, "Scp244DeployablePickup logic for transpiler"),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+                */
+
+            // FYI this gets called A LOT, and I mean A LOT. UpdateRange might be a bad idea for an event catch but.. I'll defer to Nao or Joker.
+            // However, it seems to be functional, I guess.
             newInstructions.InsertRange(index, new[]
             {
                 // Load arg 0 (No param, instance of object) EStack[Scp244DeployablePickup Instance]

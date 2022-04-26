@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     /// Patches <see cref="Scp244Item"/> to add missing event handler to the <see cref="Scp244Item.ServerOnUsingCompleted"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244Item), nameof(Scp244Item.ServerOnUsingCompleted))]
-    internal static class UsingScp244Patch
+    internal static class UsingScp244
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -40,6 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
 
+            // Confirmed this works thus far.
             int index = 0;
 #pragma warning disable SA1118 // Parameter should not span multiple lines
             newInstructions.InsertRange(index, new[]

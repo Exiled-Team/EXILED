@@ -51,20 +51,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
 
-
-
-
+            // Confirmed this works thus far.
 #pragma warning disable SA1118 // Parameter should not span multiple lines
-
-            newInstructions.InsertRange(0, new[]
-                      {
-                new CodeInstruction(OpCodes.Ldstr, "Start of it all DroppingCandy"),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
-           });
 
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory)))) + offset;
-
 
             newInstructions.InsertRange(index, new[]
             {
@@ -121,31 +112,31 @@ namespace Exiled.Events.Patches.Events.Scp330
             int jumpOverOffset = 1;
             int jumpOverIndex = newInstructions.FindLastIndex(instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
 
-            // Remove TryRemove candy logic since we did it earlier. 
+            // Remove TryRemove candy logic since we did it earlier.
             newInstructions.RemoveRange(jumpOverIndex, 6);
 
-            int CandyKindID = 4;
+            // Candy local index.
+            int candyKindID = 4;
 
             newInstructions.InsertRange(jumpOverIndex, new[]
             {
                 // EStack[DroppingUpScp330EventArgs Instance]
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                //  EStack[DroppingUpScp330EventArgs.Candy]
+                // EStack[DroppingUpScp330EventArgs.Candy]
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.Candy))),
 
-                // EStack[]
-                new CodeInstruction(OpCodes.Stloc, CandyKindID),
+                // EStack[] (The next two lines technically are not needed if I reduce the range from 6 to 4, but I had issues, tiny brain moments.)
+                new CodeInstruction(OpCodes.Stloc, candyKindID),
 
                 // EStack[Candy] (Next instruction is a brtrue)
-                new CodeInstruction(OpCodes.Ldloc, CandyKindID),
+                new CodeInstruction(OpCodes.Ldloc, candyKindID),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
-
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
