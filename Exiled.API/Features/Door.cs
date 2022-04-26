@@ -264,7 +264,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// Locks all <see cref="Door">doors</see> for a given <see cref="ZoneType">zone</see>.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
@@ -280,7 +280,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// Locks all <see cref="Door">doors</see> for a given <see cref="ZoneType">zones</see>.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
@@ -289,6 +289,21 @@ namespace Exiled.API.Features
         {
             foreach (ZoneType zone in zoneTypes)
                 LockAll(duration, zone, lockType);
+        }
+
+        /// <summary>
+        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public static void LockAll(float duration, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Door door in Door.List)
+            {
+                door.IsOpen = false;
+                door.ChangeLock(lockType);
+                MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+            }
         }
 
         /// <summary>
