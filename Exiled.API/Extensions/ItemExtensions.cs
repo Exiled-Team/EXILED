@@ -27,6 +27,13 @@ namespace Exiled.API.Extensions
     /// </summary>
     public static class ItemExtensions
     {
+        private static Attachment[] attachmentsValue;
+
+        /// <summary>
+        /// Gets a list of all the <see cref="Attachment"/>s.
+        /// </summary>
+        public static Attachment[] AttachmentsList => attachmentsValue ??= UnityEngine.Object.FindObjectsOfType<Attachment>();
+
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an ammo.
         /// </summary>
@@ -116,36 +123,54 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Gets the default ammo of a weapon.
+        /// Gets the default Maxammo of a weapon.
         /// </summary>
-        /// <param name="item">The <see cref="ItemType">item</see> that you want to get durability of.</param>
+        /// <param name="pickup">The <see cref="Pickup">item</see> that you want to get durability of.</param>
         /// <returns>Returns the item durability.</returns>
-        public static byte GetMaxAmmo(this Pickup item)
+        public static byte GetMaxAmmo(this Pickup pickup)
         {
-            if (item.Base is not FirearmPickup firearm)
+            if (pickup.Base is not FirearmPickup firearm)
                 return 0;
-            byte ammo = GetMaxAmmo(item.Type);
+            byte ammo = GetMaxAmmo(pickup.Type);
 
             if (firearm.Status.Flags.HasFlag(FirearmStatusFlags.Chambered))
                 ammo++;
 
-            AttachmentParameterDefinition definitionOfParam = AttachmentsUtils.GetDefinitionOfParam((int)AttachmentParam.MagazineCapacityModifier);
-            float num = definitionOfParam.DefaultValue;
-            item.Type.GetAttachmentIdentifiers(firearm.Status.Attachments);
-            Exiled.API.Features.Log.Info($"ammo {ammo} and attachementcount {firearm.Status.Attachments}");
-
-            // num2 should be all the Attachment[] on the firearm.
-            /*for (int i = 0; i < num2; i++)
+            foreach (AttachmentIdentifier attachmentIdentifier in GetAttachmentIdentifiers(pickup.Type, firearm.Status.Attachments))
             {
-                Attachment attachment = test[i];
-                if (attachment.IsEnabled && attachment.TryGetValue((int)AttachmentParam.MagazineCapacityModifier, out float paraValue))
-                {
-                    num = AttachmentsUtils.MixValue(num, paraValue, definitionOfParam.MixingMode);
-                }
-            }*/
+                Attachment attachment = AttachmentsList.FirstOrDefault(x => x.Name == attachmentIdentifier.Name);
+                if (attachment is null)
+                    continue;
+                ammo += (byte)attachment._parameterValues[(int)AttachmentParam.MagazineCapacityModifier];
+            }
 
-            ammo += (byte)AttachmentsUtils.ClampValue(num, definitionOfParam);
+            ammo += (byte)UnityEngine.Mathf.Clamp(GetAttachmentsValue(firearm, AttachmentParam.MagazineCapacityModifier), byte.MinValue, byte.MaxValue);
             return ammo;
+        }
+
+        /// <summary>
+        /// Gets the value of an AttachmentParam on a FirearmPickup.
+        /// </summary>
+        /// <param name="firearmPickup">The <see cref="FirearmPickup">pickup</see> that you want to get the value of.</param>
+        /// <param name="attachmentParam">The <see cref="AttachmentParam">AttachmentParam</see> for get the Parameter change you need.</param>
+        /// <returns>Returns the float value.</returns>
+        public static float GetAttachmentsValue(this FirearmPickup firearmPickup, AttachmentParam attachmentParam)
+        {
+            IEnumerable<AttachmentIdentifier> attachements = GetAttachmentIdentifiers(firearmPickup.Info.ItemId, firearmPickup.Status.Attachments);
+
+            AttachmentParameterDefinition definitionOfParam = AttachmentsUtils.GetDefinitionOfParam((int)attachmentParam);
+            float num = definitionOfParam.DefaultValue;
+
+            foreach (AttachmentIdentifier attachement in attachements)
+            {
+                Attachment attachment = AttachmentsList.FirstOrDefault(x => x.Name == attachement.Name);
+                if (attachment is null || !attachment.TryGetValue((int)attachmentParam, out float paraValue))
+                    continue;
+
+                num = AttachmentsUtils.MixValue(num, paraValue, definitionOfParam.MixingMode);
+            }
+
+            return num;
         }
 
         /// <summary>
