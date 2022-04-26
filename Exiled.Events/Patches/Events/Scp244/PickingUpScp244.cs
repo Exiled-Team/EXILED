@@ -39,12 +39,44 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
 
-            int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            Label isInst = generator.DefineLabel();
+            Label isNotInst = generator.DefineLabel();
+            Label cont = generator.DefineLabel();
 
 #pragma warning disable SA1118 // Parameter should not span multiple lines
+
+            newInstructions.InsertRange(newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brtrue_S), new[]
+                        {
+                 new CodeInstruction(OpCodes.Ldstr, "Start before the brtrue"),
+                 new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+                        });
+
+            newInstructions.InsertRange(newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret), new[]
+            {
+                 new CodeInstruction(OpCodes.Ldstr, "Return false route"),
+                 new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+                 //new CodeInstruction(OpCodes.Ldstr, "Start of it all Scp244SearchCompletorPatch, isinst {0}"),
+                 //new CodeInstruction(OpCodes.Ldarg_0),
+                 //new CodeInstruction(OpCodes.Ldfld, Field(typeof(SearchCompletor), nameof(SearchCompletor.TargetPickup))),
+                 //new CodeInstruction(OpCodes.Isinst, typeof(Scp244DeployablePickup)),
+                 //new CodeInstruction(OpCodes.Brtrue, isInst),
+                 //new CodeInstruction(OpCodes.Ldstr, "It was not equal to Scp244DeployablePickup"),
+                 //new CodeInstruction(OpCodes.Br, cont),
+                 //new CodeInstruction(OpCodes.Nop).WithLabels(isInst),
+                 //new CodeInstruction(OpCodes.Ldstr, "It was equal to Scp244DeployablePickup"),
+
+                 //new CodeInstruction(OpCodes.Nop).WithLabels(cont),
+                 //new CodeInstruction(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(string) })),
+                 //new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+            });
+
+            int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
             newInstructions.InsertRange(index, new[]
             {
+                new CodeInstruction(OpCodes.Ldstr, "Scp244SearchCompletor we were allowed"),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+
                 // Load arg 0 (No param, instance of object) EStack[Scp244SearchCompletor Instance]
                 new CodeInstruction(OpCodes.Ldarg_0),
 
@@ -79,9 +111,26 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // Good route of is allowed being true 
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
             });
+            newInstructions.InsertRange(newInstructions.Count, new[]
+           {
+                       new CodeInstruction(OpCodes.Ldstr, "Scp244SearchCompletor at the end.."),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+            });
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
+            }
+
+
+            Log.Info($" Index {index} ");
+
+            int count = 0;
+            int il_pos = 0;
+            foreach (CodeInstruction instr in newInstructions)
+            {
+                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
+                il_pos += instr.opcode.Size;
+                count++;
             }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

@@ -58,6 +58,8 @@ namespace Exiled.Events.Patches.Events.Scp330
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
 
+
+
             newInstructions.InsertRange(index, new[]
             {
                 // Load arg 0 (No param, instance of object) EStack[ReferenceHub Instance]
@@ -109,23 +111,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             int includeSameLine = -2;
             int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
-            Log.Info($"overwriteIndex {overwriteIndex} and nextReturn {nextReturn} and {newInstructions.Count}");
             newInstructions.RemoveRange(overwriteIndex, newInstructions.Count - nextReturn);
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
-            }
-
-            Log.Info($" Index {index} ");
-
-            int count = 0;
-            int il_pos = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} size {instr.opcode.Size} and {il_pos}");
-                il_pos += instr.opcode.Size;
-                count++;
             }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

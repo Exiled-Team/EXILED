@@ -51,10 +51,21 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
 
+
+
+
+#pragma warning disable SA1118 // Parameter should not span multiple lines
+
+            newInstructions.InsertRange(0, new[]
+                      {
+                new CodeInstruction(OpCodes.Ldstr, "Start of it all DroppingCandy"),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
+           });
+
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory)))) + offset;
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
+
             newInstructions.InsertRange(index, new[]
             {
                 // Load arg 0 (No param, instance of object) EStack[Referencehub Instance]

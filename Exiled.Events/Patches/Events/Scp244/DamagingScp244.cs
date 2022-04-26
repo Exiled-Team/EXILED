@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     /// Patches <see cref="Scp244DeployablePickup.Damage"/> to add missing logic to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.Damage))]
-    internal static class DamagingScp244Patch
+    internal static class DamagingScp244
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -43,13 +43,15 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             Label continueProcessing = generator.DefineLabel();
 
+#pragma warning disable SA1118 // Parameter should not span multiple lines
+
+            newInstructions.RemoveRange(0, 5);
+
             int offset = -4;
             int injectionPoint = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Sub);
+
             int index = injectionPoint + offset;
-
-
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(0, new[]
             {
 
                 // Load instance of Scp244DeployablePickup EStack[Scp244DeployablePickup Instance]
@@ -73,7 +75,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // Load arg 2 (param 1) EStack[Scp244DeployablePickup Instance, Float damage, DamageHandleBase handler]
                 new CodeInstruction(OpCodes.Ldarg_2),
 
-                // Pass all 3 variables to DamageScp244 New Object, get a new object in return EStack[DamagingScp244EventArgs Instance]
+                // Pass all 3 variables to DamageScp244 New Object, get a new object in return EStack[DamagingScp244EventArgs Instance] (Handler determins allowed??)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingScp244EventArgs))[0]),
 
                 // Copy it for later use again EStack[DamagingScp244EventArgs Instance, DamagingScp244EventArgs Instance]
@@ -95,6 +97,8 @@ namespace Exiled.Events.Patches.Events.Scp244
 
                 // Good route of is allowed being true 
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                //new CodeInstruction(OpCodes.Ldstr, "Woahhhh we were allowed"),
+                //new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
