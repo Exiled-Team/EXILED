@@ -136,16 +136,7 @@ namespace Exiled.API.Extensions
             if (firearm.Status.Flags.HasFlag(FirearmStatusFlags.Chambered))
                 ammo++;
 
-            foreach (AttachmentIdentifier attachmentIdentifier in GetAttachmentIdentifiers(pickup.Type, firearm.Status.Attachments))
-            {
-                Attachment attachment = AttachmentsList.FirstOrDefault(x => x.Name == attachmentIdentifier.Name);
-                if (attachment is null)
-                    continue;
-                ammo += (byte)attachment._parameterValues[(int)AttachmentParam.MagazineCapacityModifier];
-            }
-
-            ammo += (byte)UnityEngine.Mathf.Clamp(GetAttachmentsValue(firearm, AttachmentParam.MagazineCapacityModifier), byte.MinValue, byte.MaxValue);
-            return ammo;
+            return ammo += (byte)UnityEngine.Mathf.Clamp(GetAttachmentsValue(firearm, AttachmentParam.MagazineCapacityModifier), byte.MinValue, byte.MaxValue);
         }
 
         /// <summary>
