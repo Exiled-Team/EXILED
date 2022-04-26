@@ -42,11 +42,11 @@ namespace Exiled.Events.Patches.Events.Player
             Label ret = generator.DefineLabel();
 
             int offset = 0;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brtrue_S) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
             newInstructions.RemoveAt(index);
 
             offset = -3;
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Isinst) + offset;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Isinst) + offset;
 
             newInstructions[index].labels.Add(jne);
             newInstructions.InsertRange(index, new CodeInstruction[]
