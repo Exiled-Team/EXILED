@@ -58,18 +58,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a warhead status.
+        /// Gets or sets the warhead status.
         /// </summary>
         public static WarheadStatus Status
         {
-            get
-            {
-                if (!IsInProgress)
-                    return LeverStatus ? WarheadStatus.Armed : WarheadStatus.NotArmed;
-
-                return IsDetonated ? WarheadStatus.Detonated : WarheadStatus.InProgress;
-            }
-
+            get => IsInProgress ? IsDetonated ? WarheadStatus.Detonated : WarheadStatus.InProgress : LeverStatus ? WarheadStatus.Armed : WarheadStatus.NotArmed;
             set
             {
                 switch (value)
