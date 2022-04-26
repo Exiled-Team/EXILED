@@ -8,7 +8,7 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// Represents possible warhead statuses.
+    /// All the available warhead statuses.
     /// </summary>
     public enum WarheadStatus
     {
