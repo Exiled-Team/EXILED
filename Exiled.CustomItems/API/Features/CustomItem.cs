@@ -391,8 +391,7 @@ namespace Exiled.CustomItems.API.Features
                         }
                     }
 
-                    if (customItem is null)
-                        customItem = (CustomItem)Activator.CreateInstance(type);
+                    customItem ??= (CustomItem)Activator.CreateInstance(type);
 
                     if (customItem.Type == ItemType.None)
                         customItem.Type = ((CustomItemAttribute)attribute).ItemType;
