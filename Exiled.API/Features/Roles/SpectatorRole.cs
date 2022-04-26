@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Roles
         public TimeSpan DeadTime => DateTime.UtcNow - DeathTime;
 
         /// <summary>
-        /// Gets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
+        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
         /// </summary>
         public Player SpectatedPlayer
         {
@@ -45,6 +45,10 @@ namespace Exiled.API.Features.Roles
             {
                 Player spectatedPlayer = Player.Get(Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
                 return spectatedPlayer != Owner ? spectatedPlayer : null;
+            }
+
+            set
+            {
             }
         }
 
