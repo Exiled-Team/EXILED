@@ -484,7 +484,12 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(Player player, Item item) => Spawn(player.Position, item);
+        public virtual Pickup Spawn(Player player, Item item)
+        {
+            Pickup pickup = Spawn(player.Position, item);
+            pickup.PreviousOwner = player;
+            return pickup;
+        }
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific position.
