@@ -269,7 +269,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
-        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
         public static void LockAll(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && door.Zone == zoneType))
@@ -285,7 +285,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
-        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
         public static void LockAll(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (ZoneType zone in zoneTypes)
@@ -296,7 +296,7 @@ namespace Exiled.API.Features
         /// Locks all <see cref="Door">doors</see> in the facility.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockType"><see cref="DoorLockType"/>.</param>
+        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
         public static void LockAll(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Door.List)
