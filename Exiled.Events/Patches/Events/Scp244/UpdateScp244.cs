@@ -47,8 +47,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
 
-            int continueOffset = 0;
-            int continueIndex = newInstructions.FindIndex(index, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
 
             // FYI this gets called A LOT, and I mean A LOT. UpdateRange might be a bad idea for an event catch but.. I'll defer to Nao or Joker.
             // However, it seems to be functional, I guess.
@@ -60,11 +58,8 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // Load the field within the instance, since get; set; we can use PropertyGetter to get state. EStack[State]
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
 
-                // What to compare again (Idle State) EStack[State, 0]
-                new(OpCodes.Ldc_I4_0),
-
                 // If they are not equal, we do not do our logic and we skip nw logic EStack[]
-                new(OpCodes.Bne_Un, continueProcessing),
+                new(OpCodes.Brtrue_S, continueProcessing),
 
                 // Load the Scp244DeployablePickup instance EStack[Scp244DeployablePickup Instance]
                 new(OpCodes.Ldarg_0),
@@ -136,6 +131,9 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Br, normalProcessing).WithLabels(continueProcessing),
             });
 
+            int continueOffset = 0;
+            int continueIndex = newInstructions.FindIndex(index + 5, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
+
             // Jumping over original NW logic.
             newInstructions.InsertRange(continueIndex, new[]
             {
@@ -146,7 +144,19 @@ namespace Exiled.Events.Patches.Events.Scp244
             {
                 yield return newInstructions[z];
             }
+            index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
 
+            continueIndex = newInstructions.FindIndex(index + 4, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
+
+            Log.Info($" New index {index} and continueIndex {continueIndex}");
+            int count = 0;
+            int il_pos = 0;
+            foreach (CodeInstruction instr in newInstructions)
+            {
+                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
+                il_pos += instr.opcode.Size;
+                count++;
+            }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
