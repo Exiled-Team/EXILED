@@ -132,31 +132,32 @@ namespace Exiled.Events.Patches.Events.Scp244
             });
 
             int continueOffset = 0;
-            int continueIndex = newInstructions.FindIndex(index + 5, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
+            int continueIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
 
             // Jumping over original NW logic.
             newInstructions.InsertRange(continueIndex, new[]
             {
-                new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing),
+                new CodeInstruction(OpCodes.Nop).WithLabels(normalProcessing).MoveLabelsFrom(newInstructions[index]),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
-            index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
 
-            continueIndex = newInstructions.FindIndex(index + 4, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
+            //index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
 
-            Log.Info($" New index {index} and continueIndex {continueIndex}");
-            int count = 0;
-            int il_pos = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
-                il_pos += instr.opcode.Size;
-                count++;
-            }
+            //continueIndex = newInstructions.FindIndex(index + 4, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
+
+            //Log.Info($" New index {index} and continueIndex {continueIndex}");
+            //int count = 0;
+            //int il_pos = 0;
+            //foreach (CodeInstruction instr in newInstructions)
+            //{
+            //    Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
+            //    il_pos += instr.opcode.Size;
+            //    count++;
+            //}
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
