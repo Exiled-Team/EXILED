@@ -66,9 +66,9 @@ namespace Exiled.Events.Patches.Events.Scp330
                 if (!ev.IsAllowed)
                     return false;
 
-                if (!ServerProcessPickup(ply, null, ev.Candy, out Scp330Bag x))
+                if (!ServerProcessPickup(ply, ev.Candy, out Scp330Bag x))
                 {
-                    Scp330SearchCompletor.ShowOverloadHint(ply, x != null);
+                    Scp330SearchCompletor.ShowOverloadHint(ply, x is not null);
                     return false;
                 }
 
@@ -89,27 +89,15 @@ namespace Exiled.Events.Patches.Events.Scp330
             }
         }
 
-        private static bool ServerProcessPickup(ReferenceHub ply, Scp330Pickup pickup, CandyKindID candy, out Scp330Bag bag)
+        private static bool ServerProcessPickup(ReferenceHub ply, CandyKindID candy, out Scp330Bag bag)
         {
             if (!Scp330Bag.TryGetBag(ply, out bag))
             {
-                ushort num = pickup is null ? ushort.MinValue : pickup.Info.Serial;
-                return ply.inventory.ServerAddItem(ItemType.SCP330, num, pickup) != null;
+                ushort num = ushort.MinValue;
+                return ply.inventory.ServerAddItem(ItemType.SCP330, num) is not null;
             }
 
-            bool result = false;
-            if (pickup is null)
-            {
-                result = bag.TryAddSpecific(candy);
-            }
-            else
-            {
-                while (pickup.StoredCandies.Count > 0 && bag.TryAddSpecific(pickup.StoredCandies[0]))
-                {
-                    result = true;
-                    pickup.StoredCandies.RemoveAt(0);
-                }
-            }
+            bool result = bag.TryAddSpecific(candy);
 
             if (bag.AcquisitionAlreadyReceived)
             {
