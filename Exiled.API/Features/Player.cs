@@ -1834,10 +1834,9 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if a candy was given.</returns>
         public bool TryAddCandy(CandyKindID candyType)
         {
-            bool flag = false;
             if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
             {
-                flag = bag.TryAddSpecific(candyType);
+                bool flag = bag.TryAddSpecific(candyType);
                 if (flag)
                     bag.ServerRefreshBag();
                 return flag;
@@ -1866,7 +1865,7 @@ namespace Exiled.API.Features
 
             Timing.CallDelayed(0.5f, () =>
             {
-                if (!newItems.Any())
+                if (newItems.IsEmpty())
                     return;
 
                 foreach (ItemType item in newItems)
