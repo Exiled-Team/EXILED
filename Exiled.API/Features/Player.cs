@@ -10,7 +10,6 @@ namespace Exiled.API.Features
 #pragma warning disable 1584
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -22,7 +21,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
-    using Exiled.API.Interfaces;
     using Exiled.API.Structs;
 
     using Footprinting;
