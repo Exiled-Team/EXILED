@@ -44,8 +44,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if EXIST &quot;C:\Users\tuxwo\AppData\Roaming\EXILED\Plugins\&quot; (&#xD;&#xA;   copy /Y  &quot;$(TargetPath)&quot; &quot;C:\Users\tuxwo\AppData\Roaming\EXILED\Plugins\$(TargetFileName)&quot;&#xD;&#xA;  )" />
-  </Target>
-
 </Project>
