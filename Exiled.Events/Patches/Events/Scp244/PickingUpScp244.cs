@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Scp244
             {
 
                 // Load arg 0 (No param, instance of object) EStack[Scp244SearchCompletor Instance]
-                new(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
 
                 // Load the field within the instance, since no get; set; we can use Field. 
                 new(OpCodes.Ldfld, Field(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Hub))),
