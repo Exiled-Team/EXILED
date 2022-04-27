@@ -125,18 +125,37 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             newInstructions.InsertRange(addShouldSeverIndex, new[]
             {
+                // Load local ev object we stored before EStack[InteractingScp330EventArgs Instance]
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
 
-                new CodeInstruction(OpCodes.Brfalse, shouldNotSever),
+                // Get field shouldsever EStack[ShouldSever]
+                new (OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
 
+                // IF we should sever, continue, otherwise branch EStack[]
+                new (OpCodes.Brfalse, shouldNotSever),
+
+                // Load reference hub EStack[Referencehub]
                 new CodeInstruction(OpCodes.Ldarg_1),
+
+                // Load playereffects EStack[playerEffectsController]
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
+
+                // Load SeveredHands string EStack[playerEffectsController, "SeveredHands"]
                 new CodeInstruction(OpCodes.Ldstr, nameof(SeveredHands)),
+
+                // Load duration value EStack[playerEffectsController, "SeveredHands", 0f]
                 new CodeInstruction(OpCodes.Ldc_R4, 0f),
+
+                // Load increase duration if exists value EStack[playerEffectsController, "SeveredHands", 0f, 0]
                 new CodeInstruction(OpCodes.Ldc_I4_0),
+
+                // Call our method to force SeveredHands effect EStack[bool]
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableByString), new[] { typeof(string), typeof(float), typeof(bool) })),
+
+                // Remove success result EStack[]
                 new CodeInstruction(OpCodes.Pop),
+
+                // Return
                 new CodeInstruction(OpCodes.Ret),
             });
 
@@ -146,10 +165,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             int addTakenCandiesIndex = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Scp330Interobject), nameof(Scp330Interobject._takenCandies)))) + addTakenCandiesOffset;
 
+            // This is a jump to ensure we can escape original NW logic without deleting the original code. Might be better to just delete it. Will defer to Joker/Nao.
             newInstructions.InsertRange(addTakenCandiesIndex, new[]
-                {
+            {
                 new CodeInstruction(OpCodes.Nop).WithLabels(shouldNotSever).MoveLabelsFrom(newInstructions[addTakenCandiesIndex]),
-                });
+            });
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
