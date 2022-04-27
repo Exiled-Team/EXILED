@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 #pragma warning disable SA1313
 
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using CustomPlayerEffects;
@@ -122,11 +123,9 @@ namespace Exiled.Events.Patches.Events.Scp330
             int nextReturn = newInstructions.FindIndex(addShouldSeverIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
 
             Log.Info($" newInstructions.Count  {newInstructions.Count } and nextReturn {nextReturn} and overwriteIndex {addShouldSeverIndex}");
-            newInstructions.RemoveRange(addShouldSeverIndex, 3); //nextReturn - overwriteIndex, get rid of blt.s
+            newInstructions.RemoveRange(addShouldSeverIndex, 14); //nextReturn - overwriteIndex, get rid of blt.s, 3 , 14
 
             addShouldSeverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
-
-
 
             newInstructions.InsertRange(addShouldSeverIndex, new[]
             {
@@ -134,12 +133,43 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
 
                 new CodeInstruction(OpCodes.Brfalse, shouldNotSever),
+
+                //new CodeInstruction(OpCodes.Ldarg_1),
+                //new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
+                //new CodeInstruction(OpCodes.Ldc_R4, 0f),
+                //new CodeInstruction(OpCodes.Ldc_I4_0),
+                //PlayerEffectsController.Ena
+                ////new CodeInstruction(OpCodes.Pop),
+                ////new CodeInstruction(OpCodes.Pop),
+                ////new CodeInstruction(OpCodes.Pop), Namespace.Type1.Type2:MethodName
+                //new CodeInstruction(OpCodes.Callvirt, Method("PlayerEffectsController.SeveredHands:EnableEffect", new[] { typeof(float), typeof(bool) })),
+                //new CodeInstruction(OpCodes.Ret),
             });
+            Type myType = typeof(PlayerEffectsController);
+            MethodInfo[] myArrayMethodInfo = myType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            for (int i = 0; i < myArrayMethodInfo.Length; i++)
+            {
+                MethodInfo myMethodInfo = (MethodInfo)myArrayMethodInfo[i];
+                Log.Info($"\nThe name of the method is {myMethodInfo.Name} . and full name {myMethodInfo.GetType().FullName} ");
+
+                ParameterInfo[] pars = myMethodInfo.GetParameters();
+                foreach (ParameterInfo p in pars)
+                {
+                    Log.Info(p.ParameterType);
+                }
+            }
+
+            /*
+             *               new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
+                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
+                new(OpCodes.Ldloca_S, 0),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
+                */
 
             int nextSectionToRemove = newInstructions.FindIndex(addShouldSeverIndex + 3, instruction => instruction.opcode == OpCodes.Ldarg_0);
 
-            newInstructions.RemoveRange(nextSectionToRemove, 6);
-
+            //newInstructions.RemoveRange(nextSectionToRemove, 6);
 
             int addTakenCandiesOffset = -1;
 
@@ -149,11 +179,6 @@ namespace Exiled.Events.Patches.Events.Scp330
                 {
                 new CodeInstruction(OpCodes.Nop).WithLabels(shouldNotSever).MoveLabelsFrom(newInstructions[addTakenCandiesIndex]),
                 });
-
-            //// Issue, if you add code you may need to update every branching affect.. because it is now offset?
-            //int includeSameLine = -1;
-            //int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
-            //newInstructions.RemoveRange(overwriteIndex, newInstructions.Count - nextReturn);
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
