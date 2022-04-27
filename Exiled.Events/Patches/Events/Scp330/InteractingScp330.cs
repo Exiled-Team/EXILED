@@ -49,26 +49,13 @@ namespace Exiled.Events.Patches.Events.Scp330
             Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
 
-            LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
+            Label shouldSever = generator.DefineLabel();
+            Label shouldNotSever = generator.DefineLabel();
 
-            // Remove first isHuman check
-            newInstructions.RemoveRange(0, 5);
-            newInstructions.InsertRange(0, new[]
-            {
-                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 we're at the start"),
-                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
-            });
-            newInstructions.InsertRange(newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) - 3, new[]
-            {
-                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 Before our check "),
-                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
-            });
+            LocalBuilder eventHandler = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
 
-            newInstructions.InsertRange(newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + 1, new[]
-            {
-                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 we're at the num < 0.1f return "),
-                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
-            });
+            LocalBuilder playerEffect = generator.DeclareLocal(typeof(PlayerEffect));
+
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
 
@@ -76,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             // start of function and that's the ONLY one getting called. Seems possible its the same.
             newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Ldstr, "Woahhhh InteractingScp330 "),
+                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 ").MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
                 // Load arg 0 (No param, instance of object) EStack[ReferenceHub Instance]
                 new(OpCodes.Ldarg_1),
@@ -105,13 +92,19 @@ namespace Exiled.Events.Patches.Events.Scp330
                  // Copy it for later use again EStack[InteractingScp330EventArgs Instance, InteractingScp330EventArgs Instance]
                 new(OpCodes.Dup),
 
-                // Call Method on Instance EStack[DamagingScp244EventArgs Instance] (pops off so that's why we needed to dup)
+                // EStack[InteractingScp330EventArgs Instance]
+                new(OpCodes.Stloc, eventHandler.LocalIndex),
+
+                // EStack[InteractingScp330EventArgs Instance, InteractingScp330EventArgs Instance]
+                new(OpCodes.Ldloc, eventHandler.LocalIndex),
+
+                // Call Method on Instance EStack[InteractingScp330EventArgs Instance] (pops off so that's why we needed to dup)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnInteractingScp330))),
 
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
                 new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
 
-                // If isAllowed = 1, jump to continue route, otherwise, return occurs below
+                // If isAllowed = 1, jump to continue route, otherwise, return occurs below EStack[]
                 new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
@@ -125,16 +118,64 @@ namespace Exiled.Events.Patches.Events.Scp330
             int overwriteOffset = 1;
             int overwriteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + overwriteOffset;
 
-            int includeSameLine = -2;
+            int includeSameLine = 0;
             int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
-            newInstructions.RemoveRange(overwriteIndex, newInstructions.Count - nextReturn);
+
+            Log.Info($" newInstructions.Count  {newInstructions.Count } and nextReturn {nextReturn} and overwriteIndex {overwriteIndex}");
+            newInstructions.RemoveRange(overwriteIndex, 14); //nextReturn - overwriteIndex
+
+            overwriteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + overwriteOffset;
+
+            LocalBuilder playerEffectsController = generator.DeclareLocal(typeof(PlayerEffectsController));
+            LocalBuilder SeveredHandsType = generator.DeclareLocal(typeof(SeveredHands));
+
+            newInstructions.InsertRange(overwriteIndex, new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
+
+                new CodeInstruction(OpCodes.Brfalse, shouldNotSever),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
+                new CodeInstruction(OpCodes.Stloc, playerEffectsController.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc, playerEffectsController.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc, playerEffectsController.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlayerEffectsController), nameof(PlayerEffectsController.AllEffects))),
+                new CodeInstruction(OpCodes.Ldtoken, SeveredHandsType.LocalType),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Type, PlayerEffect>), nameof(Dictionary<Type, PlayerEffect>.TryGetValue))),
+                new CodeInstruction(OpCodes.Ldc_R4, 0f),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Pop),
+                //, GetDeclaredConstructors(typeof(SeveredHands))[0]),
+
+                //new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, uint>), nameof(Dictionary<ItemType, uint>.TryGetValue))),
+                //new (OpCodes.Call, DeclaredMethod(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableEffect), new[] { typeof(SeveredHands), typeof(float), typeof(bool) })),
+                //new CodeInstruction(OpCodes.Ret),
+                });
+
+            int addTakenCandiesOffset = -1;
+
+            int addTakenCandiesIndex = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Scp330Interobject), nameof(Scp330Interobject._takenCandies)))) + addTakenCandiesOffset;
+
+            newInstructions.InsertRange(addTakenCandiesIndex, new[]
+                {
+                new CodeInstruction(OpCodes.Nop).WithLabels(shouldNotSever).MoveLabelsFrom(newInstructions[addTakenCandiesIndex]),
+            });
+
+            //// Issue, if you add code you may need to update every branching affect.. because it is now offset?
+            //int includeSameLine = -1;
+            //int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
+            //newInstructions.RemoveRange(overwriteIndex, newInstructions.Count - nextReturn);
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
 
-            Log.Info($" Index {index} overwriteIndex {overwriteIndex} nextReturn {nextReturn} ");
+            Log.Info($" Index {index} overwriteIndex {overwriteIndex}  newInstructions.Count { newInstructions.Count}");
 
             int count = 0;
             int il_pos = 0;
