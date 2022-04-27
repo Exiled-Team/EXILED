@@ -35,14 +35,20 @@ namespace Exiled.Events.EventArgs
         {
             IsAllowed = handler is ExplosionDamageHandler;
             Scp244 = scp244;
+            Pickup = Pickup.Get(scp244);
             Handler = new(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler);
             Handler.Damage = damage;
         }
 
         /// <summary>
-        /// Gets the <see cref="Pickup"/> object that is damaged.
+        /// Gets the <see cref="Scp244DeployablePickup"/> object that is damaged.
         /// </summary>
         public Scp244DeployablePickup Scp244 { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Pickup"/> object that is damaged.
+        /// </summary>
+        public Pickup Pickup { get; }
 
         /// <summary>
         /// Gets the Damage handler for this event.
