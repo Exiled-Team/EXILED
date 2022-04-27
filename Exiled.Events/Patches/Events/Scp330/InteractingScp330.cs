@@ -60,14 +60,11 @@ namespace Exiled.Events.Patches.Events.Scp330
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
 
-            // I can't confirmed this works thus far. I don't seem to know how to get this to get called. Unless its the same as Scp244 where the event dies but.. I inserted call at
-            // start of function and that's the ONLY one getting called. Seems possible its the same.
+            // I can confirm this works during testing
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldstr, "Woahhhh InteractingScp330 ").MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
                 // Load arg 0 (No param, instance of object) EStack[ReferenceHub Instance]
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
 
                 // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Player ]
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
@@ -122,7 +119,6 @@ namespace Exiled.Events.Patches.Events.Scp330
             int includeSameLine = 0;
             int nextReturn = newInstructions.FindIndex(addShouldSeverIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
 
-            Log.Info($" newInstructions.Count  {newInstructions.Count } and nextReturn {nextReturn} and overwriteIndex {addShouldSeverIndex}");
             newInstructions.RemoveRange(addShouldSeverIndex, 14); //nextReturn - overwriteIndex, get rid of blt.s, 3 , 14
 
             addShouldSeverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
@@ -139,29 +135,12 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Ldstr, nameof(SeveredHands)),
                 new CodeInstruction(OpCodes.Ldc_R4, 0f),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
-                //PlayerEffectsController.Ena
-                ////new CodeInstruction(OpCodes.Pop),
-                ////new CodeInstruction(OpCodes.Pop),
-                ////new CodeInstruction(OpCodes.Pop), Namespace.Type1.Type2:MethodName
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableByString), new[] { typeof(string), typeof(float), typeof(bool) })),
                 new CodeInstruction(OpCodes.Pop),
                 new CodeInstruction(OpCodes.Ret),
             });
 
             // This introduces bug, need to wipe player after they die, do mec call after 5 seconds, tbh.
-
-
-            /*
-             *               new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
-                new(OpCodes.Ldloca_S, 0),
-                new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
-                */
-
-            int nextSectionToRemove = newInstructions.FindIndex(addShouldSeverIndex + 3, instruction => instruction.opcode == OpCodes.Ldarg_0);
-
-            //newInstructions.RemoveRange(nextSectionToRemove, 6);
 
             int addTakenCandiesOffset = -1;
 
@@ -177,16 +156,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 yield return newInstructions[z];
             }
 
-            Log.Info($" Index {index} overwriteIndex {addShouldSeverIndex}  newInstructions.Count { newInstructions.Count}");
 
-            int count = 0;
-            int il_pos = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
-                il_pos += instr.opcode.Size;
-                count++;
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

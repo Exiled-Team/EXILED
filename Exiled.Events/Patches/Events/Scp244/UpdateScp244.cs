@@ -48,19 +48,14 @@ namespace Exiled.Events.Patches.Events.Scp244
             int index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
 
             int continueOffset = 0;
-            int continueIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
-
-            /*
-             *                 new(OpCodes.Ldstr, "Scp244DeployablePickup logic for transpiler"),
-                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
-                */
+            int continueIndex = newInstructions.FindIndex(index, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
 
             // FYI this gets called A LOT, and I mean A LOT. UpdateRange might be a bad idea for an event catch but.. I'll defer to Nao or Joker.
             // However, it seems to be functional, I guess.
             newInstructions.InsertRange(index, new[]
             {
                 // Load arg 0 (No param, instance of object) EStack[Scp244DeployablePickup Instance]
-                new(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
 
                 // Load the field within the instance, since get; set; we can use PropertyGetter to get state. EStack[State]
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
@@ -71,38 +66,32 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // If they are not equal, we do not do our logic and we skip nw logic EStack[]
                 new(OpCodes.Bne_Un, continueProcessing),
 
-                // Used for instance call EStack[Scp244DeployablePickup Instance] --------------------
-                new(OpCodes.Ldarg_0),
-
-                // Load the field within the instance, since no get; set; we can use Field. EStack[transform]
-                new(OpCodes.Call, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.transform))),
-
-                // Load the field within the instance, since no get; set; we can use Field. EStack[Transform.up]
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UnityEngine.Transform), nameof(Transform.up))),
-
-                // Load the field within the instance, since no get; set; we can use Field. EStack[Transform.up, Vector3.up]
-                new(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.up))),
-
-                // Load the field within the instance, since no get; set; we can use Field. EStack[Vector3.Dot]
-                new(OpCodes.Call, Method(typeof(Vector3), nameof(Vector3.Dot), new[] { typeof(Vector3), typeof(Vector3) })),
-
-                // Second parameter EStack[Vector3.Dot, Scp244DeployablePickup Instance] -----------
-                new(OpCodes.Ldarg_0),
-
-                // Load our activation dot EStack[Vector3.Dot, _activationDot]
-                new(OpCodes.Ldfld, Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot))),
-
-                // Verify if dot product < activation EStack[result]
-                new(OpCodes.Clt),
-
-                // If the dot product is less than we jump, otherwise continue EStack[]
-                new(OpCodes.Brfalse, continueProcessing),
-
                 // Load the Scp244DeployablePickup instance EStack[Scp244DeployablePickup Instance]
                 new(OpCodes.Ldarg_0),
 
-                // Load our true since it is a bool anyway, EStack[Scp244DeployablePickup Instance, 1]
-                new(OpCodes.Ldc_I4_1, continueProcessing),
+                // Used for instance call EStack[Scp244DeployablePickup Instance, Scp244DeployablePickup Instance] --------------------
+                new(OpCodes.Ldarg_0),
+
+                // Load the field within the instance, since no get; set; we can use Field. EStack[Scp244DeployablePickup Instance, transform]
+                new(OpCodes.Call, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.transform))),
+
+                // Load the field within the instance, since no get; set; we can use Field. EStack[Scp244DeployablePickup Instance, Transform.up]
+                new(OpCodes.Callvirt, PropertyGetter(typeof(UnityEngine.Transform), nameof(Transform.up))),
+
+                // Load the field within the instance, since no get; set; we can use Field. EStack[Scp244DeployablePickup Instance, Transform.up, Vector3.up]
+                new(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.up))),
+
+                // Load the field within the instance, since no get; set; we can use Field. EStack[Scp244DeployablePickup Instance, Vector3.Dot]
+                new(OpCodes.Call, Method(typeof(Vector3), nameof(Vector3.Dot), new[] { typeof(Vector3), typeof(Vector3) })),
+
+                // Second parameter EStack[Scp244DeployablePickup Instance, Vector3.Dot, Scp244DeployablePickup Instance] -----------
+                new(OpCodes.Ldarg_0),
+
+                // Load our activation dot EStack[Scp244DeployablePickup Instance, Vector3.Dot, _activationDot]
+                new(OpCodes.Ldfld, Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot))),
+
+                // Verify if dot product < activation EStack[Scp244DeployablePickup Instance, result]
+                new(OpCodes.Clt),
 
                 // Pass all 2 variables to OpeningScp244EventArgs New Object, get a new object in return EStack[OpeningScp244EventArgs Instance]
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
@@ -116,8 +105,8 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpScp244EventArgs), nameof(PickingUpScp244EventArgs.IsAllowed))),
 
-                // If isAllowed = 1, jump to continue route, otherwise, false return occurs below EStack[]
-                new(OpCodes.Brfalse, continueProcessing),
+                // If isAllowed = 1, Continue route, otherwise, false return occurs below EStack[]
+                new(OpCodes.Brfalse, returnFalse),
 
                 // Load the Scp244DeployablePickup instance EStack[Scp244DeployablePickup Instance] ------
                 new(OpCodes.Ldarg_0),
@@ -141,11 +130,10 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Br, continueProcessing),
 
                 // False Route
-                new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
-                new(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Ret).WithLabels(returnFalse),
 
-                // Good route of is allowed being true 
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                // Good route of is allowed being true, jump over original logic instead of deleting
+                new CodeInstruction(OpCodes.Br, normalProcessing).WithLabels(continueProcessing),
             });
 
             // Jumping over original NW logic.
@@ -157,6 +145,17 @@ namespace Exiled.Events.Patches.Events.Scp244
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
+            }
+
+            Log.Info($" Index {index}");
+
+            int count = 0;
+            int il_pos = 0;
+            foreach (CodeInstruction instr in newInstructions)
+            {
+                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
+                il_pos += instr.opcode.Size;
+                count++;
             }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

@@ -80,8 +80,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
-                new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
-                new(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Ret).WithLabels(returnFalse),
 
                 // Good route of is allowed being true 
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
