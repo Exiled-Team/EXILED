@@ -1183,7 +1183,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Handcuff the player.
+        /// Handcuff the player as administrator.
         /// </summary>
         public void Handcuff()
         {
