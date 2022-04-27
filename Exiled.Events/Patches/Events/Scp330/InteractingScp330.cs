@@ -148,6 +148,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Ret),
             });
 
+            // This introduces bug, need to wipe player after they die, do mec call after 5 seconds, tbh.
+
 
             /*
              *               new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
