@@ -134,30 +134,20 @@ namespace Exiled.Events.Patches.Events.Scp330
 
                 new CodeInstruction(OpCodes.Brfalse, shouldNotSever),
 
-                //new CodeInstruction(OpCodes.Ldarg_1),
-                //new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
-                //new CodeInstruction(OpCodes.Ldc_R4, 0f),
-                //new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
+                new CodeInstruction(OpCodes.Ldstr, nameof(SeveredHands)),
+                new CodeInstruction(OpCodes.Ldc_R4, 0f),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
                 //PlayerEffectsController.Ena
                 ////new CodeInstruction(OpCodes.Pop),
                 ////new CodeInstruction(OpCodes.Pop),
                 ////new CodeInstruction(OpCodes.Pop), Namespace.Type1.Type2:MethodName
-                //new CodeInstruction(OpCodes.Callvirt, Method("PlayerEffectsController.SeveredHands:EnableEffect", new[] { typeof(float), typeof(bool) })),
-                //new CodeInstruction(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableByString), new[] { typeof(string), typeof(float), typeof(bool) })),
+                new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Ret),
             });
-            Type myType = typeof(PlayerEffectsController);
-            MethodInfo[] myArrayMethodInfo = myType.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            for (int i = 0; i < myArrayMethodInfo.Length; i++)
-            {
-                MethodInfo myMethodInfo = (MethodInfo)myArrayMethodInfo[i];
-                Log.Info($"\nThe name of the method is {myMethodInfo.Name} . and full name {myMethodInfo.GetType().FullName} ");
 
-                ParameterInfo[] pars = myMethodInfo.GetParameters();
-                foreach (ParameterInfo p in pars)
-                {
-                    Log.Info(p.ParameterType);
-                }
-            }
 
             /*
              *               new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
