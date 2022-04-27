@@ -112,56 +112,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
             });
 
-
-
-
-
             int removeServerProcessOffset = -2;
             int removeServerProcessIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + removeServerProcessOffset;
-
-            newInstructions.RemoveRange(removeServerProcessIndex, 3);
-
-            Label ignoreOverlay = generator.DefineLabel();
-
-            LocalBuilder scp330Bag = generator.DeclareLocal(typeof(Scp330Bag));
-
-            newInstructions.InsertRange(removeServerProcessIndex, new[]
-            {
-                // EStack [Referencehub, InteractingScp330EventArgs]
-                new CodeInstruction(OpCodes.Ldloc, eventHandler),
-
-                // EStack [Referencehub, Candy]
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Candy))),
-
-                // EStack [Referencehub, Candy, Scp330Pickup Address]
-
-
-                new CodeInstruction(OpCodes.Ldloca_S, scp330Bag.LocalIndex),
-
-                //new CodeInstruction(OpCodes.Pop),
-                //new CodeInstruction(OpCodes.Pop),
-                //new CodeInstruction(OpCodes.Pop),
-                //new CodeInstruction(OpCodes.Ldc_I4_1),
-
-                // EStack []
-
-                new CodeInstruction(OpCodes.Call, Method(typeof(InteractingScp330), nameof(InteractingScp330.ServerProcessPickup), new[] {typeof(ReferenceHub), typeof(CandyKindID), typeof(Scp330Bag)})),
-
-                new CodeInstruction(OpCodes.Brtrue, ignoreOverlay),
-
-
-
-                new CodeInstruction(OpCodes.Nop).WithLabels(ignoreOverlay),
-            });
-
-            //Log.Info($"removeServerProcessIndex {removeServerProcessIndex}");
-
-            //newInstructions.RemoveAt(newInstructions.Count - 2);
-            //newInstructions.RemoveAt(newInstructions.Count - 2);
-            //newInstructions.RemoveAt(newInstructions.Count - 2);
-            //newInstructions.RemoveAt(newInstructions.Count - 2);
-            //newInstructions.add(newInstructions.Count - 2);
-
 
             int addShouldSeverOffset = 1;
             int addShouldSeverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
@@ -210,7 +162,6 @@ namespace Exiled.Events.Patches.Events.Scp330
             });
 
             // This introduces bug, need to wipe player after they die, do mec call after 5 seconds, tbh.
-
             int addTakenCandiesOffset = -1;
 
             int addTakenCandiesIndex = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Scp330Interobject), nameof(Scp330Interobject._takenCandies)))) + addTakenCandiesOffset;

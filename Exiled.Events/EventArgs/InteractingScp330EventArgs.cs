@@ -31,7 +31,6 @@ namespace Exiled.Events.EventArgs
             Candy = candy;
             UsageCount = usage;
             ShouldSever = usage >= 2;
-            Log.Info($"What was should sever {ShouldSever}");
             IsAllowed = isAllowed;
         }
 
