@@ -147,16 +147,6 @@ namespace Exiled.Events.Patches.Events.Scp244
                 yield return newInstructions[z];
             }
 
-            Log.Info($" Index {index}");
-
-            int count = 0;
-            int il_pos = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
-                il_pos += instr.opcode.Size;
-                count++;
-            }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
