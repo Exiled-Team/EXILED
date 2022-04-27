@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp330
 #pragma warning disable SA1313
 
     using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -28,7 +30,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived"/> method to add the <see cref="Handlers.Scp330.DroppingUpScp330"/> event.
@@ -36,55 +42,102 @@ namespace Exiled.Events.Patches.Events.Scp330
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]
     internal static class DroppingCandy
     {
-        private static bool Prefix(NetworkConnection conn, SelectScp330Message msg)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            Label returnFalse = generator.DefineLabel();
+            Label continueProcessing = generator.DefineLabel();
+
+            LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
+
+            // Confirmed this works thus far.
+#pragma warning disable SA1118 // Parameter should not span multiple lines
+
+            int offset = -3;
+            int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory)))) + offset;
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (!ReferenceHub.TryGetHubNetID(conn.identity.netId, out ReferenceHub referenceHub)
-                    || referenceHub.inventory.CurInstance is not Scp330Bag scp330Bag || scp330Bag is null
-                    || scp330Bag.ItemSerial != msg.Serial || msg.CandyID >= scp330Bag.Candies.Count)
-                {
-                    return false;
-                }
+                // Load arg 0 (No param, instance of object) EStack[Referencehub Instance]
+                new(OpCodes.Ldloc_0),
 
-                if (!msg.Drop)
-                {
-                    scp330Bag.SelectedCandyId = msg.CandyID;
-                    PlayerHandler handler = UsableItemsController.GetHandler(referenceHub);
-                    handler.CurrentUsable = new(scp330Bag, msg.Serial, Time.timeSinceLevelLoad);
-                    handler.CurrentUsable.Item.OnUsingStarted();
-                    new StatusMessage(StatusMessage.StatusType.Start, msg.Serial).SendToAuthenticated();
-                    return false;
-                }
+                // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Player]
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                PickupSyncInfo psi = new()
-                {
-                    ItemId = scp330Bag.ItemTypeId,
-                    Serial = ItemSerialGenerator.GenerateNext(),
-                    Weight = scp330Bag.Weight,
-                    Position = referenceHub.PlayerCameraReference.transform.position,
-                };
+                // Load arg 0 (No param, instance of object) EStack[Player Instance, Scp330Bag Instance]
+                new(OpCodes.Ldloc_1),
 
-                DroppingUpScp330EventArgs ev = new(Player.Get(referenceHub), scp330Bag, scp330Bag.TryRemove(msg.CandyID));
-                Handlers.Scp330.OnDroppingUpScp330(ev);
+                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance]
+                new(OpCodes.Ldloc_1),
 
-                if (!ev.IsAllowed || referenceHub.inventory.ServerCreatePickup(scp330Bag, psi, true) is not Scp330Pickup scp330Pickup)
-                    return false;
+                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance, SelectScp330Message Msg]
+                new(OpCodes.Ldarg_1),
 
-                scp330Pickup.PreviousOwner = new(referenceHub);
-                CandyKindID candyKindID = ev.Candy;
-                if (candyKindID == CandyKindID.None)
-                    return false;
+                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance, CandyID]
+                new(OpCodes.Ldfld, Field(typeof(SelectScp330Message), nameof(SelectScp330Message.CandyID))),
 
-                scp330Pickup.NetworkExposedCandy = candyKindID;
-                scp330Pickup.StoredCandies.Add(candyKindID);
-                return false;
-            }
-            catch (Exception ex)
+                // EStack[Player Instance, Scp330Bag Instance, CandyKindID]
+                new(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
+
+                // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[DroppingUpScp330EventArgs Instance]
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingUpScp330EventArgs))[0]),
+
+                // EStack[]
+                new(OpCodes.Stloc, eventHandler.LocalIndex),
+
+                // EStack[DroppingUpScp330EventArgs Instance]
+                new(OpCodes.Ldloc, eventHandler.LocalIndex),
+
+                // Call Method on Instance EStack[] (pops off so that's why we needed to dup)
+                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingUpScp330))),
+
+                // EStack[DroppingUpScp330EventArgs Instance]
+                new(OpCodes.Ldloc, eventHandler.LocalIndex),
+
+                // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.IsAllowed))),
+
+                // If isAllowed = 1, jump to continue route, otherwise, false return occurs below // EStack[]
+                new(OpCodes.Brtrue, continueProcessing),
+
+                // False Route
+                new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
+                new(OpCodes.Ret),
+
+                // Good route of is allowed being true
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+            });
+
+            int jumpOverOffset = 1;
+            int jumpOverIndex = newInstructions.FindLastIndex(instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
+
+            // Remove TryRemove candy logic since we did it earlier.
+            newInstructions.RemoveRange(jumpOverIndex, 6);
+
+            // Candy local index.
+            int candyKindID = 4;
+
+            newInstructions.InsertRange(jumpOverIndex, new[]
             {
-                Log.Error($"{typeof(DroppingCandy).FullName}.{nameof(Prefix)}:\n{ex}");
-                return true;
+                // EStack[DroppingUpScp330EventArgs Instance]
+                new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
+
+                // EStack[DroppingUpScp330EventArgs.Candy]
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.Candy))),
+
+                // EStack[] (The next two lines technically are not needed if I reduce the range from 6 to 4, but I had issues, tiny brain moments.)
+                new(OpCodes.Stloc, candyKindID),
+
+                // EStack[Candy] (Next instruction is a brtrue)
+                new(OpCodes.Ldloc, candyKindID),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+            {
+                yield return newInstructions[z];
             }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

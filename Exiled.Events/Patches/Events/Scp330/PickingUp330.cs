@@ -38,6 +38,8 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(0, new[]
             {
                 // var ev = new PickingUpScp330EventArgs(Player.Get(ply), pickup);
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Brfalse, continueLabel),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
@@ -61,7 +63,9 @@ namespace Exiled.Events.Patches.Events.Scp330
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
+            {
                 yield return newInstructions[z];
+            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
