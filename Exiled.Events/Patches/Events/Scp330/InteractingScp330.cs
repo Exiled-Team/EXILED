@@ -115,46 +115,31 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
             });
 
-            int overwriteOffset = 1;
-            int overwriteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + overwriteOffset;
+            int addShouldSeverOffset = 1;
+            int addShouldSeverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
 
             int includeSameLine = 0;
-            int nextReturn = newInstructions.FindIndex(overwriteIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
+            int nextReturn = newInstructions.FindIndex(addShouldSeverIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
 
-            Log.Info($" newInstructions.Count  {newInstructions.Count } and nextReturn {nextReturn} and overwriteIndex {overwriteIndex}");
-            newInstructions.RemoveRange(overwriteIndex, 14); //nextReturn - overwriteIndex
+            Log.Info($" newInstructions.Count  {newInstructions.Count } and nextReturn {nextReturn} and overwriteIndex {addShouldSeverIndex}");
+            newInstructions.RemoveRange(addShouldSeverIndex, 3); //nextReturn - overwriteIndex, get rid of blt.s
 
-            overwriteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + overwriteOffset;
+            addShouldSeverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
 
-            LocalBuilder playerEffectsController = generator.DeclareLocal(typeof(PlayerEffectsController));
-            LocalBuilder SeveredHandsType = generator.DeclareLocal(typeof(SeveredHands));
 
-            newInstructions.InsertRange(overwriteIndex, new[]
+
+            newInstructions.InsertRange(addShouldSeverIndex, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
 
                 new CodeInstruction(OpCodes.Brfalse, shouldNotSever),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
-                new CodeInstruction(OpCodes.Stloc, playerEffectsController.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc, playerEffectsController.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc, playerEffectsController.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlayerEffectsController), nameof(PlayerEffectsController.AllEffects))),
-                new CodeInstruction(OpCodes.Ldtoken, SeveredHandsType.LocalType),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Type, PlayerEffect>), nameof(Dictionary<Type, PlayerEffect>.TryGetValue))),
-                new CodeInstruction(OpCodes.Ldc_R4, 0f),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Pop),
-                new CodeInstruction(OpCodes.Pop),
-                new CodeInstruction(OpCodes.Pop),
-                new CodeInstruction(OpCodes.Pop),
-                //, GetDeclaredConstructors(typeof(SeveredHands))[0]),
+            });
 
-                //new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, uint>), nameof(Dictionary<ItemType, uint>.TryGetValue))),
-                //new (OpCodes.Call, DeclaredMethod(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableEffect), new[] { typeof(SeveredHands), typeof(float), typeof(bool) })),
-                //new CodeInstruction(OpCodes.Ret),
-                });
+            int nextSectionToRemove = newInstructions.FindIndex(addShouldSeverIndex + 3, instruction => instruction.opcode == OpCodes.Ldarg_0);
+
+            newInstructions.RemoveRange(nextSectionToRemove, 6);
+
 
             int addTakenCandiesOffset = -1;
 
@@ -163,7 +148,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(addTakenCandiesIndex, new[]
                 {
                 new CodeInstruction(OpCodes.Nop).WithLabels(shouldNotSever).MoveLabelsFrom(newInstructions[addTakenCandiesIndex]),
-            });
+                });
 
             //// Issue, if you add code you may need to update every branching affect.. because it is now offset?
             //int includeSameLine = -1;
@@ -175,7 +160,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 yield return newInstructions[z];
             }
 
-            Log.Info($" Index {index} overwriteIndex {overwriteIndex}  newInstructions.Count { newInstructions.Count}");
+            Log.Info($" Index {index} overwriteIndex {addShouldSeverIndex}  newInstructions.Count { newInstructions.Count}");
 
             int count = 0;
             int il_pos = 0;
