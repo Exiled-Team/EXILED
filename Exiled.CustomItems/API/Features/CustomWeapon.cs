@@ -111,7 +111,7 @@ namespace Exiled.CustomItems.API.Features
             Pickup pickup = item.Spawn(position);
             if (pickup is null)
             {
-                Log.Debug($"{nameof(Spawn)}: Pickup is null.");
+                Log.Debug($"{nameof(Spawn)}: Pickup is null.", Instance.Config.Debug);
                 return null;
             }
 
