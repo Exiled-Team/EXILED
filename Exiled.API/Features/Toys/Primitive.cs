@@ -86,10 +86,9 @@ namespace Exiled.API.Features.Toys
         {
             Primitive primitve = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            Transform transform = primitve.AdminToyBase.transform;
-            transform.position = position ?? Vector3.zero;
-            transform.eulerAngles = rotation ?? Vector3.zero;
-            transform.localScale = scale ?? Vector3.one;
+            primitve.AdminToyBase.transform.position = position ?? Vector3.zero;
+            primitve.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            primitve.AdminToyBase.transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
                 primitve.Spawn();
