@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnUsingScp244))),
 
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(UsingScp244EventArgs), nameof(UsingScp244EventArgs.IsAllowed))),
 
                 // If isAllowed = 1, jump to continue route, otherwise, false return occurs below
                 new(OpCodes.Brtrue, continueProcessing),
