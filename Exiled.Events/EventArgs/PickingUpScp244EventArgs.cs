@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
 
     using InventorySystem.Items.Usables.Scp244;
 
@@ -22,11 +23,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="PickingUpScp244EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
-        public PickingUpScp244EventArgs(Player player, Scp244DeployablePickup pickup)
+        /// <param name="scp244"><inheritdoc cref="Scp244"/></param>
+        public PickingUpScp244EventArgs(Player player, Scp244DeployablePickup scp244)
         {
             Player = player;
-            Pickup = pickup;
+            Scp244 = scp244;
+            Pickup = Pickup.Get(scp244);
         }
 
         /// <summary>
@@ -35,9 +37,14 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
+        /// Gets a value representing the <see cref="API.Features.Items.Pickup"/> being picked up.
+        /// </summary>
+        public Pickup Pickup { get; }
+
+        /// <summary>
         /// Gets a value representing the <see cref="Scp244DeployablePickup"/> being picked up.
         /// </summary>
-        public Scp244DeployablePickup Pickup { get; }
+        public Scp244DeployablePickup Scp244 { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with SCP-330.
