@@ -909,10 +909,10 @@ namespace Exiled.API.Features
             {
                 foreach (ReferenceHub referenceHub in ReferenceHub.spectatorManager.ServerCurrentSpectatingPlayers)
                 {
-                    Player spectator = Get(referenceHub);
+                    if (referenceHub == ReferenceHub)
+                        continue;
 
-                    if (spectator == this || spectator.IsDead)
-                        yield return spectator;
+                    yield return Get(referenceHub);
                 }
             }
         }
