@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived"/> method to add the <see cref="Handlers.Scp330.DroppingUpScp330"/> event.
+    /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived"/> method to add the <see cref="Handlers.Scp330.DroppingScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]
     internal static class DroppingCandy
@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
 
-            LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingUpScp330EventArgs));
+            LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
 
             // Confirmed this works thus far.
 #pragma warning disable SA1118 // Parameter should not span multiple lines
@@ -80,23 +80,23 @@ namespace Exiled.Events.Patches.Events.Scp330
                 // EStack[Player Instance, Scp330Bag Instance, CandyKindID]
                 new(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
 
-                // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[DroppingUpScp330EventArgs Instance]
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingUpScp330EventArgs))[0]),
+                // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[DroppingScp330EventArgs Instance]
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingScp330EventArgs))[0]),
 
                 // EStack[]
                 new(OpCodes.Stloc, eventHandler.LocalIndex),
 
-                // EStack[DroppingUpScp330EventArgs Instance]
+                // EStack[DroppingScp330EventArgs Instance]
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
 
                 // Call Method on Instance EStack[] (pops off so that's why we needed to dup)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingUpScp330))),
+                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingScp330))),
 
-                // EStack[DroppingUpScp330EventArgs Instance]
+                // EStack[DroppingScp330EventArgs Instance]
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
 
                 // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.IsAllowed))),
 
                 // If isAllowed = 1, jump to continue route, otherwise, false return occurs below // EStack[]
                 new(OpCodes.Brtrue, continueProcessing),
@@ -120,11 +120,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             newInstructions.InsertRange(jumpOverIndex, new[]
             {
-                // EStack[DroppingUpScp330EventArgs Instance]
+                // EStack[DroppingScp330EventArgs Instance]
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // EStack[DroppingUpScp330EventArgs.Candy]
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingUpScp330EventArgs), nameof(DroppingUpScp330EventArgs.Candy))),
+                // EStack[DroppingScp330EventArgs.Candy]
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.Candy))),
 
                 // EStack[] (The next two lines technically are not needed if I reduce the range from 6 to 4, but I had issues, tiny brain moments.)
                 new(OpCodes.Stloc, candyKindID),
@@ -137,6 +137,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             {
                 yield return newInstructions[z];
             }
+
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }

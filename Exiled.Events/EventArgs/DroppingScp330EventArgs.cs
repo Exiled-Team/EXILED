@@ -1,5 +1,5 @@
-// -----------------------------------------------------------------------
-// <copyright file="DroppingUpScp330EventArgs.cs" company="Exiled Team">
+﻿// -----------------------------------------------------------------------
+// <copyright file="DroppingScp330EventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -17,15 +17,15 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player drop a candy of SCP-330.
     /// </summary>
-    public class DroppingUpScp330EventArgs : EventArgs
+    public class DroppingScp330EventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DroppingUpScp330EventArgs"/> class.
+        /// Initializes a new instance of the <see cref="DroppingScp330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="scp330"><inheritdoc cref="Item"/></param>
         /// <param name="candy"><inheritdoc cref="Candy"/></param>
-        public DroppingUpScp330EventArgs(Player player, Scp330Bag scp330, CandyKindID candy)
+        public DroppingScp330EventArgs(Player player, Scp330Bag scp330, CandyKindID candy)
         {
             Player = player;
             Item = Item.Get(scp330);

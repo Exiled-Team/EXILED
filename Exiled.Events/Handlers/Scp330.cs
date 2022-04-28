@@ -30,7 +30,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> drop a SCP-330 candy.
         /// </summary>
-        public static event CustomEventHandler<DroppingUpScp330EventArgs> DroppingUpScp330;
+        public static event CustomEventHandler<DroppingScp330EventArgs> DroppingScp330;
 
         /// <summary>
         /// Invoked before a player eats a candy from SCP-330.
@@ -69,7 +69,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
-        /// <param name="ev">The <see cref="DroppingUpScp330EventArgs"/> instance.</param>
-        public static void OnDroppingUpScp330(DroppingUpScp330EventArgs ev) => DroppingUpScp330.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="DroppingScp330EventArgs"/> instance.</param>
+        public static void OnDroppingScp330(DroppingScp330EventArgs ev) => DroppingScp330.InvokeSafely(ev);
     }
 }
