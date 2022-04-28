@@ -40,9 +40,11 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
 
-            // Confirmed this works thus far.
+            // Tested by Yamato and Undid-Iridium
             int index = 0;
 #pragma warning disable SA1118 // Parameter should not span multiple lines
+
+            // Insert at start of function to add Event Handler
             newInstructions.InsertRange(index, new[]
             {
                 // Load arg 0 (No param, instance of object) EStack[Scp244Item Instance]

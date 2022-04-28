@@ -41,8 +41,9 @@ namespace Exiled.Events.Patches.Events.Scp244
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label returnFalse = generator.DefineLabel();
-            Label continueProcessing = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
+
+            // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
             int offset = 2;
@@ -59,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
 
                 // If they are not equal, we do not do our logic and we skip nw logic EStack[]
-                new(OpCodes.Brtrue_S, continueProcessing),
+                new(OpCodes.Brtrue_S, normalProcessing),
 
                 // Load the Scp244DeployablePickup instance EStack[Scp244DeployablePickup Instance]
                 new(OpCodes.Ldarg_0),
@@ -122,13 +123,10 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Callvirt, Method(typeof(Stopwatch), nameof(Stopwatch.Restart))),
 
                 // We finished our if logic, now we will continue on with normal logic
-                new(OpCodes.Br, continueProcessing),
+                new(OpCodes.Br, normalProcessing),
 
                 // False Route
                 new CodeInstruction(OpCodes.Ret).WithLabels(returnFalse),
-
-                // Good route of is allowed being true, jump over original logic instead of deleting
-                new CodeInstruction(OpCodes.Br, normalProcessing).WithLabels(continueProcessing),
             });
 
             int continueOffset = 0;
