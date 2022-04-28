@@ -44,16 +44,16 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             Label continueProcessing = generator.DefineLabel();
 
+            // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
-            // Confirmed this works thus far.
+            // Remove grenade damage check, let event handler do it.
             newInstructions.RemoveRange(0, 5);
 
-            int offset = -4;
-            int injectionPoint = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Sub);
+            int index = 0;
 
-            int index = injectionPoint + offset;
-            newInstructions.InsertRange(0, new[]
+            // Insert event handler at start of function to determine whether to allow function to run or not.
+            newInstructions.InsertRange(index, new[]
             {
                 // Load instance of Scp244DeployablePickup EStack[Scp244DeployablePickup Instance]
                 new (OpCodes.Ldarg_0),

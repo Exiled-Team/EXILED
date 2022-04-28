@@ -47,23 +47,22 @@ namespace Exiled.Events.Patches.Events.Scp330
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
 
-            Label shouldSever = generator.DefineLabel();
             Label shouldNotSever = generator.DefineLabel();
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
 
-            LocalBuilder playerEffect = generator.DeclareLocal(typeof(PlayerEffect));
+            // Tested by Yamato and Undid-Iridium
 
+            // Remove original "No scp can touch" logic.
             newInstructions.RemoveRange(0, 5);
 
+            // Find ServerPickupProcess, insert before it.
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
 
-            //newInstructions[0].labels.Clear();
-            // I can confirm this works during testing
+            // I can confirm this works during testing with Yamato. Logic to add EventHandler
             newInstructions.InsertRange(index, new[]
             {
                 // Load arg 0 (No param, instance of object) EStack[ReferenceHub Instance]
@@ -97,12 +96,13 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
-                new CodeInstruction(OpCodes.Ret).WithLabels(returnFalse),
+                new CodeInstruction(OpCodes.Ret),
 
-                // Good route of is allowed being true 
+                // Good route of is allowed being true.
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
             });
 
+            // Logic to find the only ServerProcessPickup and replace with our own.
             int removeServerProcessOffset = -2;
             int removeServerProcessIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + removeServerProcessOffset;
 
@@ -110,11 +110,9 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             Label ignoreOverlay = generator.DefineLabel();
 
+            // Remove NW server process logic.
             newInstructions.InsertRange(removeServerProcessIndex, new[]
             {
-                //// EStack [Referencehub, InteractingScp330EventArgs]
-                //new CodeInstruction(OpCodes.Ldarg_1),
-
                 // EStack [Referencehub, InteractingScp330EventArgs]
                 new CodeInstruction(OpCodes.Ldloc, eventHandler),
 
@@ -124,19 +122,24 @@ namespace Exiled.Events.Patches.Events.Scp330
                 // EStack [Referencehub, Candy, Scp330Pickup Address]
                 new CodeInstruction(OpCodes.Ldloca_S, 3),
 
-                new CodeInstruction(OpCodes.Call, Method(typeof(InteractingScp330), nameof(InteractingScp330.ServerProcessPickup), new[] {typeof(ReferenceHub), typeof(CandyKindID), typeof(Scp330Bag).MakeByRefType() })),
+                // Returns back a bool and also referencable which means local variable 3 (Scp330Bag) gets updated.
+                new CodeInstruction(OpCodes.Call, Method(typeof(InteractingScp330), nameof(InteractingScp330.ServerProcessPickup), new[] { typeof(ReferenceHub), typeof(CandyKindID), typeof(Scp330Bag).MakeByRefType() })),
             });
 
+            // This is to find the location of RpcMakeSound to remove the original code and add a new sever logic structure (Start point)
             int addShouldSeverOffset = 1;
             int addShouldSeverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
 
+            // This is to find the location of the next return (End point)
             int includeSameLine = 1;
             int nextReturn = newInstructions.FindIndex(addShouldSeverIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
 
-            newInstructions.RemoveRange(addShouldSeverIndex, nextReturn - addShouldSeverIndex); //nextReturn - overwriteIndex, get rid of blt.s, 3 , 14
+            // Remove original code from after RpcMakeSound to next return and then fully replace it.
+            newInstructions.RemoveRange(addShouldSeverIndex, nextReturn - addShouldSeverIndex);
 
             addShouldSeverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
 
+            // Add our shouldSever and other ev event logic
             newInstructions.InsertRange(addShouldSeverIndex, new[]
             {
                 // Load local ev object we stored before EStack[InteractingScp330EventArgs Instance]
@@ -145,7 +148,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 // Get field shouldsever EStack[ShouldSever]
                 new (OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
 
-                // IF we should sever, continue, otherwise branch EStack[]
+                // If we should sever, continue, otherwise branch EStack[]
                 new (OpCodes.Brfalse, shouldNotSever),
 
                 // Load reference hub EStack[Referencehub]
@@ -163,7 +166,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 // Load increase duration if exists value EStack[playerEffectsController, "SeveredHands", 0f, 0]
                 new CodeInstruction(OpCodes.Ldc_I4_0),
 
-                // Call our method to force SeveredHands effect EStack[bool]
+                // Call our method to force SeveredHands effect EStack[bool] TODO, use generic method by https://docs.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.getgenericmethoddefinition?view=net-6.0 research.
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableByString), new[] { typeof(string), typeof(float), typeof(bool) })),
 
                 // Remove success result EStack[]
@@ -173,39 +176,20 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Ret),
             });
 
+            // This will let us jump to the taken candies code and lock until ldarg_0, meaning we allow base game logic handle candy adding.
             int addTakenCandiesOffset = -1;
 
             int addTakenCandiesIndex = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Scp330Interobject), nameof(Scp330Interobject._takenCandies)))) + addTakenCandiesOffset;
-
-            // This is a jump to ensure we can escape original NW logic without deleting the original code. Might be better to just delete it. Will defer to Joker/Nao.
-            newInstructions.InsertRange(addTakenCandiesIndex, new[]
-            {
-                new CodeInstruction(OpCodes.Nop).WithLabels(shouldNotSever).MoveLabelsFrom(newInstructions[addTakenCandiesIndex]),
-            });
+            newInstructions[addTakenCandiesIndex].WithLabels(shouldNotSever);
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
 
-            Log.Info($" Index {index} ");
-
-            int count = 0;
-            int il_pos = 0;
-            foreach (CodeInstruction instr in newInstructions)
-            {
-                Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
-                il_pos += instr.opcode.Size;
-                count++;
-            }
-
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void ServerProcessPickupTest()
-        {
-            return;
-        }
         private static bool ServerProcessPickup(ReferenceHub ply, CandyKindID candy, out Scp330Bag bag)
         {
             if (!Scp330Bag.TryGetBag(ply, out bag))

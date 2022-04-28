@@ -46,12 +46,11 @@ namespace Exiled.Events.Patches.Events.Scp330
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
 
-            // Confirmed this works thus far.
+            // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
             int offset = -3;
@@ -102,22 +101,23 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
-                new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
-                new(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Ret),
 
                 // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
             });
 
+            // Set our location of previous owner
             int jumpOverOffset = 1;
             int jumpOverIndex = newInstructions.FindLastIndex(instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
 
-            // Remove TryRemove candy logic since we did it earlier.
+            // Remove TryRemove candy logic since we did it earlier from current location
             newInstructions.RemoveRange(jumpOverIndex, 6);
 
             // Candy local index.
             int candyKindID = 4;
 
+            // Insert our logic in space we just wiped.
             newInstructions.InsertRange(jumpOverIndex, new[]
             {
                 // EStack[DroppingScp330EventArgs Instance]

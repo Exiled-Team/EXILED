@@ -35,16 +35,9 @@ namespace Exiled.Events.Patches.Events.Scp244
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label returnFalse = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
-            Label normalProcessing = generator.DefineLabel();
 
-            Label isInst = generator.DefineLabel();
-            Label isNotInst = generator.DefineLabel();
-            Label cont = generator.DefineLabel();
-
-            // Confirmed this is broken. Prefix did not fix this, nor will a transpiler. You need to either rewrite NW code or find a different path.
-            // public bool ReceiveRequestUnsafe I blame this, probably. Or Session pipes. Injecting dirty bits.
+            // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
@@ -78,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
-                new CodeInstruction(OpCodes.Ret).WithLabels(returnFalse),
+                new CodeInstruction(OpCodes.Ret),
 
                 // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
