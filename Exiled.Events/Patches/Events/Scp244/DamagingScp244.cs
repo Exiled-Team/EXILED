@@ -29,6 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patches <see cref="Scp244DeployablePickup.Damage"/> to add missing logic to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
@@ -54,7 +55,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             int index = injectionPoint + offset;
             newInstructions.InsertRange(0, new[]
             {
-
                 // Load instance of Scp244DeployablePickup EStack[Scp244DeployablePickup Instance]
                 new (OpCodes.Ldarg_0),
 

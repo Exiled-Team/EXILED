@@ -29,6 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
@@ -46,7 +47,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
-
 
             // FYI this gets called A LOT, and I mean A LOT. UpdateRange might be a bad idea for an event catch but.. I'll defer to Nao or Joker.
             // However, it seems to be functional, I guess.
@@ -145,19 +145,19 @@ namespace Exiled.Events.Patches.Events.Scp244
                 yield return newInstructions[z];
             }
 
-            //index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
+            // index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
 
-            //continueIndex = newInstructions.FindIndex(index + 4, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
+            // continueIndex = newInstructions.FindIndex(index + 4, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
 
-            //Log.Info($" New index {index} and continueIndex {continueIndex}");
-            //int count = 0;
-            //int il_pos = 0;
-            //foreach (CodeInstruction instr in newInstructions)
-            //{
+            // Log.Info($" New index {index} and continueIndex {continueIndex}");
+            // int count = 0;
+            // int il_pos = 0;
+            // foreach (CodeInstruction instr in newInstructions)
+            // {
             //    Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
             //    il_pos += instr.opcode.Size;
             //    count++;
-            //}
+            // }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }

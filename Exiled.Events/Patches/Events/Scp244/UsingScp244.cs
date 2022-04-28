@@ -45,7 +45,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 #pragma warning disable SA1118 // Parameter should not span multiple lines
             newInstructions.InsertRange(index, new[]
             {
-
                 // Load arg 0 (No param, instance of object) EStack[Scp244Item Instance]
                 new(OpCodes.Ldarg_0),
 
@@ -80,13 +79,14 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
                 new(OpCodes.Ret),
 
-                // Good route of is allowed being true 
+                // Good route of is allowed being true.
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
             });
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
+
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }

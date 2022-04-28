@@ -45,17 +45,15 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             // Confirmed this is broken. Prefix did not fix this, nor will a transpiler. You need to either rewrite NW code or find a different path.
             // public bool ReceiveRequestUnsafe I blame this, probably. Or Session pipes. Injecting dirty bits.
-
 #pragma warning disable SA1118 // Parameter should not span multiple lines
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
             newInstructions.InsertRange(index, new[]
             {
-
                 // Load arg 0 (No param, instance of object) EStack[Scp244SearchCompletor Instance]
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
 
-                // Load the field within the instance, since no get; set; we can use Field. 
+                // Load the field within the instance, since no get; set; we can use Field.
                 new(OpCodes.Ldfld, Field(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Hub))),
 
                  // Using Owner call Player.Get static method with it (Reference hub) and get a Player back
@@ -82,7 +80,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 // False Route
                 new CodeInstruction(OpCodes.Ret).WithLabels(returnFalse),
 
-                // Good route of is allowed being true 
+                // Good route of is allowed being true
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
             });
 
