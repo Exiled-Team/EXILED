@@ -24,13 +24,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="global::Scp914.Scp914Controller"/>.
         /// </summary>
-        public static Scp914Controller Scp914Controller
-        {
-            get
-            {
-                return scp914Controller ??= Object.FindObjectOfType<Scp914Controller>();
-            }
-        }
+        public static Scp914Controller Scp914Controller => scp914Controller ??= Object.FindObjectOfType<Scp914Controller>();
 
         /// <summary>
         /// Gets or sets SCP-914's <see cref="Scp914KnobSetting"/>.
