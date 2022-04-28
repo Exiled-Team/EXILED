@@ -47,9 +47,14 @@ namespace Exiled.API.Features.Roles
                 return spectatedPlayer != Owner ? spectatedPlayer : null;
             }
 
-            [Obsolete("Client side feature.", false)]
+            [Obsolete("Client side feature.", true)]
             set
             {
+                if (Owner.IsAlive)
+                    throw new InvalidOperationException("The spectated player cannot be set on an alive player.");
+
+                Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
+                Owner.ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
             }
         }
 
