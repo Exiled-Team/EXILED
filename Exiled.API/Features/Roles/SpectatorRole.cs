@@ -51,6 +51,7 @@ namespace Exiled.API.Features.Roles
                 return spectatedPlayer;
             }
 
+            [Obsolete("Client side feature.", false)]
             set
             {
                 if (Owner.IsAlive)
