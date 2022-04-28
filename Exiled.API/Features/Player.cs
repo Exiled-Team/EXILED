@@ -10,7 +10,6 @@ namespace Exiled.API.Features
 #pragma warning disable 1584
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -22,7 +21,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
-    using Exiled.API.Interfaces;
     using Exiled.API.Structs;
 
     using Footprinting;
@@ -1836,10 +1834,9 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if a candy was given.</returns>
         public bool TryAddCandy(CandyKindID candyType)
         {
-            bool flag = false;
             if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
             {
-                flag = bag.TryAddSpecific(candyType);
+                bool flag = bag.TryAddSpecific(candyType);
                 if (flag)
                     bag.ServerRefreshBag();
                 return flag;
@@ -1868,7 +1865,7 @@ namespace Exiled.API.Features
 
             Timing.CallDelayed(0.5f, () =>
             {
-                if (!newItems.Any())
+                if (newItems.IsEmpty())
                     return;
 
                 foreach (ItemType item in newItems)
