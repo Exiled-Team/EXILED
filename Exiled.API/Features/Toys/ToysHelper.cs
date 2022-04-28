@@ -133,7 +133,7 @@ namespace Exiled.API.Features.Toys
                     }
                 }
 
-                return sportShootingTargetObject;
+                return binaryShootingTargetObject;
             }
         }
     }
