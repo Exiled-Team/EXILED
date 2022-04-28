@@ -17,6 +17,7 @@ namespace Exiled.API.Features
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
 
+    using MEC;
     using Mirror;
 
     using UnityEngine;
@@ -263,31 +264,46 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// Locks all <see cref="Door">doors</see> given the specified <see cref="ZoneType"/>.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
-        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
         public static void LockAll(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && door.Zone == zoneType))
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
-                MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
             }
+        }
+
+        /// <summary>
+        /// Locks all <see cref="Door">doors</see> given the specified <see cref="ZoneType"/>.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
+        public static void LockAll(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                LockAll(duration, zone, lockType);
         }
 
         /// <summary>
         /// Locks all <see cref="Door">doors</see> in the facility.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
-        /// <param name="lockType">DoorLockType of the lockdown.</param>
-        public static void LockAll(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
+        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
+        public static void LockAll(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (ZoneType zone in zoneTypes)
-                LockAll(duration, zone, lockType);
+            foreach (Door door in Door.List)
+            {
+                door.IsOpen = false;
+                door.ChangeLock(lockType);
+                Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+            }
         }
 
         /// <summary>
