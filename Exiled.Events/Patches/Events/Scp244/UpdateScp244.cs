@@ -49,9 +49,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             LocalBuilder resultOfDotCheck = generator.DeclareLocal(typeof(int));
 
-            LocalBuilder dot = generator.DeclareLocal(typeof(float));
-            LocalBuilder activation = generator.DeclareLocal(typeof(float));
-
             // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
@@ -59,25 +56,22 @@ namespace Exiled.Events.Patches.Events.Scp244
             int index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot)))) + offset;
 
             newInstructions.RemoveAt(index);
+
             // FYI this gets called A LOT, and I mean A LOT. UpdateRange might be a bad idea for an event catch but.. I'll defer to Nao or Joker.
             // However, it seems to be functional, I guess.
             newInstructions.InsertRange(index, new[]
             {
-
-                new(OpCodes.Stloc, dot.LocalIndex),
-                new(OpCodes.Stloc, activation.LocalIndex),
-
-                new(OpCodes.Ldloc, dot.LocalIndex),
-                new(OpCodes.Ldloc, activation.LocalIndex),
-
+                // Do the compare though clt EStack[Result]
                 new CodeInstruction(OpCodes.Clt),
 
+                // Store it EStack[]
                 new(OpCodes.Stloc, resultOfDotCheck.LocalIndex),
 
+                // Load instance EStack[Scp244DeployablePickup]
                 new(OpCodes.Ldarg_0),
 
+                // Load local variable EStack[Scp244DeployablePickup, clt result]
                 new(OpCodes.Ldloc, resultOfDotCheck.LocalIndex),
-
 
                 // Pass all 2 variables to OpeningScp244EventArgs New Object, get a new object in return EStack[OpeningScp244EventArgs Instance]
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
@@ -93,7 +87,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
                 // If isAllowed = 1, Continue route, otherwise, false return occurs below EStack[]
                 new(OpCodes.Brfalse, normalProcessing),
-
             });
 
             int continueOffset = -1;
