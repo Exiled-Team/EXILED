@@ -1181,6 +1181,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Handcuff the player as administrator.
+        /// </summary>
+        public void Handcuff()
+        {
+            ReferenceHub.inventory.SetDisarmedStatus(null);
+            DisarmedPlayers.Entries.Add(new DisarmedPlayers.DisarmedEntry(referenceHub.networkIdentity.netId, 0U));
+            new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated(0);
+        }
+
+        /// <summary>
         /// Handcuff the player.
         /// </summary>
         /// <param name="cuffer">The cuffer player.</param>
