@@ -22,16 +22,14 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="InteractingScp330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="candy"><inheritdoc cref="Candy"/></param>
         /// <param name="usage"><inheritdoc cref="UsageCount"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingScp330EventArgs(Player player, CandyKindID candy, int usage, bool isAllowed)
+        public InteractingScp330EventArgs(Player player, int usage)
         {
             Player = player;
-            Candy = candy;
+            Candy = Scp330Candies.GetRandom();
             UsageCount = usage;
             ShouldSever = usage >= 2;
-            IsAllowed = isAllowed;
+            IsAllowed = Player.IsHuman;
         }
 
         /// <summary>

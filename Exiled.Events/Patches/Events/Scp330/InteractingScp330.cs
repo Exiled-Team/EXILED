@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                     return false;
                 }
 
-                InteractingScp330EventArgs ev = new(Player.Get(ply), Scp330Candies.GetRandom(), num2, ply.characterClassManager.IsHuman());
+                InteractingScp330EventArgs ev = new(Player.Get(ply), num2);
                 Handlers.Scp330.OnInteractingScp330(ev);
 
                 if (!ev.IsAllowed)
