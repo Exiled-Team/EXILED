@@ -222,7 +222,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(id, out CustomItem item))
                 return false;
 
-            pickup = item.Spawn(position, (Player)null);
+            pickup = item.Spawn(position, null);
 
             return true;
         }
@@ -241,7 +241,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(name, out CustomItem item))
                 return false;
 
-            pickup = item.Spawn(position, (Player)null);
+            pickup = item.Spawn(position, null);
 
             return true;
         }
