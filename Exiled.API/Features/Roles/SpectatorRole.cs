@@ -47,6 +47,7 @@ namespace Exiled.API.Features.Roles
                 return spectatedPlayer != Owner ? spectatedPlayer : null;
             }
 
+            [Obsolete("Client side feature.", false)]
             set
             {
             }
