@@ -47,7 +47,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DamagingScp244EventArgs));
 
-
             // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
@@ -59,10 +58,10 @@ namespace Exiled.Events.Patches.Events.Scp244
             int index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.ModelDestroyed)))) + insertOffset;
 
             newInstructions.RemoveRange(index, 3);
+
             // Insert event handler at start of function to determine whether to allow function to run or not.
             newInstructions.InsertRange(index, new[]
             {
-
                 // Load Field (Because of get; set; it's property getter) of instance EStack[Scp244Deployable.State]
                 new (OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
 
