@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
@@ -53,6 +55,33 @@ namespace Exiled.API.Features
         {
             get => OutsitePanel.NetworkkeycardEntered;
             set => OutsitePanel.NetworkkeycardEntered = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the warhead status.
+        /// </summary>
+        public static WarheadStatus Status
+        {
+            get => IsInProgress ? IsDetonated ? WarheadStatus.Detonated : WarheadStatus.InProgress : LeverStatus ? WarheadStatus.Armed : WarheadStatus.NotArmed;
+            set
+            {
+                switch (value)
+                {
+                    case WarheadStatus.NotArmed:
+                    case WarheadStatus.Armed:
+                        Stop();
+                        LeverStatus = value is WarheadStatus.Armed;
+                        break;
+
+                    case WarheadStatus.InProgress:
+                        Start();
+                        break;
+
+                    case WarheadStatus.Detonated:
+                        Detonate();
+                        break;
+                }
+            }
         }
 
         /// <summary>

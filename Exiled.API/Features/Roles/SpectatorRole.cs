@@ -44,13 +44,10 @@ namespace Exiled.API.Features.Roles
             get
             {
                 Player spectatedPlayer = Player.Get(Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
-
-                if (spectatedPlayer == Owner)
-                    return null;
-
-                return spectatedPlayer;
+                return spectatedPlayer != Owner ? spectatedPlayer : null;
             }
 
+            [Obsolete("Client side feature.", true)]
             set
             {
                 if (Owner.IsAlive)
