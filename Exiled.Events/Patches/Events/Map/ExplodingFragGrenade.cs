@@ -69,9 +69,8 @@ namespace Exiled.Events.Patches.Events.Map
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                // Player.Get(this.PreviousOwner);
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldfld, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
+                // Player.Get(attacker);
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
