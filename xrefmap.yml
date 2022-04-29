@@ -1147,6 +1147,18 @@ references:
   commentId: F:Exiled.API.Enums.DoorType.GR18
   fullName: Exiled.API.Enums.DoorType.GR18
   nameWithType: DoorType.GR18
+- uid: Exiled.API.Enums.DoorType.GR18Gate
+  name: GR18Gate
+  href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_GR18Gate
+  commentId: F:Exiled.API.Enums.DoorType.GR18Gate
+  fullName: Exiled.API.Enums.DoorType.GR18Gate
+  nameWithType: DoorType.GR18Gate
+- uid: Exiled.API.Enums.DoorType.GR18Inner
+  name: GR18Inner
+  href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_GR18Inner
+  commentId: F:Exiled.API.Enums.DoorType.GR18Inner
+  fullName: Exiled.API.Enums.DoorType.GR18Inner
+  nameWithType: DoorType.GR18Inner
 - uid: Exiled.API.Enums.DoorType.HczArmory
   name: HczArmory
   href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_HczArmory
@@ -1237,18 +1249,18 @@ references:
   commentId: F:Exiled.API.Enums.DoorType.Scp012Bottom
   fullName: Exiled.API.Enums.DoorType.Scp012Bottom
   nameWithType: DoorType.Scp012Bottom
-- uid: Exiled.API.Enums.DoorType.Scp012Locker
-  name: Scp012Locker
-  href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_Scp012Locker
-  commentId: F:Exiled.API.Enums.DoorType.Scp012Locker
-  fullName: Exiled.API.Enums.DoorType.Scp012Locker
-  nameWithType: DoorType.Scp012Locker
 - uid: Exiled.API.Enums.DoorType.Scp049Armory
   name: Scp049Armory
   href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_Scp049Armory
   commentId: F:Exiled.API.Enums.DoorType.Scp049Armory
   fullName: Exiled.API.Enums.DoorType.Scp049Armory
   nameWithType: DoorType.Scp049Armory
+- uid: Exiled.API.Enums.DoorType.Scp049Gate
+  name: Scp049Gate
+  href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_Scp049Gate
+  commentId: F:Exiled.API.Enums.DoorType.Scp049Gate
+  fullName: Exiled.API.Enums.DoorType.Scp049Gate
+  nameWithType: DoorType.Scp049Gate
 - uid: Exiled.API.Enums.DoorType.Scp079First
   name: Scp079First
   href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_Scp079First
@@ -1327,6 +1339,18 @@ references:
   commentId: F:Exiled.API.Enums.DoorType.Scp914
   fullName: Exiled.API.Enums.DoorType.Scp914
   nameWithType: DoorType.Scp914
+- uid: Exiled.API.Enums.DoorType.Scp914Door
+  name: Scp914Door
+  href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_Scp914Door
+  commentId: F:Exiled.API.Enums.DoorType.Scp914Door
+  fullName: Exiled.API.Enums.DoorType.Scp914Door
+  nameWithType: DoorType.Scp914Door
+- uid: Exiled.API.Enums.DoorType.Scp914Gate
+  name: Scp914Gate
+  href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_Scp914Gate
+  commentId: F:Exiled.API.Enums.DoorType.Scp914Gate
+  fullName: Exiled.API.Enums.DoorType.Scp914Gate
+  nameWithType: DoorType.Scp914Gate
 - uid: Exiled.API.Enums.DoorType.ServersBottom
   name: ServersBottom
   href: api/Exiled.API.Enums.DoorType.html#Exiled_API_Enums_DoorType_ServersBottom
@@ -2515,6 +2539,36 @@ references:
   commentId: F:Exiled.API.Enums.ThrowRequest.WeakThrow
   fullName: Exiled.API.Enums.ThrowRequest.WeakThrow
   nameWithType: ThrowRequest.WeakThrow
+- uid: Exiled.API.Enums.WarheadStatus
+  name: WarheadStatus
+  href: api/Exiled.API.Enums.WarheadStatus.html
+  commentId: T:Exiled.API.Enums.WarheadStatus
+  fullName: Exiled.API.Enums.WarheadStatus
+  nameWithType: WarheadStatus
+- uid: Exiled.API.Enums.WarheadStatus.Armed
+  name: Armed
+  href: api/Exiled.API.Enums.WarheadStatus.html#Exiled_API_Enums_WarheadStatus_Armed
+  commentId: F:Exiled.API.Enums.WarheadStatus.Armed
+  fullName: Exiled.API.Enums.WarheadStatus.Armed
+  nameWithType: WarheadStatus.Armed
+- uid: Exiled.API.Enums.WarheadStatus.Detonated
+  name: Detonated
+  href: api/Exiled.API.Enums.WarheadStatus.html#Exiled_API_Enums_WarheadStatus_Detonated
+  commentId: F:Exiled.API.Enums.WarheadStatus.Detonated
+  fullName: Exiled.API.Enums.WarheadStatus.Detonated
+  nameWithType: WarheadStatus.Detonated
+- uid: Exiled.API.Enums.WarheadStatus.InProgress
+  name: InProgress
+  href: api/Exiled.API.Enums.WarheadStatus.html#Exiled_API_Enums_WarheadStatus_InProgress
+  commentId: F:Exiled.API.Enums.WarheadStatus.InProgress
+  fullName: Exiled.API.Enums.WarheadStatus.InProgress
+  nameWithType: WarheadStatus.InProgress
+- uid: Exiled.API.Enums.WarheadStatus.NotArmed
+  name: NotArmed
+  href: api/Exiled.API.Enums.WarheadStatus.html#Exiled_API_Enums_WarheadStatus_NotArmed
+  commentId: F:Exiled.API.Enums.WarheadStatus.NotArmed
+  fullName: Exiled.API.Enums.WarheadStatus.NotArmed
+  nameWithType: WarheadStatus.NotArmed
 - uid: Exiled.API.Enums.ZoneType
   name: ZoneType
   href: api/Exiled.API.Enums.ZoneType.html
@@ -5465,6 +5519,12 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Door.Lock
   nameWithType: Door.Lock
+- uid: Exiled.API.Features.Door.LockAll(System.Single,Exiled.API.Enums.DoorLockType)
+  name: LockAll(Single, DoorLockType)
+  href: api/Exiled.API.Features.Door.html#Exiled_API_Features_Door_LockAll_System_Single_Exiled_API_Enums_DoorLockType_
+  commentId: M:Exiled.API.Features.Door.LockAll(System.Single,Exiled.API.Enums.DoorLockType)
+  fullName: Exiled.API.Features.Door.LockAll(System.Single, Exiled.API.Enums.DoorLockType)
+  nameWithType: Door.LockAll(Single, DoorLockType)
 - uid: Exiled.API.Features.Door.LockAll(System.Single,Exiled.API.Enums.ZoneType,Exiled.API.Enums.DoorLockType)
   name: LockAll(Single, ZoneType, DoorLockType)
   href: api/Exiled.API.Features.Door.html#Exiled_API_Features_Door_LockAll_System_Single_Exiled_API_Enums_ZoneType_Exiled_API_Enums_DoorLockType_
@@ -10247,6 +10307,12 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.GroupName
   nameWithType: Player.GroupName
+- uid: Exiled.API.Features.Player.Handcuff
+  name: Handcuff()
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Handcuff
+  commentId: M:Exiled.API.Features.Player.Handcuff
+  fullName: Exiled.API.Features.Player.Handcuff()
+  nameWithType: Player.Handcuff()
 - uid: Exiled.API.Features.Player.Handcuff(Exiled.API.Features.Player)
   name: Handcuff(Player)
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Handcuff_Exiled_API_Features_Player_
@@ -14368,6 +14434,12 @@ references:
   fullName.vb: Exiled.API.Features.Room.Get(System.Func(Of Exiled.API.Features.Room, System.Boolean))
   nameWithType: Room.Get(Func<Room, Boolean>)
   nameWithType.vb: Room.Get(Func(Of Room, Boolean))
+- uid: Exiled.API.Features.Room.Get(UnityEngine.Vector3)
+  name: Get(Vector3)
+  href: api/Exiled.API.Features.Room.html#Exiled_API_Features_Room_Get_UnityEngine_Vector3_
+  commentId: M:Exiled.API.Features.Room.Get(UnityEngine.Vector3)
+  fullName: Exiled.API.Features.Room.Get(UnityEngine.Vector3)
+  nameWithType: Room.Get(Vector3)
 - uid: Exiled.API.Features.Room.Get*
   name: Get
   href: api/Exiled.API.Features.Room.html#Exiled_API_Features_Room_Get_
@@ -16999,6 +17071,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Warhead.Start
   nameWithType: Warhead.Start
+- uid: Exiled.API.Features.Warhead.Status
+  name: Status
+  href: api/Exiled.API.Features.Warhead.html#Exiled_API_Features_Warhead_Status
+  commentId: P:Exiled.API.Features.Warhead.Status
+  fullName: Exiled.API.Features.Warhead.Status
+  nameWithType: Warhead.Status
+- uid: Exiled.API.Features.Warhead.Status*
+  name: Status
+  href: api/Exiled.API.Features.Warhead.html#Exiled_API_Features_Warhead_Status_
+  commentId: Overload:Exiled.API.Features.Warhead.Status
+  isSpec: "True"
+  fullName: Exiled.API.Features.Warhead.Status
+  nameWithType: Warhead.Status
 - uid: Exiled.API.Features.Warhead.Stop
   name: Stop()
   href: api/Exiled.API.Features.Warhead.html#Exiled_API_Features_Warhead_Stop
@@ -19268,6 +19353,18 @@ references:
   commentId: M:Exiled.CustomItems.API.Features.CustomItem.Spawn(Exiled.API.Features.Player,Exiled.API.Features.Items.Item)
   fullName: Exiled.CustomItems.API.Features.CustomItem.Spawn(Exiled.API.Features.Player, Exiled.API.Features.Items.Item)
   nameWithType: CustomItem.Spawn(Player, Item)
+- uid: Exiled.CustomItems.API.Features.CustomItem.Spawn(Exiled.API.Features.Player,Exiled.API.Features.Items.Item,Exiled.API.Features.Player)
+  name: Spawn(Player, Item, Player)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Spawn_Exiled_API_Features_Player_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.Spawn(Exiled.API.Features.Player,Exiled.API.Features.Items.Item,Exiled.API.Features.Player)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.Spawn(Exiled.API.Features.Player, Exiled.API.Features.Items.Item, Exiled.API.Features.Player)
+  nameWithType: CustomItem.Spawn(Player, Item, Player)
+- uid: Exiled.CustomItems.API.Features.CustomItem.Spawn(Exiled.API.Features.Player,Exiled.API.Features.Player)
+  name: Spawn(Player, Player)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Spawn_Exiled_API_Features_Player_Exiled_API_Features_Player_
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.Spawn(Exiled.API.Features.Player,Exiled.API.Features.Player)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.Spawn(Exiled.API.Features.Player, Exiled.API.Features.Player)
+  nameWithType: CustomItem.Spawn(Player, Player)
 - uid: Exiled.CustomItems.API.Features.CustomItem.Spawn(System.Collections.Generic.IEnumerable{Exiled.API.Features.Spawn.SpawnPoint},System.UInt32)
   name: Spawn(IEnumerable<SpawnPoint>, UInt32)
   href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Spawn_System_Collections_Generic_IEnumerable_Exiled_API_Features_Spawn_SpawnPoint__System_UInt32_
@@ -19301,6 +19398,18 @@ references:
   commentId: M:Exiled.CustomItems.API.Features.CustomItem.Spawn(UnityEngine.Vector3,Exiled.API.Features.Items.Item)
   fullName: Exiled.CustomItems.API.Features.CustomItem.Spawn(UnityEngine.Vector3, Exiled.API.Features.Items.Item)
   nameWithType: CustomItem.Spawn(Vector3, Item)
+- uid: Exiled.CustomItems.API.Features.CustomItem.Spawn(UnityEngine.Vector3,Exiled.API.Features.Items.Item,Exiled.API.Features.Player)
+  name: Spawn(Vector3, Item, Player)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Spawn_UnityEngine_Vector3_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.Spawn(UnityEngine.Vector3,Exiled.API.Features.Items.Item,Exiled.API.Features.Player)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.Spawn(UnityEngine.Vector3, Exiled.API.Features.Items.Item, Exiled.API.Features.Player)
+  nameWithType: CustomItem.Spawn(Vector3, Item, Player)
+- uid: Exiled.CustomItems.API.Features.CustomItem.Spawn(UnityEngine.Vector3,Exiled.API.Features.Player)
+  name: Spawn(Vector3, Player)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Spawn_UnityEngine_Vector3_Exiled_API_Features_Player_
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.Spawn(UnityEngine.Vector3,Exiled.API.Features.Player)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.Spawn(UnityEngine.Vector3, Exiled.API.Features.Player)
+  nameWithType: CustomItem.Spawn(Vector3, Player)
 - uid: Exiled.CustomItems.API.Features.CustomItem.Spawn*
   name: Spawn
   href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Spawn_
@@ -19683,6 +19792,18 @@ references:
   commentId: M:Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3,Exiled.API.Features.Items.Item)
   fullName: Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3, Exiled.API.Features.Items.Item)
   nameWithType: CustomWeapon.Spawn(Vector3, Item)
+- uid: Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3,Exiled.API.Features.Items.Item,Exiled.API.Features.Player)
+  name: Spawn(Vector3, Item, Player)
+  href: api/Exiled.CustomItems.API.Features.CustomWeapon.html#Exiled_CustomItems_API_Features_CustomWeapon_Spawn_UnityEngine_Vector3_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_
+  commentId: M:Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3,Exiled.API.Features.Items.Item,Exiled.API.Features.Player)
+  fullName: Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3, Exiled.API.Features.Items.Item, Exiled.API.Features.Player)
+  nameWithType: CustomWeapon.Spawn(Vector3, Item, Player)
+- uid: Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3,Exiled.API.Features.Player)
+  name: Spawn(Vector3, Player)
+  href: api/Exiled.CustomItems.API.Features.CustomWeapon.html#Exiled_CustomItems_API_Features_CustomWeapon_Spawn_UnityEngine_Vector3_Exiled_API_Features_Player_
+  commentId: M:Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3,Exiled.API.Features.Player)
+  fullName: Exiled.CustomItems.API.Features.CustomWeapon.Spawn(UnityEngine.Vector3, Exiled.API.Features.Player)
+  nameWithType: CustomWeapon.Spawn(Vector3, Player)
 - uid: Exiled.CustomItems.API.Features.CustomWeapon.Spawn*
   name: Spawn
   href: api/Exiled.CustomItems.API.Features.CustomWeapon.html#Exiled_CustomItems_API_Features_CustomWeapon_Spawn_
@@ -23640,12 +23761,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.ChangingDurabilityEventArgs
   fullName: Exiled.Events.EventArgs.ChangingDurabilityEventArgs
   nameWithType: ChangingDurabilityEventArgs
-- uid: Exiled.Events.EventArgs.ChangingDurabilityEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.Firearms.Firearm,System.Byte,System.Byte,System.Boolean)
-  name: ChangingDurabilityEventArgs(Player, Firearm, Byte, Byte, Boolean)
-  href: api/Exiled.Events.EventArgs.ChangingDurabilityEventArgs.html#Exiled_Events_EventArgs_ChangingDurabilityEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_Firearms_Firearm_System_Byte_System_Byte_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.ChangingDurabilityEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.Firearms.Firearm,System.Byte,System.Byte,System.Boolean)
-  fullName: Exiled.Events.EventArgs.ChangingDurabilityEventArgs.ChangingDurabilityEventArgs(Exiled.API.Features.Player, InventorySystem.Items.Firearms.Firearm, System.Byte, System.Byte, System.Boolean)
-  nameWithType: ChangingDurabilityEventArgs.ChangingDurabilityEventArgs(Player, Firearm, Byte, Byte, Boolean)
+- uid: Exiled.Events.EventArgs.ChangingDurabilityEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.ItemBase,System.Byte,System.Byte,System.Boolean)
+  name: ChangingDurabilityEventArgs(Player, ItemBase, Byte, Byte, Boolean)
+  href: api/Exiled.Events.EventArgs.ChangingDurabilityEventArgs.html#Exiled_Events_EventArgs_ChangingDurabilityEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ItemBase_System_Byte_System_Byte_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.ChangingDurabilityEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.ItemBase,System.Byte,System.Byte,System.Boolean)
+  fullName: Exiled.Events.EventArgs.ChangingDurabilityEventArgs.ChangingDurabilityEventArgs(Exiled.API.Features.Player, InventorySystem.Items.ItemBase, System.Byte, System.Byte, System.Boolean)
+  nameWithType: ChangingDurabilityEventArgs.ChangingDurabilityEventArgs(Player, ItemBase, Byte, Byte, Boolean)
 - uid: Exiled.Events.EventArgs.ChangingDurabilityEventArgs.#ctor*
   name: ChangingDurabilityEventArgs
   href: api/Exiled.Events.EventArgs.ChangingDurabilityEventArgs.html#Exiled_Events_EventArgs_ChangingDurabilityEventArgs__ctor_
@@ -29375,6 +29496,38 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.ShotEventArgs.Target
   nameWithType: ShotEventArgs.Target
+- uid: Exiled.Events.EventArgs.SpawnedEventArgs
+  name: SpawnedEventArgs
+  href: api/Exiled.Events.EventArgs.SpawnedEventArgs.html
+  commentId: T:Exiled.Events.EventArgs.SpawnedEventArgs
+  fullName: Exiled.Events.EventArgs.SpawnedEventArgs
+  nameWithType: SpawnedEventArgs
+- uid: Exiled.Events.EventArgs.SpawnedEventArgs.#ctor(ReferenceHub)
+  name: SpawnedEventArgs(ReferenceHub)
+  href: api/Exiled.Events.EventArgs.SpawnedEventArgs.html#Exiled_Events_EventArgs_SpawnedEventArgs__ctor_ReferenceHub_
+  commentId: M:Exiled.Events.EventArgs.SpawnedEventArgs.#ctor(ReferenceHub)
+  fullName: Exiled.Events.EventArgs.SpawnedEventArgs.SpawnedEventArgs(ReferenceHub)
+  nameWithType: SpawnedEventArgs.SpawnedEventArgs(ReferenceHub)
+- uid: Exiled.Events.EventArgs.SpawnedEventArgs.#ctor*
+  name: SpawnedEventArgs
+  href: api/Exiled.Events.EventArgs.SpawnedEventArgs.html#Exiled_Events_EventArgs_SpawnedEventArgs__ctor_
+  commentId: Overload:Exiled.Events.EventArgs.SpawnedEventArgs.#ctor
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.SpawnedEventArgs.SpawnedEventArgs
+  nameWithType: SpawnedEventArgs.SpawnedEventArgs
+- uid: Exiled.Events.EventArgs.SpawnedEventArgs.Player
+  name: Player
+  href: api/Exiled.Events.EventArgs.SpawnedEventArgs.html#Exiled_Events_EventArgs_SpawnedEventArgs_Player
+  commentId: P:Exiled.Events.EventArgs.SpawnedEventArgs.Player
+  fullName: Exiled.Events.EventArgs.SpawnedEventArgs.Player
+  nameWithType: SpawnedEventArgs.Player
+- uid: Exiled.Events.EventArgs.SpawnedEventArgs.Player*
+  name: Player
+  href: api/Exiled.Events.EventArgs.SpawnedEventArgs.html#Exiled_Events_EventArgs_SpawnedEventArgs_Player_
+  commentId: Overload:Exiled.Events.EventArgs.SpawnedEventArgs.Player
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.SpawnedEventArgs.Player
+  nameWithType: SpawnedEventArgs.Player
 - uid: Exiled.Events.EventArgs.SpawningEventArgs
   name: SpawningEventArgs
   href: api/Exiled.Events.EventArgs.SpawningEventArgs.html
@@ -33033,6 +33186,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Handlers.Player.OnShot
   nameWithType: Player.OnShot
+- uid: Exiled.Events.Handlers.Player.OnSpawned(ReferenceHub)
+  name: OnSpawned(ReferenceHub)
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnSpawned_ReferenceHub_
+  commentId: M:Exiled.Events.Handlers.Player.OnSpawned(ReferenceHub)
+  fullName: Exiled.Events.Handlers.Player.OnSpawned(ReferenceHub)
+  nameWithType: Player.OnSpawned(ReferenceHub)
+- uid: Exiled.Events.Handlers.Player.OnSpawned*
+  name: OnSpawned
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnSpawned_
+  commentId: Overload:Exiled.Events.Handlers.Player.OnSpawned
+  isSpec: "True"
+  fullName: Exiled.Events.Handlers.Player.OnSpawned
+  nameWithType: Player.OnSpawned
 - uid: Exiled.Events.Handlers.Player.OnSpawning(Exiled.Events.EventArgs.SpawningEventArgs)
   name: OnSpawning(SpawningEventArgs)
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_OnSpawning_Exiled_Events_EventArgs_SpawningEventArgs_
@@ -33364,6 +33530,12 @@ references:
   commentId: E:Exiled.Events.Handlers.Player.Shot
   fullName: Exiled.Events.Handlers.Player.Shot
   nameWithType: Player.Shot
+- uid: Exiled.Events.Handlers.Player.Spawned
+  name: Spawned
+  href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_Spawned
+  commentId: E:Exiled.Events.Handlers.Player.Spawned
+  fullName: Exiled.Events.Handlers.Player.Spawned
+  nameWithType: Player.Spawned
 - uid: Exiled.Events.Handlers.Player.Spawning
   name: Spawning
   href: api/Exiled.Events.Handlers.Player.html#Exiled_Events_Handlers_Player_Spawning
