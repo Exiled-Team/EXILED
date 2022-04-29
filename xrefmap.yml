@@ -5270,6 +5270,12 @@ references:
   commentId: M:Exiled.API.Features.Door.#ctor(Interactables.Interobjects.DoorUtils.DoorVariant)
   fullName: Exiled.API.Features.Door.Door(Interactables.Interobjects.DoorUtils.DoorVariant)
   nameWithType: Door.Door(DoorVariant)
+- uid: Exiled.API.Features.Door.#ctor(Interactables.Interobjects.DoorUtils.DoorVariant,Exiled.API.Features.Room)
+  name: Door(DoorVariant, Room)
+  href: api/Exiled.API.Features.Door.html#Exiled_API_Features_Door__ctor_Interactables_Interobjects_DoorUtils_DoorVariant_Exiled_API_Features_Room_
+  commentId: M:Exiled.API.Features.Door.#ctor(Interactables.Interobjects.DoorUtils.DoorVariant,Exiled.API.Features.Room)
+  fullName: Exiled.API.Features.Door.Door(Interactables.Interobjects.DoorUtils.DoorVariant, Exiled.API.Features.Room)
+  nameWithType: Door.Door(DoorVariant, Room)
 - uid: Exiled.API.Features.Door.#ctor*
   name: Door
   href: api/Exiled.API.Features.Door.html#Exiled_API_Features_Door__ctor_
