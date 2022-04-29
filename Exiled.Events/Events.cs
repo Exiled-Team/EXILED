@@ -14,7 +14,6 @@ namespace Exiled.Events
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.Events.Patches.Events.Server;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -82,6 +81,7 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
+            PlayerMovementSync.OnPlayerSpawned += Handlers.Player.OnSpawned;
 
             ServerConsole.ReloadServerName();
         }
@@ -101,6 +101,7 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
+            PlayerMovementSync.OnPlayerSpawned -= Handlers.Player.OnSpawned;
             Handlers.Map.Generated -= Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;

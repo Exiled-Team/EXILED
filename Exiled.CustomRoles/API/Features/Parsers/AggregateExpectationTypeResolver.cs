@@ -12,6 +12,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
     using System.Linq;
     using System.Reflection;
 
+    using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
     using Exiled.CustomRoles.API.Features.Extensions;
     using Exiled.CustomRoles.API.Features.Interfaces;
@@ -37,8 +38,15 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             typeLookup = new Dictionary<string, Type>();
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                foreach (var t in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(T))))
-                    typeLookup.Add(t.Name, t);
+                try
+                {
+                    foreach (Type t in assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(T))))
+                        typeLookup.Add(t.Name, t);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Error loading types for {assembly.FullName}\n{e}");
+                }
             }
         }
 

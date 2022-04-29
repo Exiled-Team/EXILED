@@ -59,6 +59,8 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateCache()
         {
+            Warhead.Controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
+            Warhead.Controller.detonated = false;
             Server.Host = new Player(PlayerManager.localPlayer);
             Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
             Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
@@ -141,7 +143,7 @@ namespace Exiled.Events.Handlers.Internal
                 List<AttachmentIdentifier> attachmentIdentifiers = new();
                 foreach (Attachment att in firearm.Attachments)
                 {
-                    attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));
+                    attachmentIdentifiers.Add(new(code, att.Name, att.Slot));
                     code *= 2U;
                 }
 

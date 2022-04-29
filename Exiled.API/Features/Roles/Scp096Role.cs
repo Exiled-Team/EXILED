@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp096"/> script for the role.
         /// </summary>
-        public Scp096 Script => script ?? (script = Owner.CurrentScp as Scp096);
+        public Scp096 Script => script ??= Owner.CurrentScp as Scp096;
 
         /// <summary>
         /// Gets a value indicating SCP-096's state.
