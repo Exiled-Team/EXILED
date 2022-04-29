@@ -40,12 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp244
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label returnFalse = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
-            Label cont = generator.DefineLabel();
-
-            Label isAllowed = generator.DefineLabel();
-            Label notAllowed = generator.DefineLabel();
 
             LocalBuilder resultOfDotCheck = generator.DeclareLocal(typeof(int));
 
@@ -55,6 +50,7 @@ namespace Exiled.Events.Patches.Events.Scp244
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot)))) + offset;
 
+            // Remove branching on dot result.
             newInstructions.RemoveAt(index);
 
             // FYI this gets called A LOT, and I mean A LOT. UpdateRange might be a bad idea for an event catch but.. I'll defer to Nao or Joker.
@@ -93,26 +89,13 @@ namespace Exiled.Events.Patches.Events.Scp244
             int continueIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
 
             // Jumping over original NW logic.
-            newInstructions[continueIndex].WithLabels(normalProcessing).MoveLabelsFrom(newInstructions[continueIndex]);
+            newInstructions[continueIndex].WithLabels(normalProcessing);
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 yield return newInstructions[z];
             }
 
-            // index = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + offset;
-
-            // continueIndex = newInstructions.FindIndex(index + 4, instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
-
-            // Log.Info($" New index {index} and continueIndex {continueIndex}");
-            // int count = 0;
-            // int il_pos = 0;
-            // foreach (CodeInstruction instr in newInstructions)
-            // {
-            //    Log.Info($"Current op code: {instr.opcode} and index {count} and {instr.operand} and {il_pos} and {instr.opcode.OperandType}");
-            //    il_pos += instr.opcode.Size;
-            //    count++;
-            // }
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }

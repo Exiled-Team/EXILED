@@ -36,9 +36,8 @@ namespace Exiled.Events.Patches.Events.Scp244
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label returnFalse = generator.DefineLabel();
+            Label ret = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
-            Label normalProcessing = generator.DefineLabel();
 
             // Tested by Yamato and Undid-Iridium
             int index = 0;
@@ -78,8 +77,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Brtrue, continueProcessing),
 
                 // False Route
-                new CodeInstruction(OpCodes.Nop).WithLabels(returnFalse),
-                new(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Ret).WithLabels(ret),
 
                 // Good route of is allowed being true.
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
