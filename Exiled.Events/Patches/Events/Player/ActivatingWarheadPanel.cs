@@ -31,28 +31,75 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int offset = 0;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brfalse_S) + offset;
-
             LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
+            LocalBuilder cmp_0x01 = generator.DeclareLocal(typeof(bool));
 
+            Label jne = generator.DefineLabel();
+            Label ceq = generator.DefineLabel();
+            Label je = generator.DefineLabel();
+            Label jmp = generator.DefineLabel();
+            Label cmp = generator.DefineLabel();
+            Label ret = generator.DefineLabel();
+
+            int offset = 0;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
+            newInstructions.RemoveAt(index);
+
+            offset = -3;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Isinst) + offset;
+
+            newInstructions[index].labels.Add(jne);
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                // new ActivatingWarheadPanelEventArgs(_hub, isAllowed);
                 new(OpCodes.Stloc_S, isAllowed.LocalIndex),
-                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
+                new(OpCodes.Brfalse_S, jne),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                new(OpCodes.Br_S, jmp),
+            });
+
+            offset = 1;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
+            newInstructions.RemoveAt(index);
+
+            offset = 1;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                new(OpCodes.Brfalse_S, ceq),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
+                new(OpCodes.Br_S, je),
+                new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(ceq),
+                new(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, cmp_0x01.LocalIndex).WithLabels(je),
+                new(OpCodes.Brfalse_S, jmp),
+            });
+
+            offset = 0;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brfalse_S) + offset;
+            newInstructions.RemoveAt(index);
+
+            offset = 0;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                new(OpCodes.Ldloc_S, cmp_0x01.LocalIndex),
+                new(OpCodes.Ceq),
+                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jmp),
                 new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
                 new(OpCodes.Dup),
-
-                // Player.OnActivatingWarheadPanel(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
-
-                // Load IsAllowed for the original code to evaluate
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, ret),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
