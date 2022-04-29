@@ -966,7 +966,7 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Player.RemoveItem(item);
 
-                Spawn(ev.Player, item, null);
+                Spawn(ev.Player, item, ev.Player);
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -988,7 +988,7 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Remove(item.Serial);
 
-                Spawn(ev.Target, item, null);
+                Spawn(ev.Target, item, ev.Target);
 
                 MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -1032,7 +1032,7 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Remove(item.Serial);
 
-                Spawn(ev.Target, item, null);
+                Spawn(ev.Target, item, ev.Target);
             }
         }
 
@@ -1060,7 +1060,7 @@ namespace Exiled.CustomItems.API.Features
                 ev.Player.Inventory.SendItemsNextFrame = true;
             }
 
-            Pickup pickup = Spawn(ev.Player, ev.Item, null);
+            Pickup pickup = Spawn(ev.Player, ev.Item, ev.Player);
             if (pickup.Base.Rb is not null && ev.IsThrown)
             {
                 Vector3 vector = (ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity / 3f) + (ev.Player.ReferenceHub.PlayerCameraReference.forward * 6f * (Mathf.Clamp01(Mathf.InverseLerp(7f, 0.1f, pickup.Base.Rb.mass)) + 0.3f));
