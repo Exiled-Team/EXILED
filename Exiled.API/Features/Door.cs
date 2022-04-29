@@ -28,7 +28,7 @@ namespace Exiled.API.Features
     public class Door
     {
         /// <summary>
-        /// A dictionary containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
         /// </summary>
         internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
