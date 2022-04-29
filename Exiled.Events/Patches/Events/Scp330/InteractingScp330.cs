@@ -194,7 +194,15 @@ namespace Exiled.Events.Patches.Events.Scp330
         {
             if (!Scp330Bag.TryGetBag(ply, out bag))
             {
-                return ply.inventory.ServerAddItem(ItemType.SCP330, ushort.MinValue) != null;
+                ply.inventory.ServerAddItem(ItemType.SCP330, ushort.MinValue);
+                if (!Scp330Bag.TryGetBag(ply, out bag))
+                {
+                    return false;
+                }
+
+                bag.Candies = new List<CandyKindID> { candy };
+                bag.ServerRefreshBag();
+                return true;
             }
 
             bool result = bag.TryAddSpecific(candy);
