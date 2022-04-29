@@ -2310,7 +2310,7 @@ namespace Exiled.API.Features
             object randomObject = type.Name switch
             {
                 nameof(Camera) => Camera.CamerasValue[Random.Range(0, Camera.CamerasValue.Count)],
-                nameof(Door) => Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)],
+                nameof(Door) => Door.Random(),
                 nameof(Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
                 nameof(TeslaGate) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
                 nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),

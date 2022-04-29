@@ -349,7 +349,7 @@ namespace Exiled.API.Features
         internal static void ClearCache()
         {
             Room.RoomsValue.Clear();
-            Door.DoorsValue.Clear();
+            Door.DoorVariantToDoor.Clear();
             Camera.CamerasValue.Clear();
             Window.WindowValue.Clear();
             Lift.LiftsValue.Clear();
