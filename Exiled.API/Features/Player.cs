@@ -1310,7 +1310,15 @@ namespace Exiled.API.Features
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
         /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
+        [Obsolete("Use RemoveHeldItem(bool) instead.", true)]
         public bool RemoveHeldItem() => RemoveItem(CurrentItem);
+
+        /// <summary>
+        /// Removes the held <see cref="ItemBase"/> from the player's inventory.
+        /// </summary>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
+        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
+        public bool RemoveHeldItem(bool destroy = true) => RemoveItem(CurrentItem, destroy);
 
         /// <summary>
         /// Sends a console message to the player's console.
