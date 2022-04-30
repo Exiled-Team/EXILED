@@ -1307,6 +1307,27 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Removes a list of <see cref="Item"/>'s filtered on a predicate from the player's inventory.
+        /// </summary>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="destroy">Whether or not to destroy the items.</param>
+        /// <returns>Returns count of a successfully removed <see cref="Item"/>'s.</returns>
+        public int RemoveItem(Func<Item, bool> predicate, bool destroy = true)
+        {
+            List<Item> enumeratedItems = new(ItemsValue);
+            int count = 0;
+            foreach (var item in enumeratedItems)
+            {
+                if (predicate(item) && RemoveItem(item, destroy))
+                {
+                    ++count;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
         /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
