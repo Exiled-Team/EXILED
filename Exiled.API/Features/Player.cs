@@ -1307,16 +1307,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Removes a list of <see cref="Item"/>'s filtered on a predicate from the player's inventory.
+        /// Removes all <see cref="Item"/>'s filtered on a predicate from the player's inventory.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
         /// <param name="destroy">Whether or not to destroy the items.</param>
-        /// <returns>Returns count of a successfully removed <see cref="Item"/>'s.</returns>
+        /// <returns>Count of a successfully removed <see cref="Item"/>'s.</returns>
         public int RemoveItem(Func<Item, bool> predicate, bool destroy = true)
         {
             List<Item> enumeratedItems = new(ItemsValue);
             int count = 0;
-            foreach (var item in enumeratedItems)
+            foreach (Item item in enumeratedItems)
             {
                 if (predicate(item) && RemoveItem(item, destroy))
                 {
