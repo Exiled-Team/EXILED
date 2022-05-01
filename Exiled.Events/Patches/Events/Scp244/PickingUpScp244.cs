@@ -37,6 +37,8 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             Label continueProcessing = generator.DefineLabel();
 
+            Label returnLabel = generator.DefineLabel();
+
 #pragma warning disable SA1118 // Parameter should not span multiple lines
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
@@ -58,12 +60,10 @@ namespace Exiled.Events.Patches.Events.Scp244
 
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpScp244EventArgs), nameof(PickingUpScp244EventArgs.IsAllowed))),
 
-                new(OpCodes.Brtrue_S, continueProcessing),
-
-                new CodeInstruction(OpCodes.Ret),
-
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                new(OpCodes.Brfalse_S, returnLabel),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -52,8 +52,6 @@ namespace Exiled.Events.Patches.Events.Scp244
             // Remove branching on dot result.
             newInstructions.RemoveAt(index);
 
-            // FYI this gets called A LOT, and I mean A LOT. UpdateRange might be a bad idea for an event catch but.. I'll defer to Nao or Joker.
-            // However, it seems to be functional, I guess.
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Clt),

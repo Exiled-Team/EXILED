@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp330
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label continueProcessing = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
 
@@ -83,11 +83,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.IsAllowed))),
 
-                new(OpCodes.Brtrue_S, continueProcessing),
-
-                new(OpCodes.Ret),
-
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
             // Set our location of previous owner
@@ -109,6 +105,8 @@ namespace Exiled.Events.Patches.Events.Scp330
 
                 new(OpCodes.Ldloc, candyKindIdIndex),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

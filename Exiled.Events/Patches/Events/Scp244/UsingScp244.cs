@@ -36,8 +36,8 @@ namespace Exiled.Events.Patches.Events.Scp244
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label ret = generator.DefineLabel();
             Label continueProcessing = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             int index = 0;
 #pragma warning disable SA1118 // Parameter should not span multiple lines
@@ -62,12 +62,10 @@ namespace Exiled.Events.Patches.Events.Scp244
 
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UsingScp244EventArgs), nameof(UsingScp244EventArgs.IsAllowed))),
 
-                new(OpCodes.Brtrue_S, continueProcessing),
-
-                new CodeInstruction(OpCodes.Ret).WithLabels(ret),
-
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -51,6 +51,8 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             Label shouldNotSever = generator.DefineLabel();
 
+            Label returnLabel = generator.DefineLabel();
+
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
 
             // Remove original "No scp can touch" logic.
@@ -80,11 +82,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
                 new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
 
-                new(OpCodes.Brtrue, continueProcessing),
-
-                new(OpCodes.Ret),
-
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                new(OpCodes.Brfalse, returnLabel),
             });
 
             // Logic to find the only ServerProcessPickup and replace with our own.
@@ -150,6 +148,8 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             int addTakenCandiesIndex = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Scp330Interobject), nameof(Scp330Interobject._takenCandies)))) + addTakenCandiesOffset;
             newInstructions[addTakenCandiesIndex].WithLabels(shouldNotSever);
+
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
