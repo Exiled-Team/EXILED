@@ -44,7 +44,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             LocalBuilder resultOfDotCheck = generator.DeclareLocal(typeof(int));
 
-            // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
             int offset = 1;
@@ -53,36 +52,25 @@ namespace Exiled.Events.Patches.Events.Scp244
             // Remove branching on dot result.
             newInstructions.RemoveAt(index);
 
-            // FYI this gets called A LOT, and I mean A LOT. UpdateRange might be a bad idea for an event catch but.. I'll defer to Nao or Joker.
-            // However, it seems to be functional, I guess.
             newInstructions.InsertRange(index, new[]
             {
-                // Do the compare though clt EStack[Result]
                 new CodeInstruction(OpCodes.Clt),
 
-                // Store it EStack[]
                 new(OpCodes.Stloc, resultOfDotCheck.LocalIndex),
 
-                // Load instance EStack[Scp244DeployablePickup]
                 new(OpCodes.Ldarg_0),
 
-                // Load local variable EStack[Scp244DeployablePickup, clt result]
                 new(OpCodes.Ldloc, resultOfDotCheck.LocalIndex),
 
-                // Pass all 2 variables to OpeningScp244EventArgs New Object, get a new object in return EStack[OpeningScp244EventArgs Instance]
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
 
-                // Copy it for later use again EStack[OpeningScp244EventArgs Instance, PickingUpScp244EventArgs Instance]
                 new(OpCodes.Dup),
 
-                // Call Method on Instance EStack[OpeningScp244EventArgs Instance] (pops off so that's why we needed to dup)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnOpeningScp244))),
 
-                // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
                 new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
 
-                // If isAllowed = 1, Continue route, otherwise, false return occurs below EStack[]
-                new(OpCodes.Brfalse, normalProcessing),
+                new(OpCodes.Brfalse_S, normalProcessing),
             });
 
             int continueOffset = -1;
@@ -92,9 +80,7 @@ namespace Exiled.Events.Patches.Events.Scp244
             newInstructions[continueIndex].WithLabels(normalProcessing);
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

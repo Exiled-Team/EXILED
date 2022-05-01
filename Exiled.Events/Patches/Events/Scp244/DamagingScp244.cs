@@ -47,7 +47,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DamagingScp244EventArgs));
 
-            // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
             // Remove grenade damage check, let event handler do it.
@@ -62,74 +61,50 @@ namespace Exiled.Events.Patches.Events.Scp244
             // Insert event handler at start of function to determine whether to allow function to run or not.
             newInstructions.InsertRange(index, new[]
             {
-                // Load Field (Because of get; set; it's property getter) of instance EStack[Scp244Deployable.State]
                 new (OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
 
-                // Load value 2 (Enum of Scp244State.Destroyed) EStack[Scp244Deployable.State, 2]
                 new (OpCodes.Ldc_I4_2),
 
-                // Jump to return false label EStack[]
-                new (OpCodes.Beq, returnFalse),
+                new (OpCodes.Beq_S, returnFalse),
 
-                // Continue processing, and load arg 0 (instance) again EStack[Scp244DeployablePickup Instance]
                 new (OpCodes.Ldarg_0),
 
-                // Load arg 1 (param 0) EStack[Scp244DeployablePickup Instance, Float damage]
                 new (OpCodes.Ldarg_1),
 
-                // Load arg 2 (param 1) EStack[Scp244DeployablePickup Instance, Float damage, DamageHandleBase handler]
                 new (OpCodes.Ldarg_2),
 
-                // Pass all 3 variables to DamageScp244 New Object, get a new object in return EStack[DamagingScp244EventArgs Instance] (Handler determins allowed??)
                 new (OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingScp244EventArgs))[0]),
 
-                // Copy it for later use again EStack[]
                 new (OpCodes.Stloc, eventHandler.LocalIndex),
 
-                // Load event back unto EStack[DamagingScp244EventArgs Instance]
                 new (OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // Call Method on Instance EStack[]
                 new (OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnDamagingScp244))),
 
-                // Load event back unto EStack[DamagingScp244EventArgs Instance]
                 new (OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
                 new (OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
 
-                // If isAllowed = 1, jump to continue route, otherwise, false return occurs below
-                new (OpCodes.Brtrue, continueProcessing),
+                new (OpCodes.Brtrue_S, continueProcessing),
 
-                // False Route
                 new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(returnFalse),
                 new (OpCodes.Ret),
 
-                // Continue processing, and load arg 0 (instance) again EStack[Scp244DeployablePickup Instance]
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(continueProcessing),
 
-                // Load Scp244DeployablePickup instance EStack[Scp244DeployablePickup Instance, Scp244DeployablePickup Instance]
                 new CodeInstruction(OpCodes.Ldarg_0),
 
-                // Load Scp244 health EStack[Scp244DeployablePickup Instance, health]
                 new (OpCodes.Ldfld, Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._health))),
 
-                // Load event back EStack[Scp244DeployablePickup Instance, health, DamagingScp244EventArgs Instance]
                 new (OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // Load damage handler from DamagingScp244EventArgs EStack[Scp244DeployablePickup Instance, health, Handler]
                 new (OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.Handler))),
 
-                // Load damage handler from DamagingScp244EventArg.Handler EStack[Scp244DeployablePickup Instance, health, Damage]
                 new (OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Damage))),
-
-                // Game then does a sub, and stloc.
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

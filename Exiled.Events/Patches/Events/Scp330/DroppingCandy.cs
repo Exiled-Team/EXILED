@@ -46,11 +46,10 @@ namespace Exiled.Events.Patches.Events.Scp330
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label continueProcessing = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
 
-            // Tested by Yamato and Undid-Iridium
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 
             int offset = -3;
@@ -58,53 +57,33 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             newInstructions.InsertRange(index, new[]
             {
-                // Load arg 0 (No param, instance of object) EStack[Referencehub Instance]
                 new(OpCodes.Ldloc_0),
 
-                // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Player]
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // Load arg 0 (No param, instance of object) EStack[Player Instance, Scp330Bag Instance]
                 new(OpCodes.Ldloc_1),
 
-                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance]
                 new(OpCodes.Ldloc_1),
 
-                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance, SelectScp330Message Msg]
                 new(OpCodes.Ldarg_1),
 
-                // EStack[Player Instance, Scp330Bag Instance, Scp330Bag Instance, CandyID]
                 new(OpCodes.Ldfld, Field(typeof(SelectScp330Message), nameof(SelectScp330Message.CandyID))),
 
-                // EStack[Player Instance, Scp330Bag Instance, CandyKindID]
                 new(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
 
-                // Pass all 2 variables to DamageScp244 New Object, get a new object in return EStack[DroppingScp330EventArgs Instance]
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingScp330EventArgs))[0]),
 
-                // EStack[]
                 new(OpCodes.Stloc, eventHandler.LocalIndex),
 
-                // EStack[DroppingScp330EventArgs Instance]
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // Call Method on Instance EStack[] (pops off so that's why we needed to dup)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingScp330))),
 
-                // EStack[DroppingScp330EventArgs Instance]
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.IsAllowed))),
 
-                // If isAllowed = 1, jump to continue route, otherwise, false return occurs below // EStack[]
-                new(OpCodes.Brtrue, continueProcessing),
-
-                // False Route
-                new CodeInstruction(OpCodes.Ret),
-
-                // Good route of is allowed being true
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
             // Set our location of previous owner
@@ -114,29 +93,23 @@ namespace Exiled.Events.Patches.Events.Scp330
             // Remove TryRemove candy logic since we did it earlier from current location
             newInstructions.RemoveRange(jumpOverIndex, 6);
 
-            // Candy local index.
-            int candyKindID = 4;
+            int candyKindIdIndex = 4;
 
-            // Insert our logic in space we just wiped.
             newInstructions.InsertRange(jumpOverIndex, new[]
             {
-                // EStack[DroppingScp330EventArgs Instance]
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // EStack[DroppingScp330EventArgs.Candy]
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.Candy))),
 
-                // EStack[] (The next two lines technically are not needed if I reduce the range from 6 to 4, but I had issues, tiny brain moments.)
-                new(OpCodes.Stloc, candyKindID),
+                new(OpCodes.Stloc, candyKindIdIndex),
 
-                // EStack[Candy] (Next instruction is a brtrue)
-                new(OpCodes.Ldloc, candyKindID),
+                new(OpCodes.Ldloc, candyKindIdIndex),
             });
 
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

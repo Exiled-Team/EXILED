@@ -350,7 +350,7 @@ namespace Exiled.API.Features
                                 case Scp079Interactable.InteractableType.Door:
                                 {
                                     if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                        doors.Add(Door.Get(doorVariant));
+                                        doors.Add(Door.Get(doorVariant, this));
                                     break;
                                 }
 

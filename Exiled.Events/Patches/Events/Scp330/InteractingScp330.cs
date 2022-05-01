@@ -51,9 +51,9 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             Label shouldNotSever = generator.DefineLabel();
 
-            LocalBuilder eventHandler = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
+            Label returnLabel = generator.DefineLabel();
 
-            // Tested by Yamato and Undid-Iridium
+            LocalBuilder eventHandler = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
 
             // Remove original "No scp can touch" logic.
             newInstructions.RemoveRange(0, 5);
@@ -62,44 +62,27 @@ namespace Exiled.Events.Patches.Events.Scp330
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
 
-            // I can confirm this works during testing with Yamato. Logic to add EventHandler
             newInstructions.InsertRange(index, new[]
             {
-                // Load arg 0 (No param, instance of object) EStack[ReferenceHub Instance]
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
 
-                // Using Owner call Player.Get static method with it (Reference hub) and get a Player back  EStack[Player ]
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // num2 EStack[Player, num2]
                 new(OpCodes.Ldloc_2),
 
-                // Pass all 2 variables to InteractingScp330EventArgs  New Object, get a new object in return EStack[InteractingScp330EventArgs  Instance]
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
 
-                 // Copy it for later use again EStack[InteractingScp330EventArgs Instance, InteractingScp330EventArgs Instance]
                 new(OpCodes.Dup),
 
-                // EStack[InteractingScp330EventArgs Instance]
                 new(OpCodes.Stloc, eventHandler.LocalIndex),
 
-                // EStack[InteractingScp330EventArgs Instance, InteractingScp330EventArgs Instance]
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // Call Method on Instance EStack[InteractingScp330EventArgs Instance] (pops off so that's why we needed to dup)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnInteractingScp330))),
 
-                // Call its instance field (get; set; so property getter instead of field) EStack[IsAllowed]
                 new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
 
-                // If isAllowed = 1, jump to continue route, otherwise, return occurs below EStack[]
-                new(OpCodes.Brtrue, continueProcessing),
-
-                // False Route
-                new CodeInstruction(OpCodes.Ret),
-
-                // Good route of is allowed being true.
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueProcessing),
+                new(OpCodes.Brfalse, returnLabel),
             });
 
             // Logic to find the only ServerProcessPickup and replace with our own.
@@ -113,16 +96,12 @@ namespace Exiled.Events.Patches.Events.Scp330
             // Remove NW server process logic.
             newInstructions.InsertRange(removeServerProcessIndex, new[]
             {
-                // EStack [Referencehub, InteractingScp330EventArgs]
                 new CodeInstruction(OpCodes.Ldloc, eventHandler),
 
-                // EStack [Referencehub, Candy]
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Candy))),
 
-                // EStack [Referencehub, Candy, Scp330Pickup Address]
                 new CodeInstruction(OpCodes.Ldloca_S, 3),
 
-                // Returns back a bool and also referencable which means local variable 3 (Scp330Bag) gets updated.
                 new CodeInstruction(OpCodes.Call, Method(typeof(InteractingScp330), nameof(InteractingScp330.ServerProcessPickup), new[] { typeof(ReferenceHub), typeof(CandyKindID), typeof(Scp330Bag).MakeByRefType() })),
             });
 
@@ -139,40 +118,28 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             addShouldSeverIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
 
-            // Add our shouldSever and other ev event logic
             newInstructions.InsertRange(addShouldSeverIndex, new[]
             {
-                // Load local ev object we stored before EStack[InteractingScp330EventArgs Instance]
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
 
-                // Get field shouldsever EStack[ShouldSever]
                 new (OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
 
-                // If we should sever, continue, otherwise branch EStack[]
                 new (OpCodes.Brfalse, shouldNotSever),
 
-                // Load reference hub EStack[Referencehub]
                 new CodeInstruction(OpCodes.Ldarg_1),
 
-                // Load playereffects EStack[playerEffectsController]
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
 
-                // Load SeveredHands string EStack[playerEffectsController, "SeveredHands"]
                 new CodeInstruction(OpCodes.Ldstr, nameof(SeveredHands)),
 
-                // Load duration value EStack[playerEffectsController, "SeveredHands", 0f]
                 new CodeInstruction(OpCodes.Ldc_R4, 0f),
 
-                // Load increase duration if exists value EStack[playerEffectsController, "SeveredHands", 0f, 0]
                 new CodeInstruction(OpCodes.Ldc_I4_0),
 
-                // Call our method to force SeveredHands effect EStack[bool] TODO, use generic method by https://docs.microsoft.com/en-us/dotnet/api/system.reflection.methodinfo.getgenericmethoddefinition?view=net-6.0 research.
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableByString), new[] { typeof(string), typeof(float), typeof(bool) })),
 
-                // Remove success result EStack[]
                 new CodeInstruction(OpCodes.Pop),
 
-                // Return
                 new CodeInstruction(OpCodes.Ret),
             });
 
@@ -182,10 +149,10 @@ namespace Exiled.Events.Patches.Events.Scp330
             int addTakenCandiesIndex = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Scp330Interobject), nameof(Scp330Interobject._takenCandies)))) + addTakenCandiesOffset;
             newInstructions[addTakenCandiesIndex].WithLabels(shouldNotSever);
 
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
