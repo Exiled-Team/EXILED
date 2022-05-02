@@ -2269,7 +2269,7 @@ namespace Exiled.API.Features
                     Teleport(door.Position + Vector3.up);
                     break;
                 case DoorType doorType:
-                    Teleport(Door.List.FirstOrDefault(x => x.Type == doorType)?.Position + Vector3.up);
+                    Teleport(Door.Get(doorType));
                     break;
                 case Room room:
                     Teleport(room.Position + Vector3.up);
