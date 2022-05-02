@@ -1307,7 +1307,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Removes all <see cref="Item"/>'s filtered on a predicate from the player's inventory.
+        /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
         /// <param name="destroy">Whether or not to destroy the items.</param>
