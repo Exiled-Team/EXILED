@@ -57,8 +57,8 @@ namespace Exiled.API.Features
         public static void PlaySound(bool start, int transmitterId = 0) => global::Intercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
-        /// Reset the intercom's <see cref="SpeechRemainingTime"/>.
+        /// Reset the intercom's cooldown.
         /// </summary>
-        public static void Reset() => SpeechRemainingTime = -1f;
+        public static void Reset() => global::Intercom.host.remainingCooldown = -1f;
     }
 }
