@@ -55,5 +55,10 @@ namespace Exiled.API.Features
         /// <param name="start">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
         /// <param name="transmitterId">Sets the transmitterId.</param>
         public static void PlaySound(bool start, int transmitterId = 0) => global::Intercom.host.RpcPlaySound(start, transmitterId);
+
+        /// <summary>
+        /// Reset the intercom's <see cref="SpeechRemainingTime"/>.
+        /// </summary>
+        public static void Reset() => SpeechRemainingTime = -1f;
     }
 }
