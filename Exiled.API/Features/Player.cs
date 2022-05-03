@@ -1816,11 +1816,11 @@ namespace Exiled.API.Features
         /// <param name="items">The list of items to be added.</param>
         public void AddItem(IEnumerable<Item> items)
         {
-            IEnumerable<Item> enumerable = items.ToList();
-            if (enumerable.Any())
+            List<Item> enumerable = items.ToList();
+            if (enumerable.Count != 0)
             {
-                for (int i = 0; i < enumerable.Count(); i++)
-                    AddItem(enumerable.ElementAt(i));
+                foreach (Item item in enumerable)
+                    AddItem(item);
             }
         }
 
@@ -2348,7 +2348,7 @@ namespace Exiled.API.Features
             Type[] array = types as Type[] ?? types.ToArray();
             if (array.Length == 0)
                 return;
-            RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
+            RandomTeleport(array[Random.Range(0, array.Length)]);
         }
 
         /// <summary>
