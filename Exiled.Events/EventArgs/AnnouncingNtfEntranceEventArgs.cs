@@ -30,9 +30,9 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the number of SCPs left.
+        /// Gets or sets the number of SCPs left.
         /// </summary>
-        public int ScpsLeft { get; }
+        public int ScpsLeft { get; set; }
 
         /// <summary>
         /// Gets or sets the NTF unit name.
