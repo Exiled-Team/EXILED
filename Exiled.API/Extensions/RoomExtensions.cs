@@ -28,51 +28,36 @@
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a gate or not.</returns>
-        public static bool IsGate(this RoomType room)
-        {
-            return room is RoomType.EzGateA or RoomType.EzGateB;
-        }
+        public static bool IsGate(this RoomType room) => room is RoomType.EzGateA or RoomType.EzGateB;
 
         /// <summary>
         /// Checks if a <see cref="RoomType">room type</see> is a checkpoint.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a checkpoint or not.</returns>
-        public static bool IsCheckpoint(this RoomType room)
-        {
-            return room is RoomType.LczChkpA
-                or RoomType.LczChkpB or RoomType.HczEzCheckpoint
-                or RoomType.HczChkpA or RoomType.HczChkpB;
-        }
+        public static bool IsCheckpoint(this RoomType room) => room is RoomType.LczChkpA
+            or RoomType.LczChkpB or RoomType.HczEzCheckpoint
+            or RoomType.HczChkpA or RoomType.HczChkpB;
 
         /// <summary>
         /// Checks if a <see cref="RoomType">room type</see> is a Lcz checkpoint.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a Lcz checkpoint or not.</returns>
-        public static bool IsLczCheckpoint(this RoomType room)
-        {
-            return room is RoomType.LczChkpA or RoomType.LczChkpB;
-        }
+        public static bool IsLczCheckpoint(this RoomType room) => room is RoomType.LczChkpA or RoomType.LczChkpB;
 
         /// <summary>
         /// Checks if a <see cref="RoomType">room type</see> is Hcz a checkpoint.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a Hcz checkpoint or not.</returns>
-        public static bool IsHczCheckpoint(this RoomType room)
-        {
-            return room is RoomType.HczChkpA or RoomType.HczChkpB;
-        }
+        public static bool IsHczCheckpoint(this RoomType room) => room is RoomType.HczChkpA or RoomType.HczChkpB;
 
         /// <summary>
         ///  Checks if a <see cref="RoomType">room type</see> contains any SCP.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> contains any SCP or not.</returns>
-        public static bool ContainsScp(this RoomType room)
-        {
-            return ScpRooms.Contains(room);
-        }
+        public static bool ContainsScp(this RoomType room) => ScpRooms.Contains(room);
     }
 }
