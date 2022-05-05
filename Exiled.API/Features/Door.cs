@@ -439,7 +439,7 @@ namespace Exiled.API.Features
         public void Lock(float time, DoorLockType flagsToUnlock)
         {
             ChangeLock(flagsToUnlock);
-            DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+            Unlock(time, flagsToUnlock);
         }
 
         /// <summary>
