@@ -11,26 +11,20 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
-
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
-
     using GameCore;
-
     using HarmonyLib;
-
     using MEC;
-
     using RoundRestarting;
-
     using UnityEngine;
-
     using Console = GameCore.Console;
 
     /// <summary>
     /// Patches <see cref="RoundSummary.Start"/>.
-    /// Adds the <see cref="Server.EndingRound"/> and <see cref="Server.RoundEnded"/> event.
+    /// Adds the <see cref="Handlers.Server.EndingRound"/> and <see cref="Handlers.Server.RoundEnded"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.Start))]
     internal static class RoundEnd
@@ -42,13 +36,13 @@ namespace Exiled.Events.Patches.Events.Server
             {
                 yield return Timing.WaitForSeconds(2.5f);
 
-                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || Time.unscaledTime - time < 15f || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
+                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || Time.unscaledTime - time < 15f || (roundSummary._keepRoundOnOne && (PlayerManager.players.Count - Npc.Dictionary.Count) < 2))
                     yield return Timing.WaitForOneFrame;
 
                 RoundSummary.SumInfo_ClassList newList = default;
                 foreach (KeyValuePair<GameObject, ReferenceHub> keyValuePair in ReferenceHub.GetAllHubs())
                 {
-                    if (keyValuePair.Value is null)
+                    if (keyValuePair.Value is null || keyValuePair.Key.IsNpc())
                         continue;
 
                     CharacterClassManager component = keyValuePair.Value.characterClassManager;
@@ -122,7 +116,7 @@ namespace Exiled.Events.Patches.Events.Server
                 else if (num2 > 0)
                     endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists ? LeadingTeam.ChaosInsurgency : LeadingTeam.Draw;
 
-                Server.OnEndingRound(endingRoundEventArgs);
+                Handlers.Server.OnEndingRound(endingRoundEventArgs);
 
                 roundSummary.RoundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
 
@@ -139,7 +133,7 @@ namespace Exiled.Events.Patches.Events.Server
                     {
                         RoundEndedEventArgs roundEndedEventArgs = new(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
-                        Server.OnRoundEnded(roundEndedEventArgs);
+                        Handlers.Server.OnRoundEnded(roundEndedEventArgs);
 
                         roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam)roundEndedEventArgs.LeadingTeam, RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, roundEndedEventArgs.TimeToRestart);
                     }
