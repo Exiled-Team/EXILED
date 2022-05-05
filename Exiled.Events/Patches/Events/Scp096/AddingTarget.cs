@@ -35,11 +35,10 @@ namespace Exiled.Events.Patches.Events.Scp096
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.AddTarget))]
     internal static class AddingTarget
     {
+        // Nao convert to transpiler pls
         private static bool Prefix(GameObject target)
         {
-            if (target.IsNpc())
-                return false;
-            return true;
+            return !target.IsNpc();
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
