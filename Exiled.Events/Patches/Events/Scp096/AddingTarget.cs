@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Patches.Events.Scp096
 {
+    using Exiled.API.Extensions;
+
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -33,6 +35,13 @@ namespace Exiled.Events.Patches.Events.Scp096
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.AddTarget))]
     internal static class AddingTarget
     {
+        private static bool Prefix(GameObject target)
+        {
+            if (target.IsNpc())
+                return false;
+            return true;
+        }
+
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
