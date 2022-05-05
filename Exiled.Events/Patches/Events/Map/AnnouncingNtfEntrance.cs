@@ -84,28 +84,28 @@ namespace Exiled.Events.Patches.Events.Map
 
                 // if(!ev.IsAllowed)
                 //     return;
-                new(OpCodes.Call, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
 
                 // unitName = $"{ev.UnitName}-{ev.UnitNumber};
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldstr, "{0}-{1}"),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Call, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.UnitName))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.UnitName))),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Call, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.UnitNumber))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.UnitNumber))),
                 new(OpCodes.Box, typeof(int)),
                 new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object), typeof(object) })),
+                new(OpCodes.Dup),
                 new(OpCodes.Starg_S, 1),
 
                 // cassieUnitName = this.GetCassieUnitName(unitName);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.GetCassieUnitName))),
+                new(OpCodes.Callvirt, Method(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.GetCassieUnitName))),
                 new(OpCodes.Stloc_S, 0),
 
                 // scpsLeft = ev.ScpsLeft;
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Call, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.ScpsLeft))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.ScpsLeft))),
                 new(OpCodes.Stloc_1),
             });
 
