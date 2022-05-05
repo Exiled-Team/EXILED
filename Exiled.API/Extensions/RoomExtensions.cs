@@ -9,6 +9,21 @@
     public static class RoomExtensions
     {
         /// <summary>
+        /// The list of SCP rooms.
+        /// </summary>
+        private static readonly List<RoomType> ScpRooms = new()
+        {
+            RoomType.Lcz173,
+            RoomType.Lcz330,
+            RoomType.Lcz914,
+            RoomType.Hcz049,
+            RoomType.Hcz079,
+            RoomType.Hcz096,
+            RoomType.Hcz106,
+            RoomType.Hcz939,
+        };
+
+        /// <summary>
         /// Checks if a <see cref="RoomType">room type</see> is a gate.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
@@ -31,25 +46,13 @@
         }
 
         /// <summary>
-        ///  Checks if a <see cref="RoomType">room type</see> is a SCP room.
+        ///  Checks if a <see cref="RoomType">room type</see> contains any SCP.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
-        /// <returns>Returns whether the <see cref="RoomType"/> is a SCP room or not.</returns>
-        public static bool IsScpRoom(this RoomType room)
+        /// <returns>Returns whether the <see cref="RoomType"/> contains any SCP or not.</returns>
+        public static bool ContainsScp(this RoomType room)
         {
-            List<RoomType> scpRooms = new()
-            {
-                RoomType.Lcz173,
-                RoomType.Lcz330,
-                RoomType.Lcz914,
-                RoomType.Hcz049,
-                RoomType.Hcz079,
-                RoomType.Hcz096,
-                RoomType.Hcz106,
-                RoomType.Hcz939,
-            };
-
-            return scpRooms.Contains(room);
+            return ScpRooms.Contains(room);
         }
     }
 }
