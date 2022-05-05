@@ -47,7 +47,7 @@
         public static bool IsLczCheckpoint(this RoomType room) => room is RoomType.LczChkpA or RoomType.LczChkpB;
 
         /// <summary>
-        /// Checks if a <see cref="RoomType">room type</see> is Hcz a checkpoint.
+        /// Checks if a <see cref="RoomType">room type</see> is a Hcz checkpoint.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a Hcz checkpoint or not.</returns>
