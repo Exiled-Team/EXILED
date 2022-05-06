@@ -68,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
             // Player cuffer = Player.Get(hub);
             // Player target = Player.Get(msg.PlayerToDisarm);
             // var ev = new HandcuffingEventArgs(cuffer, target, true);
-            // Player.OnRemovingHandcuffs(ev);
+            // Player.OnHandcuffing(ev);
             // if (!ev.IsAllowed)
             //     return;
             newInstructions.InsertRange(index, new[]
