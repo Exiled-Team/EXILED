@@ -101,7 +101,7 @@ namespace Exiled.Events.Patches.Events.Map
 
                 // cassieUnitName = this.GetCassieUnitName(unitName);
                 new(OpCodes.Callvirt, Method(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.GetCassieUnitName))),
-                new(OpCodes.Stloc_S, 0),
+                new(OpCodes.Stloc_0),
 
                 // scpsLeft = ev.ScpsLeft;
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
