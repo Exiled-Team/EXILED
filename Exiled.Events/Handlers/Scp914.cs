@@ -35,7 +35,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before activating the SCP-914 machine.
         /// </summary>
-        public static event CustomEventHandler<ActivatingEventArgs> Activating;
+        public static event CustomEventHandler<ActivatingScp914EventArgs> Activating;
 
         /// <summary>
         /// Invoked before changing the SCP-914 machine knob setting.
@@ -63,8 +63,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before activating the SCP-914 machine.
         /// </summary>
-        /// <param name="ev">The <see cref="ActivatingEventArgs"/> instance.</param>
-        public static void OnActivating(ActivatingEventArgs ev) => Activating.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ActivatingScp914EventArgs"/> instance.</param>
+        public static void OnActivating(ActivatingScp914EventArgs ev) => Activating.InvokeSafely(ev);
 
         /// <summary>
         /// Called before changing the SCP-914 machine knob setting.

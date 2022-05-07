@@ -79,8 +79,8 @@ namespace Exiled.Example.Events
             Log.Info($"{ev.Player.Nickname} is creating a portal as SCP-106, in the position: {ev.Position}");
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Scp914.OnActivating(ActivatingEventArgs)"/>
-        public void OnActivating(ActivatingEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Scp914.OnActivating(ActivatingScp914EventArgs)"/>
+        public void OnActivating(ActivatingScp914EventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} is activating SCP-914!");
         }

@@ -85,10 +85,10 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingScp914EventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Callvirt, Method(typeof(Handlers.Scp914), nameof(Handlers.Scp914.OnActivating))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingEventArgs), nameof(ActivatingEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingScp914EventArgs), nameof(ActivatingScp914EventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });
 
