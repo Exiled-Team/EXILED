@@ -41,10 +41,10 @@ namespace Exiled.API.Features
         /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
         public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
         {
-            GameObject model_ragdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
-            if (model_ragdoll is null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            GameObject modelRagdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
+            if (modelRagdoll is null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
-            ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, model_ragdoll.transform.localPosition, model_ragdoll.transform.localRotation);
+            ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, modelRagdoll.transform.localPosition, modelRagdoll.transform.localRotation);
             this.ragdoll = ragdoll;
             Map.RagdollsValue.Add(this);
             if (canBeSpawned)
@@ -58,8 +58,8 @@ namespace Exiled.API.Features
         /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
         public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
         {
-            GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
-            if (model_ragdoll is null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            GameObject modelRagdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
+            if (modelRagdoll is null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = ragdollInfo;
             this.ragdoll = ragdoll;
