@@ -214,7 +214,7 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the player was melted successfully; otherwise, <see langword="false"/>.</returns>
         public static bool TryMeltPlayer(Player player)
         {
-            if (player.Position.y >= 200 || player.Position.y <= -200)
+            if (player.Position.y is >= 200 or <= -200)
                 return false;
 
             player.EnableEffect(EffectType.Decontaminating);
