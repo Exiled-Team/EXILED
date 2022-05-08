@@ -139,8 +139,8 @@ namespace Exiled.API.Features.Roles
         public bool Is<T>(out T role)
             where T : Role
         {
-            role = this as T ?? null;
-            return this is T;
+            role = this as T;
+            return role != null;
         }
 
         /// <inheritdoc/>
