@@ -8,8 +8,6 @@ on:
     branches:
       - dev
   workflow_dispatch:
-    branches:
-      - dev
 
 env:
   EXILED_REFERENCES_URL: https://exiled.host/build_deps/Dev.zip
