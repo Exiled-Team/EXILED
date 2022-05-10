@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Roles
         public static bool operator !=(Role role1, Role role2)
         {
             if (role1 is null)
-                return role2 is not null;
+                return !(role2 is null);
             return !role1.Equals(role2);
         }
 
@@ -139,8 +139,8 @@ namespace Exiled.API.Features.Roles
         public bool Is<T>(out T role)
             where T : Role
         {
-            role = this as T;
-            return role != null;
+            role = this is T t ? t : null;
+            return this is T;
         }
 
         /// <inheritdoc/>
