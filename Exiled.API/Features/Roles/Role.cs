@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Roles
         public static bool operator !=(Role role1, Role role2)
         {
             if (role1 is null)
-                return !(role2 is null);
+                return role2 is not null;
             return !role1.Equals(role2);
         }
 
