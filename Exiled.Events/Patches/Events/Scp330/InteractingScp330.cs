@@ -65,23 +65,14 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
                 new(OpCodes.Ldloc_2),
-
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
-
                 new(OpCodes.Dup),
-
                 new(OpCodes.Stloc, eventHandler.LocalIndex),
-
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
-
                 new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnInteractingScp330))),
-
                 new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
-
                 new(OpCodes.Brfalse, returnLabel),
             });
 
@@ -97,11 +88,8 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(removeServerProcessIndex, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc, eventHandler),
-
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Candy))),
-
                 new CodeInstruction(OpCodes.Ldloca_S, 3),
-
                 new CodeInstruction(OpCodes.Call, Method(typeof(InteractingScp330), nameof(InteractingScp330.ServerProcessPickup), new[] { typeof(ReferenceHub), typeof(CandyKindID), typeof(Scp330Bag).MakeByRefType() })),
             });
 
@@ -121,26 +109,16 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(addShouldSeverIndex, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
-
                 new (OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
-
                 new (OpCodes.Brfalse, shouldNotSever),
-
-                new CodeInstruction(OpCodes.Ldarg_1),
-
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
-
-                new CodeInstruction(OpCodes.Ldstr, nameof(SeveredHands)),
-
-                new CodeInstruction(OpCodes.Ldc_R4, 0f),
-
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableByString), new[] { typeof(string), typeof(float), typeof(bool) })),
-
-                new CodeInstruction(OpCodes.Pop),
-
-                new CodeInstruction(OpCodes.Ret),
+                new (OpCodes.Ldarg_1),
+                new (OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
+                new (OpCodes.Ldstr, nameof(SeveredHands)),
+                new (OpCodes.Ldc_R4, 0f),
+                new (OpCodes.Ldc_I4_0),
+                new (OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableByString), new[] { typeof(string), typeof(float), typeof(bool) })),
+                new (OpCodes.Pop),
+                new (OpCodes.Ret),
             });
 
             // This will let us jump to the taken candies code and lock until ldarg_0, meaning we allow base game logic handle candy adding.

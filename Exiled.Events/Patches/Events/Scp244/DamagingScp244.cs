@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -47,8 +48,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DamagingScp244EventArgs));
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-
             // Remove grenade damage check, let event handler do it.
             newInstructions.RemoveRange(0, 5);
 
@@ -62,44 +61,25 @@ namespace Exiled.Events.Patches.Events.Scp244
             newInstructions.InsertRange(index, new[]
             {
                 new (OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
-
                 new (OpCodes.Ldc_I4_2),
-
                 new (OpCodes.Beq_S, returnFalse),
-
                 new (OpCodes.Ldarg_0),
-
                 new (OpCodes.Ldarg_1),
-
                 new (OpCodes.Ldarg_2),
-
                 new (OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingScp244EventArgs))[0]),
-
                 new (OpCodes.Stloc, eventHandler.LocalIndex),
-
                 new (OpCodes.Ldloc, eventHandler.LocalIndex),
-
                 new (OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnDamagingScp244))),
-
                 new (OpCodes.Ldloc, eventHandler.LocalIndex),
-
                 new (OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
-
                 new (OpCodes.Brtrue_S, continueProcessing),
-
                 new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(returnFalse),
                 new (OpCodes.Ret),
-
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(continueProcessing),
-
                 new CodeInstruction(OpCodes.Ldarg_0),
-
                 new (OpCodes.Ldfld, Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._health))),
-
                 new (OpCodes.Ldloc, eventHandler.LocalIndex),
-
                 new (OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.Handler))),
-
                 new (OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Damage))),
             });
 
