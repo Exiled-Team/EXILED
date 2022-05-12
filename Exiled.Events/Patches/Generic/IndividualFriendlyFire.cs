@@ -73,6 +73,10 @@ namespace Exiled.Events.Patches.Generic
                     return true;
                 }
 
+                if (attacker == victim){
+                    return true;
+                }
+
                 if (!victim.UniqueRole.IsEmpty())
                 {
                     // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us
@@ -113,7 +117,7 @@ namespace Exiled.Events.Patches.Generic
             }
             catch (Exception ex)
             {
-                Log.Info($"Woah there partner, what happened {ex}");
+                Log.Info($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}");
             }
 
             return false;
@@ -130,7 +134,7 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(attacker,  victim, attacker is null ? RoleType.None : attacker.characterClassManager.CurClass);
+                __result = IndividualFriendlyFire.CheckFriendlyFirePlayer(attacker,  victim);
 
                 return false;
             }
@@ -141,52 +145,6 @@ namespace Exiled.Events.Patches.Generic
             }
         }
     }
-
-    ///// <summary>
-    ///// Patches <see cref="HitboxIdentity.Damage(float, DamageHandlerBase, Vector3)"/>.
-    ///// </summary>
-    //[HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.Damage))]
-    //internal static class HitboxIdentityDamagePatch
-    //{
-    //    private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-    //    {
-    //        List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-    //        LocalBuilder attackerDamageHandler = generator.DeclareLocal(typeof(AttackerDamageHandler));
-    //        Label jcc = generator.DefineLabel();
-
-    //        // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
-    //        newInstructions.InsertRange(0, new[]
-    //        {
-    //            // AttackerFootprint.Hub <--- this does not exist anymore.
-    //            new(OpCodes.Ldarg_3),
-    //            new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
-
-    //            // this.TargetHub
-    //            new(OpCodes.Ldarg_0),
-    //            new(OpCodes.Call, PropertyGetter(typeof(HitboxIdentity), nameof(HitboxIdentity.TargetHub))),
-
-    //            new(OpCodes.Ldarg_3),
-    //            new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
-    //            new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
-    //            new(OpCodes.Brfalse, jcc),
-    //            new(OpCodes.Ldarg_2),
-    //            new(OpCodes.Isinst, typeof(AttackerDamageHandler)),
-    //            new(OpCodes.Dup),
-    //            new(OpCodes.Stloc, attackerDamageHandler.LocalIndex),
-    //            new(OpCodes.Brfalse, jcc),
-    //            new(OpCodes.Ldloc, attackerDamageHandler.LocalIndex),
-    //            new(OpCodes.Ldc_I4_1),
-    //            new(OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.ForceFullFriendlyFire))),
-    //            new CodeInstruction(OpCodes.Nop).WithLabels(jcc),
-    //        });
-
-    //        for (int z = 0; z < newInstructions.Count; z++)
-    //            yield return newInstructions[z];
-
-    //        ListPool<CodeInstruction>.Shared.Return(newInstructions);
-    //    }
-    //}
 
     /// <summary>
     /// Patches <see cref="AttackerDamageHandler.ProcessDamage(ReferenceHub)"/>.
