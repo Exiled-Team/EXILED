@@ -38,6 +38,11 @@ namespace Exiled.Events.Patches.Events.Map
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            int removeSelfCheckOffset = -4;
+            int removeSelfCheck = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Footprint), nameof(Footprint.Hub)))) + removeSelfCheckOffset;
+            newInstructions.RemoveRange(removeSelfCheck, 7);
+
             int offset = -3;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
             Label returnLabel = generator.DefineLabel();
@@ -63,6 +68,9 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
                 new(OpCodes.Callvirt, Method(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.Add))),
             });
+
+      
+
 
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
