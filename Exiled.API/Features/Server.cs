@@ -90,6 +90,7 @@ namespace Exiled.API.Features
             {
                 ServerConsole.FriendlyFire = value;
                 ServerConfigSynchronizer.Singleton.RefreshMainBools();
+                PlayerStatsSystem.AttackerDamageHandler.RefreshConfigs();
             }
         }
 
