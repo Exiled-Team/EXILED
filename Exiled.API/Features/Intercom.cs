@@ -75,7 +75,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Timeout()
         {
-            if(InUse)
+            if (InUse)
             {
                 SpeechRemainingTime = -1f;
             }
