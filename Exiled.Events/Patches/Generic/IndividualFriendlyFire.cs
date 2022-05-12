@@ -263,46 +263,5 @@ namespace Exiled.Events.Patches.Generic
         }
     }
 
-    /// <summary>
-    /// Patches <see cref="Scp018Projectile.DetectPlayers()"/>.
-    /// </summary>
-    // TODO: Re-do this
-    // [HarmonyPatch(typeof(Scp018Projectile), nameof(Scp018Projectile.DetectPlayers))]
-    internal static class Scp018ProjectileDetectPlayersPatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            const int referenceHubIndex = 1;
-            const int offset = 5;
-            const int instructionsToRemove = 7;
-
-            int index = newInstructions.FindLastIndex(code => code.opcode == OpCodes.Ldloca_S &&
-                ((LocalBuilder)code.operand).LocalIndex == referenceHubIndex) + offset;
-
-            newInstructions.RemoveRange(index, instructionsToRemove);
-
-            // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Scp018Projectile.PreviousOwner.Hub
-                new(OpCodes.Ldflda, Field(typeof(Scp018Projectile), nameof(Scp018Projectile.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
-
-                // targetReferenceHub
-                new(OpCodes.Ldloc_1),
-
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldflda, Field(typeof(Scp018Projectile), nameof(Scp018Projectile.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
-            });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-    }
+ 
 }

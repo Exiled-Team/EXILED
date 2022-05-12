@@ -39,6 +39,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            // Remove check if player is thrower. Grenade on self should affect themself. 
             int removeSelfCheckOffset = -4;
             int removeSelfCheck = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Footprint), nameof(Footprint.Hub)))) + removeSelfCheckOffset;
             newInstructions.RemoveRange(removeSelfCheck, 7);
