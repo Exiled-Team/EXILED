@@ -45,7 +45,8 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayerFriendly(ReferenceHub attackerHub, ReferenceHub victimHub, RoleType attackerRole)
         {
-            return CheckFriendlyFirePlayer(attackerHub, victimHub);
+            float ffMulti = 0;
+            return CheckFriendlyFirePlayer(attackerHub, victimHub, out ffMulti);
         }
 
         /// <summary>
@@ -56,11 +57,27 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub)
         {
+            float ffMulti = 0;
+            return CheckFriendlyFirePlayer(attackerHub, victimHub, out ffMulti);
+        }
+
+        /// <summary>
+        /// Checks if there can be damage between two players, according to the FF rules.
+        /// </summary>
+        /// <param name="attackerHub">The person attacking.</param>
+        /// <param name="victimHub">The person being attacked.</param>
+        /// <param name="ffMulti"> FF multiplier </param>
+        /// <returns>True if the attacker can damage the victim.</returns>
+        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMulti)
+        {
+            ffMulti = 1f;
+            Log.Info("1");
             if (Server.FriendlyFire)
                 return true;
 
             if (attackerHub is null || victimHub is null)
             {
+                Log.Info("2");
                 return true;
             }
 
@@ -70,10 +87,13 @@ namespace Exiled.Events.Patches.Generic
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
+                    Log.Info("3");
                     return true;
                 }
-
-                if (attacker == victim){
+                Log.Info($"attacker {attacker.Nickname}, {victim.Nickname}");
+                if (attacker == victim)
+                {
+                    Log.Info("4");
                     return true;
                 }
 
@@ -86,6 +106,7 @@ namespace Exiled.Events.Patches.Generic
                         {
                             if (pairedData.ContainsKey(attacker.Role))
                             {
+                                ffMulti = pairedData[attacker.Role];
                                 return true;
                             }
                         }
@@ -100,6 +121,7 @@ namespace Exiled.Events.Patches.Generic
                         {
                             if (pairedData.ContainsKey(victim.Role))
                             {
+                                ffMulti = pairedData[victim.Role];
                                 return true;
                             }
                         }
@@ -111,6 +133,7 @@ namespace Exiled.Events.Patches.Generic
                 {
                     if (attacker.FriendlyFireRules.TryGetValue(victim.Role, out int ffMult))
                     {
+                        ffMulti = ffMult;
                         return true;
                     }
                 }
@@ -119,7 +142,7 @@ namespace Exiled.Events.Patches.Generic
             {
                 Log.Info($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}");
             }
-
+            Log.Info("5");
             return false;
         }
     }
@@ -159,8 +182,10 @@ namespace Exiled.Events.Patches.Generic
 
             int offset = 1;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker)))) + offset;
-
-            newInstructions.RemoveRange(index, 4);
+            LocalBuilder ffMulti = generator.DeclareLocal(typeof(float));
+            newInstructions.RemoveRange(index, 5);
+            Label uniqueFFMulti = generator.DefineLabel();
+            Label normalProcessing = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -170,9 +195,37 @@ namespace Exiled.Events.Patches.Generic
                 // Load Target
                 new(OpCodes.Ldarg_1),
 
+                new(OpCodes.Ldc_I4_1),
+
+                new(OpCodes.Stloc, ffMulti.LocalIndex),
+
+                new(OpCodes.Ldloca, ffMulti.LocalIndex),
+
                 // Pass both over.
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer), new[] { typeof(ReferenceHub), typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
+
+                new (OpCodes.Brtrue_S, uniqueFFMulti),
             });
+
+            int ffMultiplierIndexOffset = -2;
+            //int ffMultiplierIndex = newInstructions.FindLast(index, instruction => instruction.LoadsField(Field(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler._ffMultiplier)))) + ffMultiplierIndexOffset;
+
+            int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(StandardDamageHandler), nameof(StandardDamageHandler.ProcessDamage)))) + ffMultiplierIndexOffset;
+
+            //int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + ffMultiplierIndexOffset;
+
+            newInstructions.InsertRange(ffMultiplierIndex, new CodeInstruction[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti).MoveLabelsFrom(newInstructions[ffMultiplierIndex]),
+                new (OpCodes.Ldloc, ffMulti.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new (OpCodes.Callvirt, PropertyGetter(typeof(StandardDamageHandler), nameof(StandardDamageHandler.Damage))),
+                new (OpCodes.Mul),
+                new (OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
+            });
+
+            newInstructions[ffMultiplierIndex].WithLabels(normalProcessing);
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
@@ -252,7 +305,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Ldloca_S, 2),
                 new(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
 
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
+                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer), new[] { typeof(ReferenceHub), typeof(ReferenceHub) })),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

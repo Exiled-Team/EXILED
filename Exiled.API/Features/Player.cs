@@ -567,7 +567,6 @@ namespace Exiled.API.Features
         /// This property only determines if this player can deal damage to players on the same team;
         /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
         /// </summary>
-        /// <remarks>This property currently does not function, and is planned to be re-implemented in the future.</remarks>
         public bool IsFriendlyFireEnabled
         {
             get
