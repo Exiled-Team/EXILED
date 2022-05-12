@@ -31,4 +31,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" Private="false" />
   </ItemGroup>
 
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if EXIST &quot;$(EXILED_DEV_REFERENCES)&quot; (&#xA;   copy /Y  &quot;$(TargetPath)&quot; &quot;$(EXILED_DEV_REFERENCES)\$(TargetFileName)&quot;&#xA;  )" />
+  </Target>
+
 </Project>

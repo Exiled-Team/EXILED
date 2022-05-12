@@ -129,6 +129,21 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new(20);
 
         /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleType"/> and their FF multiplier.
+        /// </summary>
+        public Dictionary<RoleType, int> FriendlyFireRules { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier.
+        /// </summary>
+        public Dictionary<string, Dictionary<RoleType, int>> UniqueFriendlyFireRules { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets a unique custom role that does not adbide to base game (Such as 035).
+        /// </summary>
+        public string UniqueRole { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub
@@ -548,12 +563,18 @@ namespace Exiled.API.Features
         public bool IsTutorial => Role?.Type == RoleType.Tutorial;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's friendly fire is enabled.
+        /// Gets a value indicating whether the player's friendly fire is enabled.
         /// This property only determines if this player can deal damage to players on the same team;
         /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
         /// </summary>
         /// <remarks>This property currently does not function, and is planned to be re-implemented in the future.</remarks>
-        public bool IsFriendlyFireEnabled { get; set; } = false;
+        public bool IsFriendlyFireEnabled
+        {
+            get
+            {
+                return this.FriendlyFireRules.Count > 0 || this.UniqueFriendlyFireRules.Count > 0;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the player's scale.
