@@ -73,9 +73,9 @@ namespace Exiled.Events.Patches.Generic
                     return true;
                 }
 
-                // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us
                 if (!victim.UniqueRole.IsEmpty())
                 {
+                    // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us
                     if (victim.UniqueFriendlyFireRules.Count > 0)
                     {
                         if (victim.UniqueFriendlyFireRules.TryGetValue(victim.UniqueRole, out Dictionary<RoleType, int> pairedData))
@@ -89,6 +89,7 @@ namespace Exiled.Events.Patches.Generic
                 }
                 else if(!attacker.UniqueRole.IsEmpty())
                 {
+                    // If 035 is attacking, whether to allow or disallow.
                     if (attacker.UniqueFriendlyFireRules.Count > 0)
                     {
                         if (attacker.UniqueFriendlyFireRules.TryGetValue(attacker.UniqueRole, out Dictionary<RoleType, int> pairedData))
@@ -101,7 +102,7 @@ namespace Exiled.Events.Patches.Generic
                     }
                 }
 
-                // If we're SCP then we need to check if we can attack other SCP, or D-Class, etc.
+                // If we're SCP then we need to check if we can attack other SCP, or D-Class, etc. This is default FF logic without unique roles. 
                 if (attacker.FriendlyFireRules.Count > 0)
                 {
                     if (attacker.FriendlyFireRules.TryGetValue(victim.Role, out int ffMult))
@@ -207,11 +208,12 @@ namespace Exiled.Events.Patches.Generic
             {
                 // Load Attacker
                 new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
+
                 // Load Target
                 new(OpCodes.Ldarg_1),
+
                 // Pass both over.
                 new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer), new[] { typeof(ReferenceHub), typeof(ReferenceHub) })),
-
             });
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
