@@ -69,9 +69,6 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Callvirt, Method(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.Add))),
             });
 
-      
-
-
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
                 // Player player = Player.Get(this.PreviousOwner.Hub)
@@ -128,7 +125,10 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
+                if(Player.Get(grenade.PreviousOwner.Hub) == player) {
+                    grenade.ProcessPlayer(player.ReferenceHub);
+                }
+                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
                 {
                     grenade.ProcessPlayer(player.ReferenceHub);
                 }
