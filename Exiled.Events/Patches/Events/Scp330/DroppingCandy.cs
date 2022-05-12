@@ -8,7 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp330
 {
 #pragma warning disable SA1313
-
+#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -50,39 +50,24 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-
             int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory)))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Ldloc_0),
-
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
                 new(OpCodes.Ldloc_1),
-
                 new(OpCodes.Ldloc_1),
-
                 new(OpCodes.Ldarg_1),
-
                 new(OpCodes.Ldfld, Field(typeof(SelectScp330Message), nameof(SelectScp330Message.CandyID))),
-
                 new(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
-
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingScp330EventArgs))[0]),
-
                 new(OpCodes.Stloc, eventHandler.LocalIndex),
-
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
-
                 new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingScp330))),
-
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
-
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.IsAllowed))),
-
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
@@ -98,11 +83,8 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(jumpOverIndex, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
-
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.Candy))),
-
                 new(OpCodes.Stloc, candyKindIdIndex),
-
                 new(OpCodes.Ldloc, candyKindIdIndex),
             });
 

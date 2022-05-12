@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
+#pragma warning disable SA1118 // Parameter should not span multiple lines
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -44,8 +45,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             LocalBuilder resultOfDotCheck = generator.DeclareLocal(typeof(int));
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot)))) + offset;
 
@@ -55,21 +54,13 @@ namespace Exiled.Events.Patches.Events.Scp244
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Clt),
-
                 new(OpCodes.Stloc, resultOfDotCheck.LocalIndex),
-
                 new(OpCodes.Ldarg_0),
-
                 new(OpCodes.Ldloc, resultOfDotCheck.LocalIndex),
-
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
-
                 new(OpCodes.Dup),
-
                 new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnOpeningScp244))),
-
                 new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
-
                 new(OpCodes.Brfalse_S, normalProcessing),
             });
 

@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Scp244
 {
+#pragma warning disable SA1118
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
@@ -40,28 +41,18 @@ namespace Exiled.Events.Patches.Events.Scp244
             Label returnLabel = generator.DefineLabel();
 
             int index = 0;
-#pragma warning disable SA1118 // Parameter should not span multiple lines
 
             newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Ldarg_0),
-
                 new(OpCodes.Ldarg_0),
-
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp244Item), nameof(Scp244Item.Owner))),
-
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
                 new(OpCodes.Ldc_I4_1),
-
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingScp244EventArgs))[0]),
-
                 new(OpCodes.Dup),
-
                 new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnUsingScp244))),
-
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UsingScp244EventArgs), nameof(UsingScp244EventArgs.IsAllowed))),
-
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
