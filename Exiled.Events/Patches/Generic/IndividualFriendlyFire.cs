@@ -56,7 +56,6 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub)
         {
-            Log.Info($"Was CheckFriendlyFirePlayer called");
             if (Server.FriendlyFire)
                 return true;
 
