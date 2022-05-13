@@ -71,13 +71,13 @@ namespace Exiled.Events.Patches.Generic
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMulti)
         {
             ffMulti = 0f;
-            Log.Info("CheckFriendlyFirePlayer 1");
+            Log.Debug("CheckFriendlyFirePlayer 1", Loader.Loader.ShouldDebugBeShown);
             if (Server.FriendlyFire)
                 return true;
 
             if (attackerHub is null || victimHub is null)
             {
-                Log.Info("CheckFriendlyFirePlayer 2");
+                Log.Debug("CheckFriendlyFirePlayer 2", Loader.Loader.ShouldDebugBeShown);
                 return true;
             }
 
@@ -87,13 +87,13 @@ namespace Exiled.Events.Patches.Generic
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
-                    Log.Info("CheckFriendlyFirePlayer 3");
+                    Log.Debug("CheckFriendlyFirePlayer 3", Loader.Loader.ShouldDebugBeShown);
                     return true;
                 }
                 Log.Info($"attacker {attacker.Nickname}, {victim.Nickname}");
                 if (attacker == victim)
                 {
-                    Log.Info("CheckFriendlyFirePlayer 4");
+                    Log.Debug("CheckFriendlyFirePlayer 4", Loader.Loader.ShouldDebugBeShown);
                     return true;
                 }
 
@@ -107,7 +107,7 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(attacker.Role))
                             {
                                 ffMulti = pairedData[attacker.Role];
-                                Log.Info($"CheckFriendlyFirePlayer 4.1 {ffMulti}");
+                                Log.Debug($"CheckFriendlyFirePlayer 4.1 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
                                 return ffMulti > 0 ? true : false;
                             }
                         }
@@ -123,7 +123,7 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(victim.Role))
                             {
                                 ffMulti = pairedData[victim.Role];
-                                Log.Info($"CheckFriendlyFirePlayer 4.2 {ffMulti}");
+                                Log.Debug($"CheckFriendlyFirePlayer 4.2 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
                                 return ffMulti > 0 ? true : false;
                             }
                         }
@@ -136,16 +136,15 @@ namespace Exiled.Events.Patches.Generic
                     if (attacker.FriendlyFireRules.TryGetValue(victim.Role, out int ffMult))
                     {
                         ffMulti = ffMult;
-                        Log.Info($"CheckFriendlyFirePlayer 4.3 {ffMulti}");
+                        Log.Debug($"CheckFriendlyFirePlayer 4.3 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
                         return ffMulti > 0 ? true : false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.Info($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}");
+                Log.Debug($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}", Loader.Loader.ShouldDebugBeShown);
             }
-            Log.Info("CheckFriendlyFirePlayer 5");
             return false;
         }
     }
