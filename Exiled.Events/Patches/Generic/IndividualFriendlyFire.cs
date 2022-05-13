@@ -70,14 +70,14 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMulti)
         {
-            ffMulti = 1f;
-            Log.Info("1");
+            ffMulti = 0f;
+            Log.Info("CheckFriendlyFirePlayer 1");
             if (Server.FriendlyFire)
                 return true;
 
             if (attackerHub is null || victimHub is null)
             {
-                Log.Info("2");
+                Log.Info("CheckFriendlyFirePlayer 2");
                 return true;
             }
 
@@ -87,17 +87,17 @@ namespace Exiled.Events.Patches.Generic
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
-                    Log.Info("3");
+                    Log.Info("CheckFriendlyFirePlayer 3");
                     return true;
                 }
                 Log.Info($"attacker {attacker.Nickname}, {victim.Nickname}");
                 if (attacker == victim)
                 {
-                    Log.Info("4");
+                    Log.Info("CheckFriendlyFirePlayer 4");
                     return true;
                 }
 
-                if (!victim.UniqueRole.IsEmpty())
+                if (!victim.UniqueRole.Equals(string.Empty))
                 {
                     // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us
                     if (victim.UniqueFriendlyFireRules.Count > 0)
@@ -107,12 +107,13 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(attacker.Role))
                             {
                                 ffMulti = pairedData[attacker.Role];
-                                return true;
+                                Log.Info($"CheckFriendlyFirePlayer 4.1 {ffMulti}");
+                                return ffMulti > 0 ? true : false;
                             }
                         }
                     }
                 }
-                else if(!attacker.UniqueRole.IsEmpty())
+                else if(!attacker.UniqueRole.Equals(string.Empty))
                 {
                     // If 035 is attacking, whether to allow or disallow.
                     if (attacker.UniqueFriendlyFireRules.Count > 0)
@@ -122,7 +123,8 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(victim.Role))
                             {
                                 ffMulti = pairedData[victim.Role];
-                                return true;
+                                Log.Info($"CheckFriendlyFirePlayer 4.2 {ffMulti}");
+                                return ffMulti > 0 ? true : false;
                             }
                         }
                     }
@@ -134,7 +136,8 @@ namespace Exiled.Events.Patches.Generic
                     if (attacker.FriendlyFireRules.TryGetValue(victim.Role, out int ffMult))
                     {
                         ffMulti = ffMult;
-                        return true;
+                        Log.Info($"CheckFriendlyFirePlayer 4.3 {ffMulti}");
+                        return ffMulti > 0 ? true : false;
                     }
                 }
             }
@@ -142,7 +145,7 @@ namespace Exiled.Events.Patches.Generic
             {
                 Log.Info($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}");
             }
-            Log.Info("5");
+            Log.Info("CheckFriendlyFirePlayer 5");
             return false;
         }
     }
@@ -207,24 +210,26 @@ namespace Exiled.Events.Patches.Generic
                 new (OpCodes.Brtrue_S, uniqueFFMulti),
             });
 
-            int ffMultiplierIndexOffset = -2;
+            int ffMultiplierIndexOffset = 0;
             //int ffMultiplierIndex = newInstructions.FindLast(index, instruction => instruction.LoadsField(Field(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler._ffMultiplier)))) + ffMultiplierIndexOffset;
 
             int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(StandardDamageHandler), nameof(StandardDamageHandler.ProcessDamage)))) + ffMultiplierIndexOffset;
 
+            newInstructions[ffMultiplierIndex].WithLabels(normalProcessing);
             //int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + ffMultiplierIndexOffset;
 
             newInstructions.InsertRange(ffMultiplierIndex, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti).MoveLabelsFrom(newInstructions[ffMultiplierIndex]),
+                new (OpCodes.Br, normalProcessing),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti),
                 new (OpCodes.Ldloc, ffMulti.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new (OpCodes.Callvirt, PropertyGetter(typeof(StandardDamageHandler), nameof(StandardDamageHandler.Damage))),
+                new (OpCodes.Ldarg_0),
+                new (OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
                 new (OpCodes.Mul),
                 new (OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
+                new (OpCodes.Ldarg_0),
+                new (OpCodes.Ldarg_1),
             });
-
-            newInstructions[ffMultiplierIndex].WithLabels(normalProcessing);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
