@@ -77,6 +77,12 @@ namespace Exiled.CustomRoles.API.Features
         public HashSet<Player> TrackedPlayers { get; } = new();
 
         /// <summary>
+        /// Gets all of the players currently can speaks with V.
+        /// </summary>
+        [YamlIgnore]
+        public HashSet<Player> TrackedVPlayers { get; } = new();
+
+        /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
         public virtual List<CustomAbility> CustomAbilities { get; set; } = new();
@@ -110,6 +116,11 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets or sets a value indicating whether players keep this role when they die.
         /// </summary>
         public virtual bool KeepRoleOnDeath { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether players can speak with V.
+        /// </summary>
+        public virtual bool SpeakWithV { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the <see cref="Player"/>'s size.
@@ -415,6 +426,8 @@ namespace Exiled.CustomRoles.API.Features
             ShowMessage(player);
             RoleAdded(player);
             TrackedPlayers.Add(player);
+            if (SpeakWithV)
+                TrackedVPlayers.Add(player);
         }
 
         /// <summary>
@@ -425,15 +438,15 @@ namespace Exiled.CustomRoles.API.Features
         {
             Log.Debug($"{Name}: Removing role from {player.Nickname}", CustomRoles.Instance.Config.Debug);
             TrackedPlayers.Remove(player);
+            if (SpeakWithV)
+                TrackedVPlayers.Remove(player);
             player.CustomInfo = string.Empty;
             player.InfoArea |= PlayerInfoArea.Role;
             player.Scale = Vector3.one;
             if (RemovalKillsPlayer)
                 player.SetRole(RoleType.Spectator);
             foreach (CustomAbility ability in CustomAbilities)
-            {
                 ability.RemoveAbility(player);
-            }
 
             RoleRemoved(player);
         }
