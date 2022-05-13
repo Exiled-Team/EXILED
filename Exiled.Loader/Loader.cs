@@ -106,6 +106,11 @@ namespace Exiled.Loader
         public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development;
 
         /// <summary>
+        /// Gets a value indicating whether the debug should be shown or not.
+        /// </summary>
+        public static bool ShouldDebugBeShownProduction => Config.Environment == EnvironmentType.Production;
+
+        /// <summary>
         /// Gets plugin dependencies.
         /// </summary>
         public static List<Assembly> Dependencies { get; } = new();

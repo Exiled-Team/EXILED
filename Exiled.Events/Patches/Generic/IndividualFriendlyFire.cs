@@ -70,14 +70,14 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMulti)
         {
-            ffMulti = 0f;
-            Log.Debug("CheckFriendlyFirePlayer 1", Loader.Loader.ShouldDebugBeShown);
+            ffMulti = 1f;
+            Log.Debug("CheckFriendlyFirePlayer 1", Loader.Loader.ShouldDebugBeShownProduction);
             if (Server.FriendlyFire)
                 return true;
 
             if (attackerHub is null || victimHub is null)
             {
-                Log.Debug("CheckFriendlyFirePlayer 2", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug("CheckFriendlyFirePlayer 2", Loader.Loader.ShouldDebugBeShownProduction);
                 return true;
             }
 
@@ -87,13 +87,13 @@ namespace Exiled.Events.Patches.Generic
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
-                    Log.Debug("CheckFriendlyFirePlayer 3", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug("CheckFriendlyFirePlayer 3", Loader.Loader.ShouldDebugBeShownProduction);
                     return true;
                 }
                 Log.Info($"attacker {attacker.Nickname}, {victim.Nickname}");
                 if (attacker == victim)
                 {
-                    Log.Debug("CheckFriendlyFirePlayer 4", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug("CheckFriendlyFirePlayer 4", Loader.Loader.ShouldDebugBeShownProduction);
                     return true;
                 }
 
@@ -107,7 +107,7 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(attacker.Role))
                             {
                                 ffMulti = pairedData[attacker.Role];
-                                Log.Debug($"CheckFriendlyFirePlayer 4.1 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                                Log.Debug($"CheckFriendlyFirePlayer 4.1 {ffMulti}", Loader.Loader.ShouldDebugBeShownProduction);
                                 return ffMulti > 0 ? true : false;
                             }
                         }
@@ -123,7 +123,7 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(victim.Role))
                             {
                                 ffMulti = pairedData[victim.Role];
-                                Log.Debug($"CheckFriendlyFirePlayer 4.2 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                                Log.Debug($"CheckFriendlyFirePlayer 4.2 {ffMulti}", Loader.Loader.ShouldDebugBeShownProduction);
                                 return ffMulti > 0 ? true : false;
                             }
                         }
@@ -136,15 +136,17 @@ namespace Exiled.Events.Patches.Generic
                     if (attacker.FriendlyFireRules.TryGetValue(victim.Role, out int ffMult))
                     {
                         ffMulti = ffMult;
-                        Log.Debug($"CheckFriendlyFirePlayer 4.3 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                        Log.Debug($"CheckFriendlyFirePlayer 4.3 {ffMulti}", Loader.Loader.ShouldDebugBeShownProduction);
                         return ffMulti > 0 ? true : false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.Debug($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}", Loader.Loader.ShouldDebugBeShownProduction);
             }
+
+            Log.Debug($"CheckFriendlyFirePlayer End {ffMulti}", Loader.Loader.ShouldDebugBeShownProduction);
             return false;
         }
     }
@@ -182,15 +184,17 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = 1;
+            int offset = -1;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker)))) + offset;
             LocalBuilder ffMulti = generator.DeclareLocal(typeof(float));
-            newInstructions.RemoveRange(index, 5);
             Label uniqueFFMulti = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
                 // Load Attacker
                 new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
