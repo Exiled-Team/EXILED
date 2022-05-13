@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Generic
         /// </summary>
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
-        /// <param name="ffMulti"> FF multiplier </param>
+        /// <param name="ffMulti"> FF multiplier. </param>
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMulti)
         {
@@ -90,7 +90,7 @@ namespace Exiled.Events.Patches.Generic
                     Log.Debug("CheckFriendlyFirePlayer 3", Loader.Loader.ShouldDebugBeShownProduction);
                     return true;
                 }
-                Log.Info($"attacker {attacker.Nickname}, {victim.Nickname}");
+
                 if (attacker == victim)
                 {
                     Log.Debug("CheckFriendlyFirePlayer 4", Loader.Loader.ShouldDebugBeShownProduction);
@@ -130,7 +130,7 @@ namespace Exiled.Events.Patches.Generic
                     }
                 }
 
-                // If we're SCP then we need to check if we can attack other SCP, or D-Class, etc. This is default FF logic without unique roles. 
+                // If we're SCP then we need to check if we can attack other SCP, or D-Class, etc. This is default FF logic without unique roles.
                 if (attacker.FriendlyFireRules.Count > 0)
                 {
                     if (attacker.FriendlyFireRules.TryGetValue(victim.Role, out int ffMult))
@@ -176,7 +176,6 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="AttackerDamageHandler.ProcessDamage(ReferenceHub)"/>.
     /// </summary>
-
     [HarmonyPatch(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.ProcessDamage))]
     internal static class ProcessDamagePatch
     {
@@ -195,6 +194,7 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
 
                 new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
+
                 // Load Attacker
                 new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
@@ -214,13 +214,13 @@ namespace Exiled.Events.Patches.Generic
             });
 
             int ffMultiplierIndexOffset = 0;
-            //int ffMultiplierIndex = newInstructions.FindLast(index, instruction => instruction.LoadsField(Field(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler._ffMultiplier)))) + ffMultiplierIndexOffset;
 
+            // int ffMultiplierIndex = newInstructions.FindLast(index, instruction => instruction.LoadsField(Field(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler._ffMultiplier)))) + ffMultiplierIndexOffset;
             int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(StandardDamageHandler), nameof(StandardDamageHandler.ProcessDamage)))) + ffMultiplierIndexOffset;
 
             newInstructions[ffMultiplierIndex].WithLabels(normalProcessing);
-            //int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + ffMultiplierIndexOffset;
 
+            // int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + ffMultiplierIndexOffset;
             newInstructions.InsertRange(ffMultiplierIndex, new CodeInstruction[]
             {
                 new (OpCodes.Br, normalProcessing),
@@ -322,6 +322,4 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-
- 
 }

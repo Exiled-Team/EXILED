@@ -42,8 +42,4 @@
     <PackageReference Include="dnlib" Version="3.3.2" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if EXIST &quot;$(EXILED_DEV_REFERENCES)&quot; (&#xA;   copy /Y  &quot;$(TargetPath)&quot; &quot;$(EXILED_DEV_REFERENCES)\Plugins\$(TargetFileName)&quot;&#xA;  )" />
-  </Target>
-
 </Project>

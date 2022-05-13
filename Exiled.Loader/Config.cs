@@ -34,6 +34,12 @@ namespace Exiled.Loader
         public EnvironmentType Environment { get; set; } = EnvironmentType.Production;
 
         /// <summary>
+        /// Gets or sets a value indicating whether gets or sets the whether to show debug during production.
+        /// </summary>
+        [Description("Whether to allow debugs during production")]
+        public bool DebugProduction { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets the config files distribution type.
         /// </summary>
         [Description("The config files distribution type (Default, Separated)")]
