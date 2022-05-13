@@ -68,14 +68,14 @@ namespace Exiled.Events.Patches.Generic
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMulti)
         {
             ffMulti = 1f;
-            Log.Debug("CheckFriendlyFirePlayer 1", Loader.Loader.ShouldDebugBeShown);
+            Log.Debug("Entered CheckFriendlyFirePlayer", Loader.Loader.ShouldDebugBeShown);
 
             if (Server.FriendlyFire)
                 return true;
 
             if (attackerHub is null || victimHub is null)
             {
-                Log.Debug("CheckFriendlyFirePlayer 2", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug("CheckFriendlyFirePlayer attacker or victim reference hub was null", Loader.Loader.ShouldDebugBeShown);
                 return true;
             }
 
@@ -85,13 +85,13 @@ namespace Exiled.Events.Patches.Generic
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
-                    Log.Debug("CheckFriendlyFirePlayer 3", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug("CheckFriendlyFirePlayer attack or victim player object was null", Loader.Loader.ShouldDebugBeShown);
                     return true;
                 }
 
                 if (attacker == victim)
                 {
-                    Log.Debug("CheckFriendlyFirePlayer 4", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug("CheckFriendlyFirePlayer, attacker was victim", Loader.Loader.ShouldDebugBeShown);
                     return true;
                 }
 
@@ -100,12 +100,12 @@ namespace Exiled.Events.Patches.Generic
                     // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us
                     if (victim.CustomRoleFriendlyFireMultiplier.Count > 0)
                     {
-                        if (victim.CustomRoleFriendlyFireMultiplier.TryGetValue(victim.UniqueRole, out Dictionary<RoleType, int> pairedData))
+                        if (victim.CustomRoleFriendlyFireMultiplier.TryGetValue(victim.UniqueRole, out Dictionary<RoleType, float> pairedData))
                         {
                             if (pairedData.ContainsKey(attacker.Role))
                             {
                                 ffMulti = pairedData[attacker.Role];
-                                Log.Debug($"CheckFriendlyFirePlayer 4.1 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                                Log.Debug($"CheckFriendlyFirePlayer, victum had unique role {ffMulti}", Loader.Loader.ShouldDebugBeShown);
                                 return ffMulti > 0;
                             }
                         }
@@ -116,12 +116,12 @@ namespace Exiled.Events.Patches.Generic
                     // If 035 is attacking, whether to allow or disallow based on victim role.
                     if (attacker.CustomRoleFriendlyFireMultiplier.Count > 0)
                     {
-                        if (attacker.CustomRoleFriendlyFireMultiplier.TryGetValue(attacker.UniqueRole, out Dictionary<RoleType, int> pairedData))
+                        if (attacker.CustomRoleFriendlyFireMultiplier.TryGetValue(attacker.UniqueRole, out Dictionary<RoleType, float> pairedData))
                         {
                             if (pairedData.ContainsKey(victim.Role))
                             {
                                 ffMulti = pairedData[victim.Role];
-                                Log.Debug($"CheckFriendlyFirePlayer 4.2 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                                Log.Debug($"CheckFriendlyFirePlayer, attack had unique role {ffMulti}", Loader.Loader.ShouldDebugBeShown);
                                 return ffMulti > 0;
                             }
                         }
@@ -131,10 +131,10 @@ namespace Exiled.Events.Patches.Generic
                 // If we're SCP then we need to check if we can attack other SCP, or D-Class, etc. This is default FF logic without unique roles.
                 if (attacker.FriendlyFireMultiplier.Count > 0)
                 {
-                    if (attacker.FriendlyFireMultiplier.TryGetValue(victim.Role, out int ffMult))
+                    if (attacker.FriendlyFireMultiplier.TryGetValue(victim.Role, out float ffMult))
                     {
                         ffMulti = ffMult;
-                        Log.Debug($"CheckFriendlyFirePlayer 4.3 {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                        Log.Debug($"CheckFriendlyFirePlayer, Friendlyfire for non-unique role {ffMulti}", Loader.Loader.ShouldDebugBeShown);
                         return ffMulti > 0;
                     }
                 }
@@ -144,7 +144,7 @@ namespace Exiled.Events.Patches.Generic
                 Log.Debug($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}", Loader.Loader.ShouldDebugBeShown);
             }
 
-            Log.Debug($"CheckFriendlyFirePlayer End {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+            Log.Debug($"CheckFriendlyFirePlayer will return false and run default NW logic", Loader.Loader.ShouldDebugBeShown);
             return false;
         }
     }

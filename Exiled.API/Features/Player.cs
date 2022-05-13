@@ -131,12 +131,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleType"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
-        public Dictionary<RoleType, int> FriendlyFireMultiplier { get; set; } = new();
+        public Dictionary<RoleType, float> FriendlyFireMultiplier { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier. This is for unique custom roles.
         /// </summary>
-        public Dictionary<string, Dictionary<RoleType, int>> CustomRoleFriendlyFireMultiplier { get; set; } = new();
+        public Dictionary<string, Dictionary<RoleType, float>> CustomRoleFriendlyFireMultiplier { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
