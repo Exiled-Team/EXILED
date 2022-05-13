@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1118
 #pragma warning disable SA1402
-#pragma warning disable SA1649
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
@@ -45,8 +44,7 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayerFriendly(ReferenceHub attackerHub, ReferenceHub victimHub, RoleType attackerRole)
         {
-            float ffMulti = 0;
-            return CheckFriendlyFirePlayer(attackerHub, victimHub, out ffMulti);
+            return CheckFriendlyFirePlayer(attackerHub, victimHub, out _);
         }
 
         /// <summary>
@@ -57,8 +55,7 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub)
         {
-            float ffMulti = 0;
-            return CheckFriendlyFirePlayer(attackerHub, victimHub, out ffMulti);
+            return CheckFriendlyFirePlayer(attackerHub, victimHub, out _);
         }
 
         /// <summary>
@@ -108,14 +105,14 @@ namespace Exiled.Events.Patches.Generic
                             {
                                 ffMulti = pairedData[attacker.Role];
                                 Log.Debug($"CheckFriendlyFirePlayer 4.1 {ffMulti}", Loader.Loader.ShouldDebugBeShownProduction);
-                                return ffMulti > 0 ? true : false;
+                                return ffMulti > 0;
                             }
                         }
                     }
                 }
                 else if(!attacker.UniqueRole.Equals(string.Empty))
                 {
-                    // If 035 is attacking, whether to allow or disallow.
+                    // If 035 is attacking, whether to allow or disallow based on victim role.
                     if (attacker.UniqueFriendlyFireRules.Count > 0)
                     {
                         if (attacker.UniqueFriendlyFireRules.TryGetValue(attacker.UniqueRole, out Dictionary<RoleType, int> pairedData))
@@ -124,7 +121,7 @@ namespace Exiled.Events.Patches.Generic
                             {
                                 ffMulti = pairedData[victim.Role];
                                 Log.Debug($"CheckFriendlyFirePlayer 4.2 {ffMulti}", Loader.Loader.ShouldDebugBeShownProduction);
-                                return ffMulti > 0 ? true : false;
+                                return ffMulti > 0;
                             }
                         }
                     }
@@ -137,7 +134,7 @@ namespace Exiled.Events.Patches.Generic
                     {
                         ffMulti = ffMult;
                         Log.Debug($"CheckFriendlyFirePlayer 4.3 {ffMulti}", Loader.Loader.ShouldDebugBeShownProduction);
-                        return ffMulti > 0 ? true : false;
+                        return ffMulti > 0;
                     }
                 }
             }

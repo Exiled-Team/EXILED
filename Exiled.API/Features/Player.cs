@@ -129,17 +129,17 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new(20);
 
         /// <summary>
-        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleType"/> and their FF multiplier.
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleType"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
         public Dictionary<RoleType, int> FriendlyFireRules { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier.
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier. This is for unique custom roles.
         /// </summary>
         public Dictionary<string, Dictionary<RoleType, int>> UniqueFriendlyFireRules { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets a unique custom role that does not adbide to base game (Such as 035).
+        /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="UniqueFriendlyFireRules"/>.
         /// </summary>
         public string UniqueRole { get; set; } = string.Empty;
 
