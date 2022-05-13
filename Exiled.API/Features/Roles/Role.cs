@@ -146,8 +146,11 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
 
-        /// <inheritdoc/>
-        public override string ToString() => Type.ToString();
+        /// <summary>
+        /// Returns the role in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing role-related data.</returns>
+        public override string ToString() => $"{Side} {Team} {Type} {IsValid}";
 
         /// <inheritdoc/>
         public override int GetHashCode() => base.GetHashCode();

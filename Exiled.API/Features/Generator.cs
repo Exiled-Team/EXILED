@@ -238,7 +238,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Returns the player in a human-readable format.
+        /// Returns the Generator in a human-readable format.
         /// </summary>
         /// <returns>A string containing Generator-related data.</returns>
         public override string ToString() => $"{State} {KeycardPermissions}";

@@ -440,7 +440,7 @@ namespace Exiled.API.Features
         public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
 
         /// <summary>
-        /// Returns the player in a human-readable format.
+        /// Returns the Camera in a human-readable format.
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>
         public override string ToString() => $"{Zone} {Type} {Name} {Id} {IsBeingUsed}";

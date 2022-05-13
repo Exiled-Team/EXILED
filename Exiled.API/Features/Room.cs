@@ -247,7 +247,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Returns the Window in a human-readable format.
+        /// Returns the Room in a human-readable format.
         /// </summary>
         /// <returns>A string containing Room-related data.</returns>
         public override string ToString() => $"{Type} {Zone} {Doors} {Cameras} {TeslaGate}";
