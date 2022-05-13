@@ -57,7 +57,7 @@ namespace Exiled.Loader
 
             ConfigManager.LoadLoaderConfigs();
 
-            if (Config.Environment != EnvironmentType.Production)
+            if (Config.Environment != EnvironmentType.Production && Config.Environment != EnvironmentType.ProductionDebug)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                 Paths.Reload($"EXILED-Testing");
@@ -103,12 +103,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
         /// </summary>
-        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development;
-
-        /// <summary>
-        /// Gets a value indicating whether the debug should be shown or not.
-        /// </summary>
-        public static bool ShouldDebugBeShownProduction => Config.DebugProduction;
+        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development || Config.Environment == EnvironmentType.ProductionDebug;
 
         /// <summary>
         /// Gets plugin dependencies.
