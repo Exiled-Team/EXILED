@@ -69,6 +69,7 @@ namespace Exiled.Events.Patches.Generic
         {
             ffMulti = 1f;
             Log.Debug("CheckFriendlyFirePlayer 1", Loader.Loader.ShouldDebugBeShownProduction);
+
             if (Server.FriendlyFire)
                 return true;
 
@@ -97,9 +98,9 @@ namespace Exiled.Events.Patches.Generic
                 if (!victim.UniqueRole.Equals(string.Empty))
                 {
                     // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us
-                    if (victim.UniqueFriendlyFireRules.Count > 0)
+                    if (victim.CustomRoleFriendlyFireMultiplier.Count > 0)
                     {
-                        if (victim.UniqueFriendlyFireRules.TryGetValue(victim.UniqueRole, out Dictionary<RoleType, int> pairedData))
+                        if (victim.CustomRoleFriendlyFireMultiplier.TryGetValue(victim.UniqueRole, out Dictionary<RoleType, int> pairedData))
                         {
                             if (pairedData.ContainsKey(attacker.Role))
                             {
@@ -113,9 +114,9 @@ namespace Exiled.Events.Patches.Generic
                 else if(!attacker.UniqueRole.Equals(string.Empty))
                 {
                     // If 035 is attacking, whether to allow or disallow based on victim role.
-                    if (attacker.UniqueFriendlyFireRules.Count > 0)
+                    if (attacker.CustomRoleFriendlyFireMultiplier.Count > 0)
                     {
-                        if (attacker.UniqueFriendlyFireRules.TryGetValue(attacker.UniqueRole, out Dictionary<RoleType, int> pairedData))
+                        if (attacker.CustomRoleFriendlyFireMultiplier.TryGetValue(attacker.UniqueRole, out Dictionary<RoleType, int> pairedData))
                         {
                             if (pairedData.ContainsKey(victim.Role))
                             {
@@ -128,9 +129,9 @@ namespace Exiled.Events.Patches.Generic
                 }
 
                 // If we're SCP then we need to check if we can attack other SCP, or D-Class, etc. This is default FF logic without unique roles.
-                if (attacker.FriendlyFireRules.Count > 0)
+                if (attacker.FriendlyFireMultiplier.Count > 0)
                 {
-                    if (attacker.FriendlyFireRules.TryGetValue(victim.Role, out int ffMult))
+                    if (attacker.FriendlyFireMultiplier.TryGetValue(victim.Role, out int ffMult))
                     {
                         ffMulti = ffMult;
                         Log.Debug($"CheckFriendlyFirePlayer 4.3 {ffMulti}", Loader.Loader.ShouldDebugBeShownProduction);

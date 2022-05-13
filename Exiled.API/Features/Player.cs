@@ -131,15 +131,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleType"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
-        public Dictionary<RoleType, int> FriendlyFireRules { get; set; } = new();
+        public Dictionary<RoleType, int> FriendlyFireMultiplier { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier. This is for unique custom roles.
         /// </summary>
-        public Dictionary<string, Dictionary<RoleType, int>> UniqueFriendlyFireRules { get; set; } = new();
+        public Dictionary<string, Dictionary<RoleType, int>> CustomRoleFriendlyFireMultiplier { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="UniqueFriendlyFireRules"/>.
+        /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
         /// </summary>
         public string UniqueRole { get; set; } = string.Empty;
 
@@ -571,7 +571,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                return this.FriendlyFireRules.Count > 0 || this.UniqueFriendlyFireRules.Count > 0;
+                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0;
             }
         }
 
