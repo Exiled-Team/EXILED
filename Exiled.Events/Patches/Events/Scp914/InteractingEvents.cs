@@ -95,15 +95,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
-                Log.Debug(newInstructions[z].opcode + " " + newInstructions[z].operand);
-                foreach (var label in newInstructions[z].labels)
-                {
-                    Log.Debug(label.GetHashCode());
-                }
-
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
