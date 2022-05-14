@@ -105,8 +105,8 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(attacker.Role))
                             {
                                 ffMulti = pairedData[attacker.Role];
-                                Log.Debug($"CheckFriendlyFirePlayer, victum had unique role {ffMulti}", Loader.Loader.ShouldDebugBeShown);
-                                return ffMulti > 0;
+                                Log.Debug($"CheckFriendlyFirePlayer, victum had unique role with FF: {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                                return true;
                             }
                         }
                     }
@@ -121,8 +121,8 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(victim.Role))
                             {
                                 ffMulti = pairedData[victim.Role];
-                                Log.Debug($"CheckFriendlyFirePlayer, attack had unique role {ffMulti}", Loader.Loader.ShouldDebugBeShown);
-                                return ffMulti > 0;
+                                Log.Debug($"CheckFriendlyFirePlayer, attack had unique role with FF: {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                                return true;
                             }
                         }
                     }
@@ -134,8 +134,8 @@ namespace Exiled.Events.Patches.Generic
                     if (attacker.FriendlyFireMultiplier.TryGetValue(victim.Role, out float ffMult))
                     {
                         ffMulti = ffMult;
-                        Log.Debug($"CheckFriendlyFirePlayer, Friendlyfire for non-unique role {ffMulti}", Loader.Loader.ShouldDebugBeShown);
-                        return ffMulti > 0;
+                        Log.Debug($"CheckFriendlyFirePlayer, Friendlyfire for non-unique role with FF: {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                        return true;
                     }
                 }
             }

@@ -1315,8 +1315,11 @@ namespace Exiled.API.Features
 
                 currentPairedData.Add(roleToAdd, ffMult);
             }
+            else
+            {
+                SetCustomRoleFriendlyFire(roleType, roleToAdd, ffMult);
+            }
 
-            SetCustomRoleFriendlyFire(roleType, roleToAdd, ffMult);
             return true;
         }
 
