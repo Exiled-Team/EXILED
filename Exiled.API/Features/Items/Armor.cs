@@ -89,7 +89,7 @@ namespace Exiled.API.Features.Items
             get => Base.HelmetEfficacy;
             set
             {
-                if (value <= 101 && value >= 0)
+                if (value is <= 101 and >= 0)
                     Base.HelmetEfficacy = value;
                 else
                     throw new ArgumentOutOfRangeException(nameof(HelmetEfficacy), "You can only set the efficacy value of armor to a value between 0 and 100.");
@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Items
             get => Base.VestEfficacy;
             set
             {
-                if (value <= 101 && value >= 0)
+                if (value is <= 101 and >= 0)
                     Base.VestEfficacy = value;
                 else
                     throw new ArgumentOutOfRangeException(nameof(VestEfficacy), "You can only set the efficacy value of armor to a value between 0 and 100.");
@@ -121,7 +121,7 @@ namespace Exiled.API.Features.Items
             get => Base.StaminaUseMultiplier;
             set
             {
-                if (value > 2f || value < 1f)
+                if (value is > 2f or < 1f)
                     throw new ArgumentOutOfRangeException(nameof(StaminaUseMultiplier), "You can only set the stamina use multiplier to a value between 1f and 2f.");
                 Base.StaminaUseMultiplier = value;
             }
@@ -136,7 +136,7 @@ namespace Exiled.API.Features.Items
             get => Base.MovementSpeedMultiplier;
             set
             {
-                if (value < 0.0f || value > 1f)
+                if (value is < 0.0f or > 1f)
                     throw new ArgumentOutOfRangeException(nameof(MovementSpeedMultiplier), "You can only set the movement speed multiplier to a value between 0 and 1.");
                 Base.MovementSpeedMultiplier = value;
             }
