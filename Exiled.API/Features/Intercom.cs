@@ -41,6 +41,15 @@ namespace Exiled.API.Features
         public static Player Speaker => !InUse ? null : Player.Get(global::Intercom.host.speaker);
 
         /// <summary>
+        /// Gets or sets the remaining cooldown of the intercom.
+        /// </summary>
+        public static float RemainingCooldown
+        {
+            get => global::Intercom.host.remainingCooldown;
+            set => global::Intercom.host.remainingCooldown = value;
+        }
+
+        /// <summary>
         /// Gets or sets the remaining speech time of the intercom.
         /// </summary>
         public static float SpeechRemainingTime
@@ -55,5 +64,21 @@ namespace Exiled.API.Features
         /// <param name="start">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
         /// <param name="transmitterId">Sets the transmitterId.</param>
         public static void PlaySound(bool start, int transmitterId = 0) => global::Intercom.host.RpcPlaySound(start, transmitterId);
+
+        /// <summary>
+        /// Reset the intercom's cooldown.
+        /// </summary>
+        public static void Reset() => RemainingCooldown = -1f;
+
+        /// <summary>
+        /// Times out the intercom.
+        /// </summary>
+        public static void Timeout()
+        {
+            if (InUse)
+            {
+                SpeechRemainingTime = -1f;
+            }
+        }
     }
 }
