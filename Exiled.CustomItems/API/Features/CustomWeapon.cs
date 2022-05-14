@@ -334,7 +334,6 @@ namespace Exiled.CustomItems.API.Features
         {
             if (ev.Attacker is null)
             {
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Attacker null", Instance.Config.Debug);
                 return;
             }
 
