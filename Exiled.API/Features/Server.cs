@@ -8,7 +8,7 @@
 namespace Exiled.API.Features
 {
     using System;
-
+    using System.Collections.Generic;
     using System.Reflection;
 
     using MEC;
@@ -146,6 +146,17 @@ namespace Exiled.API.Features
             get => CustomNetworkManager.HeavilyModded;
             set => CustomNetworkManager.HeavilyModded = value;
         }
+
+        /// <summary>
+        /// Gets the dictionary of the server's session variables.
+        /// <para>
+        /// Session variables can be used to save temporary data. Data is stored in a <see cref="Dictionary{TKey, TValue}"/>.
+        /// The key of the data is always a <see cref="string"/>, whereas the value can be any <see cref="object"/>.
+        /// The data stored in a session variable can be accessed by different assemblies; it is recommended to uniquely identify stored data so that it does not conflict with other plugins that may also be using the same name.
+        /// Data saved with session variables is not being saved on round restart, or server restart. If the data must be saved after a restart, a database must be used instead.
+        /// </para>
+        /// </summary>
+        public static Dictionary<string, object> SessionVariables => Host.SessionVariables;
 
         /// <summary>
         /// Restarts the server, reconnects all players.
