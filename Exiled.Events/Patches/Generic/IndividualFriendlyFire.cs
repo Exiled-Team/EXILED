@@ -172,7 +172,7 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="AttackerDamageHandler.ProcessDamage(ReferenceHub)"/>.
+    /// Patches <see cref="AttackerDamageHandler.ProcessDamage(ReferenceHub)"/> to allow or disallow friendly fire.
     /// </summary>
     [HarmonyPatch(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.ProcessDamage))]
     internal static class ProcessDamagePatch
