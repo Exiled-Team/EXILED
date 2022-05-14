@@ -30,7 +30,9 @@ namespace Exiled.CustomItems.API.Features
     using Firearm = Exiled.API.Features.Items.Firearm;
     using Player = Exiled.API.Features.Player;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The Custom Weapon base class.
+    /// </summary>
     public abstract class CustomWeapon : CustomItem
     {
         /// <summary>
