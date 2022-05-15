@@ -33,8 +33,11 @@
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="if EXIST &quot;$(EXILED_DEV_REFERENCES)&quot; (&#xD;&#xA;   copy /Y  &quot;$(TargetPath)&quot; &quot;$(EXILED_DEV_REFERENCES)\Plugins\dependencies\$(TargetFileName)&quot;&#xD;&#xA;  )" />
-  </Target>
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <PostBuildEvent>if not "$(EXILED_DEV_REFERENCES)"=="" copy /y "$(OutputPath)$(AssemblyName).dll" "$(EXILED_DEV_REFERENCES)\Plugins\dependencies\"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <PostBuildEvent>if [[ ! -z "$EXILED_DEV_REFERENCES" ]]; then cp "$(OutputPath)$(AssemblyName).dll" "$EXILED_DEV_REFERENCES\Plugins\dependencies\" fi</PostBuildEvent>
+  </PropertyGroup>
 
 </Project>
