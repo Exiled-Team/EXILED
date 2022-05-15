@@ -1240,16 +1240,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Wrapper to call <see cref="SetCustomRoleFriendlyFire(string, RoleType, float)"/>.
-        /// </summary>
-        /// <param name="roleType"> Role associated for CustomFF. </param>
-        /// <param name="roleFF"> Role with FF to add even if it exists. </param>
-        public void SetFriendlyFire(string roleType, KeyValuePair<RoleType, float> roleFF)
-        {
-            SetCustomRoleFriendlyFire(roleType, roleFF.Key, roleFF.Value);
-        }
-
-        /// <summary>
         /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
         /// </summary>
         /// <param name="roleType"> Role associated for CustomFF. </param>
@@ -1372,6 +1362,26 @@ namespace Exiled.API.Features
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Adds the Custom role to the <see cref="CustomRoleFriendlyFireMultiplier"/> if they did not already exist.
+        /// </summary>
+        /// <param name="customRoleFriendlyFireMultiplier"> Custom role with FF role rules. </param>
+        public void TryAddCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleType, float>> customRoleFriendlyFireMultiplier)
+        {
+            foreach(KeyValuePair<string, Dictionary<RoleType, float>> newRolesWithFF in customRoleFriendlyFireMultiplier){
+                this.TryAddCustomRoleFriendlyFire(newRolesWithFF.Key, newRolesWithFF.Value);
+            }
+        }
+
+        /// <summary>
+        /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
+        /// </summary>
+        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
+        public void TrySetCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleType, float>> customRoleFriendlyFireMultiplier)
+        {
+            this.CustomRoleFriendlyFireMultiplier = customRoleFriendlyFireMultiplier;
         }
 
         /// <summary>
