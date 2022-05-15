@@ -156,33 +156,19 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public IEnumerable<ArmorAmmoLimit> AmmoLimits
         {
-            get
-            {
-                List<ArmorAmmoLimit> limits = new();
-                for (int i = 0; i < Base.AmmoLimits.Length; i++)
-                {
-                    limits.Add(new ArmorAmmoLimit(Base.AmmoLimits[i].AmmoType.GetAmmoType(), Base.AmmoLimits[i].Limit));
-                }
+            get => Base.AmmoLimits.Cast<ArmorAmmoLimit>();
 
-                return limits;
-            }
+            set => Base.AmmoLimits = value.Select(limit => (BodyArmor.ArmorAmmoLimit)limit).ToArray();
+        }
 
-            set
-            {
-                List<BodyArmor.ArmorAmmoLimit> limits = ListPool<BodyArmor.ArmorAmmoLimit>.Shared.Rent();
-                for (int i = 0; i < value.Count(); i++)
-                {
-                    ArmorAmmoLimit limit = value.ElementAt(i);
-                    limits.Add(new BodyArmor.ArmorAmmoLimit
-                    {
-                        AmmoType = limit.AmmoType.GetItemType(),
-                        Limit = limit.Limit,
-                    });
-                }
+        /// <summary>
+        /// Gets or sets the item caterory limit of the wearer when using this armor.
+        /// </summary>
+        public IEnumerable<BodyArmor.ArmorCategoryLimitModifier> CategoryLimits
+        {
+            get => Base.CategoryLimits;
 
-                Base.AmmoLimits = limits.ToArray();
-                ListPool<BodyArmor.ArmorAmmoLimit>.Shared.Return(limits);
-            }
+            set => Base.CategoryLimits = value.ToArray();
         }
     }
 }
