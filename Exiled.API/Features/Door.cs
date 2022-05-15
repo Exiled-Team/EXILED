@@ -287,7 +287,7 @@ namespace Exiled.API.Features
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
-                Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                Timing.CallDelayed(duration, () => door.Unlock());
             }
         }
 
@@ -314,7 +314,7 @@ namespace Exiled.API.Features
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
-                Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                Timing.CallDelayed(duration, () => door.Unlock());
             }
         }
 
@@ -324,7 +324,7 @@ namespace Exiled.API.Features
         public static void UnlockAll()
         {
             foreach (Door door in List)
-                door.ChangeLock(DoorLockType.None);
+                door.Unlock();
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace Exiled.API.Features
         public static void UnlockAll(Func<Door, bool> predicate)
         {
             foreach (Door door in Get(predicate))
-                door.ChangeLock(DoorLockType.None);
+                door.Unlock();
         }
 
         /// <summary>
@@ -439,7 +439,7 @@ namespace Exiled.API.Features
         public void Lock(float time, DoorLockType flagsToUnlock)
         {
             ChangeLock(flagsToUnlock);
-            DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+            Unlock(time, flagsToUnlock);
         }
 
         /// <summary>
