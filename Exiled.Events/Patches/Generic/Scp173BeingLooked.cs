@@ -46,10 +46,10 @@ namespace Exiled.Events.Patches.Generic
             newInstructions.InsertRange(addCheck, new CodeInstruction[]
             {
                 new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, player.LocalIndex),
-                new(OpCodes.Brfalse, jne),
+                new(OpCodes.Brfalse_S, jne),
                 new(OpCodes.Ldloc, player.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Exiled.Events.Events.Config.CanTutorialBlockScp173))),
-                new(OpCodes.Brfalse, cnt),
+                new(OpCodes.Brfalse_S, cnt),
             });
 
             int offset = -3;
