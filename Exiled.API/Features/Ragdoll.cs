@@ -298,5 +298,11 @@ namespace Exiled.API.Features
         /// Un-spawns the ragdoll.
         /// </summary>
         public void UnSpawn() => NetworkServer.UnSpawn(GameObject);
+
+        /// <summary>
+        /// Returns the Ragdoll in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Ragdoll-related data.</returns>
+        public override string ToString() => $"{Owner} {Name} {DeathReason} {Role} {CreationTime} {AllowRecall}";
     }
 }

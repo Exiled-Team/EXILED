@@ -2388,6 +2388,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
         public override string ToString() =>
-            $"{Id} {Nickname} {UserId} {(Role is null ? "No role" : Role.ToString())} {Role?.Team}";
+            $"{Id} {Nickname} {UserId} {(Role is null ? "No role" : Role)}";
     }
 }
