@@ -964,7 +964,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> filtered based on a predicate.
         /// </summary>
-        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="predicate">The condition to satisfy.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains elements that satify the condition.</returns>
         public static IEnumerable<Player> Get(Func<Player, bool> predicate) => List.Where(predicate);
 
@@ -1307,10 +1307,39 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
+        /// </summary>
+        /// <param name="predicate">The condition to satisfy.</param>
+        /// <param name="destroy">Whether or not to destroy the items.</param>
+        /// <returns>Count of a successfully removed <see cref="Item"/>'s.</returns>
+        public int RemoveItem(Func<Item, bool> predicate, bool destroy = true)
+        {
+            List<Item> enumeratedItems = new(ItemsValue);
+            int count = 0;
+            foreach (Item item in enumeratedItems)
+            {
+                if (predicate(item) && RemoveItem(item, destroy))
+                {
+                    ++count;
+                }
+            }
+
+            return count;
+        }
+
+        /// <summary>
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
         /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
+        [Obsolete("Use RemoveHeldItem(bool) instead.", true)]
         public bool RemoveHeldItem() => RemoveItem(CurrentItem);
+
+        /// <summary>
+        /// Removes the held <see cref="ItemBase"/> from the player's inventory.
+        /// </summary>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
+        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
+        public bool RemoveHeldItem(bool destroy = true) => RemoveItem(CurrentItem, destroy);
 
         /// <summary>
         /// Sends a console message to the player's console.
