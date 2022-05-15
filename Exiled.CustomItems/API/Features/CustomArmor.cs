@@ -38,11 +38,6 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the Weight of the armor.
-        /// </summary>
-        public virtual float ArmorWeight { get; set; } = 5.5f;
-
-        /// <summary>
         /// Gets or sets how much faster stamina will drain when wearing this armor.
         /// </summary>
         [Description("The value must be above 1 and below 2")]
@@ -60,38 +55,20 @@ namespace Exiled.CustomItems.API.Features
         [Description("The value must be above 0 and below 100")]
         public virtual int VestEfficacy { get; set; } = 80;
 
-        /// <summary>
-        /// Gets or sets how much the players movement speed should be affected when wearing this armor. (higher values = slower movement).
-        /// </summary>
-        [Description("The value must be above 0 and below 1")]
-        public virtual float MovementSpeedMultiplier { get; set; } = 0.95f;
-
-        /// <summary>
-        /// Gets or sets how much worse <see cref="RoleType.ClassD"/> and <see cref="RoleType.Scientist"/>s are affected by wearing this armor.
-        /// </summary>
-        public virtual float CivilianDownsideMultiplier { get; set; } = 2f;
-
         /// <inheritdoc />
         public override void Give(Player player, bool displayMessage = true)
         {
-            Item item = Item.Create(Type);
+            Armor armor = (Armor)Item.Create(Type);
 
-            if (item is Armor armor)
-            {
-                armor.Weight = ArmorWeight;
+            armor.Weight = Weight;
+            armor.StaminaUseMultiplier = StaminaUseMultiplier;
 
-                armor.StaminaUseMultiplier = StaminaUseMultiplier;
+            armor.VestEfficacy = VestEfficacy;
+            armor.HelmetEfficacy = HelmetEfficacy;
 
-                armor.CivilianDownsideMultiplier = CivilianDownsideMultiplier;
-                armor.MovementSpeedMultiplier = MovementSpeedMultiplier;
+            player.AddItem(armor);
 
-                armor.VestEfficacy = VestEfficacy;
-                armor.HelmetEfficacy = HelmetEfficacy;
-            }
-
-            player.AddItem(item);
-
-            TrackedSerials.Add(item.Serial);
+            TrackedSerials.Add(armor.Serial);
 
             Timing.CallDelayed(0.05f, () => OnAcquired(player));
 
