@@ -63,6 +63,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
                 new(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
+
                 // Skip to checking if tutorial should be blocked
                 new(OpCodes.Beq_S, isTutorial),
 
@@ -104,80 +105,4 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-
-    ///// <summary>
-    ///// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
-    ///// </summary>
-    //[HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
-
-    //internal static class Scp173BeingLooked
-    //{
-    //    [HarmonyPrefix]
-    //    private static bool dumb(PlayableScps.Scp173 __instance)
-    //    {
-
-    //            int count = __instance._observingPlayers.Count;
-    //            foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
-    //            {
-    //                ReferenceHub value = allHub.Value;
-    //                CharacterClassManager characterClassManager = value.characterClassManager;
-
-    //                if (characterClassManager.CurClass == RoleType.Spectator || value == __instance.Hub || characterClassManager.IsAnyScp())
-    //                {
-
-    //                    if (__instance._observingPlayers.Contains(value))
-    //                    {
-    //                        __instance._observingPlayers.Remove(value);
-    //                    }
-
-    //                    continue;
-    //                }
-
-    //                Vector3 realModelPosition = __instance.Hub.playerMovementSync.RealModelPosition;
-    //                bool flag = false;
-    //                RoomIdentifier roomIdentifier = RoomIdUtils.RoomAtPosition(__instance.Hub.playerMovementSync.RealModelPosition);
-    //                if (VisionInformation.GetVisionInformation(value, realModelPosition, -2f, (roomIdentifier != null && roomIdentifier.Zone == FacilityZone.Surface) ? 80f : 40f, checkFog: false, checkLineOfSight: false, __instance.Hub.localCurrentRoomEffects).IsLooking && (!Physics.Linecast(realModelPosition + new Vector3(0f, 1.5f, 0f), value.PlayerCameraReference.position, VisionInformation.VisionLayerMask) || !Physics.Linecast(realModelPosition + new Vector3(0f, -1f, 0f), value.PlayerCameraReference.position, VisionInformation.VisionLayerMask)))
-    //                {
-    //                    flag = true;
-    //                }
-
-    //                Player temp = Player.Get(value);
-
-    //                if (temp != null)
-    //                {
-    //                    if (temp.Role.Type == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
-    //                    {
-    //                        continue;
-    //                    }
-    //                }
-
-    //                if (flag)
-    //                    {
-    //                        if (!__instance._observingPlayers.Contains(value))
-    //                        {
-    //                            __instance._observingPlayers.Add(value);
-    //                        }
-    //                    }
-    //                else if (__instance._observingPlayers.Contains(value))
-    //                {
-    //                    __instance._observingPlayers.Remove(value);
-    //                }
-    //            }
-
-    //            __instance._isObserved = (__instance._observingPlayers.Count > 0 || __instance.StareAtDuration > 0f);
-    //            if (count != __instance._observingPlayers.Count && __instance._blinkCooldownRemaining > 0f)
-    //            {
-    //                GameCore.Console.AddDebugLog("SCP173", $"Adjusting blink cooldown. Initial observers: {count}. " + $"New observers: {__instance._observingPlayers.Count}.", MessageImportance.LessImportant);
-    //                GameCore.Console.AddDebugLog("SCP173", $"Current blink cooldown: {__instance._blinkCooldownRemaining}", MessageImportance.LeastImportant);
-    //                __instance._blinkCooldownRemaining = Mathf.Max(0f, __instance._blinkCooldownRemaining + ((float)(__instance._observingPlayers.Count - count) * (__instance.BreakneckSpeedsActive ? 0f : 0f)));
-    //                GameCore.Console.AddDebugLog("SCP173", $"New blink cooldown: {__instance._blinkCooldownRemaining}", MessageImportance.LeastImportant);
-    //                if (__instance._blinkCooldownRemaining <= 0f)
-    //                {
-    //                __instance.BlinkReady = true;
-    //                }
-    //            }
-
-    //            return false;
-    //    }
-    //}
 }
