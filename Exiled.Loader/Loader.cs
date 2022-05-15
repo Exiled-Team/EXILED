@@ -284,6 +284,15 @@ namespace Exiled.Loader
                     return plugin;
                 }
             }
+            catch (ReflectionTypeLoadException reflectionTypeLoadException)
+            {
+                Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {reflectionTypeLoadException}");
+
+                foreach (var loaderException in reflectionTypeLoadException.LoaderExceptions)
+                {
+                    Log.Error(loaderException);
+                }
+            }
             catch (Exception exception)
             {
                 Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
