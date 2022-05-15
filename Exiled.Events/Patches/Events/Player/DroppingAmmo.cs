@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem"/>.
+    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropAmmo"/>.
     /// Adds the <see cref="DroppingAmmo"/> event.
     /// </summary>
     [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdDropAmmo))]
