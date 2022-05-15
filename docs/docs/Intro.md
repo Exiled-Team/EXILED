@@ -23,7 +23,7 @@ All **EXILED** events are coded with [Harmony](https://harmony.pardeike.net/) us
 EXILED - short for "EXtended In-runtime Library for External Development" is a plugin framework for SCP: Secret Laboratory compatible with MP2. It is not a direct replacement for SMOD, but it's purpose is to implement an event-based framework using Harmony patches, that plugin developers can utilize to develop plugins for SCP:SL servers.
 
 ## How do I install EXILED?
-See the [Installation](/docs/Installation) page for installation information.
+See the [Installation](/docs/Installation/Intro) page for installation information.
 
 ## How do I install plugins?
 All plugins contain a DLL file (found in its latest release) that is used to load the plugin. Place the plugin in the appropriate plugin folder.
