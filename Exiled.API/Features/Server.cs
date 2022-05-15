@@ -156,7 +156,7 @@ namespace Exiled.API.Features
         /// Data saved with session variables is not being saved on server restart. If the data must be saved after a restart, a database must be used instead.
         /// </para>
         /// </summary>
-        public static Dictionary<string, object> SessionVariables => new();
+        public static Dictionary<string, object> SessionVariables { get; } = new();
 
         /// <summary>
         /// Restarts the server, reconnects all players.
