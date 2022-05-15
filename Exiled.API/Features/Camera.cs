@@ -438,5 +438,11 @@ namespace Exiled.API.Features
         /// <param name="predicate">The condition to satify.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</returns>
         public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Returns the Camera in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Camera-related data.</returns>
+        public override string ToString() => $"{Zone} {Type} {Name} {Id} {IsBeingUsed}";
     }
 }

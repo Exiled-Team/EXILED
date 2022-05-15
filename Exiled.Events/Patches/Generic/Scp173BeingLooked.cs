@@ -37,28 +37,58 @@ namespace Exiled.Events.Patches.Generic
 
             Label jne = generator.DefineLabel();
             Label cnt = generator.DefineLabel();
+            Label isTutorial = generator.DefineLabel();
+            Label samePlayer = generator.DefineLabel();
 
             int addCheckOffset = 4;
             int addCheck = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Physics), nameof(Physics.Linecast), new[] { typeof(Vector3), typeof(Vector3), typeof(int) }))) + addCheckOffset;
 
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
+            LocalBuilder turnedPlayers = generator.DeclareLocal(typeof(HashSet<Player>));
+
             newInstructions.InsertRange(addCheck, new CodeInstruction[]
             {
+                // Player.get(current player in all hub)
                 new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, player.LocalIndex),
-                new(OpCodes.Brfalse, jne),
+
+                // Player is null (Generic static ref hub for example)
+                new(OpCodes.Brfalse_S, jne),
+
+                // Player.role == Tutorial
                 new(OpCodes.Ldloc, player.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
                 new(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
-                new(OpCodes.Bne_Un_S, jne),
-                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+
+                // Skip to checking if tutorial should be blocked
+                new(OpCodes.Beq_S, isTutorial),
+
+                // Scp173.TurnedPlayers.Remove(Current 173)
+                new(OpCodes.Call, PropertyGetter(typeof(API.Features.Scp173), nameof(API.Features.Scp173.TurnedPlayers))),
+                new(OpCodes.Stloc, turnedPlayers.LocalIndex),
+                new(OpCodes.Ldloc, turnedPlayers.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(PlayableScp), nameof(PlayableScp.Hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Remove))),
+
+                // Scp173.TurnedPlayers.Contains(Current looking player)
+                new(OpCodes.Ldloc, turnedPlayers.LocalIndex),
+                new(OpCodes.Ldloc, player.LocalIndex),
+                new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
+
+                // If true, skip adding to watching
+                new(OpCodes.Brtrue_S, cnt),
+
+                // If the player is tutorial, and allowed to not block, skip adding to watching
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))).WithLabels(isTutorial),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Exiled.Events.Events.Config.CanTutorialBlockScp173))),
-                new(OpCodes.Brfalse, cnt),
+                new(OpCodes.Brfalse_S, cnt),
             });
 
             int offset = -3;
@@ -75,80 +105,4 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-
-    ///// <summary>
-    ///// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
-    ///// </summary>
-    //[HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
-
-    //internal static class Scp173BeingLooked
-    //{
-    //    [HarmonyPrefix]
-    //    private static bool dumb(PlayableScps.Scp173 __instance)
-    //    {
-
-    //            int count = __instance._observingPlayers.Count;
-    //            foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
-    //            {
-    //                ReferenceHub value = allHub.Value;
-    //                CharacterClassManager characterClassManager = value.characterClassManager;
-
-    //                if (characterClassManager.CurClass == RoleType.Spectator || value == __instance.Hub || characterClassManager.IsAnyScp())
-    //                {
-
-    //                    if (__instance._observingPlayers.Contains(value))
-    //                    {
-    //                        __instance._observingPlayers.Remove(value);
-    //                    }
-
-    //                    continue;
-    //                }
-
-    //                Vector3 realModelPosition = __instance.Hub.playerMovementSync.RealModelPosition;
-    //                bool flag = false;
-    //                RoomIdentifier roomIdentifier = RoomIdUtils.RoomAtPosition(__instance.Hub.playerMovementSync.RealModelPosition);
-    //                if (VisionInformation.GetVisionInformation(value, realModelPosition, -2f, (roomIdentifier != null && roomIdentifier.Zone == FacilityZone.Surface) ? 80f : 40f, checkFog: false, checkLineOfSight: false, __instance.Hub.localCurrentRoomEffects).IsLooking && (!Physics.Linecast(realModelPosition + new Vector3(0f, 1.5f, 0f), value.PlayerCameraReference.position, VisionInformation.VisionLayerMask) || !Physics.Linecast(realModelPosition + new Vector3(0f, -1f, 0f), value.PlayerCameraReference.position, VisionInformation.VisionLayerMask)))
-    //                {
-    //                    flag = true;
-    //                }
-
-    //                Player temp = Player.Get(value);
-
-    //                if (temp != null)
-    //                {
-    //                    if (temp.Role.Type == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
-    //                    {
-    //                        continue;
-    //                    }
-    //                }
-
-    //                if (flag)
-    //                    {
-    //                        if (!__instance._observingPlayers.Contains(value))
-    //                        {
-    //                            __instance._observingPlayers.Add(value);
-    //                        }
-    //                    }
-    //                else if (__instance._observingPlayers.Contains(value))
-    //                {
-    //                    __instance._observingPlayers.Remove(value);
-    //                }
-    //            }
-
-    //            __instance._isObserved = (__instance._observingPlayers.Count > 0 || __instance.StareAtDuration > 0f);
-    //            if (count != __instance._observingPlayers.Count && __instance._blinkCooldownRemaining > 0f)
-    //            {
-    //                GameCore.Console.AddDebugLog("SCP173", $"Adjusting blink cooldown. Initial observers: {count}. " + $"New observers: {__instance._observingPlayers.Count}.", MessageImportance.LessImportant);
-    //                GameCore.Console.AddDebugLog("SCP173", $"Current blink cooldown: {__instance._blinkCooldownRemaining}", MessageImportance.LeastImportant);
-    //                __instance._blinkCooldownRemaining = Mathf.Max(0f, __instance._blinkCooldownRemaining + ((float)(__instance._observingPlayers.Count - count) * (__instance.BreakneckSpeedsActive ? 0f : 0f)));
-    //                GameCore.Console.AddDebugLog("SCP173", $"New blink cooldown: {__instance._blinkCooldownRemaining}", MessageImportance.LeastImportant);
-    //                if (__instance._blinkCooldownRemaining <= 0f)
-    //                {
-    //                __instance.BlinkReady = true;
-    //                }
-    //            }
-
-    //            return false;
-    //    }
-    //}
 }

@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
-    /// Contains all informations before a player interacts with SCP-330.
+    /// Contains all information before a player picks up an SCP-330.
     /// </summary>
     public class PickingUpScp330EventArgs : EventArgs
     {

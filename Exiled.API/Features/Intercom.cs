@@ -33,7 +33,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
         /// </summary>
-        public static bool InUse => State == global::Intercom.State.Transmitting || State == global::Intercom.State.TransmittingBypass || State == global::Intercom.State.AdminSpeaking;
+        public static bool InUse => State is global::Intercom.State.Transmitting or global::Intercom.State.TransmittingBypass or global::Intercom.State.AdminSpeaking;
 
         /// <summary>
         /// Gets the <see cref="Player"/> that is using the intercom.<br>Will be <see langword="null"/> if <see cref="InUse"/> is <see langword="false"/>.</br>
