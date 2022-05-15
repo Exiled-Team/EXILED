@@ -140,7 +140,7 @@ namespace Exiled.API.Features.Roles
             where T : Role
         {
             role = this is T t ? t : null;
-            return this is T;
+            return role is not null;
         }
 
         /// <inheritdoc/>
