@@ -2,7 +2,7 @@ name: Publish Exiled Docs
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
       - master
