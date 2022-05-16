@@ -267,9 +267,9 @@ namespace Exiled.API.Features
         /// <returns><see cref="Pickup"/> object.</returns>
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
-            List<Pickup> pickups = type != ItemType.None
-                ? Pickups.Where(p => p.Type == type).ToList()
-                : Pickups.ToList();
+            List<Pickup> pickups = (type != ItemType.None
+                ? Pickups.Where(p => p.Type == type)
+                : Pickups).ToList();
             return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
         }
 
