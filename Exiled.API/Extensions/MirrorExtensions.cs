@@ -34,8 +34,8 @@ namespace Exiled.API.Extensions
         private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new();
         private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new(WriterExtensionsValue);
         private static readonly ReadOnlyDictionary<string, ulong> ReadOnlySyncVarDirtyBitsValue = new(SyncVarDirtyBitsValue);
-        private static MethodInfo setDirtyBitsMethodInfoValue = null;
-        private static MethodInfo sendSpawnMessageMethodInfoValue = null;
+        private static MethodInfo setDirtyBitsMethodInfoValue;
+        private static MethodInfo sendSpawnMessageMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -95,34 +95,14 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets a <see cref="NetworkBehaviour.SetDirtyBit(ulong)"/>'s <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SetDirtyBitsMethodInfo
-        {
-            get
-            {
-                if (setDirtyBitsMethodInfoValue is null)
-                {
-                    setDirtyBitsMethodInfoValue = typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
-                }
-
-                return setDirtyBitsMethodInfoValue;
-            }
-        }
+        public static MethodInfo SetDirtyBitsMethodInfo =>
+            setDirtyBitsMethodInfoValue ??= typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
 
         /// <summary>
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SendSpawnMessageMethodInfo
-        {
-            get
-            {
-                if (sendSpawnMessageMethodInfoValue is null)
-                {
-                    sendSpawnMessageMethodInfoValue = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
-                }
-
-                return sendSpawnMessageMethodInfoValue;
-            }
-        }
+        public static MethodInfo SendSpawnMessageMethodInfo =>
+            sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
         /// Shaking target <see cref="Player"/> window.
@@ -233,7 +213,7 @@ namespace Exiled.API.Extensions
             StringBuilder annoucement = new();
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
-            for (int i = 0; i < cassies.Count(); i++)
+            for (int i = 0; i < cassies.Length; i++)
                 annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
 
             SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
