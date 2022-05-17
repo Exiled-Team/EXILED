@@ -18,26 +18,26 @@ namespace Exiled.API.Enums
         /// <summary>
         /// The Surface Zone.
         /// </summary>
-        Surface,
+        Surface = 1,
 
         /// <summary>
         /// The Entrance Zone.
         /// </summary>
-        Entrance,
+        Entrance = 2,
 
         /// <summary>
         /// The Heavy Containment Zone.
         /// </summary>
-        HeavyContainment,
+        HeavyContainment = 4,
 
         /// <summary>
         /// The Light Containment Zone.
         /// </summary>
-        LightContainment,
+        LightContainment = 8,
 
         /// <summary>
         /// An unspecified zone.
         /// </summary>
-        Unspecified,
+        Unspecified = 16,
     }
 }
