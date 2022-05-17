@@ -341,7 +341,7 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
-        /// Resync CustomRole Friendly Fire with Player, adds any new conditions if there are any.
+        /// ResyncCustomRole Friendly Fire with Player (Append, or Overwrite).
         /// </summary>
         /// <param name="roleToSync"> <see cref="CustomRole"/> to sync with player. </param>
         /// <param name="player"> <see cref="Player"/> Player to add custom role to. </param>
@@ -357,6 +357,16 @@ namespace Exiled.CustomRoles.API.Features
             {
                 player.TryAddCustomRoleFriendlyFire(roleToSync.Name, roleToSync.CustomRoleFFMultiplier);
             }
+        }
+
+        /// <summary>
+        /// Force sync CustomRole Friendly Fire with Player (Set to).
+        /// </summary>
+        /// <param name="roleToSync"> <see cref="CustomRole"/> to sync with player. </param>
+        /// <param name="player"> <see cref="Player"/> Player to add custom role to. </param>
+        public static void ForceSyncSetPlayerFriendlyFire(CustomRole roleToSync, Player player)
+        {
+            player.TrySetCustomRoleFriendlyFire(roleToSync.Name, roleToSync.CustomRoleFFMultiplier);
         }
 
         /// <summary>

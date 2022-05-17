@@ -1386,6 +1386,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
+        /// </summary>
+        /// <param name="roleType"> Role to associate FF rules to. </param>
+        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
+        public void TrySetCustomRoleFriendlyFire(string roleType, Dictionary<RoleType, float> customRoleFriendlyFireMultiplier)
+        {
+            this.CustomRoleFriendlyFireMultiplier[roleType] = customRoleFriendlyFireMultiplier;
+        }
+
+        /// <summary>
         /// Tries to remove <see cref="RoleType"/> from FriendlyFire rules.
         /// </summary>
         /// <param name="role"> Role to add. </param>
