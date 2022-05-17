@@ -324,10 +324,7 @@ namespace Exiled.API.Features
         {
             Transform transform = gameObject.transform;
 
-            if (transform.parent is null)
-                return ZoneType.Surface;
-
-            return transform.parent.name switch
+            return transform.parent?.name switch
             {
                 "HeavyRooms" => ZoneType.HeavyContainment,
                 "LightRooms" => ZoneType.LightContainment,
