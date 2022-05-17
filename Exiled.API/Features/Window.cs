@@ -59,7 +59,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the window's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => GameObject.transform;
+        public Transform Transform => Base._transform;
 
         /// <summary>
         /// Gets the <see cref="Room"/>.
