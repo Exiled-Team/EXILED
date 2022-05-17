@@ -1318,7 +1318,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="customRoleName"> Role associated for CustomFF. </param>
         /// <param name="ffRules"> Roles to add with friendly fire values. </param>
-        /// <param name="overwrite"> Whether to overwrite current values if they exist. </param>
+        /// <param name="overwrite"> Whether to overwrite current values if they exist - does NOT delete previous entries if they are not in provided rules. </param>
         /// <returns> Whether the item was able to be added. </returns>
         public bool TryAddCustomRoleFriendlyFire(string customRoleName, Dictionary<RoleType, float> ffRules, bool overwrite = false)
         {
@@ -1370,7 +1370,8 @@ namespace Exiled.API.Features
         /// <param name="customRoleFriendlyFireMultiplier"> Custom role with FF role rules. </param>
         public void TryAddCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleType, float>> customRoleFriendlyFireMultiplier)
         {
-            foreach(KeyValuePair<string, Dictionary<RoleType, float>> newRolesWithFF in customRoleFriendlyFireMultiplier){
+            foreach(KeyValuePair<string, Dictionary<RoleType, float>> newRolesWithFF in customRoleFriendlyFireMultiplier)
+            {
                 this.TryAddCustomRoleFriendlyFire(newRolesWithFF.Key, newRolesWithFF.Value);
             }
         }

@@ -341,6 +341,25 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
+        /// Resync CustomRole Friendly Fire with Player, adds any new conditions if there are any.
+        /// </summary>
+        /// <param name="roleToSync"> <see cref="CustomRole"/> to sync with player. </param>
+        /// <param name="player"> <see cref="Player"/> Player to add custom role to. </param>
+        /// <param name="overwrite"> <see cref="bool"/> whether to force sync (Overwriting previous information). </param>
+        public static void SyncPlayerFriendlyFire(CustomRole roleToSync, Player player, bool overwrite = false)
+        {
+            if(overwrite)
+            {
+                player.TryAddCustomRoleFriendlyFire(roleToSync.Name, roleToSync.CustomRoleFFMultiplier, overwrite);
+                player.UniqueRole = roleToSync.Name;
+            }
+            else
+            {
+                player.TryAddCustomRoleFriendlyFire(roleToSync.Name, roleToSync.CustomRoleFFMultiplier);
+            }
+        }
+
+        /// <summary>
         /// Checks if the given player has this role.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
