@@ -31,13 +31,33 @@ namespace Exiled.API.Enums
         HeavyContainment = 4,
 
         /// <summary>
+        /// The Entrance and HeavyContainment Zone.
+        /// </summary>
+        EntranceHeavy = Entrance | HeavyContainment,
+
+        /// <summary>
         /// The Light Containment Zone.
         /// </summary>
         LightContainment = 8,
 
         /// <summary>
+        /// The Light and Heavy Containment Zone.
+        /// </summary>
+        HeavyLightContainment = HeavyContainment | LightContainment,
+
+        /// <summary>
+        /// The Pocket Zone.
+        /// </summary>
+        Pocket = 16,
+
+        /// <summary>
+        /// Inside the facility
+        /// </summary>
+        Facility = HeavyLightContainment | Entrance | Pocket,
+
+        /// <summary>
         /// An unspecified zone.
         /// </summary>
-        Unspecified = 16,
+        Unspecified = 32,
     }
 }

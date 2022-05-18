@@ -320,20 +320,21 @@ namespace Exiled.API.Features
             };
         }
 
-        private static ZoneType FindZone(GameObject gameObject)
+        private static ZoneType FindZone(string rawName)
         {
-            Transform transform = gameObject.transform;
+            rawName = rawName.RemoveBracketsOnEndOfName();
 
-            if (transform.parent is null)
+            if (rawName.StartsWith("EZ_"))
+                return ZoneType.Entrance;
+            if (rawName.StartsWith("HCZ_"))
+                return rawName.StartsWith("HCZ_EZ_") ? ZoneType.EntranceHeavy : ZoneType.HeavyContainment;
+            if (rawName.StartsWith("LCZ_"))
+                return rawName.StartsWith("LCZ_Chkp") ? ZoneType.HeavyLightContainment : ZoneType.LightContainment;
+            if (rawName == "PocketWorld")
+                return ZoneType.Pocket;
+            if (rawName == "Outside")
                 return ZoneType.Surface;
-
-            return transform.parent.name switch
-            {
-                "HeavyRooms" => ZoneType.HeavyContainment,
-                "LightRooms" => ZoneType.LightContainment,
-                "EntranceRooms" => ZoneType.Entrance,
-                _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
-            };
+            return ZoneType.Unspecified;
         }
 
         private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController)
@@ -399,7 +400,7 @@ namespace Exiled.API.Features
 
         private void Awake()
         {
-            Zone = FindZone(gameObject);
+            Zone = FindZone(gameObject.name);
             Type = FindType(gameObject.name);
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
 
