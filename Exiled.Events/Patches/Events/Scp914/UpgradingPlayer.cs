@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 // moveVector
                 new(OpCodes.Ldarg_3),
 
-                // var ev = new UpgradingPlayerEventArgs(player, upgradeInventory, heldonly, setting);
+                // var ev = new UpgradingPlayerEventArgs(player, upgradeInventory, heldonly, setting, moveVector);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPlayerEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
