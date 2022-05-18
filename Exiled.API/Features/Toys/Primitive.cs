@@ -84,16 +84,18 @@ namespace Exiled.API.Features.Toys
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
-            Primitive primitve = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            primitve.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitve.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitve.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
+            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
-                primitve.Spawn();
+                primitive.Spawn();
 
-            return primitve;
+            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+
+            return primitive;
         }
 
         /// <summary>
