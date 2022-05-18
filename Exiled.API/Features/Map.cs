@@ -238,7 +238,7 @@ namespace Exiled.API.Features
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
-                if (zoneTypes == ZoneType.Unspecified || (room is not null && zoneTypes == room.Zone))
+                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room is not null && zoneTypes.HasFlag(room.Zone)))
                     controller.ServerFlickerLights(duration);
             }
         }
