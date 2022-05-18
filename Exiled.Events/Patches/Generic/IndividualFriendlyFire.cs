@@ -95,6 +95,8 @@ namespace Exiled.Events.Patches.Generic
                     return true;
                 }
 
+                Log.Debug($"CheckFriendlyFirePlayer, What was attacker role {attacker.Role} and victim {victim.Role}", Loader.Loader.ShouldDebugBeShown);
+
                 if (!victim.UniqueRole.Equals(string.Empty))
                 {
                     // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us

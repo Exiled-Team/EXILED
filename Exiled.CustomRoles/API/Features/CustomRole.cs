@@ -119,7 +119,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier.
         /// </summary>
-        public Dictionary<RoleType, float> CustomRoleFFMultiplier { get; set; } = new();
+        public virtual Dictionary<RoleType, float> CustomRoleFFMultiplier { get; set; } = new();
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
