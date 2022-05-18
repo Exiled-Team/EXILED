@@ -12,7 +12,6 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Facility zone types.
     /// </summary>
-    [Flags]
     public enum ZoneType
     {
         /// <summary>
