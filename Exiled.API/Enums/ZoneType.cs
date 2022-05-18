@@ -16,9 +16,9 @@ namespace Exiled.API.Enums
     public enum ZoneType
     {
         /// <summary>
-        /// The Surface Zone.
+        /// An unspecified zone.
         /// </summary>
-        Surface = 1,
+        Unspecified = 1,
 
         /// <summary>
         /// The Entrance Zone.
@@ -56,8 +56,8 @@ namespace Exiled.API.Enums
         Facility = HeavyLightContainment | Entrance | Pocket,
 
         /// <summary>
-        /// An unspecified zone.
+        /// The Surface Zone.
         /// </summary>
-        Unspecified = 32,
+        Surface = 32,
     }
 }
