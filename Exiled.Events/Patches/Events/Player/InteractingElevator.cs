@@ -7,50 +7,61 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
 
-#pragma warning disable SA1313
+    using HarmonyLib;
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patches <see cref="PlayerInteract.UserCode_CmdUseElevator(UnityEngine.GameObject)"/>.
     /// Adds the <see cref="Handlers.Player.InteractingElevator"/> event.
     /// </summary>
-    [HarmonyLib.HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUseElevator), typeof(UnityEngine.GameObject))]
-    internal static class InteractingElevator
+    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUseElevator))]
+    internal class InteractingElevator
     {
-        private static bool Prefix(PlayerInteract __instance, UnityEngine.GameObject elevator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            int offset = -2;
+            int index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(global::Lift), nameof(global::Lift.UseLift)))) + offset;
+
+            Label continueLabel = generator.DefineLabel();
+
+            // InteractingElevatorEventArgs ev = new(API.Features.Player.Get(__instance._hub), elevator1, component);
+            // Handlers.Player.OnInteractingElevator(interactingEventArgs);
+            // if (!ev.IsAllowed)
+            //     continue;
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance.CanInteract || elevator is null)
-                    return false;
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldloc_3),
+                new(OpCodes.Ldloc_0),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingElevatorEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingElevator))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingElevatorEventArgs), nameof(InteractingElevatorEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, continueLabel),
+            });
 
-                Lift component = elevator.GetComponent<Lift>();
-                if (component is null)
-                    return false;
+            offset = 1;
+            index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract)))) + offset;
 
-                foreach (Lift.Elevator elevator1 in component.elevators)
-                {
-                    if (!__instance.ChckDis(elevator1.door.transform.position))
-                        continue;
+            newInstructions[index].labels.Add(continueLabel);
 
-                    InteractingElevatorEventArgs interactingEventArgs = new(API.Features.Player.Get(__instance._hub), elevator1, component);
-                    Handlers.Player.OnInteractingElevator(interactingEventArgs);
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                    if (interactingEventArgs.IsAllowed)
-                    {
-                        elevator.GetComponent<Lift>().UseLift();
-                        __instance.OnInteract();
-                    }
-                }
-
-                return false;
-            }
-            catch (System.Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator:\n{e}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
