@@ -45,7 +45,7 @@ EXILED - низкоуровневый фреймворк для серверов
 Вот и все, теперь EXILED должен быть установлен и активен при следующей загрузке вашего сервера. Обратите внимание, что EXILED сам по себе почти ничего не делает, поэтому обязательно получайте новые плагины с **[нашего сервера Discord](https://discord.gg/PyUkWTg)**.
 - Чтобы установить плагин, просто:
   - Скачайте плагин с [*их* страницы релизов](https://i.imgur.com/u34wgPD.jpg) (**он ДОЛЖЕН быть `.dll`!**)
-  - Переместите его в: ``C:`\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (переместите его сюда, нажав Win + R, а затем написав `%appdata%`)
+  - Переместите его в: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (переместите его сюда, нажав Win + R, а затем написав `%appdata%`)
 
 # Linux
 ### Автоматическая установка ([подробнее](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
