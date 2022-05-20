@@ -41,10 +41,10 @@ namespace Exiled.Events.Patches.Events.Player
             Label returnLabel = generator.DefineLabel();
             Label continueLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(this.Hub)
-                new(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Ldfld, Field(typeof(PlayerEffect), nameof(PlayerEffect.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),

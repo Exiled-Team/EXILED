@@ -28,16 +28,15 @@ namespace Exiled.API.Features
     public class Door
     {
         /// <summary>
-        /// A <see cref="List{T}"/> of <see cref="Door"/> on the map.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
         /// </summary>
-        internal static readonly List<Door> DoorsValue = new(250);
-
-        private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
+        internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
+        [Obsolete("Use new Door(DoorVariant, Room) instead.", true)]
         public Door(DoorVariant door)
         {
             DoorVariantToDoor.Add(door, this);
@@ -47,9 +46,22 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Door"/> class.
+        /// </summary>
+        /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
+        /// <param name="room">The <see cref="Room"/> for this door.</param>
+        public Door(DoorVariant door, Room room)
+        {
+            DoorVariantToDoor.Add(door, this);
+            Base = door;
+            Room = room;
+            Type = GetDoorType();
+        }
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IEnumerable<Door> List => DoorsValue.AsReadOnly();
+        public static IEnumerable<Door> List => DoorVariantToDoor.Values.ToList().AsReadOnly();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
@@ -215,7 +227,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the door's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room.Get(room => room.Doors.Contains(this)).FirstOrDefault().Zone;
+        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
@@ -224,7 +236,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
         public static Door Get(DoorVariant doorVariant) => DoorVariantToDoor.ContainsKey(doorVariant)
             ? DoorVariantToDoor[doorVariant]
-            : new Door(doorVariant);
+            : new Door(doorVariant, doorVariant.GetComponentInParent<Room>());
 
         /// <summary>
         /// Gets a <see cref="Door"/> given the specified name.
@@ -259,7 +271,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorsValue;
+            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
             return doors[UnityEngine.Random.Range(0, doors.Count)];
         }
 
@@ -275,7 +287,7 @@ namespace Exiled.API.Features
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
-                Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                Timing.CallDelayed(duration, () => door.Unlock());
             }
         }
 
@@ -302,7 +314,7 @@ namespace Exiled.API.Features
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
-                Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                Timing.CallDelayed(duration, () => door.Unlock());
             }
         }
 
@@ -312,7 +324,7 @@ namespace Exiled.API.Features
         public static void UnlockAll()
         {
             foreach (Door door in List)
-                door.ChangeLock(DoorLockType.None);
+                door.Unlock();
         }
 
         /// <summary>
@@ -334,7 +346,7 @@ namespace Exiled.API.Features
         public static void UnlockAll(Func<Door, bool> predicate)
         {
             foreach (Door door in Get(predicate))
-                door.ChangeLock(DoorLockType.None);
+                door.Unlock();
         }
 
         /// <summary>
@@ -427,8 +439,19 @@ namespace Exiled.API.Features
         public void Lock(float time, DoorLockType flagsToUnlock)
         {
             ChangeLock(flagsToUnlock);
-            DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+            Unlock(time, flagsToUnlock);
         }
+
+        /// <summary>
+        /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
+        /// </summary>
+        /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
+        /// <param name="room">The <see cref="Room"/> this door is in.</param>
+        /// <remarks>The 'room' parameter is only used if a new door wrapper needs to be created.</remarks>
+        /// <returns>A <see cref="Door"/> wrapper object.</returns>
+        internal static Door Get(DoorVariant doorVariant, Room room) => DoorVariantToDoor.ContainsKey(doorVariant)
+            ? DoorVariantToDoor[doorVariant]
+            : new Door(doorVariant, room);
 
         private DoorType GetDoorType()
         {

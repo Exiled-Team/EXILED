@@ -65,7 +65,6 @@ namespace Exiled.Events.Handlers.Internal
             Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
             Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
             GenerateTeslaGates();
-            GenerateDoors();
             GenerateCameras();
             GenerateRooms();
             GenerateWindow();
@@ -91,12 +90,6 @@ namespace Exiled.Events.Handlers.Internal
                 Room.RoomsValue.Add(Room.CreateComponent(roomObject));
 
             ListPool<GameObject>.Shared.Return(roomObjects);
-        }
-
-        private static void GenerateDoors()
-        {
-            foreach (DoorVariant doorVariant in Object.FindObjectsOfType<DoorVariant>())
-                Door.DoorsValue.Add(Door.Get(doorVariant));
         }
 
         private static void GenerateWindow()

@@ -41,10 +41,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of players that are currently viewing SCP-173. Can be empty.
         /// </summary>
-        public IReadOnlyCollection<Player> ObservingPlayers
-        {
-            get => Script._observingPlayers.Select(hub => Player.Get(hub)).ToList().AsReadOnly();
-        }
+        public IReadOnlyCollection<Player> ObservingPlayers => Script._observingPlayers.Select(Player.Get).ToList().AsReadOnly();
 
         /// <summary>
         /// Gets SCP-173's move speed.

@@ -247,6 +247,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Returns the Room in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Room-related data.</returns>
+        public override string ToString() => $"{Type} {Zone} {Doors} {Cameras} {TeslaGate}";
+
+        /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
         /// We can add parameters to be set privately here.
         /// </summary>
@@ -350,7 +356,7 @@ namespace Exiled.API.Features
                                 case Scp079Interactable.InteractableType.Door:
                                 {
                                     if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                        doors.Add(Door.Get(doorVariant));
+                                        doors.Add(Door.Get(doorVariant, this));
                                     break;
                                 }
 

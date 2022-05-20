@@ -238,7 +238,7 @@ namespace Exiled.API.Features
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
-                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room is not null && zoneTypes.HasFlag(room.Zone)))
+                if (zoneTypes == ZoneType.Unspecified || (room is not null && zoneTypes == room.Zone))
                     controller.ServerFlickerLights(duration);
             }
         }
@@ -267,9 +267,9 @@ namespace Exiled.API.Features
         /// <returns><see cref="Pickup"/> object.</returns>
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
-            List<Pickup> pickups = type != ItemType.None
-                ? Pickups.Where(p => p.Type == type).ToList()
-                : Pickups.ToList();
+            List<Pickup> pickups = (type != ItemType.None
+                ? Pickups.Where(p => p.Type == type)
+                : Pickups).ToList();
             return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
         }
 
@@ -349,7 +349,7 @@ namespace Exiled.API.Features
         internal static void ClearCache()
         {
             Room.RoomsValue.Clear();
-            Door.DoorsValue.Clear();
+            Door.DoorVariantToDoor.Clear();
             Camera.CamerasValue.Clear();
             Window.WindowValue.Clear();
             Lift.LiftsValue.Clear();
