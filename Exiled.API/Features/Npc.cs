@@ -25,7 +25,8 @@ namespace Exiled.API.Features
         /// <param name="roleType">The role of the npc.</param>
         /// <param name="name">The name of the npc.</param>
         /// <param name="scale">The size of the npc.</param>
-        public Npc(RoleType roleType, string name, Vector3 scale)
+        /// <param name="triggerScps">Whether or not the npc should trigger scps</param>
+        public Npc(RoleType roleType, string name, Vector3 scale, bool triggerScps = false)
         {
             GameObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
             Dictionary.Add(GameObject, this);
@@ -35,6 +36,8 @@ namespace Exiled.API.Features
             ReferenceHub.playerStats.StatModules[0].CurValue = 100;
             ReferenceHub.nicknameSync.Network_myNickSync = name;
             ReferenceHub.queryProcessor._ipAddress = "127.0.0.WAN";
+
+            TriggerScps = triggerScps;
 
             ReferenceHub.characterClassManager.IsVerified = true;
 
@@ -71,6 +74,11 @@ namespace Exiled.API.Features
         /// Gets the created <see cref="Exiled.API.Features.Player"/> to represent the npc.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the npc should trigger scps.
+        /// </summary>
+        public bool TriggerScps { get; set; }
 
         /// <summary>
         /// Gets or sets the NPC's position.

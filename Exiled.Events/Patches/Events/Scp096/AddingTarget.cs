@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Scp096
         // Nao convert to transpiler pls
         private static bool Prefix(GameObject target)
         {
-            return !target.IsNpc();
+            return target.IsNpc() && !Npc.Dictionary[target.gameObject].TriggerScps;
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
