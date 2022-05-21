@@ -26,11 +26,11 @@ EXILED的安装可能看起来比别的框架更加复杂，但其实并不复�
 ### 全自动安装 ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
 **备注**: 在运行安装包前请确保你所使用的用户有管理员权限。
 
-  - Download the **`Exiled.Installer-Win.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> click the Installer)
-  - Place it on your server folder (download the dedicated server if you haven't)
-  - Double click the **`Exiled.Installer.exe`** or **[download this .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** and place it in the server folder to install the latest pre-release
-  - To install and get plugins, check the [Installing plugins](#installing-plugins) section down below.
-**备注:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or one with Admin privileges)
+  - 下载 **`Exiled.Installer-Win.exe` [从这里](https://github.com/galaxy119/EXILED/releases)** (点击 Assets -> 下载安装包)
+  - 放置到你的服务器文件夹 (先下载服务器端文件如果你还没有)
+  - 双击 **`Exiled.Installer.exe`** 或 **[下载这个 .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** 并放置到服务器文件夹中来安装最新的预更新
+  - 获取以及安装插件，请参考下面的[安装插件](#installing-plugins)部分。
+**备注:** 如果你正在一个远程服务器上安装EXILED，请确保你运行的.exe的用户和你运行SCP:SL服务器的一致
 
 ### 手动安装
   - 下载 **`Exiled.tar.gz` [从这里](https://github.com/galaxy119/EXILED/releases)**
@@ -43,15 +43,15 @@ EXILED的安装可能看起来比别的框架更加复杂，但其实并不复�
       Press Win + R and type `%appdata%`
 
 ### 安装插件
-That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
-- To install a plugin, simply:
-  - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
-  - Move it to: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
+现在EXILED已经安装好了，并会在下次你启动你的服务器时随之启动。请注意EXILED本身基本不会做出任何事情，所以来 **[我们的Discord服务器](https://discord.gg/PyUkWTg)** 获取最新的插件吧。
+- 想要安装插件，只需要:
+  - 下载一个插件从[*他们的*Releases页面](https://i.imgur.com/u34wgPD.jpg) (**它必须是个`.dll`!**)
+  - 移动到: ``C:\用户\(你的用户)\AppData\Roaming\EXILED\Plugins`` (可以通过按 Win + R键输入`%appdata%快速定位到AppData`)
 
 # Linux
 ### 全自动安装 ([更多信息](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
 
-**备注:** If you are installing EXILED on a remote server, make sure you run the Installer as the same user that runs your SCP:SL servers (or root)
+**备注:** 如果你正在一个远程服务器上安装EXILED，请确保你运行的.exe的用户和你运行SCP:SL服务器的一致
 
   - 下载 **`Exiled.Installer-Linux` [从这里](https://github.com/galaxy119/EXILED/releases)** (点击 Assets -> 下载安装包)
   - Install it by either typing **`./Exiled.Installer-Linux --path /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux`**.
@@ -59,22 +59,22 @@ That's it, EXILED should now be installed and active the next time you boot up y
   - 另一个例子, 如果你把 `Exiled.Installer-Linux` 放到了你服务器的文件夹: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
   - 获取以及安装插件，请参考下面的[安装插件](#installing-plugins-1)部分。
 
-### Manual installation
-  - **Ensure** you are logged in on the user that runs the SCP servers.
-  - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)** (SSH: right click and to get the `Exiled.tar.gz` link, then type: **`wget (link_to_download)`**)
+### 手动安装
+  - **确保** 你登录的是用于运行SCP服务器的用户。
+  - 下载 **`Exiled.tar.gz` [从这里](https://github.com/galaxy119/EXILED/releases)** (SSH: 右键获取 `Exiled.tar.gz` 链接, 然后输入: **`wget (下载链接)`**)
   - To extract it to your current folder, type **``tar -xzvf EXILED.tar.gz``**
   - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
   - Move the **`EXILED`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
 
 ### 安装插件
-That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
-- To install a plugin, simply:
-  - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
-  - Move it to: ``~/.config/EXILED/Plugins`` (if you use your SSH as root, then search for the correct `.config` which will be inside `/home/(SCP Server User)`)
+现在EXILED已经安装好了，并会在下次你启动你的服务器时随之启动。请注意EXILED本身基本不会做出任何事情，所以来 **[我们的Discord服务器](https://discord.gg/PyUkWTg)** 获取最新的插件吧。
+- 想要安装插件，只需要:
+  - 下载一个插件从[*他们的*Releases页面](https://i.imgur.com/u34wgPD.jpg) (**它必须是个`.dll`!**)
+  - 移动到: ``~/.config/EXILED/Plugins`` (if you use your SSH as root, then search for the correct `.config` which will be inside `/home/(SCP Server User)`)
 
 # 配置文件（Config）
 EXILED自身提供一些配置选项。
-All of them are auto-generated at the server startup, they are located at ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\Configs\(ServerPortHere)-config.yml`` on Windows).
+这些配置都会在服务器启动时被自动生成， they are located at ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\Configs\(ServerPortHere)-config.yml`` on Windows).
 
 Plugin configs will ***NOT*** be in the aforementioned ``config_gameplay.txt`` file, instead, plugin configs are set in the ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\(ServerPortHere)-config.yml`` on Windows).
 However, some plugins might get their config settings from other locations on their own, this is simply the default EXILED location for them, so refer to the individual plugin if there are issues.
@@ -98,8 +98,8 @@ However, some plugins might get their config settings from other locations on th
 MEC协程 are basically timed methods, that support waiting periods of time before continuing execution, without interrupting/sleeping the main game thread.
 MEC协程可以用于Unity, 不像传统的线程 ***请勿尝试增加新的线程与Unity交互，它会导致炸服的。***
 
-To use MEC, you will need to reference ``Assembly-CSharp-firstpass.dll`` from the server files, and include ``using MEC;``.
-Example of calling a simple coroutine, that repeats itself with a delay between each loop:
+如需使用 MEC, 你需要引用``Assembly-CSharp-firstpass.dll``从服务器文件中, 并包括 ``using MEC;``.
+一个简单的协程例子，循环重复之间有一个延迟:
 ```cs
 using MEC;
 using Exiled.API.Features;
@@ -114,21 +114,21 @@ public IEnumerator<float> MyCoroutine()
     for (;;) //repeat the following infinitely
     {
         Log.Info("Hey I'm a infinite loop!"); //Call Log.Info to print a line to the game console/server logs.
-        yield return Timing.WaitForSeconds(5f); //Tells the coroutine to wait 5 seconds before continuing, since this is at the end of the loop, it effectively stalls the loop from repeating for 5 seconds.
+        yield return Timing.WaitForSeconds(5f); //告诉协程等待5秒后再继续，鉴于这是循环的结尾，这将会有效的使得循环每次在结尾时都会停顿5秒。
     }
 }
 ```
 
-It is ***strongly*** recommended that you do some googling, or ask around in the Discord if you are unfamiliar with MEC and would like to learn more, get advice, or need help. Questions, no matter how 'stupid' they are, will always be answered as helpfully and clearly as possible for plugin developers to excell. Better code is better for everyone.
+如果你对MEC仍然不熟悉，或是想要了解更多、得到建议、又或是寻求帮助。***强烈建议***  你去百度或谷歌一下，或在Discord里面提问。无论问题本身有多“蠢”，我们都会尽可能的尝试帮助你解决问题。*好的代码对所有人都有益*。
 
-### Dynamic Updates
+### 动态更新
 EXILED as a framework supports dynamic reloading of plugin assemblies without requiring a server reboot.
 For example, if you start the server with just `Exiled.Events` as the only plugin, and wish to add a new one, you do not need to reboot the server to complete this task. You can simply use the RemoteAdmin/ServerConsole command `reload plugins` to reload all EXILED plugins, including new ones that weren't loaded before.
 
 This also means that you can *update* plugins without having to fully reboot the server as well. However there are a few guidelines that must be followed by the plugin developer in order for this to be achieved properly:
 
 ***致服主***
- - If you are updating a plugin, make sure that it's assembly name is not the same as the current version you have installed (if any). The plugin must be built by the developer with Dynamic Updates in mind for this to work, simply renaming the file will not.
+ - 如果你想要更新一个插件, 请确保它的程序集名字和已经安装的版本（如有）的名字为不同的。 插件本身必须支持动态更新以工作，只是重命名文件名则不会正常工作。
  - If the plugin supports Dynamic Updates, be sure that when you put the newer version of the plugin into the "Plugins" folder, you also remove the older version from the folder, before reloading EXILED, failure to ensure this will result in many many bad things.
  - Any problems that arise from Dynamically Updating a plugin is solely the responsibility of you and the developer of the plugin in question. While EXILED fully supports and encourages Dynamic Updates, the only way it could fail or go wrong is if the server host or plugin dev did something wrong. Triple check that everything was done correctly by both of those parties before reporting a bug to EXILED devs regarding Dynamic Updates.
 
@@ -146,4 +146,4 @@ This is a very very bad idea to let happen.
 
 As such, plugins that support Dynamic Updates ***MUST*** follow these guidelines or they will be removed from the Discord server due to potential risk to server hosts.
 
-But not every plugin must support Dynamic Updates. If you do not intend to support Dynamic Updates, that's perfectly fine, simply don't change the Assembly Name of your plugin when you build a new version, and you will not need to worry about any of this, just make sure server hosts know they will need to completely reboot their servers to update your plugin.
+不过不是所有的插件都必须支持动态更新。如果你不打算支持动态更新，这也完全没有问题，只是需要注意不要在更新插件后改变程序集的名字，并让服主知道他们会需要重启服务器来更新你的插件。
