@@ -20,10 +20,10 @@ EXILED是一个用于SCP: 秘密实验室服务器的低级别插件框架。 �
 # 安装方法
 EXILED的安装可能看起来比别的框架更加复杂，但其实并不复杂。
 如同上面所述，EXILED的主要部分并不是在服务器的Assembly-CSharp.dll文件中, 但是, 由于需要在服务器启动时加载EXILED，Assembly-CSharp.dll文件中会有一处需要修改。一个纯净的程序集和这个改动在Releases中会被提供。
-如果你使用的是安装包，并正确运行，它会帮你搞定安装`Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API`和`Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer.
+如果你使用的是安装包，并正确运行，它会帮你搞定安装`Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API`和`Exiled.Events`, 并保证你的服务器使用的是正确的Assembly-CSharp.dll文件.
 
 # Windows
-### 全自动安装 ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+### 全自动安装 ([更多消息](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
 **备注**: 在运行安装包前请确保你所使用的用户有管理员权限。
 
   - 下载 **`Exiled.Installer-Win.exe` [从这里](https://github.com/galaxy119/EXILED/releases)** (点击 Assets -> 下载安装包)
@@ -54,7 +54,7 @@ EXILED的安装可能看起来比别的框架更加复杂，但其实并不复�
 **备注:** 如果你正在一个远程服务器上安装EXILED，请确保你运行的.exe的用户和你运行SCP:SL服务器的一致
 
   - 下载 **`Exiled.Installer-Linux` [从这里](https://github.com/galaxy119/EXILED/releases)** (点击 Assets -> 下载安装包)
-  - Install it by either typing **`./Exiled.Installer-Linux --path /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux`**.
+  - 输入 **`./Exiled.Installer-Linux --path /path/to/server`** 来安装，或者是直接把它放到服务器文件夹里, move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux`**.
   - 如果你想要最新的预更新, 只需添加 **`--pre-releases`**. 例子: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
   - 另一个例子, 如果你把 `Exiled.Installer-Linux` 放到了你服务器的文件夹: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
   - 获取以及安装插件，请参考下面的[安装插件](#installing-plugins-1)部分。
@@ -62,22 +62,20 @@ EXILED的安装可能看起来比别的框架更加复杂，但其实并不复�
 ### 手动安装
   - **确保** 你登录的是用于运行SCP服务器的用户。
   - 下载 **`Exiled.tar.gz` [从这里](https://github.com/galaxy119/EXILED/releases)** (SSH: 右键获取 `Exiled.tar.gz` 链接, 然后输入: **`wget (下载链接)`**)
-  - To extract it to your current folder, type **``tar -xzvf EXILED.tar.gz``**
-  - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
-  - Move the **`EXILED`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
+  - 解压到你目前的文件夹，输入 **``tar -xzvf EXILED.tar.gz``**
+  - 移动 **``Assembly-CSharp.dll``** 文件到 **``SCPSL_Data/Managed``** （在游戏文件夹内） (SSH: **`mv Assembly-CSharp.dll (服务器文件的位置)/SCPSL_Data/Managed`**).
+  - 移动 **`EXILED`** 文件夹到 **``~/.config``**. *备注: 这个文件夹应该放到 ``~/.config``, 而 ***不是*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
 
 ### 安装插件
 现在EXILED已经安装好了，并会在下次你启动你的服务器时随之启动。请注意EXILED本身基本不会做出任何事情，所以来 **[我们的Discord服务器](https://discord.gg/PyUkWTg)** 获取最新的插件吧。
 - 想要安装插件，只需要:
   - 下载一个插件从[*他们的*Releases页面](https://i.imgur.com/u34wgPD.jpg) (**它必须是个`.dll`!**)
-  - 移动到: ``~/.config/EXILED/Plugins`` (if you use your SSH as root, then search for the correct `.config` which will be inside `/home/(SCP Server User)`)
+  - 移动到: ``~/.config/EXILED/Plugins`` (如果你的SSH用的是root，请搜索正确的`.config`，它会在 `/home/(SCP服务器用户)`)
 
 # 配置文件（Config）
 EXILED自身提供一些配置选项。
-这些配置都会在服务器启动时被自动生成， they are located at ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\Configs\(ServerPortHere)-config.yml`` on Windows).
-
-Plugin configs will ***NOT*** be in the aforementioned ``config_gameplay.txt`` file, instead, plugin configs are set in the ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\(ServerPortHere)-config.yml`` on Windows).
-However, some plugins might get their config settings from other locations on their own, this is simply the default EXILED location for them, so refer to the individual plugin if there are issues.
+这些配置都会在服务器启动时被自动生成， 它们***不在*** ``config_gameplay.txt`` 文件中， 而是在 ``~/.config/EXILED/Configs/(服务器端口)-config.yml`` 文件 (Windows上为``%AppData%\EXILED\(服务器端口)-config.yml``).
+以上是默认的EXILED存放地点。但是，有一些插件可能会把它们的插件配置放在别的地方。如出现问题，请找该插件开发者。
 
 # 致开发者
 
@@ -88,10 +86,10 @@ However, some plugins might get their config settings from other locations on th
 制作插件时应遵守以下规则：
 
  - 你的插件必须有一个类继承Exiled.API.Features.Plugin<>，如果没有， EXILED将不会在服务器启动时载入你的插件。
- - 当一个插件载入后， ``OnEnabled()`` 方法中的代码将会在之前提到的类中被叫到, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your OnEnable() method, be sure you are not accessing things which may not be initialized by the server yet, such as ServerConsole.Port, or PlayerManager.localPlayer.
- - If you need to access things early on that are not initialized before your plugin is loaded, it is recommended to simply wait for the WaitingForPlayers event to do so, if you for some reason need to do things sooner, wrap the code in a ``` while(!x)``` loop that checks for the variable/object you need to no longer be null before continuing.
- - EXILED supports dynamically reloading plugin assemblies mid-execution. The means that, if you need to update a plugin, it can be done without rebooting the server, however, if you are updating a plugin mid-execution, the plugin needs to be properly setup to support it, or you will have a very bad time. Refer to the ``Dynamic Updates`` section for more information and guidelines to follow.
- - There is ***NO*** OnUpdate, OnFixedUpdate or OnLateUpdate event within EXILED. If you need to, for some reason, run code that often, you can use a MEC coroutine that waits for one frame, 0.01f, or uses a Timing layer like Timing.FixedUpdate instead.
+ - 当一个插件载入后， ``OnEnabled()`` 方法中的代码将会在之前提到的类中会被首先叫到, 它不会等待其他插件的加载，也不会等待服务器的启动完成。 ***它不会等待任何事物。*** 当你在设置你的OnEnable()方法时，务必确保你没有在使用任何未初始化的事物，如ServerConsole.Port， PlayerManager.localPlayer。
+ - 如果在你需要使用任何可能未初始化的东西，建议你等到WaitingForPlayers事件，如果基于某些原因你需要执行一些东西在更早的时候，把代码放入一个``` while(!x)``` 循环来检查你所使用的变量不为null。
+ - EXILED支持动态重新载入正在运行的插件程序集。也就是说，更新一个插件不需要重新启动服务器。但是，如果你要更新一个正在执行中的插件，插件本身需要支持这个功能，否则你将会非常不好过。 见 ``动态更新`` 部分以获取更多信息及规范。
+ - EXILED ***没有*** OnUpdate, OnFixedUpdate 或 OnLateUpdate 事件。如果由于某些原因你需要执行次数那么频繁的代码，你可以使用MEC协程来等待1帧，0.01秒，或Timing.FixedUpdate 来代替。
 
  ### MEC协程
 如果你对MEC并不了解, 这将会是一个简单的入门供你参考。
@@ -113,7 +111,7 @@ public IEnumerator<float> MyCoroutine()
 {
     for (;;) //repeat the following infinitely
     {
-        Log.Info("Hey I'm a infinite loop!"); //Call Log.Info to print a line to the game console/server logs.
+        Log.Info("Hey I'm a infinite loop!"); //使用 Log.Info 输出一行字在控制台和日志
         yield return Timing.WaitForSeconds(5f); //告诉协程等待5秒后再继续，鉴于这是循环的结尾，这将会有效的使得循环每次在结尾时都会停顿5秒。
     }
 }
@@ -122,21 +120,21 @@ public IEnumerator<float> MyCoroutine()
 如果你对MEC仍然不熟悉，或是想要了解更多、得到建议、又或是寻求帮助。***强烈建议***  你去百度或谷歌一下，或在Discord里面提问。无论问题本身有多“蠢”，我们都会尽可能的尝试帮助你解决问题。*好的代码对所有人都有益*。
 
 ### 动态更新
-EXILED as a framework supports dynamic reloading of plugin assemblies without requiring a server reboot.
-For example, if you start the server with just `Exiled.Events` as the only plugin, and wish to add a new one, you do not need to reboot the server to complete this task. You can simply use the RemoteAdmin/ServerConsole command `reload plugins` to reload all EXILED plugins, including new ones that weren't loaded before.
+EXILED框架支持在不重启服务器的情况下动态重新载入插件程序集。
+打个比方， 如果你启动的服务器只安装了`Exiled.Events`，并希望增加一个新的插件，你不需要重启你的服务器来达成这个目的。你只需要使用RA/服务控制台指令 `reload plugins` 来重新载入所有EXILED的插件，包括那些曾经没有被载入过的新插件。
 
-This also means that you can *update* plugins without having to fully reboot the server as well. However there are a few guidelines that must be followed by the plugin developer in order for this to be achieved properly:
+这也意味着你可以*更新* 插件而不需要完全重新启动服务器。但需要插件开发者遵守一些规则来避免出现问题。
 
 ***致服主***
- - 如果你想要更新一个插件, 请确保它的程序集名字和已经安装的版本（如有）的名字为不同的。 插件本身必须支持动态更新以工作，只是重命名文件名则不会正常工作。
- - If the plugin supports Dynamic Updates, be sure that when you put the newer version of the plugin into the "Plugins" folder, you also remove the older version from the folder, before reloading EXILED, failure to ensure this will result in many many bad things.
- - Any problems that arise from Dynamically Updating a plugin is solely the responsibility of you and the developer of the plugin in question. While EXILED fully supports and encourages Dynamic Updates, the only way it could fail or go wrong is if the server host or plugin dev did something wrong. Triple check that everything was done correctly by both of those parties before reporting a bug to EXILED devs regarding Dynamic Updates.
+ - 如果你想要更新一个插件, 请确保它的程序集名字和已经安装的版本（如有）的名字为不同的。 插件本身必须支持动态更新才能工作，只是重命名文件名则不会使其正常工作。
+ - 如果一个插件支持动态更新，请务必确保你放置新版插件到"Plugins"文件夹，以及你重新载入EXILED前移除了文件夹中旧版本的插件。否则，很多不好的事情会发生。
+ - 任何由于动态更新插件所导致的问题是你与出现问题插件的作者的责任。 虽然EXILED完全支持并鼓励使用动态更新，但是它出现问题时，只可能是服主或者是插件开发者做了什么不该做的事情。 提交Bug给EXILED开发者关于动态更新前，再三确认你们双方都没有弄错任何事情。
 
  ***致开发者***
 
- - Plugins that want to support Dynamic Updating need to be sure to unsubscribe from all events they are hooked into when they are Disabled or Reloaded.
- - Plugins that have custom Harmony patches must use some kind of changing variable within the name of the Harmony Instance, and must UnPatchAll() on their harmony instance when the plugin is disabled or reloaded.
- - Any coroutines started by the plugin in OnEnabled must also be killed when the plugin is disabled or reloaded.
+ - 插件若想要支持动态更新，必须确保它在被关闭或重新载入时取消订阅所有之前订阅的事件。
+ - 包含自制的Harmony补丁的插件必须使用某种形式的可变变量在Harmony Instance的名字里面，并且必须UnPatchAll()当插件被关闭或重新载入。
+ - 任何在OnEnabled方法中启动的协程都必须在插件被关闭或重载时结束。
 
 All of these can be achieved in either the OnReloaded() or OnDisabled() methods in the plugin class. When EXILED reloads plugins, it calls OnDisabled(), then OnReloaded(), then it will load in the new assemblies, and then executes OnEnabled().
 
