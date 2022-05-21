@@ -40,7 +40,7 @@ EXILED的安装可能看起来比别的框架更加复杂，但其实并不复�
     - Windows 10 & 11:
       输入 `%appdata%` 在底部的 Cortana / 搜索图标
     - 其他Windows版本:
-      Press Win + R and type `%appdata%`
+      按 Win + R 并输入 `%appdata%`
 
 ### 安装插件
 现在EXILED已经安装好了，并会在下次你启动你的服务器时随之启动。请注意EXILED本身基本不会做出任何事情，所以来 **[我们的Discord服务器](https://discord.gg/PyUkWTg)** 获取最新的插件吧。
@@ -54,7 +54,7 @@ EXILED的安装可能看起来比别的框架更加复杂，但其实并不复�
 **备注:** 如果你正在一个远程服务器上安装EXILED，请确保你运行的.exe的用户和你运行SCP:SL服务器的一致
 
   - 下载 **`Exiled.Installer-Linux` [从这里](https://github.com/galaxy119/EXILED/releases)** (点击 Assets -> 下载安装包)
-  - 输入 **`./Exiled.Installer-Linux --path /path/to/server`** 来安装，或者是直接把它放到服务器文件夹里， move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux`**.
+  - 输入 **`./Exiled.Installer-Linux --path /path/to/server`** 来安装，或者是直接把它放到服务器文件夹里， 在控制台 (`cd`) 输入: **`./Exiled.Installer-Linux`**.
   - 如果你想要最新的预更新， 只需添加 **`--pre-releases`**. 例子: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
   - 另一个例子， 如果你把 `Exiled.Installer-Linux` 放到了你服务器的文件夹: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
   - 获取以及安装插件，请参考下面的[安装插件](#installing-plugins-1)部分。
@@ -89,11 +89,11 @@ EXILED自身提供一些配置选项。
  - 当一个插件载入后， ``OnEnabled()`` 方法中的代码将会在之前提到的类中会被首先叫到， 它不会等待其他插件的加载，也不会等待服务器的启动完成。 ***它不会等待任何事物。*** 当你在设置你的OnEnable()方法时，务必确保你没有在使用任何未初始化的事物，如ServerConsole.Port， PlayerManager.localPlayer。
  - 如果在你需要使用任何可能未初始化的东西，建议你等到WaitingForPlayers事件，如果基于某些原因你需要执行一些东西在更早的时候，把代码放入一个``` while(!x)``` 循环来检查你所使用的变量不为null。
  - EXILED支持动态重新载入正在运行的插件程序集。也就是说，更新一个插件不需要重新启动服务器。但是，如果你要更新一个正在执行中的插件，插件本身需要支持这个功能，否则你将会非常不好过。 见 ``动态更新`` 部分以获取更多信息及规范。
- - EXILED ***没有*** OnUpdate， OnFixedUpdate 或 OnLateUpdate 事件。如果由于某些原因你需要执行次数那么频繁的代码，你可以使用MEC协程来等待1帧，0.01秒，或Timing.FixedUpdate 来代替。
+ - EXILED***没有***``OnUpdate``，``OnFixedUpdate``或``OnLateUpdate``事件。如果由于某些原因你需要执行次数那么频繁的代码，你可以使用MEC协程来等待1帧，0.01秒，或``Timing.FixedUpdate``来代替。
 
  ### MEC协程
 如果你对MEC并不了解， 这将会是一个简单的入门供你参考。
-MEC协程 are basically timed methods， that support waiting periods of time before continuing execution， without interrupting/sleeping the main game thread.
+MEC协程其实就是计时方法， 它支持在执行一段代码前等待一段时间， 而不会影响/睡眠游戏主线程。
 MEC协程可以用于Unity， 不像传统的线程 ***请勿尝试增加新的线程与Unity交互，它会导致炸服的。***
 
 如需使用 MEC， 你需要引用``Assembly-CSharp-firstpass.dll``从服务器文件中， 并包括 ``using MEC;``。
@@ -138,7 +138,7 @@ EXILED框架支持在不重启服务器的情况下动态重新载入插件程�
 
 以上所提到的可以通过在plugin类的OnReloaded()或OnDisabled()方法来实现。当EXILED重新加载插件时，它会先执行``OnDisabled()``，再是``OnReloaded()``， 然后才是加载新程序集以及执行``OnEnabled()``。
 
-请注意我说的是*新的*程序集。如果你替换了一个有着同样名字的程序集，它***不会*** 被更新。这是GAC(全局程序集缓存)所导致的，如果你尝试“载入”一个已经在缓存的程序集，它只会使用那个已经在缓存的里的程序集。
+请注意我说的是*新的*程序集。如果你替换了一个有着同样名字的程序集，它***不会***被更新。这是GAC(全局程序集缓存)所导致的，如果你尝试“载入”一个已经在缓存的程序集，它只会使用那个已经在缓存的里的程序集。
 因此，如果你的插件将会支持动态更新，你必须在生成时使用不一样的程序集名（重命名文件是没有用的）。此外，不需要用的旧程序集并不会被“清除”，如果你没有正确的取消订阅事件，取消Harmony补丁，摧毁协程等。原本的代码将会同新的代码一起运行。 
 让这件事发生绝对不是一个好主意
 
