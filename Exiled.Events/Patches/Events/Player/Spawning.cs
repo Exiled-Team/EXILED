@@ -72,6 +72,7 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(SpawningEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
+            // Label to skip to isLocalPlayer call, which is actually ignored by compiler but useful for hook.
             Label localPlayerCheck = generator.DefineLabel();
 
             // There is a bug here. If you set role using Player.SetRole then later on doing it again, with lite set to false, this will spam create this player infinitely.
@@ -110,24 +111,24 @@ namespace Exiled.Events.Patches.Events.Player
             const int addLiteOffset = 0;
             int addLiteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(NetworkBehaviour), nameof(NetworkBehaviour.isLocalPlayer)))) + addLiteOffset;
 
-            newInstructions.InsertRange(addLiteIndex, new[]
+            newInstructions.InsertRange(addLiteIndex, new CodeInstruction[]
             {
                 // !NetworkServer.Active ? skip : process lite
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))),
-                new (OpCodes.Brfalse_S, localPlayerCheck),
+                new(OpCodes.Call, PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))),
+                new(OpCodes.Brfalse_S, localPlayerCheck),
 
                 // !lite, skip
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new (OpCodes.Brfalse_S, localPlayerCheck),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Brfalse_S, localPlayerCheck),
 
                 // Player.Get(this._hub)
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
                 new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // CCM instance.
-                new CodeInstruction(OpCodes.Ldarga, 0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Spawning), nameof(Spawning.HandleLiteSpawning), new[] { typeof(Player), typeof(CharacterClassManager).MakeByRefType() })),
+                // CCM instance, and call HandleLiteSpawning.
+                new(OpCodes.Ldarga, 0),
+                new(OpCodes.Call, Method(typeof(Spawning), nameof(Spawning.HandleLiteSpawning), new[] { typeof(Player), typeof(CharacterClassManager).MakeByRefType() })),
             });
 
             int notActiveServerOffset = 0;
