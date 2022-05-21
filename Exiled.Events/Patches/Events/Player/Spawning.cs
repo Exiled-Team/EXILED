@@ -18,7 +18,13 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Mirror;
+
     using NorthwoodLib.Pools;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="CharacterClassManager.ApplyProperties(bool, bool)"/>.
@@ -27,6 +33,28 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.ApplyProperties))]
     internal static class Spawning
     {
+        /// <summary>
+        /// Handles logic for <see cref="Player"/> to preserve the position and inventory after changing the role.
+        /// </summary>
+        /// <param name="player"> Current player object to build off of, assuming the data is still there. </param>
+        /// <param name="__instance"> Instance of CharacterClassManager. </param>
+        public static void HandleLiteSpawning(Player player, ref CharacterClassManager __instance)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            __instance._pms.OnPlayerClassChange(player.Position, new global::PlayerMovementSync.PlayerRotation?(new global::PlayerMovementSync.PlayerRotation(new float?(0f), new float?(player.Position.y))));
+
+            if (!__instance.SpawnProtected && global::CharacterClassManager.EnableSP && global::CharacterClassManager.SProtectedTeam.Contains((int)__instance.CurRole.team))
+            {
+                __instance.GodMode = true;
+                __instance.SpawnProtected = true;
+                __instance.ProtectedTime = Time.time;
+            }
+        }
+
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             // Player RoleType Vector3 float
@@ -40,16 +68,25 @@ namespace Exiled.Events.Patches.Events.Player
             foreach (CodeInstruction instruction in newInstructions.FindAll(i =>
                 i.opcode == OpCodes.Call && (MethodInfo)i.operand == AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange))))
                 newInstructions.Remove(instruction);
-            LocalBuilder ev = generator.DeclareLocal(typeof(SpawningEventArgs));
 
+            LocalBuilder ev = generator.DeclareLocal(typeof(SpawningEventArgs));
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+
+            Label localPlayerCheck = generator.DefineLabel();
+
+            // There is a bug here. If you set role using Player.SetRole then later on doing it again, with lite set to false, this will spam create this player infinitely.
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(this._hub)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
                 new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, player.LocalIndex),
+                new(OpCodes.Brfalse_S, localPlayerCheck),
 
                 // this.CurClass
+                new(OpCodes.Ldloc, player.LocalIndex),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
 
@@ -69,6 +106,34 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.RotationY))),
                 new(OpCodes.Call, AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange))),
             });
+
+            const int addLiteOffset = 0;
+            int addLiteIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(NetworkBehaviour), nameof(NetworkBehaviour.isLocalPlayer)))) + addLiteOffset;
+
+            newInstructions.InsertRange(addLiteIndex, new[]
+            {
+                // !NetworkServer.Active ? skip : process lite
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))),
+                new (OpCodes.Brfalse_S, localPlayerCheck),
+
+                // !lite, skip
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new (OpCodes.Brfalse_S, localPlayerCheck),
+
+                // Player.Get(this._hub)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // CCM instance.
+                new CodeInstruction(OpCodes.Ldarga, 0),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Spawning), nameof(Spawning.HandleLiteSpawning), new[] { typeof(Player), typeof(CharacterClassManager).MakeByRefType() })),
+            });
+
+            int notActiveServerOffset = 0;
+            int notActiveServer = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(NetworkBehaviour), nameof(NetworkBehaviour.isLocalPlayer)))) + notActiveServerOffset;
+
+            newInstructions[notActiveServer].WithLabels(localPlayerCheck);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
