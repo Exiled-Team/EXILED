@@ -11,55 +11,53 @@
 </a>
 
 
-EXILED is a low-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook in order to manipulate or change game code, or implement their own functions.
-All EXILED events are coded with Harmony, meaning they require no direct editing of server Assemblies to function, which allows for two unique benefits.
+EXILED是一个用于SCP: 秘密实验室服务器的低级别插件框架。 它为开发者提供了一个事件系统，以便改变游戏代码，或实现其自己的功能。
+所有的EXILED事件都基于Harmony，意味着它不需要直接修改程序集来生效，使得其拥有两个独特的优点。
+ - 首先， 所有框架内的代码都可以被发布和分享, 使得开发者可以更好的了解它是如何运作的, 以及提供增加或修改功能的建议。
+ - 其次， 因为所有与框架相关的代码都是在服务器的程序集之外完成的，小的游戏更新对框架的影响会非常小。使得其更可能会与未来游戏更新兼容，以及在必要时更新时更加简单。
 
- - Firstly, the entirety of the frameworks code can be freely published and shared, allowing developers to better understand *how* it works, as well as offer suggestions for adding to or changing it's features.
- - Secondly, since all of the code related to the framework are done outside of the server assembly, things like small game updates will have little, if any, effect on the framework. Making it most likely to be compatible with future game updates, as well as making it easier to update when it *is* necessary to do so.
 
-
-# Installation
-Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
-As mentioned above, the vast majority of EXILED is not contained within the server's Assembly-CSharp.dll file, however, there is a single modification needed to the Assembly-CSharp.dll file that is required to actually *load* EXILED into the server during startup, a clean game Assembly with this change already made will be provided with releases.
-
-If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer.
+# 安装方法
+EXILED的安装可能看起来比别的框架更加复杂，但其实并不复杂。
+如同上面所述，EXILED的主要部分并不是在服务器的Assembly-CSharp.dll文件中, 但是, 由于需要在服务器启动时加载EXILED，Assembly-CSharp.dll文件中会有一处需要修改。一个纯净的程序集和这个改动在Releases中会被提供。
+如果你使用的是安装包，并正确运行，它会帮你搞定安装`Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API`和`Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer.
 
 # Windows
-### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
-**Note**: Make sure you're on the user that runs the server or you have Admin privileges before running the Installer.
+### 全自动安装 ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+**备注**: 在运行安装包前请确保你所使用的用户有管理员权限。
 
   - Download the **`Exiled.Installer-Win.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> click the Installer)
   - Place it on your server folder (download the dedicated server if you haven't)
   - Double click the **`Exiled.Installer.exe`** or **[download this .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** and place it in the server folder to install the latest pre-release
   - To install and get plugins, check the [Installing plugins](#installing-plugins) section down below.
-**Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or one with Admin privileges)
+**备注:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or one with Admin privileges)
 
-### Manual installation
-  - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)**
-  - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Move **``Assembly-CSharp.dll``** to: **`(Your Server Folder)\SCPSL_Data\Managed`** and replace the file.
-  - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
-    - Windows 10:
-      Write `%appdata%` in Cortana / the search icon, or the Windows Explorer bar
-    - Any other Windows version:
+### 手动安装
+  - 下载 **`Exiled.tar.gz` [从这里](https://github.com/galaxy119/EXILED/releases)**
+  - 使用 [7Zip](https://www.7-zip.org/) 或 [WinRar](https://www.win-rar.com/download.html?&L=6) 解压里面的内容
+  - 移动 **``Assembly-CSharp.dll``** 到: **`(服务器文件夹)\SCPSL_Data\Managed`** 并更换文件
+  - 移动 **``EXILED``** 文件夹到 **`%appdata%`** *备注: 这个文件夹需要放在 ``C:\用户\(你的用户)\AppData\Roaming``, 而 ***不是*** ``C:\用户\(你的用户)\AppData\Roaming\SCP Secret Laboratory``, 而且它 **必须** 在 (...)\AppData\Roaming, 而不是 (...)\AppData\!*
+    - Windows 10 & 11:
+      输入 `%appdata%` 在底部的 Cortana / 搜索图标
+    - 其他Windows版本:
       Press Win + R and type `%appdata%`
 
-### Installing plugins
+### 安装插件
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
 - To install a plugin, simply:
   - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
   - Move it to: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
 
 # Linux
-### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+### 全自动安装 ([更多信息](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
 
-**Note:** If you are installing EXILED on a remote server, make sure you run the Installer as the same user that runs your SCP:SL servers (or root)
+**备注:** If you are installing EXILED on a remote server, make sure you run the Installer as the same user that runs your SCP:SL servers (or root)
 
-  - Download the **`Exiled.Installer-Linux` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> download the Installer)
+  - 下载 **`Exiled.Installer-Linux` [从这里](https://github.com/galaxy119/EXILED/releases)** (点击 Assets -> 下载安装包)
   - Install it by either typing **`./Exiled.Installer-Linux --path /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux`**.
-  - If you want the latest pre-release, simply add **`--pre-releases`**. Example: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
-  - Another example, if you placed `Exiled.Installer-Linux` in your server folder: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
-  - To install and get plugins, check the [Installing plugins](#installing-plugins-1) section down below.
+  - 如果你想要最新的预更新, 只需添加 **`--pre-releases`**. 例子: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
+  - 另一个例子, 如果你把 `Exiled.Installer-Linux` 放到了你服务器的文件夹: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
+  - 获取以及安装插件，请参考下面的[安装插件](#installing-plugins-1)部分。
 
 ### Manual installation
   - **Ensure** you are logged in on the user that runs the SCP servers.
@@ -68,40 +66,37 @@ That's it, EXILED should now be installed and active the next time you boot up y
   - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
   - Move the **`EXILED`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
 
-### Installing plugins
+### 安装插件
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
 - To install a plugin, simply:
   - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
   - Move it to: ``~/.config/EXILED/Plugins`` (if you use your SSH as root, then search for the correct `.config` which will be inside `/home/(SCP Server User)`)
 
-# Config
-EXILED by itself offers some config options.
+# 配置文件（Config）
+EXILED自身提供一些配置选项。
 All of them are auto-generated at the server startup, they are located at ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\Configs\(ServerPortHere)-config.yml`` on Windows).
 
 Plugin configs will ***NOT*** be in the aforementioned ``config_gameplay.txt`` file, instead, plugin configs are set in the ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\(ServerPortHere)-config.yml`` on Windows).
 However, some plugins might get their config settings from other locations on their own, this is simply the default EXILED location for them, so refer to the individual plugin if there are issues.
 
-# For Developers
+# 致开发者
 
-If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
+制作一个EXILED的插件也是一件非常轻松的事情。如果你想要一个教程，请访问我们的[入门指南](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
 
-For more comprehensive and actively updated tutorials, see [the EXILED website](https://exiled-team.github.io/EXILED/articles/install.html).
+一个更加详细并且保持更新的教程，请见 [EXILED官网](https://exiled-team.github.io/EXILED/articles/install.html).
 
-But make sure to follow these rules when publishing your plugins:
+制作插件时应遵守以下规则：
 
- - Your plugin must contain a class that inherits from Exiled.API.Features.Plugin<>, if it does not, EXILED will not load your plugin when the server starts.
- - When a plugin is loaded, the code within the aforementioned class' ``OnEnabled()`` method is fired immediately, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your OnEnable() method, be sure you are not accessing things which may not be initialized by the server yet, such as ServerConsole.Port, or PlayerManager.localPlayer.
+ - 你的插件必须有一个类继承Exiled.API.Features.Plugin<>，如果没有， EXILED将不会在服务器启动时载入你的插件。
+ - 当一个插件载入后， ``OnEnabled()`` 方法中的代码将会在之前提到的类中被叫到, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your OnEnable() method, be sure you are not accessing things which may not be initialized by the server yet, such as ServerConsole.Port, or PlayerManager.localPlayer.
  - If you need to access things early on that are not initialized before your plugin is loaded, it is recommended to simply wait for the WaitingForPlayers event to do so, if you for some reason need to do things sooner, wrap the code in a ``` while(!x)``` loop that checks for the variable/object you need to no longer be null before continuing.
  - EXILED supports dynamically reloading plugin assemblies mid-execution. The means that, if you need to update a plugin, it can be done without rebooting the server, however, if you are updating a plugin mid-execution, the plugin needs to be properly setup to support it, or you will have a very bad time. Refer to the ``Dynamic Updates`` section for more information and guidelines to follow.
  - There is ***NO*** OnUpdate, OnFixedUpdate or OnLateUpdate event within EXILED. If you need to, for some reason, run code that often, you can use a MEC coroutine that waits for one frame, 0.01f, or uses a Timing layer like Timing.FixedUpdate instead.
 
-### Disabling EXILED Event patches
-***This feature is currently no longer implemented.***
-
- ### MEC Coroutines
-If you are unfamiliar with MEC, this will be a very brief and simple primer to get you started.
-MEC Coroutines are basically timed methods, that support waiting periods of time before continuing execution, without interrupting/sleeping the main game thread.
-MEC coroutines are safe to use with Unity, unlike traditional threading. ***DO NOT try and make new threads to interact with Unity on, they WILL crash the server.***
+ ### MEC协程
+如果你对MEC并不了解, 这将会是一个简单的入门供你参考。
+MEC协程 are basically timed methods, that support waiting periods of time before continuing execution, without interrupting/sleeping the main game thread.
+MEC协程可以用于Unity, 不像传统的线程 ***请勿尝试增加新的线程与Unity交互，它会导致炸服的。***
 
 To use MEC, you will need to reference ``Assembly-CSharp-firstpass.dll`` from the server files, and include ``using MEC;``.
 Example of calling a simple coroutine, that repeats itself with a delay between each loop:
@@ -132,12 +127,12 @@ For example, if you start the server with just `Exiled.Events` as the only plugi
 
 This also means that you can *update* plugins without having to fully reboot the server as well. However there are a few guidelines that must be followed by the plugin developer in order for this to be achieved properly:
 
-***For Hosts***
+***致服主***
  - If you are updating a plugin, make sure that it's assembly name is not the same as the current version you have installed (if any). The plugin must be built by the developer with Dynamic Updates in mind for this to work, simply renaming the file will not.
  - If the plugin supports Dynamic Updates, be sure that when you put the newer version of the plugin into the "Plugins" folder, you also remove the older version from the folder, before reloading EXILED, failure to ensure this will result in many many bad things.
  - Any problems that arise from Dynamically Updating a plugin is solely the responsibility of you and the developer of the plugin in question. While EXILED fully supports and encourages Dynamic Updates, the only way it could fail or go wrong is if the server host or plugin dev did something wrong. Triple check that everything was done correctly by both of those parties before reporting a bug to EXILED devs regarding Dynamic Updates.
 
- ***For Developers***
+ ***致开发者***
 
  - Plugins that want to support Dynamic Updating need to be sure to unsubscribe from all events they are hooked into when they are Disabled or Reloaded.
  - Plugins that have custom Harmony patches must use some kind of changing variable within the name of the Harmony Instance, and must UnPatchAll() on their harmony instance when the plugin is disabled or reloaded.
