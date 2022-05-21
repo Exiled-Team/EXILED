@@ -11,7 +11,7 @@
 </a>
 
 
-EXILED是一个用于SCP: 秘密实验室服务器的低级别插件框架。 它为开发者提供了一个事件系统，以便改变游戏代码，或实现其自己的功能。
+EXILED是一个用于SCP: 秘密实验室服务器的低级别插件框架。 它为开发者提供了一个可以改变游戏代码或实现其自己的功能的事件系统。
 所有的EXILED事件都基于Harmony，意味着它不需要直接修改程序集来生效，使得其拥有两个独特的优点。
  - 首先， 所有框架内的代码都可以被发布和分享, 使得开发者可以更好的了解它是如何运作的, 以及提供增加或修改功能的建议。
  - 其次， 因为所有与框架相关的代码都是在服务器的程序集之外完成的，小的游戏更新对框架的影响会非常小。使得其更可能会与未来游戏更新兼容，以及在必要时更新时更加简单。
@@ -133,15 +133,15 @@ EXILED框架支持在不重启服务器的情况下动态重新载入插件程�
  ***致开发者***
 
  - 插件若想要支持动态更新，必须确保它在被关闭或重新载入时取消订阅所有之前订阅的事件。
- - 包含自制的Harmony补丁的插件必须使用某种形式的可变变量在Harmony Instance的名字里面，并且必须UnPatchAll()当插件被关闭或重新载入。
+ - 包含自制的Harmony补丁的插件必须使用某种形式的可变变量在Harmony Instance的名字里面，并且必须在插件被关闭或重新载入时``UnPatchAll()``。
  - 任何在OnEnabled方法中启动的协程都必须在插件被关闭或重载时结束。
 
-All of these can be achieved in either the OnReloaded() or OnDisabled() methods in the plugin class. When EXILED reloads plugins, it calls OnDisabled(), then OnReloaded(), then it will load in the new assemblies, and then executes OnEnabled().
+以上所提到的可以通过在plugin类的OnReloaded()或OnDisabled()方法来实现。当EXILED重新加载插件时，它会先执行``OnDisabled()``，再是``OnReloaded()``, 然后才是加载新程序集以及执行``OnEnabled()``。
 
-Note that I said *new* assemblies. If you replace an assembly with another one of the same name, it will ***NOT*** be updated. This is due to the GAC (Global Assembly Cache), if you attempt to 'load' and assembly that is already in the cache, it will always use the cached assembly instead.
-For this reason, if your plugin will support Dynamic Updates, you must build each version with a different Assembly Name in the build options (renaming the file will not work). Also, since the old assembly is not "destroyed" when it is no longer needed, if you fail to unsubscribe from events, unpatch your harmony instance, kill coroutines, etc, that code will continue to run aswell as the new version's code.
-This is a very very bad idea to let happen.
+请注意我说的是*新的*程序集。如果你替换了一个有着同样名字的程序集，它***不会*** 被更新。这是GAC(全局程序集缓存)所导致的，如果你尝试“载入”一个已经在缓存的程序集，它只会使用那个已经在缓存的里的程序集。
+因此，如果你的插件将会支持动态更新，你必须在生成时使用不一样的程序集名（重命名文件是没有用的）。此外，不需要用的旧程序集并不会被“清除”，如果你没有正确的取消订阅事件，取消Harmony补丁，摧毁协程等。原本的代码将会同新的代码一起运行。 
+让这件事发生绝对不是一个好主意
 
-As such, plugins that support Dynamic Updates ***MUST*** follow these guidelines or they will be removed from the Discord server due to potential risk to server hosts.
+所以，支持动态更新的插***必须***遵从以上规则，否则，插件将会因为可能对服主造成威胁而被移除Discord服务器。
 
-不过不是所有的插件都必须支持动态更新。如果你不打算支持动态更新，这也完全没有问题，只是需要注意不要在更新插件后改变程序集的名字，并让服主知道他们会需要重启服务器来更新你的插件。
+不是所有的插件都必须支持动态更新。如果你不打算支持动态更新，这也完全没有问题，只是需要注意不要在更新插件后改变程序集的名字，并让服主知道他会需要重启服务器来更新你的插件。
