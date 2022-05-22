@@ -34,8 +34,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label continueLabel = generator.DefineLabel();
 
-            // InteractingElevatorEventArgs ev = new(API.Features.Player.Get(__instance._hub), elevator1, component);
-            // Handlers.Player.OnInteractingElevator(interactingEventArgs);
+            // InteractingElevatorEventArgs ev = new(API.Features.Player.Get(hub), elevator, lift);
+            // Handlers.Player.OnInteractingElevator(ev);
             // if (!ev.IsAllowed)
             //     continue;
             newInstructions.InsertRange(index, new[]
