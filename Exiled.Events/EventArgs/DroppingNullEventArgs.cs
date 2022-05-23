@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player drops a null item.
     /// </summary>
-    public class DroppingNullEventArgs : EventArgs
+    public class DroppingNullEventArgs : EventArgs // TODO: Rename to normal
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DroppingNullEventArgs"/> class.
