@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldloca_S, item.LocalIndex),
-                new(OpCodes.Callvirt, FirstMethod(typeof(API.Features.Player), info => info.Name == "TryGetItem" && info.GetCustomAttribute<ObsoleteAttribute>() == null)),
+                new(OpCodes.Callvirt, Method(typeof(API.Features.Player), nameof(API.Features.Player.TryGetItem), new[] { typeof(ushort), typeof(API.Features.Items.Item).MakeByRefType() })),
                 new(OpCodes.Brtrue_S, notNullLabel),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
