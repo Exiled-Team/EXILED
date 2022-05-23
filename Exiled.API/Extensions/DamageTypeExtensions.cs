@@ -23,13 +23,13 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation.Id"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } =
+        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = // TODO: To readonly
             TranslationConversion.ToDictionary(key => key.Key.Id, value => value.Value);
 
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new()
+        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new() // TODO: To readonly
         {
             { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
             { DeathTranslations.Bleeding, DamageType.Bleeding },
@@ -60,7 +60,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new()
+        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new() // TODO: To readonly
         {
             { ItemType.GunCrossvec, DamageType.Crossvec },
             { ItemType.GunLogicer, DamageType.Logicer },
