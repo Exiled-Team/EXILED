@@ -40,22 +40,32 @@ namespace Exiled.Events.Patches.Events.Scp173
 
             newInstructions.RemoveRange(index, 5);
 
+            // var ev = new UsingBreakneckSpeedsEventArgs(Player, Scp173._breakneckSpeedsCooldownRemaining == 0);
+            // Handlers.Scp173.OnUsingBreakneckSpeeds(ev);
+            // if (!ev.IsAllowed)
+            //   return;
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
+                // Player.Get(this.Hub)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.Hub))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // Scp173._breakneckSpeedsCooldownRemaining == 0
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173._breakneckSpeedsCooldownRemaining))),
                 new(OpCodes.Ldc_R4, 0f),
                 new(OpCodes.Ceq),
 
+                // new UsingBreakneckSpeedsEventArgs(...)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingBreakneckSpeedsEventArgs))[0]),
                 new(OpCodes.Dup),
 
+                // Handlers.Scp173.OnUsingBreakneckSpeeds(ev)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp173), nameof(Handlers.Scp173.OnUsingBreakneckSpeeds))),
 
+                // if (!ev.IsAllowed)
+                //   return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UsingBreakneckSpeedsEventArgs), nameof(UsingBreakneckSpeedsEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });

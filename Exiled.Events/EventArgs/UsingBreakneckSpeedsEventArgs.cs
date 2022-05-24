@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's interacting with SCP-244.
+        /// Gets the player who's using breakneck speeds.
         /// </summary>
         public Player Player { get; }
 
