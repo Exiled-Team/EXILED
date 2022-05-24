@@ -325,7 +325,7 @@ namespace Exiled.API.Features.Items
                     {
                         AutomaticFirearm auto => auto._baseMaxAmmo,
                         Shotgun shotgun => shotgun._ammoCapacity,
-                        Revolver _ => 6,
+                        Revolver => 6,
                         _ => 0,
                     };
                     firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);

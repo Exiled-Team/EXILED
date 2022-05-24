@@ -64,9 +64,6 @@ namespace Exiled.API.Features
         public static IEnumerable<Door> List => DoorVariantToDoor.Values.ToList().AsReadOnly();
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
-        /// </summary>
-        /// <summary>
         /// Gets the base-game <see cref="DoorVariant"/> for this door.
         /// </summary>
         public DoorVariant Base { get; }
@@ -75,6 +72,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="UnityEngine.GameObject"/> of the door.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the door's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => GameObject.transform;
 
         /// <summary>
         /// Gets the <see cref="DoorType"/>.
