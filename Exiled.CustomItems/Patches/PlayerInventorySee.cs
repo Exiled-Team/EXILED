@@ -58,7 +58,7 @@ namespace Exiled.CustomItems.Patches
                 new(OpCodes.Brfalse_S, continueLabel),
                 new(OpCodes.Ldloc_S, item.LocalIndex),
                 new(OpCodes.Ldloca_S, customItem.LocalIndex),
-                new(OpCodes.Call, FirstMethod(typeof(CustomItem), info => info.Name == "TryGet" && info.GetParameters()[0].ParameterType == typeof(Item))),
+                new(OpCodes.Call, Method(typeof(CustomItem), nameof(CustomItem.TryGet), new[] { typeof(Item), typeof(CustomItem).MakeByRefType() })),
                 new(OpCodes.Brfalse_S, checkLabel),
                 new(OpCodes.Ldloc_S, customItem.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(CustomItem), nameof(CustomItem.Name))),
