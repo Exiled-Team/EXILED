@@ -38,7 +38,6 @@ namespace Exiled.Events.Patches.Generic
             Label jne = generator.DefineLabel();
             Label cnt = generator.DefineLabel();
             Label isTutorial = generator.DefineLabel();
-            Label samePlayer = generator.DefineLabel();
 
             int addCheckOffset = 4;
             int addCheck = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Physics), nameof(Physics.Linecast), new[] { typeof(Vector3), typeof(Vector3), typeof(int) }))) + addCheckOffset;

@@ -7,12 +7,10 @@
 
 namespace Exiled.Events.Patches.Events.Scp330
 {
-    using System;
 #pragma warning disable SA1118
 #pragma warning disable SA1313
 
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using CustomPlayerEffects;
@@ -20,19 +18,14 @@ namespace Exiled.Events.Patches.Events.Scp330
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
-    using Footprinting;
-
     using HarmonyLib;
 
     using Interactables.Interobjects;
 
     using InventorySystem;
     using InventorySystem.Items.Usables.Scp330;
-    using InventorySystem.Searching;
 
     using NorthwoodLib.Pools;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -46,8 +39,6 @@ namespace Exiled.Events.Patches.Events.Scp330
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            Label continueProcessing = generator.DefineLabel();
 
             Label shouldNotSever = generator.DefineLabel();
 
@@ -81,8 +72,6 @@ namespace Exiled.Events.Patches.Events.Scp330
             int removeServerProcessIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + removeServerProcessOffset;
 
             newInstructions.RemoveRange(removeServerProcessIndex, 3);
-
-            Label ignoreOverlay = generator.DefineLabel();
 
             // Remove NW server process logic.
             newInstructions.InsertRange(removeServerProcessIndex, new[]
