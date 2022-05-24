@@ -134,6 +134,20 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the <see cref="Npc"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
+        /// </summary>
+        /// <param name="gameObject">The player's <see cref="UnityEngine.GameObject"/>.</param>
+        /// <returns>A <see cref="Npc"/> or <see langword="null"/> if not found.</returns>
+        public static Npc Get(GameObject gameObject) => Dictionary.ContainsKey(gameObject) ? Dictionary[gameObject] : null;
+
+        /// <summary>
+        /// Gets the <see cref="Npc"/> belonging to the <see cref="Player"/>, if any.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>.</param>
+        /// <returns>A <see cref="Npc"/> or <see langword="null"/> if not found.</returns>
+        public static Npc Get(Player player) => Dictionary.ContainsKey(player.GameObject) ? Dictionary[player.GameObject] : null;
+
+        /// <summary>
         /// Spawns the NPC.
         /// </summary>
         public void Spawn()
