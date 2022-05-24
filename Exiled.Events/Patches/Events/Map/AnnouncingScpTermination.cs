@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using NorthwoodLib.Pools;
 
-    using PlayerStatsSystem;
-
     using static HarmonyLib.AccessTools;
 
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;

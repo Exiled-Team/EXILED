@@ -23,8 +23,6 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Pickups;
 
-    using MEC;
-
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;

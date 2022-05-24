@@ -63,7 +63,5 @@ namespace Exiled.Events.Patches.Events.Map
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static Transform GetTransform(RaycastHit hit) => hit.collider.transform;
     }
 }

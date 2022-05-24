@@ -8,15 +8,11 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.EventArgs;
-
-    using Footprinting;
 
     using HarmonyLib;
 
@@ -25,8 +21,6 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
-
-    using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
 
     /// <summary>
     /// Patch the <see cref="BreakableWindow.Damage(float, PlayerStatsSystem.DamageHandlerBase, Vector3)"/>.
