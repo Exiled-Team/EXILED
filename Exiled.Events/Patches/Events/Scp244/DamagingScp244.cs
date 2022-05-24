@@ -9,26 +9,17 @@ namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
 #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using InventorySystem;
     using InventorySystem.Items.Usables.Scp244;
-    using InventorySystem.Searching;
 
     using NorthwoodLib.Pools;
-
-    using PlayerStatsSystem;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 

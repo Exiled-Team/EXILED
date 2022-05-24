@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1118
 #pragma warning disable SA1313
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -18,10 +17,7 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using HarmonyLib;
 
-    using InventorySystem;
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
-    using InventorySystem.Searching;
 
     using NorthwoodLib.Pools;
 
@@ -37,7 +33,6 @@ namespace Exiled.Events.Patches.Events.Scp244
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label continueProcessing = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
 
             int index = 0;

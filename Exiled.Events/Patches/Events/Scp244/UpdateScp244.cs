@@ -9,25 +9,16 @@ namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
 #pragma warning disable SA1118 // Parameter should not span multiple lines
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using InventorySystem;
     using InventorySystem.Items.Usables.Scp244;
-    using InventorySystem.Searching;
-
-    using Mirror;
 
     using NorthwoodLib.Pools;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 

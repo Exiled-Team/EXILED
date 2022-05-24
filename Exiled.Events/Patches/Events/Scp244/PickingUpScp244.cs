@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
 #pragma warning disable SA1118 // Parameter should not span multiple lines
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -18,8 +17,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using HarmonyLib;
 
-    using InventorySystem;
-    using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Searching;
 
     using NorthwoodLib.Pools;
@@ -35,8 +32,6 @@ namespace Exiled.Events.Patches.Events.Scp244
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            Label continueProcessing = generator.DefineLabel();
 
             Label returnLabel = generator.DefineLabel();
 
