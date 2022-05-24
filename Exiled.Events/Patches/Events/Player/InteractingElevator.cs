@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -2;
             int index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(global::Lift), nameof(global::Lift.UseLift)))) + offset;
 
-            Label continueLabel = generator.DefineLabel();
+            Label continueLabel = newInstructions[index + 6].labels[0];
 
             // InteractingElevatorEventArgs ev = new(API.Features.Player.Get(hub), elevator, lift);
             // Handlers.Player.OnInteractingElevator(ev);
@@ -52,11 +52,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingElevatorEventArgs), nameof(InteractingElevatorEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, continueLabel),
             });
-
-            offset = 1;
-            index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract)))) + offset;
-
-            newInstructions[index].labels.Add(continueLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
