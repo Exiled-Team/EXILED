@@ -17,6 +17,8 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
  - Firstly, the entirety of the frameworks code can be freely published and shared, allowing developers to better understand *how* it works, as well as offer suggestions for adding to or changing it's features.
  - Secondly, since all of the code related to the framework are done outside of the server assembly, things like small game updates will have little, if any, effect on the framework. Making it most likely to be compatible with future game updates, as well as making it easier to update when it *is* necessary to do so.
 
+# Localized READMEs
+- [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 
 # Installation
 Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
