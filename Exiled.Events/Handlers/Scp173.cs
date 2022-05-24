@@ -28,6 +28,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<PlacingTantrumEventArgs> PlacingTantrum;
 
         /// <summary>
+        /// Invoked before using breakneck speeds.
+        /// </summary>
+        public static event CustomEventHandler<UsingBreakneckSpeedsEventArgs> UsingBreakneckSpeeds;
+
+        /// <summary>
         /// Called before players near SCP-173 blink.
         /// </summary>
         /// <param name="ev">The <see cref="BlinkingEventArgs"/> instance.</param>
@@ -38,5 +43,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PlacingTantrumEventArgs"/> instance.</param>
         public static void OnPlacingTantrum(PlacingTantrumEventArgs ev) => PlacingTantrum.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a using breakneck speeds.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingBreakneckSpeedsEventArgs"/> instance.</param>
+        public static void OnUsingBreakneckSpeeds(UsingBreakneckSpeedsEventArgs ev) => UsingBreakneckSpeeds.InvokeSafely(ev);
     }
 }
