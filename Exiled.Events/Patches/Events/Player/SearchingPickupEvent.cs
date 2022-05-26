@@ -114,64 +114,9 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
-                Exiled.API.Features.Log.Debug(newInstructions[z]);
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        /*private static bool Prefix(SearchCoordinator __instance, ref bool __result, out SearchSession? session, out SearchCompletor completor)
-        {
-            try
-            {
-                SearchRequest request = __instance.SessionPipe.Request;
-
-                SearchingPickupEventArgs ev = new(Player.Get(__instance.Hub),
-                    request.Target,
-                    request.Body,
-                    SearchCompletor.FromPickup(__instance, request.Target, __instance.ServerMaxRayDistanceSqr),
-                    request.Target.SearchTimeForPlayer(__instance.Hub));
-                Handlers.Player.OnSearchPickupRequest(ev);
-
-                completor = ev.SearchCompletor;
-                if (!ev.IsAllowed)
-                {
-                    session = null;
-                    completor = null;
-                    __result = true;
-                    return false;
-                }
-
-                SearchSession body = ev.SearchSession;
-                if (!__instance.isLocalPlayer)
-                {
-                    double num = NetworkTime.time - request.InitialTime;
-                    double num2 = LiteNetLib4MirrorServer.Peers[__instance.connectionToClient.connectionId].Ping * 0.001 * __instance.serverDelayThreshold;
-                    float searchTime = ev.SearchTime;
-                    if (num < 0.0 || num2 < num)
-                    {
-                        body.InitialTime = NetworkTime.time - num2;
-                        body.FinishTime = body.InitialTime + searchTime;
-                    }
-                    else if (Math.Abs(body.FinishTime - body.InitialTime - searchTime) > 0.001)
-                    {
-                        body.FinishTime = body.InitialTime + searchTime;
-                    }
-                }
-
-                session = body;
-                __result = true;
-                return false;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"{typeof(SearchingPickupEvent).FullName}.{nameof(Prefix)}:\n{exception}");
-                session = null;
-                completor = null;
-                return true;
-            }
-        }*/
     }
 }
