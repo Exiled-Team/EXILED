@@ -38,6 +38,12 @@ namespace Exiled.Events.Patches.Events.Map
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // Remove check if player is thrower. Grenade on self should affect themself.
+            int removeSelfCheckOffset = -4;
+            int removeSelfCheck = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Footprint), nameof(Footprint.Hub)))) + removeSelfCheckOffset;
+            newInstructions.RemoveRange(removeSelfCheck, 7);
+
             int offset = -3;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
             Label returnLabel = generator.DefineLabel();
@@ -120,7 +126,11 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
+                if(Player.Get(grenade.PreviousOwner.Hub) == player)
+                {
+                    grenade.ProcessPlayer(player.ReferenceHub);
+                }
+                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
                 {
                     grenade.ProcessPlayer(player.ReferenceHub);
                 }
