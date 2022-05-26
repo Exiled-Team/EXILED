@@ -8,21 +8,15 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using InventorySystem.Items.Pickups;
     using InventorySystem.Searching;
-
-    using Mirror;
-    using Mirror.LiteNetLib4Mirror;
 
     using NorthwoodLib.Pools;
 
@@ -46,9 +40,18 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label allowLabel = generator.DefineLabel();
 
+            // remove base-game check and `SearchSession body` setter
             newInstructions.RemoveRange(index, 14);
 
-            //
+            // SearchingPickupEventArgs ev = new(Player.Get(Hub), request.Target, request.Body, completor, request.Target.SearchTimeForPlayer(Hub));
+            // Handlers.Player.OnSearchPickupRequest(ev);
+            // if(!ev.IsAllowed) {
+            //     SearchSession = null;
+            //     completor = null;
+            //     return true;
+            // }
+            // completor = ev.SearchCompletor;
+            // body = ev.SearchSession;
             newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Ldarg_0),
@@ -100,8 +103,10 @@ namespace Exiled.Events.Patches.Events.Player
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_S &&
                                                    i.operand is LocalBuilder { LocalIndex: 4 }) + offset;
 
+            // remove base-game SearchTime setter
             newInstructions.RemoveRange(index, 5);
 
+            // SearchTime = ev.SearchTime;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -110,7 +115,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             for (int z = 0; z < newInstructions.Count; z++)
             {
-                Log.Debug(newInstructions[z]);
+                Exiled.API.Features.Log.Debug(newInstructions[z]);
                 yield return newInstructions[z];
             }
 
