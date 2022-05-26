@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Fixes
 #pragma warning disable SA1649
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using HarmonyLib;
     using NorthwoodLib.Pools;
     using PlayableScps;
