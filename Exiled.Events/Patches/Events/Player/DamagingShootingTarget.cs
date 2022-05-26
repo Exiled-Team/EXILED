@@ -41,6 +41,11 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label allowedLabel = generator.DefineLabel();
 
+            // DamagingShootingTargetEventArgs ev = new(Player.Get(hub), damage, distance, hitLocation, this, damageHandler, true);
+            // Player.OnDamagingShootingTarget(ev);
+            // if(!ev.IsAllowed)
+            //     return;
+            // damage = ev.Amount;
             newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Ldloc_1),
