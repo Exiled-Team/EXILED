@@ -41,8 +41,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
-            for (int i = 0; i < 12; i++)
-                newInstructions.RemoveAt(index);
+            newInstructions.RemoveRange(index, 12);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
