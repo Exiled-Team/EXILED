@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayerFriendly(ReferenceHub attackerHub, ReferenceHub victimHub, RoleType attackerRole)
         {
-            return CheckFriendlyFirePlayer(attackerHub, victimHub, out _);
+            return CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Generic
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub)
         {
-            return CheckFriendlyFirePlayer(attackerHub, victimHub, out _);
+            return CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
         }
 
         /// <summary>
@@ -63,19 +63,20 @@ namespace Exiled.Events.Patches.Generic
         /// </summary>
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
-        /// <param name="ffMulti"> FF multiplier. </param>
-        /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMulti)
+        /// <param name="ffMultiplier"> FF multiplier. </param>
+        /// <returns> True if the attacker can damage the victim.</returns>
+        /// <remarks> Friendly fire multiplier is also provided back if needed. </remarks>
+        public static bool CheckFriendlyFirePlayerRules(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMultiplier)
         {
-            ffMulti = 1f;
-            Log.Debug("Entered CheckFriendlyFirePlayer", Loader.Loader.ShouldDebugBeShown);
+            ffMultiplier = 1f;
 
+            // Return false, no custom friendly fire allowed, default to NW logic for FF.
             if (Server.FriendlyFire)
-                return true;
+                return false;
 
             if (attackerHub is null || victimHub is null)
             {
-                Log.Debug("CheckFriendlyFirePlayer attacker or victim reference hub was null", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerHub is null}, Victim hub null: {victimHub is null}", Loader.Loader.ShouldDebugBeShown);
                 return true;
             }
 
@@ -85,17 +86,17 @@ namespace Exiled.Events.Patches.Generic
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
-                    Log.Debug("CheckFriendlyFirePlayer attack or victim player object was null", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug($"CheckFriendlyFirePlayerRules, Attacker null: {attacker is null}, Victim null: {victim is null}", Loader.Loader.ShouldDebugBeShown);
                     return true;
                 }
 
                 if (attacker == victim)
                 {
-                    Log.Debug("CheckFriendlyFirePlayer, attacker was victim", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug("CheckFriendlyFirePlayerRules, Attacker player was equal to Victim, likely suicide", Loader.Loader.ShouldDebugBeShown);
                     return true;
                 }
 
-                Log.Debug($"CheckFriendlyFirePlayer, What was attacker role {attacker.Role} and victim {victim.Role}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role} and Victim {victim.Role}", Loader.Loader.ShouldDebugBeShown);
 
                 if (!victim.UniqueRole.Equals(string.Empty))
                 {
@@ -106,8 +107,7 @@ namespace Exiled.Events.Patches.Generic
                         {
                             if (pairedData.ContainsKey(attacker.Role))
                             {
-                                ffMulti = pairedData[attacker.Role];
-                                Log.Debug($"CheckFriendlyFirePlayer, victum had unique role with FF: {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                                ffMultiplier = pairedData[attacker.Role];
                                 return true;
                             }
                         }
@@ -122,8 +122,7 @@ namespace Exiled.Events.Patches.Generic
                         {
                             if (pairedData.ContainsKey(victim.Role))
                             {
-                                ffMulti = pairedData[victim.Role];
-                                Log.Debug($"CheckFriendlyFirePlayer, attack had unique role with FF: {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                                ffMultiplier = pairedData[victim.Role];
                                 return true;
                             }
                         }
@@ -133,20 +132,18 @@ namespace Exiled.Events.Patches.Generic
                 // If we're SCP then we need to check if we can attack other SCP, or D-Class, etc. This is default FF logic without unique roles.
                 if (attacker.FriendlyFireMultiplier.Count > 0)
                 {
-                    if (attacker.FriendlyFireMultiplier.TryGetValue(victim.Role, out float ffMult))
+                    if (attacker.FriendlyFireMultiplier.TryGetValue(victim.Role, out float ffMulti))
                     {
-                        ffMulti = ffMult;
-                        Log.Debug($"CheckFriendlyFirePlayer, Friendlyfire for non-unique role with FF: {ffMulti}", Loader.Loader.ShouldDebugBeShown);
+                        ffMultiplier = ffMulti;
                         return true;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log.Debug($"CheckFriendlyFirePlayer failed to handle friendly fire because: {ex}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules failed to handle friendly fire because: {ex}", Loader.Loader.ShouldDebugBeShown);
             }
 
-            Log.Debug($"CheckFriendlyFirePlayer will return false and run default NW logic", Loader.Loader.ShouldDebugBeShown);
             return false;
         }
     }
@@ -157,7 +154,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool))]
     internal static class HitboxIdentityCheckFriendlyFire
     {
-        private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig, ref bool __result)
+        private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, ref bool __result)
         {
             try
             {
@@ -201,15 +198,17 @@ namespace Exiled.Events.Patches.Generic
                 // Load Target
                 new(OpCodes.Ldarg_1),
 
+                // Set default FF to 1.
                 new(OpCodes.Ldc_I4_1),
 
                 new(OpCodes.Stloc, ffMulti.LocalIndex),
 
                 new(OpCodes.Ldloca, ffMulti.LocalIndex),
 
-                // Pass both over.
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
+                // Pass over Player hubs, and FF multiplier.
+                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerRules), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
 
+                // If we have rules, we branch to custom logic, otherwise, default to NW logic.
                 new (OpCodes.Brtrue_S, uniqueFFMulti),
             });
 
@@ -223,7 +222,10 @@ namespace Exiled.Events.Patches.Generic
             // int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + ffMultiplierIndexOffset;
             newInstructions.InsertRange(ffMultiplierIndex, new CodeInstruction[]
             {
+                // Do not run our custom logic, skip over.
                 new (OpCodes.Br, normalProcessing),
+
+                // AttackerDamageHandler.Damage = AttackerDamageHandler.Damage * ffMulti
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti),
                 new (OpCodes.Ldloc, ffMulti.LocalIndex),
                 new (OpCodes.Ldarg_0),
@@ -232,6 +234,8 @@ namespace Exiled.Events.Patches.Generic
                 new (OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
                 new (OpCodes.Ldarg_0),
                 new (OpCodes.Ldarg_1),
+
+                // Next line is ProcessDamage, which uses AttackerDamageHandler information.
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
