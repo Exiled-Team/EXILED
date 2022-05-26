@@ -4,22 +4,15 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-#pragma warning disable
-using Scp914KnobSetting = Scp914.Scp914KnobSetting;
-using Scp914Upgrader = Scp914.Scp914Upgrader;
-#pragma warning restore
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-
-    using global::Scp914.Processors;
 
     using HarmonyLib;
 
@@ -30,6 +23,9 @@ namespace Exiled.Events.Patches.Events.Scp914
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
+
+    using Scp914KnobSetting = global::Scp914.Scp914KnobSetting;
+    using Scp914Upgrader = global::Scp914.Scp914Upgrader;
 
     /// <summary>
     /// Patches <see cref="Scp914Upgrader.ProcessPlayer"/> to add the <see cref="Handlers.Scp914.UpgradingPlayer"/> event.

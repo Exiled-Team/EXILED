@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Scp173
 {
-#pragma warning disable SA1118
-
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;

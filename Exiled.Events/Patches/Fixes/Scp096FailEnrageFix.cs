@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
-#pragma warning disable SA1118
 #pragma warning disable SA1402
 #pragma warning disable SA1649
     using System.Collections.Generic;

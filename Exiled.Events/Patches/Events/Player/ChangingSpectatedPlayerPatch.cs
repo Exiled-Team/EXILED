@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
