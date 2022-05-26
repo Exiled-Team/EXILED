@@ -37,7 +37,9 @@ namespace Exiled.Events.Patches.Events.Scp914
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int index = 0;
+
             Label returnLabel = generator.DefineLabel();
+
             LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
@@ -94,7 +96,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Ldarg, 4),
                 new(OpCodes.Stloc, curSetting.LocalIndex),
 
-                // ply.playerMovementSync.OverridePosition(ev.OutputPosition);
+                // ev.Player.Teleport(ev.OutputPosition);
                 new(OpCodes.Ldloc, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.Player))),
                 new(OpCodes.Ldloc, ev.LocalIndex),
@@ -103,8 +105,11 @@ namespace Exiled.Events.Patches.Events.Scp914
             });
 
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld);
+
             Label continueLabel = generator.DefineLabel();
+
             newInstructions[index + 13].labels.Add(continueLabel);
+
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
             newInstructions.InsertRange(index, new CodeInstruction[]
@@ -150,12 +155,6 @@ namespace Exiled.Events.Patches.Events.Scp914
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-
-        private static ItemBase GetItem(KeyValuePair<uint, ItemBase> kvp)
-        {
-            Log.Error($"{kvp.Key} - {kvp.Value.ItemTypeId} - {kvp.Value.ItemSerial}");
-            return kvp.Value;
         }
     }
 }
