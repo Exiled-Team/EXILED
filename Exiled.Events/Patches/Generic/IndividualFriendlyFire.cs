@@ -64,7 +64,7 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <param name="ffMultiplier"> FF multiplier. </param>
-        /// <returns>True if the attacker can damage the victim.</returns>
+        /// <returns> True if the attacker can damage the victim.</returns>
         /// <remarks> Friendly fire multiplier is also provided back if needed. </remarks>
         public static bool CheckFriendlyFirePlayerRules(ReferenceHub attackerHub, ReferenceHub victimHub, out float ffMultiplier)
         {
@@ -76,7 +76,7 @@ namespace Exiled.Events.Patches.Generic
 
             if (attackerHub is null || victimHub is null)
             {
-                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerHub is null}, Victum hub null: {victimHub is null}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerHub is null}, Victim hub null: {victimHub is null}", Loader.Loader.ShouldDebugBeShown);
                 return true;
             }
 
@@ -92,11 +92,11 @@ namespace Exiled.Events.Patches.Generic
 
                 if (attacker == victim)
                 {
-                    Log.Debug("CheckFriendlyFirePlayerRules, Attacker was victim", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug("CheckFriendlyFirePlayerRules, Attacker player was equal to Victim, likely suicide", Loader.Loader.ShouldDebugBeShown);
                     return true;
                 }
 
-                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role} and victim {victim.Role}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role} and Victim {victim.Role}", Loader.Loader.ShouldDebugBeShown);
 
                 if (!victim.UniqueRole.Equals(string.Empty))
                 {
