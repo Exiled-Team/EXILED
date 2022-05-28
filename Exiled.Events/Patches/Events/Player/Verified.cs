@@ -38,9 +38,10 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label callJoined = generator.DefineLabel();
+
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
-            int offset = -1;
+            const int offset = -1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions))) + offset;
 
             newInstructions.InsertRange(index, new[]
