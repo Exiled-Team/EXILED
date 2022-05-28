@@ -65,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            LocalBuilder out_rh = generator.DeclareLocal(typeof(ReferenceHub));
+            LocalBuilder out_ply = generator.DeclareLocal(typeof(API.Features.Player));
 
             Label cdc = generator.DefineLabel();
             Label je = generator.DefineLabel();
@@ -92,7 +92,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_4),
                 new(OpCodes.Call, Method(typeof(MultiAdminFeatures), nameof(MultiAdminFeatures.CallEvent))),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(je),
-                new(OpCodes.Ldloca_S, out_rh),
+                new(OpCodes.Ldloca_S, out_ply),
                 new(OpCodes.Call, Method(typeof(Joined), nameof(Joined.CallEvent))),
                 new(OpCodes.Pop),
             });
