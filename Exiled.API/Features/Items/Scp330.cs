@@ -17,6 +17,7 @@ namespace Exiled.API.Features.Items
 
     using UnityEngine;
 
+    using NWScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -121,7 +122,7 @@ namespace Exiled.API.Features.Items
 
             if (count > 1 && !dropIndividual)
             {
-                Scp330Pickup ipb = (Scp330Pickup)Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
+                NWScp330Pickup ipb = (NWScp330Pickup)Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
                 ipb.NetworkExposedCandy = overrideExposedType ? exposedType : CandyKindID.None;
                 for (int i = 0; i < count; i++)
                     ipb.StoredCandies.Add(type);
@@ -135,7 +136,7 @@ namespace Exiled.API.Features.Items
 
             for (int i = 0; i < count; i++)
             {
-                Scp330Pickup ipb = (Scp330Pickup)Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
+                NWScp330Pickup ipb = (NWScp330Pickup)Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
                 ipb.NetworkExposedCandy = overrideExposedType ? exposedType : CandyKindID.None;
                 NetworkServer.Spawn(ipb.gameObject);
                 ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
@@ -162,7 +163,7 @@ namespace Exiled.API.Features.Items
             Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
             Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
 
-            Scp330Pickup ipb = (Scp330Pickup)Object.Instantiate(Base.PickupDropModel, position, rotation);
+            NWScp330Pickup ipb = (NWScp330Pickup)Object.Instantiate(Base.PickupDropModel, position, rotation);
 
             if (overrideExposedType)
                 ipb.NetworkExposedCandy = ExposedType;
