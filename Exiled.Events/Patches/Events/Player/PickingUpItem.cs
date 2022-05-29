@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldflda, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.Pickup))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Pickup), nameof(API.Features.Items.Pickup.Serial))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Pickups.Pickup), nameof(API.Features.Pickups.Pickup.Serial))),
                 new(OpCodes.Stfld, Field(typeof(PickupSyncInfo), nameof(PickupSyncInfo.Serial))),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.IsAllowed))),

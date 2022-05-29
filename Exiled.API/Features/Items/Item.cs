@@ -32,8 +32,8 @@ namespace Exiled.API.Features.Items
 
     using UnityEngine;
 
-    using Object = UnityEngine.Object;
     using NWFirearm = InventorySystem.Items.Firearms.FirearmPickup;
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.

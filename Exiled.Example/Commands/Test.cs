@@ -13,6 +13,7 @@ namespace Exiled.Example.Commands
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
 
     /// <summary>
     /// This is an example of how commands should be made.

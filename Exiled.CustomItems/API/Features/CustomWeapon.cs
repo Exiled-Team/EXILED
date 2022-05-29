@@ -14,6 +14,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs;
 
     using InventorySystem.Items.Firearms;
@@ -28,6 +29,7 @@ namespace Exiled.CustomItems.API.Features
     using static CustomItems;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
+    using NWFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Player = Exiled.API.Features.Player;
 
     /// <inheritdoc />
@@ -139,7 +141,7 @@ namespace Exiled.CustomItems.API.Features
 
                 Timing.CallDelayed(1f, () =>
                 {
-                    if (pickup.Base is FirearmPickup firearmPickup)
+                    if (pickup.Base is NWFirearmPickup firearmPickup)
                     {
                         firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
                         firearmPickup.NetworkStatus = firearmPickup.Status;
@@ -173,7 +175,7 @@ namespace Exiled.CustomItems.API.Features
 
                 Timing.CallDelayed(1f, () =>
                 {
-                    if (pickup.Base is FirearmPickup firearmPickup)
+                    if (pickup.Base is NWFirearmPickup firearmPickup)
                     {
                         firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
                         firearmPickup.NetworkStatus = firearmPickup.Status;

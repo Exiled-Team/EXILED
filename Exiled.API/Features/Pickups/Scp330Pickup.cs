@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="NWRadio"/> class.</param>
+        /// <param name="itemBase">The base <see cref="NWScp330"/> class.</param>
         public Scp330Pickup(NWScp330 itemBase)
             : base(itemBase)
         {

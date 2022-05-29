@@ -11,6 +11,7 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
 
     using InventorySystem.Items.Usables.Scp244;
 
@@ -37,7 +38,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets a value representing the <see cref="API.Features.Items.Pickup"/> being picked up.
+        /// Gets a value representing the <see cref="API.Features.Pickups.Pickup"/> being picked up.
         /// </summary>
         public Pickup Pickup { get; }
 

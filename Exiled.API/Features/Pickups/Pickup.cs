@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Pickups
     public class Pickup
     {
         /// <summary>
-        /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
+        /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
         /// </summary>
         internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new();
 
