@@ -46,6 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
             // if(!ev.IsAllowed)
             //     return;
             // damage = ev.Amount;
+            // distance = ev.Distance;
             newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Ldloc_1),
@@ -65,8 +66,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Pop),
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))).WithLabels(allowedLabel),
+                new CodeInstruction(OpCodes.Dup).WithLabels(allowedLabel),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
                 new(OpCodes.Starg_S, 1),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Distance))),
+                new(OpCodes.Stloc_2),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
