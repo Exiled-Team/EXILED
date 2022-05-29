@@ -7,12 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using NWAmmo = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
 
     /// <summary>
@@ -34,5 +28,22 @@ namespace Exiled.API.Features.Pickups
         /// Gets the <see cref="NWAmmo"/> that this class is encapsulating.
         /// </summary>
         public new NWAmmo Base { get; }
+
+        /// <summary>
+        /// Gets the max ammo.
+        /// </summary>
+        public int MaxAmmo => Base._maxDisplayedValue;
+
+        /// <summary>
+        /// Gets or Sets the number of ammo.
+        /// </summary>
+        public ushort NetworkSavedAmmo
+        {
+            get => Base.SavedAmmo;
+            set
+            {
+                Base.NetworkSavedAmmo = value;
+            }
+        }
     }
 }
