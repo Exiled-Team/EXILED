@@ -25,7 +25,7 @@ namespace Exiled.API.Features
         /// <param name="roleType">The role of the npc.</param>
         /// <param name="name">The name of the npc.</param>
         /// <param name="scale">The size of the npc.</param>
-        /// <param name="triggerScps">Whether or not the npc should trigger scps</param>
+        /// <param name="triggerScps">Whether or not the npc should trigger scps.</param>
         public Npc(RoleType roleType, string name, Vector3 scale, bool triggerScps = false)
         {
             GameObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
