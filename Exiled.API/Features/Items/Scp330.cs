@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Features.Pickups;
+
     using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;

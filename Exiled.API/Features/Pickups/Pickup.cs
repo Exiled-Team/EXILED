@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Items
+namespace Exiled.API.Features.Pickups
 {
     using System.Collections.Generic;
 

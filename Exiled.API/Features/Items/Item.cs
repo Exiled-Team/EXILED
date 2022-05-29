@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Items
     using System.Linq;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Structs;
 
     using InventorySystem.Items;
@@ -32,6 +33,7 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using Object = UnityEngine.Object;
+    using NWFirearm = InventorySystem.Items.Firearms.FirearmPickup;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
@@ -266,7 +268,7 @@ namespace Exiled.API.Features.Items
             Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
 
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-            if (ipb is FirearmPickup firearmPickup)
+            if (ipb is NWFirearm firearmPickup)
             {
                 if (this is Firearm firearm)
                 {
@@ -313,7 +315,7 @@ namespace Exiled.API.Features.Items
             Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
 
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-            if (ipb is FirearmPickup firearmPickup)
+            if (ipb is NWFirearm firearmPickup)
             {
                 if (this is Firearm firearm)
                 {
