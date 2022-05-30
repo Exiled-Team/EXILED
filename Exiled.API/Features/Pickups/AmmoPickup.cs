@@ -7,6 +7,9 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+
     using NWAmmo = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
 
     /// <summary>
@@ -32,7 +35,12 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the max ammo.
         /// </summary>
-        public int MaxAmmo => Base._maxDisplayedValue;
+        public int MaxDisplayedAmmo => Base._maxDisplayedValue;
+
+        /// <summary>
+        /// Gets the <see cref="Enums.AmmoType"/> of the item.
+        /// </summary>
+        public AmmoType AmmoType => Type.GetAmmoType();
 
         /// <summary>
         /// Gets or Sets the number of ammo.
@@ -47,6 +55,6 @@ namespace Exiled.API.Features.Pickups
         /// Returns the AmmoPickup in a human readable format.
         /// </summary>
         /// <returns>A string containing AmmoPickup related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{MaxAmmo}| -{Ammo}-";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{MaxDisplayedAmmo}| -{Ammo}-";
     }
 }

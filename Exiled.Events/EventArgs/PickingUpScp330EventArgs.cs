@@ -10,8 +10,10 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Pickups;
 
-    using InventorySystem.Items.Usables.Scp330;
+    using NWScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
+    using Scp330Pickup = Exiled.API.Features.Pickups.Scp330Pickup;
 
     /// <summary>
     /// Contains all information before a player picks up an SCP-330.
@@ -23,10 +25,10 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
-        public PickingUpScp330EventArgs(Player player, Scp330Pickup pickup)
+        public PickingUpScp330EventArgs(Player player, NWScp330 pickup)
         {
             Player = player;
-            Pickup = pickup;
+            Scp330 = (Scp330Pickup)Pickup.Get(pickup);
         }
 
         /// <summary>
@@ -35,13 +37,13 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
+        /// Gets or sets a value representing the <see cref="Scp330Pickup"/> being picked up.
+        /// </summary>
+        public Scp330Pickup Scp330 { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with SCP-330.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value representing the <see cref="Scp330Pickup"/> being picked up.
-        /// </summary>
-        public Scp330Pickup Pickup { get; set; }
     }
 }

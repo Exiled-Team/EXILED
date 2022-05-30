@@ -7,14 +7,17 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System;
+
     using Exiled.API.Features;
+    using Exiled.API.Features.Pickups;
 
     using InventorySystem.Items.Pickups;
 
     /// <summary>
     /// Contains all information before a player picks up <see cref="API.Features.Items.Armor"/>.
     /// </summary>
-    public class PickingUpArmorEventArgs : PickingUpItemEventArgs
+    public class PickingUpArmorEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PickingUpArmorEventArgs"/> class.
@@ -23,8 +26,25 @@ namespace Exiled.Events.EventArgs
         /// <param name="pickup"><inheritdoc cref="PickingUpItemEventArgs.Pickup"/></param>
         /// <param name="isAllowed"><inheritdoc cref="PickingUpItemEventArgs.IsAllowed"/></param>
         public PickingUpArmorEventArgs(Player player, ItemPickupBase pickup, bool isAllowed = true)
-            : base(player, pickup, isAllowed)
         {
+            Armor = (BodyArmorPickup)Pickup.Get(pickup);
+            Player = player;
+            IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the player who dropped the item.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <summary>
+        /// Gets the dropped BodyArmor.
+        /// </summary>
+        public BodyArmorPickup Armor { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the BodyArmor can be picked up.
+        /// </summary>
+        public bool IsAllowed { get; set; }
     }
 }
