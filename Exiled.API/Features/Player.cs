@@ -272,7 +272,6 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's display nickname.
-        /// May be <see langword="null"/>.
         /// </summary>
         public string DisplayNickname
         {
