@@ -17,11 +17,11 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="TimeGrenadePickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="TimeGrenade"/> class.</param>
-        public TimeGrenadePickup(TimeGrenade itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="TimeGrenade"/> class.</param>
+        public TimeGrenadePickup(TimeGrenade pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Exiled.API.Features.Pickups
         public new TimeGrenade Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether if the grenade have already explode.
+        /// Gets or sets a value indicating whether the grenade have already explode.
         /// </summary>
         public bool IsAlreadyDetonated
         {
@@ -39,7 +39,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the time to explode before it's start.
+        /// Gets or sets FuseTime.
         /// </summary>
         public float FuseTime
         {
@@ -48,7 +48,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets how long it going to takes to explode.
+        /// Gets or sets time indicating how long it will take to explode.
         /// </summary>
         public float TargetTime
         {

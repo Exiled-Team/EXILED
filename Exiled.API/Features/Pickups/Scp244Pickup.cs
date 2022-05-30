@@ -22,11 +22,11 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244Pickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="Scp244DeployablePickup"/> class.</param>
-        public Scp244Pickup(Scp244DeployablePickup itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="Scp244DeployablePickup"/> class.</param>
+        public Scp244Pickup(Scp244DeployablePickup pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Exiled.API.Features.Pickups
         public new Scp244DeployablePickup Base { get; }
 
         /// <summary>
-        /// Gets the speed of Scp244's too grow.
+        /// Gets the speed of <see cref="Scp244Pickup"/>'s too grow.
         /// </summary>
         public float GrowSpeed => Base.GrowSpeed;
 
@@ -70,7 +70,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether or not this Scp244 is breakable.
         /// </summary>
-        public bool IsBreakable => Base.State == Scp244State.Idle || Base.State == Scp244State.Active;
+        public bool IsBreakable => Base.State is Scp244State.Idle or Scp244State.Active;
 
         /// <summary>
         /// Gets or sets the <see cref="Scp244State"/>.

@@ -20,11 +20,11 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="RadioPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="BaseRadio"/> class.</param>
-        public RadioPickup(BaseRadio itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="BaseRadio"/> class.</param>
+        public RadioPickup(BaseRadio pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the Radio Range.
+        /// Gets or sets the <see cref="RadioRange"/>.
         /// </summary>
         public RadioRange Range
         {

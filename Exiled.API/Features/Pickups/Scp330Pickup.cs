@@ -23,11 +23,11 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="BaseScp330"/> class.</param>
-        public Scp330Pickup(BaseScp330 itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="BaseScp330"/> class.</param>
+        public Scp330Pickup(BaseScp330 pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Exiled.API.Features.Pickups
         public new BaseScp330 Base { get; }
 
         /// <summary>
-        /// Gets or sets the exposed type.
+        /// Gets or sets the exposed <see cref="CandyKindID"/>.
         /// </summary>
         public CandyKindID ExposedCandy
         {
