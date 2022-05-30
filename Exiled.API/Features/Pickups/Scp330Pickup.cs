@@ -40,12 +40,18 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public new NWScp330 Base { get; }
 
+        /// <summary>
+        /// Gets or sets the exposed type.
+        /// </summary>
         public CandyKindID ExposedCandy
         {
             get => Base.NetworkExposedCandy;
             set => Base.NetworkExposedCandy = value;
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="CandyKindID"/>s held in this bag.
+        /// </summary>
         public List<CandyKindID> Candies
         {
             get => Base.StoredCandies;

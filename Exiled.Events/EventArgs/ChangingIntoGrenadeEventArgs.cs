@@ -28,15 +28,15 @@ namespace Exiled.Events.EventArgs
         {
             if (pickup is null)
                 Log.Error($"{nameof(ChangingIntoGrenadeEventArgs)}: Pickup is null!");
-            Pickup = Pickup.Get(pickup);
-            Type = pickup.Info.ItemId;
-            FuseTime = Pickup.Base is TimeGrenade timeGrenade ? timeGrenade._fuseTime : 3f;
+            Projectile = (ProjectilePickup)Pickup.Get(pickup);
+            Type = Projectile.Type;
+            FuseTime = Projectile is TimeGrenadePickup timeGrenade ? timeGrenade.FuseTime : 3f;
         }
 
         /// <summary>
         /// Gets a value indicating the pickup being changed.
         /// </summary>
-        public Pickup Pickup { get; }
+        public ProjectilePickup Projectile { get; }
 
         /// <summary>
         /// Gets or sets a value indicating what type of grenade will be spawned.

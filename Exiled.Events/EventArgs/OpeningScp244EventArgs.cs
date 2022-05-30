@@ -29,20 +29,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public OpeningScp244EventArgs(Scp244DeployablePickup pickup, bool isAllowed)
         {
-            Scp244 = pickup;
-            Pickup = Pickup.Get(pickup);
+            Scp244 = (Scp244Pickup)Pickup.Get(pickup);
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets a value representing the <see cref="Scp244DeployablePickup"/> being picked up.
+        /// Gets a value representing the <see cref="Scp244Pickup"/> being picked up.
         /// </summary>
-        public Scp244DeployablePickup Scp244 { get; }
-
-        /// <summary>
-        /// Gets a value representing the <see cref="Pickup"/> being picked up.
-        /// </summary>
-        public Pickup Pickup { get; }
+        public Scp244Pickup Scp244 { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with SCP-330.

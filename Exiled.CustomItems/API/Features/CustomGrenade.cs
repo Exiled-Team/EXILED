@@ -213,7 +213,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
         {
-            if (!Check(ev.Pickup))
+            if (!Check(ev.Projectile))
                 return;
 
             ev.FuseTime = FuseTime;
@@ -223,8 +223,8 @@ namespace Exiled.CustomItems.API.Features
 
             if (ev.IsAllowed)
             {
-                Timing.CallDelayed(0.25f, () => Throw(ev.Pickup.Position, 0f, ev.FuseTime, ev.Type));
-                ev.Pickup.Destroy();
+                Timing.CallDelayed(0.25f, () => Throw(ev.Projectile.Position, 0f, ev.FuseTime, ev.Type));
+                ev.Projectile.Destroy();
                 ev.IsAllowed = false;
             }
         }

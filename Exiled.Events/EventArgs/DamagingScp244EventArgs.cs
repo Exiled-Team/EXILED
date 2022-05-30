@@ -35,21 +35,15 @@ namespace Exiled.Events.EventArgs
         public DamagingScp244EventArgs(Scp244DeployablePickup scp244, float damage, DamageHandlerBase handler)
         {
             IsAllowed = handler is ExplosionDamageHandler;
-            Scp244 = scp244;
-            Pickup = Pickup.Get(scp244);
+            Scp244 = (Scp244Pickup)Pickup.Get(scp244);
             Handler = new(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler);
             Handler.Damage = damage;
         }
 
         /// <summary>
-        /// Gets the <see cref="Scp244DeployablePickup"/> object that is damaged.
+        /// Gets the <see cref="Scp244Pickup"/> object that is damaged.
         /// </summary>
-        public Scp244DeployablePickup Scp244 { get; }
-
-        /// <summary>
-        /// Gets the <see cref="Pickup"/> object that is damaged.
-        /// </summary>
-        public Pickup Pickup { get; }
+        public Scp244Pickup Scp244 { get; }
 
         /// <summary>
         /// Gets the Damage handler for this event.
@@ -59,6 +53,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether the window can be broken.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
     }
 }
