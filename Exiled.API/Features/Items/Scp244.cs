@@ -51,9 +51,6 @@ namespace Exiled.API.Features.Items
         /// Returns the SCP-244 in a human readable format.
         /// </summary>
         /// <returns>A string containing SCP-244 related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Primed}-";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Primed}-";
     }
 }

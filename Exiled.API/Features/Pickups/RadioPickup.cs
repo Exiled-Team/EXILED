@@ -63,5 +63,11 @@ namespace Exiled.API.Features.Pickups
             get => Base.SavedEnabled;
             set => Base.SavedEnabled = value;
         }
+
+        /// <summary>
+        /// Returns the AmmoPickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing AmmoPickup related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{Range}- /{IsActive}/";
     }
 }

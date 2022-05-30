@@ -179,9 +179,6 @@ namespace Exiled.API.Features.Items
         /// Returns the SCP-330 in a human readable format.
         /// </summary>
         /// <returns>A string containing SCP-330 related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
     }
 }

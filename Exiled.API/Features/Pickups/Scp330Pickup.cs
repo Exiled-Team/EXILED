@@ -51,5 +51,11 @@ namespace Exiled.API.Features.Pickups
             get => Base.StoredCandies;
             set => Base.StoredCandies = value;
         }
+
+        /// <summary>
+        /// Returns the AmmoPickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing AmmoPickup related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{ExposedCandy}| -{Candies}-";
     }
 }

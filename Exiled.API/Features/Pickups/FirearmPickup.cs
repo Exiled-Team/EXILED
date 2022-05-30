@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets a value indicating whether if the pickup are already distrubuted.
         /// </summary>
-        public bool IsAlreadyTake
+        public bool IsDistributed
         {
             get => Base.Distributed;
             set => Base.Distributed = value;
@@ -81,5 +81,11 @@ namespace Exiled.API.Features.Pickups
             get => Base.NetworkStatus.Attachments;
             set => Base.NetworkStatus = new FirearmStatus(Base.NetworkStatus.Ammo, Base.NetworkStatus.Flags, value);
         }
+
+        /// <summary>
+        /// Returns the AmmoPickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing AmmoPickup related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{IsDistributed}| -{Ammo}-";
     }
 }

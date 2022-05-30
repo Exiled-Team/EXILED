@@ -34,5 +34,11 @@ namespace Exiled.API.Features.Pickups
         /// Gets the <see cref="NWBodyArmor"/> that this class is encapsulating.
         /// </summary>
         public new NWBodyArmor Base { get; }
+
+        /// <summary>
+        /// Returns the AmmoPickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing AmmoPickup related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
     }
 }

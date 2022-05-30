@@ -42,5 +42,11 @@ namespace Exiled.API.Features.Pickups
             get => Base.SavedAmmo;
             set => Base.NetworkSavedAmmo = value;
         }
+
+        /// <summary>
+        /// Returns the AmmoPickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing AmmoPickup related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{MaxAmmo}| -{Ammo}-";
     }
 }
