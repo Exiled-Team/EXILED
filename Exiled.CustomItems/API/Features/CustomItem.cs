@@ -39,10 +39,10 @@ namespace Exiled.CustomItems.API.Features
 
     using static CustomItems;
 
+    using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Firearm = Exiled.API.Features.Items.Firearm;
     using Item = Exiled.API.Features.Items.Item;
     using Map = Exiled.API.Features.Map;
-    using NWFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
@@ -640,7 +640,7 @@ namespace Exiled.CustomItems.API.Features
                 else
                 {
                     Pickup pickup = Spawn(spawnPoint.Position, (Player)null);
-                    if (pickup.Base is NWFirearmPickup firearmPickup && this is CustomWeapon customWeapon)
+                    if (pickup.Base is BaseFirearmPickup firearmPickup && this is CustomWeapon customWeapon)
                     {
                         firearmPickup.Status = new FirearmStatus(customWeapon.ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
                         firearmPickup.NetworkStatus = firearmPickup.Status;

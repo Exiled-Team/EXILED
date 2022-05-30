@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Pickups
     using System.Text;
     using System.Threading.Tasks;
 
-    using NWBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
+    using BaseBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
 
     /// <summary>
     /// A wrapper class for BodyArmor.
@@ -23,17 +23,17 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="BodyArmorPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="NWBodyArmor"/> class.</param>
-        public BodyArmorPickup(NWBodyArmor itemBase)
+        /// <param name="itemBase">The base <see cref="BaseBodyArmor"/> class.</param>
+        public BodyArmorPickup(BaseBodyArmor itemBase)
             : base(itemBase)
         {
             Base = itemBase;
         }
 
         /// <summary>
-        /// Gets the <see cref="NWBodyArmor"/> that this class is encapsulating.
+        /// Gets the <see cref="BaseBodyArmor"/> that this class is encapsulating.
         /// </summary>
-        public new NWBodyArmor Base { get; }
+        public new BaseBodyArmor Base { get; }
 
         /// <summary>
         /// Returns the AmmoPickup in a human readable format.

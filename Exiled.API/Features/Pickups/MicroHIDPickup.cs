@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Pickups
     using System.Text;
     using System.Threading.Tasks;
 
-    using NWMicroHID = InventorySystem.Items.MicroHID.MicroHIDPickup;
+    using BaseMicroHID = InventorySystem.Items.MicroHID.MicroHIDPickup;
 
     /// <summary>
     /// A wrapper class for SCP-330 bags.
@@ -23,17 +23,17 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="MicroHIDPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="NWMicroHID"/> class.</param>
-        public MicroHIDPickup(NWMicroHID itemBase)
+        /// <param name="itemBase">The base <see cref="BaseMicroHID"/> class.</param>
+        public MicroHIDPickup(BaseMicroHID itemBase)
             : base(itemBase)
         {
             Base = itemBase;
         }
 
         /// <summary>
-        /// Gets the <see cref="NWMicroHID"/> that this class is encapsulating.
+        /// Gets the <see cref="BaseMicroHID"/> that this class is encapsulating.
         /// </summary>
-        public new NWMicroHID Base { get; }
+        public new BaseMicroHID Base { get; }
 
         /// <summary>
         /// Gets or sets the MicroHID Energy.

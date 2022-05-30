@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
 
-    using NWScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
+    using BaseScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
     using Scp330Pickup = Exiled.API.Features.Pickups.Scp330Pickup;
 
     /// <summary>
@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
-        public PickingUpScp330EventArgs(Player player, NWScp330 pickup)
+        public PickingUpScp330EventArgs(Player player, BaseScp330 pickup)
         {
             Player = player;
             Scp330 = (Scp330Pickup)Pickup.Get(pickup);
