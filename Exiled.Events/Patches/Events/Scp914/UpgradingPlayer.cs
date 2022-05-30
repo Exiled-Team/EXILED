@@ -8,15 +8,12 @@
 namespace Exiled.Events.Patches.Events.Scp914
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
-
-    using InventorySystem.Items;
 
     using NorthwoodLib.Pools;
 

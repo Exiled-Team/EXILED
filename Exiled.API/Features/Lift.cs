@@ -95,7 +95,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
         /// </summary>
-        #pragma warning disable SA1122
+#pragma warning disable SA1122
         public ElevatorType Type => Name switch
         {
             "SCP-049" => ElevatorType.Scp049,
@@ -106,7 +106,7 @@ namespace Exiled.API.Features
             "" => ElevatorType.Nuke,
             _ => ElevatorType.Unknown,
         };
-        #pragma warning restore SA1122
+#pragma warning restore SA1122
 
         /// <summary>
         /// Gets a value indicating whether the lift is operative.

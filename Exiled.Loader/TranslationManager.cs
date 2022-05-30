@@ -16,6 +16,7 @@ namespace Exiled.Loader
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
+
     using YamlDotNet.Core;
 
     /// <summary>

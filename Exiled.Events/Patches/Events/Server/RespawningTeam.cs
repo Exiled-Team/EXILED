@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Server
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;

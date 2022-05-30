@@ -18,8 +18,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     using Player = Exiled.API.Features.Player;

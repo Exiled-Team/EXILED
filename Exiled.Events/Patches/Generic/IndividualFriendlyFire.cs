@@ -68,7 +68,7 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(attacker,  victim, attacker is null ? RoleType.None : attacker.characterClassManager.CurClass);
+                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(attacker, victim, attacker is null ? RoleType.None : attacker.characterClassManager.CurClass);
 
                 return false;
             }

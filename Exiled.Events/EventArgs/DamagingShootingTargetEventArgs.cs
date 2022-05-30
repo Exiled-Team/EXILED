@@ -14,6 +14,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Toys;
 
     using PlayerStatsSystem;
+
     using UnityEngine;
 
     /// <summary>

@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using Player = Exiled.Events.Handlers.Player;

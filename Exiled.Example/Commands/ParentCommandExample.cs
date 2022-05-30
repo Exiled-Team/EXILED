@@ -12,6 +12,7 @@ namespace Exiled.Example.Commands
     using System;
 
     using CommandSystem;
+
     using Exiled.Permissions.Extensions; // Use this if you want to add perms
 
     /// <inheritdoc />

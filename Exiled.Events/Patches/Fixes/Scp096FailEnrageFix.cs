@@ -13,7 +13,9 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using PlayableScps;
 
     using static HarmonyLib.AccessTools;
