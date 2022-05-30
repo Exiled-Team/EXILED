@@ -13,10 +13,12 @@ namespace Exiled.API.Features.Pickups
     using System.Text;
     using System.Threading.Tasks;
 
+    using InventorySystem.Items.Firearms;
+
     using NWFirearm = InventorySystem.Items.Firearms.FirearmPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for Firearm.
     /// </summary>
     public class FirearmPickup : Pickup
     {
@@ -34,5 +36,50 @@ namespace Exiled.API.Features.Pickups
         /// Gets the <see cref="NWFirearm"/> that this class is encapsulating.
         /// </summary>
         public new NWFirearm Base { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether if the pickup are already distrubuted.
+        /// </summary>
+        public bool IsAlreadyTake
+        {
+            get => Base.Distributed;
+            set => Base.Distributed = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="FirearmStatus"/>.
+        /// </summary>
+        public FirearmStatus Status
+        {
+            get => Base.NetworkStatus;
+            set => Base.NetworkStatus = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether how many ammo have this Firearm.
+        /// </summary>
+        public byte Ammo
+        {
+            get => Base.NetworkStatus.Ammo;
+            set => Base.NetworkStatus = new FirearmStatus(value, Base.NetworkStatus.Flags, Base.NetworkStatus.Attachments);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether Flags have this Firearm.
+        /// </summary>
+        public FirearmStatusFlags Flags
+        {
+            get => Base.NetworkStatus.Flags;
+            set => Base.NetworkStatus = new FirearmStatus(Base.NetworkStatus.Ammo, value, Base.NetworkStatus.Attachments);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the Attachement code.
+        /// </summary>
+        public uint Attachments
+        {
+            get => Base.NetworkStatus.Attachments;
+            set => Base.NetworkStatus = new FirearmStatus(Base.NetworkStatus.Ammo, Base.NetworkStatus.Flags, value);
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Pickups
     using NWAmmo = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for Ammo Pickup.
     /// </summary>
     public class AmmoPickup : Pickup
     {
@@ -37,13 +37,10 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or Sets the number of ammo.
         /// </summary>
-        public ushort NetworkSavedAmmo
+        public ushort Ammo
         {
             get => Base.SavedAmmo;
-            set
-            {
-                Base.NetworkSavedAmmo = value;
-            }
+            set => Base.NetworkSavedAmmo = value;
         }
     }
 }

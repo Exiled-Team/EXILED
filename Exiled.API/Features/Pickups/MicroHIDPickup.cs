@@ -34,5 +34,14 @@ namespace Exiled.API.Features.Pickups
         /// Gets the <see cref="NWMicroHID"/> that this class is encapsulating.
         /// </summary>
         public new NWMicroHID Base { get; }
+
+        /// <summary>
+        /// Gets or sets the MicroHID Energy.
+        /// </summary>
+        public float Energy
+        {
+            get => Base.NetworkEnergy;
+            set => Base.NetworkEnergy = value;
+        }
     }
 }

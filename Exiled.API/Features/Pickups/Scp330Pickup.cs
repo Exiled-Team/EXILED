@@ -7,11 +7,16 @@
 
 namespace Exiled.API.Features.Pickups
 {
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
+#pragma warning disable SA1600 // Commentaire XML manquant pour le type ou le membre visible publiquement
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
+    using InventorySystem.Items.Usables.Scp330;
 
     using NWScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
 
@@ -34,5 +39,17 @@ namespace Exiled.API.Features.Pickups
         /// Gets the <see cref="NWScp330"/> that this class is encapsulating.
         /// </summary>
         public new NWScp330 Base { get; }
+
+        public CandyKindID ExposedCandy
+        {
+            get => Base.NetworkExposedCandy;
+            set => Base.NetworkExposedCandy = value;
+        }
+
+        public List<CandyKindID> Candies
+        {
+            get => Base.StoredCandies;
+            set => Base.StoredCandies = value;
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Exiled.API.Features.Pickups
     using NWBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for BodyArmor.
     /// </summary>
     public class BodyArmorPickup : Pickup
     {
