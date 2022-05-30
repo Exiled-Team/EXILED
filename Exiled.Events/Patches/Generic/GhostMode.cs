@@ -128,7 +128,7 @@ namespace Exiled.Events.Patches.Generic
                                             MakeGhost(index, __instance._transmitBuffer);
                                             continue;
                                         }
-                                        if (!(currentTarget.ReferenceHub.scpsController.CurrentScp is Scp096 scp) || !scp.EnragedOrEnraging)
+                                        if (currentTarget.ReferenceHub.scpsController.CurrentScp is not Scp096 scp || !scp.EnragedOrEnraging)
                                         {
                                             MakeGhost(index, __instance._transmitBuffer);
                                             continue;

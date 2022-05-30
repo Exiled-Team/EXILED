@@ -128,6 +128,22 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new(20);
 
         /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleType"/> and their FF multiplier. This is for non-unique roles.
+        /// </summary>
+        public Dictionary<RoleType, float> FriendlyFireMultiplier { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier. This is for unique custom roles.
+        /// </summary>
+        /// <remarks> Consider adding this as object, Dict so that CustomRoles, and Strings can be parsed. </remarks>
+        public Dictionary<string, Dictionary<RoleType, float>> CustomRoleFriendlyFireMultiplier { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
+        /// </summary>
+        public string UniqueRole { get; set; } = string.Empty;
+
+        /// <summary>
         /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub
@@ -547,12 +563,17 @@ namespace Exiled.API.Features
         public bool IsTutorial => Role?.Type == RoleType.Tutorial;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's friendly fire is enabled.
+        /// Gets a value indicating whether the player's friendly fire is enabled.
         /// This property only determines if this player can deal damage to players on the same team;
         /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
         /// </summary>
-        /// <remarks>This property currently does not function, and is planned to be re-implemented in the future.</remarks>
-        public bool IsFriendlyFireEnabled { get; set; } = false;
+        public bool IsFriendlyFireEnabled
+        {
+            get
+            {
+                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the player's scale.
@@ -1122,6 +1143,275 @@ namespace Exiled.API.Features
                 Log.Error($"{typeof(Player).FullName}.{nameof(Get)} error: {exception}");
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
+        /// </summary>
+        /// <param name="roleToAdd"> Role to add. </param>
+        /// <param name="ffMult"> Friendly fire multiplier. </param>
+        public void SetFriendlyFire(RoleType roleToAdd, float ffMult)
+        {
+            if (FriendlyFireMultiplier.ContainsKey(roleToAdd))
+            {
+                FriendlyFireMultiplier[roleToAdd] = ffMult;
+            }
+            else
+            {
+                FriendlyFireMultiplier.Add(roleToAdd, ffMult);
+            }
+        }
+
+        /// <summary>
+        /// Wrapper to call <see cref="SetFriendlyFire(RoleType, float)"/>.
+        /// </summary>
+        /// <param name="roleFF"> Role with FF to add even if it exists. </param>
+        public void SetFriendlyFire(KeyValuePair<RoleType, float> roleFF)
+        {
+            SetFriendlyFire(roleFF.Key, roleFF.Value);
+        }
+
+        /// <summary>
+        /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
+        /// </summary>
+        /// <param name="roleToAdd"> Role to add. </param>
+        /// <param name="ffMult"> Friendly fire multiplier. </param>
+        /// <returns> Whether the item was able to be added. </returns>
+        public bool TryAddFriendlyFire(RoleType roleToAdd, float ffMult)
+        {
+            if (FriendlyFireMultiplier.ContainsKey(roleToAdd))
+            {
+                return false;
+            }
+
+            FriendlyFireMultiplier.Add(roleToAdd, ffMult);
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
+        /// </summary>
+        /// <param name="pairedRoleFF"> Role FF multiplier to add. </param>
+        /// <returns> Whether the item was able to be added. </returns>
+        public bool TryAddFriendlyFire(KeyValuePair<RoleType, float> pairedRoleFF)
+        {
+            return TryAddFriendlyFire(pairedRoleFF.Key, pairedRoleFF.Value);
+        }
+
+        /// <summary>
+        /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
+        /// </summary>
+        /// <param name="ffRules"> Roles to add with friendly fire values. </param>
+        /// <param name="overwrite"> Whether to overwrite current values if they exist. </param>
+        /// <returns> Whether the item was able to be added. </returns>
+        public bool TryAddFriendlyFire(Dictionary<RoleType, float> ffRules, bool overwrite = false)
+        {
+            Dictionary<RoleType, float> temporaryFriendlyFireRules = new();
+            foreach (KeyValuePair<RoleType, float> roleFF in ffRules)
+            {
+                if (overwrite)
+                {
+                    SetFriendlyFire(roleFF);
+                }
+                else
+                {
+                    if (!this.FriendlyFireMultiplier.ContainsKey(roleFF.Key))
+                    {
+                        temporaryFriendlyFireRules.Add(roleFF.Key, roleFF.Value);
+                    }
+                    else
+                    {
+                        // Contained Key but overwrite set to false so we do not add any.
+                        return false;
+                    }
+                }
+            }
+
+            if (!overwrite)
+            {
+                foreach (KeyValuePair<RoleType, float> roleFF in temporaryFriendlyFireRules)
+                {
+                    TryAddFriendlyFire(roleFF);
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
+        /// </summary>
+        /// <param name="roleType"> Role associated for CustomFF. </param>
+        /// <param name="roleToAdd"> Role to add. </param>
+        /// <param name="ffMult"> Friendly fire multiplier. </param>
+        public void SetCustomRoleFriendlyFire(string roleType, RoleType roleToAdd, float ffMult)
+        {
+            if (CustomRoleFriendlyFireMultiplier.TryGetValue(roleType, out Dictionary<RoleType, float> currentPairedData))
+            {
+                if (currentPairedData.ContainsKey(roleToAdd))
+                {
+                    currentPairedData[roleToAdd] = ffMult;
+                }
+                else
+                {
+                    currentPairedData.Add(roleToAdd, ffMult);
+                }
+            }
+            else
+            {
+                Dictionary<RoleType, float> newFFRules = new();
+                newFFRules.Add(roleToAdd, ffMult);
+                CustomRoleFriendlyFireMultiplier.Add(roleType, newFFRules);
+            }
+        }
+
+        /// <summary>
+        /// Wrapper to call <see cref="SetCustomRoleFriendlyFire(string, RoleType, float)"/>.
+        /// </summary>
+        /// <param name="roleType"> Role associated for CustomFF. </param>
+        /// <param name="roleFF"> Role with FF to add even if it exists. </param>
+        public void SetCustomRoleFriendlyFire(string roleType, KeyValuePair<RoleType, float> roleFF)
+        {
+            SetCustomRoleFriendlyFire(roleType, roleFF.Key, roleFF.Value);
+        }
+
+        /// <summary>
+        /// Tries to add <see cref="RoleType"/> to FriendlyFire rules for CustomRole.
+        /// </summary>
+        /// <param name="roleType"> Role associated for CustomFF. </param>
+        /// <param name="roleFF"> Role to add and FF multiplier. </param>
+        /// <returns> Whether the item was able to be added. </returns>
+        public bool TryAddCustomRoleFriendlyFire(string roleType, KeyValuePair<RoleType, float> roleFF)
+        {
+            return TryAddCustomRoleFriendlyFire(roleType, roleFF.Key, roleFF.Value);
+        }
+
+        /// <summary>
+        /// Tries to add <see cref="RoleType"/> to FriendlyFire rules for CustomRole.
+        /// </summary>
+        /// <param name="roleType"> Role associated for CustomFF. </param>
+        /// <param name="roleToAdd"> Role to add. </param>
+        /// <param name="ffMult"> Friendly fire multiplier. </param>
+        /// <returns> Whether the item was able to be added. </returns>
+        public bool TryAddCustomRoleFriendlyFire(string roleType, RoleType roleToAdd, float ffMult)
+        {
+            if (CustomRoleFriendlyFireMultiplier.TryGetValue(roleType, out Dictionary<RoleType, float> currentPairedData))
+            {
+                if (currentPairedData.ContainsKey(roleToAdd))
+                {
+                    return false;
+                }
+
+                currentPairedData.Add(roleToAdd, ffMult);
+            }
+            else
+            {
+                SetCustomRoleFriendlyFire(roleType, roleToAdd, ffMult);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
+        /// </summary>
+        /// <param name="customRoleName"> Role associated for CustomFF. </param>
+        /// <param name="ffRules"> Roles to add with friendly fire values. </param>
+        /// <param name="overwrite"> Whether to overwrite current values if they exist - does NOT delete previous entries if they are not in provided rules. </param>
+        /// <returns> Whether the item was able to be added. </returns>
+        public bool TryAddCustomRoleFriendlyFire(string customRoleName, Dictionary<RoleType, float> ffRules, bool overwrite = false)
+        {
+            Dictionary<RoleType, float> temporaryFriendlyFireRules = new();
+            if (this.CustomRoleFriendlyFireMultiplier.TryGetValue(customRoleName, out Dictionary<RoleType, float> pairedRoleFF))
+            {
+                foreach (KeyValuePair<RoleType, float> roleFF in ffRules)
+                {
+                    if (overwrite)
+                    {
+                        SetCustomRoleFriendlyFire(customRoleName, roleFF);
+                    }
+                    else
+                    {
+                        if (!pairedRoleFF.ContainsKey(roleFF.Key))
+                        {
+                            temporaryFriendlyFireRules.Add(roleFF.Key, roleFF.Value);
+                        }
+                        else
+                        {
+                            // Contained Key but overwrite set to false so we do not add any.
+                            return false;
+                        }
+                    }
+                }
+
+                if (!overwrite)
+                {
+                    foreach (KeyValuePair<RoleType, float> roleFF in temporaryFriendlyFireRules)
+                    {
+                        TryAddCustomRoleFriendlyFire(customRoleName, roleFF);
+                    }
+                }
+            }
+            else
+            {
+                foreach (KeyValuePair<RoleType, float> roleFF in ffRules)
+                {
+                    SetCustomRoleFriendlyFire(customRoleName, roleFF);
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Adds the Custom role to the <see cref="CustomRoleFriendlyFireMultiplier"/> if they did not already exist.
+        /// </summary>
+        /// <param name="customRoleFriendlyFireMultiplier"> Custom role with FF role rules. </param>
+        public void TryAddCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleType, float>> customRoleFriendlyFireMultiplier)
+        {
+            foreach(KeyValuePair<string, Dictionary<RoleType, float>> newRolesWithFF in customRoleFriendlyFireMultiplier)
+            {
+                this.TryAddCustomRoleFriendlyFire(newRolesWithFF.Key, newRolesWithFF.Value);
+            }
+        }
+
+        /// <summary>
+        /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
+        /// </summary>
+        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
+        public void TrySetCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleType, float>> customRoleFriendlyFireMultiplier)
+        {
+            this.CustomRoleFriendlyFireMultiplier = customRoleFriendlyFireMultiplier;
+        }
+
+        /// <summary>
+        /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
+        /// </summary>
+        /// <param name="roleType"> Role to associate FF rules to. </param>
+        /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
+        public void TrySetCustomRoleFriendlyFire(string roleType, Dictionary<RoleType, float> customRoleFriendlyFireMultiplier)
+        {
+            this.CustomRoleFriendlyFireMultiplier[roleType] = customRoleFriendlyFireMultiplier;
+        }
+
+        /// <summary>
+        /// Tries to remove <see cref="RoleType"/> from FriendlyFire rules.
+        /// </summary>
+        /// <param name="role"> Role to add. </param>
+        /// <returns> Whether the item was able to be added. </returns>
+        public bool TryRemoveFriendlyFire(RoleType role)
+        {
+            return FriendlyFireMultiplier.Remove(role);
+        }
+
+        /// <summary>
+        /// Tries to remove <see cref="RoleType"/> from FriendlyFire rules.
+        /// </summary>
+        /// <param name="role"> Role to add. </param>
+        /// <returns> Whether the item was able to be added. </returns>
+        public bool TryRemoveCustomeRoleFriendlyFire(string role)
+        {
+            return CustomRoleFriendlyFireMultiplier.Remove(role);
         }
 
         /// <summary>
