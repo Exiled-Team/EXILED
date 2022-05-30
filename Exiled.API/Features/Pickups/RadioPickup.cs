@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
 
-    using NWRadio = InventorySystem.Items.Radio.RadioPickup;
+    using BaseRadio = InventorySystem.Items.Radio.RadioPickup;
 
     /// <summary>
     /// A wrapper class for SCP-330 bags.
@@ -20,17 +20,17 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="RadioPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="NWRadio"/> class.</param>
-        public RadioPickup(NWRadio itemBase)
+        /// <param name="itemBase">The base <see cref="BaseRadio"/> class.</param>
+        public RadioPickup(BaseRadio itemBase)
             : base(itemBase)
         {
             Base = itemBase;
         }
 
         /// <summary>
-        /// Gets the <see cref="NWRadio"/> that this class is encapsulating.
+        /// Gets the <see cref="BaseRadio"/> that this class is encapsulating.
         /// </summary>
-        public new NWRadio Base { get; }
+        public new BaseRadio Base { get; }
 
         /// <summary>
         /// Gets or sets the Radio Energy.

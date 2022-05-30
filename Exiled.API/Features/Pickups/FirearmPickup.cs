@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Pickups
 
     using InventorySystem.Items.Firearms;
 
-    using NWFirearm = InventorySystem.Items.Firearms.FirearmPickup;
+    using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
 
     /// <summary>
     /// A wrapper class for Firearm.
@@ -21,17 +21,17 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="FirearmPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="NWFirearm"/> class.</param>
-        public FirearmPickup(NWFirearm itemBase)
+        /// <param name="itemBase">The base <see cref="BaseFirearm"/> class.</param>
+        public FirearmPickup(BaseFirearm itemBase)
             : base(itemBase)
         {
             Base = itemBase;
         }
 
         /// <summary>
-        /// Gets the <see cref="NWFirearm"/> that this class is encapsulating.
+        /// Gets the <see cref="BaseFirearm"/> that this class is encapsulating.
         /// </summary>
-        public new NWFirearm Base { get; }
+        public new BaseFirearm Base { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether if the pickup are already distrubuted.

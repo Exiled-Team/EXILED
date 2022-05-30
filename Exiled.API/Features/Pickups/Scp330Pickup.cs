@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Pickups
 
     using InventorySystem.Items.Usables.Scp330;
 
-    using NWScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
+    using BaseScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
 
     /// <summary>
     /// A wrapper class for SCP-330 bags.
@@ -23,17 +23,17 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="NWScp330"/> class.</param>
-        public Scp330Pickup(NWScp330 itemBase)
+        /// <param name="itemBase">The base <see cref="BaseScp330"/> class.</param>
+        public Scp330Pickup(BaseScp330 itemBase)
             : base(itemBase)
         {
             Base = itemBase;
         }
 
         /// <summary>
-        /// Gets the <see cref="NWScp330"/> that this class is encapsulating.
+        /// Gets the <see cref="BaseScp330"/> that this class is encapsulating.
         /// </summary>
-        public new NWScp330 Base { get; }
+        public new BaseScp330 Base { get; }
 
         /// <summary>
         /// Gets or sets the exposed type.

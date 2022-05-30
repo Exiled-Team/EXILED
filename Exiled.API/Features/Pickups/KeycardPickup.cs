@@ -9,7 +9,7 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Features.Items;
 
-    using NWKeycard = InventorySystem.Items.Keycards.KeycardPickup;
+    using BaseKeycard = InventorySystem.Items.Keycards.KeycardPickup;
 
     /// <summary>
     /// A wrapper class for SCP-330 bags.
@@ -19,16 +19,16 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="KeycardPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="NWKeycard"/> class.</param>
-        public KeycardPickup(NWKeycard itemBase)
+        /// <param name="itemBase">The base <see cref="BaseKeycard"/> class.</param>
+        public KeycardPickup(BaseKeycard itemBase)
             : base(itemBase)
         {
             Base = itemBase;
         }
 
         /// <summary>
-        /// Gets the <see cref="NWKeycard"/> that this class is encapsulating.
+        /// Gets the <see cref="BaseKeycard"/> that this class is encapsulating.
         /// </summary>
-        public new NWKeycard Base { get; }
+        public new BaseKeycard Base { get; }
     }
 }

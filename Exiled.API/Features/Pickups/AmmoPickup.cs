@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
-    using NWAmmo = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
+    using BaseAmmo = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
 
     /// <summary>
     /// A wrapper class for Ammo Pickup.
@@ -21,17 +21,17 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="AmmoPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="NWAmmo"/> class.</param>
-        public AmmoPickup(NWAmmo itemBase)
+        /// <param name="itemBase">The base <see cref="BaseAmmo"/> class.</param>
+        public AmmoPickup(BaseAmmo itemBase)
             : base(itemBase)
         {
             Base = itemBase;
         }
 
         /// <summary>
-        /// Gets the <see cref="NWAmmo"/> that this class is encapsulating.
+        /// Gets the <see cref="BaseAmmo"/> that this class is encapsulating.
         /// </summary>
-        public new NWAmmo Base { get; }
+        public new BaseAmmo Base { get; }
 
         /// <summary>
         /// Gets the max ammo.
