@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomItems.Patches
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
