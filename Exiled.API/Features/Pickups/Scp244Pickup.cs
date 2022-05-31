@@ -82,6 +82,15 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
+        /// Gets or sets the current size percent of the Scp244's Hypothermia.
+        /// </summary>
+        public float ActivationDot
+        {
+            get => Base._activationDot;
+            set => Base._activationDot = value;
+        }
+
+        /// <summary>
         /// Damages the Scp244Pickup.
         /// </summary>
         /// <param name="handler">The damage to deal.</param>
