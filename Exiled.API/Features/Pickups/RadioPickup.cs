@@ -60,7 +60,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the RadioPickup in a human readable format.
         /// </summary>
         /// <returns>A string containing RadioPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{Range}- /{IsActive}/";

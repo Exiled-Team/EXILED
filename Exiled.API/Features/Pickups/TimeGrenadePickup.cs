@@ -57,7 +57,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the TimeGrenadePickup in a human readable format.
         /// </summary>
         /// <returns>A string containing TimeGrenadePickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}| -{TargetTime}- ={IsAlreadyDetonated}=";

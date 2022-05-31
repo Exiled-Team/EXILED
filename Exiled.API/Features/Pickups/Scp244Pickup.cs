@@ -98,7 +98,7 @@ namespace Exiled.API.Features.Pickups
         public bool Damage(DamageHandler handler) => Base.Damage(handler.Damage, handler, Vector3.zero);
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the Scp244Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Scp244Pickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Health}| -{State}- ={CurrentSizePercent}=";
