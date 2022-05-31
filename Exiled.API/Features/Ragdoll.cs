@@ -288,7 +288,7 @@ namespace Exiled.API.Features
         /// <param name="player">The ragdoll's <see cref="Player"/> owner.</param>
         /// <param name="handler">The ragdoll's <see cref="DamageHandlerBase"/>.</param>
         /// <returns>The created <see cref="Ragdoll"/>.</returns>
-        public static Ragdoll Spawn(Player player, DamageHandlers.DamageHandlerBase handler) => new Ragdoll(player, handler, true);
+        public static Ragdoll Spawn(Player player, DamageHandlers.DamageHandlerBase handler) => new(player, handler, true);
 
         /// <summary>
         /// Deletes the ragdoll.
