@@ -55,5 +55,11 @@ namespace Exiled.API.Features.Pickups
             get => Base.TargetTime;
             set => Base.TargetTime = value;
         }
+
+        /// <summary>
+        /// Returns the AmmoPickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing TimeGrenadePickup related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}| -{TargetTime}- ={IsAlreadyDetonated}=";
     }
 }

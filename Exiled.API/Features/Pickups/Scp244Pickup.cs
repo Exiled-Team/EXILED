@@ -93,14 +93,14 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Damages the Scp244Pickup.
         /// </summary>
-        /// <param name="handler">The damage to deal.</param>
+        /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
         /// <returns><see langword="true"/> if the the damage has been deal; otherwise, <see langword="false"/>.</returns>
         public bool Damage(DamageHandler handler) => Base.Damage(handler.Damage, handler, Vector3.zero);
 
         /// <summary>
         /// Returns the AmmoPickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
+        /// <returns>A string containing Scp244Pickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Health}| -{State}- ={CurrentSizePercent}=";
     }
 }

@@ -39,7 +39,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Returns the AmmoPickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
+        /// <returns>A string containing BodyArmorPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
     }
 }

@@ -51,7 +51,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether is radio enable.
+        /// Gets or sets a value indicating whether the radio is active.
         /// </summary>
         public bool IsActive
         {
@@ -62,7 +62,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Returns the AmmoPickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
+        /// <returns>A string containing RadioPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{Range}- /{IsActive}/";
     }
 }
