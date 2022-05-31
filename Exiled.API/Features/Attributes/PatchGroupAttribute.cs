@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Attributes
     /// <br>Target-patching also allows to emit patches without having to manually define and/or supply parameters and elements made for patching</br>
     /// </para>
     /// </summary>
-    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class PatchGroupAttribute : Attribute
     {
         /// <summary>
