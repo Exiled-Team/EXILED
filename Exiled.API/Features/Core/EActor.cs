@@ -10,12 +10,13 @@ namespace Exiled.API.Features.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using MEC;
 
     using UnityEngine;
 
     /// <summary>
-    /// <see cref="EActor"/> is the base class for a <see cref="EObject"/> used along with an in-game <see cref="GameObject"/>.
+    /// Actor is the base class for a <see cref="EObject"/> that can be placed or spawned in-game.
     /// </summary>
     public abstract class EActor : EObject
     {
@@ -26,18 +27,52 @@ namespace Exiled.API.Features.Core
 
         private CoroutineHandle serverTick;
         private bool canEverTick;
-        private float fixedTickRate = DefaultFixedTickRate;
+        private float fixedTickRate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EActor"/> class.
         /// </summary>
-        /// <param name="gameObject"><inheritdoc cref="EObject.Base"/></param>
+        /// <param name="gameObject">The base <see cref="GameObject"/>.</param>
         protected EActor(GameObject gameObject = null)
             : base(gameObject)
         {
+            IsEditable = true;
             CanEverTick = true;
+            fixedTickRate = DefaultFixedTickRate;
             Timing.CallDelayed(fixedTickRate, () => OnBeginPlay());
             Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));
+        }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets or sets the <see cref="Vector3">position</see>.
+        /// </summary>
+        public virtual Vector3 Position
+        {
+            get => Transform.position;
+            set => Transform.position = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Quaternion">rotation</see>.
+        /// </summary>
+        public virtual Quaternion Rotation
+        {
+            get => Transform.rotation;
+            set => Transform.rotation = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Vector3">scale</see>.
+        /// </summary>
+        public virtual Vector3 Scale
+        {
+            get => Transform.localScale;
+            set => Transform.localScale = value;
         }
 
         /// <summary>
@@ -71,25 +106,39 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
-        /// Gets a <see cref="EActorComponent"/>[] containing all the components in parent.
+        /// Gets a <see cref="EActor"/>[] containing all the components in parent.
         /// </summary>
-        protected internal EActor[] ComponentsInParent => FindActiveObjectsOfType<EActor>().Where(actor => actor.ComponentsInChildren.Any(comp => comp == this)).ToArray();
+        protected EActor[] ComponentsInParent => FindActiveObjectsOfType<EActor>().Where(actor => actor.ComponentsInChildren.Any(comp => comp == this)).ToArray();
 
         /// <summary>
-        /// Gets a <see cref="EActorComponent"/>[] containing all the components in children.
+        /// Gets a <see cref="HashSet{T}"/> of <see cref="EActor"/> containing all the components in children.
         /// </summary>
-        protected internal HashSet<EActor> ComponentsInChildren { get; } = new HashSet<EActor>();
+        protected HashSet<EActor> ComponentsInChildren { get; } = new();
+
+        /// <summary>
+        /// Attaches a <see cref="EActor"/> to the specified <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="comp"><see cref="EActor"/>.</param>
+        /// <param name="gameObject"><see cref="GameObject"/>.</param>
+        public static void AttachTo(EActor comp, GameObject gameObject) => comp.Base = gameObject;
+
+        /// <summary>
+        /// Attaches a <see cref="EActor"/> to the specified <see cref="EActor"/>.
+        /// </summary>
+        /// <param name="to">The actor to be modified.</param>
+        /// <param name="from">The source actor.</param>
+        public static void AttachTo(EActor to, EActor from) => to.Base = from.Base;
 
         /// <summary>
         /// Adds a component to this actor.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to be added.</typeparam>
         /// <param name="name">The name of the component.</param>
-        /// <returns>The added <see cref="EActor"/> component.</returns>
+        /// <returns>The added component.</returns>
         public T AddComponent<T>(string name = "")
             where T : EActor
         {
-            T component = CreateDefaultSubobject<T>(Base, string.IsNullOrEmpty(name) ? $"{GetType().Name}-Component#{ComponentsInChildren.Count}" : name);
+            T component = CreateDefaultSubobject<T>(Base, string.IsNullOrEmpty(name) ? $"{GetType().Name}-Component#{ComponentsInChildren.Count}" : name).Cast<T>();
             if (component is null)
                 return null;
 
@@ -102,7 +151,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to be added.</param>
         /// <param name="name">The name of the component.</param>
-        /// <returns>The added <see cref="EActor"/> component.</returns>
+        /// <returns>The added component.</returns>
         public EActor AddComponent(Type type, string name = "")
         {
             EActor component = CreateDefaultSubobject(type, Base, string.IsNullOrEmpty(name) ? $"{GetType().Name}-Component#{ComponentsInChildren.Count}" : name).Cast<EActor>();
@@ -117,7 +166,7 @@ namespace Exiled.API.Features.Core
         /// Gets a component from this actor.
         /// </summary>
         /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>
-        /// <returns>The <see cref="EActor"/> component.</returns>
+        /// <returns>The corresponding component or <see langword="null"/> if not found.</returns>
         public T GetComponent<T>()
             where T : EActor => ComponentsInChildren.FirstOrDefault(comp => typeof(T) == comp.GetType()).Cast<T>();
 
@@ -125,7 +174,7 @@ namespace Exiled.API.Features.Core
         /// Gets a component from this actor.
         /// </summary>
         /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to look for.</param>
-        /// <returns>The <see cref="EActor"/> component.</returns>
+        /// <returns>The corresponding component or <see langword="null"/> if not found.</returns>
         public EActor GetComponent(Type type) => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType());
 
         /// <summary>
@@ -137,7 +186,10 @@ namespace Exiled.API.Features.Core
         public bool TryGetComponent<T>(out T component)
             where T : EActor
         {
-            component = GetComponent<T>();
+            component = null;
+
+            if (HasComponent<T>())
+                component = GetComponent<T>().Cast<T>();
 
             return component is not null;
         }
@@ -150,7 +202,10 @@ namespace Exiled.API.Features.Core
         /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
         public bool TryGetComponent(Type type, out EActor component)
         {
-            component = GetComponent(type);
+            component = null;
+
+            if (HasComponent(type))
+                component = GetComponent(type);
 
             return component is not null;
         }
@@ -175,6 +230,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void OnBeginPlay()
         {
+            SubscribeEvents();
         }
 
         /// <summary>
@@ -189,6 +245,21 @@ namespace Exiled.API.Features.Core
         /// </summary>
         protected virtual void OnEndPlay()
         {
+            UnsubscribeEvents();
+        }
+
+        /// <summary>
+        /// Subscribes all the events.
+        /// </summary>
+        protected virtual void SubscribeEvents()
+        {
+        }
+
+        /// <summary>
+        /// Unsubscribes all the events.
+        /// </summary>
+        protected virtual void UnsubscribeEvents()
+        {
         }
 
         /// <inheritdoc/>
@@ -197,10 +268,6 @@ namespace Exiled.API.Features.Core
             base.OnBeginDestroy();
 
             Timing.KillCoroutines(serverTick);
-
-            foreach (EActor parent in ComponentsInParent)
-                parent.ComponentsInChildren.Remove(this);
-
             OnEndPlay();
         }
 
