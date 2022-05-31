@@ -211,9 +211,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
     }
 }
