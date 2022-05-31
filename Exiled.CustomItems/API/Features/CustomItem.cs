@@ -881,7 +881,9 @@ namespace Exiled.CustomItems.API.Features
         /// Handles tracking items when they are picked up by a player.
         /// </summary>
         /// <param name="ev"><see cref="PickingUpItemEventArgs"/>.</param>
-        protected virtual void OnPickingUp(PickingUpItemEventArgs ev) => ShowPickedUpMessage(ev.Player);
+        protected virtual void OnPickingUp(PickingUpItemEventArgs ev)
+        {
+        }
 
         /// <summary>
         /// Handles tracking items when they are selected in the player's inventory.
@@ -906,9 +908,7 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player)
-        {
-        }
+        protected virtual void OnAcquired(Player player) => ShowPickedUpMessage(player);
 
         /// <summary>
         /// Clears the lists of item uniqIDs and Pickups since any still in the list will be invalid.
