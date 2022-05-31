@@ -10,7 +10,9 @@ namespace Exiled.Example.Commands
 #pragma warning disable SA1402
     // Usings
     using System;
+
     using CommandSystem;
+
     using Exiled.Permissions.Extensions; // Use this if you want to add perms
 
     /// <inheritdoc />

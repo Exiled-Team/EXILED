@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -22,8 +21,6 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Pickups;
-
-    using MEC;
 
     using NorthwoodLib.Pools;
 
@@ -163,7 +160,15 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void UpdatePlayerRole(RoleType type, API.Features.Player player) => player.Role = API.Features.Roles.Role.Create(type, player);
+        private static void UpdatePlayerRole(RoleType newRole, API.Features.Player player)
+        {
+            if (newRole is RoleType.Scp173)
+            {
+                Scp173.TurnedPlayers.Remove(player);
+            }
+
+            player.Role = API.Features.Roles.Role.Create(newRole, player);
+        }
 
         private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason)
         {

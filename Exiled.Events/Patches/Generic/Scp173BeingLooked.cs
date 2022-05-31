@@ -7,15 +7,12 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
 
     using HarmonyLib;
-
-    using MapGeneration;
 
     using NorthwoodLib.Pools;
 
@@ -38,7 +35,6 @@ namespace Exiled.Events.Patches.Generic
             Label jne = generator.DefineLabel();
             Label cnt = generator.DefineLabel();
             Label isTutorial = generator.DefineLabel();
-            Label samePlayer = generator.DefineLabel();
 
             int addCheckOffset = 4;
             int addCheck = newInstructions.FindLastIndex(instruction => instruction.Calls(Method(typeof(Physics), nameof(Physics.Linecast), new[] { typeof(Vector3), typeof(Vector3), typeof(int) }))) + addCheckOffset;
