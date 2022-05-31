@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -22,8 +21,6 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Pickups;
-
-    using MEC;
 
     using NorthwoodLib.Pools;
 

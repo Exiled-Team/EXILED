@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
@@ -15,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using Player = Exiled.Events.Handlers.Player;

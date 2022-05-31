@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features
 {
-    using System;
 #pragma warning disable 1584
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 

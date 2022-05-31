@@ -9,12 +9,9 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
     using InventorySystem.Items.Usables.Scp244;
-
-    using UnityEngine;
 
     /// <summary>
     /// Contains all information before a player picks up an SCP-244.

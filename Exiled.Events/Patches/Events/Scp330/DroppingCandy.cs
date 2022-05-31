@@ -8,31 +8,19 @@
 namespace Exiled.Events.Patches.Events.Scp330
 {
 #pragma warning disable SA1313
-#pragma warning disable SA1118
-    using System;
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
-    using Footprinting;
-
-    using global::Utils.Networking;
-
     using HarmonyLib;
 
-    using InventorySystem;
-    using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
-    using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
 
-    using Mirror;
-
     using NorthwoodLib.Pools;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 

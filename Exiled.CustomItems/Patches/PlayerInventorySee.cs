@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomItems.Patches
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -22,6 +21,7 @@ namespace Exiled.CustomItems.Patches
     using InventorySystem.Items;
 
     using NorthwoodLib.Pools;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>

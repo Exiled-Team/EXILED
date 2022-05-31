@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118
 #pragma warning disable SA1402
 #pragma warning disable SA1313
     using System;
@@ -158,7 +157,7 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                __result = IndividualFriendlyFire.CheckFriendlyFirePlayer(attacker,  victim);
+                __result = IndividualFriendlyFire.CheckFriendlyFirePlayer(attacker, victim);
 
                 return false;
             }
