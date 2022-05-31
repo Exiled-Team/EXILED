@@ -18,10 +18,10 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
-#pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
-
+    /// <summary>
+    /// Patches <see cref="PlayableScps.Scp096.UpdateVision"/>.
+    /// Adds the <see cref="Scp096.TurnedPlayers"/> support.
+    /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.UpdateVision))]
     internal static class ParseVisionInformation
     {
@@ -69,6 +69,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
                 new(OpCodes.Brfalse_S, continueLabel),
+
                 // END
                 // if (API.Features.Scp096.TurnedPlayers.Contains(Player.Get(referenceHub)))
                 //      continue;
@@ -78,6 +79,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                 new(OpCodes.Brtrue_S, continueLabel),
+
                 // END
             });
 

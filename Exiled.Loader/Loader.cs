@@ -57,7 +57,7 @@ namespace Exiled.Loader
 
             ConfigManager.LoadLoaderConfigs();
 
-            if (Config.Environment != EnvironmentType.Production)
+            if (Config.Environment != EnvironmentType.Production && Config.Environment != EnvironmentType.ProductionDebug)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                 Paths.Reload($"EXILED-Testing");
@@ -103,7 +103,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
         /// </summary>
-        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development;
+        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development || Config.Environment == EnvironmentType.ProductionDebug;
 
         /// <summary>
         /// Gets plugin dependencies.
@@ -242,7 +242,7 @@ namespace Exiled.Loader
                         continue;
                     }
 
-                    if (!type.BaseType.IsGenericType || (type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) && type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<,>)))
+                    if (!IsDerivedFromPlugin(type))
                     {
                         Log.Debug($"\"{type.FullName}\" does not inherit from Plugin<TConfig>, skipping.", ShouldDebugBeShown);
                         continue;
@@ -401,6 +401,31 @@ namespace Exiled.Loader
         /// <param name="args">The name or prefix of the plugin (Using the prefix is recommended).</param>
         /// <returns>The desired plugin, null if not found.</returns>
         public static IPlugin<IConfig> GetPlugin(string args) => Plugins.FirstOrDefault(x => x.Name == args || x.Prefix == args);
+
+        /// <summary>
+        /// Indicates that the passed type is derived from the plugin type.
+        /// </summary>
+        /// <param name="type">Type.</param>
+        /// <returns><see langword="true"/> if passed type is derived from <see cref="Plugin{TConfig}"/> or <see cref="Plugin{TConfig, TTranslation}"/>, otherwise <see langword="false"/>.</returns>
+        private static bool IsDerivedFromPlugin(Type type)
+        {
+            while (type is not null)
+            {
+                type = type.BaseType;
+
+                if (type is { IsGenericType: true })
+                {
+                    var genericTypeDef = type.GetGenericTypeDefinition();
+
+                    if (genericTypeDef == typeof(Plugin<>) || genericTypeDef == typeof(Plugin<,>))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
 
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {

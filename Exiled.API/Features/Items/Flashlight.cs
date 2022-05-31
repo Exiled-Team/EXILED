@@ -50,9 +50,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Flashlight in a human readable format.
         /// </summary>
         /// <returns>A string containing Flashlight-related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
     }
 }

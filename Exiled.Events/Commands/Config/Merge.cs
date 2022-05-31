@@ -9,7 +9,9 @@ namespace Exiled.Events.Commands.Config
 {
     using System;
     using System.IO;
+
     using CommandSystem;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Loader;
