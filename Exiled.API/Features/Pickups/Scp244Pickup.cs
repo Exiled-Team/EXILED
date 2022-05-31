@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the current size percent of the Scp244's Hypothermia.
+        /// Gets or sets the ActivationDot.
         /// </summary>
         public float ActivationDot
         {
