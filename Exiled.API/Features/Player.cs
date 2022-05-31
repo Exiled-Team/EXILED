@@ -1816,12 +1816,8 @@ namespace Exiled.API.Features
         /// <param name="items">The list of items to be added.</param>
         public void AddItem(IEnumerable<Item> items)
         {
-            List<Item> enumerable = items.ToList();
-            if (enumerable.Count != 0)
-            {
-                foreach (Item item in enumerable)
-                    AddItem(item);
-            }
+            foreach (Item item in items)
+                AddItem(item);
         }
 
         /// <summary>
