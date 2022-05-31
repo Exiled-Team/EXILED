@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the ActivationDot.
+        /// Gets or sets the activation angle, where 1 is a minimum, and -1 it's a maximum activation angle.
         /// </summary>
         public float ActivationDot
         {
