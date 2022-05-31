@@ -1,10 +1,14 @@
 ---
-uid: plugin_structure
+sidebar_position: 1
 ---
-> [!NOTE]
-> This tutorial assumes that you are familiar with C#.
 
-# Plugin Structure
+:::caution
+
+This tutorial assumes that you are familiar with C#.
+
+:::
+
+### Plugin Structure
 In order to be loaded onto the framework, *every* plugin must follow a certain structure and inherit from certain members. If this is not achieved, the plugin will not execute. This tutorial will explain the proper setup for a plugin on the EXILED framework.
 
 ## Plugin Core
@@ -17,15 +21,12 @@ The following example shows how to properly inherit the class. However, notice t
 namespace MyPluginNamespace
 {
     using Exiled.API.Features;
-
     public class Plugin : Plugin<Config>
     {
         // This plugin will now be recognized by the EXILED framework!
     }
-
     // It is strongly encouraged to create a separate file for your Config class.
     using Exiled.API.Interfaces;
-
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; }
@@ -42,23 +43,19 @@ The following example shows how to utilize these methods to send a message to th
 namespace MyPluginNamespace
 {
     using Exiled.API.Features;
-
     public class Plugin : Plugin<Config>
     {
         public override void OnEnabled()
         {
             Log.Info("My plugin has been enabled!");
         }
-
         public override void OnDisabled()
         {
             Log.Info("My plugin has been disabled!");
         }
     }
-
     // Config.cs file
     using Exiled.API.Interfaces;
-
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; }
@@ -76,14 +73,12 @@ namespace MyPluginNamespace
 {
     using System;
     using Exiled.API.Features;
-
     public class Plugin : Plugin<Config>
     {
         public override string Name => "My Awesome Plugin";
         public override string Author => "MyName";
         public override Version Version => new Version(1, 0, 0);
     }
-
     // ...
 }
 ```
@@ -99,7 +94,6 @@ To start, take a look at your Config.cs file.
 namespace MyPluginNamespace
 {
     using Exiled.API.Interfaces;
-
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; }
@@ -113,7 +107,6 @@ In the following example, a config file with three configs is created.
 namespace MyPluginNamespace
 {
     using Exiled.API.Interfaces;
-
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; }
@@ -129,18 +122,14 @@ namespace MyPluginNamespace
 {
     using System.ComponentModel;
     using Exiled.API.Interfaces;
-
     public class Config : IConfig
     {
         [Description("Whether or not the plugin is enabled.")]
         public bool IsEnabled { get; set; }
-
         [Description("Config that must be true or false!")]
         public bool MyBoolConfig { get; set; }
-
         [Description("Config that must be a string!")]
         public string MyStringConfig { get; set; }
-
         [Description("Config that must be a number! Defaults to 5.")]
         public int MyIntConfig { get; set; } = 5;
     }
@@ -152,7 +141,6 @@ namespace MyPluginNamespace
 > You do not need to read the value of the `IsEnabled` config; EXILED will automatically prevent your plugin from executing if its `IsEnabled` config is set to false.
 
 
-
 Reading configuration is more simple than creating it. The base `Plugin<IConfig>` class provides a property, called `Config`, which can be used to access these values.
 
 In the following example, our config from the previous class is displayed when the plugin starts.
@@ -160,7 +148,6 @@ In the following example, our config from the previous class is displayed when t
 namespace MyPluginNamespace
 {
     using Exiled.API.Features;
-
     public class Plugin : Plugin<Config>
     {
         public override void OnEnabled()
@@ -170,24 +157,20 @@ namespace MyPluginNamespace
             Log.Info("Int config: " + Config.MyIntConfig);
         }
     }
-
     // Config.cs file
     using System.ComponentModel;
     using Exiled.API.Interfaces;
-
     public class Config : IConfig
     {
         [Description("Whether or not the plugin is enabled.")]
         public bool IsEnabled { get; set; }
-
         [Description("Config that must be true or false!")]
         public bool MyBoolConfig { get; set; }
-
         [Description("Config that must be a string!")]
         public string MyStringConfig { get; set; }
-
         [Description("Config that must be a number! Defaults to 5.")]
         public int MyIntConfig { get; set; } = 5;
     }
 }
 ```
+

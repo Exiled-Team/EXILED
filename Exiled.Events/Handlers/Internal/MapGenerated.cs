@@ -16,9 +16,6 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.API.Features.Items;
     using Exiled.API.Structs;
 
-    using Interactables.Interobjects.DoorUtils;
-
-    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
 
     using MapGeneration;
