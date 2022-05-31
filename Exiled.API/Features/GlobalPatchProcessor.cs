@@ -16,7 +16,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Attributes;
 
     using HarmonyLib;
-#pragma warning disable format
 
     /// <summary>
     /// A <see cref="Harmony"/> alternative detour tool which adds more ways to manage patches and external assemblies.
