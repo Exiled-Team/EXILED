@@ -1437,8 +1437,22 @@ namespace Exiled.API.Features
         /// <param name="serial">The unique identifier of the item.</param>
         /// <param name="item">The <see cref="ItemBase"/> found. <see langword="null"/> if it doesn't exist.</param>
         /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
+        [Obsolete("Use TryGetItem(ushort, Item) instead.", true)]
         public bool TryGetItem(ushort serial, out ItemBase item) =>
             Inventory.UserInventory.Items.TryGetValue(serial, out item);
+
+        /// <summary>
+        /// Tries to get an item from a player's inventory.
+        /// </summary>
+        /// <param name="serial">The unique identifier of the item.</param>
+        /// <param name="item">The <see cref="Item"/> found. <see langword="null"/> if it doesn't exist.</param>
+        /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
+        public bool TryGetItem(ushort serial, out Item item)
+        {
+            item = Inventory.UserInventory.Items.TryGetValue(serial, out ItemBase itemBase) ? Item.Get(itemBase) : null;
+
+            return item != null;
+        }
 
         /// <summary>
         /// Sets the player's rank.
