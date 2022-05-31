@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -41,34 +42,24 @@ namespace Exiled.Events.Patches.Events.Scp244
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label normalProcessing = generator.DefineLabel();
+            Label retLabel = generator.DefineLabel();
 
-            LocalBuilder resultOfDotCheck = generator.DeclareLocal(typeof(int));
-
-            int offset = 1;
+            int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot)))) + offset;
 
-            // Remove branching on dot result.
-            newInstructions.RemoveAt(index);
-
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Clt),
-                new(OpCodes.Stloc, resultOfDotCheck.LocalIndex),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc, resultOfDotCheck.LocalIndex),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnOpeningScp244))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, normalProcessing),
+                new(OpCodes.Brfalse_S, retLabel),
             });
 
-            int continueOffset = -1;
-            int continueIndex = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State)))) + continueOffset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(Stopwatch), nameof(Stopwatch.Restart)));
 
-            // Jumping over original NW logic.
-            newInstructions[continueIndex].WithLabels(normalProcessing);
+            newInstructions[index].WithLabels(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
