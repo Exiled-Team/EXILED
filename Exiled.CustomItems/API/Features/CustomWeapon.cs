@@ -133,7 +133,8 @@ namespace Exiled.CustomItems.API.Features
             {
                 if (!Attachments.IsEmpty())
                     firearm.AddAttachment(Attachments);
-                Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ClipSize} ammo.", Instance.Config.Debug);
+                byte ammo = firearm.Ammo;
+                Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
                 Pickup pickup = firearm.Spawn(position);
 
                 TrackedSerials.Add(pickup.Serial);
@@ -142,7 +143,7 @@ namespace Exiled.CustomItems.API.Features
                 {
                     if (pickup.Base is FirearmPickup firearmPickup)
                     {
-                        firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                        firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
                         firearmPickup.NetworkStatus = firearmPickup.Status;
                         Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
                     }
@@ -163,7 +164,8 @@ namespace Exiled.CustomItems.API.Features
             {
                 if (!Attachments.IsEmpty())
                     firearm.AddAttachment(Attachments);
-                Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ClipSize} ammo.", Instance.Config.Debug);
+                byte ammo = firearm.Ammo;
+                Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
                 Pickup pickup = firearm.Spawn(position);
 
                 if (previousOwner is not null)
@@ -175,7 +177,7 @@ namespace Exiled.CustomItems.API.Features
                 {
                     if (pickup.Base is FirearmPickup firearmPickup)
                     {
-                        firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                        firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
                         firearmPickup.NetworkStatus = firearmPickup.Status;
                         Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
                     }
