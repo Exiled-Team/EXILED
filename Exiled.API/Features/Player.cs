@@ -272,13 +272,26 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's display nickname.
-        /// May be <see langword="null"/>.
         /// </summary>
         public string DisplayNickname
         {
-            get => ReferenceHub.nicknameSync.Network_displayName;
+            get => ReferenceHub.nicknameSync.DisplayName;
+            set => ReferenceHub.nicknameSync.DisplayName = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's nickname.
+        /// </summary>
+        public string CustomName
+        {
+            get => ReferenceHub.nicknameSync.Network_displayName ?? Nickname;
             set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether if the player has an active CustomName.
+        /// </summary>
+        public bool HasCustomName => ReferenceHub.nicknameSync.NickSet;
 
         /// <summary>
         /// Gets the player's nickname.
