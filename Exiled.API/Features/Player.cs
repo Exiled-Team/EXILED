@@ -276,8 +276,8 @@ namespace Exiled.API.Features
         /// </summary>
         public string DisplayNickname
         {
-            get => ReferenceHub.nicknameSync.DisplayName;
-            set => ReferenceHub.nicknameSync.DisplayName = value;
+            get => ReferenceHub.nicknameSync.Network_displayName;
+            set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
 
         /// <summary>
@@ -425,7 +425,7 @@ namespace Exiled.API.Features
         /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
         /// </para>
         /// <para>
-        /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded and this property should be used again to get the new Role.
+        /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Features.Roles.Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded and this property should be used again to get the new Role.
         /// This role is automatically cached until it changes, and it is recommended to use this propertly directly rather than storing the property yourself.
         /// </para>
         /// <para>
@@ -1022,7 +1022,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
         /// </summary>
-        /// <param name="netId">The player's <see cref="NetworkIdentity.netId"/>.</param>
+        /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
         /// <returns>The <see cref="Player"/> owning the netId, or <see langword="null"/> if not found.</returns>
         public static Player Get(uint netId) =>
             ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
@@ -1437,8 +1437,22 @@ namespace Exiled.API.Features
         /// <param name="serial">The unique identifier of the item.</param>
         /// <param name="item">The <see cref="ItemBase"/> found. <see langword="null"/> if it doesn't exist.</param>
         /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
+        [Obsolete("Use TryGetItem(ushort, Item) instead.", true)]
         public bool TryGetItem(ushort serial, out ItemBase item) =>
             Inventory.UserInventory.Items.TryGetValue(serial, out item);
+
+        /// <summary>
+        /// Tries to get an item from a player's inventory.
+        /// </summary>
+        /// <param name="serial">The unique identifier of the item.</param>
+        /// <param name="item">The <see cref="Item"/> found. <see langword="null"/> if it doesn't exist.</param>
+        /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
+        public bool TryGetItem(ushort serial, out Item item)
+        {
+            item = Inventory.UserInventory.Items.TryGetValue(serial, out ItemBase itemBase) ? Item.Get(itemBase) : null;
+
+            return item != null;
+        }
 
         /// <summary>
         /// Sets the player's rank.
@@ -1860,10 +1874,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="AmmoType"/>.
         /// This method factors in the armor the player is wearing, as well as server configuration.
-        /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="Ammo.AmmoLimit"/>.
+        /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="Features.Items.Ammo.AmmoLimit"/>.
         /// </summary>
         /// <param name="type">The <see cref="AmmoType"/> of the ammo to check.</param>
-        /// <returns>The maximum amount of ammo this player can carry. Guaranteed to be between <c>0</c> and <see cref="Ammo.AmmoLimit"/>.</returns>
+        /// <returns>The maximum amount of ammo this player can carry. Guaranteed to be between <c>0</c> and <see cref="Features.Items.Ammo.AmmoLimit"/>.</returns>
         public int GetAmmoLimit(AmmoType type) =>
             InventorySystem.Configs.InventoryLimits.GetAmmoLimit(type.GetItemType(), referenceHub);
 
@@ -2134,12 +2148,8 @@ namespace Exiled.API.Features
         /// <param name="items">The list of items to be added.</param>
         public void AddItem(IEnumerable<Item> items)
         {
-            IEnumerable<Item> enumerable = items.ToList();
-            if (enumerable.Any())
-            {
-                for (int i = 0; i < enumerable.Count(); i++)
-                    AddItem(enumerable.ElementAt(i));
-            }
+            foreach (Item item in items)
+                AddItem(item);
         }
 
         /// <summary>
@@ -2670,7 +2680,7 @@ namespace Exiled.API.Features
             Type[] array = types as Type[] ?? types.ToArray();
             if (array.Length == 0)
                 return;
-            RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
+            RandomTeleport(array[Random.Range(0, array.Length)]);
         }
 
         /// <summary>
