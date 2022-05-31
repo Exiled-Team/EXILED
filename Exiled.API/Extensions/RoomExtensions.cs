@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Extensions
 {
-    using System.Collections.Generic;
     using Exiled.API.Enums;
 
     /// <summary>

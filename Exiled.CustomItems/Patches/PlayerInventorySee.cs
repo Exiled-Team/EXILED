@@ -22,6 +22,7 @@ namespace Exiled.CustomItems.Patches
     using InventorySystem.Items;
 
     using NorthwoodLib.Pools;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>

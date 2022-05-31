@@ -23,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     using PlayerStatsSystem;
 
     using UnityEngine;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
