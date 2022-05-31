@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Pickups
     using BaseRadio = InventorySystem.Items.Radio.RadioPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for Radio.
     /// </summary>
     public class RadioPickup : Pickup
     {

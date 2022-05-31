@@ -15,7 +15,7 @@ namespace Exiled.API.Features.Pickups
     using UnityEngine;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for SCP-244.
     /// </summary>
     public class Scp244Pickup : Pickup
     {

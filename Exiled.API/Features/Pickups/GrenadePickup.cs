@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    /// A wrapper class for Projectile.
+    /// A wrapper class for Grenade.
     /// </summary>
     public class GrenadePickup : Pickup
     {

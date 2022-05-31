@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Pickups
     using BaseMicroHID = InventorySystem.Items.MicroHID.MicroHIDPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for MicroHID.
     /// </summary>
     public class MicroHIDPickup : Pickup
     {

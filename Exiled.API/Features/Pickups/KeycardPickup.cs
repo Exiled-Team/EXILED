@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Pickups
     using BaseKeycard = InventorySystem.Items.Keycards.KeycardPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for Keycard.
     /// </summary>
     public class KeycardPickup : Pickup
     {
