@@ -122,6 +122,17 @@ namespace Exiled.CustomItems.API.Features
                 pickup.PreviousOwner = previousOwner;
 
             TrackedSerials.Add(pickup.Serial);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                if (pickup.Base is FirearmPickup firearmPickup)
+                {
+                    firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                    firearmPickup.NetworkStatus = firearmPickup.Status;
+                    Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                }
+            });
+
             return pickup;
         }
 
