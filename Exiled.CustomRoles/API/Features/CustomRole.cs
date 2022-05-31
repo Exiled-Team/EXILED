@@ -24,6 +24,8 @@ namespace Exiled.CustomRoles.API.Features
 
     using MEC;
 
+    using Mirror;
+
     using NorthwoodLib.Pools;
 
     using UnityEngine;
@@ -746,21 +748,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Check(ev.Target))
             {
                 CustomRoles.Instance.StopRagdollPlayers.Add(ev.Target);
-                Role role = CharacterClassManager._staticClasses.SafeGet(Role);
-
-                // TODO: This
-                /*
-                Ragdoll.Info info = new Ragdoll.Info
-                {
-                    ClassColor = role.classColor,
-                    DeathCause = ev.HitInformation,
-                    FullName = Name,
-                    Nick = ev.Target.Nickname,
-                    ownerHLAPI_id = ev.Target.GameObject.GetComponent<MirrorIgnorancePlayer>().PlayerId,
-                    PlayerId = ev.Target.Id,
-                };
-                Exiled.API.Features.Ragdoll.Spawn(role, info, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), default, false, false);
-                */
+                _ = new Ragdoll(new RagdollInfo(ev.Target.ReferenceHub, ev.Handler, Role, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), ev.Target.DisplayNickname, NetworkTime.time), true);
             }
         }
     }
