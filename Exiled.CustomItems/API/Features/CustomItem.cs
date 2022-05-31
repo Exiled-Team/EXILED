@@ -1088,12 +1088,8 @@ namespace Exiled.CustomItems.API.Features
             if (!ev.IsAllowed)
                 return;
 
-            ev.IsAllowed = false;
-
-            TrackedSerials.Remove(ev.Pickup.Serial);
-            ev.Pickup.Destroy();
-
-            Give(ev.Player);
+            if (!TrackedSerials.Contains(ev.Pickup.Serial))
+                TrackedSerials.Add(ev.Pickup.Serial);
 
             Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player));
         }
