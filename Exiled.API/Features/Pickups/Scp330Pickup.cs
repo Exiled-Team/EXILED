@@ -7,14 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
-#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
-#pragma warning disable SA1600 // Commentaire XML manquant pour le type ou le membre visible publiquement
-
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using InventorySystem.Items.Usables.Scp330;
 
@@ -28,11 +21,11 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="BaseScp330"/> class.</param>
-        public Scp330Pickup(BaseScp330 itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="BaseScp330"/> class.</param>
+        public Scp330Pickup(BaseScp330 pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -41,7 +34,7 @@ namespace Exiled.API.Features.Pickups
         public new BaseScp330 Base { get; }
 
         /// <summary>
-        /// Gets or sets the exposed type.
+        /// Gets or sets the exposed <see cref="CandyKindID"/>.
         /// </summary>
         public CandyKindID ExposedCandy
         {
@@ -59,9 +52,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the Scp330Pickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
+        /// <returns>A string containing Scp330Pickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{ExposedCandy}| -{Candies}-";
     }
 }

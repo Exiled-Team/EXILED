@@ -7,27 +7,22 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using BaseMicroHID = InventorySystem.Items.MicroHID.MicroHIDPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for MicroHID.
     /// </summary>
     public class MicroHIDPickup : Pickup
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MicroHIDPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="BaseMicroHID"/> class.</param>
-        public MicroHIDPickup(BaseMicroHID itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="BaseMicroHID"/> class.</param>
+        public MicroHIDPickup(BaseMicroHID pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -45,9 +40,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the MicroHIDPickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
+        /// <returns>A string containing MicroHIDPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}|";
     }
 }

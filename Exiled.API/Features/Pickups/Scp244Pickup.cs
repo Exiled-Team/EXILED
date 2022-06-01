@@ -7,15 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
-#pragma warning disable SA1600 // Commentaire XML manquant pour le type ou le membre visible publiquement
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Features.DamageHandlers;
 
     using InventorySystem.Items.Usables.Scp244;
@@ -23,18 +14,18 @@ namespace Exiled.API.Features.Pickups
     using UnityEngine;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for SCP-244.
     /// </summary>
     public class Scp244Pickup : Pickup
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244Pickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="Scp244DeployablePickup"/> class.</param>
-        public Scp244Pickup(Scp244DeployablePickup itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="Scp244DeployablePickup"/> class.</param>
+        public Scp244Pickup(Scp244DeployablePickup pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -42,36 +33,73 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public new Scp244DeployablePickup Base { get; }
 
+        /// <summary>
+        /// Gets the speed of <see cref="Scp244Pickup"/>'s too grow.
+        /// </summary>
         public float GrowSpeed => Base.GrowSpeed;
 
+        /// <summary>
+        /// Gets the time for the sphere to finish their expansion.
+        /// </summary>
         public float TimeToGrow => Base.TimeToGrow;
 
+        /// <summary>
+        /// Gets the current size effect of the Scp244's Hypothermia.
+        /// </summary>
         public float CurrentDiameter => Base.CurrentDiameter;
 
+        /// <summary>
+        /// Gets or sets the current size percent of the Scp244's Hypothermia.
+        /// </summary>
         public float CurrentSizePercent
         {
             get => Base.CurrentSizePercent;
             set => Base.CurrentSizePercent = value;
         }
 
+        /// <summary>
+        /// Gets or sets the Scp244's remaining health.
+        /// </summary>
         public float Health
         {
             get => Base._health;
             set => Base._health = value;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether or not this Scp244 is breakable.
+        /// </summary>
+        public bool IsBreakable => Base.State is Scp244State.Idle or Scp244State.Active;
+
+        /// <summary>
+        /// Gets or sets the <see cref="Scp244State"/>.
+        /// </summary>
         public Scp244State State
         {
             get => Base.State;
             set => Base.State = value;
         }
 
+        /// <summary>
+        /// Gets or sets the activation angle, where 1 is a minimum, and -1 it's a maximum activation angle.
+        /// </summary>
+        public float ActivationDot
+        {
+            get => Base._activationDot;
+            set => Base._activationDot = value;
+        }
+
+        /// <summary>
+        /// Damages the Scp244Pickup.
+        /// </summary>
+        /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
+        /// <returns><see langword="true"/> if the the damage has been deal; otherwise, <see langword="false"/>.</returns>
         public bool Damage(DamageHandler handler) => Base.Damage(handler.Damage, handler, Vector3.zero);
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the Scp244Pickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Health}| -{State}- /{CurrentSizePercent}/";
+        /// <returns>A string containing Scp244Pickup related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Health}| -{State}- ={CurrentSizePercent}=";
     }
 }

@@ -7,11 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using InventorySystem.Items.Firearms;
 
@@ -25,11 +20,11 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="FirearmPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="BaseFirearm"/> class.</param>
-        public FirearmPickup(BaseFirearm itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="BaseFirearm"/> class.</param>
+        public FirearmPickup(BaseFirearm pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -38,7 +33,7 @@ namespace Exiled.API.Features.Pickups
         public new BaseFirearm Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether if the pickup are already distrubuted.
+        /// Gets or sets a value indicating whether the pickup is already distributed.
         /// </summary>
         public bool IsDistributed
         {
@@ -56,7 +51,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether how many ammo have this Firearm.
+        /// Gets or sets a value indicating how many ammo have this <see cref="FirearmPickup"/>.
         /// </summary>
         public byte Ammo
         {
@@ -65,7 +60,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether Flags have this Firearm.
+        /// Gets or sets the <see cref="FirearmStatusFlags"/>.
         /// </summary>
         public FirearmStatusFlags Flags
         {
@@ -74,7 +69,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the Attachement code.
+        /// Gets or sets a value indicating whether the Attachement code have this <see cref="FirearmPickup"/>.
         /// </summary>
         public uint Attachments
         {
@@ -83,9 +78,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the FirearmPickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
+        /// <returns>A string containing FirearmPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{IsDistributed}| -{Ammo}-";
     }
 }

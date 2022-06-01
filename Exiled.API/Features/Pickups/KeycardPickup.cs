@@ -7,27 +7,22 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using BaseKeycard = InventorySystem.Items.Keycards.KeycardPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for Keycard.
     /// </summary>
     public class KeycardPickup : Pickup
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="KeycardPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="BaseKeycard"/> class.</param>
-        public KeycardPickup(BaseKeycard itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="BaseKeycard"/> class.</param>
+        public KeycardPickup(BaseKeycard pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>

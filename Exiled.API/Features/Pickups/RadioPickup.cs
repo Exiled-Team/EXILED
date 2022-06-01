@@ -7,29 +7,23 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Enums;
 
     using BaseRadio = InventorySystem.Items.Radio.RadioPickup;
 
     /// <summary>
-    /// A wrapper class for SCP-330 bags.
+    /// A wrapper class for Radio.
     /// </summary>
     public class RadioPickup : Pickup
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RadioPickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="BaseRadio"/> class.</param>
-        public RadioPickup(BaseRadio itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="BaseRadio"/> class.</param>
+        public RadioPickup(BaseRadio pickupBase)
+            : base(pickupBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -47,7 +41,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the Radio Range.
+        /// Gets or sets the <see cref="RadioRange"/>.
         /// </summary>
         public RadioRange Range
         {
@@ -56,7 +50,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether is radio enable.
+        /// Gets or sets a value indicating whether the radio is active.
         /// </summary>
         public bool IsActive
         {
@@ -65,9 +59,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the RadioPickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
+        /// <returns>A string containing RadioPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{Range}- /{IsActive}/";
     }
 }
