@@ -86,6 +86,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts SCP-914.
         /// </summary>
-        public static void Start() => Scp914Controller.ServerInteract(Server.Host.ReferenceHub, (byte)Scp914InteractCode.Activate);
+        /// <param name="player">The player who interact.</param>
+        public static void Start(Player player = null) => Scp914Controller.ServerInteract(player is null ? Server.Host.ReferenceHub : player.ReferenceHub, (byte)Scp914InteractCode.Activate);
     }
 }
