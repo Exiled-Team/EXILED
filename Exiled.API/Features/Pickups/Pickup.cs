@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using InventorySystem;
     using InventorySystem.Items;
@@ -53,6 +54,11 @@ namespace Exiled.API.Features.Pickups
             Serial = itemBase.PickupDropModel.NetworkInfo.Serial;
             BaseToItem.Add(itemBase.PickupDropModel, this);
         }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
+        /// </summary>
+        public static IEnumerable<Pickup> List => BaseToItem.Values;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
@@ -163,9 +169,6 @@ namespace Exiled.API.Features.Pickups
             {
                 Base.Rb.position = value;
                 Base.transform.position = value;
-                NetworkServer.UnSpawn(GameObject);
-                NetworkServer.Spawn(GameObject);
-
                 Base.RefreshPositionAndRotation();
             }
         }
@@ -180,8 +183,6 @@ namespace Exiled.API.Features.Pickups
             {
                 Base.Rb.rotation = value;
                 Base.transform.rotation = value;
-                NetworkServer.UnSpawn(GameObject);
-                NetworkServer.Spawn(GameObject);
 
                 Base.RefreshPositionAndRotation();
             }
