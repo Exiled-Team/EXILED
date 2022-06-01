@@ -29,6 +29,15 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FirearmPickup"/> class.
+        /// </summary>
+        /// <param name="firearmType">.</param>
+        internal FirearmPickup(ItemType firearmType)
+           : this((BaseFirearm)new Pickup(firearmType).Base)
+        {
+        }
+
+        /// <summary>
         /// Gets the <see cref="BaseFirearm"/> that this class is encapsulating.
         /// </summary>
         public new BaseFirearm Base { get; }
