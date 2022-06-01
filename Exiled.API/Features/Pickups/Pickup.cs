@@ -169,6 +169,7 @@ namespace Exiled.API.Features.Pickups
             {
                 Base.Rb.position = value;
                 Base.transform.position = value;
+
                 Base.RefreshPositionAndRotation();
             }
         }
