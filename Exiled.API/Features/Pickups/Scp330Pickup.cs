@@ -31,14 +31,6 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
-        /// </summary>
-        internal Scp330Pickup()
-           : this((BaseScp330)new Pickup(ItemType.SCP330).Base)
-        {
-        }
-
-        /// <summary>
         /// Gets the <see cref="BaseScp330"/> that this class is encapsulating.
         /// </summary>
         public new BaseScp330 Base { get; }
