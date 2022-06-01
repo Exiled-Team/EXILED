@@ -203,6 +203,8 @@ namespace Exiled.API.Features.Items
         /// <br />- All valid keycards should be casted to the <see cref="KeycardPickup"/> class.
         /// <br />- All valid armor should be casted to the <see cref="BodyArmorPickup"/> class.
         /// <br />- Explosive grenades and SCP-018  and Flash grenades and SCP-2176 should be casted to the <see cref="GrenadePickup"/> class.
+        /// </para>
+        /// <para>
         /// <br />The following have their own respective classes:
         /// <br />- Radios can be casted to <see cref="RadioPickup"/>.
         /// <br />- The Micro HID can be casted to <see cref="MicroHIDPickup"/>.
