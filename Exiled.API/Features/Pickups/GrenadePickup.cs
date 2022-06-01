@@ -27,6 +27,15 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="GrenadePickup"/> class.
+        /// </summary>
+        /// <param name="scp244Type">.</param>
+        internal GrenadePickup(ItemType scp244Type)
+           : this((TimedGrenadePickup)new Pickup(scp244Type).Base)
+        {
+        }
+
+        /// <summary>
         /// Gets the <see cref="TimedGrenadePickup"/> that this class is encapsulating.
         /// </summary>
         public new TimedGrenadePickup Base { get; }
