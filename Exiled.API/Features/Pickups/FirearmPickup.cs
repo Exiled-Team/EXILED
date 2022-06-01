@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-
     using InventorySystem.Items.Firearms;
 
     using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;

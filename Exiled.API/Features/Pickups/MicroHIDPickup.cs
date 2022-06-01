@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-
     using BaseMicroHID = InventorySystem.Items.MicroHID.MicroHIDPickup;
 
     /// <summary>

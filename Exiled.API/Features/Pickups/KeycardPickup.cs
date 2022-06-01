@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-
     using BaseKeycard = InventorySystem.Items.Keycards.KeycardPickup;
 
     /// <summary>
