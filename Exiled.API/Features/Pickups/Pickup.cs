@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Pickups
     using System.Linq;
 
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups.Projectiles;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -24,6 +25,7 @@ namespace Exiled.API.Features.Pickups
     using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
     using BaseBodyArmorPickup = InventorySystem.Items.Armor.BodyArmorPickup;
     using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
+    using BaseKeycardPickup = InventorySystem.Items.Keycards.KeycardPickup;
     using BaseMicroHIDPickup = InventorySystem.Items.MicroHID.MicroHIDPickup;
     using BaseRadioPickup = InventorySystem.Items.Radio.RadioPickup;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
@@ -207,7 +209,7 @@ namespace Exiled.API.Features.Pickups
         /// <returns>The <see cref="Pickup"/> wrapper for the given <see cref="ItemPickupBase"/>.</returns>
         public static Pickup Get(ItemPickupBase pickupBase)
         {
-            if(pickupBase is null)
+            if (pickupBase is null)
                 return null;
             if (BaseToItem.TryGetValue(pickupBase, out Pickup pickup))
                 return pickup;
@@ -216,15 +218,31 @@ namespace Exiled.API.Features.Pickups
             {
                 Scp244DeployablePickup scp244 => new Scp244Pickup(scp244),
                 BaseAmmoPickup ammoPickup => new AmmoPickup(ammoPickup),
-                InventorySystem.Items.Radio.RadioPickup radioPickup => new RadioPickup(radioPickup),
+                BaseRadioPickup radioPickup => new RadioPickup(radioPickup),
                 BaseMicroHIDPickup microHidPickup => new MicroHIDPickup(microHidPickup),
                 TimedGrenadePickup timeGrenade => new GrenadePickup(timeGrenade),
-                TimeGrenade timeGrenade => new TimeGrenadePickup(timeGrenade),
-                ThrownProjectile thrownProjectile => new ProjectilePickup(thrownProjectile),
                 BaseFirearmPickup firearmPickup => new FirearmPickup(firearmPickup),
-                InventorySystem.Items.Keycards.KeycardPickup keycardPickup => new KeycardPickup(keycardPickup),
+                BaseKeycardPickup keycardPickup => new KeycardPickup(keycardPickup),
                 BaseBodyArmorPickup bodyArmorPickup => new BodyArmorPickup(bodyArmorPickup),
                 BaseScp330Pickup scp330Pickup => new Scp330Pickup(scp330Pickup),
+                ThrownProjectile thrownProjectile => pickupBase switch
+                {
+                    TimeGrenade timeGrenade => pickupBase switch
+                    {
+                        EffectGrenade effectGrenade => pickupBase switch
+                        {
+                            ExplosionGrenade explosionGrenade => pickupBase switch
+                            {
+                                Scp018Projectile scp018 => new Scp018Pickup(scp018),
+                                _ => new ExplosionGrenadePickup(explosionGrenade),
+                            },
+                            FlashbangGrenade flashGrenade => new FlashbangPickup(flashGrenade),
+                            _ => new EffectGrenadePickup(effectGrenade),
+                        },
+                        _ => new TimeGrenadePickup(timeGrenade),
+                    },
+                    _ => new ProjectilePickup(thrownProjectile),
+                },
                 _ => new Pickup(pickupBase),
             };
         }
