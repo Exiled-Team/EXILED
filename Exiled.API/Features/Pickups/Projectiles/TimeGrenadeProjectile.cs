@@ -12,23 +12,23 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for TimeGrenade.
     /// </summary>
-    public class TimeGrenadePickup : ProjectilePickup
+    public class TimeGrenadeProjectile : ProjectileProjectile
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimeGrenadePickup"/> class.
+        /// Initializes a new instance of the <see cref="TimeGrenadeProjectile"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="TimeGrenade"/> class.</param>
-        internal TimeGrenadePickup(TimeGrenade pickupBase)
+        internal TimeGrenadeProjectile(TimeGrenade pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TimeGrenadePickup"/> class.
+        /// Initializes a new instance of the <see cref="TimeGrenadeProjectile"/> class.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
-        internal TimeGrenadePickup(ItemType type)
+        internal TimeGrenadeProjectile(ItemType type)
             : base(type)
         {
             Base = (TimeGrenade)((Pickup)this).Base;

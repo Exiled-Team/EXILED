@@ -16,13 +16,13 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for ExplosionGrenade.
     /// </summary>
-    public class ExplosionGrenadePickup : EffectGrenadePickup
+    public class ExplosionGrenadeProjectile : EffectGrenadeProjectile
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExplosionGrenadePickup"/> class.
+        /// Initializes a new instance of the <see cref="ExplosionGrenadeProjectile"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="ExplosionGrenade"/> class.</param>
-        public ExplosionGrenadePickup(ExplosionGrenade pickupBase)
+        public ExplosionGrenadeProjectile(ExplosionGrenade pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;

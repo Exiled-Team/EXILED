@@ -9,16 +9,18 @@ namespace Exiled.API.Features.Pickups.Projectiles
 {
     using InventorySystem.Items.ThrowableProjectiles;
 
+    using BaseScp018Projectile = InventorySystem.Items.ThrowableProjectiles.Scp018Projectile;
+
     /// <summary>
     /// A wrapper class for Scp018Projectile.
     /// </summary>
-    public class Scp018Pickup : ExplosionGrenadePickup
+    public class Scp018Projectile : ExplosionGrenadeProjectile
     {
         /// <summary>
-         /// Initializes a new instance of the <see cref="Scp018Pickup"/> class.
+        /// Initializes a new instance of the <see cref="Scp018Projectile"/> class.
         /// </summary>
-        /// <param name="pickupBase">The base <see cref="Scp018Projectile"/> class.</param>
-        public Scp018Pickup(Scp018Projectile pickupBase)
+        /// <param name="pickupBase">The base <see cref="BaseScp018Projectile"/> class.</param>
+        public Scp018Projectile(BaseScp018Projectile pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;
@@ -27,7 +29,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets the <see cref="ExplosionGrenade"/> that this class is encapsulating.
         /// </summary>
-        public new Scp018Projectile Base { get; }
+        public new BaseScp018Projectile Base { get; }
 
 
         /// <summary>

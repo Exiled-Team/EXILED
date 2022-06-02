@@ -28,6 +28,8 @@ namespace Exiled.API.Features.Pickups
     using BaseKeycardPickup = InventorySystem.Items.Keycards.KeycardPickup;
     using BaseMicroHIDPickup = InventorySystem.Items.MicroHID.MicroHIDPickup;
     using BaseRadioPickup = InventorySystem.Items.Radio.RadioPickup;
+    using BaseScp018Projectile = InventorySystem.Items.ThrowableProjectiles.Scp018Projectile;
+    using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
     using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
 
     /// <summary>
@@ -227,13 +229,13 @@ namespace Exiled.API.Features.Pickups
                 BaseScp330Pickup scp330Pickup => new Scp330Pickup(scp330Pickup),
                 ThrownProjectile thrownProjectile => thrownProjectile switch
                 {
-                    Scp018Projectile scp018 => new Scp018Pickup(scp018),
-                    ExplosionGrenade explosionGrenade => new ExplosionGrenadePickup(explosionGrenade),
-                    FlashbangGrenade flashGrenade => new FlashbangPickup(flashGrenade),
-                    Scp2176Projectile scp2176 => new Scp2176Pickup(scp2176),
-                    EffectGrenade effectGrenade => new EffectGrenadePickup(effectGrenade),
-                    TimeGrenade timeGrenade => new TimeGrenadePickup(timeGrenade),
-                    _ => new ProjectilePickup(thrownProjectile),
+                    BaseScp018Projectile scp018 => new Projectiles.Scp018Projectile(scp018),
+                    ExplosionGrenade explosionGrenade => new ExplosionGrenadeProjectile(explosionGrenade),
+                    FlashbangGrenade flashGrenade => new FlashbangProjectile(flashGrenade),
+                    BaseScp2176Projectile scp2176 => new Projectiles.Scp2176Projectile(scp2176),
+                    EffectGrenade effectGrenade => new EffectGrenadeProjectile(effectGrenade),
+                    TimeGrenade timeGrenade => new TimeGrenadeProjectile(timeGrenade),
+                    _ => new ProjectileProjectile(thrownProjectile),
                 },
                 _ => new Pickup(pickupBase),
             };
