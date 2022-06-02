@@ -227,6 +227,7 @@ namespace Exiled.API.Features.Pickups
                 BaseScp330Pickup scp330Pickup => new Scp330Pickup(scp330Pickup),
                 ThrownProjectile thrownProjectile => thrownProjectile switch
                 {
+                    Scp2176Projectile scp2176 => new Scp2176Pickup(scp2176),
                     Scp018Projectile scp018 => new Scp018Pickup(scp018),
                     ExplosionGrenade explosionGrenade => new ExplosionGrenadePickup(explosionGrenade),
                     FlashbangGrenade flashGrenade => new FlashbangPickup(flashGrenade),
