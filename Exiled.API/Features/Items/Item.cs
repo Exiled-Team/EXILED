@@ -257,9 +257,9 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
-        /// <param name="identifiers">The attachments to be added.</param>
+        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default, IEnumerable<AttachmentIdentifier> identifiers = null)
+        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
             Base.PickupDropModel.Info.ItemId = Type;
             Base.PickupDropModel.Info.Position = position;
@@ -268,87 +268,14 @@ namespace Exiled.API.Features.Items
             Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
 
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-            if (ipb is BaseFirearm firearmPickup)
-            {
-                if (this is Firearm firearm)
-                {
-                    if (identifiers is not null)
-                        firearm.AddAttachment(identifiers);
 
-                    firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
-                }
-                else
-                {
-                    byte ammo = Base switch
-                    {
-                        AutomaticFirearm auto => auto._baseMaxAmmo,
-                        Shotgun shotgun => shotgun._ammoCapacity,
-                        Revolver revolver => revolver.AmmoManagerModule.MaxAmmo,
-                        _ => 0,
-                    };
-                    uint code = identifiers is not null ? (uint)firearmPickup.Info.ItemId.GetBaseCode() + identifiers.GetAttachmentsCode() : firearmPickup.Status.Attachments;
-                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, code);
-                }
-
-                firearmPickup.NetworkStatus = firearmPickup.Status;
-            }
-
-            NetworkServer.Spawn(ipb.gameObject);
             ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
             Pickup pickup = Pickup.Get(ipb);
+            if (spawn)
+                pickup.Spawn();
             pickup.Scale = Scale;
             return pickup;
         }
-
-        /// <summary>
-        /// Spawns the item on the map.
-        /// </summary>
-        /// <param name="position">The location to spawn the item.</param>
-        /// <param name="rotation">The rotation of the item.</param>
-        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
-        {
-            Base.PickupDropModel.Info.ItemId = Type;
-            Base.PickupDropModel.Info.Position = position;
-            Base.PickupDropModel.Info.Weight = Weight;
-            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
-            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
-
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-            if (ipb is BaseFirearm firearmPickup)
-            {
-                if (this is Firearm firearm)
-                {
-                    firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
-                }
-                else
-                {
-                    byte ammo = Base switch
-                    {
-                        AutomaticFirearm auto => auto._baseMaxAmmo,
-                        Shotgun shotgun => shotgun._ammoCapacity,
-                        Revolver => 6,
-                        _ => 0,
-                    };
-                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
-                }
-
-                firearmPickup.NetworkStatus = firearmPickup.Status;
-            }
-
-            NetworkServer.Spawn(ipb.gameObject);
-            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
-            Pickup pickup = Pickup.Get(ipb);
-            pickup.Scale = Scale;
-            return pickup;
-        }
-
-        /// <summary>
-        /// Spawns the item on the map.
-        /// </summary>
-        /// <param name="position">The location to spawn the item.</param>
-        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position) => Spawn(position, default);
 
         /// <summary>
         /// Returns the Item in a human readable format.

@@ -7,12 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using BaseBodyArmor = InventorySystem.Items.Armor.BodyArmorPickup;
 
     /// <summary>
@@ -24,10 +18,20 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="BodyArmorPickup"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="BaseBodyArmor"/> class.</param>
-        public BodyArmorPickup(BaseBodyArmor itemBase)
+        internal BodyArmorPickup(BaseBodyArmor itemBase)
             : base(itemBase)
         {
             Base = itemBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BodyArmorPickup"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        internal BodyArmorPickup(ItemType type)
+            : base(type)
+        {
+            Base = (BaseBodyArmor)((Pickup)this).Base;
         }
 
         /// <summary>

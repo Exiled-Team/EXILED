@@ -21,10 +21,20 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="AmmoPickup"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="BaseAmmo"/> class.</param>
-        public AmmoPickup(BaseAmmo itemBase)
+        internal AmmoPickup(BaseAmmo itemBase)
             : base(itemBase)
         {
             Base = itemBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AmmoPickup"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        internal AmmoPickup(ItemType type)
+            : base(type)
+        {
+            Base = (BaseAmmo)((Pickup)this).Base;
         }
 
         /// <summary>

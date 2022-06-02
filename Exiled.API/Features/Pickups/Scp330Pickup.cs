@@ -29,10 +29,19 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="BaseScp330"/> class.</param>
-        public Scp330Pickup(BaseScp330 itemBase)
+        internal Scp330Pickup(BaseScp330 itemBase)
             : base(itemBase)
         {
             Base = itemBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
+        /// </summary>
+        internal Scp330Pickup()
+            : base(ItemType.SCP330)
+        {
+            Base = (BaseScp330)((Pickup)this).Base;
         }
 
         /// <summary>

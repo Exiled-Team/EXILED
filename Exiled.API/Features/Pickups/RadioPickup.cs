@@ -26,10 +26,19 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="RadioPickup"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="BaseRadio"/> class.</param>
-        public RadioPickup(BaseRadio itemBase)
+        internal RadioPickup(BaseRadio itemBase)
             : base(itemBase)
         {
             Base = itemBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RadioPickup"/> class.
+        /// </summary>
+        internal RadioPickup()
+            : base(ItemType.Radio)
+        {
+            Base = (BaseRadio)((Pickup)this).Base;
         }
 
         /// <summary>

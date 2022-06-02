@@ -15,6 +15,7 @@ namespace Exiled.API.Features.Items
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Structs;
 
     using InventorySystem.Items.Firearms;
@@ -22,6 +23,14 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
+    using InventorySystem.Items.Pickups;
+
+    using Mirror;
+
+    using UnityEngine;
+
+    using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
@@ -511,6 +520,41 @@ namespace Exiled.API.Features.Items
         {
             foreach (Player player in players)
                 ClearPreferences(player);
+        }
+
+        /// <summary>
+        /// Spawns the item on the map.
+        /// </summary>
+        /// <param name="position">The location to spawn the item.</param>
+        /// <param name="rotation">The rotation of the item.</param>
+        /// <param name="identifiers">The attachments to be added.</param>
+        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
+        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
+        public Pickup Spawn(Vector3 position, Quaternion rotation = default, IEnumerable<AttachmentIdentifier> identifiers = null, bool spawn = true)
+        {
+            Base.PickupDropModel.Info.ItemId = Type;
+            Base.PickupDropModel.Info.Position = position;
+            Base.PickupDropModel.Info.Weight = Weight;
+            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
+            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
+
+            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            if (ipb is BaseFirearm firearmPickup)
+            {
+                if (identifiers is not null)
+                    AddAttachment(identifiers);
+
+                firearmPickup.Status = new FirearmStatus(Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
+
+                firearmPickup.NetworkStatus = firearmPickup.Status;
+            }
+
+            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+            Pickup pickup = Pickup.Get(ipb);
+            if (spawn)
+                pickup.Spawn();
+            pickup.Scale = Scale;
+            return pickup;
         }
 
         /// <summary>

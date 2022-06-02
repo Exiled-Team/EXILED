@@ -31,10 +31,20 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="Scp244Pickup"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="Scp244DeployablePickup"/> class.</param>
-        public Scp244Pickup(Scp244DeployablePickup itemBase)
+        internal Scp244Pickup(Scp244DeployablePickup itemBase)
             : base(itemBase)
         {
             Base = itemBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Scp244Pickup"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        internal Scp244Pickup(ItemType type)
+            : base(type)
+        {
+            Base = (Scp244DeployablePickup)((Pickup)this).Base;
         }
 
         /// <summary>

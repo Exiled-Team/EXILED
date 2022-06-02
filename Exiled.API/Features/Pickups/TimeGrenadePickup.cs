@@ -7,12 +7,6 @@
 
 namespace Exiled.API.Features.Pickups
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -24,10 +18,20 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="TimeGrenadePickup"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="TimeGrenade"/> class.</param>
-        public TimeGrenadePickup(TimeGrenade itemBase)
+        internal TimeGrenadePickup(TimeGrenade itemBase)
             : base(itemBase)
         {
             Base = itemBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeGrenadePickup"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        internal TimeGrenadePickup(ItemType type)
+            : base(type)
+        {
+            Base = (TimeGrenade)((Pickup)this).Base;
         }
 
         /// <summary>
