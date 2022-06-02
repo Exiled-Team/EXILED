@@ -25,5 +25,11 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="FlashbangGrenade"/> that this class is encapsulating.
         /// </summary>
         public new FlashbangGrenade Base { get; }
+
+        /// <summary>
+        /// Returns the FlashbangPickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing FlashbangPickup-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
     }
 }

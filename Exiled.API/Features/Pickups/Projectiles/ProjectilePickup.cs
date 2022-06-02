@@ -38,5 +38,11 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="ThrownProjectile"/> that this class is encapsulating.
         /// </summary>
         public new ThrownProjectile Base { get; }
+
+        /// <summary>
+        /// Returns the ProjectilePickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing ProjectilePickup-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
     }
 }

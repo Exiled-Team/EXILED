@@ -28,5 +28,11 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="EffectGrenade"/> that this class is encapsulating.
         /// </summary>
         public new EffectGrenade Base { get; }
+
+        /// <summary>
+        /// Returns the EffectGrenadePickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing EffectGrenadePickup-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
     }
 }

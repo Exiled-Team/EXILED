@@ -28,5 +28,11 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="ExplosionGrenade"/> that this class is encapsulating.
         /// </summary>
         public new Scp018Projectile Base { get; }
+
+        /// <summary>
+        /// Returns the Scp018Pickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Scp018Pickup-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
     }
 }
