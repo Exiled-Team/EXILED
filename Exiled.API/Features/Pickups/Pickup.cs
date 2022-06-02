@@ -63,7 +63,7 @@ namespace Exiled.API.Features.Pickups
 
             Base = Object.Instantiate(item.Base.PickupDropModel);
 
-            PickupSyncInfo psi = new PickupSyncInfo()
+            PickupSyncInfo psi = new()
             {
                 ItemId = type,
                 Serial = item.Serial,
