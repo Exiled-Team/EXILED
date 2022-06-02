@@ -74,6 +74,16 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
+
+        /// <summary>
+        /// The running speed of the player.
+        /// </summary>
+        private float? runningSpeed;
+
+        /// <summary>
+        /// The walk speed of the player.
+        /// </summary>
+        private float? walkSpeed;
 #pragma warning restore SA1401
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
@@ -309,6 +319,32 @@ namespace Exiled.API.Features
         {
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
             set => ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
+        }
+
+        /// <summary>
+        /// Gets or sets runningSpeed of the player.
+        /// </summary>
+        public float RunningSpeed
+        {
+            get => runningSpeed ??= ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier;
+            set
+            {
+                runningSpeed = value;
+                this.ChangeRunningSpeed(value, false);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets walkSpeed of the player.
+        /// </summary>
+        public float WalkSpeed
+        {
+            get => walkSpeed ??= ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
+            set
+            {
+                walkSpeed = value;
+                this.ChangeWalkingSpeed(value, false);
+            }
         }
 
         /// <summary>

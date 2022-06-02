@@ -229,7 +229,6 @@ namespace Exiled.API.Extensions
         {
             if (useCap)
                 multiplier = Mathf.Clamp(multiplier, -2f, 2f);
-
             SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
         }
 
@@ -243,7 +242,6 @@ namespace Exiled.API.Extensions
         {
             if (useCap)
                 multiplier = Mathf.Clamp(multiplier, -1.4f, 1.4f);
-
             SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), multiplier);
         }
 
