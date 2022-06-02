@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.Pickups
+namespace Exiled.API.Features.Pickups.Projectiles
 {
     using InventorySystem.Items.ThrowableProjectiles;
 
