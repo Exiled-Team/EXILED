@@ -18,10 +18,19 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="MicroHIDPickup"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="BaseMicroHID"/> class.</param>
-        public MicroHIDPickup(BaseMicroHID pickupBase)
+        internal MicroHIDPickup(BaseMicroHID pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MicroHIDPickup"/> class.
+        /// </summary>
+        internal MicroHIDPickup()
+            : base(ItemType.MicroHID)
+        {
+            Base = (BaseMicroHID)((Pickup)this).Base;
         }
 
         /// <summary>

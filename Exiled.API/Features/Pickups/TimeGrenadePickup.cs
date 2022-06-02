@@ -18,10 +18,20 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="TimeGrenadePickup"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="TimeGrenade"/> class.</param>
-        public TimeGrenadePickup(TimeGrenade pickupBase)
+        internal TimeGrenadePickup(TimeGrenade pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimeGrenadePickup"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        internal TimeGrenadePickup(ItemType type)
+            : base(type)
+        {
+            Base = (TimeGrenade)((Pickup)this).Base;
         }
 
         /// <summary>
