@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Features.Items;
 
@@ -70,6 +71,11 @@ namespace Exiled.API.Features.Pickups
             Base.NetworkInfo = Base.Info;
             BaseToItem.Add(Base, this);
         }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
+        /// </summary>
+        public static IEnumerable<Pickup> List => BaseToItem.Values;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.

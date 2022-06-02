@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Pickups
         internal BodyArmorPickup(BaseBodyArmor itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace Exiled.API.Features.Pickups
         public new BaseBodyArmor Base { get; }
 
         /// <summary>
-        /// Returns the AmmoPickup in a human readable format.
+        /// Returns the BodyArmorPickup in a human readable format.
         /// </summary>
-        /// <returns>A string containing AmmoPickup related data.</returns>
+        /// <returns>A string containing BodyArmorPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
     }
 }

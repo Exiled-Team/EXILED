@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Pickups
         internal TimeGrenadePickup(TimeGrenade itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Pickups
         public new TimeGrenade Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether if the grenade have already explode.
+        /// Gets or sets a value indicating whether the grenade have already explode.
         /// </summary>
         public bool IsAlreadyDetonated
         {
@@ -49,7 +49,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the time to explode before it's start.
+        /// Gets or sets FuseTime.
         /// </summary>
         public float FuseTime
         {
@@ -58,12 +58,18 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets how long it going to takes to explode.
+        /// Gets or sets time indicating how long it will take to explode.
         /// </summary>
         public float TargetTime
         {
             get => Base.TargetTime;
             set => Base.TargetTime = value;
         }
+
+        /// <summary>
+        /// Returns the TimeGrenadePickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing TimeGrenadePickup related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}| -{TargetTime}- ={IsAlreadyDetonated}=";
     }
 }

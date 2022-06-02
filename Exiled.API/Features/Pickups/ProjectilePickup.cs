@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Pickups
         internal ProjectilePickup(ThrownProjectile itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>

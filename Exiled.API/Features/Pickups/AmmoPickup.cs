@@ -24,7 +24,7 @@ namespace Exiled.API.Features.Pickups
         internal AmmoPickup(BaseAmmo itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            Base = pickupBase;
         }
 
         /// <summary>
