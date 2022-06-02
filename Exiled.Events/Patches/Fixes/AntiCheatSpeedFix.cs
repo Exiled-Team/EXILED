@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Fixes
     using UnityEngine;
 
     /// <summary>
-    /// Fixes Cassie ignoring unit name if it's changed via <see cref="Map.ChangeUnitColor(int, string)"/>.
+    /// Fixes AntiCheat making rollback the player when he get there speed changed"/>.
     /// </summary>
     [HarmonyPatch(typeof(FirstPersonController), nameof(FirstPersonController.GetSpeed))]
     public static class AntiCheatSpeedFix
