@@ -29,10 +29,21 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         public new Scp018Projectile Base { get; }
 
+
+        /// <summary>
+        /// Gets a value indicating whether the damage going to be done on the teamate of the guys who trow it.
+        /// </summary>
+        public bool IgnoreFriendlyFire => Base.IgnoreFriendlyFire;
+
+        /// <summary>
+        /// Gets the damage when the ball hit something.
+        /// </summary>
+        public float Damage => Base.CurrentDamage;
+
         /// <summary>
         /// Returns the Scp018Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Scp018Pickup-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Damage}- ={IgnoreFriendlyFire}=";
     }
 }

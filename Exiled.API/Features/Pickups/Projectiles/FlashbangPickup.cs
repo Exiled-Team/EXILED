@@ -7,8 +7,13 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
+    /// <summary>
+    /// A wrapper class for FlashbangGrenade.
+    /// </summary>
     public class FlashbangPickup : EffectGrenadePickup
     {
         /// <summary>
@@ -25,6 +30,34 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="FlashbangGrenade"/> that this class is encapsulating.
         /// </summary>
         public new FlashbangGrenade Base { get; }
+
+
+        /// <summary>
+        /// Gets or sets the minimum duration of player can take the effect.
+        /// </summary>
+        public float MinimalDurationEffect
+        {
+            get => Base._minimalEffectDuration;
+            set => Base._minimalEffectDuration = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the additional duration of the <see cref="EffectType.Blinded"/> effect.
+        /// </summary>
+        public float AdditionalBlindedEffect
+        {
+            get => Base._additionalBlurDuration;
+            set => Base._additionalBlurDuration = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the how mush the FlashBang going to be intensified when explode at <see cref="RoomType.Surface"/>.
+        /// </summary>
+        public float SurfaceIntensifier
+        {
+            get => Base._surfaceZoneDistanceIntensifier;
+            set => Base._surfaceZoneDistanceIntensifier = value;
+        }
 
         /// <summary>
         /// Returns the FlashbangPickup in a human readable format.
