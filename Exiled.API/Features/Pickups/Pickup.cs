@@ -227,20 +227,11 @@ namespace Exiled.API.Features.Pickups
                 BaseScp330Pickup scp330Pickup => new Scp330Pickup(scp330Pickup),
                 ThrownProjectile thrownProjectile => pickupBase switch
                 {
-                    TimeGrenade timeGrenade => pickupBase switch
-                    {
-                        EffectGrenade effectGrenade => pickupBase switch
-                        {
-                            ExplosionGrenade explosionGrenade => pickupBase switch
-                            {
-                                Scp018Projectile scp018 => new Scp018Pickup(scp018),
-                                _ => new ExplosionGrenadePickup(explosionGrenade),
-                            },
-                            FlashbangGrenade flashGrenade => new FlashbangPickup(flashGrenade),
-                            _ => new EffectGrenadePickup(effectGrenade),
-                        },
-                        _ => new TimeGrenadePickup(timeGrenade),
-                    },
+                    Scp018Projectile scp018 => new Scp018Pickup(scp018),
+                    ExplosionGrenade explosionGrenade => new ExplosionGrenadePickup(explosionGrenade),
+                    FlashbangGrenade flashGrenade => new FlashbangPickup(flashGrenade),
+                    EffectGrenade effectGrenade => new EffectGrenadePickup(effectGrenade),
+                    TimeGrenade timeGrenade => new TimeGrenadePickup(timeGrenade),
                     _ => new ProjectilePickup(thrownProjectile),
                 },
                 _ => new Pickup(pickupBase),
