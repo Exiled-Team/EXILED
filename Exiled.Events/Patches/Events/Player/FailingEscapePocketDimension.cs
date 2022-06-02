@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
             // The check is a check that this is a player, if it isn't a player, then we simply call return
             // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
 
-            // Find the first null check of the NetworkIdentity component
+            // Find the first ReferenceHub.TryGetHubNetID method
             int offset = 3;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(ReferenceHub), nameof(ReferenceHub.TryGetHubNetID))) + offset;
 
