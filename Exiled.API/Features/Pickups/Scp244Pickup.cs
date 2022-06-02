@@ -21,9 +21,9 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244Pickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="Scp244DeployablePickup"/> class.</param>
-        internal Scp244Pickup(Scp244DeployablePickup itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="Scp244DeployablePickup"/> class.</param>
+        internal Scp244Pickup(Scp244DeployablePickup pickupBase)
+            : base(pickupBase)
         {
             Base = pickupBase;
         }

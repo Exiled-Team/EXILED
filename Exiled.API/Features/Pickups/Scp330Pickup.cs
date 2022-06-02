@@ -21,9 +21,9 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="BaseScp330"/> class.</param>
-        internal Scp330Pickup(BaseScp330 itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="BaseScp330"/> class.</param>
+        internal Scp330Pickup(BaseScp330 pickupBase)
+            : base(pickupBase)
         {
             Base = pickupBase;
         }

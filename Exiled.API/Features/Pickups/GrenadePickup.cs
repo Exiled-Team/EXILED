@@ -17,9 +17,9 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="GrenadePickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="TimedGrenadePickup"/> class.</param>
-        internal GrenadePickup(TimedGrenadePickup itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="TimedGrenadePickup"/> class.</param>
+        internal GrenadePickup(TimedGrenadePickup pickupBase)
+            : base(pickupBase)
         {
             Base = pickupBase;
         }

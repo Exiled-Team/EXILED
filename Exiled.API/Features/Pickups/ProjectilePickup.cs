@@ -17,9 +17,9 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectilePickup"/> class.
         /// </summary>
-        /// <param name="itemBase">The base <see cref="ThrownProjectile"/> class.</param>
-        internal ProjectilePickup(ThrownProjectile itemBase)
-            : base(itemBase)
+        /// <param name="pickupBase">The base <see cref="ThrownProjectile"/> class.</param>
+        internal ProjectilePickup(ThrownProjectile pickupBase)
+            : base(pickupBase)
         {
             Base = pickupBase;
         }
