@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    /// A wrapper class for Grenade.
+    /// A wrapper class for GrenadePickup(granade pickup, before turning into a grenade).
     /// </summary>
     public class GrenadePickup : Pickup
     {
@@ -18,10 +18,20 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="GrenadePickup"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="TimedGrenadePickup"/> class.</param>
-        public GrenadePickup(TimedGrenadePickup pickupBase)
+        internal GrenadePickup(TimedGrenadePickup pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrenadePickup"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        internal GrenadePickup(ItemType type)
+            : base(type)
+        {
+            Base = (TimedGrenadePickup)((Pickup)this).Base;
         }
 
         /// <summary>

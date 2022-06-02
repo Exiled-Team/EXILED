@@ -18,10 +18,20 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="BodyArmorPickup"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="BaseBodyArmor"/> class.</param>
-        public BodyArmorPickup(BaseBodyArmor pickupBase)
+        internal BodyArmorPickup(BaseBodyArmor pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BodyArmorPickup"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        internal BodyArmorPickup(ItemType type)
+            : base(type)
+        {
+            Base = (BaseBodyArmor)((Pickup)this).Base;
         }
 
         /// <summary>

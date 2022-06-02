@@ -154,8 +154,9 @@ namespace Exiled.API.Features.Items
         /// <param name="position">The <see cref="Vector3"/> location to spawn it.</param>
         /// <param name="rotation">The <see cref="Quaternion"/> rotation to give the item.</param>
         /// <param name="overrideExposedType">Whether or not to use the <see cref="ExposedType"/> value or the default value.</param>
+        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
         /// <returns>The <see cref="Pickup"/> spawned.</returns>
-        public Pickup Spawn(Vector3 position, Quaternion rotation = default, bool overrideExposedType = false)
+        public Pickup Spawn(Vector3 position, Quaternion rotation = default, bool overrideExposedType = false, bool spawn = true)
         {
             Base.PickupDropModel.Info.ItemId = Type;
             Base.PickupDropModel.Info.Position = position;
@@ -168,9 +169,10 @@ namespace Exiled.API.Features.Items
             if (overrideExposedType)
                 ipb.NetworkExposedCandy = ExposedType;
 
-            NetworkServer.Spawn(ipb.gameObject);
             ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
             Pickup pickup = Pickup.Get(ipb);
+            if (spawn)
+                pickup.Spawn();
             pickup.Scale = Scale;
             return pickup;
         }

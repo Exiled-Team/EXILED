@@ -10,13 +10,23 @@ namespace Exiled.API.Features.Pickups
     using System.Collections.Generic;
     using System.Linq;
 
-    using InventorySystem;
+    using Exiled.API.Features.Items;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.ThrowableProjectiles;
+    using InventorySystem.Items.Usables.Scp244;
 
     using Mirror;
 
     using UnityEngine;
+
+    using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
+    using BaseBodyArmorPickup = InventorySystem.Items.Armor.BodyArmorPickup;
+    using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
+    using BaseMicroHIDPickup = InventorySystem.Items.MicroHID.MicroHIDPickup;
+    using BaseRadioPickup = InventorySystem.Items.Radio.RadioPickup;
+    using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
@@ -28,13 +38,11 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new();
 
-        private ushort id;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
-        public Pickup(ItemPickupBase pickupBase)
+        internal Pickup(ItemPickupBase pickupBase)
         {
             Base = pickupBase;
             Serial = pickupBase.NetworkInfo.Serial == 0 ? ItemSerialGenerator.GenerateNext() : pickupBase.NetworkInfo.Serial;
@@ -45,14 +53,23 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
-        public Pickup(ItemType type)
+        internal Pickup(ItemType type)
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
-                return;
+            Item item = Item.Create(type);
 
-            Base = itemBase.PickupDropModel;
-            Serial = itemBase.PickupDropModel.NetworkInfo.Serial;
-            BaseToItem.Add(itemBase.PickupDropModel, this);
+            Base = Object.Instantiate(item.Base.PickupDropModel);
+
+            PickupSyncInfo psi = new PickupSyncInfo()
+            {
+                ItemId = type,
+                Serial = item.Serial,
+                Weight = item.Weight,
+            };
+
+            Serial = psi.Serial;
+            Base.Info = psi;
+            Base.NetworkInfo = Base.Info;
+            BaseToItem.Add(Base, this);
         }
 
         /// <summary>
@@ -66,23 +83,16 @@ namespace Exiled.API.Features.Pickups
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the unique serial number for the item.
+        /// Gets or sets the unique serial number for the item.
         /// </summary>
         public ushort Serial
         {
-            get
+            get => Base.Info.Serial;
+            set
             {
-                if (id == 0)
-                {
-                    id = ItemSerialGenerator.GenerateNext();
-                    Base.Info.Serial = id;
-                    Base.NetworkInfo = Base.Info;
-                }
-
-                return id;
+                Base.Info.Serial = value;
+                Base.NetworkInfo = Base.Info;
             }
-
-            internal set => id = value;
         }
 
         /// <summary>
@@ -93,9 +103,9 @@ namespace Exiled.API.Features.Pickups
             get => GameObject.transform.localScale;
             set
             {
-                NetworkServer.UnSpawn(GameObject);
+                UnSpawn();
                 GameObject.transform.localScale = value;
-                NetworkServer.Spawn(GameObject);
+                Spawn();
             }
         }
 
@@ -130,9 +140,8 @@ namespace Exiled.API.Features.Pickups
             get => Base.NetworkInfo.Locked;
             set
             {
-                PickupSyncInfo info = Base.Info;
-                info.Locked = value;
-                Base.NetworkInfo = info;
+                Base.Info.Locked = value;
+                Base.NetworkInfo = Base.Info;
             }
         }
 
@@ -153,9 +162,8 @@ namespace Exiled.API.Features.Pickups
             get => Base.NetworkInfo.InUse;
             set
             {
-                PickupSyncInfo info = Base.Info;
-                info.InUse = value;
-                Base.NetworkInfo = info;
+                Base.Info.InUse = value;
+                Base.NetworkInfo = Base.Info;
             }
         }
 
@@ -168,7 +176,6 @@ namespace Exiled.API.Features.Pickups
             set
             {
                 Base.Rb.position = value;
-                Base.transform.position = value;
 
                 Base.RefreshPositionAndRotation();
             }
@@ -183,7 +190,6 @@ namespace Exiled.API.Features.Pickups
             set
             {
                 Base.Rb.rotation = value;
-                Base.transform.rotation = value;
 
                 Base.RefreshPositionAndRotation();
             }
@@ -199,10 +205,72 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> to convert into a <see cref="Pickup"/>.</param>
         /// <returns>The <see cref="Pickup"/> wrapper for the given <see cref="ItemPickupBase"/>.</returns>
-        public static Pickup Get(ItemPickupBase pickupBase) =>
-            pickupBase is null ? null :
-            BaseToItem.ContainsKey(pickupBase) ? BaseToItem[pickupBase] :
-            new Pickup(pickupBase);
+        public static Pickup Get(ItemPickupBase pickupBase)
+        {
+            if(pickupBase is null)
+                return null;
+            if (BaseToItem.TryGetValue(pickupBase, out Pickup pickup))
+                return pickup;
+
+            return pickupBase switch
+            {
+                Scp244DeployablePickup scp244 => new Scp244Pickup(scp244),
+                BaseAmmoPickup ammoPickup => new AmmoPickup(ammoPickup),
+                InventorySystem.Items.Radio.RadioPickup radioPickup => new RadioPickup(radioPickup),
+                BaseMicroHIDPickup microHidPickup => new MicroHIDPickup(microHidPickup),
+                TimedGrenadePickup timeGrenade => new GrenadePickup(timeGrenade),
+                TimeGrenade timeGrenade => new TimeGrenadePickup(timeGrenade),
+                ThrownProjectile thrownProjectile => new ProjectilePickup(thrownProjectile),
+                BaseFirearmPickup firearmPickup => new FirearmPickup(firearmPickup),
+                InventorySystem.Items.Keycards.KeycardPickup keycardPickup => new KeycardPickup(keycardPickup),
+                BaseBodyArmorPickup bodyArmorPickup => new BodyArmorPickup(bodyArmorPickup),
+                BaseScp330Pickup scp330Pickup => new Scp330Pickup(scp330Pickup),
+                _ => new Pickup(pickupBase),
+            };
+        }
+
+        /// <summary>
+        /// creates.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        /// <returns>pickup.</returns>
+        public static Pickup Create(ItemType type) => type switch
+        {
+            ItemType.SCP244a or ItemType.SCP244b => new Scp244Pickup(type),
+            ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new AmmoPickup(type),
+            ItemType.Radio => new RadioPickup(),
+            ItemType.MicroHID => new MicroHIDPickup(),
+            ItemType.GrenadeHE or ItemType.SCP018 or ItemType.GrenadeFlash or ItemType.SCP2176 => new GrenadePickup(type),
+            ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new FirearmPickup(type),
+            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new KeycardPickup(type),
+            ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
+            ItemType.SCP330 => new Scp330Pickup(),
+            _ => new Pickup(type),
+        };
+
+        /// <summary>
+        /// Spawns pickup on server.
+        /// </summary>
+        public void Spawn()
+        {
+            if (!Spawned)
+            {
+                NetworkServer.Spawn(GameObject);
+                Spawned = true;
+            }
+        }
+
+        /// <summary>
+        /// Unspawns pickup on server.
+        /// </summary>
+        public void UnSpawn()
+        {
+            if (Spawned)
+            {
+                Spawned = false;
+                NetworkServer.UnSpawn(GameObject);
+            }
+        }
 
         /// <summary>
         /// Destroys the pickup.

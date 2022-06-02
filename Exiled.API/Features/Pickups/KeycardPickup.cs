@@ -18,10 +18,20 @@ namespace Exiled.API.Features.Pickups
         /// Initializes a new instance of the <see cref="KeycardPickup"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="BaseKeycard"/> class.</param>
-        public KeycardPickup(BaseKeycard pickupBase)
+        internal KeycardPickup(BaseKeycard pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="KeycardPickup"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
+        internal KeycardPickup(ItemType type)
+            : base(type)
+        {
+            Base = (BaseKeycard)((Pickup)this).Base;
         }
 
         /// <summary>
