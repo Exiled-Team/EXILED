@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomItems.API.EventArgs
 {
-    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
 
     using InventorySystem.Items.Pickups;
@@ -19,7 +18,7 @@ namespace Exiled.CustomItems.API.EventArgs
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Item"/> gets upgraded.
     /// </summary>
-    public class UpgradingEventArgs : Exiled.Events.EventArgs.UpgradingItemEventArgs
+    public class UpgradingEventArgs : Events.EventArgs.UpgradingItemEventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpgradingEventArgs"/> class.

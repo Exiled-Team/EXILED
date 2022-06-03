@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System.Reflection;
+
     using Exiled.API.Features;
 
     /// <summary>
@@ -21,7 +23,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="target">The ban target.</param>
         /// <param name="issuer">The ban issuer.</param>
-        /// <param name="duration">The ban minutes duration.</param>
+        /// <param name="duration">The ban seconds duration.</param>
         /// <param name="reason">The ban reason.</param>
         /// <param name="fullMessage">The ban full message.</param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
@@ -43,7 +45,7 @@ namespace Exiled.Events.EventArgs
                     return;
 
                 if (Events.Instance.Config.ShouldLogBans)
-                    LogBanChange($" changed Ban duration: {duration} to {value} for ID: {Target.UserId}");
+                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name, $" changed Ban duration: {duration} to {value} for ID: {Target.UserId}");
 
                 duration = value;
             }

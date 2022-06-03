@@ -1,8 +1,11 @@
 # EXILED - EXtended In-runtime Library for External Development
 
 ![EXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
-![GitHub Release](https://img.shields.io/github/release/galaxy119/EXILED/all.svg?style=flat)
-![Github All Releases](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat) 
+<a href="https://github.com/Exiled-Team/EXILED/releases">
+  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
+</a>
+![Github All Downloads](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat)
+![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
 <a href="https://discord.gg/PyUkWTg">
   <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
 </a>
@@ -14,12 +17,14 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
  - Firstly, the entirety of the frameworks code can be freely published and shared, allowing developers to better understand *how* it works, as well as offer suggestions for adding to or changing it's features.
  - Secondly, since all of the code related to the framework are done outside of the server assembly, things like small game updates will have little, if any, effect on the framework. Making it most likely to be compatible with future game updates, as well as making it easier to update when it *is* necessary to do so.
 
+# Localized READMEs
+- [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 
 # Installation
 Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
 As mentioned above, the vast majority of EXILED is not contained within the server's Assembly-CSharp.dll file, however, there is a single modification needed to the Assembly-CSharp.dll file that is required to actually *load* EXILED into the server during startup, a clean game Assembly with this change already made will be provided with releases.
 
-If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer.
+If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installed.
 
 # Windows
 ### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
@@ -80,7 +85,9 @@ However, some plugins might get their config settings from other locations on th
 
 # For Developers
 
-If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md), or you can just watch a [video tutorial](https://www.youtube.com/watch?v=gx67ziYldvk) on YouTube.
+If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
+
+For more comprehensive and actively updated tutorials, see [the EXILED website](https://exiled-team.github.io/EXILED/articles/install.html).
 
 But make sure to follow these rules when publishing your plugins:
 

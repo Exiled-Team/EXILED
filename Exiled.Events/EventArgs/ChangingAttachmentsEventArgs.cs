@@ -7,49 +7,76 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using Exiled.API.Enums;
-    using Exiled.API.Features.Items;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    using Firearm = InventorySystem.Items.Firearms.Firearm;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+    using Exiled.API.Structs;
+
+    using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
     /// Contains all informations before changing item attachments.
     /// </summary>
-    public class ChangingAttachmentsEventArgs : ChangingAttributesEventArgs
+    public class ChangingAttachmentsEventArgs : System.EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingAttachmentsEventArgs"/> class.
         /// </summary>
-        /// <param name="item"><inheritdoc cref="ChangingAttributesEventArgs.OldItem"/></param>
-        /// <param name="newSight"><inheritdoc cref="NewSight"/></param>
-        /// <param name="newBarrel"><inheritdoc cref="NewBarrel"/></param>
-        /// <param name="newOther"><inheritdoc cref="NewOther"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="ChangingAttributesEventArgs.IsAllowed"/></param>
-        public ChangingAttachmentsEventArgs(Firearm item, SightType newSight, BarrelType newBarrel, OtherType newOther, bool isAllowed = true)
-            : base(item, item, isAllowed)
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="firearm"><inheritdoc cref="Firearm"/></param>
+        /// <param name="code">The attachments code.</param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public ChangingAttachmentsEventArgs(
+            Player player,
+            Firearm firearm,
+            uint code,
+            bool isAllowed = true)
         {
-            NewSight = newSight;
-            NewBarrel = newBarrel;
-            NewOther = newOther;
-            OldItem = (API.Features.Items.Firearm)Item.Get(item);
+            Player = player;
+            Firearm = firearm;
+            CurrentAttachmentIdentifiers = firearm.AttachmentIdentifiers;
+            NewAttachmentIdentifiers = firearm.Type.GetAttachmentIdentifiers(code).ToList();
+            CurrentCode = firearm.Base.GetCurrentAttachmentsCode();
+            NewCode = code;
+            IsAllowed = isAllowed;
         }
 
-        /// <inheritdoc cref="ChangingAttributesEventArgs.OldItem"/>
-        public new API.Features.Items.Firearm OldItem { get; }
+        /// <summary>
+        /// Gets the <see cref="API.Features.Player"/> who's changing attachments.
+        /// </summary>
+        public Player Player { get; }
 
         /// <summary>
-        /// Gets the new item sight attachment.
+        /// Gets the <see cref="API.Features.Items.Firearm"/> which is being modified.
         /// </summary>
-        public SightType NewSight { get; }
+        public Firearm Firearm { get; }
 
         /// <summary>
-        /// Gets the new item barrel attachment.
+        /// Gets the old <see cref="AttachmentIdentifier"/>.
         /// </summary>
-        public BarrelType NewBarrel { get; }
+        public IEnumerable<AttachmentIdentifier> CurrentAttachmentIdentifiers { get; }
 
         /// <summary>
-        /// Gets the new item other attachment.
+        /// Gets or sets the new <see cref="AttachmentIdentifier"/>.
         /// </summary>
-        public OtherType NewOther { get; }
+        public List<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="CurrentAttachmentIdentifiers"/> code.
+        /// </summary>
+        public uint CurrentCode { get; }
+
+        /// <summary>
+        /// Gets the <see cref="NewAttachmentIdentifiers"/> code.
+        /// </summary>
+        public uint NewCode { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the attachments can be changed.
+        /// </summary>
+        public bool IsAllowed { get; set; }
     }
 }

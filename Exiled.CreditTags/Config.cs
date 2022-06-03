@@ -29,6 +29,6 @@ namespace Exiled.CreditTags
         public bool CustomPlayerInfoOverride { get; private set; } = false;
 
         [Description("Whether or not the plugin should ignore a player's DNT flag. By default (false), players with DNT flag will not be checked for credit tags.")]
-        public bool IgnoreDntFlag { get; private set; } = true;
+        public bool IgnoreDntFlag { get; private set; } = false;
     }
 }

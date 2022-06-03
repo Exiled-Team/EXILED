@@ -28,7 +28,7 @@ namespace Exiled.CustomItems.Commands.List
         /// <summary>
         /// Gets the command instance.
         /// </summary>
-        public static Registered Instance { get; } = new Registered();
+        public static Registered Instance { get; } = new();
 
         /// <inheritdoc/>
         public string Command { get; } = "registered";

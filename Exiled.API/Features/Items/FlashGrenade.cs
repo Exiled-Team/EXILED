@@ -19,6 +19,8 @@ namespace Exiled.API.Features.Items
 
     using UnityEngine;
 
+    using Object = UnityEngine.Object;
+
     /// <summary>
     /// A wrapper class for <see cref="FlashbangGrenade"/>.
     /// </summary>
@@ -27,7 +29,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="FlashGrenade"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Throwable.Base"/></param>
+        /// <param name="itemBase">The base <see cref="ThrowableItem"/> class.</param>
         public FlashGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
@@ -39,13 +41,12 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FlashGrenade"/> class.
+        /// Initializes a new instance of the <see cref="FlashGrenade"/> class, as well as a new flash grenade item.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Throwable.Base"/></param>
-        /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
+        /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
-        public FlashGrenade(ItemType type, Player player = null)
-            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
+        internal FlashGrenade(Player player = null)
+            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.GrenadeFlash, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.GrenadeFlash, true))
         {
         }
 
@@ -72,7 +73,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets all the currently known <see cref="EffectGrenade"/>:<see cref="Throwable"/> items.
         /// </summary>
-        internal static Dictionary<FlashbangGrenade, FlashGrenade> GrenadeToItem { get; set; } = new Dictionary<FlashbangGrenade, FlashGrenade>();
+        internal static Dictionary<FlashbangGrenade, FlashGrenade> GrenadeToItem { get; set; } = new();
 
         /// <summary>
         /// Spawns an active grenade on the map at the specified location.
@@ -85,7 +86,7 @@ namespace Exiled.API.Features.Items
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
             FlashbangGrenade grenade = (FlashbangGrenade)Object.Instantiate(Base.Projectile, position, Quaternion.identity);
-            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub);
+            grenade.PreviousOwner = new Footprint(owner is not null ? owner.ReferenceHub : Server.Host.ReferenceHub);
             grenade._blindingOverDistance = BlindCurve;
             grenade._surfaceZoneDistanceIntensifier = SurfaceDistanceIntensifier;
             grenade._deafenDurationOverDistance = DeafenCurve;
@@ -94,7 +95,10 @@ namespace Exiled.API.Features.Items
             grenade.ServerActivate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the FlashGrenade in a human readable format.
+        /// </summary>
+        /// <returns>A string containing FlashGrenade-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";

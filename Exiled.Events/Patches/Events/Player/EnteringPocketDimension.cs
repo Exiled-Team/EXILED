@@ -56,57 +56,50 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(ply)
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // Vector3.down * 1998.5f
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.down))),
-                new CodeInstruction(OpCodes.Ldc_R4, 1998.5f),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Vector3), "op_Multiply", new[] { typeof(Vector3), typeof(float) })),
+                new(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.down))),
+                new(OpCodes.Ldc_R4, 1998.5f),
+                new(OpCodes.Call, Method(typeof(Vector3), "op_Multiply", new[] { typeof(Vector3), typeof(float) })),
 
                 // Player.Get(this.gameObject)
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // true
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new(OpCodes.Ldc_I4_1),
 
                 // var ev = new EnteringPocketDimensionEventArgs(...)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringPocketDimensionEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringPocketDimensionEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnEnteringPocketDimension(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringPocketDimension))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringPocketDimension))),
 
                 // if (!ev.IsAllowed)
                 //   return;
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, returnLabel),
             });
-
-            // The index offset.
-            offset = -5;
-
-            // The amount of instructions to remove.
-            const int instructionsToRemove = 3;
 
             // Search for the first "OverridePosition" method.
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-                                                                 (MethodInfo)instruction.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + offset;
-
-            // Remove "Vector3.down * 1998.5f" instructions.
-            newInstructions.RemoveRange(index, instructionsToRemove);
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret);
 
             // ev.Position
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Position))),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Player))),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Position))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Player), nameof(Player.Position))),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

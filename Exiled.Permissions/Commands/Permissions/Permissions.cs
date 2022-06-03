@@ -27,7 +27,7 @@ namespace Exiled.Permissions.Commands.Permissions
         public override string Command { get; } = "permissions";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = new string[] { "ep" };
+        public override string[] Aliases { get; } = new[] { "ep" };
 
         /// <inheritdoc/>
         public override string Description { get; } = "Handles commands about permissions";
@@ -44,7 +44,7 @@ namespace Exiled.Permissions.Commands.Permissions
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
 
             stringBuilder.AppendLine("Available commands: ");
             stringBuilder.AppendLine("- EP RELOAD - Reloads permissions.");

@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                         scp914KnobSetting = Scp914KnobSetting.Rough;
                     else
                         scp914KnobSetting = __instance._knobSetting + 1;
-                    ChangingKnobSettingEventArgs ev = new ChangingKnobSettingEventArgs(Player.Get(ply), scp914KnobSetting);
+                    ChangingKnobSettingEventArgs ev = new(Player.Get(ply), scp914KnobSetting);
 
                     Handlers.Scp914.OnChangingKnobSetting(ev);
                     if (!ev.IsAllowed)
@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                     __instance.RpcPlaySound(0);
                     break;
                 case Scp914InteractCode.Activate:
-                    ActivatingEventArgs ev2 = new ActivatingEventArgs(Player.Get(ply));
+                    ActivatingEventArgs ev2 = new(Player.Get(ply));
 
                     Handlers.Scp914.OnActivating(ev2);
 

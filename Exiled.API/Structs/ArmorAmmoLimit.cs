@@ -27,8 +27,8 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Initializes a new instance of the <see cref="ArmorAmmoLimit"/> struct.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="AmmoType"/></param>
-        /// <param name="limit"><inheritdoc cref="Limit"/></param>
+        /// <param name="type">The <see cref="Enums.AmmoType"/> of the ammo.</param>
+        /// <param name="limit">The ammo limit.</param>
         public ArmorAmmoLimit(AmmoType type, ushort limit)
         {
             AmmoType = type;

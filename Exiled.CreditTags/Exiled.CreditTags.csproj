@@ -8,6 +8,8 @@
     <BaseProperties>false</BaseProperties>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>$(NoWarn);CS1591;SA1600</NoWarn>
+    <Configurations>Debug;Release;Programs</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <Import Project="../EXILED.props" />

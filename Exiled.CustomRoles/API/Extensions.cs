@@ -14,8 +14,6 @@ namespace Exiled.CustomRoles.API
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
 
-    using UnityEngine;
-
     /// <summary>
     /// A collection of API methods.
     /// </summary>
@@ -28,7 +26,7 @@ namespace Exiled.CustomRoles.API
         /// <returns>A <see cref="ReadOnlyCollection{T}"/> of all current custom roles.</returns>
         public static ReadOnlyCollection<CustomRole> GetCustomRoles(this Player player)
         {
-            List<CustomRole> roles = new List<CustomRole>();
+            List<CustomRole> roles = new();
 
             foreach (CustomRole customRole in CustomRole.Registered)
             {
@@ -45,7 +43,7 @@ namespace Exiled.CustomRoles.API
         /// <param name="customRoles"><see cref="CustomRole"/>s to be registered.</param>
         public static void Register(this IEnumerable<CustomRole> customRoles)
         {
-            if (customRoles == null)
+            if (customRoles is null)
                 throw new ArgumentNullException(nameof(customRoles));
 
             foreach (CustomRole customItem in customRoles)
@@ -53,16 +51,40 @@ namespace Exiled.CustomRoles.API
         }
 
         /// <summary>
+        /// Registers a <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="role"><see cref="CustomRole"/> to be registered.</param>
+        public static void Register(this CustomRole role) => role.TryRegister();
+
+        /// <summary>
+        /// Registers a <see cref="CustomAbility"/>.
+        /// </summary>
+        /// <param name="ability">The <see cref="CustomAbility"/> to be registered.</param>
+        public static void Register(this CustomAbility ability) => ability.TryRegister();
+
+        /// <summary>
         /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
         /// </summary>
         /// <param name="customRoles"><see cref="CustomRole"/>s to be unregistered.</param>
         public static void Unregister(this IEnumerable<CustomRole> customRoles)
         {
-            if (customRoles == null)
+            if (customRoles is null)
                 throw new ArgumentNullException(nameof(customRoles));
 
             foreach (CustomRole customItem in customRoles)
                 customItem.TryUnregister();
         }
+
+        /// <summary>
+        /// Unregisters a <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="role"><see cref="CustomRole"/> to be unregistered.</param>
+        public static void Unregister(this CustomRole role) => role.TryUnregister();
+
+        /// <summary>
+        /// Unregisters a <see cref="CustomAbility"/>.
+        /// </summary>
+        /// <param name="ability">The <see cref="CustomAbility"/> to be unregistered.</param>
+        public static void Unregister(this CustomAbility ability) => ability.TryUnregister();
     }
 }

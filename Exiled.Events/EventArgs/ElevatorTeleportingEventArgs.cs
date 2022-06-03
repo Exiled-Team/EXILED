@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs
         public ElevatorTeleportingEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
-            Camera = camera;
+            Camera = Camera.Get(camera);
             AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = isAllowed;
         }
@@ -37,9 +37,9 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Camera079"/> that SCP-079 will be moved to.
+        /// Gets or sets the <see cref="API.Features.Camera"/> that SCP-079 will be moved to.
         /// </summary>
-        public Camera079 Camera { get; set; }
+        public Camera Camera { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of auxiliary power required to teleport to an elevator camera.

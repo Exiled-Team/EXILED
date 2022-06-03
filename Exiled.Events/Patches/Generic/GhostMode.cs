@@ -8,6 +8,9 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
+#pragma warning disable SA1515
+#pragma warning disable SA1513
+#pragma warning disable SA1512
     using System;
     using System.Collections.Generic;
 
@@ -22,12 +25,6 @@ namespace Exiled.Events.Patches.Generic
     using UnityEngine;
 
     using Scp096 = PlayableScps.Scp096;
-
-#pragma warning disable SA1028 // Code should not contain trailing whitespace
-#pragma warning disable CS0618 // Type or member is obsolete (Player.TargetGhosts)
-#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
-#pragma warning disable SA1513 // Closing brace should be followed by blank line
-#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
 
     /// <summary>
     /// Patches <see cref="PlayerPositionManager.TransmitData"/>.
@@ -47,6 +44,9 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
+                if (!Round.IsStarted)
+                    return true;
+
                 if (++__instance._frame != __instance._syncFrequency)
                     return false;
 
@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Generic
                 List<GameObject> players = PlayerManager.players;
                 __instance._usedData = players.Count;
 
-                if (__instance.ReceivedData == null
+                if (__instance.ReceivedData is null
                     || __instance.ReceivedData.Length < __instance._usedData)
                 {
                     __instance.ReceivedData = new PlayerPositionData[__instance._usedData * 2];
@@ -64,7 +64,7 @@ namespace Exiled.Events.Patches.Generic
                 for (int index = 0; index < __instance._usedData; ++index)
                     __instance.ReceivedData[index] = new PlayerPositionData(ReferenceHub.GetHub(players[index]));
 
-                if (__instance._transmitBuffer == null
+                if (__instance._transmitBuffer is null
                     || __instance._transmitBuffer.Length < __instance._usedData)
                 {
                     __instance._transmitBuffer = new PlayerPositionData[__instance._usedData * 2];
@@ -73,12 +73,12 @@ namespace Exiled.Events.Patches.Generic
                 foreach (GameObject gameObject in players)
                 {
                     Player player = GetPlayerOrServer(gameObject);
-                    if (player == null || player.ReferenceHub.queryProcessor._ipAddress == "127.0.0.WAN")
+                    if (player is null || player.ReferenceHub.queryProcessor._ipAddress == "127.0.0.WAN")
                         continue;
 
                     Array.Copy(__instance.ReceivedData, __instance._transmitBuffer, __instance._usedData);
 
-                    if (player.Role.Is939())
+                    if (player.Role.Type.Is939())
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
@@ -97,7 +97,7 @@ namespace Exiled.Events.Patches.Generic
                             }
                         }
                     }
-                    else if (player.Role != RoleType.Spectator && player.Role != RoleType.Scp079)
+                    else if (player.Role.Type != RoleType.Spectator && player.Role.Type != RoleType.Scp079)
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
@@ -106,7 +106,7 @@ namespace Exiled.Events.Patches.Generic
                                 continue;
 
                             Player currentTarget = GetPlayerOrServer(targetHub.gameObject);
-                            if (currentTarget == null)
+                            if (currentTarget is null)
                                 continue;
 
                             Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
@@ -144,10 +144,10 @@ namespace Exiled.Events.Patches.Generic
                                 // The code below doesn't have to follow a ELSE statement!
                                 // Otherwise Scp268 won't be processed
 
-                                if (scp096 != null
+                                if (scp096 is not null
                                     && scp096.EnragedOrEnraging
                                     && !scp096.HasTarget(currentTarget.ReferenceHub)
-                                    && currentTarget.Team != Team.SCP)
+                                    && currentTarget.Role.Team != Team.SCP)
                                 {
 #if DEBUG
                                     Log.Debug($"[Scp096@GhostModePatch] {player.UserId} can't see {currentTarget.UserId}");
@@ -157,11 +157,11 @@ namespace Exiled.Events.Patches.Generic
                                 else if (currentTarget.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
                                 {
                                     bool flag2 = false;
-                                    if (scp096 != null)
+                                    if (scp096 is not null)
                                         flag2 = scp096.HasTarget(currentTarget.ReferenceHub);
 
-                                    if (currentTarget != player && player.Role != RoleType.Scp079
-                                        && player.Role != RoleType.Spectator
+                                    if (currentTarget != player && player.Role.Type != RoleType.Scp079
+                                        && player.Role.Type != RoleType.Spectator
                                         && !flag2)
                                     {
                                         MakeGhost(index, __instance._transmitBuffer);
@@ -195,30 +195,20 @@ namespace Exiled.Events.Patches.Generic
                             continue;
 
                         Player target = GetPlayerOrServer(targetHub.gameObject);
-                        if (target == null || target.ReferenceHub.queryProcessor._ipAddress == "127.0.0.WAN")
+                        if (target is null || target.ReferenceHub.queryProcessor._ipAddress == "127.0.0.WAN")
                             continue;
 
                         // If for some reason the player/their ref hub is null
-                        if (target?.ReferenceHub == null)
+                        if (target?.ReferenceHub is null)
                             continue;
 
-                        if (target.IsInvisible || PlayerCannotSee(player, target.Id))
+                        if (player.IsAlive && (target.IsInvisible || PlayerCannotSee(player, target.Id)))
                         {
                             MakeGhost(z, __instance._transmitBuffer);
                         }
-                        // Rotate the player because
-                        // those movement checks are
-                        // in client-side
-                        else if (player.Role == RoleType.Scp173
-                            && ((!Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173
-                                    && target.Role == RoleType.Tutorial)
-                                || Scp173.TurnedPlayers.Contains(target)))
-                        {
-                            RotatePlayer(z, __instance._transmitBuffer, FindLookRotation(player.Position, target.Position));
-                        }
                     }
 
-                    if (player.ReferenceHub.characterClassManager.netIdentity != null)
+                    if (player.ReferenceHub.characterClassManager.netIdentity is not null)
                     {
                         NetworkConnection networkConnection =
                             player.ReferenceHub.characterClassManager.netIdentity.isLocalPlayer
@@ -227,17 +217,17 @@ namespace Exiled.Events.Patches.Generic
 
                         if (__instance._usedData <= 20)
                         {
-                            networkConnection.Send<PositionPPMMessage>(
+                            networkConnection.Send(
                                 new PositionPPMMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
                         }
                         else
                         {
                             byte part;
                             for (part = 0; part < __instance._usedData / 20; ++part)
-                                networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, 20, part), 1);
+                                networkConnection.Send(new PositionPPMMessage(__instance._transmitBuffer, 20, part), 1);
                             byte count = (byte)(__instance._usedData % (part * 20));
                             if (count > 0)
-                                networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, count, part), 1);
+                                networkConnection.Send(new PositionPPMMessage(__instance._transmitBuffer, count, part), 1);
                         }
                     }
                 }

@@ -10,19 +10,17 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Enums;
     using Exiled.API.Structs;
 
-    using InventorySystem;
-    using InventorySystem.Items;
     using InventorySystem.Items.Radio;
 
     /// <summary>
-    /// A wrapper class for <see cref="InventorySystem.Items.Radio.RadioItem"/>.
+    /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
     public class Radio : Item
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Radio"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="RadioItem"/> class.</param>
         public Radio(RadioItem itemBase)
             : base(itemBase)
         {
@@ -30,15 +28,16 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Radio"/> class.
+        /// Initializes a new instance of the <see cref="Radio"/> class, as well as a new Radio item.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Base"/></param>
-        public Radio(ItemType type)
-            : this((RadioItem)Server.Host.Inventory.CreateItemInstance(type, false))
+        internal Radio()
+            : this((RadioItem)Server.Host.Inventory.CreateItemInstance(ItemType.Radio, false))
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="RadioItem"/> that this class is encapsulating.
+        /// </summary>
         public new RadioItem Base { get; }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace Exiled.API.Features.Items
         public RadioRangeSettings RangeSettings
         {
             get =>
-                new RadioRangeSettings
+                new()
                 {
                     IdleUsage = Base.Ranges[(int)Range].MinuteCostWhenIdle,
                     TalkingUsage = Base.Ranges[(int)Range].MinuteCostWhenTalking,
@@ -85,7 +84,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public void Disable() => Base._radio.ForceDisableRadio();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Radio in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Radio-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";

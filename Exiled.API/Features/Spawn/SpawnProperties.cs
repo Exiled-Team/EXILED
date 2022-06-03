@@ -9,10 +9,6 @@ namespace Exiled.API.Features.Spawn
 {
     using System.Collections.Generic;
 
-    using NorthwoodLib.Pools;
-
-    using UnityEngine;
-
     /// <summary>
     /// Handles special properties of spawning an item.
     /// </summary>
@@ -26,17 +22,17 @@ namespace Exiled.API.Features.Spawn
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of possible dynamic spawn points.
         /// </summary>
-        public List<DynamicSpawnPoint> DynamicSpawnPoints { get; set; } = new List<DynamicSpawnPoint>();
+        public List<DynamicSpawnPoint> DynamicSpawnPoints { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of possible static spawn points.
         /// </summary>
-        public List<StaticSpawnPoint> StaticSpawnPoints { get; set; } = new List<StaticSpawnPoint>();
+        public List<StaticSpawnPoint> StaticSpawnPoints { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of possible role-based spawn points.
         /// </summary>
-        public List<RoleSpawnPoint> RoleSpawnPoints { get; set; } = new List<RoleSpawnPoint>();
+        public List<RoleSpawnPoint> RoleSpawnPoints { get; set; } = new();
 
         /// <summary>
         /// Counts how many spawn points are in this instance.

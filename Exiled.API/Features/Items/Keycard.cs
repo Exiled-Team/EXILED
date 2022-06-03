@@ -7,12 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Exiled.API.Enums;
-
-    using Interactables.Interobjects.DoorUtils;
-
-    using InventorySystem;
-    using InventorySystem.Items;
     using InventorySystem.Items.Keycards;
 
     /// <summary>
@@ -23,7 +17,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Keycard"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="KeycardItem"/> class.</param>
         public Keycard(KeycardItem itemBase)
             : base(itemBase)
         {
@@ -33,13 +27,15 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Keycard"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Item.Type"/></param>
-        public Keycard(ItemType type)
+        /// <param name="type">The <see cref="ItemType"/> of the keycard.</param>
+        internal Keycard(ItemType type)
             : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="KeycardItem"/> that this class is encapsulating.
+        /// </summary>
         public new KeycardItem Base { get; }
 
         /// <summary>
@@ -51,7 +47,10 @@ namespace Exiled.API.Features.Items
             set => Base.Permissions = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Keycard in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Keycard-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";

@@ -19,6 +19,8 @@ namespace Exiled.API.Features.Items
 
     using UnityEngine;
 
+    using Object = UnityEngine.Object;
+
     /// <summary>
     /// A wrapper class for <see cref="ExplosionGrenade"/>.
     /// </summary>
@@ -27,7 +29,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Throwable.Base"/></param>
+        /// <param name="itemBase">The base <see cref="ThrowableItem"/> class.</param>
         public ExplosiveGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
@@ -43,11 +45,11 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Throwable.Base"/></param>
-        /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
+        /// <param name="type">The <see cref="ItemType"/> of the grenade.</param>
+        /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
-        public ExplosiveGrenade(ItemType type, Player player = null)
-            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
+        internal ExplosiveGrenade(ItemType type, Player player = null)
+            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
         }
 
@@ -84,7 +86,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets all the currently known <see cref="EffectGrenade"/>:<see cref="Throwable"/> items.
         /// </summary>
-        internal static Dictionary<ExplosionGrenade, ExplosiveGrenade> GrenadeToItem { get; set; } = new Dictionary<ExplosionGrenade, ExplosiveGrenade>();
+        internal static Dictionary<ExplosionGrenade, ExplosiveGrenade> GrenadeToItem { get; set; } = new();
 
         /// <summary>
         /// Spawns an active grenade on the map at the specified location.
@@ -103,12 +105,15 @@ namespace Exiled.API.Features.Items
             grenade._deafenedDuration = DeafenDuration;
             grenade._concussedDuration = ConcussDuration;
             grenade._fuseTime = FuseTime;
-            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub);
+            grenade.PreviousOwner = new Footprint(owner is not null ? owner.ReferenceHub : Server.Host.ReferenceHub);
             NetworkServer.Spawn(grenade.gameObject);
             grenade.ServerActivate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the ExplosiveGrenade in a human readable format.
+        /// </summary>
+        /// <returns>A string containing ExplosiveGrenade-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";

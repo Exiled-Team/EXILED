@@ -7,58 +7,37 @@
 
 namespace Exiled.API.Features
 {
-    using System;
+    using Exiled.API.Enums;
+
+    using UnityEngine;
 
     /// <summary>
     /// A set of tools to easily work with the alpha warhead.
     /// </summary>
     public static class Warhead
     {
-        private static AlphaWarheadController controller;
         private static AlphaWarheadNukesitePanel sitePanel;
         private static AlphaWarheadOutsitePanel outsitePanel;
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
-        public static AlphaWarheadController Controller
-        {
-            get
-            {
-                if (controller == null)
-                    controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
-
-                return controller;
-            }
-        }
+        public static AlphaWarheadController Controller { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadNukesitePanel SitePanel
-        {
-            get
-            {
-                if (sitePanel == null)
-                    sitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
-
-                return sitePanel;
-            }
-        }
+        public static AlphaWarheadNukesitePanel SitePanel => sitePanel ??= Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel
-        {
-            get
-            {
-                if (outsitePanel == null)
-                    outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
+        public static AlphaWarheadOutsitePanel OutsitePanel => outsitePanel ??= Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
-                return outsitePanel;
-            }
-        }
+        /// <summary>
+        /// Gets the <see cref="GameObject"/> of the warhead lever.
+        /// </summary>
+        public static GameObject Lever => sitePanel.lever.gameObject;
 
         /// <summary>
         /// Gets or sets a value indicating whether the warhead lever is enabled or not.
@@ -76,6 +55,33 @@ namespace Exiled.API.Features
         {
             get => OutsitePanel.NetworkkeycardEntered;
             set => OutsitePanel.NetworkkeycardEntered = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the warhead status.
+        /// </summary>
+        public static WarheadStatus Status
+        {
+            get => IsInProgress ? IsDetonated ? WarheadStatus.Detonated : WarheadStatus.InProgress : LeverStatus ? WarheadStatus.Armed : WarheadStatus.NotArmed;
+            set
+            {
+                switch (value)
+                {
+                    case WarheadStatus.NotArmed:
+                    case WarheadStatus.Armed:
+                        Stop();
+                        LeverStatus = value is WarheadStatus.Armed;
+                        break;
+
+                    case WarheadStatus.InProgress:
+                        Start();
+                        break;
+
+                    case WarheadStatus.Detonated:
+                        Detonate();
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -114,7 +120,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the warhead can be started or not.
         /// </summary>
-        public static bool CanBeStarted => AlphaWarheadController.Host.CanDetonate;
+        public static bool CanBeStarted => Controller.CanDetonate;
 
         /// <summary>
         /// Starts the warhead countdown.
@@ -122,7 +128,7 @@ namespace Exiled.API.Features
         public static void Start()
         {
             Controller.InstantPrepare();
-            Controller.StartDetonation();
+            Controller.StartDetonation(false);
         }
 
         /// <summary>
@@ -142,6 +148,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shake all players, like if the warhead has been detonated.
         /// </summary>
-        public static void Shake() => Controller.RpcShake(true);
+        public static void Shake()
+        {
+            foreach (Player player in Player.List)
+                Controller.TargetRpcShake(player.Connection, false, false);
+        }
     }
 }

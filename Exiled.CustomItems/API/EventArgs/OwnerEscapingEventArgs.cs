@@ -12,8 +12,6 @@ namespace Exiled.CustomItems.API.EventArgs
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
 
-    using InventorySystem.Items;
-
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> escapes.
     /// </summary>

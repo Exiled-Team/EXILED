@@ -7,19 +7,17 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Exiled.API.Enums;
-
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
-    /// A wrapper class for <see cref="InventorySystem.Items.MicroHID.MicroHIDItem"/>.
+    /// A wrapper class for <see cref="MicroHIDItem"/>.
     /// </summary>
     public class MicroHid : Item
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MicroHid"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="MicroHIDItem"/> class.</param>
         public MicroHid(MicroHIDItem itemBase)
             : base(itemBase)
         {
@@ -27,11 +25,10 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MicroHid"/> class.
+        /// Initializes a new instance of the <see cref="MicroHid"/> class, as well as a new Micro HID item.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Base"/></param>
-        public MicroHid(ItemType type)
-            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(type, false))
+        internal MicroHid()
+            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(ItemType.MicroHID, false))
         {
         }
 
@@ -67,7 +64,10 @@ namespace Exiled.API.Features.Items
             State = HidState.Firing;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the MicroHid in a human readable format.
+        /// </summary>
+        /// <returns>A string containing MicroHid-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{State}-";

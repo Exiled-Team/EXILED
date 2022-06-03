@@ -7,10 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
-
-    using Exiled.API.Enums;
-    using InventorySystem.Items;
     using InventorySystem.Items.Flashlight;
 
     /// <summary>
@@ -21,23 +17,24 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Flashlight"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Flashlight(ItemBase itemBase)
+        /// <param name="itemBase">The base <see cref="FlashlightItem"/> class.</param>
+        public Flashlight(FlashlightItem itemBase)
             : base(itemBase)
         {
-            Base = (FlashlightItem)itemBase;
+            Base = itemBase;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Flashlight"/> class.
+        /// Initializes a new instance of the <see cref="Flashlight"/> class, as well as a new Flashlight item.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Type"/></param>
-        public Flashlight(ItemType type)
-            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(type, false))
+        internal Flashlight()
+            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(ItemType.Flashlight, false))
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="FlashlightItem"/> that this class is encapsulating.
+        /// </summary>
         public new FlashlightItem Base { get; }
 
         /// <summary>
@@ -49,7 +46,10 @@ namespace Exiled.API.Features.Items
             set => Base.IsEmittingLight = value;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Flashlight in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Flashlight-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";

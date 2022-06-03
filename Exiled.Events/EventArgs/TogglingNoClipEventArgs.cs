@@ -22,6 +22,7 @@ namespace Exiled.Events.EventArgs
         public TogglingNoClipEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
+            IsEnabled = player.ReferenceHub.characterClassManager.NoclipEnabled;
             IsAllowed = isAllowed;
         }
 
@@ -29,6 +30,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who's toggling the NoClip mode.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the NoClip mode is enabled.
+        /// </summary>
+        public bool IsEnabled { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can toggle the NoClip mode.

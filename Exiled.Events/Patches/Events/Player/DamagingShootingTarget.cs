@@ -7,9 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
+    using System;
+#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
+    using AdminToys;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -22,53 +25,62 @@ namespace Exiled.Events.Patches.Events.Player
 
     using PlayerStatsSystem;
 
-    using static HarmonyLib.AccessTools;
+    using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="AdminToys.ShootingTarget.TargetRpcReceiveData(NetworkConnection, float, float, UnityEngine.Vector3, DamageHandlerBase)"/>.
+    /// Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)"/>.
     /// Adds the <see cref="Handlers.Player.DamagingShootingTarget"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(AdminToys.ShootingTarget), nameof(AdminToys.ShootingTarget.TargetRpcReceiveData))]
+    [HarmonyPatch(typeof(ShootingTarget), nameof(ShootingTarget.Damage))]
     internal static class DamagingShootingTarget
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(ShootingTarget __instance, ref bool __result, float damage, DamageHandlerBase handler, Vector3 exactHit)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(DamagingShootingTargetEventArgs));
-
-            Label ret = generator.DefineLabel();
-
-            newInstructions.InsertRange(0, new[]
+            try
             {
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
-                new CodeInstruction(OpCodes.Ldarg_2),
-                new CodeInstruction(OpCodes.Ldarg_3),
-                new CodeInstruction(OpCodes.Ldarg_S, 4),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldarg_S, 5),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDamagingShootingTarget))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, ret),
-                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
-                new CodeInstruction(OpCodes.Starg_S, 2),
-            });
+                if (handler is not AttackerDamageHandler attackerDamageHandler)
+                {
+                    __result = false;
+                    return false;
+                }
 
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+                if (attackerDamageHandler.Attacker.Hub is null)
+                {
+                    __result = false;
+                    return false;
+                }
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+                DamagingShootingTargetEventArgs ev = new(
+                    Player.Get(attackerDamageHandler.Attacker.Hub),
+                    damage,
+                    Vector3.Distance(attackerDamageHandler.Attacker.Hub.transform.position, __instance._bullsEye.position),
+                    exactHit,
+                    __instance,
+                    handler);
+                Handlers.Player.OnDamagingShootingTarget(ev);
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+                if (!ev.IsAllowed)
+                {
+                    __result = false;
+                    return false;
+                }
+
+                foreach (ReferenceHub referenceHub in ReferenceHub.GetAllHubs().Values)
+                {
+                    if (__instance._syncMode || referenceHub == attackerDamageHandler.Attacker.Hub)
+                    {
+                        __instance.TargetRpcReceiveData(referenceHub.characterClassManager.connectionToClient, ev.Amount, ev.Distance, exactHit, handler);
+                    }
+                }
+
+                __result = true;
+                return false;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"{typeof(DamagingShootingTarget).FullName}.{nameof(Prefix)}:\n{exception}");
+                return false;
+            }
         }
     }
 }

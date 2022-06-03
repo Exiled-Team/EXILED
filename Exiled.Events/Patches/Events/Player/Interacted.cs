@@ -23,27 +23,27 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.OnInteract"/>.
-    /// Adds the <see cref="Player.Interacted"/> event.
+    /// Adds the <see cref="Interacted"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract))]
     internal static class Interacted
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
                 // Handlers.Player.OnInteracted(new InteractedEventArgs(API.Features.Player.Get(this.gameObject)));
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlayerInteract), nameof(PlayerInteract.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractedEventArgs))[0]),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteracted))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, PropertyGetter(typeof(PlayerInteract), nameof(PlayerInteract.gameObject))),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractedEventArgs))[0]),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteracted))),
             });
 
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

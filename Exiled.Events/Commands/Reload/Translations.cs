@@ -23,7 +23,7 @@ namespace Exiled.Events.Commands.Reload
         /// <summary>
         /// Gets static instance of the <see cref="Translations"/> command.
         /// </summary>
-        public static Translations Instance { get; } = new Translations();
+        public static Translations Instance { get; } = new();
 
         /// <inheritdoc/>
         public string Command { get; } = "translations";

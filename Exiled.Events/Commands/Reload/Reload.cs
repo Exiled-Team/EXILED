@@ -27,7 +27,7 @@ namespace Exiled.Events.Commands.Reload
         public override string Command { get; } = "reload";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = new string[] { "rld" };
+        public override string[] Aliases { get; } = new[] { "rld" };
 
         /// <inheritdoc/>
         public override string Description { get; } = "Reload plugins, plugin configs, gameplay and remote admin configs.";

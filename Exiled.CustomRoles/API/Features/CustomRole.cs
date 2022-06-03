@@ -10,15 +10,14 @@ namespace Exiled.CustomRoles.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Dissonance.Integrations.MirrorIgnorance;
+    using System.Reflection;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Spawn;
-    using Exiled.CustomItems;
+    using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Loader;
@@ -31,8 +30,6 @@ namespace Exiled.CustomRoles.API.Features
 
     using YamlDotNet.Serialization;
 
-    using Ragdoll = Ragdoll;
-
     /// <summary>
     /// The custom role base class.
     /// </summary>
@@ -41,7 +38,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets a list of all registered custom roles.
         /// </summary>
-        public static HashSet<CustomRole> Registered { get; } = new HashSet<CustomRole>();
+        public static HashSet<CustomRole> Registered { get; } = new();
 
         /// <summary>
         /// Gets or sets the custom RoleID of the role.
@@ -54,7 +51,7 @@ namespace Exiled.CustomRoles.API.Features
         public abstract RoleType Role { get; set; }
 
         /// <summary>
-        /// Gets or sets the max <see cref="Exiled.API.Features.Player.Health"/> for the role.
+        /// Gets or sets the max <see cref="Player.Health"/> for the role.
         /// </summary>
         public abstract int MaxHealth { get; set; }
 
@@ -69,60 +66,75 @@ namespace Exiled.CustomRoles.API.Features
         public abstract string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the CustomInfo of this role.
+        /// </summary>
+        public abstract string CustomInfo { get; set; }
+
+        /// <summary>
         /// Gets all of the players currently set to this role.
         /// </summary>
         [YamlIgnore]
-        public HashSet<Player> TrackedPlayers { get; } = new HashSet<Player>();
+        public HashSet<Player> TrackedPlayers { get; } = new();
 
         /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
-        public virtual List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>();
+        public virtual List<CustomAbility> CustomAbilities { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the starting inventory for the role.
         /// </summary>
-        protected virtual List<string> Inventory { get; set; } = new List<string>();
+        public virtual List<string> Inventory { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the starting ammo for the role.
+        /// </summary>
+        public virtual Dictionary<AmmoType, ushort> Ammo { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the possible spawn locations for this role.
         /// </summary>
-        protected virtual SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
+        public virtual SpawnProperties SpawnProperties { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep their current inventory when gaining this role.
         /// </summary>
-        protected virtual bool KeepInventoryOnSpawn { get; set; }
+        public virtual bool KeepInventoryOnSpawn { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether players die when this role is removed.
         /// </summary>
-        protected virtual bool RemovalKillsPlayer { get; set; } = true;
+        public virtual bool RemovalKillsPlayer { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep this role when they die.
         /// </summary>
-        protected virtual bool KeepRoleOnDeath { get; set; }
+        public virtual bool KeepRoleOnDeath { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the <see cref="Player"/>'s size.
+        /// </summary>
+        public virtual Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
+        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomRole Get(int id) => Registered?.FirstOrDefault(r => r.Id == id);
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by type.
         /// </summary>
         /// <param name="t">The <see cref="Type"/> to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
+        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomRole Get(Type t) => Registered.FirstOrDefault(r => r.GetType() == t);
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by name.
         /// </summary>
         /// <param name="name">The name of the role to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
+        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomRole Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
 
         /// <summary>
@@ -135,8 +147,155 @@ namespace Exiled.CustomRoles.API.Features
         {
             customRole = Get(id);
 
-            return customRole != null;
+            return customRole is not null;
         }
+
+        /// <summary>
+        /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object overrideClass = null)
+        {
+            List<CustomRole> roles = new();
+            Log.Warn("Registering roles..");
+            Assembly assembly = Assembly.GetCallingAssembly();
+
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.BaseType != typeof(CustomRole) || type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null)
+                    continue;
+
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true))
+                {
+                    CustomRole customRole = null;
+
+                    if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                    {
+                        IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+
+                        foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
+                        {
+                            if (property.PropertyType != type)
+                                continue;
+
+                            customRole = property.GetValue(overrideClass ?? plugin.Config) as CustomRole;
+                            break;
+                        }
+                    }
+
+                    if (customRole is null)
+                        customRole = (CustomRole)Activator.CreateInstance(type);
+
+                    if (customRole.Role == RoleType.None)
+                        customRole.Role = ((CustomRoleAttribute)attribute).RoleType;
+
+                    if (customRole.TryRegister())
+                        roles.Add(customRole);
+                }
+            }
+
+            return roles;
+        }
+
+        /// <summary>
+        /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> RegisterRoles(IEnumerable<Type> targetTypes, bool isIgnored = false, bool skipReflection = false, object overrideClass = null)
+        {
+            List<CustomRole> roles = new();
+            Assembly assembly = Assembly.GetCallingAssembly();
+
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null ||
+                    (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
+                    continue;
+
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true))
+                {
+                    CustomRole customRole = null;
+
+                    if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                    {
+                        IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+
+                        foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ??
+                                                          plugin.Config.GetType().GetProperties())
+                        {
+                            if (property.PropertyType != type)
+                                continue;
+
+                            customRole = property.GetValue(overrideClass ?? plugin.Config) as CustomRole;
+                        }
+                    }
+
+                    if (customRole is null)
+                        customRole = (CustomRole)Activator.CreateInstance(type);
+
+                    if (customRole.Role == RoleType.None)
+                        customRole.Role = ((CustomRoleAttribute)attribute).RoleType;
+
+                    if (customRole.TryRegister())
+                        roles.Add(customRole);
+                }
+            }
+
+            return roles;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> UnregisterRoles()
+        {
+            List<CustomRole> unregisteredRoles = new();
+
+            foreach (CustomRole customRole in Registered)
+            {
+                customRole.TryUnregister();
+                unregisteredRoles.Add(customRole);
+            }
+
+            return unregisteredRoles;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> UnregisterRoles(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        {
+            List<CustomRole> unregisteredRoles = new();
+
+            foreach (CustomRole customRole in Registered)
+            {
+                if ((targetTypes.Contains(customRole.GetType()) && isIgnored) || (!targetTypes.Contains(customRole.GetType()) && !isIgnored))
+                    continue;
+
+                customRole.TryUnregister();
+                unregisteredRoles.Add(customRole);
+            }
+
+            return unregisteredRoles;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetRoles">The <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> containing the target roles.</param>
+        /// <param name="isIgnored">A value indicating whether the target roles should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> UnregisterRoles(IEnumerable<CustomRole> targetRoles, bool isIgnored = false) => UnregisterRoles(targetRoles.Select(x => x.GetType()), isIgnored);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
@@ -144,7 +303,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="name">The name of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        /// <exception cref="ArgumentNullException">If the name is a null or empty string.</exception>
+        /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
         public static bool TryGet(string name, out CustomRole customRole)
         {
             if (string.IsNullOrEmpty(name))
@@ -152,7 +311,7 @@ namespace Exiled.CustomRoles.API.Features
 
             customRole = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
-            return customRole != null;
+            return customRole is not null;
         }
 
         /// <summary>
@@ -161,10 +320,10 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The player to check.</param>
         /// <param name="customRoles">The custom roles the player has.</param>
         /// <returns>True if the player has custom roles.</returns>
-        /// <exception cref="ArgumentNullException">If the player is null.</exception>
+        /// <exception cref="ArgumentNullException">If the player is <see langword="null"/>.</exception>
         public static bool TryGet(Player player, out IReadOnlyCollection<CustomRole> customRoles)
         {
-            if (player == null)
+            if (player is null)
                 throw new ArgumentNullException(nameof(player));
 
             List<CustomRole> tempList = ListPool<CustomRole>.Shared.Rent();
@@ -184,11 +343,110 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool Check(Player player) => TrackedPlayers.Contains(player);
 
         /// <summary>
+        /// Initializes this role manager.
+        /// </summary>
+        public virtual void Init() => SubscribeEvents();
+
+        /// <summary>
+        /// Destroys this role manager.
+        /// </summary>
+        public virtual void Destroy() => UnsubscribeEvents();
+
+        /// <summary>
+        /// Handles setup of the role, including spawn location, inventory and registering event handlers.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to add the role to.</param>
+        public virtual void AddRole(Player player)
+        {
+            Vector3 oldPos = player.Position;
+            Log.Debug($"{Name}: Adding role to {player.Nickname}.", CustomRoles.Instance.Config.Debug);
+            if (Role != RoleType.None)
+            {
+                player.SetRole(Role, SpawnReason.ForceClass, true);
+            }
+
+            Timing.CallDelayed(1.5f, () =>
+            {
+                Vector3 pos = GetSpawnPosition();
+
+                Log.Debug($"{nameof(AddRole)}: Found {pos} to spawn {player.Nickname}", CustomRoles.Instance.Config.Debug);
+
+                // If the spawn pos isn't 0,0,0, We add vector3.up * 1.5 here to ensure they do not spawn inside the ground and get stuck.
+                player.Position = oldPos;
+                if (pos != Vector3.zero)
+                {
+                    Log.Debug($"{nameof(AddRole)}: Setting {player.Nickname} position..", CustomRoles.Instance.Config.Debug);
+                    player.Position = pos + (Vector3.up * 1.5f);
+                }
+
+                if (!KeepInventoryOnSpawn)
+                {
+                    Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.", CustomRoles.Instance.Config.Debug);
+                    player.ClearInventory();
+                }
+
+                foreach (string itemName in Inventory)
+                {
+                    Log.Debug($"{Name}: Adding {itemName} to inventory.", CustomRoles.Instance.Config.Debug);
+                    TryAddItem(player, itemName);
+                }
+
+                foreach (AmmoType ammo in Ammo.Keys)
+                {
+                    Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.", CustomRoles.Instance.Config.Debug);
+                    player.SetAmmo(ammo, Ammo[ammo]);
+                }
+
+                Log.Debug($"{Name}: Setting health values.", CustomRoles.Instance.Config.Debug);
+                player.Health = MaxHealth;
+                player.MaxHealth = MaxHealth;
+                player.Scale = Scale;
+            });
+
+            Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
+            player.CustomInfo = CustomInfo;
+            player.InfoArea &= ~PlayerInfoArea.Role;
+            if (CustomAbilities is not null)
+            {
+                foreach (CustomAbility ability in CustomAbilities)
+                    ability.AddAbility(player);
+            }
+
+            ShowMessage(player);
+            RoleAdded(player);
+            TrackedPlayers.Add(player);
+        }
+
+        /// <summary>
+        /// Removes the role from a specific player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
+        public virtual void RemoveRole(Player player)
+        {
+            Log.Debug($"{Name}: Removing role from {player.Nickname}", CustomRoles.Instance.Config.Debug);
+            TrackedPlayers.Remove(player);
+            player.CustomInfo = string.Empty;
+            player.InfoArea |= PlayerInfoArea.Role;
+            player.Scale = Vector3.one;
+            if (RemovalKillsPlayer)
+                player.SetRole(RoleType.Spectator);
+            foreach (CustomAbility ability in CustomAbilities)
+            {
+                ability.RemoveAbility(player);
+            }
+
+            RoleRemoved(player);
+        }
+
+        /// <summary>
         /// Tries to register this role.
         /// </summary>
         /// <returns>True if the role registered properly.</returns>
-        public bool TryRegister()
+        internal bool TryRegister()
         {
+            if (!CustomRoles.Instance.Config.IsEnabled)
+                return false;
+
             if (!Registered.Contains(this))
             {
                 if (Registered.Any(r => r.Id == Id))
@@ -215,7 +473,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Tries to unregister this role.
         /// </summary>
         /// <returns>True if the role is unregistered properly.</returns>
-        public bool TryUnregister()
+        internal bool TryUnregister()
         {
             Destroy();
 
@@ -227,79 +485,6 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Initializes this role manager.
-        /// </summary>
-        public virtual void Init() => SubscribeEvents();
-
-        /// <summary>
-        /// Destroys this role manager.
-        /// </summary>
-        public virtual void Destroy() => UnSubscribeEvents();
-
-        /// <summary>
-        /// Handles setup of the role, including spawn location, inventory and registering event handlers.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to add the role to.</param>
-        public virtual void AddRole(Player player)
-        {
-            Log.Debug($"{Name}: Adding role to {player.Nickname}.", CustomRoles.Instance.Config.Debug);
-            if (Role != RoleType.None)
-            {
-                player.SetRole(Role, SpawnReason.ForceClass, true);
-            }
-
-            Timing.CallDelayed(1.5f, () =>
-            {
-                Vector3 pos = GetSpawnPosition();
-
-                // If the spawn pos isn't 0,0,0, We add vector3.up * 1.5 here to ensure they do not spawn inside the ground and get stuck.
-                if (pos != Vector3.zero)
-                    player.Position = pos + (Vector3.up * 1.5f);
-
-                if (!KeepInventoryOnSpawn)
-                {
-                    Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.", CustomRoles.Instance.Config.Debug);
-                    player.ClearInventory();
-                }
-
-                foreach (string itemName in Inventory)
-                {
-                    Log.Debug($"{Name}: Adding {itemName} to inventory.", CustomRoles.Instance.Config.Debug);
-                    TryAddItem(player, itemName);
-                }
-
-                Log.Debug($"{Name}: Setting health values.", CustomRoles.Instance.Config.Debug);
-                player.Health = MaxHealth;
-                player.MaxHealth = MaxHealth;
-            });
-
-            Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
-            player.CustomInfo = $"{Name} (Custom Role)";
-            foreach (CustomAbility ability in CustomAbilities)
-                ability.AddAbility(player);
-            ShowMessage(player);
-            RoleAdded(player);
-            TrackedPlayers.Add(player);
-        }
-
-        /// <summary>
-        /// Removes the role from a specific player.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
-        public virtual void RemoveRole(Player player)
-        {
-            TrackedPlayers.Remove(player);
-            if (RemovalKillsPlayer)
-                player.Role = RoleType.Spectator;
-            foreach (CustomAbility ability in CustomAbilities)
-            {
-                ability.RemoveAbility(player);
-            }
-
-            RoleRemoved(player);
         }
 
         /// <summary>
@@ -338,7 +523,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>The chosen spawn location.</returns>
         protected Vector3 GetSpawnPosition()
         {
-            if (SpawnProperties == null || SpawnProperties.Count() == 0)
+            if (SpawnProperties is null || SpawnProperties.Count() == 0)
                 return Vector3.zero;
 
             if (SpawnProperties.StaticSpawnPoints.Count > 0)
@@ -387,7 +572,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Called when the role is destroyed to unsubscribe internal event handlers.
         /// </summary>
-        protected virtual void UnSubscribeEvents()
+        protected virtual void UnsubscribeEvents()
         {
             foreach (Player player in TrackedPlayers)
                 RemoveRole(player);

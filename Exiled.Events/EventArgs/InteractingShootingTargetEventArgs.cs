@@ -8,10 +8,9 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
-
     using Exiled.API.Enums;
     using Exiled.API.Features;
-
+    using Exiled.API.Features.Toys;
     using UnityEngine;
 
     /// <summary>
@@ -34,7 +33,7 @@ namespace Exiled.Events.EventArgs
         public InteractingShootingTargetEventArgs(Player player, AdminToys.ShootingTarget shootingTarget, ShootingTargetButton targetButton, int maxHp, int autoResetTime, bool isAllowed = true)
         {
             Player = player;
-            ShootingTarget = ShootingTarget.Get(shootingTarget);
+            ShootingTarget = ShootingTargetToy.Get(shootingTarget);
             TargetButton = targetButton;
             IsAllowed = isAllowed;
             this.maxHp = maxHp;
@@ -49,7 +48,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the shooting target being interacted with.
         /// </summary>
-        public ShootingTarget ShootingTarget { get; }
+        public ShootingTargetToy ShootingTarget { get; }
 
         /// <summary>
         /// Gets the button the player interacted with.

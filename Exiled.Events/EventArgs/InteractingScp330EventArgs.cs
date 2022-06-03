@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             UsageCount = usage;
-            ShouldSever = usage > 2;
+            ShouldSever = usage >= 2;
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs
         public OpeningGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
             Player = player;
-            Generator = generator;
+            Generator = Generator.Get(generator);
             IsAllowed = isAllowed;
         }
 
@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the generator that is opening.
         /// </summary>
-        public Scp079Generator Generator { get; }
+        public Generator Generator { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the generator can be opened.

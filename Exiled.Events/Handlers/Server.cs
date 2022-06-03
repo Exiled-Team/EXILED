@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 

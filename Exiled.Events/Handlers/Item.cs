@@ -29,6 +29,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingAttachmentsEventArgs> ChangingAttachments;
 
         /// <summary>
+        /// Invoked before receiving a preference.
+        /// </summary>
+        public static event CustomEventHandler<ReceivingPreferenceEventArgs> ReceivingPreference;
+
+        /// <summary>
         /// Called before the durability of an item is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingDurabilityEventArgs"/> instance.</param>
@@ -39,5 +44,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> instance.</param>
         public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before receiving a preference.
+        /// </summary>
+        /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs"/> instance.</param>
+        public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);
     }
 }

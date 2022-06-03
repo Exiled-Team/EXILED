@@ -8,10 +8,11 @@
 namespace Exiled.API.Features
 {
     using System;
+    using System.Collections.Generic;
+
+    using Exiled.API.Enums;
 
     using GameCore;
-
-    using PlayerStatsSystem;
 
     using RoundRestarting;
 
@@ -33,7 +34,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => RoundSummary.RoundInProgress();
+        public static bool IsStarted => ReferenceHub.LocalHub is not null && RoundSummary.RoundInProgress();
+
+        /// <summary>
+        /// Gets a value indicating whether the round is ended or not.
+        /// </summary>
+        public static bool IsEnded => RoundSummary.singleton.RoundEnded;
+
+        /// <summary>
+        /// Gets a value indicating whether the round is lobby or not.
+        /// </summary>
+        public static bool IsLobby => !(IsEnded || IsStarted);
 
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
@@ -84,6 +95,24 @@ namespace Exiled.API.Features
         public static int UptimeRounds => RoundRestart.UptimeRounds;
 
         /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> indicating the sides that are currently alive.
+        /// </summary>
+        public static IEnumerable<Side> AliveSides
+        {
+            get
+            {
+                List<Side> sides = new(4);
+                foreach (Player ply in Player.Get(ply => ply.IsAlive))
+                {
+                    if (!sides.Contains(ply.Role.Side))
+                        sides.Add(ply.Role.Side);
+                }
+
+                return sides;
+            }
+        }
+
+        /// <summary>
         /// Restarts the round with custom settings.
         /// </summary>
         /// <param name="fastRestart">
@@ -126,15 +155,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
+        /// <param name="forceEnd">
+        /// Indicates whether or not it'll force the restart with no check if it's lock.
+        /// </param>
         /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
-        public static bool ForceEnd()
+        public static bool EndRound(bool forceEnd = false)
         {
-            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2)
+            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2 && !forceEnd)
             {
                 return false;
             }
 
-            if (IsStarted && !IsLocked)
+            if ((IsStarted && !IsLocked) || forceEnd)
             {
                 RoundSummary.singleton.ForceEnd();
                 return true;

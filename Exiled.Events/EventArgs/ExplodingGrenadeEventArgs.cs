@@ -24,11 +24,12 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ExplodingGrenadeEventArgs : EventArgs
     {
-        private static Dictionary<Type, GrenadeType> grenadeDictionary = new Dictionary<Type, GrenadeType>()
+        private static Dictionary<Type, GrenadeType> grenadeDictionary = new()
         {
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
             { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
             { typeof(Scp018Projectile), GrenadeType.Scp018 },
+            { typeof(Scp2176Projectile), GrenadeType.Scp2176 },
         };
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Exiled.Events.EventArgs
                     continue;
 
                 Player player = Player.Get(hub);
-                if (player == null)
+                if (player is null)
                     continue;
 
                 if (!TargetsToAffect.Contains(player))
@@ -88,16 +89,7 @@ namespace Exiled.Events.EventArgs
         public List<Player> TargetsToAffect { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the grenade is a frag or flash grenade.
-        /// </summary>
-        [Obsolete("Use GrenadeType instead.", true)]
-        public bool IsFrag
-        {
-            get => GrenadeType == GrenadeType.FragGrenade;
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Exiled.API.Enums.GrenadeType"/> of the grenade.
+        /// Gets the <see cref="API.Enums.GrenadeType"/> of the grenade.
         /// </summary>
         public GrenadeType GrenadeType { get; }
 

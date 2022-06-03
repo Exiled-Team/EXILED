@@ -11,9 +11,6 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
-
-    using InventorySystem.Items;
 
     /// <summary>
     /// Contains all information before a player drops an item.
