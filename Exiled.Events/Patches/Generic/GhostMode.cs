@@ -87,7 +87,7 @@ namespace Exiled.Events.Patches.Generic
                             {
                                 Player player2 = Player.Get(__instance._transmitBuffer[index].playerID);
 
-                                if (scp939Role.CanSee.Contains(player2))
+                                if (scp939Role.VisiblePlayers.Contains(player2))
                                     continue;
 
                                 if (player2.Role.Team != Team.SCP

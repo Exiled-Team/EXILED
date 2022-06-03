@@ -55,7 +55,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a list of players this SCP-939 instance can see regardless of their movement.
         /// </summary>
-        public List<Player> CanSee { get; } = new();
+        public List<Player> VisiblePlayers { get; } = new();
 
         /// <inheritdoc/>
         internal override RoleType RoleType { get; }
