@@ -91,7 +91,5 @@ namespace Exiled.Events.Patches.Events.Player
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static void LogThing(byte old, byte @new) => Log.Warn($"Old: {old} New: {@new}");
     }
 }
