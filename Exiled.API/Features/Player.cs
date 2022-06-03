@@ -2351,6 +2351,24 @@ namespace Exiled.API.Features
             RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
         }
 
+
+        /// <summary>
+        /// Reconnect player to current session
+        /// </summary>
+        /// <param name="delay">Time between switching on and disconnecting from the server</param>
+        public static void Reconnect(this Player player, float delay = 1f, RoundRestartType type = RoundRestartType.FastRestart)
+        {
+            player.NetworkIdentity.connectionToClient.Send(new RoundRestartMessage(type, delay, 0, true, false));
+        }
+        /// <summary>
+        /// Reconnect the player to another server on the same IP address and on a different port
+        /// </summary>
+        /// <param name="delay">Waiting after disconnecting from the current server</param>
+        public static void ConnectToServer(this Player player, ushort serverPort, float delay = 1f)
+        {
+            player.NetworkIdentity.connectionToClient.Send(new RoundRestartMessage(RoundRestartType.RedirectRestart, delay, serverPort, true, false));
+        }
+
         /// <summary>
         /// Returns the player in a human-readable format.
         /// </summary>
