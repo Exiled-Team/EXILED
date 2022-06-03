@@ -65,14 +65,14 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
 
                 // if (player is not null)
-                new(OpCodes.Stloc, player),
+                new(OpCodes.Stloc_S, player),
                 new(OpCodes.Brfalse_S, endLabel),
-                new(OpCodes.Ldloc, player),
+                new(OpCodes.Ldloc_S, player),
 
                 // Player.Get(__instance.CurrentSpectatedPlayer)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
-                new (OpCodes.Brfalse_S, nullLabel),
+                new(OpCodes.Brfalse_S, nullLabel),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
                 new(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -87,7 +87,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(ChangingSpectatedPlayerEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup), new(OpCodes.Stloc, ev),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev),
 
                 // Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer(ev);
                 new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.OnChangingSpectatedPlayer))),
@@ -107,7 +108,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // value = ev.Player.ReferenceHub;
                 new(OpCodes.Pop),
-                new(OpCodes.Ldloc, ev),
+                new(OpCodes.Ldloc_S, ev),
                 new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.Player))),
 
                 // value = ev.NewTarget.ReferenceHub;
