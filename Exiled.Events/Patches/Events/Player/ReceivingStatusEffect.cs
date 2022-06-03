@@ -63,19 +63,19 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReceivingEffectEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnReceivingEffect))),
 
                 // if (!ev.IsAllowed)
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingEffectEventArgs), nameof(ReceivingEffectEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Dup),
 
                 // value = ev.State
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingEffectEventArgs), nameof(ReceivingEffectEventArgs.State))),
-                new(OpCodes.Starg, 1),
+                new(OpCodes.Starg_S, 1),
 
                 // this.Duration = ev.Duration
                 new(OpCodes.Ldarg_0),
