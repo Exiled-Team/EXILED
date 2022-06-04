@@ -60,7 +60,7 @@ namespace Exiled.Patcher
 
                 TypeDef modClass = bootstrap.Types[0];
 
-                foreach (var type in bootstrap.Types)
+                foreach (TypeDef type in bootstrap.Types)
                 {
                     if (type.Name == "Bootstrap")
                     {
@@ -69,7 +69,7 @@ namespace Exiled.Patcher
                     }
                 }
 
-                var modRefType = modClass;
+                TypeDef modRefType = modClass;
 
                 bootstrap.Types.Remove(modClass);
 
@@ -117,7 +117,7 @@ namespace Exiled.Patcher
         {
             if (type is not null)
             {
-                foreach (var method in type.Methods)
+                foreach (MethodDef method in type.Methods)
                 {
                     if (method.Name == methodName)
                         return method;
@@ -129,9 +129,9 @@ namespace Exiled.Patcher
 
         private static TypeDef FindType(AssemblyDef assembly, string path)
         {
-            foreach (var module in assembly.Modules)
+            foreach (ModuleDef module in assembly.Modules)
             {
-                foreach (var type in module.Types)
+                foreach (TypeDef type in module.Types)
                 {
                     if (type.FullName == path)
                         return type;

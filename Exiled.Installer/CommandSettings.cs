@@ -25,7 +25,7 @@ namespace Exiled.Installer
                 new[] { "-p", "--path" },
                 parseArgument: (parsed) =>
                 {
-                    var path = parsed.Tokens.SingleOrDefault()?.Value ?? Directory.GetCurrentDirectory();
+                    string path = parsed.Tokens.SingleOrDefault()?.Value ?? Directory.GetCurrentDirectory();
                     if (string.IsNullOrEmpty(path))
                     {
                         parsed.ErrorMessage = "--path is null or empty";
@@ -36,7 +36,7 @@ namespace Exiled.Installer
                         parsed.ErrorMessage = "Can't be a file!";
                     else if (!Directory.Exists(path))
                         parsed.ErrorMessage = "Directory doesn't exist!";
-                    else if (!Program.ValidateServerPath(path, out var targetFilePath))
+                    else if (!Program.ValidateServerPath(path, out string? targetFilePath))
                         parsed.ErrorMessage = $"Couldn't find '{Program.TargetFileName}' in '{targetFilePath}'";
 
                     return new(path); // return for default value
@@ -49,13 +49,13 @@ namespace Exiled.Installer
                 "--appdata",
                 parseArgument: (parsed) =>
                 {
-                    var appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                     if (string.IsNullOrEmpty(appdataPath))
                     {
                         Console.Error.WriteLine("Your appdata path is null, make sure it exists");
                     }
 
-                    var path = parsed.Tokens.SingleOrDefault()?.Value ?? appdataPath;
+                    string path = parsed.Tokens.SingleOrDefault()?.Value ?? appdataPath;
                     if (string.IsNullOrEmpty(path))
                     {
                         parsed.ErrorMessage = "--appdata is null or empty, make sure your appdata folder exists";
