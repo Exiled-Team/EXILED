@@ -12,23 +12,23 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for Projectile.
     /// </summary>
-    public class ProjectileProjectile : Pickup
+    public class Projectile : Pickup
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProjectileProjectile"/> class.
+        /// Initializes a new instance of the <see cref="Projectile"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="ThrownProjectile"/> class.</param>
-        internal ProjectileProjectile(ThrownProjectile pickupBase)
+        internal Projectile(ThrownProjectile pickupBase)
             : base(pickupBase)
         {
             Base = pickupBase;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProjectileProjectile"/> class.
+        /// Initializes a new instance of the <see cref="Projectile"/> class.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
-        internal ProjectileProjectile(ItemType type)
+        internal Projectile(ItemType type)
             : base(type)
         {
             Base = (ThrownProjectile)((Pickup)this).Base;

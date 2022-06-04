@@ -235,7 +235,7 @@ namespace Exiled.API.Features.Pickups
                     BaseScp2176Projectile scp2176 => new Projectiles.Scp2176Projectile(scp2176),
                     EffectGrenade effectGrenade => new EffectGrenadeProjectile(effectGrenade),
                     TimeGrenade timeGrenade => new TimeGrenadeProjectile(timeGrenade),
-                    _ => new ProjectileProjectile(thrownProjectile),
+                    _ => new Projectile(thrownProjectile),
                 },
                 _ => new Pickup(pickupBase),
             };
