@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -21,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="AnimationController.UserCode_CmdChangeSpeedState"/>.
-    /// Adds the <see cref="Player.ChangingMoveState"/> event.
+    ///     Patches <see cref="AnimationController.UserCode_CmdChangeSpeedState" />.
+    ///     Adds the <see cref="Player.ChangingMoveState" /> event.
     /// </summary>
     [HarmonyPatch(typeof(AnimationController), nameof(AnimationController.UserCode_CmdChangeSpeedState))]
     internal static class ChangingMoveState
@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnChangingMoveState))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingMoveState))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMoveStateEventArgs), nameof(ChangingMoveStateEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -3;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            (FieldInfo)instruction.operand == Field(typeof(Role), nameof(Role.team))) + offset;
+                                                             (FieldInfo) instruction.operand == Field(typeof(Role), nameof(Role.team))) + offset;
 
             newInstructions.RemoveRange(index, 10);
 

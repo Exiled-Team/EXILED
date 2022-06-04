@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,8 +23,9 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)"/>.
-    /// Adds the <see cref="Handlers.Player.EscapingPocketDimension"/> and <see cref="Handlers.Player.FailingEscapePocketDimension"/> event.
+    ///     Patches <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)" />.
+    ///     Adds the <see cref="Handlers.Player.EscapingPocketDimension" /> and
+    ///     <see cref="Handlers.Player.FailingEscapePocketDimension" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
     internal static class FailingEscapePocketDimension
@@ -57,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             // ----------- FailingEscapePocketDimension-------------
             int offset = 2;
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldsfld && (FieldInfo)i.operand ==
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldsfld && (FieldInfo) i.operand ==
                 Field(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.DebugBool))) + offset;
 
             newInstructions.InsertRange(index, new[]

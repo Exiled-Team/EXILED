@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using Footprinting;
 
@@ -25,35 +25,33 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
+    using Map = Exiled.Events.Handlers.Map;
+
     /// <summary>
-    /// Patches <see cref="ExplosionGrenade.Explode(Footprint, Vector3, ExplosionGrenade)"/>.
-    /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
+    ///     Patches <see cref="ExplosionGrenade.Explode(Footprint, Vector3, ExplosionGrenade)" />.
+    ///     Adds the <see cref="Handlers.Map.OnExplodingGrenade" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.Explode))]
     internal static class ExplodingFragGrenade
     {
         /// <summary>
-        /// Trims colliders from the given array.
+        ///     Trims colliders from the given array.
         /// </summary>
-        /// <param name="ev"><inheritdoc cref="ExplodingGrenadeEventArgs"/></param>
+        /// <param name="ev">
+        ///     <inheritdoc cref="ExplodingGrenadeEventArgs" />
+        /// </param>
         /// <param name="colliderArray">The list of colliders to trim from.</param>
         /// <returns>An array of colliders.</returns>
         public static Collider[] TrimColliders(ExplodingGrenadeEventArgs ev, Collider[] colliderArray)
         {
             List<Collider> colliders = new();
             foreach (Collider collider in colliderArray)
-            {
                 if (collider.TryGetComponent(out IDestructible dest) &&
                     ReferenceHub.TryGetHubNetID(dest.NetworkId, out ReferenceHub hub) &&
                     Player.Get(hub) is Player player && !ev.TargetsToAffect.Contains(player))
-                {
                     colliders.Add(collider);
-                }
                 else
-                {
                     colliders.Add(collider);
-                }
-            }
 
             return colliders.ToArray();
         }
@@ -83,7 +81,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnExplodingGrenade))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
                 new(OpCodes.Ldloc, ev.LocalIndex),

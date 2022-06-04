@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
 
@@ -22,9 +22,11 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using static HarmonyLib.AccessTools;
 
+    using Warhead = Exiled.Events.Handlers.Warhead;
+
     /// <summary>
-    /// Patches <see cref="AlphaWarheadController.CancelDetonation(GameObject)"/>.
-    /// Adds the <see cref="Handlers.Warhead.Stopping"/> event.
+    ///     Patches <see cref="AlphaWarheadController.CancelDetonation(GameObject)" />.
+    ///     Adds the <see cref="Handlers.Warhead.Stopping" /> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.CancelDetonation), typeof(GameObject))]
     internal static class Stopping
@@ -34,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for "call" with method "ServerLogs::AddLog" and then add 1 to insert method after "ServerLogs::AddLog".
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))) + 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo) instruction.operand == Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))) + 1;
 
             // Get the count to find the previous index
             int oldCount = newInstructions.Count;
@@ -61,10 +63,10 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStopping))),
+                new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStopping))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StoppingEventArgs), nameof(StoppingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.IsLocked))),
+                new(OpCodes.Call, PropertyGetter(typeof(API.Features.Warhead), nameof(API.Features.Warhead.IsLocked))),
                 new(OpCodes.Brtrue_S, returnLabel),
             });
 

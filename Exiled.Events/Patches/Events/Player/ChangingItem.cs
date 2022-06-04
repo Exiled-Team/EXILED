@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Inventory.CurInstance"/>.
-    /// Adds the <see cref="Handlers.Player.ChangingItem"/> event.
+    ///     Patches <see cref="Inventory.CurInstance" />.
+    ///     Adds the <see cref="Handlers.Player.ChangingItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.ServerSelectItem))]
     internal static class ChangingItem
@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             const int offset = 3;
             int index = newInstructions.FindLastIndex(i =>
-                i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(EquipDequipModifierExtensions), nameof(EquipDequipModifierExtensions.CanEquip))) + offset;
+                i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(EquipDequipModifierExtensions), nameof(EquipDequipModifierExtensions.CanEquip))) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingItemEventArgs));
             Label returnLabel = generator.DefineLabel();
             Label continueLabel = generator.DefineLabel();

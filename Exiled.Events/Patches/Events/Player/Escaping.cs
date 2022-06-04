@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -21,7 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.UserCode_CmdRegisterEscape"/> for <see cref="Handlers.Player.Escaping"/>.
+    ///     Patches <see cref="CharacterClassManager.UserCode_CmdRegisterEscape" /> for <see cref="Handlers.Player.Escaping" />
+    ///     .
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.UserCode_CmdRegisterEscape))]
     internal static class Escaping
@@ -50,11 +51,12 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc, role.LocalIndex),
             });
 
-            foreach (CodeInstruction ins in newInstructions.FindAll(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))))
+            foreach (CodeInstruction ins in newInstructions.FindAll(i =>
+                         i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))))
             {
                 int index = newInstructions.IndexOf(ins) - 5;
                 newInstructions.RemoveAt(index);
-                newInstructions.Insert(index, new(OpCodes.Ldloc, role.LocalIndex));
+                newInstructions.Insert(index, new CodeInstruction(OpCodes.Ldloc, role.LocalIndex));
             }
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

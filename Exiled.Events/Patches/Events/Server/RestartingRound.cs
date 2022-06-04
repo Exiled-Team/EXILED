@@ -11,6 +11,8 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Loader;
+
     using GameCore;
 
     using HarmonyLib;
@@ -21,9 +23,12 @@ namespace Exiled.Events.Patches.Events.Server
 
     using static HarmonyLib.AccessTools;
 
+    using Log = Exiled.API.Features.Log;
+    using Server = Exiled.Events.Handlers.Server;
+
     /// <summary>
-    /// Patches <see cref="RoundRestart.InitiateRoundRestart"/>.
-    /// Adds the RestartingRound event.
+    ///     Patches <see cref="RoundRestart.InitiateRoundRestart" />.
+    ///     Adds the RestartingRound event.
     /// </summary>
     [HarmonyPatch(typeof(RoundRestart), nameof(RoundRestart.InitiateRoundRestart))]
     internal static class RestartingRound
@@ -33,8 +38,8 @@ namespace Exiled.Events.Patches.Events.Server
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
-                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShowDebugLine))),
+                new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRestartingRound))),
+                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(ShowDebugLine))),
             });
 
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse);
@@ -50,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new(OpCodes.Brtrue, newInstructions[index].operand),
 
                 // ShouldServerRestart()
-                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
+                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(ShouldServerRestart))),
 
                 // if (prev) -> goto normal round restart
                 new(OpCodes.Brtrue, newInstructions[index].operand),
@@ -64,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Server
 
         private static void ShowDebugLine()
         {
-            API.Features.Log.Debug("Round restarting", Loader.Loader.ShouldDebugBeShown);
+            Log.Debug("Round restarting", Loader.ShouldDebugBeShown);
         }
 
         private static bool ShouldServerRestart()

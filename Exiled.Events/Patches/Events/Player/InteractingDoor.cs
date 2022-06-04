@@ -15,15 +15,15 @@ namespace Exiled.Events.Patches.Events.Player
     using System;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using Interactables.Interobjects.DoorUtils;
 
     /// <summary>
-    /// Patches <see cref="DoorVariant.ServerInteract(ReferenceHub, byte)"/>.
-    /// Adds the <see cref="Handlers.Player.InteractingDoor"/> event.
+    ///     Patches <see cref="DoorVariant.ServerInteract(ReferenceHub, byte)" />.
+    ///     Adds the <see cref="Handlers.Player.InteractingDoor" /> event.
     /// </summary>
     [HarmonyPatch(typeof(DoorVariant), nameof(DoorVariant.ServerInteract), typeof(ReferenceHub), typeof(byte))]
     internal static class InteractingDoor
@@ -38,9 +38,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (__instance.ActiveLocks != 0)
                 {
-                    DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)__instance.ActiveLocks);
+                    DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason) __instance.ActiveLocks);
                     if ((!mode.HasFlagFast(DoorLockMode.CanClose)
-                            || !mode.HasFlagFast(DoorLockMode.CanOpen))
+                         || !mode.HasFlagFast(DoorLockMode.CanOpen))
                         && (!mode.HasFlagFast(DoorLockMode.ScpOverride)
                             || ply.characterClassManager.CurRole.team != 0)
                         && (mode == DoorLockMode.FullLock
@@ -63,25 +63,21 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!bypassDenied && (allowInteracting = __instance.AllowInteracting(ply, colliderId)))
                 {
                     if (ply.characterClassManager.CurClass == RoleType.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply))
-                    {
                         /*
-                        __instance.NetworkTargetState = !__instance.TargetState;
-                        __instance._triggerPlayer = ply;
-                        */
+                            __instance.NetworkTargetState = !__instance.TargetState;
+                            __instance._triggerPlayer = ply;
+                            */
                         //>EXILED
                         ev.IsAllowed = true;
-                        //<EXILED
-                    }
+                    //<EXILED
                     else
-                    {
                         /*
-                        __instance.PermissionsDenied(ply, colliderId);
-                        DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
-                        */
+                            __instance.PermissionsDenied(ply, colliderId);
+                            DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
+                            */
                         //>EXILED
                         ev.IsAllowed = false;
-                        //<EXILED
-                    }
+                    //<EXILED
                 }
 
                 //>EXILED

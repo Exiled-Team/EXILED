@@ -5,13 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
+namespace Exiled.Events.Patches.Events.Scp173
 {
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
 
@@ -23,11 +24,13 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    using Scp173 = PlayableScps.Scp173;
+
     /// <summary>
-    /// Patches <see cref="PlayableScps.Scp173.ServerDoTantrum"/>.
-    /// Adds the <see cref="Handlers.Scp173.PlacingTantrum"/> event.
+    ///     Patches <see cref="PlayableScps.Scp173.ServerDoTantrum" />.
+    ///     Adds the <see cref="Handlers.Scp173.PlacingTantrum" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.ServerDoTantrum))]
+    [HarmonyPatch(typeof(Scp173), nameof(Scp173.ServerDoTantrum))]
     internal static class PlacingTantrum
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -41,14 +44,16 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 1;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-                                                                 (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
+                                                                 (MethodInfo) instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn),
+                                                                     new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
 
             newInstructions.RemoveRange(index, 3);
 
             offset = -9;
 
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
+                                                             (MethodInfo) instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn),
+                                                                 new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
 
             // var ev = new PlacingTantrumEventArgs(this, Player, gameObject, cooldown, true);
             //
@@ -65,14 +70,14 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
 
                 // Player.Get(this.Hub)
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.Hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173.Hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // gameObject
                 new(OpCodes.Ldloc_0),
 
                 // cooldown
-                new(OpCodes.Ldc_R4, PlayableScps.Scp173.TantrumBaseCooldown),
+                new(OpCodes.Ldc_R4, Scp173.TantrumBaseCooldown),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
@@ -95,7 +100,8 @@ namespace Exiled.Events.Patches.Events.Player
             offset = 1;
 
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
+                                                             (MethodInfo) instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn),
+                                                                 new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -103,7 +109,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Call, PropertyGetter(typeof(PlacingTantrumEventArgs), nameof(PlacingTantrumEventArgs.Cooldown))),
-                new(OpCodes.Stfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173._tantrumCooldownRemaining))),
+                new(OpCodes.Stfld, Field(typeof(Scp173), nameof(Scp173._tantrumCooldownRemaining))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

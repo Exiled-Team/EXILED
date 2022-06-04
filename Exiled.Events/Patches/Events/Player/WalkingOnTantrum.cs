@@ -10,7 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -19,8 +20,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="TantrumEnvironmentalHazard.DistanceChanged"/>.
-    /// Adds the <see cref="Handlers.Player.WalkingOnTantrum"/> event.
+    ///     Patches <see cref="TantrumEnvironmentalHazard.DistanceChanged" />.
+    ///     Adds the <see cref="Handlers.Player.WalkingOnTantrum" /> event.
     /// </summary>
     [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.DistanceChanged))]
     internal static class WalkingOnTantrum
@@ -36,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(WalkingOnTantrumEventArgs))[0]),

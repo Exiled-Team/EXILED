@@ -8,10 +8,11 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+
     using System;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -20,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using BaseTeslaGate = TeslaGate;
 
     /// <summary>
-    /// Patches <see cref="TeslaGateController.FixedUpdate"/>.
-    /// Adds the <see cref="Handlers.Player.TriggeringTesla"/> event.
+    ///     Patches <see cref="TeslaGateController.FixedUpdate" />.
+    ///     Adds the <see cref="Handlers.Player.TriggeringTesla" /> event.
     /// </summary>
     [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
     internal static class TriggeringTesla
@@ -51,7 +52,6 @@ namespace Exiled.Events.Patches.Events.Player
                     bool isTriggerable = false;
 
                     foreach (Player player in Player.List)
-                    {
                         try
                         {
                             if (player is null || !teslaGate.CanBeIdle(player))
@@ -60,8 +60,8 @@ namespace Exiled.Events.Patches.Events.Player
                             TriggeringTeslaEventArgs ev = new(player, teslaGate);
                             Handlers.Player.OnTriggeringTesla(ev);
 
-                            if (ev.IsTriggerable && !isTriggerable)
-                                isTriggerable = ev.IsTriggerable;
+                            if (ev.IsAllowed && !isTriggerable)
+                                isTriggerable = ev.IsAllowed;
 
                             if (ev.IsInIdleRange && !inIdleRange)
                                 inIdleRange = ev.IsInIdleRange;
@@ -74,7 +74,6 @@ namespace Exiled.Events.Patches.Events.Player
                             Log.Error($"{nameof(TriggeringTesla)}.Prefix: {e}");
 #endif
                         }
-                    }
 
                     if (isTriggerable)
                         teslaGate.Trigger();

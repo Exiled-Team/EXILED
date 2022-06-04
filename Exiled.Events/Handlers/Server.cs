@@ -7,139 +7,176 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Extensions;
 
-    using static Exiled.Events.Events;
+    using static Events;
 
     /// <summary>
-    /// Server related events.
+    ///     Server related events.
     /// </summary>
     public static class Server
     {
         /// <summary>
-        /// Invoked before waiting for players.
+        ///     Invoked before waiting for players.
         /// </summary>
         public static event CustomEventHandler WaitingForPlayers;
 
         /// <summary>
-        /// Invoked after the start of a new round.
+        ///     Invoked after the start of a new round.
         /// </summary>
         public static event CustomEventHandler RoundStarted;
 
         /// <summary>
-        /// Invoked before ending a round.
+        ///     Invoked before ending a round.
         /// </summary>
         public static event CustomEventHandler<EndingRoundEventArgs> EndingRound;
 
         /// <summary>
-        /// Invoked after the end of a round.
+        ///     Invoked after the end of a round.
         /// </summary>
         public static event CustomEventHandler<RoundEndedEventArgs> RoundEnded;
 
         /// <summary>
-        /// Invoked before the restart of a round.
+        ///     Invoked before the restart of a round.
         /// </summary>
         public static event CustomEventHandler RestartingRound;
 
         /// <summary>
-        /// Invoked when a player reports a cheater.
+        ///     Invoked when a player reports a cheater.
         /// </summary>
         public static event CustomEventHandler<ReportingCheaterEventArgs> ReportingCheater;
 
         /// <summary>
-        /// Invoked before respawning a wave of Chaos Insurgency or NTF.
+        ///     Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
 
         /// <summary>
-        /// Invoked when sending a complaint about a player to the local server administrators.
+        ///     Invoked when sending a complaint about a player to the local server administrators.
         /// </summary>
         public static event CustomEventHandler<LocalReportingEventArgs> LocalReporting;
 
         /// <summary>
-        /// Invoked after the "reload configs" command is ran.
+        ///     Invoked after the "reload configs" command is ran.
         /// </summary>
         public static event CustomEventHandler ReloadedConfigs;
 
         /// <summary>
-        /// Invoked after the "reload translations" command is ran.
+        ///     Invoked after the "reload translations" command is ran.
         /// </summary>
         public static event CustomEventHandler ReloadedTranslations;
 
         /// <summary>
-        /// Invoked after the "reload gameplay" command is ran.
+        ///     Invoked after the "reload gameplay" command is ran.
         /// </summary>
         public static event CustomEventHandler ReloadedGameplay;
 
         /// <summary>
-        /// Invoked after the "reload remoteadminconfigs" command is ran.
+        ///     Invoked after the "reload remoteadminconfigs" command is ran.
         /// </summary>
         public static event CustomEventHandler ReloadedRA;
 
         /// <summary>
-        /// Called before waiting for players.
+        ///     Called before waiting for players.
         /// </summary>
-        public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely();
+        public static void OnWaitingForPlayers()
+        {
+            WaitingForPlayers.InvokeSafely();
+        }
 
         /// <summary>
-        /// Called after the start of a new round.
+        ///     Called after the start of a new round.
         /// </summary>
-        public static void OnRoundStarted() => RoundStarted.InvokeSafely();
+        public static void OnRoundStarted()
+        {
+            RoundStarted.InvokeSafely();
+        }
 
         /// <summary>
-        /// Called before ending a round.
+        ///     Called before ending a round.
         /// </summary>
-        /// <param name="ev">The <see cref="EndingRoundEventArgs"/> instance.</param>
-        public static void OnEndingRound(EndingRoundEventArgs ev) => EndingRound.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="EndingRoundEventArgs" /> instance.</param>
+        public static void OnEndingRound(EndingRoundEventArgs ev)
+        {
+            EndingRound.InvokeSafely(ev);
+        }
 
         /// <summary>
-        /// Called after the end of a round.
+        ///     Called after the end of a round.
         /// </summary>
-        /// <param name="ev">The <see cref="RoundEndedEventArgs"/> instance.</param>
-        public static void OnRoundEnded(RoundEndedEventArgs ev) => RoundEnded.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="RoundEndedEventArgs" /> instance.</param>
+        public static void OnRoundEnded(RoundEndedEventArgs ev)
+        {
+            RoundEnded.InvokeSafely(ev);
+        }
 
         /// <summary>
-        /// Called before restarting a round.
+        ///     Called before restarting a round.
         /// </summary>
-        public static void OnRestartingRound() => RestartingRound.InvokeSafely();
+        public static void OnRestartingRound()
+        {
+            RestartingRound.InvokeSafely();
+        }
 
         /// <summary>
-        /// Called when a player reports a cheater.
+        ///     Called when a player reports a cheater.
         /// </summary>
-        /// <param name="ev">The <see cref="ReportingCheaterEventArgs"/> instance.</param>
-        public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ReportingCheaterEventArgs" /> instance.</param>
+        public static void OnReportingCheater(ReportingCheaterEventArgs ev)
+        {
+            ReportingCheater.InvokeSafely(ev);
+        }
 
         /// <summary>
-        /// Called before respawning a wave of Chaos Insurgency or NTF.
+        ///     Called before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
-        /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
-        public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="RespawningTeamEventArgs" /> instance.</param>
+        public static void OnRespawningTeam(RespawningTeamEventArgs ev)
+        {
+            RespawningTeam.InvokeSafely(ev);
+        }
 
         /// <summary>
-        /// Called when sending a complaint about a player to the local server administrators.
+        ///     Called when sending a complaint about a player to the local server administrators.
         /// </summary>
-        /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
-        public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="LocalReportingEventArgs" /> instance.</param>
+        public static void OnLocalReporting(LocalReportingEventArgs ev)
+        {
+            LocalReporting.InvokeSafely(ev);
+        }
 
         /// <summary>
-        /// Called after the "reload configs" command is ran.
+        ///     Called after the "reload configs" command is ran.
         /// </summary>
-        public static void OnReloadedConfigs() => ReloadedConfigs.InvokeSafely();
+        public static void OnReloadedConfigs()
+        {
+            ReloadedConfigs.InvokeSafely();
+        }
 
         /// <summary>
-        /// Called after the "reload translations" command is ran.
+        ///     Called after the "reload translations" command is ran.
         /// </summary>
-        public static void OnReloadedTranslations() => ReloadedTranslations.InvokeSafely();
+        public static void OnReloadedTranslations()
+        {
+            ReloadedTranslations.InvokeSafely();
+        }
 
         /// <summary>
-        /// Called after the "reload gameplay" command is ran.
+        ///     Called after the "reload gameplay" command is ran.
         /// </summary>
-        public static void OnReloadedGameplay() => ReloadedGameplay.InvokeSafely();
+        public static void OnReloadedGameplay()
+        {
+            ReloadedGameplay.InvokeSafely();
+        }
 
         /// <summary>
-        /// Called after the "reload remoteadminconfigs" command is ran.
+        ///     Called after the "reload remoteadminconfigs" command is ran.
         /// </summary>
-        public static void OnReloadedRA() => ReloadedRA.InvokeSafely();
+        public static void OnReloadedRA()
+        {
+            ReloadedRA.InvokeSafely();
+        }
     }
 }

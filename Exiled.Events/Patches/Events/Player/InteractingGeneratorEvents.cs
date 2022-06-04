@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -21,9 +21,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using MapGeneration.Distributors;
 
+    using Player = Exiled.Events.Handlers.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp079Generator.ServerInteract(ReferenceHub, byte)"/>.
-    /// Adds the <see cref="Player.ActivatingGenerator"/> event.
+    ///     Patches <see cref="Scp079Generator.ServerInteract(ReferenceHub, byte)" />.
+    ///     Adds the <see cref="Handlers.Player.ActivatingGenerator" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.ServerInteract))]
     internal static class InteractingGeneratorEvents
@@ -33,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Player
             try
             {
                 if ((__instance._cooldownStopwatch.IsRunning && __instance._cooldownStopwatch.Elapsed.TotalSeconds <
-                    __instance._targetCooldown) || (colliderId != 0 && !__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open)))
+                        __instance._targetCooldown) || (colliderId != 0 && !__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open)))
                     return false;
                 __instance._cooldownStopwatch.Stop();
                 switch (colliderId)
@@ -73,7 +75,9 @@ namespace Exiled.Events.Patches.Events.Player
                             (!(ply.inventory.CurInstance is not null) ||
                              ply.inventory.CurInstance is not KeycardItem curInstance2
                                 ? 0
-                                : (curInstance2.Permissions.HasFlagFast(__instance._requiredPermission) ? 1 : 0)) != 0;
+                                : curInstance2.Permissions.HasFlagFast(__instance._requiredPermission)
+                                    ? 1
+                                    : 0) != 0;
                         UnlockingGeneratorEventArgs unlockingEvent = new(API.Features.Player.Get(ply), __instance, flag);
                         Player.OnUnlockingGenerator(unlockingEvent);
 
@@ -112,7 +116,6 @@ namespace Exiled.Events.Patches.Events.Player
                             if (__instance.Activating)
                                 __instance._leverStopwatch.Restart();
                             __instance._targetCooldown = __instance._doorToggleCooldownTime;
-                            break;
                         }
 
                         break;
@@ -129,7 +132,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                             __instance.ServerSetFlag(Scp079Generator.GeneratorFlags.Activating, false);
                             __instance._targetCooldown = __instance._unlockCooldownTime;
-                            break;
                         }
 
                         break;
@@ -142,7 +144,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                API.Features.Log.Error(
+                Log.Error(
                     $"Exiled.Events.Patches.Events.Player.InteractingGeneratorEvent: {exception}\n{exception.StackTrace}");
 
                 return true;

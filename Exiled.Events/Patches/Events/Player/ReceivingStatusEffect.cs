@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using CustomPlayerEffects;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="PlayerEffect.Intensity"/> method.
-    /// Adds the <see cref="Handlers.Player.ReceivingEffect"/> event.
+    ///     Patches the <see cref="PlayerEffect.Intensity" /> method.
+    ///     Adds the <see cref="Handlers.Player.ReceivingEffect" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerEffect), nameof(PlayerEffect.Intensity), MethodType.Setter)]
     internal static class ReceivingStatusEffect
@@ -92,6 +92,9 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void LogThing(byte old, byte @new) => Log.Warn($"Old: {old} New: {@new}");
+        private static void LogThing(byte old, byte @new)
+        {
+            Log.Warn($"Old: {old} New: {@new}");
+        }
     }
 }

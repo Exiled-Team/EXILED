@@ -10,7 +10,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Map;
 
     using HarmonyLib;
 
@@ -20,9 +21,12 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
+    using Events = Exiled.Events.Events;
+    using Map = Exiled.Events.Handlers.Map;
+
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.RpcPlaceBlood(Vector3, int, float)"/>.
-    /// Adds the <see cref="PlacingBlood"/> event.
+    ///     Patches <see cref="CharacterClassManager.RpcPlaceBlood(Vector3, int, float)" />.
+    ///     Adds the <see cref="PlacingBlood" /> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.RpcPlaceBlood))]
     internal static class PlacingBlood
@@ -53,8 +57,8 @@ namespace Exiled.Events.Patches.Events.Map
             // f = ev.Multiplier;
             newInstructions.InsertRange(0, new[]
             {
-                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
+                new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanSpawnBlood))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldarg_0),
@@ -63,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Stloc_S, rh.LocalIndex),
                 new(OpCodes.Brfalse_S, cmp),
                 new(OpCodes.Ldloc_S, rh.LocalIndex),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Br_S, jmp),
                 new CodeInstruction(OpCodes.Ldnull).WithLabels(cmp),
                 new CodeInstruction(OpCodes.Ldarg_1).WithLabels(jmp),
@@ -74,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnPlacingBlood))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnPlacingBlood))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

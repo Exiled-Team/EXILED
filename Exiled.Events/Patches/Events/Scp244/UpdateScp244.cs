@@ -8,12 +8,14 @@
 namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
+
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp244;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -24,7 +26,8 @@ namespace Exiled.Events.Patches.Events.Scp244
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
+    ///     Patches <see cref="Scp244DeployablePickup" /> to add missing event handler to the
+    ///     <see cref="Scp244DeployablePickup" />.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]
     internal static class UpdateScp244
@@ -43,12 +46,12 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnOpeningScp244))),
+                new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnOpeningScp244))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
             });
 
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(Stopwatch), nameof(Stopwatch.Restart)));
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo) i.operand == Method(typeof(Stopwatch), nameof(Stopwatch.Restart)));
 
             newInstructions[index].WithLabels(retLabel);
 

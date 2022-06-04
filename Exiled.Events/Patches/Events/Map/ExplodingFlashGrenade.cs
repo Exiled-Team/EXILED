@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using Footprinting;
 
@@ -27,9 +27,11 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
+    using Map = Exiled.Events.Handlers.Map;
+
     /// <summary>
-    /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
-    /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
+    ///     Patches <see cref="FlashbangGrenade.PlayExplosionEffects()" />.
+    ///     Adds the <see cref="Handlers.Map.OnExplodingGrenade" /> event.
     /// </summary>
     [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
     internal static class ExplodingFlashGrenade
@@ -44,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.RemoveRange(removeSelfCheck, 7);
 
             int offset = -3;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
             Label returnLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(ExplodingGrenadeEventArgs));
             LocalBuilder list = generator.DeclareLocal(typeof(List<ReferenceHub>));
@@ -91,7 +93,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Map.OnExplodingGrenade(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnExplodingGrenade))),
 
                 // if (!ev.IsAllowed)
                 //    return;
@@ -119,21 +121,17 @@ namespace Exiled.Events.Patches.Events.Map
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static List<Player> ConvertHubs(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
+        private static List<Player> ConvertHubs(List<ReferenceHub> hubs)
+        {
+            return hubs.Select(Player.Get).ToList();
+        }
 
         private static void ProcessPlayers(FlashbangGrenade grenade, List<Player> players)
         {
             foreach (Player player in players)
-            {
-                if(Player.Get(grenade.PreviousOwner.Hub) == player)
-                {
+                if (Player.Get(grenade.PreviousOwner.Hub) == player)
                     grenade.ProcessPlayer(player.ReferenceHub);
-                }
-                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
-                {
-                    grenade.ProcessPlayer(player.ReferenceHub);
-                }
-            }
+                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass)) grenade.ProcessPlayer(player.ReferenceHub);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -26,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete"/>.
-    /// Adds the <see cref="Handlers.Player.OnVerified"/> event.
+    ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete" />.
+    ///     Adds the <see cref="Handlers.Player.OnVerified" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
     internal static class Verified
@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
             const int offset = -1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions))) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions))) + offset;
 
             // Player player;
             // if(!Player.UnverifiedPlayers.TryGetValue(_hub, out player)) {
@@ -65,13 +65,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles._hub))),
                 new(OpCodes.Ldloca_S, player.LocalIndex),
-                new(OpCodes.Callvirt,  Method(typeof(ConditionalWeakTable<ReferenceHub, Player>), nameof(ConditionalWeakTable<ReferenceHub, Player>.TryGetValue))),
+                new(OpCodes.Callvirt, Method(typeof(ConditionalWeakTable<ReferenceHub, Player>), nameof(ConditionalWeakTable<ReferenceHub, Player>.TryGetValue))),
                 new(OpCodes.Brtrue_S, callJoined),
 
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles._hub))),
                 new(OpCodes.Ldloca_S, player.LocalIndex),
-                new(OpCodes.Call,  Method(typeof(Joined), nameof(Joined.CallEvent))),
+                new(OpCodes.Call, Method(typeof(Joined), nameof(Joined.CallEvent))),
 
                 new CodeInstruction(OpCodes.Nop).WithLabels(callJoined),
 #if DEBUG
@@ -95,7 +95,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Player), nameof(Player.IsVerified))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.UserId))),
-                new(OpCodes.Call,  Method(typeof(StringExtensions), nameof(StringExtensions.GetRawUserId))),
+                new(OpCodes.Call, Method(typeof(StringExtensions), nameof(StringExtensions.GetRawUserId))),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Player), nameof(Player.RawUserId))),
 
                 new CodeInstruction(OpCodes.Ldstr, "Player {0} ({1}) ({2}) connected with the IP: {3}"),

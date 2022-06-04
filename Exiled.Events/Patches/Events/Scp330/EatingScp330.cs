@@ -11,8 +11,9 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp330;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -22,9 +23,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted"/>.
-    /// Adds the <see cref="Handlers.Scp330.EatingScp330"/> and <see cref="Handlers.Scp330.EatenScp330"/> event.
+    ///     Patches <see cref="Scp330Bag.ServerOnUsingCompleted" />.
+    ///     Adds the <see cref="Handlers.Scp330.EatingScp330" /> and <see cref="Handlers.Scp330.EatenScp330" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerOnUsingCompleted))]
     internal static class EatingScp330
@@ -35,7 +38,8 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             int offset = -3;
 
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(ICandy), nameof(ICandy.ServerApplyEffects))) + offset;
+            int index = newInstructions.FindIndex(
+                instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo) instruction.operand == Method(typeof(ICandy), nameof(ICandy.ServerApplyEffects))) + offset;
 
             Label returnLabel = generator.DefineLabel();
 
@@ -57,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Dup),
 
                 // Handlers.Scp330.OnEatingScp330(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEatingScp330))),
+                new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnEatingScp330))),
 
                 // if (!ev.IsAllowed)
                 //  return;
@@ -68,7 +72,8 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             offset = -1;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerRefreshBag))) + offset;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo) instruction.operand == Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerRefreshBag))) +
+                    offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -84,7 +89,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatenScp330EventArgs))[0]),
 
                 // Handlers.Scp330.OnEatenScp330(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEatenScp330))),
+                new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnEatenScp330))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

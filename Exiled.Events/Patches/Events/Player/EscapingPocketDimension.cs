@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="PocketDimensionTeleport.SuccessEscape"/> method.
-    /// Adds the <see cref="Exiled.Events.Handlers.Player.EscapingPocketDimension"/> event.
+    ///     Patches the <see cref="PocketDimensionTeleport.SuccessEscape" /> method.
+    ///     Adds the <see cref="Exiled.Events.Handlers.Player.EscapingPocketDimension" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.SuccessEscape))]
     internal static class EscapingPocketDimension
@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label retLabel = generator.DefineLabel();
             Label effectLabel = generator.DefineLabel();
             int offset = +2;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(Vector3), nameof(Vector3.Distance))) + offset;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(Vector3), nameof(Vector3.Distance))) + offset;
             for (int i = 0; i < 28; i++)
                 newInstructions.RemoveAt(index);
             newInstructions.InsertRange(index, new CodeInstruction[]
@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             offset = -1;
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))) + offset;
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo) i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))) + offset;
 
             for (int i = 0; i < 15; i++)
                 newInstructions.RemoveAt(index);
@@ -87,7 +87,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Br, effectLabel),
             });
 
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo) i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))) + offset;
             newInstructions[index].labels.Add(effectLabel);
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 

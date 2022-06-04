@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="MicroHIDItem.ExecuteServerside"/>.
-    /// Adds the <see cref="Handlers.Player.OnUsingMicroHIDEnergy"/> event.
+    ///     Patches <see cref="MicroHIDItem.ExecuteServerside" />.
+    ///     Adds the <see cref="Handlers.Player.OnUsingMicroHIDEnergy" /> event.
     /// </summary>
     [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]
     internal static class UsingMicroHIDEnergy
@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -7;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-                                                                 (MethodInfo)instruction.operand == Method(typeof(Mathf), nameof(Mathf.Clamp01))) + offset;
+                                                                 (MethodInfo) instruction.operand == Method(typeof(Mathf), nameof(Mathf.Clamp01))) + offset;
 
             Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 

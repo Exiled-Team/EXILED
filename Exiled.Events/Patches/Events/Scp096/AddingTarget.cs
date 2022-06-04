@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
 
@@ -27,8 +27,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
-    /// Patches <see cref="Scp096.AddTarget"/>.
-    /// Adds the <see cref="Handlers.Scp096.AddingTarget"/> event.
+    ///     Patches <see cref="PlayableScps.Scp096.AddTarget" />.
+    ///     Adds the <see cref="Handlers.Scp096.AddingTarget" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.AddTarget))]
     internal static class AddingTarget
@@ -93,7 +93,7 @@ namespace Exiled.Events.Patches.Events.Scp096
 
             // Search for the sixth "ldarg.0".
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(Scp096), nameof(Scp096.AddReset))) + offset;
+                                                                 (MethodInfo) instruction.operand == Method(typeof(Scp096), nameof(Scp096.AddReset))) + offset;
 
             // Extract all labels from it.
             List<Label> addResetLabels = newInstructions[index].ExtractLabels();

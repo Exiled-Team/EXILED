@@ -9,7 +9,8 @@ namespace Exiled.Events.Patches.Events.Player
 {
     using System;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using GameCore;
 
@@ -19,11 +20,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using UnityEngine;
 
-    using Server = Exiled.API.Features.Server;
+    using Log = Exiled.API.Features.Log;
 
     /// <summary>
-    /// Patches <see cref="BanPlayer.BanUser(GameObject, long, string, string, bool)"/>.
-    /// Adds the <see cref="Handlers.Player.Banning"/> and <see cref="Handlers.Player.Kicking"/>events.
+    ///     Patches <see cref="BanPlayer.BanUser(GameObject, long, string, string, bool)" />.
+    ///     Adds the <see cref="Handlers.Player.Banning" /> and <see cref="Handlers.Player.Kicking" />events.
     /// </summary>
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), typeof(GameObject), typeof(long), typeof(string), typeof(string), typeof(bool))]
     internal static class BanningAndKicking
@@ -32,28 +33,21 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (isGlobalBan && ConfigFile.ServerConfig.GetBool("gban_ban_ip", false))
-                {
-                    duration = int.MaxValue;
-                }
+                if (isGlobalBan && ConfigFile.ServerConfig.GetBool("gban_ban_ip")) duration = int.MaxValue;
 
                 string userId = null;
                 string address = user.GetComponent<NetworkIdentity>().connectionToClient.address;
 
-                API.Features.Player targetPlayer = API.Features.Player.Get(user);
-                API.Features.Player issuerPlayer;
+                Player targetPlayer = Player.Get(user);
+                Player issuerPlayer;
                 if (issuer.Contains("("))
-                {
-                    issuerPlayer = API.Features.Player.Get(issuer.Substring(issuer.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host;
-                }
+                    issuerPlayer = Player.Get(issuer.Substring(issuer.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host;
                 else
-                {
                     issuerPlayer = Server.Host;
-                }
 
                 try
                 {
-                    if (ConfigFile.ServerConfig.GetBool("online_mode", false))
+                    if (ConfigFile.ServerConfig.GetBool("online_mode"))
                         userId = targetPlayer.UserId;
                 }
                 catch
@@ -62,11 +56,8 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
                 }
 
-                string message = $"You have been {((duration > 0) ? "banned" : "kicked")}. ";
-                if (!string.IsNullOrEmpty(reason))
-                {
-                    message = message + "Reason: " + reason;
-                }
+                string message = $"You have been {(duration > 0 ? "banned" : "kicked")}. ";
+                if (!string.IsNullOrEmpty(reason)) message = message + "Reason: " + reason;
 
                 if (!ServerStatic.PermissionsHandler.IsVerified || !targetPlayer.IsStaffBypassEnabled)
                 {
@@ -86,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
                             ? "(no nick)"
                             : targetPlayer.Nickname;
                         long issuanceTime = TimeBehaviour.CurrentTimestamp();
-                        long banExpieryTime = TimeBehaviour.GetBanExpirationTime((uint)duration);
+                        long banExpieryTime = TimeBehaviour.GetBanExpirationTime((uint) duration);
                         try
                         {
                             if (userId is not null && !isGlobalBan)
@@ -103,7 +94,6 @@ namespace Exiled.Events.Patches.Events.Player
                                     }, BanHandler.BanType.UserId);
 
                                 if (!string.IsNullOrEmpty(targetPlayer.CustomUserId))
-                                {
                                     BanHandler.IssueBan(
                                         new BanDetails
                                         {
@@ -114,7 +104,6 @@ namespace Exiled.Events.Patches.Events.Player
                                             Reason = reason,
                                             Issuer = issuer,
                                         }, BanHandler.BanType.UserId);
-                                }
                             }
                         }
                         catch
@@ -125,8 +114,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                         try
                         {
-                            if (ConfigFile.ServerConfig.GetBool("ip_banning", false) || isGlobalBan)
-                            {
+                            if (ConfigFile.ServerConfig.GetBool("ip_banning") || isGlobalBan)
                                 BanHandler.IssueBan(
                                     new BanDetails
                                     {
@@ -137,7 +125,6 @@ namespace Exiled.Events.Patches.Events.Player
                                         Reason = reason,
                                         Issuer = issuer,
                                     }, BanHandler.BanType.IP);
-                            }
                         }
                         catch
                         {
@@ -164,7 +151,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.BanningAndKicking: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Player.BanningAndKicking: {e}\n{e.StackTrace}");
 
                 return true;
             }

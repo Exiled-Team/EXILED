@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.AllowContain"/>.
-    /// Adds the <see cref="Player.EnteringFemurBreaker"/> event.
+    ///     Patches <see cref="CharacterClassManager.AllowContain" />.
+    ///     Adds the <see cref="Player.EnteringFemurBreaker" /> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.AllowContain))]
     internal static class EnteringFemurBreaker

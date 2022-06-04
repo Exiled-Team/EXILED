@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp173
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
 
@@ -23,18 +23,20 @@ namespace Exiled.Events.Patches.Events.Scp173
 
     using static HarmonyLib.AccessTools;
 
+    using Scp173 = PlayableScps.Scp173;
+
     /// <summary>
-    /// Patches <see cref="PlayableScps.Scp173.ServerHandleBlinkMessage"/>.
-    /// Adds the <see cref="Handlers.Scp173.Blinking"/> event.
+    ///     Patches <see cref="PlayableScps.Scp173.ServerHandleBlinkMessage" />.
+    ///     Adds the <see cref="Handlers.Scp173.Blinking" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.ServerHandleBlinkMessage))]
+    [HarmonyPatch(typeof(Scp173), nameof(Scp173.ServerHandleBlinkMessage))]
     internal static class Blinking
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = -13;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand ==
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo) i.operand ==
                 Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ForcePosition), new[] { typeof(Vector3) })) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(BlinkingEventArgs));
             Label returnLabel = generator.DefineLabel();
@@ -42,11 +44,11 @@ namespace Exiled.Events.Patches.Events.Scp173
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.Hub))),
+                new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173._observingPlayers))),
+                new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173._observingPlayers))),
                 new(OpCodes.Call, Method(typeof(Blinking), nameof(GetObservingPlayers))),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(BlinkingEventArgs))[0]),
@@ -62,15 +64,15 @@ namespace Exiled.Events.Patches.Events.Scp173
             });
 
             offset = 1;
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stfld && (FieldInfo)i.operand ==
-                Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173._blinkCooldownRemaining))) + offset;
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stfld && (FieldInfo) i.operand ==
+                Field(typeof(Scp173), nameof(Scp173._blinkCooldownRemaining))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(returnLabel),
                 new(OpCodes.Ldloc, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(BlinkingEventArgs), nameof(BlinkingEventArgs.BlinkCooldown))),
-                new(OpCodes.Stfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173._blinkCooldownRemaining))),
+                new(OpCodes.Stfld, Field(typeof(Scp173), nameof(Scp173._blinkCooldownRemaining))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -79,6 +81,9 @@ namespace Exiled.Events.Patches.Events.Scp173
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static List<Player> GetObservingPlayers(IEnumerable<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
+        private static List<Player> GetObservingPlayers(IEnumerable<ReferenceHub> hubs)
+        {
+            return hubs.Select(Player.Get).ToList();
+        }
     }
 }
