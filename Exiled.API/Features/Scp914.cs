@@ -38,10 +38,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets SCP-914's config mode.
         /// </summary>
-        public static ConfigEntry<Scp914Mode> ConfigMode
+        public static Scp914Mode ConfigMode
         {
-            get => Scp914Controller._configMode;
-            set => Scp914Controller._configMode = value;
+            get => Scp914Controller._configMode.Value;
+            set => Scp914Controller._configMode.Value = value;
         }
 
         /// <summary>
@@ -52,12 +52,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the position of SCP-914's intake chamber.
         /// </summary>
-        public static Vector3 IntakePosition => Scp914Controller._intakeChamber.localPosition;
+        public static Vector3 IntakePosition => Scp914Controller._intakeChamber.position;
 
         /// <summary>
         /// Gets the position of SCP-914's output chamber.
         /// </summary>
-        public static Vector3 OutputPosition => Scp914Controller._outputChamber.localPosition;
+        public static Vector3 OutputPosition => Scp914Controller._outputChamber.position;
 
         /// <summary>
         /// Gets a value indicating whether SCP-914 was activated and is currently processing items.
@@ -77,16 +77,22 @@ namespace Exiled.API.Features
         /// <summary>
         /// Plays the SCP-914's sound.
         /// </summary>
-        /// <param name="soundId">The soundId to play.</param>
+        /// <param name="code">The sound to play.</param>
         /// <remarks>There are two sounds only.
-        /// The values to identify them are <c>0</c>, which stands for the soundId played when SCP-914 is being activated,
-        /// and <c>1</c>, which stands for the soundId played when SCP-914's knob state is being changed.</remarks>
-        public static void PlaySound(byte soundId) => scp914Controller.RpcPlaySound(soundId);
+        /// The values to identify them are <see cref="Scp914InteractCode.ChangeMode"/>, which stands for the sound played when SCP-914 is being activated,
+        /// and <see cref="Scp914InteractCode.Activate"/>, which stands for the sound played when SCP-914's knob state is being changed.</remarks>
+        public static void PlaySound(Scp914InteractCode code) => scp914Controller.RpcPlaySound((byte)code);
 
         /// <summary>
         /// Starts SCP-914.
         /// </summary>
         /// <param name="player">The player who interact.</param>
-        public static void Start(Player player = null) => Scp914Controller.ServerInteract(player is null ? Server.Host.ReferenceHub : player.ReferenceHub, (byte)Scp914InteractCode.Activate);
+        public static void Start(Player player = null) => Scp914Controller.ServerInteract((player is null ? Server.Host : player).ReferenceHub, (byte)Scp914InteractCode.Activate);
+
+        /// <summary>
+        /// Procces SCP-914 mode.
+        /// </summary>
+        /// <param name="player">The player who interact.</param>
+        public static void ProccesMode(Player player = null) => Scp914Controller.ServerInteract((player is null ? Server.Host : player).ReferenceHub, (byte)Scp914InteractCode.ChangeMode);
     }
 }
