@@ -62,6 +62,17 @@ namespace Exiled.Events.Patches.Generic
         /// </summary>
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
+        /// <returns>True if the attacker can damage the victim.</returns>
+        public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub)
+        {
+            return Server.FriendlyFire || CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
+        }
+
+        /// <summary>
+        /// Checks if there can be damage between two players, according to the FF rules.
+        /// </summary>
+        /// <param name="attackerHub">The person attacking.</param>
+        /// <param name="victimHub">The person being attacked.</param>
         /// <param name="ffMultiplier"> FF multiplier. </param>
         /// <returns> True if the attacker can damage the victim.</returns>
         /// <remarks> Friendly fire multiplier is also provided back if needed. </remarks>
@@ -69,7 +80,7 @@ namespace Exiled.Events.Patches.Generic
         {
             ffMultiplier = 1f;
 
-            // Return false, no custom friendly fire allowed, default to NW logic for FF.
+            // Return false, no custom friendly fire allowed, default to NW logic for FF. No point in processing if FF is enabled across the board.
             if (Server.FriendlyFire)
                 return false;
 
@@ -157,8 +168,13 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                __result = IndividualFriendlyFire.CheckFriendlyFirePlayer(attacker, victim);
+                bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
+                if(!currentResult)
+                {
+                    return true;
+                }
 
+                __result = currentResult;
                 return false;
             }
             catch (Exception e)
