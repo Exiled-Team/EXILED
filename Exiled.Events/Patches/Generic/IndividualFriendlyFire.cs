@@ -80,7 +80,7 @@ namespace Exiled.Events.Patches.Generic
         {
             ffMultiplier = 1f;
 
-            // Return false, no custom friendly fire allowed, default to NW logic for FF.
+            // Return false, no custom friendly fire allowed, default to NW logic for FF. No point in processing if FF is enabled across the board.
             if (Server.FriendlyFire)
                 return false;
 
