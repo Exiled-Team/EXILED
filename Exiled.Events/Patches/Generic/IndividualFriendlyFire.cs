@@ -168,8 +168,13 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
+                bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
+                if(!currentResult)
+                {
+                    return true;
+                }
 
+                __result = currentResult;
                 return false;
             }
             catch (Exception e)
