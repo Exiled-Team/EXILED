@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Generic
             {
                 if (Scp106Container.CanBeKilled(player))
                 {
-                    var ev = new EnteringFemurBreakerEventArgs(player);
+                    EnteringFemurBreakerEventArgs ev = new(player);
                     Handlers.Player.OnEnteringFemurBreaker(ev);
 
                     if (!ev.IsAllowed)
