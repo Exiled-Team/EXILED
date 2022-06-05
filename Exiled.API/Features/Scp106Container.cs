@@ -49,7 +49,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the LureSubjectContainer position.
         /// </summary>
-        public static Vector3 Position => Base._position;
+        public static Vector3 Position => Base.transform.position;
 
         /// <summary>
         /// Gets the LureSubjectContainer rotation.
