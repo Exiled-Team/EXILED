@@ -74,6 +74,9 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
+#pragma warning restore SA1401
+
+        private readonly IReadOnlyCollection<Item> readOnlyItems;
 
         /// <summary>
         /// The running speed of the player.
@@ -84,9 +87,7 @@ namespace Exiled.API.Features
         /// The walk speed of the player.
         /// </summary>
         private float? walkSpeed;
-#pragma warning restore SA1401
 
-        private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
