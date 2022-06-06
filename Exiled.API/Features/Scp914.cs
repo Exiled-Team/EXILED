@@ -7,12 +7,9 @@
 
 namespace Exiled.API.Features
 {
-#pragma warning disable 1584
     using global::Scp914;
 
     using UnityEngine;
-
-    using Utils.ConfigHandler;
 
     /// <summary>
     /// A set of tools to modify SCP-914's behaviour.
@@ -84,15 +81,10 @@ namespace Exiled.API.Features
         public static void PlaySound(Scp914InteractCode code) => scp914Controller.RpcPlaySound((byte)code);
 
         /// <summary>
-        /// Starts SCP-914.
+        /// Interacts with SCP-914.
         /// </summary>
+        /// <param name="action">Interaction type.</param>
         /// <param name="player">The player who interact.</param>
-        public static void Start(Player player = null) => Scp914Controller.ServerInteract((player is null ? Server.Host : player).ReferenceHub, (byte)Scp914InteractCode.Activate);
-
-        /// <summary>
-        /// Procces SCP-914 mode.
-        /// </summary>
-        /// <param name="player">The player who interact.</param>
-        public static void ProccesMode(Player player = null) => Scp914Controller.ServerInteract((player is null ? Server.Host : player).ReferenceHub, (byte)Scp914InteractCode.ChangeMode);
+        public static void Interact(Scp914InteractCode action, Player player = null) => Scp914Controller.ServerInteract((player is null ? Server.Host : player).ReferenceHub, (byte)action);
     }
 }
