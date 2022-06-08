@@ -437,6 +437,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
 
         /// <summary>
+        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        public static event CustomEventHandler<ItemAddedEventArgs> ItemAdded;
+
+        /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -930,5 +935,13 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        /// <param name="inventory">The <see cref="InventorySystem.Inventory"/> the item was added to.</param>
+        /// <param name="itemBase">The added <see cref="InventorySystem.Items.ItemBase"/>.</param>
+        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from.</param>
+        public static void OnItemAdded(InventorySystem.Inventory inventory, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase) => ItemAdded.InvokeSafely(new ItemAddedEventArgs(inventory, itemBase, pickupBase));
     }
 }
