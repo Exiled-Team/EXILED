@@ -941,7 +941,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="inventory">The <see cref="InventorySystem.Inventory"/> the item was added to.</param>
         /// <param name="itemBase">The added <see cref="InventorySystem.Items.ItemBase"/>.</param>
-        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from.</param>
+        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public static void OnItemAdded(InventorySystem.Inventory inventory, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase) => ItemAdded.InvokeSafely(new ItemAddedEventArgs(inventory, itemBase, pickupBase));
     }
 }
