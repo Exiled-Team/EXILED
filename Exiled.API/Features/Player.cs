@@ -840,7 +840,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the current room the player is in.
+        /// Gets the current <see cref="Room"/> the pickup is in.
         /// </summary>
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
 

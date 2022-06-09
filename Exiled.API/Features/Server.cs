@@ -33,12 +33,12 @@ namespace Exiled.API.Features
         public static Player Host { get; internal set; }
 
         /// <summary>
-        /// Gets the cached <see cref="Broadcast"/> component.
+        /// Gets the cached <see cref="global::Broadcast"/> component.
         /// </summary>
         public static global::Broadcast Broadcast { get; internal set; }
 
         /// <summary>
-        /// Gets the cached <see cref="BanPlayer"/> component.
+        /// Gets the cached <see cref="global::BanPlayer"/> component.
         /// </summary>
         public static BanPlayer BanPlayer { get; internal set; }
 
