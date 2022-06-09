@@ -134,7 +134,7 @@ namespace Exiled.API.Features.Items
         public float MovementSpeedMultiplier
         {
             get => Base.MovementSpeedMultiplier;
-            [Obsolete("The client would be decyncronysed", true)]
+            [Obsolete("The client would be desynchronized", true)]
             set
             {
                 if (value < 0.0f || value > 1f)
@@ -149,7 +149,7 @@ namespace Exiled.API.Features.Items
         public float CivilianDownsideMultiplier
         {
             get => Base.CivilianClassDownsidesMultiplier;
-            [Obsolete("The client would be decyncronysed", true)]
+            [Obsolete("The client would be desynchronized", true)]
             set => Base.CivilianClassDownsidesMultiplier = value;
         }
 
