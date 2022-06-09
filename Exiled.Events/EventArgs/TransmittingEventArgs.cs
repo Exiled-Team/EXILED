@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.EventArgs
 {
-#pragma warning disable 1584
     using System;
 
     using Assets._Scripts.Dissonance;

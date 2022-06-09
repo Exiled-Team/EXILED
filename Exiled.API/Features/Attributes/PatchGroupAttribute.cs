@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Attributes
 {
-#pragma warning disable 1584
     using System;
     using System.Reflection;
 
