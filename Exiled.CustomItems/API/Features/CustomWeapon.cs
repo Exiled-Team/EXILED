@@ -30,7 +30,9 @@ namespace Exiled.CustomItems.API.Features
     using Firearm = Exiled.API.Features.Items.Firearm;
     using Player = Exiled.API.Features.Player;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The Custom Weapon base class.
+    /// </summary>
     public abstract class CustomWeapon : CustomItem
     {
         /// <summary>
@@ -120,6 +122,17 @@ namespace Exiled.CustomItems.API.Features
                 pickup.PreviousOwner = previousOwner;
 
             TrackedSerials.Add(pickup.Serial);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                if (pickup.Base is FirearmPickup firearmPickup)
+                {
+                    firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                    firearmPickup.NetworkStatus = firearmPickup.Status;
+                    Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                }
+            });
+
             return pickup;
         }
 
@@ -332,7 +345,6 @@ namespace Exiled.CustomItems.API.Features
         {
             if (ev.Attacker is null)
             {
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Attacker null", Instance.Config.Debug);
                 return;
             }
 
