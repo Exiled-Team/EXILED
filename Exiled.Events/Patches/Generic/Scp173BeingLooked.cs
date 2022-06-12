@@ -32,9 +32,9 @@ namespace Exiled.Events.Patches.Generic
     ///// <summary>
     ///// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
     ///// </summary>
-    //[HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
-    //internal static class Scp173BeingLookedPrefix
-    //{
+    // [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
+    // internal static class Scp173BeingLookedPrefix
+    // {
     //    [HarmonyPrefix]
     //    private static bool ProcessObservers(PlayableScps.Scp173 __instance)
     //    {
@@ -80,17 +80,17 @@ namespace Exiled.Events.Patches.Generic
     //                                __instance._observingPlayers.Remove(currentPlayerReferenceHub);
     //                            }
 
-    //                            continue;
+    // continue;
     //                        }
     //                    }
 
-    //                    RoomIdentifier roomIdentifier = RoomIdUtils.RoomAtPosition(__instance.Hub.playerMovementSync.RealModelPosition);
+    // RoomIdentifier roomIdentifier = RoomIdUtils.RoomAtPosition(__instance.Hub.playerMovementSync.RealModelPosition);
     //                    if (VisionInformation.GetVisionInformation(currentPlayerReferenceHub, realModelPosition, -2f, (roomIdentifier != null && roomIdentifier.Zone == FacilityZone.Surface) ? 80f : 40f, false, false, __instance.Hub.localCurrentRoomEffects, 0).IsLooking && (!Physics.Linecast(realModelPosition + new Vector3(0f, 1.5f, 0f), currentPlayerReferenceHub.PlayerCameraReference.position, VisionInformation.VisionLayerMask) || !Physics.Linecast(realModelPosition + new Vector3(0f, -1f, 0f), currentPlayerReferenceHub.PlayerCameraReference.position, VisionInformation.VisionLayerMask)))
     //                    {
     //                        flag = true;
     //                    }
 
-    //                    if (flag)
+    // if (flag)
     //                    {
     //                        if (!__instance._observingPlayers.Contains(currentPlayerReferenceHub))
     //                        {
@@ -104,7 +104,7 @@ namespace Exiled.Events.Patches.Generic
     //                }
     //            }
 
-    //            __instance._isObserved = __instance._observingPlayers.Count > 0 || __instance.StareAtDuration > 0f;
+    // __instance._isObserved = __instance._observingPlayers.Count > 0 || __instance.StareAtDuration > 0f;
     //            if (count != __instance._observingPlayers.Count && __instance._blinkCooldownRemaining > 0f)
     //            {
     //                GameCore.Console.AddDebugLog("SCP173", string.Format("Adjusting blink cooldown. Initial observers: {0}. ", count) + string.Format("New observers: {0}.", __instance._observingPlayers.Count), MessageImportance.LessImportant, false);
@@ -124,9 +124,9 @@ namespace Exiled.Events.Patches.Generic
     //            Log.Error($"Unable to do Scp173BeingLooked {generic}\n");
     //        }
 
-    //        return true;
+    // return true;
     //    }
-    //}
+    // }
 
     /// <summary>
     /// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
@@ -204,12 +204,11 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(skipPlayerCheck, new CodeInstruction[]
             {
-
                 new(OpCodes.Ldarga, 0),
                 new(OpCodes.Ldloca_S, 2),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
                 new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(Scp173BeingLooked), nameof(Scp173BeingLooked.SkipPlayer), new[] {typeof(API.Features.Scp173).MakeByRefType(), typeof(GameObject), typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Scp173BeingLooked), nameof(Scp173BeingLooked.SkipPlayer), new[] { typeof(API.Features.Scp173).MakeByRefType(), typeof(GameObject), typeof(ReferenceHub) })),
 
                 // If true, skip adding to watching
                 new(OpCodes.Brtrue, cnt),
@@ -225,6 +224,4 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-
-   
 }
