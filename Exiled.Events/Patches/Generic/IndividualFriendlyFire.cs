@@ -39,18 +39,6 @@ namespace Exiled.Events.Patches.Generic
         /// </summary>
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
-        /// <param name="attackerRole">The attackers current role.</param>
-        /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayerFriendly(ReferenceHub attackerHub, ReferenceHub victimHub, RoleType attackerRole)
-        {
-            return CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
-        }
-
-        /// <summary>
-        /// Checks if there can be damage between two players, according to the FF rules.
-        /// </summary>
-        /// <param name="attackerHub">The person attacking.</param>
-        /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
         public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub)
         {
@@ -291,10 +279,7 @@ namespace Exiled.Events.Patches.Generic
                 // targetReferenceHub
                 new(OpCodes.Ldloc_3),
 
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldflda, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
+                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -332,7 +317,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Ldloca_S, 2),
                 new(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
 
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer), new[] { typeof(ReferenceHub), typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
