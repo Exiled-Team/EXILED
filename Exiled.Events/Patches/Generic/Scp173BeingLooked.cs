@@ -148,13 +148,13 @@ namespace Exiled.Events.Patches.Generic
             {
                 if (player?.Role?.Type == RoleType.Tutorial)
                 {
-                    Log.Info($"What is canBLock {Exiled.Events.Events.Instance?.Config?.CanTutorialBlockScp173}");
                     if (!Exiled.Events.Events.Instance?.Config?.CanTutorialBlockScp173 ?? false)
                     {
                         if (instance._observingPlayers.Contains(curPlayerHub))
                         {
                             instance._observingPlayers.Remove(curPlayerHub);
                         }
+
                         return true;
                     }
                 }
@@ -164,6 +164,7 @@ namespace Exiled.Events.Patches.Generic
                     {
                         instance._observingPlayers.Remove(curPlayerHub);
                     }
+
                     return true;
                 }
             }
@@ -182,7 +183,6 @@ namespace Exiled.Events.Patches.Generic
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder scp173Player = generator.DeclareLocal(typeof(Player));
             LocalBuilder turnedPlayers = generator.DeclareLocal(typeof(HashSet<Player>));
-
 
             int removeTurnedPeanutOffset = 2;
             int removeTurnedPeanut = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Count)))) + removeTurnedPeanutOffset;
