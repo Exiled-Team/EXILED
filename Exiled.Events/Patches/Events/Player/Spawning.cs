@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
 
-                // var ev = new SpawningEventArg(Player, RoleType)
+                // var ev = new SpawningEventArgs(Player, RoleType)
                 // Exiled.Events.Handlers.Player.OnSpawning(ev);
                 new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
                 new(OpCodes.Dup),
