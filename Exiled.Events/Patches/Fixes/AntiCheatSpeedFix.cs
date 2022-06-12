@@ -7,26 +7,14 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
-
-    using CustomPlayerEffects;
 
     using Exiled.API.Features;
 
     using HarmonyLib;
 
-    using InventorySystem.Items;
-    using InventorySystem.Items.Armor;
-
     using NorthwoodLib.Pools;
-
-    using PlayableScps;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -42,6 +30,7 @@ namespace Exiled.Events.Patches.Fixes
 
             const int offset = 2;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldloc_0) + offset;
+
             Label maxSpeed = generator.DefineLabel();
             Label setSpeed = generator.DefineLabel();
 
@@ -50,8 +39,10 @@ namespace Exiled.Events.Patches.Fixes
 
             newInstructions.InsertRange(index, new[]
             {
-                // speed
+                // &speed
                 new(OpCodes.Ldarg_1),
+
+                // speed
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldind_R4),
 
@@ -75,10 +66,9 @@ namespace Exiled.Events.Patches.Fixes
             });
 
             for(int z = 0; z < newInstructions.Count; z++)
-            {
-                Log.Debug(newInstructions[z]);
                 yield return newInstructions[z];
-            }
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
