@@ -41,9 +41,10 @@ namespace Exiled.Events.Patches.Events.Server
                 new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string), typeof(bool) })),
             });
 
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse);
+            const int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse) + offset;
 
-            newInstructions.InsertRange(index + 1, new CodeInstruction[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // if(ServerStatic.StopNextRound == ServerStatic.NextRoundAction.Restart)  -> goto normal round restart
                 new(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
