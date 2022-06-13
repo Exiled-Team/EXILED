@@ -45,15 +45,13 @@ namespace Exiled.Events.Patches.Events.Server
 
             newInstructions.InsertRange(index + 1, new CodeInstruction[]
             {
-                // if(ServerStatic.StopNextRound == 1 (restarting))  -> goto normal round restart
+                // if(ServerStatic.StopNextRound == ServerStatic.NextRoundAction.Restart)  -> goto normal round restart
                 new(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Beq_S, newInstructions[index].operand),
 
-                // ShouldServerRestart()
+                // if (ShouldServerRestart()) -> goto normal round restart
                 new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
-
-                // if (prev) -> goto normal round restart
                 new(OpCodes.Brtrue, newInstructions[index].operand),
             });
 
