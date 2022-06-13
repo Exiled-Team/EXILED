@@ -249,47 +249,6 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="ExplosionGrenade.ExplodeDestructible(IDestructible, Footprint, Vector3, ExplosionGrenade)"/>.
-    /// </summary>
-    // TODO: Re-do this
-    // [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.ExplodeDestructible))]
-    internal static class ExplosionGrenadeExplodeDestructiblePatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            const int targetIsOwnerIndex = 5;
-            const int offset = 6;
-            const int instructionsToRemove = 8;
-
-            int index = newInstructions.FindIndex(code => code.opcode == OpCodes.Stloc_S &&
-                ((LocalBuilder)code.operand).LocalIndex == targetIsOwnerIndex) + offset;
-
-            newInstructions.RemoveRange(index, instructionsToRemove);
-
-            // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // this.PreviousOwner.Hub
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldflda, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
-
-                // targetReferenceHub
-                new(OpCodes.Ldloc_3),
-
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
-            });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-    }
-
-    /// <summary>
     /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
     /// </summary>
     [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
