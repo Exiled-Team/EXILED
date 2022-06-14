@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before starting the warhead.
     /// </summary>
-    public class StartingWarheadEventArgs : StoppingEventArgs
+    public class StartingWarheadEventArgs : StoppingWarheadEventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StartingWarheadEventArgs"/> class.
