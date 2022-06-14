@@ -144,27 +144,19 @@ namespace Exiled.Events.Patches.Generic
         public static bool SkipPlayer(ref PlayableScps.Scp173 instance, GameObject curPlayerGameObj, ReferenceHub curPlayerHub)
         {
             Player player = Player.Get(curPlayerGameObj);
-            if (player != null)
+            if (player is not null)
             {
                 if (player?.Role?.Type == RoleType.Tutorial)
                 {
                     if (!Exiled.Events.Events.Instance?.Config?.CanTutorialBlockScp173 ?? false)
                     {
-                        if (instance._observingPlayers.Contains(curPlayerHub))
-                        {
-                            instance._observingPlayers.Remove(curPlayerHub);
-                        }
-
+                        instance._observingPlayers.Remove(curPlayerHub);
                         return true;
                     }
                 }
                 else if (API.Features.Scp173.TurnedPlayers.Contains(player))
                 {
-                    if (instance._observingPlayers.Contains(curPlayerHub))
-                    {
-                        instance._observingPlayers.Remove(curPlayerHub);
-                    }
-
+                    instance._observingPlayers.Remove(curPlayerHub);
                     return true;
                 }
             }
@@ -180,7 +172,7 @@ namespace Exiled.Events.Patches.Generic
             Label cnt = generator.DefineLabel();
             Label isTutorial = generator.DefineLabel();
 
-            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            LocalBuilder currentPlayer = generator.DeclareLocal(typeof(Player));
             LocalBuilder scp173Player = generator.DeclareLocal(typeof(Player));
             LocalBuilder turnedPlayers = generator.DeclareLocal(typeof(HashSet<Player>));
 
