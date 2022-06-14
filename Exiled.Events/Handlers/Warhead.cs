@@ -20,12 +20,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before stopping the warhead.
         /// </summary>
-        public static event CustomEventHandler<StoppingEventArgs> Stopping;
+        public static event CustomEventHandler<StoppingWarheadEventArgs> Stopping;
 
         /// <summary>
         /// Invoked before starting the warhead.
         /// </summary>
-        public static event CustomEventHandler<StartingEventArgs> Starting;
+        public static event CustomEventHandler<StartingWarheadEventArgs> Starting;
 
         /// <summary>
         /// Invoked after the warhead has been detonated.
@@ -40,14 +40,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before stopping the warhead.
         /// </summary>
-        /// <param name="ev">The <see cref="StoppingEventArgs"/> instance.</param>
-        public static void OnStopping(StoppingEventArgs ev) => Stopping.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="StoppingWarheadEventArgs"/> instance.</param>
+        public static void OnStopping(StoppingWarheadEventArgs ev) => Stopping.InvokeSafely(ev);
 
         /// <summary>
         /// Called before starting the warhead.
         /// </summary>
-        /// <param name="ev">The <see cref="StartingEventArgs"/> instance.</param>
-        public static void OnStarting(StartingEventArgs ev) => Starting.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="StartingWarheadEventArgs"/> instance.</param>
+        public static void OnStarting(StartingWarheadEventArgs ev) => Starting.InvokeSafely(ev);
 
         /// <summary>
         /// Called after the warhead has been detonated.
