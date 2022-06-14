@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Define a return label for us to use.
             Label returnLabel = generator.DefineLabel();
 
-            // var ev = new StartingEventArgs(Server.Host, true);
+            // var ev = new StartingWarheadEventArgs(Server.Host, true);
             //
             // Handlers.Warhead.OnStarting(ev);
             //
@@ -54,10 +54,10 @@ namespace Exiled.Events.Patches.Events.Warhead
             {
                 new(OpCodes.Call, PropertyGetter(typeof(Server), nameof(Server.Host))),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingWarheadEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(StartingWarheadEventArgs), nameof(StartingWarheadEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });
 

@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             // if(!this.inProgress)
             //   return;
             //
-            // var ev = new StoppingEventArgs(Player.Get(disabler), true);
+            // var ev = new StoppingWarheadEventArgs(Player.Get(disabler), true);
             //
             // Handlers.Warhead.OnStopping(ev);
             //
@@ -61,10 +61,10 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingWarheadEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStopping))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(StoppingEventArgs), nameof(StoppingEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(StoppingWarheadEventArgs), nameof(StoppingWarheadEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.IsLocked))),
                 new(OpCodes.Brtrue_S, returnLabel),
