@@ -33,12 +33,11 @@ namespace Exiled.Events.Patches.Generic
         /// Checks if the current player is to be skipped.
         /// </summary>
         /// <param name="instance"> Scp173 instance <see cref="PlayableScps.Scp173"/>. </param>
-        /// <param name="curPlayerGameObj"> Current player game object. </param>
         /// <param name="curPlayerHub"> Current player referencehub. </param>
         /// <returns> True if to be skipped, false if not. </returns>
-        public static bool SkipPlayer(ref PlayableScps.Scp173 instance, GameObject curPlayerGameObj, ReferenceHub curPlayerHub)
+        public static bool SkipPlayer(ref PlayableScps.Scp173 instance, ReferenceHub curPlayerHub)
         {
-            Player player = Player.Get(curPlayerGameObj);
+            Player player = Player.Get(curPlayerHub);
             if (player is not null)
             {
                 if (player.Role.Type == RoleType.Tutorial)
@@ -84,10 +83,8 @@ namespace Exiled.Events.Patches.Generic
             newInstructions.InsertRange(skipPlayerCheck, new CodeInstruction[]
             {
                 new(OpCodes.Ldarga, 0),
-                new(OpCodes.Ldloca_S, 2),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
                 new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(Scp173BeingLooked), nameof(Scp173BeingLooked.SkipPlayer), new[] { typeof(API.Features.Scp173).MakeByRefType(), typeof(GameObject), typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Scp173BeingLooked), nameof(Scp173BeingLooked.SkipPlayer), new[] { typeof(API.Features.Scp173).MakeByRefType(), typeof(ReferenceHub) })),
 
                 // If true, skip adding to watching
                 new(OpCodes.Brtrue, cnt),
