@@ -431,14 +431,23 @@ namespace Exiled.API.Features
         /// Unlocks and clears all active locks on the door after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="flagsToUnlock">The door.</param>
+        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
         public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+
+        /// <summary>
+        /// Locks all active locks on the door.
+        /// </summary>
+        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
+        public void Lock(DoorLockType flagsToUnlock)
+        {
+            ChangeLock(flagsToUnlock);
+        }
 
         /// <summary>
         /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="flagsToUnlock">The door.</param>
+        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
         public void Lock(float time, DoorLockType flagsToUnlock)
         {
             ChangeLock(flagsToUnlock);
