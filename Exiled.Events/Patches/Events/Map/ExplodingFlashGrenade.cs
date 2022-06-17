@@ -38,10 +38,13 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Remove check if player is thrower. Grenade on self should affect themself.
-            int removeSelfCheckOffset = -4;
-            int removeSelfCheck = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Footprint), nameof(Footprint.Hub)))) + removeSelfCheckOffset;
-            newInstructions.RemoveRange(removeSelfCheck, 7);
+            if (Exiled.Events.Events.Instance.Config.CanFlashBangsAffectThrower)
+            {
+                // Remove check if player is thrower. Grenade on self should affect themself.
+                int removeSelfCheckOffset = -4;
+                int removeSelfCheck = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Footprint), nameof(Footprint.Hub)))) + removeSelfCheckOffset;
+                newInstructions.RemoveRange(removeSelfCheck, 7);
+            }
 
             int offset = -3;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
