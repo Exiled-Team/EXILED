@@ -65,8 +65,6 @@ namespace Exiled.API.Features
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
-        private static System.Random random = new();
-
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
@@ -269,7 +267,7 @@ namespace Exiled.API.Features
             List<Pickup> pickups = (type != ItemType.None
                 ? Pickups.Where(p => p.Type == type)
                 : Pickups).ToList();
-            return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
+            return pickups[Random.Range(0, pickups.Count)];
         }
 
         /// <summary>
