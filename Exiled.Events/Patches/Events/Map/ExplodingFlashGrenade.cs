@@ -125,7 +125,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                if(Exiled.Events.Events.Instance.Config.CanFlashBangsAffectThrower && Player.Get(grenade.PreviousOwner.Hub) == player)
+                if(Exiled.Events.Events.Instance.Config.CanFlashbangsAffectThrower && Player.Get(grenade.PreviousOwner.Hub) == player)
                 {
                     grenade.ProcessPlayer(player.ReferenceHub);
                 }
