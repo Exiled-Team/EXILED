@@ -7,7 +7,10 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
+
+    using UnityEngine;
 
     /// <summary>
     /// Defines the class for role-related classes.
@@ -36,12 +39,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this role.
         /// </summary>
-        public Enums.Side Side => Type.GetSide();
+        public Side Side => Type.GetSide();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this role.
         /// </summary>
-        public UnityEngine.Color Color => Type.GetColor();
+        public Color Color => Type.GetColor();
 
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
