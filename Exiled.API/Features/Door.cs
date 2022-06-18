@@ -438,10 +438,7 @@ namespace Exiled.API.Features
         /// Locks all active locks on the door.
         /// </summary>
         /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
-        public void Lock(DoorLockType flagsToUnlock)
-        {
-            ChangeLock(flagsToUnlock);
-        }
+        public void Lock(DoorLockType flagsToUnlock) => ChangeLock(flagsToUnlock);
 
         /// <summary>
         /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
