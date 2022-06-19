@@ -8,12 +8,13 @@
 namespace Exiled.API.Features
 {
     using Exiled.API.Enums;
+
     using Footprinting;
 
     /// <summary>
     /// Allows generic damage to player.
     /// </summary>
-    internal class GenericDamageHandler : PlayerStatsSystem.AttackerDamageHandler
+    internal class GenericDamageHandler : PlayerStatsSystem.CustomReasonDamageHandler
     {
         private Player player;
         private Player attacker;
@@ -30,6 +31,7 @@ namespace Exiled.API.Features
         /// <param name="damageType"> Damage type. </param>
         /// <param name="cassieAnnouncement"> Custom cassie announcment. </param>
         public GenericDamageHandler(Player player, Player attacker, float amount, DamageType damageType, DamageHandlers.DamageHandlerBase.CassieAnnouncement cassieAnnouncement)
+            : base($"You were damaged by {damageType}")
         {
             this.player = player;
             this.attacker = attacker;
@@ -40,6 +42,20 @@ namespace Exiled.API.Features
             this.AllowSelfDamage = true;
             this.Damage = amount;
             this.ServerLogsText = $"You were damaged by {damageType}";
+            Log.Info($"What is cassie {this.CassieDeathAnnouncement.Announcement}");
+            /*
+             *_deathReason = customReason;
+            Damage = damage;
+            _cassieAnnouncement = new CassieAnnouncement();
+            _cassieAnnouncement.Announcement = customCassieAnnouncement;
+            _cassieAnnouncement.SubtitleParts = new SubtitlePart[1]
+            {
+                new SubtitlePart(SubtitleType.Custom, new string[1]
+                {
+                    customCassieAnnouncement
+                })
+            };
+            */
         }
 
         /// <inheritdoc />
@@ -49,6 +65,13 @@ namespace Exiled.API.Features
             {
                 CassieAnnouncement baseAnnouncement = base.CassieDeathAnnouncement;
                 baseAnnouncement.Announcement += $" utilizing {this.damageType}";
+                baseAnnouncement.SubtitleParts = new Subtitles.SubtitlePart[]
+                {
+                    new Subtitles.SubtitlePart(Subtitles.SubtitleType.Custom, new string[]
+                    {
+                        baseAnnouncement.Announcement,
+                    }),
+                };
                 return baseAnnouncement;
             }
         }
@@ -71,7 +94,17 @@ namespace Exiled.API.Features
         /// <param name="ply"> Current player reference hub. </param>
         public override void ProcessDamage(ReferenceHub ply)
         {
-            return;
+            base.ProcessDamage(ply);
+        }
+
+        /// <summary>
+        /// Custom Exiled process damage.
+        /// </summary>
+        /// <param name="ply"> Current player hub. </param>
+        /// <returns> Handlers for processing. </returns>
+        public override HandlerOutput ApplyDamage(ReferenceHub ply)
+        {
+            return HandlerOutput.Death;             // return base.ApplyDamage(ply);
         }
     }
 }
