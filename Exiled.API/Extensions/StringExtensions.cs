@@ -99,22 +99,19 @@ namespace Exiled.API.Extensions
             StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
             int index = 0;
 
-            stringBuilder.AppendLine(string.Empty);
+            stringBuilder.AppendLine();
 
             foreach (T enumerator in enumerable)
             {
                 if (showIndex)
                 {
-                    stringBuilder.Append(index++);
-                    stringBuilder.Append(' ');
+                    stringBuilder.Append($"{index++} ");
                 }
 
                 stringBuilder.AppendLine(enumerator.ToString());
             }
 
-            string result = stringBuilder.ToString();
-
-            StringBuilderPool.Shared.Return(stringBuilder);
+            string result = StringBuilderPool.Shared.ToStringReturn(stringBuilder);
 
             return result;
         }
