@@ -111,9 +111,7 @@ namespace Exiled.API.Extensions
                 stringBuilder.AppendLine(enumerator.ToString());
             }
 
-            string result = StringBuilderPool.Shared.ToStringReturn(stringBuilder);
-
-            return result;
+            return StringBuilderPool.Shared.ToStringReturn(stringBuilder);
         }
 
         /// <summary>
