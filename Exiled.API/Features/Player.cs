@@ -1730,7 +1730,7 @@ namespace Exiled.API.Features
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
         public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CustomHandlerBase.CassieAnnouncement cassieAnnouncement = null) =>
-            Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
+            Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement).Base);
 
         /// <summary>
         /// Hurts the player.
