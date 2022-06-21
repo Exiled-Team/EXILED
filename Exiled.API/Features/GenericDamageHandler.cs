@@ -173,7 +173,7 @@ namespace Exiled.API.Features
         /// Custom Exiled process damage.
         /// </summary>
         /// <param name="ply"> Current player hub. </param>
-        /// <returns> Handlers for processing. </returns>
+        /// <returns> Handles processing damage outcome. </returns>
         public override HandlerOutput ApplyDamage(ReferenceHub ply)
         {
             HandlerOutput output = base.ApplyDamage(ply);
