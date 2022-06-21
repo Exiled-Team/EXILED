@@ -203,9 +203,9 @@ namespace Exiled.API.Features
             Firearm firearm = new(itemType)
             {
                 Base =
-                            {
-                                Owner = attacker.ReferenceHub,
-                            },
+                {
+                    Owner = attacker.ReferenceHub,
+                },
             };
             Base = new FirearmDamageHandler(firearm.Base, amount);
         }
