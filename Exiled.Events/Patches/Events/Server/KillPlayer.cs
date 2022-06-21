@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Text;
     using System.Threading.Tasks;
 
+    using Exiled.API.Features;
+
     using HarmonyLib;
 
     using Mirror;
@@ -37,12 +39,9 @@ namespace Exiled.Events.Patches.Events.Server
         {
             if(!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {
-                try
+                if (handler is GenericDamageHandler exiledHandler)
                 {
-                    handler = ((API.Features.GenericDamageHandler)handler).Base;
-                }
-                catch
-                {
+                    handler = exiledHandler.Base;
                 }
             }
 
