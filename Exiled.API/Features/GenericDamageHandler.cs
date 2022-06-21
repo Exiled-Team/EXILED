@@ -46,6 +46,10 @@ namespace Exiled.API.Features
             this.player = player;
             this.damageType = damageType;
             this.customCassieAnnouncement = cassieAnnouncement;
+            if (this.customCassieAnnouncement != null)
+            {
+                this.customCassieAnnouncement.Announcement = customCassieAnnouncement.Announcement ?? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}";
+            }
 
             this.Attacker = attacker.Footprint;
             this.AllowSelfDamage = true;
@@ -138,7 +142,7 @@ namespace Exiled.API.Features
                 case DamageType.Custom:
                 case DamageType.Unknown:
                 default:
-                    Base = new CustomReasonDamageHandler(damageText ?? genericDamageText, damage, string.IsNullOrEmpty(cassieAnnouncement?.Announcement) ? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}" : cassieAnnouncement.Announcement);
+                    Base = new CustomReasonDamageHandler(damageText ?? genericDamageText, damage, cassieAnnouncement.Announcement);
                     break;
             }
         }
