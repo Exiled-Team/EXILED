@@ -200,7 +200,6 @@ namespace Exiled.API.Features
         /// <param name="itemType"> ItemType. </param>
         private void GenericFirearm(Player player, Player attacker, float amount, DamageType damageType, ItemType itemType)
         {
-            Log.Info($"What was amount {amount}");
             Firearm firearm = new(itemType)
             {
                 Base =
