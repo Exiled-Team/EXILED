@@ -46,7 +46,7 @@ namespace Exiled.API.Features
             this.Attacker = attacker.Footprint;
             this.AllowSelfDamage = true;
             this.Damage = damage;
-            this.ServerLogsText = $"You were damaged by {damageType}";
+            this.ServerLogsText = $"GenericDamageHandler damage processing";
 
             switch (damageType)
             {
@@ -65,13 +65,11 @@ namespace Exiled.API.Features
                 case DamageType.Warhead:
                 case DamageType.Decontamination:
                 case DamageType.Tesla:
-                    Base = new CustomReasonDamageHandler($"You were damaged by {damageType}", damage, cassieAnnouncement.Announcement);
+                    Base = new CustomReasonDamageHandler($"Environemntal damage of type {damageType}", damage, cassieAnnouncement.Announcement);
                     break;
-
                 case DamageType.Recontainment:
                     Base = new RecontainmentDamageHandler(Attacker);
                     break;
-
                 case DamageType.Firearm:
                     GenericFirearm(player, attacker, damage, damageType, ItemType.GunAK);
                     break;
@@ -159,6 +157,8 @@ namespace Exiled.API.Features
 
         /// <inheritdoc />
         public override string ServerLogsText { get; }
+
+        private string deathMessage;
 
         /// <summary>
         /// Process damage for this custom damage source.
