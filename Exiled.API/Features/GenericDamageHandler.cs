@@ -21,11 +21,9 @@ namespace Exiled.API.Features
     /// <summary>
     /// Allows generic damage to player.
     /// </summary>
-    internal class GenericDamageHandler : PlayerStatsSystem.AttackerDamageHandler
+    internal class GenericDamageHandler : PlayerStatsSystem.CustomReasonDamageHandler
     {
         private Player player;
-        private Player attacker;
-        private float amount;
         private DamageType damageType;
         private DamageHandlers.DamageHandlerBase.CassieAnnouncement customCassieAnnouncement;
 
@@ -39,11 +37,9 @@ namespace Exiled.API.Features
         /// <param name="damageType"> Damage type. </param>
         /// <param name="cassieAnnouncement"> Custom cassie announcment. </param>
         public GenericDamageHandler(Player player, Player attacker, float amount, DamageType damageType, DamageHandlers.DamageHandlerBase.CassieAnnouncement cassieAnnouncement)
-            : base()
+            : base($"You were damaged by {damageType}")
         {
             this.player = player;
-            this.attacker = attacker;
-            this.amount = amount;
             this.damageType = damageType;
             this.customCassieAnnouncement = cassieAnnouncement;
 
@@ -52,7 +48,7 @@ namespace Exiled.API.Features
             this.Damage = amount;
             this.ServerLogsText = $"You were damaged by {damageType}";
 
-            // Base = new CustomReasonDamageHandler($"You were damaged by {damageType}", amount, string.IsNullOrEmpty(cassieAnnouncement?.Announcement) ? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}" : cassieAnnouncement.Announcement);
+            Base = new CustomReasonDamageHandler($"You were damaged by {damageType}", amount, string.IsNullOrEmpty(cassieAnnouncement?.Announcement) ? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}" : cassieAnnouncement.Announcement);
         }
 
         /// <summary>
@@ -63,12 +59,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets current attacker.
         /// </summary>
-        public override Footprint Attacker { get; set; }
+        public Footprint Attacker { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether allow self damage.
         /// </summary>
-        public override bool AllowSelfDamage { get; }
+        public bool AllowSelfDamage { get; }
 
         /// <inheritdoc />
         public override float Damage { get; set; }
@@ -95,6 +91,7 @@ namespace Exiled.API.Features
             HandlerOutput output = base.ApplyDamage(ply);
             if(output == HandlerOutput.Death)
             {
+                this._deathReason = $"You were killed by {damageType}";
                 Cassie.Message(this.customCassieAnnouncement?.Announcement ?? $" {this.player} KILLED BY UNKNOWN CAUSE ");
             }
 
