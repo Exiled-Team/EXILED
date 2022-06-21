@@ -158,8 +158,6 @@ namespace Exiled.API.Features
         /// <inheritdoc />
         public override string ServerLogsText { get; }
 
-        private string deathMessage;
-
         /// <summary>
         /// Process damage for this custom damage source.
         /// </summary>
@@ -179,8 +177,6 @@ namespace Exiled.API.Features
             HandlerOutput output = base.ApplyDamage(ply);
             if(output == HandlerOutput.Death)
             {
-                this._deathReason = $"You were killed by {damageType}";
-
                 if (this.customCassieAnnouncement?.Announcement != null)
                 {
                     Cassie.Message(this.customCassieAnnouncement.Announcement);
