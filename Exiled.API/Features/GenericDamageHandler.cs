@@ -92,7 +92,11 @@ namespace Exiled.API.Features
             if(output == HandlerOutput.Death)
             {
                 this._deathReason = $"You were killed by {damageType}";
-                Cassie.Message(this.customCassieAnnouncement?.Announcement ?? $" {this.player} KILLED BY UNKNOWN CAUSE ");
+
+                if (this.customCassieAnnouncement?.Announcement != null)
+                {
+                    Cassie.Message(this.customCassieAnnouncement.Announcement);
+                }
             }
 
             return output;

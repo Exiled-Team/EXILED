@@ -37,7 +37,13 @@ namespace Exiled.Events.Patches.Events.Server
         {
             if(!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {
-                handler = ((API.Features.GenericDamageHandler)handler).Base;
+                try
+                {
+                    handler = ((API.Features.GenericDamageHandler)handler).Base;
+                }
+                catch
+                {
+                }
             }
 
             return true;
