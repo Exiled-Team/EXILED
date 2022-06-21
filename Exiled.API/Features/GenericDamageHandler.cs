@@ -175,7 +175,7 @@ namespace Exiled.API.Features
         public override HandlerOutput ApplyDamage(ReferenceHub ply)
         {
             HandlerOutput output = base.ApplyDamage(ply);
-            if(output == HandlerOutput.Death)
+            if(output is HandlerOutput.Death)
             {
                 if (this.customCassieAnnouncement?.Announcement != null)
                 {
