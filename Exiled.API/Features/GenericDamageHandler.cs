@@ -23,6 +23,9 @@ namespace Exiled.API.Features
     /// </summary>
     internal class GenericDamageHandler : PlayerStatsSystem.CustomReasonDamageHandler
     {
+        private const string DamageTextDefault = "You were damaged by Unknown Cause";
+        private string genericDamageText;
+        private string genericEnvironmentDamageText;
         private Player player;
         private DamageType damageType;
         private DamageHandlers.DamageHandlerBase.CassieAnnouncement customCassieAnnouncement;
@@ -36,8 +39,9 @@ namespace Exiled.API.Features
         /// <param name="damage"> Damage quantity. </param>
         /// <param name="damageType"> Damage type. </param>
         /// <param name="cassieAnnouncement"> Custom cassie announcment. </param>
-        public GenericDamageHandler(Player player, Player attacker, float damage, DamageType damageType, DamageHandlers.DamageHandlerBase.CassieAnnouncement cassieAnnouncement)
-            : base($"You were damaged by {damageType}")
+        /// <param name="damageText"> Text to provide to player death screen. </param>
+        public GenericDamageHandler(Player player, Player attacker, float damage, DamageType damageType, DamageHandlers.DamageHandlerBase.CassieAnnouncement cassieAnnouncement, string damageText = null)
+            : base(DamageTextDefault)
         {
             this.player = player;
             this.damageType = damageType;
@@ -47,6 +51,8 @@ namespace Exiled.API.Features
             this.AllowSelfDamage = true;
             this.Damage = damage;
             this.ServerLogsText = $"GenericDamageHandler damage processing";
+            this.genericDamageText = $"You were damaged by {damageType}";
+            this.genericEnvironmentDamageText = $"Environemntal damage of type {damageType}";
 
             switch (damageType)
             {
@@ -60,12 +66,12 @@ namespace Exiled.API.Features
                 case DamageType.PocketDimension:
                 case DamageType.FriendlyFireDetector:
                 case DamageType.SeveredHands:
-                    Base = new CustomReasonDamageHandler($"You were damaged by {damageType}", damage, cassieAnnouncement.Announcement);
+                    Base = new CustomReasonDamageHandler(damageText ?? genericDamageText, damage, cassieAnnouncement.Announcement);
                     break;
                 case DamageType.Warhead:
                 case DamageType.Decontamination:
                 case DamageType.Tesla:
-                    Base = new CustomReasonDamageHandler($"Environemntal damage of type {damageType}", damage, cassieAnnouncement.Announcement);
+                    Base = new CustomReasonDamageHandler(damageText ?? genericEnvironmentDamageText, damage, cassieAnnouncement.Announcement);
                     break;
                 case DamageType.Recontainment:
                     Base = new RecontainmentDamageHandler(Attacker);
@@ -132,7 +138,7 @@ namespace Exiled.API.Features
                 case DamageType.Custom:
                 case DamageType.Unknown:
                 default:
-                    Base = new CustomReasonDamageHandler($"You were damaged by {damageType}", damage, string.IsNullOrEmpty(cassieAnnouncement?.Announcement) ? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}" : cassieAnnouncement.Announcement);
+                    Base = new CustomReasonDamageHandler(damageText ?? genericDamageText, damage, string.IsNullOrEmpty(cassieAnnouncement?.Announcement) ? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}" : cassieAnnouncement.Announcement);
                     break;
             }
         }
