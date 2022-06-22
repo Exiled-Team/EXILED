@@ -19,7 +19,8 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Fixes AntiCheat making rollback the player when he get there speed changed"/>.
+    /// Fixes position desync when player speed changed"/>.
+    /// Adds <see cref="Player.RunningSpeed"/> and <see cref="Player.WalkingSpeed"/> implementation.
     /// </summary>
     [HarmonyPatch(typeof(FirstPersonController), nameof(FirstPersonController.GetSpeed))]
     public static class AntiCheatSpeedFix
@@ -65,7 +66,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Stind_R4),
             });
 
-            for(int z = 0; z < newInstructions.Count; z++)
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
