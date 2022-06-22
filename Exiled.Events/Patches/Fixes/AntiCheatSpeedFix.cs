@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Ldfld, Field(typeof(FirstPersonController), nameof(FirstPersonController.staminaController))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Stamina), nameof(Stamina.AllowMaxSpeed))),
                 new(OpCodes.Brtrue_S, maxSpeed),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.WalkSpeed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.WalkingSpeed))),
                 new(OpCodes.Br_S, setSpeed),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.RunningSpeed))).WithLabels(maxSpeed),
 
