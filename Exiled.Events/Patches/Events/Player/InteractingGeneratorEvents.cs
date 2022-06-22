@@ -163,6 +163,22 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, notAllowed).WithLabels(check2),
             });
 
+            offset = 2;
+            index = newInstructions.FindLastIndex(i => i.Calls(PropertyGetter(typeof(Scp079Generator), nameof(Scp079Generator.Engaged)))) + offset;
+
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldc_I4_1),
+
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingGeneratorEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnStoppingGenerator))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(StoppingGeneratorEventArgs), nameof(StoppingGeneratorEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, notAllowed),
+            });
+
             for (int z = 0; z < newInstructions.Count; z++)
             {
                 API.Features.Log.Debug(newInstructions[z]);
