@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection.Emit;
@@ -17,10 +15,6 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
-    using Interactables.Interobjects.DoorUtils;
-
-    using InventorySystem.Items.Keycards;
 
     using MapGeneration.Distributors;
 
@@ -41,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
 
-            Label isClosed = generator.DefineLabel();
+            Label isOpen = generator.DefineLabel();
             Label isActivating = generator.DefineLabel();
             Label check = generator.DefineLabel();
             Label check2 = generator.DefineLabel();
@@ -52,6 +46,8 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 1;
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Stopwatch), nameof(Stopwatch.Stop)))) + offset;
 
+            // player = Player.Get(ply)
+            // I dont want write those instructions inside every event ctor
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
@@ -62,6 +58,26 @@ namespace Exiled.Events.Patches.Events.Player
             offset = -9;
             index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Scp079Generator), nameof(Scp079Generator.ServerSetFlag)))) + offset;
 
+            // if (this.HasFlag(_flags, GeneratorFlags.Open))
+            // {
+            //     ClosingGeneratorEventArgs ev = new(player, this, true);
+            //     Player.OnClosingGenerator(ev);
+            //     if(!ev.IsAllowed)
+            //     {
+            //         this.RpcDenied();
+            //         break;
+            //     }
+            // }
+            // else
+            // {
+            //     OpeningGeneratorEventArgs ev = new(player, this, true);
+            //     Player.OnOpeningGenerator(ev);
+            //     if(!ev.IsAllowed)
+            //     {
+            //         this.RpcDenied();
+            //         break;
+            //     }
+            // }
             newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Ldloc_S, player.LocalIndex),
@@ -73,7 +89,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(Scp079Generator), nameof(Scp079Generator._flags))),
                 new(OpCodes.Ldc_I4_4), // GeneratorFlags.Open
                 new(OpCodes.Callvirt, Method(typeof(Scp079Generator), nameof(Scp079Generator.HasFlag))),
-                new(OpCodes.Brfalse_S, isClosed),
+                new(OpCodes.Brfalse_S, isOpen),
 
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ClosingGeneratorEventArgs))[0]),
                 new(OpCodes.Dup),
@@ -81,7 +97,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ClosingGeneratorEventArgs), nameof(ClosingGeneratorEventArgs.IsAllowed))),
                 new(OpCodes.Br_S, check),
 
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningGeneratorEventArgs))[0]).WithLabels(isClosed),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningGeneratorEventArgs))[0]).WithLabels(isOpen),
                 new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnOpeningGenerator))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningGeneratorEventArgs), nameof(OpeningGeneratorEventArgs.IsAllowed))),
@@ -98,9 +114,10 @@ namespace Exiled.Events.Patches.Events.Player
             offset = 7;
             index = newInstructions.FindIndex(i => i.LoadsField(Field(typeof(Scp079Generator), nameof(Scp079Generator._requiredPermission)))) + offset;
 
-            // remove base game unlocking
+            // remove base game unlocking(we will unlock generator after UnlockingGeneratorEventArgs invoke and allowed check)
             newInstructions.RemoveRange(index, 4);
 
+            // ctor arguments
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
@@ -111,6 +128,7 @@ namespace Exiled.Events.Patches.Events.Player
             offset = -1;
             index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(Scp079Generator), nameof(Scp079Generator.RpcDenied)))) + offset;
 
+            // ctor arguments
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).MoveLabelsFrom(newInstructions[index]),
@@ -118,11 +136,19 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_0),
             });
 
-            // remove base game RpcDenied
+            // remove base game RpcDenied(same as unlocking)
             newInstructions.RemoveRange(index + 3, 2);
 
             index += 3;
 
+            // UnlockingGeneratorEventArgs ev = new(player, this, canUnlock);
+            // Player.OnUnlockingGenerator(ev);
+            // if(!ev.IsAllowed)
+            // {
+            //     this.RpcDenied();
+            //     break;
+            // }
+            // this.ServerSetFlag(GeneratorFlags.Unlocked, true);
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UnlockingGeneratorEventArgs))[0]).MoveLabelsFrom(newInstructions[index]),
@@ -140,6 +166,26 @@ namespace Exiled.Events.Patches.Events.Player
             offset = -5;
             index = newInstructions.FindIndex(i => i.Calls(PropertySetter(typeof(Scp079Generator), nameof(Scp079Generator.Activating)))) + offset;
 
+            // if (this.Activating)
+            // {
+            //     StoppingGeneratorEventArgs ev = new(player, this, true);
+            //     Player.OnStoppingGenerator(ev);
+            //     if(!ev.IsAllowed)
+            //     {
+            //         this.RpcDenied();
+            //         break;
+            //     }
+            // }
+            // else
+            // {
+            //     ActivatingGeneratorEventArgs ev = new(player, this, true);
+            //     Player.OnActivatingGenerator(ev);
+            //     if(!ev.IsAllowed)
+            //     {
+            //         this.RpcDenied();
+            //         break;
+            //     }
+            // }
             newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Ldloc_S, player.LocalIndex),
@@ -166,6 +212,13 @@ namespace Exiled.Events.Patches.Events.Player
             offset = 2;
             index = newInstructions.FindLastIndex(i => i.Calls(PropertyGetter(typeof(Scp079Generator), nameof(Scp079Generator.Engaged)))) + offset;
 
+            // StoppingGeneratorEventArgs ev = new(player, this, true);
+            // Player.OnStoppingGenerator(ev);
+            // if(!ev.IsAllowed)
+            // {
+            //     this.RpcDenied();
+            //     break;
+            // }
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
@@ -180,135 +233,9 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
-                API.Features.Log.Debug(newInstructions[z]);
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        /*private static bool Prefix(Scp079Generator __instance, ReferenceHub ply, byte colliderId)
-        {
-            try
-            {
-                if ((__instance._cooldownStopwatch.IsRunning && __instance._cooldownStopwatch.Elapsed.TotalSeconds <
-                    __instance._targetCooldown) || (colliderId != 0 && !__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open)))
-                    return false;
-                __instance._cooldownStopwatch.Stop();
-                switch (colliderId)
-                {
-                    case 0:
-                        if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Unlocked))
-                        {
-                            if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open))
-                            {
-                                ClosingGeneratorEventArgs closingGenEvent =
-                                    new(API.Features.Player.Get(ply), __instance);
-                                Player.OnClosingGenerator(closingGenEvent);
-                                if (!closingGenEvent.IsAllowed)
-                                {
-                                    __instance.RpcDenied();
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                OpeningGeneratorEventArgs openingGenEvent =
-                                    new(API.Features.Player.Get(ply), __instance);
-                                Player.OnOpeningGenerator(openingGenEvent);
-                                if (!openingGenEvent.IsAllowed)
-                                {
-                                    __instance.RpcDenied();
-                                    break;
-                                }
-                            }
-
-                            __instance.ServerSetFlag(Scp079Generator.GeneratorFlags.Open, !__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open));
-                            __instance._targetCooldown = __instance._doorToggleCooldownTime;
-                            break;
-                        }
-
-                        bool flag =
-                            (!(ply.inventory.CurInstance is not null) ||
-                             ply.inventory.CurInstance is not KeycardItem curInstance2
-                                ? 0
-                                : (curInstance2.Permissions.HasFlagFast(__instance._requiredPermission) ? 1 : 0)) != 0;
-                        UnlockingGeneratorEventArgs unlockingEvent = new(API.Features.Player.Get(ply), __instance, flag);
-                        Player.OnUnlockingGenerator(unlockingEvent);
-
-                        if (unlockingEvent.IsAllowed)
-                            __instance.ServerSetFlag(Scp079Generator.GeneratorFlags.Unlocked, true);
-                        else
-                            __instance.RpcDenied();
-                        __instance._targetCooldown = __instance._unlockCooldownTime;
-                        break;
-                    case 1:
-                        if ((ply.characterClassManager.IsHuman() || __instance.Activating) && !__instance.Engaged)
-                        {
-                            if (__instance.Activating)
-                            {
-                                StoppingGeneratorEventArgs stoppingGen = new(API.Features.Player.Get(ply), __instance);
-                                Player.OnStoppingGenerator(stoppingGen);
-                                if (!stoppingGen.IsAllowed)
-                                {
-                                    __instance.RpcDenied();
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                ActivatingGeneratorEventArgs activatingEvent =
-                                    new(API.Features.Player.Get(ply), __instance);
-                                Player.OnActivatingGenerator(activatingEvent);
-                                if (!activatingEvent.IsAllowed)
-                                {
-                                    __instance.RpcDenied();
-                                    break;
-                                }
-                            }
-
-                            __instance.Activating = !__instance.Activating;
-                            if (__instance.Activating)
-                                __instance._leverStopwatch.Restart();
-                            __instance._targetCooldown = __instance._doorToggleCooldownTime;
-                            break;
-                        }
-
-                        break;
-                    case 2:
-                        if (__instance.Activating && !__instance.Engaged)
-                        {
-                            StoppingGeneratorEventArgs stoppingGen = new(API.Features.Player.Get(ply), __instance);
-                            Player.OnStoppingGenerator(stoppingGen);
-                            if (!stoppingGen.IsAllowed)
-                            {
-                                __instance.RpcDenied();
-                                break;
-                            }
-
-                            __instance.ServerSetFlag(Scp079Generator.GeneratorFlags.Activating, false);
-                            __instance._targetCooldown = __instance._unlockCooldownTime;
-                            break;
-                        }
-
-                        break;
-                    default:
-                        __instance._targetCooldown = 1f;
-                        break;
-                }
-
-                __instance._cooldownStopwatch.Restart();
-            }
-            catch (Exception exception)
-            {
-                API.Features.Log.Error(
-                    $"Exiled.Events.Patches.Events.Player.InteractingGeneratorEvent: {exception}\n{exception.StackTrace}");
-
-                return true;
-            }
-
-            return false;
-        }*/
     }
 }
