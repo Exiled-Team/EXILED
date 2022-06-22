@@ -19,11 +19,11 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Fixes position desync when player speed changed"/>.
+    /// Fixes position desync when player speed changed.
     /// Adds <see cref="Player.RunningSpeed"/> and <see cref="Player.WalkingSpeed"/> implementation.
     /// </summary>
     [HarmonyPatch(typeof(FirstPersonController), nameof(FirstPersonController.GetSpeed))]
-    public static class AntiCheatSpeedFix
+    internal static class AntiCheatSpeedFix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
