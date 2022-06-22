@@ -14,12 +14,16 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Threading.Tasks;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
 
     using HarmonyLib;
 
     using Mirror;
 
     using PlayerStatsSystem;
+
+    using static Exiled.Events.Events;
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     /// <summary>
@@ -29,11 +33,11 @@ namespace Exiled.Events.Patches.Events.Server
     internal class KillPlayer
     {
         /// <summary>
-        /// Handles processing of kill player.
+        /// Handles processing of kill player to cast to correct damage handler.
         /// </summary>
         /// <param name="__instance"> PlayerStat instance. </param>
         /// <param name="handler"> DamageHandlerBase instance. </param>
-        /// <returns> True if original function should run. </returns>
+        /// <returns> Always returns true as we want to run original function with correct DamageHandler. </returns>
         [HarmonyPrefix]
         public static bool KillPlayerPrefix(PlayerStats __instance, ref DamageHandlerBase handler)
         {
@@ -42,6 +46,12 @@ namespace Exiled.Events.Patches.Events.Server
                 if (handler is GenericDamageHandler exiledHandler)
                 {
                     handler = exiledHandler.Base;
+                }
+                else
+                {
+                    KillingPlayerEventArgs ev = new KillingPlayerEventArgs(Player.Get(__instance._hub), ref handler);
+                    Handlers.Player.OnKillPlayer(ev);
+                    handler = ev.Handler;
                 }
             }
 

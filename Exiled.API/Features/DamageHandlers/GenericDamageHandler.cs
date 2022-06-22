@@ -21,7 +21,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Allows generic damage to player.
     /// </summary>
-    internal class GenericDamageHandler : PlayerStatsSystem.CustomReasonDamageHandler
+    public class GenericDamageHandler : PlayerStatsSystem.CustomReasonDamageHandler
     {
         private const string DamageTextDefault = "You were damaged by Unknown Cause";
         private string genericDamageText;
