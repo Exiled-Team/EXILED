@@ -44,6 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label isClosed = generator.DefineLabel();
             Label isActivating = generator.DefineLabel();
             Label check = generator.DefineLabel();
+            Label check2 = generator.DefineLabel();
             Label notAllowed = generator.DefineLabel();
             Label skip = generator.DefineLabel();
             Label @break = newInstructions.FindLast(i => i.IsLdarg(0)).labels[0];
@@ -141,9 +142,25 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldc_I4_1),
+
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp079Generator), nameof(Scp079Generator.Activating))),
                 new(OpCodes.Brtrue_S, isActivating),
+
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingGeneratorEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnStoppingGenerator))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(StoppingGeneratorEventArgs), nameof(StoppingGeneratorEventArgs.IsAllowed))),
+                new(OpCodes.Br_S, check2),
+
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingGeneratorEventArgs))[0]).WithLabels(isActivating),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnActivatingGenerator))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingGeneratorEventArgs), nameof(ActivatingGeneratorEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, notAllowed).WithLabels(check2),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
