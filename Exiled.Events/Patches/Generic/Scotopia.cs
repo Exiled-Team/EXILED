@@ -61,8 +61,8 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static bool GetValue(Player player) => player.IsScp ? player.IsScotopia.Value : !player.IsScotopia.Value;
+        private static bool GetValue(Player player) => player.IsScp ? player.HasScotopia.Value : !player.HasScotopia.Value;
 
-        private static bool HasValue(Player player) => player.IsScotopia.HasValue;
+        private static bool HasValue(Player player) => player.HasScotopia.HasValue;
     }
 }
