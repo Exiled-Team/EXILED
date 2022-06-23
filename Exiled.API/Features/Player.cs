@@ -372,7 +372,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is fully connected to the server.
         /// </summary>
-        public bool IsConnected => GameObject is not null;
+        public bool IsConnected => GameObject != null;
 
         /// <summary>
         /// Gets a list of player ids who can't see the player.

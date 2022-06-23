@@ -58,7 +58,7 @@ namespace Exiled.API.Features
         /// Gets the actual <see cref="RespawnEffectsController"/>.
         /// </summary>
         [Obsolete("Using this will lead to indefinable errors", true)]
-        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller is not null);
+        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller != null);
 
         /// <summary>
         /// Play an effect when a certain class spawns.
@@ -80,7 +80,7 @@ namespace Exiled.API.Features
         {
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {
-                if (controller is not null)
+                if (controller != null)
                     controller.RpcPlayEffects(effects);
             }
         }
