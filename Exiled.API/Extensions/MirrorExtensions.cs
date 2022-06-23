@@ -21,6 +21,8 @@ namespace Exiled.API.Extensions
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
     using Respawning;
 
     using UnityEngine;
@@ -219,13 +221,21 @@ namespace Exiled.API.Extensions
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = new();
+            StringBuilder annoucement = StringBuilderPool.Shared.Rent();
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Length; i++)
                 annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
 
-            SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller is not null)
+                {
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+                }
+            }
+
+            StringBuilderPool.Shared.Return(annoucement);
         }
 
         /// <summary>
