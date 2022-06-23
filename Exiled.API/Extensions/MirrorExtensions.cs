@@ -108,7 +108,7 @@ namespace Exiled.API.Extensions
         /// Shaking target <see cref="Player"/> window.
         /// </summary>
         /// <param name="player">Target to shake.</param>
-        public static void Shake(this Player player) => SendFakeTargetRpc(player, AlphaWarheadController.Host.netIdentity, typeof(AlphaWarheadController), nameof(AlphaWarheadController.TargetRpcShake), false);
+        public static void Shake(this Player player) => AlphaWarheadController.Host.TargetRpcShake(player.Connection, false, true);
 
         /// <summary>
         /// Play beep sound to <see cref="Player"/>.
