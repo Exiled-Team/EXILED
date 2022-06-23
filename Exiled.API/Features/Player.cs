@@ -1055,7 +1055,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                return referenceHub?.gameObject is null ? null : Get(referenceHub.gameObject);
+                return referenceHub?.gameObject == null ? null : Get(referenceHub.gameObject);
             }
             catch (Exception)
             {
@@ -1092,7 +1092,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
-            if (gameObject is null)
+            if (gameObject == null)
                 return null;
 
             Dictionary.TryGetValue(gameObject, out Player player);
