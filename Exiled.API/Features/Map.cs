@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;

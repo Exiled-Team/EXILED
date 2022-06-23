@@ -17,6 +17,7 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public abstract class Role
     {
+#pragma warning disable 1584
         /// <summary>
         /// Gets the player this role is referring to.
         /// </summary>
