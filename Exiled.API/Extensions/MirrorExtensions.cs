@@ -196,7 +196,16 @@ namespace Exiled.API.Extensions
         /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
         /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
         /// <param name="isSubtitles">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isSubtitles.</param>
-        public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+        public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false)
+        {
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if(controller is not null)
+                {
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+                }
+            }
+        }
 
         /// <summary>
         /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
