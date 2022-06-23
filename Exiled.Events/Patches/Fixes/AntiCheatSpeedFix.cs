@@ -7,127 +7,69 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-
-    using System;
     using System.Collections.Generic;
-
-    using CustomPlayerEffects;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
 
     using HarmonyLib;
 
-    using InventorySystem.Items;
-    using InventorySystem.Items.Armor;
+    using NorthwoodLib.Pools;
 
-    using PlayableScps;
-
-    using UnityEngine;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Fixes AntiCheat making rollback the player when he get there speed changed"/>.
+    /// Fixes position desync when player speed changed.
+    /// Adds <see cref="Player.RunningSpeed"/> and <see cref="Player.WalkingSpeed"/> implementation.
     /// </summary>
     [HarmonyPatch(typeof(FirstPersonController), nameof(FirstPersonController.GetSpeed))]
-    public static class AntiCheatSpeedFix
+    internal static class AntiCheatSpeedFix
     {
-        private static bool Prefix(FirstPersonController __instance, out float speed, bool isServerSide)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            const int offset = 2;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldloc_0) + offset;
+
+            Label maxSpeed = generator.DefineLabel();
+            Label setSpeed = generator.DefineLabel();
+
+            // Remove base-game stamina speed setter
+            newInstructions.RemoveRange(index, 14);
+
+            newInstructions.InsertRange(index, new[]
             {
-                __instance.curRole = __instance._hub.characterClassManager.Classes.SafeGet(__instance._hub.characterClassManager.CurClass);
-                bool flag = __instance._hub.characterClassManager.IsAnyScp();
-                if (isServerSide)
-                {
-                    if (!__instance.isLocalPlayer)
-                        __instance.IsSneaking = __instance._hub.animationController.MoveState == PlayerMovementState.Sneaking && !__instance._hub.characterClassManager.IsAnyScp();
+                // &speed
+                new(OpCodes.Ldarg_1),
 
-                    speed = __instance.staminaController.AllowMaxSpeed ? __instance.curRole.runSpeed : __instance.curRole.walkSpeed;
-                    if (!flag)
-                    {
-                        // Only need to add this two lines
-                        var player = Player.Get(__instance._hub);
-                        speed *= __instance.staminaController.AllowMaxSpeed ? player.RunningSpeed : player.WalkSpeed;
-                    }
-                }
-                else
-                {
-                    speed = 0f;
-                }
+                // speed
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldind_R4),
 
-                if (flag)
-                {
-                    if (__instance._hub.scpsController.CurrentScp != null)
-                    {
-                        IMovementVariation currentScp = __instance._hub.scpsController.CurrentScp;
-                        speed = currentScp.MaxSpeed;
-                    }
-                    else
-                    {
-                        RoleType curClass = __instance._hub.characterClassManager.CurClass;
-                        if (curClass == RoleType.Scp106 && __instance.Slowdown106)
-                            speed = 1f;
-                    }
-                }
+                // Player player = Player.Get(_hub)
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(FirstPersonController), nameof(FirstPersonController._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                if (!isServerSide)
-                    __instance.MovementLock = CursorManager.IsMovementLocked();
+                // staminaController.AllowMaxSpeed ? player.RunningSpeed : player.WalkSpeed
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(FirstPersonController), nameof(FirstPersonController.staminaController))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Stamina), nameof(Stamina.AllowMaxSpeed))),
+                new(OpCodes.Brtrue_S, maxSpeed),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.WalkingSpeed))),
+                new(OpCodes.Br_S, setSpeed),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.RunningSpeed))).WithLabels(maxSpeed),
 
-                if (__instance.MovementLock > MovementLockType.Unlocked && !isServerSide)
-                {
-                    speed = 0f;
-                }
-                else
-                {
-                    if (__instance.IsSneaking)
-                        speed *= 0.4f;
+                // speed *= (speed value above)
+                new CodeInstruction(OpCodes.Mul).WithLabels(setSpeed),
+                new(OpCodes.Stind_R4),
+            });
 
-                    foreach (KeyValuePair<Type, PlayerEffect> keyValuePair in __instance._hub.playerEffectsController.AllEffects)
-                    {
-                        if (keyValuePair.Value.IsEnabled && keyValuePair.Value is IMovementSpeedEffect movementSpeedEffect)
-                        {
-                            speed = movementSpeedEffect.GetMovementSpeed(speed);
-                            if (movementSpeedEffect.DisableSprint)
-                            {
-                                __instance.IsSprinting = false;
-                            }
-                        }
-                    }
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                    if (__instance._hub.inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
-                    {
-                        BodyArmorUtils.GetMovementProperties(__instance._hub.characterClassManager.CurRole.team, bodyArmor, out float num, out float num2);
-                        speed *= num;
-                    }
-
-                    if (__instance._hub.inventory.CurInstance is IMobilityModifyingItem mobilityModifyingItem)
-                    {
-                        speed *= mobilityModifyingItem.MovementSpeedMultiplier;
-                        if (speed > mobilityModifyingItem.MovementSpeedLimiter && mobilityModifyingItem.MovementSpeedLimiter >= 0f)
-                            speed = mobilityModifyingItem.MovementSpeedLimiter;
-                    }
-                }
-
-                if (isServerSide)
-                {
-                    return false;
-                }
-
-                speed *= __instance.input.sqrMagnitude;
-                __instance.input = Vector2.Lerp(__instance.input, new Vector2(__instance.horizontal, __instance.vertical), 0.6f);
-                if (__instance.input.sqrMagnitude > 1f)
-                {
-                    __instance.input.Normalize();
-                }
-
-                return false;
-            }
-            catch(Exception ex)
-            {
-                Log.Error("e" + ex);
-                speed = 0;
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

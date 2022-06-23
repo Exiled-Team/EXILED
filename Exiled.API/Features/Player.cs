@@ -86,7 +86,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// The walk speed of the player.
         /// </summary>
-        private float? walkSpeed;
+        private float? walkingSpeed;
 
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
@@ -338,12 +338,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets walkSpeed of the player.
         /// </summary>
-        public float WalkSpeed
+        public float WalkingSpeed
         {
-            get => walkSpeed ??= ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
+            get => walkingSpeed ??= ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
             set
             {
-                walkSpeed = value;
+                walkingSpeed = value;
                 this.ChangeWalkingSpeed(value, false);
             }
         }
