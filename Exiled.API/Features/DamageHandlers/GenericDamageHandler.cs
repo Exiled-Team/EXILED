@@ -74,8 +74,10 @@ namespace Exiled.API.Features
                     break;
                 case DamageType.Warhead:
                 case DamageType.Decontamination:
-                case DamageType.Tesla:
                     Base = new CustomReasonDamageHandler(damageText ?? genericEnvironmentDamageText, damage, cassieAnnouncement.Announcement);
+                    break;
+                case DamageType.Tesla:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.Tesla, cassieAnnouncement);
                     break;
                 case DamageType.Recontainment:
                     Base = new RecontainmentDamageHandler(Attacker);
