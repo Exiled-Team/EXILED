@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Generic
     using CustomPlayerEffects;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
 
     using HarmonyLib;
 
@@ -78,17 +79,20 @@ namespace Exiled.Events.Patches.Generic
 
                     Array.Copy(__instance.ReceivedData, __instance._transmitBuffer, __instance._usedData);
 
-                    if (player.Role.Type.Is939())
+                    if (player.Role is Scp939Role scp939Role)
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
                             if (__instance._transmitBuffer[index].position.y < 800f)
                             {
-                                ReferenceHub hub2 = ReferenceHub.GetHub(__instance._transmitBuffer[index].playerID);
+                                Player player2 = Player.Get(__instance._transmitBuffer[index].playerID);
 
-                                if (hub2.characterClassManager.CurRole.team != Team.SCP
-                                    && hub2.characterClassManager.CurRole.team != Team.RIP
-                                    && !hub2
+                                if (scp939Role.VisiblePlayers.Contains(player2))
+                                    continue;
+
+                                if (player2.Role.Team != Team.SCP
+                                    && player2.Role.Team != Team.RIP
+                                    && !player2.ReferenceHub
                                         .GetComponent<Scp939_VisionController>()
                                         .CanSee(player.ReferenceHub.playerEffectsController.GetEffect<Visuals939>()))
                                 {

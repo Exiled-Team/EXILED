@@ -82,6 +82,7 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
             PlayerMovementSync.OnPlayerSpawned += Handlers.Player.OnSpawned;
+            InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
             ServerConsole.ReloadServerName();
         }
@@ -102,6 +103,7 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
             PlayerMovementSync.OnPlayerSpawned -= Handlers.Player.OnSpawned;
+            InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
             Handlers.Map.Generated -= Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
