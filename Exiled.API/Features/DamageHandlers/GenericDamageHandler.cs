@@ -61,20 +61,40 @@ namespace Exiled.API.Features
             switch (damageType)
             {
                 case DamageType.Falldown:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.Falldown, cassieAnnouncement);
+                    break;
                 case DamageType.Hypothermia:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.Hypothermia, cassieAnnouncement);
+                    break;
                 case DamageType.Asphyxiation:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.Asphyxiated, cassieAnnouncement);
+                    break;
                 case DamageType.Poison:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.Poisoned, cassieAnnouncement);
+                    break;
                 case DamageType.Bleeding:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.Bleeding, cassieAnnouncement);
+                    break;
                 case DamageType.Crushed:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.Crushed, cassieAnnouncement);
+                    break;
                 case DamageType.FemurBreaker:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.UsedAs106Bait, cassieAnnouncement);
+                    break;
                 case DamageType.PocketDimension:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.PocketDecay, cassieAnnouncement);
+                    break;
                 case DamageType.FriendlyFireDetector:
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.FriendlyFireDetector, cassieAnnouncement);
+                    break;
                 case DamageType.SeveredHands:
-                    Base = new CustomReasonDamageHandler(damageText ?? genericDamageText, damage, cassieAnnouncement.Announcement);
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.SeveredHands, cassieAnnouncement);
                     break;
                 case DamageType.Warhead:
+                    Base = new WarheadDamageHandler();
+                    break;
                 case DamageType.Decontamination:
-                    Base = new CustomReasonDamageHandler(damageText ?? genericEnvironmentDamageText, damage, cassieAnnouncement.Announcement);
+                    Base = new UniversalDamageHandler(damage, DeathTranslations.Decontamination, cassieAnnouncement);
                     break;
                 case DamageType.Tesla:
                     Base = new UniversalDamageHandler(damage, DeathTranslations.Tesla, cassieAnnouncement);
@@ -82,14 +102,17 @@ namespace Exiled.API.Features
                 case DamageType.Recontainment:
                     Base = new RecontainmentDamageHandler(Attacker);
                     break;
-                case DamageType.Firearm:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunAK);
-                    break;
+
                 case DamageType.MicroHid:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.MicroHID);
+                    InventorySystem.Items.MicroHID.MicroHIDItem microHidOwner = new InventorySystem.Items.MicroHID.MicroHIDItem();
+                    microHidOwner.Owner = attacker.ReferenceHub;
+                    Base = new MicroHidDamageHandler(microHidOwner, damage);
                     break;
                 case DamageType.Explosion:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GrenadeHE);
+                    Base = new ExplosionDamageHandler(attacker.Footprint, UnityEngine.Vector3.zero, damage, 50);
+                    break;
+                case DamageType.Firearm:
+                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunAK);
                     break;
                 case DamageType.Crossvec:
                     GenericFirearm(player, attacker, damage, damageType, ItemType.GunCrossvec);
@@ -132,14 +155,28 @@ namespace Exiled.API.Features
                     Base = new Scp096DamageHandler(curr096, damage, Scp096DamageHandler.AttackType.Slap);
                     break;
                 case DamageType.Scp:
-                case DamageType.Scp018:
-                case DamageType.Scp207:
-                case DamageType.Scp049:
-                case DamageType.Scp173:
-                case DamageType.Scp939:
-                case DamageType.Scp0492:
-                case DamageType.Scp106:
                     Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
+                    break;
+                case DamageType.Scp018:
+                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
+                    break;
+                case DamageType.Scp207:
+                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp207);
+                    break;
+                case DamageType.Scp049:
+                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp049);
+                    break;
+                case DamageType.Scp173:
+                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp173);
+                    break;
+                case DamageType.Scp939:
+                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp939);
+                    break;
+                case DamageType.Scp0492:
+                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Zombie);
+                    break;
+                case DamageType.Scp106:
+                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.PocketDecay);
                     break;
                 case DamageType.Custom:
                 case DamageType.Unknown:
