@@ -130,11 +130,12 @@ namespace Exiled.API.Features
         /// <param name="playEffects">Whether or not effects will be played with the spawn.</param>
         public static void ForceWave(SpawnableTeamType team, bool playEffects = false)
         {
-            RespawnManager.Singleton.ForceSpawnTeam(team);
             if (playEffects)
             {
                 RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.Selection, team);
             }
+
+            RespawnManager.Singleton.ForceSpawnTeam(team);
         }
     }
 }
