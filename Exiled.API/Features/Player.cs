@@ -123,7 +123,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new(20);
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new(20, new ReferenceHub.GameObjectComparer());
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -372,7 +372,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is fully connected to the server.
         /// </summary>
-        public bool IsConnected => GameObject is not null;
+        public bool IsConnected => GameObject != null;
 
         /// <summary>
         /// Gets a list of player ids who can't see the player.
@@ -840,7 +840,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the current room the player is in.
+        /// Gets the current <see cref="Room"/> the player is in.
         /// </summary>
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
@@ -1055,7 +1055,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                return referenceHub?.gameObject is null ? null : Get(referenceHub.gameObject);
+                return referenceHub?.gameObject == null ? null : Get(referenceHub.gameObject);
             }
             catch (Exception)
             {
@@ -1092,7 +1092,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
-            if (gameObject is null)
+            if (gameObject == null)
                 return null;
 
             Dictionary.TryGetValue(gameObject, out Player player);

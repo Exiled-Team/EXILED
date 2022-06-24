@@ -49,8 +49,8 @@ namespace Exiled.Events.Patches.Events.Map
             LocalBuilder ev = generator.DeclareLocal(typeof(ExplodingGrenadeEventArgs));
             LocalBuilder list = generator.DeclareLocal(typeof(List<ReferenceHub>));
             int instructionsToRemove = 4;
-            for (int i = 0; i < instructionsToRemove; i++)
-                newInstructions.RemoveAt(index);
+
+            newInstructions.RemoveRange(index, instructionsToRemove);
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {

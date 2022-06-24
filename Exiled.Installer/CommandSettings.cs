@@ -14,9 +14,6 @@ namespace Exiled.Installer
     using System.Linq;
     using System.Threading.Tasks;
 
-#pragma warning disable SA1401 // Fields should be private
-#pragma warning disable SA1600 // Elements should be documented
-
     internal sealed class CommandSettings
     {
         public static readonly RootCommand RootCommand = new()
