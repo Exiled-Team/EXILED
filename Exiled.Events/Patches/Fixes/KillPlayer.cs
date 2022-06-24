@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -24,7 +25,6 @@ namespace Exiled.Events.Patches.Events.Server
     using PlayerStatsSystem;
 
     using static Exiled.Events.Events;
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     /// <summary>
     /// Prefix of KillPlayer action.
@@ -32,14 +32,8 @@ namespace Exiled.Events.Patches.Events.Server
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal class KillPlayer
     {
-        /// <summary>
-        /// Handles processing of kill player to cast to correct damage handler.
-        /// </summary>
-        /// <param name="__instance"> PlayerStat instance. </param>
-        /// <param name="handler"> DamageHandlerBase instance. </param>
-        /// <returns> Always returns true as we want to run original function with correct DamageHandler. </returns>
         [HarmonyPrefix]
-        public static bool KillPlayerPrefix(PlayerStats __instance, ref DamageHandlerBase handler)
+        private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler)
         {
             if(!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {
@@ -54,9 +48,6 @@ namespace Exiled.Events.Patches.Events.Server
                     handler = ev.Handler;
                 }
             }
-
-            return true;
         }
     }
-#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
 }

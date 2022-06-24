@@ -208,15 +208,6 @@ namespace Exiled.API.Features
         public override string ServerLogsText { get; }
 
         /// <summary>
-        /// Process damage for this custom damage source.
-        /// </summary>
-        /// <param name="ply"> Current player reference hub. </param>
-        public override void ProcessDamage(ReferenceHub ply)
-        {
-            base.ProcessDamage(ply);
-        }
-
-        /// <summary>
         /// Custom Exiled process damage.
         /// </summary>
         /// <param name="ply"> Current player hub. </param>
