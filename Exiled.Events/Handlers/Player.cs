@@ -442,6 +442,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ItemAddedEventArgs> ItemAdded;
 
         /// <summary>
+        /// Invoked before KillPlayer is called.
+        /// </summary>
+        public static event CustomEventHandler<KillingPlayerEventArgs> KillingPlayer;
+
+        /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -935,6 +940,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+
+        /// <summary>
+        ///  Called before KillPlayer is called.
+        /// </summary>
+        /// <param name="ev"> Current <see cref="KillingPlayerEventArgs"/> event handler. </param>
+        public static void OnKillPlayer(KillingPlayerEventArgs ev) => KillingPlayer.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
