@@ -80,7 +80,7 @@ namespace Exiled.API.Features
         {
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {
-                if (controller != null)
+                if (controller is not null)
                     controller.RpcPlayEffects(effects);
             }
         }
