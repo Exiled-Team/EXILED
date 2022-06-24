@@ -31,6 +31,7 @@ namespace Exiled.Events.Patches.Generic
 
             Label continueLable = generator.DefineLabel();
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            LocalBuilder value = generator.DeclareLocal(typeof(bool?));
 
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call
             && (MethodInfo)i.operand == PropertySetter(typeof(LocalCurrentRoomEffects), nameof(LocalCurrentRoomEffects.NetworksyncFlicker)));
@@ -46,13 +47,22 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, player.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Scotopia), nameof(Scotopia.HasValue))),
+                new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.HasScotopia))),
+                new(OpCodes.Stloc, value.LocalIndex),
+                new(OpCodes.Ldloca, value.LocalIndex),
+                new(OpCodes.Call, PropertyGetter(typeof(bool?), nameof(Player.HasScotopia.HasValue))),
                 new(OpCodes.Brfalse_S, continueLable),
 
-                // this.NetworksyncFlicker = Scotopia.GetValue(player);
+                // this.NetworksyncFlicker = player.IsScp ? player.HasScotopia.Value : !player.HasScotopia.Value;
                 new(OpCodes.Pop),
+                new(OpCodes.Ldloca, value.LocalIndex),
+                new(OpCodes.Call, PropertyGetter(typeof(bool?), nameof(Player.HasScotopia.Value))),
+
                 new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Scotopia), nameof(Scotopia.GetValue))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsScp))),
+                new(OpCodes.Brtrue_S, continueLable),
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Ceq),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -60,9 +70,5 @@ namespace Exiled.Events.Patches.Generic
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static bool GetValue(Player player) => player.IsScp ? player.HasScotopia.Value : !player.HasScotopia.Value;
-
-        private static bool HasValue(Player player) => player.HasScotopia.HasValue;
     }
 }
