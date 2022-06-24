@@ -202,7 +202,7 @@ namespace Exiled.API.Extensions
         {
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {
-                if(controller != null)
+                if (controller is not null)
                 {
                     SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
                 }
