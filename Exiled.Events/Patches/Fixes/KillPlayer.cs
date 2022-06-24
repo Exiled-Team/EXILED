@@ -32,7 +32,6 @@ namespace Exiled.Events.Patches.Events.Server
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal class KillPlayer
     {
-        [HarmonyPrefix]
         private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler)
         {
             if(!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
