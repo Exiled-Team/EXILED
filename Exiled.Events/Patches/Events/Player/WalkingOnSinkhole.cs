@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// patches <see cref="SinkholeEnvironmentalHazard.DistanceChanged"/> to add the <see cref="Handlers.Player.WalkingOnSinkhole"/> event.
+    /// patches <see cref="SinkholeEnvironmentalHazard.DistanceChanged"/> to add the <see cref="Handlers.Player.EnteringSinkhole"/> event.
     /// </summary>
     [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.DistanceChanged))]
     internal static class WalkingOnSinkhole
@@ -40,10 +40,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(WalkingOnSinkholeEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringSinkholeEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnWalkingOnSinkhole))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(WalkingOnSinkholeEventArgs), nameof(WalkingOnSinkholeEventArgs.IsAllowed))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringSinkhole))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringSinkholeEventArgs), nameof(EnteringSinkholeEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });
 

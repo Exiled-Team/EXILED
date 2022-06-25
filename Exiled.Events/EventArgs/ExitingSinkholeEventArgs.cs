@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="WalkingOnSinkholeEventArgs.cs" company="Exiled Team">
+// <copyright file="ExitingSinkholeEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,17 +12,17 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player walks over a sinkhole.
+    /// Contains all information before a player Exiting over a sinkhole.
     /// </summary>
-    public class WalkingOnSinkholeEventArgs : EventArgs
+    public class ExitingSinkholeEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WalkingOnSinkholeEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ExitingSinkholeEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="sinkhole"><inheritdoc cref="SinkholeEnvironmentalHazard"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public WalkingOnSinkholeEventArgs(Player player, SinkholeEnvironmentalHazard sinkhole, bool isAllowed = true)
+        public ExitingSinkholeEventArgs(Player player, SinkholeEnvironmentalHazard sinkhole, bool isAllowed = true)
         {
             Player = player;
             Sinkhole = sinkhole;

@@ -327,7 +327,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
         /// </summary>
-        public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
+        public static event CustomEventHandler<EnteringSinkholeEventArgs> EnteringSinkhole;
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
+        /// </summary>
+        public static event CustomEventHandler<ExitingSinkholeEventArgs> ExitingSinkhole;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with a shooting target.
@@ -808,10 +813,16 @@ namespace Exiled.Events.Handlers
         public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
+        /// Called before a <see cref="API.Features.Player"/> entering in a sinkhole.
         /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
-        public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
+        /// /// <param name="ev">The <see cref="EnteringSinkholeEventArgs"/> instance.</param>
+        public static void OnEnteringSinkhole(EnteringSinkholeEventArgs ev) => EnteringSinkhole.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> exiting over a sinkhole.
+        /// </summary>
+        /// /// <param name="ev">The <see cref="ExitingSinkholeEventArgs"/> instance.</param>
+        public static void OnExitingSinkhole(ExitingSinkholeEventArgs ev) => ExitingSinkhole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a shooting target.
