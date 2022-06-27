@@ -112,7 +112,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID.</param>
         /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
-        public static CustomItem Get(int id) => Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Id == id);
+        public static CustomItem Get(uint id) => Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Id == id);
 
         /// <summary>
         /// Gets a <see cref="CustomItem"/> with a specific name.
@@ -127,7 +127,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="id">The <see cref="CustomItem"/> ID to look for.</param>
         /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
-        public static bool TryGet(int id, out CustomItem customItem)
+        public static bool TryGet(uint id, out CustomItem customItem)
         {
             customItem = Get(id);
 
@@ -145,7 +145,7 @@ namespace Exiled.CustomItems.API.Features
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
 
-            customItem = int.TryParse(name, out int id) ? Get(id) : Get(name);
+            customItem = uint.TryParse(name, out uint id) ? Get(id) : Get(name);
 
             return customItem is not null;
         }
@@ -215,7 +215,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
         /// <param name="pickup">The <see cref="ItemPickupBase"/> instance of the <see cref="CustomItem"/>.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was spawned or not.</returns>
-        public static bool TrySpawn(int id, Vector3 position, out Pickup pickup)
+        public static bool TrySpawn(uint id, Vector3 position, out Pickup pickup)
         {
             pickup = default;
 
@@ -270,7 +270,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="id">The IDs of the <see cref="CustomItem"/> to give.</param>
         /// <param name="displayMessage">Indicates a value whether <see cref="ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
         /// <returns>Returns a value indicating if the player was given the <see cref="CustomItem"/> or not.</returns>
-        public static bool TryGive(Player player, int id, bool displayMessage = true)
+        public static bool TryGive(Player player, uint id, bool displayMessage = true)
         {
             if (!TryGet(id, out CustomItem item))
                 return false;

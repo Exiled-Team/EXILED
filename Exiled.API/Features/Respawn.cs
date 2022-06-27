@@ -39,19 +39,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the amount of spawn tickets belonging to the NTF.
         /// </summary>
-        public static uint NtfTickets
+        public static int NtfTickets
         {
-            get => (uint)RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.NineTailedFox);
-            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.NineTailedFox] = Mathf.Max(0, (int)value);
+            get => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.NineTailedFox);
+            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.NineTailedFox] = Mathf.Max(0, value);
         }
 
         /// <summary>
         /// Gets or sets the amount of spawn tickets belonging to the Chaos Insurgency.
         /// </summary>
-        public static uint ChaosTickets
+        public static int ChaosTickets
         {
-            get => (uint)RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);
-            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.ChaosInsurgency] = Mathf.Max(0, (int)value);
+            get => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);
+            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.ChaosInsurgency] = Mathf.Max(0, value);
         }
 
         /// <summary>

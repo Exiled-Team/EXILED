@@ -128,7 +128,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
         /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
-        public static CustomRole Get(int id) => Registered?.FirstOrDefault(r => r.Id == id);
+        public static CustomRole Get(uint id) => Registered?.FirstOrDefault(r => r.Id == id);
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by type.
@@ -150,7 +150,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="id">The ID of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        public static bool TryGet(int id, out CustomRole customRole)
+        public static bool TryGet(uint id, out CustomRole customRole)
         {
             customRole = Get(id);
 
@@ -316,7 +316,7 @@ namespace Exiled.CustomRoles.API.Features
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
 
-            customRole = int.TryParse(name, out int id) ? Get(id) : Get(name);
+            customRole = uint.TryParse(name, out uint id) ? Get(id) : Get(name);
 
             return customRole is not null;
         }
