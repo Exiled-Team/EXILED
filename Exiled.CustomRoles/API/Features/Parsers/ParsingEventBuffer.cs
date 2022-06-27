@@ -8,6 +8,7 @@
 namespace Exiled.CustomRoles.API.Features.Parsers
 {
     using System.Collections.Generic;
+
     using YamlDotNet.Core;
     using YamlDotNet.Core.Events;
 

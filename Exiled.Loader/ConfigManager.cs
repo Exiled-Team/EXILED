@@ -11,10 +11,12 @@ namespace Exiled.Loader
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
+
     using YamlDotNet.Core;
 
     /// <summary>
@@ -109,7 +111,7 @@ namespace Exiled.Loader
                 rawConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
             }
 
-            if (!rawConfigs.TryGetValue(plugin.Prefix, out var rawDeserializedConfig))
+            if (!rawConfigs.TryGetValue(plugin.Prefix, out object rawDeserializedConfig))
             {
                 Log.Warn($"{plugin.Name} doesn't have default configs, generating...");
 

@@ -1,8 +1,12 @@
 ---
-uid: mec
+sidebar_position: 2
 ---
-> [!NOTE]
-> Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the [](xref:plugin_structure) tutorial if you are unfamiliar with setting up a plugin using EXILED.
+
+:::caution
+
+This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the [Plugin Structure](/docs/plugins/Plugin%20Structure) tutorial if you are unfamiliar with setting up a plugin using **EXILED**.
+
+:::
 
 # MEC (More Effective Coroutines)
 If you are unfamiliar with MEC, this will be a very brief and simple primer to get you started. **MEC Coroutines** are basically timed methods, that support waiting periods of time before continuing execution, without interrupting/sleeping the main game thread. MEC coroutines are safe to use with Unity, unlike traditional threading, which *will* crash the server.
@@ -18,12 +22,10 @@ MEC offers [tons of features](http://trinary.tech/category/mec/free/) for contro
 ```cs
 using MEC;
 using Exiled.API.Features;
-
 public void SomeMethod()
 {
     Timing.RunCoroutine(MyCoroutine());
 }
-
 public IEnumerator<float> MyCoroutine()
 {
     for (;;) //repeat the loop infinitely
@@ -40,7 +42,6 @@ A simpler method of running an action after a delay is using `Timing.CallDelayed
 ```cs
 using MEC;
 using Exiled.API.Features;
-
 public void SomeMethod()
 {
     Timing.CallDelayed(5f, () => // Execute the provided method 5 seconds late.

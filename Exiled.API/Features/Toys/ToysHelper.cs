@@ -8,7 +8,9 @@
 namespace Exiled.API.Features.Toys
 {
     using AdminToys;
+
     using Mirror;
+
     using UnityEngine;
 
     /// <summary>

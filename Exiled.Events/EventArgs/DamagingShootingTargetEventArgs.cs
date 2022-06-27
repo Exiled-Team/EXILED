@@ -8,10 +8,13 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Toys;
+
     using PlayerStatsSystem;
+
     using UnityEngine;
 
     /// <summary>
@@ -47,16 +50,6 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the damage amount.
-        /// </summary>
-        public float Amount { get; set; }
-
-        /// <summary>
-        /// Gets the distance between the shooter and the shooting target.
-        /// </summary>
-        public float Distance { get; }
-
-        /// <summary>
         /// Gets the shooting target which is being damaged.
         /// </summary>
         public ShootingTargetToy ShootingTarget { get; }
@@ -75,6 +68,16 @@ namespace Exiled.Events.EventArgs
         /// Gets the exact world location the bullet impacted the target.
         /// </summary>
         public Vector3 HitLocation { get; }
+
+        /// <summary>
+        /// Gets or sets the damage amount.
+        /// </summary>
+        public float Amount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distance between the shooter and the shooting target.
+        /// </summary>
+        public float Distance { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the target can be damaged.

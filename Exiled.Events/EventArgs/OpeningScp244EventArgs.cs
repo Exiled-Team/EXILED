@@ -9,12 +9,9 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
     using InventorySystem.Items.Usables.Scp244;
-
-    using UnityEngine;
 
     /// <summary>
     /// Contains all information before a player picks up an SCP-244.
@@ -25,12 +22,10 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="OpeningScp244EventArgs"/> class.
         /// </summary>
         /// <param name="pickup"><inheritdoc cref="Scp244"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public OpeningScp244EventArgs(Scp244DeployablePickup pickup, bool isAllowed)
+        public OpeningScp244EventArgs(Scp244DeployablePickup pickup)
         {
             Scp244 = pickup;
             Pickup = Pickup.Get(pickup);
-            IsAllowed = isAllowed;
         }
 
         /// <summary>

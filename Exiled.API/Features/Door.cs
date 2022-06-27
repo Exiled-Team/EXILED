@@ -18,6 +18,7 @@ namespace Exiled.API.Features
     using Interactables.Interobjects.DoorUtils;
 
     using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -64,9 +65,6 @@ namespace Exiled.API.Features
         public static IEnumerable<Door> List => DoorVariantToDoor.Values.ToList().AsReadOnly();
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
-        /// </summary>
-        /// <summary>
         /// Gets the base-game <see cref="DoorVariant"/> for this door.
         /// </summary>
         public DoorVariant Base { get; }
@@ -75,6 +73,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="UnityEngine.GameObject"/> of the door.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the door's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => GameObject.transform;
 
         /// <summary>
         /// Gets the <see cref="DoorType"/>.
@@ -428,14 +431,20 @@ namespace Exiled.API.Features
         /// Unlocks and clears all active locks on the door after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="flagsToUnlock">The door.</param>
+        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
         public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+
+        /// <summary>
+        /// Locks all active locks on the door.
+        /// </summary>
+        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
+        public void Lock(DoorLockType flagsToUnlock) => ChangeLock(flagsToUnlock);
 
         /// <summary>
         /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="flagsToUnlock">The door.</param>
+        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
         public void Lock(float time, DoorLockType flagsToUnlock)
         {
             ChangeLock(flagsToUnlock);

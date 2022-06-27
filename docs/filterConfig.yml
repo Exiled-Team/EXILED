@@ -1,7 +1,0 @@
-apiRules:
-  - exclude:
-      uidRegex: Exiled.Updater
-      type: Namespace
-  - exclude:
-      uidRegex: Exiled.Example
-      type: Namespace

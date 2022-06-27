@@ -8,7 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
-#pragma warning disable SA1118
+
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -39,9 +39,9 @@ namespace Exiled.Events.Patches.Events.Player
             AccessTools.PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.SpawnProtected))) + offset;
 
             // Remove all existing this._pms.OnPlayerClassChange calls (we will want to call this ourselves after our even fires, to allow their spawn position to change.)
-            foreach (CodeInstruction instruction in newInstructions.FindAll(i =>
-                i.opcode == OpCodes.Call && (MethodInfo)i.operand == AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange))))
-                newInstructions.Remove(instruction);
+
+            newInstructions.RemoveAll(i =>
+                i.opcode == OpCodes.Call && (MethodInfo)i.operand == AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange)));
 
             LocalBuilder ev = generator.DeclareLocal(typeof(SpawningEventArgs));
 
@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
 
-                // var ev = new SpawningEventArg(Player, RoleType)
+                // var ev = new SpawningEventArgs(Player, RoleType)
                 // Exiled.Events.Handlers.Player.OnSpawning(ev);
                 new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
                 new(OpCodes.Dup),

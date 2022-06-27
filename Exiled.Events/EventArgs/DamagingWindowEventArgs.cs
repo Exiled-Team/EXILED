@@ -8,8 +8,10 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
+
     using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 

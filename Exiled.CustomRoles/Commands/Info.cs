@@ -38,7 +38,7 @@ namespace Exiled.CustomRoles.Commands
         public string[] Aliases { get; } = { "i" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Gets more information about the specified custom item.";
+        public string Description { get; } = "Gets more information about the specified custom role.";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.Roles
 {
-    using UnityEngine;
-
     /// <summary>
     /// Defines a role that represents SCP-049-2.
     /// </summary>

@@ -1,8 +1,11 @@
 ---
-uid: events
+sidebar_position: 3
 ---
-> [!NOTE]
-> Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the [](xref:plugin_structure) tutorial if you are unfamiliar with setting up a plugin using EXILED.
+
+:::caution
+
+This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the tutorial if you are unfamiliar with setting up a plugin using EXILED.
+:::
 
 # Events: What are they?
 **Events** play a key role in the EXILED framework and all of the plugins utilizing it. Almost every plugin created using the EXILED framework uses events in one way or another. So, what are they? An event is a simple way of being informed when *something* happens. Events range from the round ending, to a player throwing an item or opening a door, to even SCP-096 being enraged! Events allow you to attach code that executes when something occurs before, during, or at the conclusion of a round.
@@ -44,20 +47,16 @@ Events can be connected and disconnected by using the `+=` and `-=` operators. T
 // Base plugin class
 // This example assumes a method called "OnEnraging" exists in this class. For best practice, you should create a new class to handle events.
 using Exiled.Events;
-
 public override void OnEnabled()
 {
     Scp096.Enraging += OnEnraging; // Scp096 is the event handler, while Enraging is the name of the event. The += operator connects this event to the provided method.
 }
-
 public override void OnDisabled()
 {
     Scp096.Enraging -= OnEnraging; // The -= operator disconnects this event from the provided method.
 }
-
 // Some other class
 using Exiled.Events.EventArgs;
-
 public void OnEnraging(EnragingEventArgs ev) // ev is the arguments for the event. Every event has a different argument class with different parameters, so make sure to check its documentation.
 {
     Log.Info(ev.Player.Nickname + " has just been enraged!");

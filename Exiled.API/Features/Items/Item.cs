@@ -190,8 +190,8 @@ namespace Exiled.API.Features.Items
                 FlashlightItem flashlight => new Flashlight(flashlight),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
-                    FlashbangGrenade _ => new FlashGrenade(throwable),
-                    ExplosionGrenade _ => new ExplosiveGrenade(throwable),
+                    FlashbangGrenade => new FlashGrenade(throwable),
+                    ExplosionGrenade => new ExplosiveGrenade(throwable),
                     _ => new Throwable(throwable),
                 },
                 _ => new Item(itemBase)
@@ -325,7 +325,7 @@ namespace Exiled.API.Features.Items
                     {
                         AutomaticFirearm auto => auto._baseMaxAmmo,
                         Shotgun shotgun => shotgun._ammoCapacity,
-                        Revolver _ => 6,
+                        Revolver => 6,
                         _ => 0,
                     };
                     firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
@@ -352,9 +352,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Item in a human readable format.
         /// </summary>
         /// <returns>A string containing Item-related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}*";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
     }
 }
