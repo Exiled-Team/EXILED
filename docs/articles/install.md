@@ -19,7 +19,7 @@ If you would like to download pre-releases or specify other advanced options, yo
 
 Download `Exiled.Installer-Linux` from [here](https://github.com/galaxy119/EXILED/releases).
 
-Move it into your server directory and run it using `./Exiled.Installer-Linux`
+Move it into your server directory and run it from the scp user using `./Exiled.Installer-Linux`
 
 If you would like to download pre-releases or specify other advanced options, you can reference all the flags [here.](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md)
 
