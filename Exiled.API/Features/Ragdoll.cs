@@ -41,10 +41,10 @@ namespace Exiled.API.Features
         /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
         public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
         {
-            GameObject model_ragdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
-            if (model_ragdoll is null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            GameObject modelRagdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
+            if (modelRagdoll is null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
-            ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, model_ragdoll.transform.localPosition, model_ragdoll.transform.localRotation);
+            ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, modelRagdoll.transform.localPosition, modelRagdoll.transform.localRotation);
             this.ragdoll = ragdoll;
             Map.RagdollsValue.Add(this);
             if (canBeSpawned)
@@ -58,8 +58,8 @@ namespace Exiled.API.Features
         /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
         public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
         {
-            GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
-            if (model_ragdoll is null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            GameObject modelRagdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
+            if (modelRagdoll is null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = ragdollInfo;
             this.ragdoll = ragdoll;
@@ -272,13 +272,23 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The ragdoll's <see cref="Player">owner</see>.</param>
         /// <param name="handler">The player's <see cref="DamageHandlerBase"/>.</param>
-        public static void Spawn(Player player, DamageHandlerBase handler) => ServerSpawnRagdoll(player.ReferenceHub, handler);
+        [Obsolete("Use Spawn(Player, Exiled.API.Features.DamageHandlers.DamageHandlerBase) instead.", true)]
+        public static void Spawn(Player player, DamageHandlerBase handler) => _ = new Ragdoll(player, handler, true);
 
         /// <summary>
         /// Spawns a <see cref="Ragdoll"/> on the map.
         /// </summary>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
-        public static void Spawn(RagdollInfo ragdollInfo) => ServerSpawnRagdoll(ragdollInfo.OwnerHub, ragdollInfo.Handler);
+        [Obsolete("Use Spawn(Player, Exiled.API.Features.DamageHandlers.DamageHandlerBase) instead.", true)]
+        public static void Spawn(RagdollInfo ragdollInfo) => _ = new Ragdoll(ragdollInfo, true);
+
+        /// <summary>
+        /// Spawns a <see cref="Ragdoll"/> on the map.
+        /// </summary>
+        /// <param name="player">The ragdoll's <see cref="Player"/> owner.</param>
+        /// <param name="handler">The ragdoll's <see cref="DamageHandlerBase"/>.</param>
+        /// <returns>The created <see cref="Ragdoll"/>.</returns>
+        public static Ragdoll Spawn(Player player, DamageHandlers.DamageHandlerBase handler) => new(player, handler, true);
 
         /// <summary>
         /// Deletes the ragdoll.
@@ -298,5 +308,11 @@ namespace Exiled.API.Features
         /// Un-spawns the ragdoll.
         /// </summary>
         public void UnSpawn() => NetworkServer.UnSpawn(GameObject);
+
+        /// <summary>
+        /// Returns the Ragdoll in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Ragdoll-related data.</returns>
+        public override string ToString() => $"{Owner} {Name} {DeathReason} {Role} {CreationTime} {AllowRecall}";
     }
 }

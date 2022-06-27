@@ -8,6 +8,7 @@
 namespace Exiled.API.Extensions
 {
     using System.Linq;
+
     using Exiled.API.Features;
 
     /// <summary>

@@ -417,11 +417,13 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
+        [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
         public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
+        [Obsolete("Use Handlers.Scp330.InteractingScp330", true)]
         public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
 
         /// <summary>
@@ -433,6 +435,16 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
         /// </summary>
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
+
+        /// <summary>
+        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        public static event CustomEventHandler<ItemAddedEventArgs> ItemAdded;
+
+        /// <summary>
+        /// Invoked before KillPlayer is called.
+        /// </summary>
+        public static event CustomEventHandler<KillingPlayerEventArgs> KillingPlayer;
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
@@ -907,12 +919,14 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
+        [Obsolete("Use Handlers.Scp330.OnPickingUp330", true)]
         public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
+        [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
         public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
 
         /// <summary>
@@ -926,5 +940,19 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+
+        /// <summary>
+        ///  Called before KillPlayer is called.
+        /// </summary>
+        /// <param name="ev"> Current <see cref="KillingPlayerEventArgs"/> event handler. </param>
+        public static void OnKillPlayer(KillingPlayerEventArgs ev) => KillingPlayer.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        /// <param name="inventory">The <see cref="InventorySystem.Inventory"/> the item was added to.</param>
+        /// <param name="itemBase">The added <see cref="InventorySystem.Items.ItemBase"/>.</param>
+        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
+        public static void OnItemAdded(InventorySystem.Inventory inventory, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase) => ItemAdded.InvokeSafely(new ItemAddedEventArgs(inventory, itemBase, pickupBase));
     }
 }

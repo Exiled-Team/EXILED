@@ -30,7 +30,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp049"/> player script for this role.
         /// </summary>
-        public Scp049 Script => script ?? (script = Owner.CurrentScp as Scp049);
+        public Scp049 Script => script ??= Owner.CurrentScp as Scp049;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-049 is currently recalling a player.

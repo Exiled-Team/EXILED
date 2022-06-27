@@ -70,9 +70,9 @@ namespace Exiled.Installer
 
                 if (args.GetVersions)
                 {
-                    var releases1 = await GetReleases().ConfigureAwait(false);
+                    IEnumerable<Release> releases1 = await GetReleases().ConfigureAwait(false);
                     Console.WriteLine(Resources.Program_MainSafe_____AVAILABLE_VERSIONS____);
-                    foreach (var r in releases1)
+                    foreach (Release r in releases1)
                         Console.WriteLine(FormatRelease(r, true));
 
                     if (args.Exit)
@@ -81,7 +81,7 @@ namespace Exiled.Installer
 
                 Console.WriteLine(Resources.Program_MainSafe_AppData_folder___0_, args.AppData.FullName);
 
-                if (!ValidateServerPath(args.Path.FullName, out var targetFilePath))
+                if (!ValidateServerPath(args.Path.FullName, out string? targetFilePath))
                 {
                     Console.WriteLine(Resources.Program_MainSafe_Couldn_t_find___0___in___1__, TargetFileName, targetFilePath);
                     throw new FileNotFoundException("Check the validation of the path parameter");
@@ -97,10 +97,10 @@ namespace Exiled.Installer
                 Console.WriteLine(Resources.Program_MainSafe_Prereleases_included____0_, args.PreReleases);
                 Console.WriteLine(Resources.Program_MainSafe_Target_release_version____0_, (string.IsNullOrEmpty(args.TargetVersion) ? "(null)" : args.TargetVersion));
 
-                var releases = await GetReleases().ConfigureAwait(false);
+                IEnumerable<Release> releases = await GetReleases().ConfigureAwait(false);
                 Console.WriteLine(Resources.Program_MainSafe_Searching_for_the_latest_release_that_matches_the_parameters___);
 
-                if (!TryFindRelease(args, releases, out var targetRelease))
+                if (!TryFindRelease(args, releases, out Release? targetRelease))
                 {
                     Console.WriteLine(Resources.Program_MainSafe_____RELEASES____);
                     Console.WriteLine(string.Join(Environment.NewLine, releases.Select(FormatRelease)));
@@ -110,7 +110,7 @@ namespace Exiled.Installer
                 Console.WriteLine(Resources.Program_MainSafe_Release_found_);
                 Console.WriteLine(FormatRelease(targetRelease!));
 
-                var exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(ExiledAssetName, StringComparison.OrdinalIgnoreCase));
+                ReleaseAsset exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(ExiledAssetName, StringComparison.OrdinalIgnoreCase));
                 if (exiledAsset is null)
                 {
                     Console.WriteLine(Resources.Program_MainSafe_____ASSETS____);
@@ -121,17 +121,17 @@ namespace Exiled.Installer
                 Console.WriteLine(Resources.Program_MainSafe_Asset_found_);
                 Console.WriteLine(FormatAsset(exiledAsset));
 
-                using var httpClient = new HttpClient
+                using HttpClient httpClient = new HttpClient
                 {
                     Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload)
                 };
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
 
-                using var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
-                using var downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                using HttpResponseMessage downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
+                using Stream downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
-                using var gzInputStream = new GZipInputStream(downloadArchiveStream);
-                using var tarInputStream = new TarInputStream(gzInputStream, null);
+                using GZipInputStream gzInputStream = new GZipInputStream(downloadArchiveStream);
+                using TarInputStream tarInputStream = new TarInputStream(gzInputStream, null);
 
                 TarEntry entry;
                 while (!((entry = tarInputStream.GetNextEntry()) is null))
@@ -156,7 +156,7 @@ namespace Exiled.Installer
 
         private static async Task<IEnumerable<Release>> GetReleases()
         {
-            var releases = (await GitHubClient.Repository.Release.GetAll(RepoID).ConfigureAwait(false))
+            IEnumerable<Release> releases = (await GitHubClient.Repository.Release.GetAll(RepoID).ConfigureAwait(false))
                 .Where(r => Version.TryParse(r.TagName, out Version version)
                     && (version > VersionLimit));
 
@@ -168,11 +168,11 @@ namespace Exiled.Installer
 
         private static string FormatRelease(Release r, bool includeAssets)
         {
-            var builder = new StringBuilder(30);
+            StringBuilder builder = new StringBuilder(30);
             builder.AppendLine($"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}");
             if (includeAssets)
             {
-                foreach (var asset in r.Assets)
+                foreach (ReleaseAsset asset in r.Assets)
                     builder.Append("   - ").AppendLine(FormatAsset(asset));
             }
 
@@ -193,7 +193,7 @@ namespace Exiled.Installer
         {
             if (entry.IsDirectory)
             {
-                var entries = entry.GetDirectoryEntries();
+                TarEntry[] entries = entry.GetDirectoryEntries();
                 for (int z = 0; z < entries.Length; z++)
                 {
                     ProcessTarEntry(args, targetFilePath, tarInputStream, entries[z]);
@@ -212,7 +212,7 @@ namespace Exiled.Installer
                 switch (ResolveEntry(entry))
                 {
                     case PathResolution.Absolute:
-                        ResolvePath(args, entry.Name, out var path);
+                        ResolvePath(args, entry.Name, out string path);
                         ExtractEntry(tarInputStream, entry, path);
                         break;
                     case PathResolution.Game:
@@ -269,15 +269,15 @@ namespace Exiled.Installer
             static PathResolution TryParse(string s)
             {
                 // We'll get UNDEFINED if it cannot be determined
-                Enum.TryParse<PathResolution>(s, true, out var result);
+                Enum.TryParse<PathResolution>(s, true, out PathResolution result);
                 return result;
             }
-
-            var fileName = entry.Name;
-            var fileInFolder = !string.IsNullOrEmpty(Path.GetDirectoryName(fileName));
-            foreach (var pair in Markup)
+            
+            string fileName = entry.Name;
+            bool fileInFolder = !string.IsNullOrEmpty(Path.GetDirectoryName(fileName));
+            foreach (KeyValuePair<string, string> pair in Markup)
             {
-                var isFolder = pair.Key.EndsWith('\\');
+                bool isFolder = pair.Key.EndsWith('\\');
                 if (fileInFolder && isFolder &&
                     pair.Key[0..^1].Equals(fileName.Substring(0, fileName.IndexOf(Path.DirectorySeparatorChar)), StringComparison.OrdinalIgnoreCase))
                 {
@@ -297,8 +297,8 @@ namespace Exiled.Installer
         {
             Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
             Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : VersionLimit;
-
-            foreach (var r in releases)
+            
+            foreach (Release r in releases)
             {
                 release = r;
 

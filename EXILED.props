@@ -15,11 +15,11 @@
 
   <PropertyGroup>
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version Condition="$(Version) == ''">5.2.2</Version>
+    <Version Condition="$(Version) == ''">5.3.0-beta</Version>
     <!-- Enables public beta warning via the PUBLIC_BETA constant -->
     <PublicBeta>false</PublicBeta>
 
-    <HarmonyVersion>2.0.4</HarmonyVersion>
+    <HarmonyVersion>2.2.1</HarmonyVersion>
     <YamlDotNetVersion>9.1.4</YamlDotNetVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
     <SemanticVersioningVersion>1.3.0</SemanticVersioningVersion>

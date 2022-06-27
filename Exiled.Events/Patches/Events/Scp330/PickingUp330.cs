@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Scp330
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -23,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="Scp330Bag.ServerProcessPickup"/> method to add the <see cref="Handlers.Player.PickingUpScp330"/> event.
+    /// Patches the <see cref="Scp330Bag.ServerProcessPickup"/> method to add the <see cref="Handlers.Scp330.PickingUpScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup))]
     internal static class PickingUp330
@@ -38,6 +37,8 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(0, new[]
             {
                 // var ev = new PickingUpScp330EventArgs(Player.Get(ply), pickup);
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Brfalse, continueLabel),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
@@ -46,8 +47,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
 
-                // Handlers.Player.OnPickingUpScp330(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUp330))),
+                // Handlers.Scp330.OnPickingUpScp330(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnPickingUp330))),
 
                 // if (!ev.IsAllowed)
                 //    return false;
@@ -61,7 +62,9 @@ namespace Exiled.Events.Patches.Events.Scp330
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
+            {
                 yield return newInstructions[z];
+            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

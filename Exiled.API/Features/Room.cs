@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features
 {
-    using System;
 #pragma warning disable 1584
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -247,6 +247,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Returns the Room in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Room-related data.</returns>
+        public override string ToString() => $"{Type} {Zone} {Doors} {Cameras} {TeslaGate}";
+
+        /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
         /// We can add parameters to be set privately here.
         /// </summary>
@@ -318,10 +324,7 @@ namespace Exiled.API.Features
         {
             Transform transform = gameObject.transform;
 
-            if (transform.parent is null)
-                return ZoneType.Surface;
-
-            return transform.parent.name switch
+            return transform.parent?.name switch
             {
                 "HeavyRooms" => ZoneType.HeavyContainment,
                 "LightRooms" => ZoneType.LightContainment,
@@ -343,39 +346,27 @@ namespace Exiled.API.Features
                 {
                     try
                     {
-                        if (scp079Interactable is not null)
+                        if (scp079Interactable is null)
+                            continue;
+                        switch (scp079Interactable.type)
                         {
-                            switch (scp079Interactable.type)
-                            {
-                                case Scp079Interactable.InteractableType.Door:
-                                {
-                                    if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                        doors.Add(Door.Get(doorVariant, this));
-                                    break;
-                                }
-
-                                case Scp079Interactable.InteractableType.Camera:
-                                {
-                                    if (scp079Interactable.TryGetComponent(out Camera079 camera))
-                                        cameraList.Add(camera);
-                                    break;
-                                }
-
-                                case Scp079Interactable.InteractableType.LightController:
-                                {
-                                    if (scp079Interactable.TryGetComponent(
-                                            out FlickerableLightController lightController))
-                                        flickerableLightController = lightController;
-                                    break;
-                                }
-
-                                case Scp079Interactable.InteractableType.Tesla:
-                                {
-                                    if (scp079Interactable.TryGetComponent(out global::TeslaGate tesla))
-                                        teslaGate = TeslaGate.Get(tesla);
-                                    break;
-                                }
-                            }
+                            case Scp079Interactable.InteractableType.Door:
+                                if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
+                                    doors.Add(Door.Get(doorVariant, this));
+                                break;
+                            case Scp079Interactable.InteractableType.Camera:
+                                if (scp079Interactable.TryGetComponent(out Camera079 camera))
+                                    cameraList.Add(camera);
+                                break;
+                            case Scp079Interactable.InteractableType.LightController:
+                                if (scp079Interactable.TryGetComponent(
+                                        out FlickerableLightController lightController))
+                                    flickerableLightController = lightController;
+                                break;
+                            case Scp079Interactable.InteractableType.Tesla:
+                                if (scp079Interactable.TryGetComponent(out global::TeslaGate tesla))
+                                    teslaGate = TeslaGate.Get(tesla);
+                                break;
                         }
                     }
                     catch (Exception e)

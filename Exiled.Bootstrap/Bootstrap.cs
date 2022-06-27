@@ -7,7 +7,6 @@
 
 namespace Exiled.Bootstrap
 {
-#pragma warning disable SA1118
     using System;
     using System.IO;
     using System.Reflection;

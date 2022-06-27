@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -21,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem"/>.
+    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropAmmo"/>.
     /// Adds the <see cref="DroppingAmmo"/> event.
     /// </summary>
     [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdDropAmmo))]

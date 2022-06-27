@@ -236,5 +236,11 @@ namespace Exiled.API.Features
             else
                 Base._requiredPermission &= ~permission;
         }
+
+        /// <summary>
+        /// Returns the Generator in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Generator-related data.</returns>
+        public override string ToString() => $"{State} {KeycardPermissions}";
     }
 }

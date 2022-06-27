@@ -10,7 +10,9 @@ namespace Exiled.API.Interfaces
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using CommandSystem;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
