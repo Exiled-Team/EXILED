@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Scp018Pickup.cs" company="Exiled Team">
+// <copyright file="Scp018Projectile.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -30,7 +30,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="ExplosionGrenade"/> that this class is encapsulating.
         /// </summary>
         public new BaseScp018Projectile Base { get; }
-
 
         /// <summary>
         /// Gets a value indicating whether the damage going to be done on the teamate of the guys who trow it.

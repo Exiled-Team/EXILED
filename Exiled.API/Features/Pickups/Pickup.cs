@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
 
+    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
@@ -50,7 +51,7 @@ namespace Exiled.API.Features.Pickups
         {
             Base = pickupBase;
             Serial = pickupBase.NetworkInfo.Serial == 0 ? ItemSerialGenerator.GenerateNext() : pickupBase.NetworkInfo.Serial;
-            BaseToItem.Add(pickupBase, this);
+            BaseToItem[pickupBase] = this;
         }
 
         /// <summary>
@@ -59,18 +60,18 @@ namespace Exiled.API.Features.Pickups
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Pickup(ItemType type)
         {
-            Item item = Item.Create(type);
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out var value))
+                return;
 
-            Base = Object.Instantiate(item.Base.PickupDropModel);
+            Base = Object.Instantiate(value.PickupDropModel);
 
             PickupSyncInfo psi = new()
             {
                 ItemId = type,
-                Serial = item.Serial,
-                Weight = item.Weight,
+                Serial = ItemSerialGenerator.GenerateNext(),
+                Weight = value.Weight,
             };
 
-            Serial = psi.Serial;
             Base.Info = psi;
             Base.NetworkInfo = Base.Info;
             BaseToItem.Add(Base, this);

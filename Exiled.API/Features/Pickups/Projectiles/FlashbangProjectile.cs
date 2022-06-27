@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="FlashbangPickup.cs" company="Exiled Team">
+// <copyright file="FlashbangProjectile.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -30,7 +30,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="FlashbangGrenade"/> that this class is encapsulating.
         /// </summary>
         public new FlashbangGrenade Base { get; }
-
 
         /// <summary>
         /// Gets or sets the minimum duration of player can take the effect.
