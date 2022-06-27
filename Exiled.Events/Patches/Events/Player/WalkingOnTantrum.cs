@@ -19,10 +19,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="TantrumEnvironmentalHazard.DistanceChanged"/>.
+    /// Patches <see cref="TantrumEnvironmentalHazard"/>.
     /// Adds the <see cref="Handlers.Player.WalkingOnTantrum"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.DistanceChanged))]
+    // [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.OnStay))]
     internal static class WalkingOnTantrum
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
