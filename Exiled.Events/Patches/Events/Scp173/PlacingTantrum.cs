@@ -38,9 +38,17 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(PlacingTantrumEventArgs));
 
-            int offset = -2;
+            int offset = 1;
 
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+            int index = newInstructions.FindIndex(instruction =>
+            instruction.opcode == OpCodes.Call &&
+            (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
+
+            newInstructions.RemoveRange(index, 3);
+
+            offset = -9;
+
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
             (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
 
             // var ev = new PlacingTantrumEventArgs(this, Player, gameObject, cooldown, true);
@@ -54,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // this
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Ldarg_0),
                 new(OpCodes.Dup),
 
                 // Player.Get(this.Hub)
