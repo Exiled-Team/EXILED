@@ -82,7 +82,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Initobj, typeof(SearchSession)),
-                new(OpCodes.Ldarg_2),
+                new(OpCodes.Ldarga_S, 2),
                 new(OpCodes.Ldnull),
                 new(OpCodes.Stind_Ref),
                 new(OpCodes.Ldc_I4_1),
