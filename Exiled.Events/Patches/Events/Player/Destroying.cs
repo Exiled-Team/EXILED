@@ -39,8 +39,8 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, player.LocalIndex),
-                new(OpCodes.Ldloc_S, player.LocalIndex),
                 new(OpCodes.Brfalse_S, cdcLabel),
                 new(OpCodes.Ldloc_S, player.LocalIndex),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DestroyingEventArgs))[0]),

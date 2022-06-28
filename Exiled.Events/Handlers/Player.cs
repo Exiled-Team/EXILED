@@ -535,10 +535,7 @@ namespace Exiled.Events.Handlers
         /// Called after a <see cref="API.Features.Player"/> has been verified.
         /// </summary>
         /// <param name="ev">The <see cref="VerifiedEventArgs"/> instance.</param>
-        public static void OnVerified(VerifiedEventArgs ev)
-        {
-            Verified.InvokeSafely(ev);
-        }
+        public static void OnVerified(VerifiedEventArgs ev) => Verified.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> has left the server.
