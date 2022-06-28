@@ -8,6 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using System;
+    using System.Collections.Generic;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
@@ -534,13 +535,38 @@ namespace Exiled.Events.Handlers
         /// Called after a <see cref="API.Features.Player"/> has been verified.
         /// </summary>
         /// <param name="ev">The <see cref="VerifiedEventArgs"/> instance.</param>
-        public static void OnVerified(VerifiedEventArgs ev) => Verified.InvokeSafely(ev);
+        public static void OnVerified(VerifiedEventArgs ev)
+        {
+            Verified.InvokeSafely(ev);
+        }
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> has left the server.
         /// </summary>
         /// <param name="ev">The <see cref="LeftEventArgs"/> instance.</param>
-        public static void OnLeft(LeftEventArgs ev) => Left.InvokeSafely(ev);
+        public static void OnLeft(LeftEventArgs ev)
+        {
+            // TODO add this call to the patch, just make it the last thing the Left.cs patch function (OnServerDisconnect) does instead of MEC
+            MEC.Timing.CallDelayed(2f, () =>
+            {
+                if (API.Features.Player.InstantiatedRolesToPlayers.TryGetValue(ev.Player.Role, out HashSet<API.Features.Player> previousRolePlayers))
+                {
+                    previousRolePlayers.Remove(ev.Player);
+                }
+
+                if (API.Features.Player.InstantiatedTeamToPlayers.TryGetValue(ev.Player.Role.Team, out HashSet<API.Features.Player> previousTeamPlayers))
+                {
+                    previousTeamPlayers.Remove(ev.Player);
+                }
+
+                if (API.Features.Player.InstantiatedSideToPlayers.TryGetValue(ev.Player.Role.Side, out HashSet<API.Features.Player> previousSidePlayers))
+                {
+                    previousSidePlayers.Remove(ev.Player);
+                }
+            });
+
+            Left.InvokeSafely(ev);
+        }
 
         /// <summary>
         /// Called before destroying a <see cref="API.Features.Player"/>.

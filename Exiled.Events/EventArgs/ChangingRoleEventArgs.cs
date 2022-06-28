@@ -11,6 +11,7 @@ namespace Exiled.Events.EventArgs
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     /// <summary>
@@ -27,6 +28,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
         public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)
         {
+            Log.Info($"Who called me last for player {player} and stck {new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name} and whole stack \n {new System.Diagnostics.StackTrace()}");
             Player = player;
             NewRole = newRole;
             if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole))
@@ -39,6 +41,8 @@ namespace Exiled.Events.EventArgs
 
             Lite = shouldPreservePosition;
             Reason = (SpawnReason)reason;
+
+            ConsolidatePlayerInformation();
         }
 
         /// <summary>
@@ -75,5 +79,53 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets a value indicating whether the event can continue.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
+
+        /// <summary>
+        /// Conslidates all the player information to be easily access through helper functions later on.
+        /// </summary>
+        private void ConsolidatePlayerInformation()
+        {
+            if (Player.InstantiatedRolesToPlayers.TryGetValue(Player.Role, out HashSet<Player> previousRolePlayers))
+            {
+                previousRolePlayers.Remove(Player);
+            }
+
+            if (Player.InstantiatedRolesToPlayers.TryGetValue(NewRole, out HashSet<Player> newRolePlayers))
+            {
+                newRolePlayers.Add(Player);
+            }
+            else
+            {
+                Player.InstantiatedRolesToPlayers.Add(NewRole, new HashSet<Player>() { Player });
+            }
+
+            if (Player.InstantiatedTeamToPlayers.TryGetValue(Player.Role.Team, out HashSet<Player> previousTeamPlayers))
+            {
+                previousTeamPlayers.Remove(Player);
+            }
+
+            if (Player.InstantiatedTeamToPlayers.TryGetValue(NewRole.GetTeam(), out HashSet<Player> newTeamPlayers))
+            {
+                newTeamPlayers.Add(Player);
+            }
+            else
+            {
+                Player.InstantiatedTeamToPlayers.Add(NewRole.GetTeam(), new HashSet<Player>() { Player });
+            }
+
+            if (Player.InstantiatedSideToPlayers.TryGetValue(Player.Role.Side, out HashSet<Player> previousSidePlayers))
+            {
+                previousSidePlayers.Remove(Player);
+            }
+
+            if (Player.InstantiatedSideToPlayers.TryGetValue(NewRole.GetSide(), out HashSet<Player> newSidePlayers))
+            {
+                newSidePlayers.Add(Player);
+            }
+            else
+            {
+                Player.InstantiatedSideToPlayers.Add(NewRole.GetSide(), new HashSet<Player>() { Player });
+            }
+        }
     }
 }

@@ -123,6 +123,21 @@ namespace Exiled.API.Features
         ~Player() => HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
 
         /// <summary>
+        /// Gets all the current players of a specific role.
+        /// </summary>
+        public static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayers { get; internal set; } = new();
+
+        /// <summary>
+        /// Gets players per Team.
+        /// </summary>
+        public static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayers { get; internal set; } = new();
+
+        /// <summary>
+        /// Gets players per Side.
+        /// </summary>
+        public static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayers { get; internal set; } = new();
+
+        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
         public static Dictionary<GameObject, Player> Dictionary { get; } = new(20, new ReferenceHub.GameObjectComparer());
@@ -1016,21 +1031,33 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="side">The players' side.</param>
         /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Role.Side == side);
+        public static IEnumerable<Player> Get(Side side)
+        {
+            InstantiatedSideToPlayers.TryGetValue(side, out HashSet<Player> playersForSide);
+            return playersForSide;
+        }
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team. Can be empty.
         /// </summary>
         /// <param name="team">The players' team.</param>
         /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Role.Team == team);
+        public static IEnumerable<Player> Get(Team team)
+        {
+            InstantiatedTeamToPlayers.TryGetValue(team, out HashSet<Player> playersForTeam);
+            return playersForTeam;
+        }
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role. Can be empty.
         /// </summary>
         /// <param name="role">The players' role.</param>
         /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+        public static HashSet<Player> Get(RoleType role)
+        {
+            InstantiatedRolesToPlayers.TryGetValue(role, out HashSet<Player> playersForRole);
+            return playersForRole;
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> filtered based on a predicate.
