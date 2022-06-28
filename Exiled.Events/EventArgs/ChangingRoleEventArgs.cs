@@ -28,7 +28,6 @@ namespace Exiled.Events.EventArgs
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
         public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)
         {
-            Log.Info($"Who called me last for player {player} and stck {new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name} and whole stack \n {new System.Diagnostics.StackTrace()}");
             Player = player;
             NewRole = newRole;
             if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole))
