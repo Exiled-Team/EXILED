@@ -72,12 +72,6 @@ namespace Exiled.Events.Patches.Events.Player
                 // Player.Get(__instance.CurrentSpectatedPlayer)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
-                new(OpCodes.Brfalse_S, nullLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
-                new(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Br_S, skipNull),
-                new CodeInstruction(OpCodes.Ldnull).WithLabels(nullLabel),
 
                 // Player.Get(value)
                 new CodeInstruction(OpCodes.Ldarg_1).WithLabels(skipNull),

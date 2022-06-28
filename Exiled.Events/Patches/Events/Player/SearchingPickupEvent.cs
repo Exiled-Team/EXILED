@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(SearchingPickupEventArgs));
 
-            Label allowLabel = generator.DefineLabel();
+            Label defaultReturn = generator.DefineLabel();
 
             // remove base-game check and `SearchSession body` setter
             newInstructions.RemoveRange(index, 14);
@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
             // }
             // completor = ev.SearchCompletor;
             // body = ev.SearchSession;
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SearchCoordinator), nameof(SearchCoordinator.Hub))),
@@ -78,17 +78,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc_S, ev.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSearchPickupRequest))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, allowLabel),
+                new(OpCodes.Brfalse_S, defaultReturn),
 
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Initobj, typeof(SearchSession)),
                 new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldnull),
-                new(OpCodes.Stind_Ref),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ret),
-
-                new CodeInstruction(OpCodes.Ldarg_2).WithLabels(allowLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.SearchCompletor))),
                 new(OpCodes.Stind_Ref),
@@ -97,6 +89,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.SearchSession))),
                 new(OpCodes.Stloc_1),
             });
+
+            newInstructions[newInstructions.Count - 6].WithLabels(defaultReturn);
 
             offset = -5;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_S &&
