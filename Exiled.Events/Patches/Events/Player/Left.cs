@@ -73,10 +73,34 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnLeft))),
             });
 
+            newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
+            {
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Left), nameof(Left.ForceCleanPlayerInfo))),
+            });
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static void ForceCleanPlayerInfo(Player player)
+        {
+                if (API.Features.Player.InstantiatedRolesToPlayers.TryGetValue(player.Role, out HashSet<API.Features.Player> previousRolePlayers))
+                {
+                    previousRolePlayers.Remove(player);
+                }
+
+                if (API.Features.Player.InstantiatedTeamToPlayers.TryGetValue(player.Role.Team, out HashSet<API.Features.Player> previousTeamPlayers))
+                {
+                    previousTeamPlayers.Remove(player);
+                }
+
+                if (API.Features.Player.InstantiatedSideToPlayers.TryGetValue(player.Role.Side, out HashSet<API.Features.Player> previousSidePlayers))
+                {
+                    previousSidePlayers.Remove(player);
+                }
         }
     }
 }

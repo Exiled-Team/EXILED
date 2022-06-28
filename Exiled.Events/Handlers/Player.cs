@@ -546,25 +546,6 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="LeftEventArgs"/> instance.</param>
         public static void OnLeft(LeftEventArgs ev)
         {
-            // TODO add this call to the patch, just make it the last thing the Left.cs patch function (OnServerDisconnect) does instead of MEC
-            MEC.Timing.CallDelayed(2f, () =>
-            {
-                if (API.Features.Player.InstantiatedRolesToPlayers.TryGetValue(ev.Player.Role, out HashSet<API.Features.Player> previousRolePlayers))
-                {
-                    previousRolePlayers.Remove(ev.Player);
-                }
-
-                if (API.Features.Player.InstantiatedTeamToPlayers.TryGetValue(ev.Player.Role.Team, out HashSet<API.Features.Player> previousTeamPlayers))
-                {
-                    previousTeamPlayers.Remove(ev.Player);
-                }
-
-                if (API.Features.Player.InstantiatedSideToPlayers.TryGetValue(ev.Player.Role.Side, out HashSet<API.Features.Player> previousSidePlayers))
-                {
-                    previousSidePlayers.Remove(ev.Player);
-                }
-            });
-
             Left.InvokeSafely(ev);
         }
 
