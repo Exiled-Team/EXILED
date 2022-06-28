@@ -544,10 +544,7 @@ namespace Exiled.Events.Handlers
         /// Called after a <see cref="API.Features.Player"/> has left the server.
         /// </summary>
         /// <param name="ev">The <see cref="LeftEventArgs"/> instance.</param>
-        public static void OnLeft(LeftEventArgs ev)
-        {
-            Left.InvokeSafely(ev);
-        }
+        public static void OnLeft(LeftEventArgs ev) => Left.InvokeSafely(ev);
 
         /// <summary>
         /// Called before destroying a <see cref="API.Features.Player"/>.

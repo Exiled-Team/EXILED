@@ -87,20 +87,20 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void ForceCleanPlayerInfo(Player player)
         {
-                if (API.Features.Player.InstantiatedRolesToPlayers.TryGetValue(player.Role, out HashSet<API.Features.Player> previousRolePlayers))
-                {
-                    previousRolePlayers.Remove(player);
-                }
+            if (Player.InstantiatedRolesToPlayers.TryGetValue(player.Role, out HashSet<Player> previousRolePlayers))
+            {
+                previousRolePlayers.Remove(player);
+            }
 
-                if (API.Features.Player.InstantiatedTeamToPlayers.TryGetValue(player.Role.Team, out HashSet<API.Features.Player> previousTeamPlayers))
-                {
-                    previousTeamPlayers.Remove(player);
-                }
+            if (Player.InstantiatedTeamToPlayers.TryGetValue(player.Role.Team, out HashSet<Player> previousTeamPlayers))
+            {
+                previousTeamPlayers.Remove(player);
+            }
 
-                if (API.Features.Player.InstantiatedSideToPlayers.TryGetValue(player.Role.Side, out HashSet<API.Features.Player> previousSidePlayers))
-                {
-                    previousSidePlayers.Remove(player);
-                }
+            if (Player.InstantiatedSideToPlayers.TryGetValue(player.Role.Side, out HashSet<Player> previousSidePlayers))
+            {
+                previousSidePlayers.Remove(player);
+            }
         }
     }
 }
