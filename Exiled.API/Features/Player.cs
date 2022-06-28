@@ -1053,7 +1053,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="role">The players' role.</param>
         /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static HashSet<Player> Get(RoleType role)
+        public static IEnumerable<Player> Get(RoleType role)
         {
             InstantiatedRolesToPlayers.TryGetValue(role, out HashSet<Player> playersForRole);
             return playersForRole;
