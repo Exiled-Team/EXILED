@@ -136,10 +136,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_0),
             });
 
-            // remove base game RpcDenied(same as unlocking)
-            newInstructions.RemoveRange(index + 3, 2);
-
             index += 3;
+
+            // remove base game RpcDenied(same as unlocking)
+            newInstructions.RemoveRange(index, 2);
 
             // UnlockingGeneratorEventArgs ev = new(player, this, canUnlock);
             // Player.OnUnlockingGenerator(ev);
