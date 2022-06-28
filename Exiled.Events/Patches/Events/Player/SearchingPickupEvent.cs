@@ -90,7 +90,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc_1),
             });
 
-            newInstructions[newInstructions.Count - 6].WithLabels(defaultReturn);
+            int defultReturnIndexOffset = 1;
+            int defaultReturnIndex = newInstructions.FindLastIndex(i => i.Calls(PropertySetter(typeof(SearchSession), nameof(SearchSession.FinishTime)))) + defultReturnIndexOffset;
+            newInstructions[defaultReturnIndex].WithLabels(defaultReturn);
 
             offset = -5;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_S &&
