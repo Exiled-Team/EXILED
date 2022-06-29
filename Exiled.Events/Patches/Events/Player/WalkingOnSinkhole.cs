@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="SinkholeEnvironmentalHazard.OnStay"/> to add the <see cref="Handlers.Player.WalkingOnSinkhole"/> event.
     /// </summary>
-    // [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.OnStay))]
+    [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.OnStay))]
     internal static class WalkingOnSinkhole
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
