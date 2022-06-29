@@ -86,7 +86,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
 
-                // Event
+                // Event 
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
 
                 // PlayerRoles being updated.
