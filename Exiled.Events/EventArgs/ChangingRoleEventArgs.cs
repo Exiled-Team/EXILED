@@ -92,7 +92,6 @@ namespace Exiled.Events.EventArgs
 
             Player.InstantiatedTeamToPlayers[Player.Role.Team].Remove(Player);
             Player.InstantiatedTeamToPlayers[NewRole.GetTeam()].Add(Player);
-
         }
     }
 }

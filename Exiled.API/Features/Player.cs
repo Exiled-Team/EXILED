@@ -123,61 +123,6 @@ namespace Exiled.API.Features
         ~Player() => HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
 
         /// <summary>
-        /// Gets all the current players of a specific role.
-        /// </summary>
-        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayers { get; private set; } = new()
-        {
-            { RoleType.None, new HashSet<Player>() },
-            { RoleType.Scp173, new HashSet<Player>() },
-            { RoleType.ClassD, new HashSet<Player>() },
-            { RoleType.Spectator, new HashSet<Player>() },
-            { RoleType.Scp106, new HashSet<Player>() },
-            { RoleType.NtfSpecialist, new HashSet<Player>() },
-            { RoleType.Scp049, new HashSet<Player>() },
-            { RoleType.Scientist, new HashSet<Player>() },
-            { RoleType.Scp079, new HashSet<Player>() },
-            { RoleType.ChaosConscript, new HashSet<Player>() },
-            { RoleType.Scp096, new HashSet<Player>() },
-            { RoleType.Scp0492, new HashSet<Player>() },
-            { RoleType.NtfSergeant, new HashSet<Player>() },
-            { RoleType.NtfCaptain, new HashSet<Player>() },
-            { RoleType.NtfPrivate, new HashSet<Player>() },
-            { RoleType.Tutorial, new HashSet<Player>() },
-            { RoleType.FacilityGuard, new HashSet<Player>() },
-            { RoleType.Scp93953, new HashSet<Player>() },
-            { RoleType.Scp93989, new HashSet<Player>() },
-            { RoleType.ChaosRifleman, new HashSet<Player>() },
-            { RoleType.ChaosRepressor, new HashSet<Player>() },
-            { RoleType.ChaosMarauder, new HashSet<Player>() },
-        };
-
-        /// <summary>
-        /// Gets players per Team.
-        /// </summary>
-        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayers { get; private set; } = new()
-        {
-            { Team.SCP, new HashSet<Player>() },
-            { Team.MTF, new HashSet<Player>() },
-            { Team.CHI, new HashSet<Player>() },
-            { Team.RSC, new HashSet<Player>() },
-            { Team.CDP, new HashSet<Player>() },
-            { Team.RIP, new HashSet<Player>() },
-            { Team.TUT, new HashSet<Player>() },
-        };
-
-        /// <summary>
-        /// Gets players per Side.
-        /// </summary>
-        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayers { get; private set; } = new()
-        {
-            { Side.ChaosInsurgency, new HashSet<Player>() },
-            { Side.Mtf, new HashSet<Player>() },
-            { Side.Tutorial, new HashSet<Player>() },
-            { Side.Scp, new HashSet<Player>() },
-            { Side.None, new HashSet<Player>() },
-        };
-
-        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
         public static Dictionary<GameObject, Player> Dictionary { get; } = new(20, new ReferenceHub.GameObjectComparer());
@@ -1060,6 +1005,61 @@ namespace Exiled.API.Features
             get => ReferenceHub.characterClassManager.SpawnProtected;
             set => ReferenceHub.characterClassManager.SpawnProtected = value;
         }
+
+        /// <summary>
+        /// Gets all the current players of a specific role.
+        /// </summary>
+        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayers { get; private set; } = new()
+        {
+            { RoleType.None, new HashSet<Player>() },
+            { RoleType.Scp173, new HashSet<Player>() },
+            { RoleType.ClassD, new HashSet<Player>() },
+            { RoleType.Spectator, new HashSet<Player>() },
+            { RoleType.Scp106, new HashSet<Player>() },
+            { RoleType.NtfSpecialist, new HashSet<Player>() },
+            { RoleType.Scp049, new HashSet<Player>() },
+            { RoleType.Scientist, new HashSet<Player>() },
+            { RoleType.Scp079, new HashSet<Player>() },
+            { RoleType.ChaosConscript, new HashSet<Player>() },
+            { RoleType.Scp096, new HashSet<Player>() },
+            { RoleType.Scp0492, new HashSet<Player>() },
+            { RoleType.NtfSergeant, new HashSet<Player>() },
+            { RoleType.NtfCaptain, new HashSet<Player>() },
+            { RoleType.NtfPrivate, new HashSet<Player>() },
+            { RoleType.Tutorial, new HashSet<Player>() },
+            { RoleType.FacilityGuard, new HashSet<Player>() },
+            { RoleType.Scp93953, new HashSet<Player>() },
+            { RoleType.Scp93989, new HashSet<Player>() },
+            { RoleType.ChaosRifleman, new HashSet<Player>() },
+            { RoleType.ChaosRepressor, new HashSet<Player>() },
+            { RoleType.ChaosMarauder, new HashSet<Player>() },
+        };
+
+        /// <summary>
+        /// Gets players per Team.
+        /// </summary>
+        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayers { get; private set; } = new()
+        {
+            { Team.SCP, new HashSet<Player>() },
+            { Team.MTF, new HashSet<Player>() },
+            { Team.CHI, new HashSet<Player>() },
+            { Team.RSC, new HashSet<Player>() },
+            { Team.CDP, new HashSet<Player>() },
+            { Team.RIP, new HashSet<Player>() },
+            { Team.TUT, new HashSet<Player>() },
+        };
+
+        /// <summary>
+        /// Gets players per Side.
+        /// </summary>
+        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayers { get; private set; } = new()
+        {
+            { Side.ChaosInsurgency, new HashSet<Player>() },
+            { Side.Mtf, new HashSet<Player>() },
+            { Side.Tutorial, new HashSet<Player>() },
+            { Side.Scp, new HashSet<Player>() },
+            { Side.None, new HashSet<Player>() },
+        };
 
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.

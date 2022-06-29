@@ -92,7 +92,6 @@ namespace Exiled.Events.Patches.Events.Player
             Player.InstantiatedSideToPlayers[player.Role.Side].Remove(player);
 
             Player.InstantiatedTeamToPlayers[player.Role.Team].Remove(player);
-
         }
     }
 }
