@@ -82,12 +82,13 @@ namespace Exiled.Events.Patches.Events.Player
                 // Handlers.Player.OnChangingRole(ev)
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingRole))),
 
-                new(OpCodes.Callvirt, Method(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.ConsolidatePlayerInformation))),
-
                 // if (!ev.IsAllowed)
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
+
+                // PlayerRoles being updated.
+                new(OpCodes.Callvirt, Method(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.ConsolidatePlayerInformation))),
 
                 // id = ev.NewRole;
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
