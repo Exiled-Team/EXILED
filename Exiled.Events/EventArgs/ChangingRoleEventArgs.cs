@@ -84,47 +84,15 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         private void ConsolidatePlayerInformation()
         {
-            if (Player.InstantiatedRolesToPlayers.TryGetValue(Player.Role, out HashSet<Player> previousRolePlayers))
-            {
-                previousRolePlayers.Remove(Player);
-            }
+            Player.InstantiatedRolesToPlayers[Player.Role].Remove(Player);
+            Player.InstantiatedRolesToPlayers[NewRole].Add(Player);
 
-            if (Player.InstantiatedRolesToPlayers.TryGetValue(NewRole, out HashSet<Player> newRolePlayers))
-            {
-                newRolePlayers.Add(Player);
-            }
-            else
-            {
-                Player.InstantiatedRolesToPlayers.Add(NewRole, new HashSet<Player>() { Player });
-            }
+            Player.InstantiatedSideToPlayers[Player.Role.Side].Remove(Player);
+            Player.InstantiatedSideToPlayers[NewRole.GetSide()].Add(Player);
 
-            if (Player.InstantiatedTeamToPlayers.TryGetValue(Player.Role.Team, out HashSet<Player> previousTeamPlayers))
-            {
-                previousTeamPlayers.Remove(Player);
-            }
+            Player.InstantiatedTeamToPlayers[Player.Role.Team].Remove(Player);
+            Player.InstantiatedTeamToPlayers[NewRole.GetTeam()].Add(Player);
 
-            if (Player.InstantiatedTeamToPlayers.TryGetValue(NewRole.GetTeam(), out HashSet<Player> newTeamPlayers))
-            {
-                newTeamPlayers.Add(Player);
-            }
-            else
-            {
-                Player.InstantiatedTeamToPlayers.Add(NewRole.GetTeam(), new HashSet<Player>() { Player });
-            }
-
-            if (Player.InstantiatedSideToPlayers.TryGetValue(Player.Role.Side, out HashSet<Player> previousSidePlayers))
-            {
-                previousSidePlayers.Remove(Player);
-            }
-
-            if (Player.InstantiatedSideToPlayers.TryGetValue(NewRole.GetSide(), out HashSet<Player> newSidePlayers))
-            {
-                newSidePlayers.Add(Player);
-            }
-            else
-            {
-                Player.InstantiatedSideToPlayers.Add(NewRole.GetSide(), new HashSet<Player>() { Player });
-            }
         }
     }
 }
