@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="WalkingOnSinkhole.cs" company="Exiled Team">
+// <copyright file="EnteringEnvironmentalHazard.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,10 +19,11 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="SinkholeEnvironmentalHazard.OnStay"/> to add the <see cref="Handlers.Player.WalkingOnSinkhole"/> event.
+    /// Patches <see cref="EnvironmentalHazard.OnEnter(ReferenceHub)"/>.
+    /// Adds the <see cref="Handlers.Player.EnteringEnvironmentalHazard"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.OnStay))]
-    internal static class WalkingOnSinkhole
+    [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter))]
+    internal static class EnteringEnvironmentalHazard
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -36,10 +37,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(WalkingOnSinkholeEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringEnvironmentalHazardEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnWalkingOnSinkhole))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(WalkingOnSinkholeEventArgs), nameof(WalkingOnSinkholeEventArgs.IsAllowed))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringEnvironmentalHazard))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringEnvironmentalHazardEventArgs), nameof(EnteringEnvironmentalHazardEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
 
