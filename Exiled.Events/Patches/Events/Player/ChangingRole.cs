@@ -76,10 +76,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRoleEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
+                new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnChangingRole(ev)
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingRole))),
+
+                new(OpCodes.Callvirt, Method(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.ConsolidatePlayerInformation))),
 
                 // if (!ev.IsAllowed)
                 //    return;

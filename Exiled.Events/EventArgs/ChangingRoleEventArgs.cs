@@ -40,8 +40,6 @@ namespace Exiled.Events.EventArgs
 
             Lite = shouldPreservePosition;
             Reason = (SpawnReason)reason;
-
-            ConsolidatePlayerInformation();
         }
 
         /// <summary>
@@ -82,7 +80,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Conslidates all the player information to be easily access through helper functions later on.
         /// </summary>
-        private void ConsolidatePlayerInformation()
+        internal void ConsolidatePlayerInformation()
         {
             Player.InstantiatedRolesToPlayers[Player.Role].Remove(Player);
             Player.InstantiatedRolesToPlayers[NewRole].Add(Player);
