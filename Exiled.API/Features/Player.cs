@@ -1071,21 +1071,21 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="side">The players' side.</param>
         /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Side side) => InstantiatedSideToPlayers?[side];
+        public static IEnumerable<Player> Get(Side side) => InstantiatedSideToPlayers[side];
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team. Can be empty.
         /// </summary>
         /// <param name="team">The players' team.</param>
         /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Team team) => InstantiatedTeamToPlayers?[team];
+        public static IEnumerable<Player> Get(Team team) => InstantiatedTeamToPlayers[team];
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role. Can be empty.
         /// </summary>
         /// <param name="role">The players' role.</param>
         /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(RoleType role) => InstantiatedRolesToPlayers?[role];
+        public static IEnumerable<Player> Get(RoleType role) => InstantiatedRolesToPlayers[role];
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> filtered based on a predicate.
