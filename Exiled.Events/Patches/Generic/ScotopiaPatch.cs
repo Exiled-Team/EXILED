@@ -46,6 +46,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Ldfld, Field(typeof(LocalCurrentRoomEffects), nameof(LocalCurrentRoomEffects._hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Stloc_S, player.LocalIndex),
+                new(OpCodes.Dup),
                 new(OpCodes.Brfalse_S, cdc),
                 new(OpCodes.Ldloc_S, player),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.HasScotopia))),
