@@ -1635,7 +1635,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
-        /// <returns>A value indicating whether the <see cref="Item"/> was removed.</returns>
+        /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
         public bool RemoveItem(Item item, bool destroy = true)
         {
             if (!ItemsValue.Contains(item))
@@ -1691,7 +1691,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
-        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
+        /// <returns>Returns a value indicating whether or not the <see cref="ItemBase"/> was removed.</returns>
         [Obsolete("Use RemoveHeldItem(bool) instead.", true)]
         public bool RemoveHeldItem() => RemoveItem(CurrentItem);
 
@@ -1699,7 +1699,7 @@ namespace Exiled.API.Features
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
         /// <param name="destroy">Whether or not to destroy the item.</param>
-        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
+        /// <returns>Returns a value indicating whether or not the <see cref="ItemBase"/> was removed.</returns>
         public bool RemoveHeldItem(bool destroy = true) => RemoveItem(CurrentItem, destroy);
 
         /// <summary>
@@ -1789,7 +1789,7 @@ namespace Exiled.API.Features
         /// Heals the player.
         /// </summary>
         /// <param name="amount">The amount of health to heal.</param>
-        /// <param name="overrideMaxHealth">Whether healing should exceed their max health.</param>
+        /// <param name="overrideMaxHealth">Whether or not healing should exceed their max health.</param>
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
@@ -1873,7 +1873,7 @@ namespace Exiled.API.Features
         /// Sends a message to the player's Remote Admin console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        /// <param name="success">Indicates whether the message should be highlighted as success.</param>
+        /// <param name="success">Indicates whether or not the message should be highlighted as success.</param>
         /// <param name="pluginName">The plugin name.</param>
         public void RemoteAdminMessage(string message, bool success = true, string pluginName = null)
         {
@@ -1935,7 +1935,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> that will be dropped.</param>
         /// <param name="amount">The amount of ammo that will be dropped.</param>
-        /// <param name="checkMinimals">Whether ammo limits will be taken into consideration.</param>
+        /// <param name="checkMinimals">Whether or not ammo limits will be taken into consideration.</param>
         /// <returns><see langword="true"/> if ammo was dropped; otherwise, <see langword="false"/>.</returns>
         public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) =>
             Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
@@ -2392,10 +2392,10 @@ namespace Exiled.API.Features
             => ReferenceHub.playerStats.GetModule<T>();
 
         /// <summary>
-        /// Gets a <see cref="bool"/> describing whether the given <see cref="PlayerEffect">status effect</see> is currently enabled.
+        /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
-        /// <returns>A <see cref="bool"/> determining whether the player effect is active.</returns>
+        /// <returns>A <see cref="bool"/> determining whether or not the player effect is active.</returns>
         public bool GetEffectActive<T>()
             where T : PlayerEffect
         {
@@ -2466,7 +2466,7 @@ namespace Exiled.API.Features
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
-        /// <returns>A bool indicating whether the effect was valid and successfully enabled.</returns>
+        /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false)
             => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
 
@@ -2528,7 +2528,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <param name="playerEffect">The <see cref="PlayerEffect"/>.</param>
-        /// <returns>A bool indicating whether the <paramref name="playerEffect"/> was successfully gotten.</returns>
+        /// <returns>A bool indicating whether or not the <paramref name="playerEffect"/> was successfully gotten.</returns>
         public bool TryGetEffect(EffectType effect, out PlayerEffect playerEffect)
         {
             playerEffect = GetEffect(effect);
@@ -2861,7 +2861,7 @@ namespace Exiled.API.Features
         /// Checks if the player has an active component.
         /// </summary>
         /// <typeparam name="T">The <see cref="EActor"/> to look for.</typeparam>
-        /// <param name="depthInheritance">A value indicating whether subclasses should be considered.</param>
+        /// <param name="depthInheritance">A value indicating whether or not subclasses should be considered.</param>
         /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
         public bool HasComponent<T>(bool depthInheritance = false)
             where T : EActor => depthInheritance
@@ -2872,7 +2872,7 @@ namespace Exiled.API.Features
         /// Checks if the player has an active component.
         /// </summary>
         /// <param name="type">The <see cref="EActor"/> to look for.</param>
-        /// <param name="depthInheritance">A value indicating whether subclasses should be considered.</param>
+        /// <param name="depthInheritance">A value indicating whether or not subclasses should be considered.</param>
         /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
         public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
                 ? components.Any(comp => type.IsSubclassOf(comp.GetType()))
