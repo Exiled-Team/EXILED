@@ -81,7 +81,7 @@ namespace Exiled.API.Features
         public static double Tps => Math.Round(1f / Time.smoothDeltaTime);
 
         /// <summary>
-        /// Gets or sets a value indicating whether friendly fire is enabled or not.
+        /// Gets or sets a value indicating whether or not friendly fire is enabled.
         /// </summary>
         public static bool FriendlyFire
         {
