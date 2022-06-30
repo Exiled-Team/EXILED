@@ -190,11 +190,6 @@ namespace Exiled.API.Features
         public Vector3 Position => Base.transform.position;
 
         /// <summary>
-        /// Gets the generator transform.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets the generator rotation.
         /// </summary>
         public Quaternion Rotation => Base.transform.rotation;
