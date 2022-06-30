@@ -367,9 +367,8 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player has scotopia in the darkened room (like SCPs), but HCZ doesn't work well.
+        /// Gets or sets a value indicating whether the player has scotopia in the darkened room.
         /// </summary>
-        /// <remarks>Setting this value to <see langword="null"/> will disable this property.</remarks>
         public bool? HasScotopia { get; set; } = null;
 
         /// <summary>
