@@ -103,6 +103,11 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the ragdoll.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollInfo">NetworkInfo</see>.
         /// </summary>
         public RagdollInfo NetworkInfo

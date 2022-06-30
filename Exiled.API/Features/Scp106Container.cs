@@ -37,12 +37,12 @@ namespace Exiled.API.Features
         public static LureSubjectContainer Base { get; internal set; }
 
         /// <summary>
-        /// Gets the LureSubjectContainer <see cref="UnityEngine.GameObject"/>.
+        /// Gets the Scp106Container's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public static GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the LureSubjectContainer <see cref="UnityEngine.Transform"/>.
+        /// Gets the Scp106Container's <see cref="UnityEngine.Transform"/>.
         /// </summary>
         public static Transform Transform => Base.transform;
 

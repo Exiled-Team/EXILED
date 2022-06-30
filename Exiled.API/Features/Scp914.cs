@@ -50,6 +50,11 @@ namespace Exiled.API.Features
         public static GameObject GameObject => Scp914Controller.gameObject;
 
         /// <summary>
+        /// Gets SCP-914's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public static Transform Transform => Scp914Controller.transform;
+
+        /// <summary>
         /// Gets the position of SCP-914's intake chamber.
         /// </summary>
         public static Vector3 IntakePosition => Scp914Controller._intakeChamber.localPosition;

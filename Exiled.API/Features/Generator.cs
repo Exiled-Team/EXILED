@@ -48,6 +48,11 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
         /// Gets the generator's <see cref="Room"/>.
         /// </summary>
         public Room Room => Map.FindParentRoom(GameObject);
