@@ -367,11 +367,8 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player has scotopia in the darkened room (like SCPs).
-        /// <para/>
-        /// Setting this value to <see langword="null"/> will disable this property.
+        /// Gets or sets a value indicating whether the player has the scotopia effect in darkened rooms.
         /// </summary>
-        /// <remarks>Note: Rooms in Heavy Containment Zone do not work well with this effect.</remarks>
         public bool? HasScotopia { get; set; } = null;
 
         /// <summary>
