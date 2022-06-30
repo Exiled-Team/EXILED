@@ -14,8 +14,11 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Items;
 
     using Interactables.Interobjects.DoorUtils;
+
+    using InventorySystem.Items.Pickups;
 
     using MapGeneration;
 
@@ -87,6 +90,24 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Door> Doors { get; private set; }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IEnumerable<Pickup> Pickups
+        {
+            get
+            {
+                List<Pickup> pickups = new(0);
+                foreach (ItemPickupBase pickup in FindObjectsOfType<ItemPickupBase>())
+                {
+                    if (Map.FindParentRoom(pickup.gameObject) == this)
+                        pickups.Add(Pickup.Get(pickup));
+                }
+
+                return pickups;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the intensity of the lights in the room.
