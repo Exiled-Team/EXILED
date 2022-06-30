@@ -367,9 +367,11 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player has scotopia in the darkened room (like SCPs), but HCZ doesn't work well.
+        /// Gets or sets a value indicating whether the player has scotopia in the darkened room (like SCPs).
+        /// <para/>
+        /// Setting this value to <see langword="null"/> will disable this property.
         /// </summary>
-        /// <remarks>Setting this value to <see langword="null"/> will disable this property.</remarks>
+        /// <remarks>Note: Rooms in Heavy Containment Zone do not work well with this effect.</remarks>
         public bool? HasScotopia { get; set; } = null;
 
         /// <summary>
@@ -472,8 +474,14 @@ namespace Exiled.API.Features
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleType"/> of the player, and casting should be used to modify the role.
         /// <br /><see cref="RoleType.Spectator"/> = <see cref="SpectatorRole"/>.
+        /// <br /><see cref="RoleType.None"/> = <see cref="NoneRole"/>.
         /// <br /><see cref="RoleType.Scp049"/> = <see cref="Scp049Role"/>.
+        /// <br /><see cref="RoleType.Scp0492"/> = <see cref="Scp0492Role"/>.
         /// <br /><see cref="RoleType.Scp079"/> = <see cref="Scp079Role"/>.
+        /// <br /><see cref="RoleType.Scp096"/> = <see cref="Scp096Role"/>.
+        /// <br /><see cref="RoleType.Scp106"/> = <see cref="Scp106Role"/>.
+        /// <br /><see cref="RoleType.Scp173"/> = <see cref="Scp173Role"/>.
+        /// <br /><see cref="RoleType.Scp93953"/> / <see cref="RoleType.Scp93989"/> = <see cref="Scp939Role"/>.
         /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
         /// </para>
         /// <para>
@@ -1669,7 +1677,7 @@ namespace Exiled.API.Features
         /// <returns>Count of a successfully removed <see cref="Item"/>'s.</returns>
         public int RemoveItem(Func<Item, bool> predicate, bool destroy = true)
         {
-            List<Item> enumeratedItems = new(ItemsValue);
+            List<Item> enumeratedItems = ListPool<Item>.Shared.Rent(ItemsValue);
             int count = 0;
             foreach (Item item in enumeratedItems)
             {
@@ -1679,6 +1687,7 @@ namespace Exiled.API.Features
                 }
             }
 
+            ListPool<Item>.Shared.Return(enumeratedItems);
             return count;
         }
 
@@ -2029,12 +2038,13 @@ namespace Exiled.API.Features
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
         public IEnumerable<Item> AddItem(IEnumerable<ItemType> items)
         {
-            List<ItemType> enumeratedItems = new(items);
+            List<ItemType> enumeratedItems = ListPool<ItemType>.Shared.Rent(items);
             List<Item> returnedItems = new(enumeratedItems.Count);
 
             foreach (ItemType type in enumeratedItems)
                 returnedItems.Add(AddItem(type));
 
+            ListPool<ItemType>.Shared.Return(enumeratedItems);
             return returnedItems;
         }
 
