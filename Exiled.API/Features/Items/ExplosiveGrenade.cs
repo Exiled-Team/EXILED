@@ -15,6 +15,8 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.ThrowableProjectiles;
 
+    using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -115,5 +117,26 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing ExplosiveGrenade-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
+
+        /// <summary>
+        /// Clones current <see cref="ExplosiveGrenade"/> object.
+        /// </summary>
+        /// <returns> New <see cref="ExplosiveGrenade"/> object. </returns>
+        public override Item Clone()
+        {
+            ExplosiveGrenade cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.MaxRadius = this.MaxRadius;
+                cloneableItem.ScpMultiplier = this.ScpMultiplier;
+                cloneableItem.BurnDuration = this.BurnDuration;
+                cloneableItem.DeafenDuration = this.DeafenDuration;
+                cloneableItem.ConcussDuration = this.ConcussDuration;
+                cloneableItem.FuseTime = this.FuseTime;
+            });
+
+            return cloneableItem;
+        }
     }
 }

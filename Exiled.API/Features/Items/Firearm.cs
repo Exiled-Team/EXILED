@@ -23,6 +23,8 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
 
+    using MEC;
+
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
     /// </summary>
@@ -520,6 +522,23 @@ namespace Exiled.API.Features.Items
         {
             foreach (Player player in Player.List)
                 ClearPreferences(player);
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Firearm"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Firearm"/> object. </returns>
+        public override Item Clone()
+        {
+            Firearm cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.Ammo = Ammo;
+                cloneableItem.FireRate = FireRate;
+            });
+
+            return cloneableItem;
         }
     }
 }
