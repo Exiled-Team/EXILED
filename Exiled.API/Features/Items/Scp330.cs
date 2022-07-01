@@ -20,6 +20,27 @@ namespace Exiled.API.Features.Items
     using Object = UnityEngine.Object;
 
     /// <summary>
+    /// Candy enumeration status.
+    /// </summary>
+    public enum CandyAddStatus
+    {
+        /// <summary>
+        /// If no candy was able to be added.
+        /// </summary>
+        NoCandyAdded,
+
+        /// <summary>
+        /// If at least one candy was added.
+        /// </summary>
+        SomeCandyAdded,
+
+        /// <summary>
+        /// If all candies provided were added.
+        /// </summary>
+        AllCandyAdded,
+    }
+
+    /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
     public partial class Scp330 : Usable
