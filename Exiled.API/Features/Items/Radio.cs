@@ -88,6 +88,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Radio in a human readable format.
         /// </summary>
         /// <returns>A string containing Radio-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) |{Range}| -{BatteryLevel}-";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
     }
 }

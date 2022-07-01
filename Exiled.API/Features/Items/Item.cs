@@ -88,6 +88,11 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets the scale for the item.
+        /// </summary>
+        public Vector3 Scale { get; set; } = Vector3.one;
+
+        /// <summary>
         /// Gets the <see cref="ItemBase"/> of the item.
         /// </summary>
         public ItemBase Base { get; }
@@ -101,6 +106,11 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="ItemCategory"/> of the item.
         /// </summary>
         public ItemCategory Category => Base.Category;
+
+        /// <summary>
+        /// Gets the Weight of the item.
+        /// </summary>
+        public float Weight => Base.Weight;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
@@ -252,11 +262,12 @@ namespace Exiled.API.Features.Items
             {
                 ItemId = Type,
                 Position = position,
-                Weight = ipb.Info.Weight,
+                Weight = Weight,
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 
             ipb.NetworkInfo = info;
+            ipb.InfoReceived(default, info);
 
             Pickup pickup = Pickup.Get(ipb);
 
@@ -274,9 +285,11 @@ namespace Exiled.API.Features.Items
                 }
             }
 
-            ipb.InfoReceived(default, info);
+            ipb.transform.localScale = Scale;
+
             if (spawn)
                 pickup.Spawn();
+
             return pickup;
         }
 
@@ -284,6 +297,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Item in a human readable format.
         /// </summary>
         /// <returns>A string containing Item-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial})";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
     }
 }

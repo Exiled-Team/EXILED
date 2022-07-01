@@ -66,6 +66,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Throwable in a human readable format.
         /// </summary>
         /// <returns>A string containing Throwable-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) |{PinPullTime}|";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
     }
 }

@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
 
     using Exiled.API.Features.Pickups;
-
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;
@@ -129,6 +129,7 @@ namespace Exiled.API.Features.Items
                 NetworkServer.Spawn(ipb.gameObject);
                 ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
                 Pickup pickup = Pickup.Get(ipb);
+                pickup.Scale = Scale;
                 pickups.Add(pickup);
                 return pickups;
             }
@@ -140,6 +141,7 @@ namespace Exiled.API.Features.Items
                 NetworkServer.Spawn(ipb.gameObject);
                 ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
                 Pickup pickup = Pickup.Get(ipb);
+                pickup.Scale = Scale;
                 pickups.Add(pickup);
             }
 
@@ -156,21 +158,29 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool overrideExposedType = false, bool spawn = true)
         {
-            Base.PickupDropModel.Info.ItemId = Type;
-            Base.PickupDropModel.Info.Position = position;
-            Base.PickupDropModel.Info.Weight = Weight;
-            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
-            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
-
             BaseScp330Pickup ipb = (BaseScp330Pickup)Object.Instantiate(Base.PickupDropModel, position, rotation);
+
+            PickupSyncInfo info = new()
+            {
+                ItemId = Type,
+                Position = position,
+                Weight = Weight,
+                Rotation = new LowPrecisionQuaternion(rotation),
+            };
+
+            ipb.NetworkInfo = info;
+            ipb.InfoReceived(default, info);
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (overrideExposedType)
                 ipb.NetworkExposedCandy = ExposedType;
 
-            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
-            Pickup pickup = Pickup.Get(ipb);
+            ipb.transform.localScale = Scale;
+
             if (spawn)
                 pickup.Spawn();
+
             return pickup;
         }
 
@@ -178,6 +188,6 @@ namespace Exiled.API.Features.Items
         /// Returns the SCP-330 in a human readable format.
         /// </summary>
         /// <returns>A string containing SCP-330 related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] |{Candies}|";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
     }
 }
