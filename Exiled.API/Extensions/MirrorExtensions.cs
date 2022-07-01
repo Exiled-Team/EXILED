@@ -21,6 +21,8 @@ namespace Exiled.API.Extensions
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
     using Respawning;
 
     using UnityEngine;
@@ -108,7 +110,7 @@ namespace Exiled.API.Extensions
         /// Shaking target <see cref="Player"/> window.
         /// </summary>
         /// <param name="player">Target to shake.</param>
-        public static void Shake(this Player player) => SendFakeTargetRpc(player, AlphaWarheadController.Host.netIdentity, typeof(AlphaWarheadController), nameof(AlphaWarheadController.TargetRpcShake), false);
+        public static void Shake(this Player player) => AlphaWarheadController.Host.TargetRpcShake(player.Connection, false, true);
 
         /// <summary>
         /// Play beep sound to <see cref="Player"/>.
@@ -196,7 +198,16 @@ namespace Exiled.API.Extensions
         /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
         /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
         /// <param name="isSubtitles">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isSubtitles.</param>
-        public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+        public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false)
+        {
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+                }
+            }
+        }
 
         /// <summary>
         /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
@@ -210,13 +221,21 @@ namespace Exiled.API.Extensions
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = new();
+            StringBuilder annoucement = StringBuilderPool.Shared.Rent();
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Length; i++)
                 annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
 
-            SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+                }
+            }
+
+            StringBuilderPool.Shared.Return(annoucement);
         }
 
         /// <summary>
@@ -229,7 +248,6 @@ namespace Exiled.API.Extensions
         {
             if (useCap)
                 multiplier = Mathf.Clamp(multiplier, -2f, 2f);
-
             SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
         }
 
@@ -243,7 +261,6 @@ namespace Exiled.API.Extensions
         {
             if (useCap)
                 multiplier = Mathf.Clamp(multiplier, -1.4f, 1.4f);
-
             SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), multiplier);
         }
 

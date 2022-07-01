@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -56,7 +57,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the actual <see cref="RespawnEffectsController"/>.
         /// </summary>
-        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller is not null);
+        [Obsolete("Using this will lead to indefinable errors", true)]
+        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller != null);
 
         /// <summary>
         /// Play an effect when a certain class spawns.
@@ -74,7 +76,14 @@ namespace Exiled.API.Features
         /// Play effects when a certain class spawns.
         /// </summary>
         /// <param name="effects">The effects to be played.</param>
-        public static void PlayEffects(byte[] effects) => Controller.RpcPlayEffects(effects);
+        public static void PlayEffects(byte[] effects)
+        {
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                    controller.RpcPlayEffects(effects);
+            }
+        }
 
         /// <summary>
         /// Play effects when a certain class spawns.
@@ -121,11 +130,12 @@ namespace Exiled.API.Features
         /// <param name="playEffects">Whether or not effects will be played with the spawn.</param>
         public static void ForceWave(SpawnableTeamType team, bool playEffects = false)
         {
-            RespawnManager.Singleton.ForceSpawnTeam(team);
             if (playEffects)
             {
                 RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.Selection, team);
             }
+
+            RespawnManager.Singleton.ForceSpawnTeam(team);
         }
     }
 }

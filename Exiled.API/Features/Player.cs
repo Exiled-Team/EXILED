@@ -17,6 +17,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
@@ -59,6 +60,8 @@ namespace Exiled.API.Features
 
     using Utils.Networking;
 
+    using static Exiled.API.Features.DamageHandlers.DamageHandlerBase;
+
     using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Exiled.API.Features.Items.Firearm;
@@ -77,9 +80,21 @@ namespace Exiled.API.Features
 #pragma warning restore SA1401
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
+
+        /// <summary>
+        /// The running speed of the player.
+        /// </summary>
+        private float? runningSpeed;
+
+        /// <summary>
+        /// The walk speed of the player.
+        /// </summary>
+        private float? walkingSpeed;
+
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
+        private HashSet<EActor> components = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -111,7 +126,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new(20);
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new(20, new ReferenceHub.GameObjectComparer());
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -163,6 +178,11 @@ namespace Exiled.API.Features
                     value.playerStats._dictionarizedTypes.Add(typeof(HealthStat), healthStat);
             }
         }
+
+        /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="EActor"/> containing all the player's components.
+        /// </summary>
+        public IReadOnlyCollection<EActor> Components => components;
 
         /// <summary>
         /// Gets the player's ammo.
@@ -306,6 +326,32 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets runningSpeed of the player.
+        /// </summary>
+        public float RunningSpeed
+        {
+            get => runningSpeed ??= ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier;
+            set
+            {
+                runningSpeed = value;
+                this.ChangeRunningSpeed(value, false);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets walkSpeed of the player.
+        /// </summary>
+        public float WalkingSpeed
+        {
+            get => walkingSpeed ??= ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
+            set
+            {
+                walkingSpeed = value;
+                this.ChangeWalkingSpeed(value, false);
+            }
+        }
+
+        /// <summary>
         /// Gets the dictionary of the player's session variables.
         /// <para>
         /// Session variables can be used to save temporary data on players. Data is stored in a <see cref="Dictionary{TKey, TValue}"/>.
@@ -322,6 +368,11 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the player has scotopia in the darkened room.
+        /// </summary>
+        public bool? HasScotopia { get; set; } = null;
+
+        /// <summary>
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
         /// </summary>
         public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
@@ -329,7 +380,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is fully connected to the server.
         /// </summary>
-        public bool IsConnected => GameObject is not null;
+        public bool IsConnected => GameObject != null;
 
         /// <summary>
         /// Gets a list of player ids who can't see the player.
@@ -797,7 +848,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the current room the player is in.
+        /// Gets the current <see cref="Room"/> the player is in.
         /// </summary>
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
@@ -1012,7 +1063,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                return referenceHub?.gameObject is null ? null : Get(referenceHub.gameObject);
+                return referenceHub?.gameObject == null ? null : Get(referenceHub.gameObject);
             }
             catch (Exception)
             {
@@ -1049,7 +1100,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
-            if (gameObject is null)
+            if (gameObject == null)
                 return null;
 
             Dictionary.TryGetValue(gameObject, out Player player);
@@ -1686,8 +1737,19 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
-        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CustomHandlerBase.CassieAnnouncement cassieAnnouncement = null) =>
-            Hurt(new CustomDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
+        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null) =>
+            Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
+        /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
+        /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
+        /// <param name="deathText"> The <see langword="string"/> death text to appear on <see cref="Player"/> screen. </param>
+        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null, string deathText = null) =>
+            Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement, deathText));
 
         /// <summary>
         /// Hurts the player.
@@ -2673,6 +2735,143 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Adds a component to the player.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to be added.</typeparam>
+        /// <returns>The added <see cref="EActor"/> component.</returns>
+        public T AddComponent<T>()
+            where T : EActor
+        {
+            T component = EObject.CreateDefaultSubobject<T>(GameObject);
+
+            if (component is null)
+                return null;
+
+            components.Add(component);
+            return component;
+        }
+
+        /// <summary>
+        /// Adds a component to the player.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to be added.</param>
+        /// <returns>The added <see cref="EActor"/> component.</returns>
+        public EActor AddComponent(Type type)
+        {
+            EActor component = EObject.CreateDefaultSubobject(type, GameObject).Cast<EActor>();
+
+            if (component is null)
+                return null;
+
+            components.Add(component);
+            return component;
+        }
+
+        /// <summary>
+        /// Adds a component to the player.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> cast <see cref="EActor"/> type.</typeparam>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to be added.</param>
+        /// <returns>The added <see cref="EActor"/> component.</returns>
+        public T AddComponent<T>(Type type)
+            where T : EActor
+        {
+            T component = EObject.CreateDefaultSubobject<T>(type, GameObject);
+            if (component is null)
+                return null;
+
+            components.Add(component);
+            return component;
+        }
+
+        /// <summary>
+        /// Gets a component to the player.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>
+        /// <returns>The <see cref="EActor"/> component.</returns>
+        public T GetComponent<T>()
+            where T : EActor => components.FirstOrDefault(comp => typeof(T) == comp.GetType()).Cast<T>();
+
+        /// <summary>
+        /// Gets a component from the player.
+        /// </summary>
+        /// <typeparam name="T">The cast <typeparamref name="T"/> <see cref="EActor"/>.</typeparam>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to look for.</param>
+        /// <returns>The <see cref="EActor"/> component.</returns>
+        public T GetComponent<T>(Type type)
+            where T : EActor => components.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
+
+        /// <summary>
+        /// Gets a component from the player.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to look for.</param>
+        /// <returns>The <see cref="EActor"/> component.</returns>
+        public EActor GetComponent(Type type) => components.FirstOrDefault(comp => type == comp.GetType());
+
+        /// <summary>
+        /// Tries to get a component from the player.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>
+        /// <param name="component">The <typeparamref name="T"/> <see cref="EActor"/>.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetComponent<T>(out T component)
+            where T : EActor
+        {
+            component = GetComponent<T>();
+
+            return component is not null;
+        }
+
+        /// <summary>
+        /// Tries to get a component from the player.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to get.</param>
+        /// <param name="component">The found component.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetComponent(Type type, out EActor component)
+        {
+            component = GetComponent(type);
+
+            return component is not null;
+        }
+
+        /// <summary>
+        /// Tries to get a component from the player.
+        /// </summary>
+        /// <typeparam name="T">The cast <typeparamref name="T"/> <see cref="EActor"/>.</typeparam>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to get.</param>
+        /// <param name="component">The found component.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetComponent<T>(Type type, out T component)
+            where T : EActor
+        {
+            component = GetComponent<T>(type);
+
+            return component is not null;
+        }
+
+        /// <summary>
+        /// Checks if the player has an active component.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="EActor"/> to look for.</typeparam>
+        /// <param name="depthInheritance">A value indicating whether subclasses should be considered.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasComponent<T>(bool depthInheritance = false)
+            where T : EActor => depthInheritance
+                ? components.Any(comp => typeof(T).IsSubclassOf(comp.GetType()))
+                : components.Any(comp => typeof(T) == comp.GetType());
+
+        /// <summary>
+        /// Checks if the player has an active component.
+        /// </summary>
+        /// <param name="type">The <see cref="EActor"/> to look for.</param>
+        /// <param name="depthInheritance">A value indicating whether subclasses should be considered.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
+                ? components.Any(comp => type.IsSubclassOf(comp.GetType()))
+                : components.Any(comp => type == comp.GetType());
+
+        /// <summary>
         /// Teleports the player to a random object.
         /// </summary>
         /// <param name="types">The list of object types to choose from.</param>
@@ -2685,7 +2884,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Returns the player in a human-readable format.
+        /// Converts the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
         public override string ToString() =>
