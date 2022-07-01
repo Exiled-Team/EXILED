@@ -77,7 +77,7 @@ namespace Exiled.API.Features.Items
         /// Adds a collection of candy's to a bag.
         /// </summary>
         /// <param name="candies">The <see cref="CandyKindID"/>'s to add.</param>
-        /// <returns><see langword="true"/> if the candy was successfully added to the bag; otherwise, <see langword="false"/>.</returns>
+        /// <returns> <see cref="CandyAddStatus"/> based on insertion status. </returns>
         public CandyAddStatus AddCandy(IReadOnlyCollection<CandyKindID> candies)
         {
             bool addedCandy = false;
