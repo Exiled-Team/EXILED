@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Items
 {
     using InventorySystem.Items.Usables.Scp244;
 
+    using MEC;
+
     /// <summary>
     /// A wrapper class for SCP-244.
     /// </summary>
@@ -52,5 +54,20 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing SCP-244 related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Primed}-";
+
+        /// <summary>
+        /// Clones current <see cref="Scp244"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Scp244"/> object. </returns>
+        public override Item Clone()
+        {
+            Scp244 cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.Primed = this.Primed;
+            });
+            return cloneableItem;
+        }
     }
 }
