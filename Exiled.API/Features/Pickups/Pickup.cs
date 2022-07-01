@@ -108,6 +108,12 @@ namespace Exiled.API.Features.Pickups
             get => GameObject.transform.localScale;
             set
             {
+                if (!Spawned)
+                {
+                    GameObject.transform.localScale = value;
+                    return;
+                }
+
                 UnSpawn();
                 GameObject.transform.localScale = value;
                 Spawn();
