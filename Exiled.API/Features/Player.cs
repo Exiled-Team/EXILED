@@ -583,48 +583,43 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Role?.Team == Team.RIP;
+        public bool IsDead => Role?.Team is Team.RIP;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsNTF => Role?.Team == Team.MTF;
+        public bool IsNTF => Role?.Team is Team.MTF;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any Chaos rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsCHI => Role?.Team == Team.CHI;
+        public bool IsCHI => Role?.Team is Team.CHI;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any SCP rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsScp => Role?.Team == Team.SCP;
+        public bool IsScp => Role?.Team is Team.SCP;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank.
         /// </summary>
-        public bool IsHuman => Role is not null && Role.Is(out HumanRole _);
+        public bool IsHuman => Role?.Team is not Team.SCP and not Team.RIP;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
         /// </summary>
-        public bool IsTutorial => Role?.Type == RoleType.Tutorial;
+        public bool IsTutorial => Role?.Type is RoleType.Tutorial;
 
         /// <summary>
         /// Gets a value indicating whether the player's friendly fire is enabled.
         /// This property only determines if this player can deal damage to players on the same team;
         /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
         /// </summary>
-        public bool IsFriendlyFireEnabled
-        {
-            get
-            {
-                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0;
-            }
-        }
+        public bool IsFriendlyFireEnabled =>
+            FriendlyFireMultiplier.Count > 0 || CustomRoleFriendlyFireMultiplier.Count > 0;
 
         /// <summary>
         /// Gets or sets the player's scale.
