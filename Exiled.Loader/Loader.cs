@@ -187,8 +187,6 @@ namespace Exiled.Loader
                     continue;
 
                 Locations[assembly] = assemblyPath;
-
-                Log.Info($"Loaded plugin {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
             }
 
             foreach (Assembly assembly in Locations.Keys)
@@ -200,6 +198,10 @@ namespace Exiled.Loader
 
                 if (plugin is null)
                     continue;
+
+                AssemblyInformationalVersionAttribute attribute = plugin.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+
+                Log.Info($"Loaded plugin {plugin.Name}@{(plugin.Version is not null ? $"{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
 
                 PluginAssemblies.Add(assembly, plugin);
                 Plugins.Add(plugin);
