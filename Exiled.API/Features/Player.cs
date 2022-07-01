@@ -2079,12 +2079,11 @@ namespace Exiled.API.Features
                     ammo = firearm1.Ammo;
                 }
 
+                item.Base.OnRemoved(null);
+
                 itemBase.Owner = ReferenceHub;
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
-                if (itemBase.PickupDropModel is not null)
-                {
-                    itemBase.OnAdded(itemBase.PickupDropModel);
-                }
+                itemBase.OnAdded(itemBase.PickupDropModel);
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
@@ -2102,6 +2101,7 @@ namespace Exiled.API.Features
                 if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
                 {
                     acquisitionConfirmationTrigger.ServerConfirmAcqusition();
+                    acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
                 }
 
                 ItemsValue.Add(item);
