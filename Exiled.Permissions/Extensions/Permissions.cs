@@ -201,7 +201,7 @@ namespace Exiled.Permissions.Extensions
             if (Server.Host == player)
                 return true;
 
-            if (player is null || player.GameObject is null || Groups is null || Groups.Count == 0)
+            if (player is null || player.GameObject == null || Groups is null || Groups.Count == 0)
             {
                 return false;
             }

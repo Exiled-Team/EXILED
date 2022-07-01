@@ -34,8 +34,8 @@ namespace Exiled.API.Features.Toys
         {
             Base = toyAdminToyBase;
 
-            Vector3 actualScale = Base.transform.localScale;
-            Collidable = actualScale.x > 0f || actualScale.y > 0f || actualScale.z > 0f;
+            Vector3 scale = Base.transform.localScale;
+            collidable = scale.x > 0f || scale.y > 0f || scale.z > 0f;
         }
 
         /// <summary>
@@ -101,28 +101,22 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets the <see cref="Primitive"/> belonging to the <see cref="PrimitiveObjectToy"/>.
         /// </summary>
-        /// <param name="primitveObjectToy">The <see cref="PrimitiveObjectToy"/> instance.</param>
+        /// <param name="primitiveObjectToy">The <see cref="PrimitiveObjectToy"/> instance.</param>
         /// <returns>The corresponding <see cref="Primitive"/> instance.</returns>
-        public static Primitive Get(PrimitiveObjectToy primitveObjectToy)
+        public static Primitive Get(PrimitiveObjectToy primitiveObjectToy)
         {
-            AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == primitveObjectToy);
-            return adminToy is not null ? adminToy as Primitive : new Primitive(primitveObjectToy);
+            AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == primitiveObjectToy);
+            return adminToy is not null ? adminToy as Primitive : new Primitive(primitiveObjectToy);
         }
 
         private void RefreshCollidable()
         {
             UnSpawn();
 
-            Vector3 actualScale = Scale;
-
-            if (Collidable)
-            {
-                Base.transform.localScale = new Vector3(Math.Abs(actualScale.x), Math.Abs(actualScale.y), Math.Abs(actualScale.z));
-            }
-            else
-            {
-                Base.transform.localScale = new Vector3(-Math.Abs(actualScale.x), -Math.Abs(actualScale.y), -Math.Abs(actualScale.z));
-            }
+            Vector3 scale = Scale;
+            Base.transform.localScale = Collidable ?
+                new(Math.Abs(scale.x), Math.Abs(scale.y), Math.Abs(scale.z)) :
+                new(-Math.Abs(scale.x), -Math.Abs(scale.y), -Math.Abs(scale.z));
 
             Spawn();
         }

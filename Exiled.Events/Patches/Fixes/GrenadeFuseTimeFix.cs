@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Fixes
 
             newInstructions.InsertRange(index, new[]
             {
-                // if (!thrownProjectils is TimeGrenade timeGrenade)
+                // if (thrownProjectils is not TimeGrenade timeGrenade)
                 //    goto SKIP_LABEL
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Isinst, typeof(TimeGrenade)),
@@ -53,11 +53,11 @@ namespace Exiled.Events.Patches.Fixes
                 // item = Item.Get(this);
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get))),
+                new(OpCodes.Dup),
                 new(OpCodes.Stloc, item.LocalIndex),
-                new(OpCodes.Ldloc, item.LocalIndex),
                 new(OpCodes.Brfalse, skipLabel),
 
-                // if (item is ExplosiveGrenade explosive)
+                // if (item is not ExplosiveGrenade explosive)
                 //    goto NOT_EXPLOSIVE_LABEL
                 new(OpCodes.Ldloc, item.LocalIndex),
                 new(OpCodes.Isinst, typeof(ExplosiveGrenade)),
@@ -77,6 +77,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Callvirt, Method(typeof(Dictionary<ExplosionGrenade, ExplosiveGrenade>), nameof(Dictionary<ExplosiveGrenade, ExplosionGrenade>.Add))),
 
                 // timeGrenade.ServerActivate()
+                // return;
                 new(OpCodes.Ldloc, timeGrenade.LocalIndex),
                 new(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
                 new(OpCodes.Ret),
@@ -101,6 +102,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.Add))),
 
                 // timeGrenade.ServerActivate();
+                // return
                 new(OpCodes.Ldloc, timeGrenade.LocalIndex),
                 new(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
                 new(OpCodes.Ret),

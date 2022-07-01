@@ -31,7 +31,9 @@ namespace Exiled.CustomItems.API.Features
 
     using YamlDotNet.Serialization;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The Custom Grenade base class.
+    /// </summary>
     public abstract class CustomGrenade : CustomItem
     {
         /// <summary>

@@ -288,7 +288,7 @@ namespace Exiled.Loader
             {
                 Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {reflectionTypeLoadException}");
 
-                foreach (var loaderException in reflectionTypeLoadException.LoaderExceptions)
+                foreach (Exception loaderException in reflectionTypeLoadException.LoaderExceptions)
                 {
                     Log.Error(loaderException);
                 }
@@ -415,7 +415,7 @@ namespace Exiled.Loader
 
                 if (type is { IsGenericType: true })
                 {
-                    var genericTypeDef = type.GetGenericTypeDefinition();
+                    Type genericTypeDef = type.GetGenericTypeDefinition();
 
                     if (genericTypeDef == typeof(Plugin<>) || genericTypeDef == typeof(Plugin<,>))
                     {
