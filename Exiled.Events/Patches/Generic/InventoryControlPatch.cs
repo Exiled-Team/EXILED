@@ -20,6 +20,7 @@ namespace Exiled.Events.Patches.Generic
 
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
 
     using MEC;
 
@@ -55,7 +56,10 @@ namespace Exiled.Events.Patches.Generic
                 // itemInstance
                 new(OpCodes.Ldloc_1),
 
-                // AddItem(player, itemInstance)
+                // pickup
+                new(OpCodes.Ldarg_3),
+
+                // AddItem(player, itemInstance, pickup)
                 new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
             });
 
@@ -65,7 +69,16 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void AddItem(Player player, ItemBase item) => player?.ItemsValue.Add(Item.Get(item));
+        private static void AddItem(Player player, ItemBase itemBase, ItemPickupBase itemPickupBase)
+        {
+            Item item = Item.Get(itemBase);
+            if(itemPickupBase != null)
+            {
+                item.Scale = itemPickupBase.transform.localScale;
+            }
+
+            player?.ItemsValue.Add(item);
+        }
     }
 
     /// <summary>
