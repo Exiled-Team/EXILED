@@ -85,7 +85,7 @@ namespace Exiled.CustomItems.API.Features
             if (item is Firearm firearm && Attachments is not null && !Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
 
-            Pickup pickup = item.Spawn(position);
+            Pickup pickup = item.CreatePickup(position);
             if (pickup is null)
             {
                 Log.Debug($"{nameof(Spawn)}: Pickup is null.");
@@ -112,7 +112,7 @@ namespace Exiled.CustomItems.API.Features
             if (item is Firearm firearm && Attachments is not null && !Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
 
-            Pickup pickup = item.Spawn(position);
+            Pickup pickup = item.CreatePickup(position);
             if (pickup is null)
             {
                 Log.Debug($"{nameof(Spawn)}: Pickup is null.", Instance.Config.Debug);
@@ -127,7 +127,7 @@ namespace Exiled.CustomItems.API.Features
 
             Timing.CallDelayed(1f, () =>
             {
-                if (pickup.Base is FirearmPickup firearmPickup)
+                if (pickup.Base is BaseFirearmPickup firearmPickup)
                 {
                     firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
                     firearmPickup.NetworkStatus = firearmPickup.Status;
@@ -148,7 +148,7 @@ namespace Exiled.CustomItems.API.Features
                     firearm.AddAttachment(Attachments);
                 byte ammo = firearm.Ammo;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
-                Pickup pickup = firearm.Spawn(position);
+                Pickup pickup = firearm.CreatePickup(position);
 
                 TrackedSerials.Add(pickup.Serial);
 
@@ -179,7 +179,7 @@ namespace Exiled.CustomItems.API.Features
                     firearm.AddAttachment(Attachments);
                 byte ammo = firearm.Ammo;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
-                Pickup pickup = firearm.Spawn(position);
+                Pickup pickup = firearm.CreatePickup(position);
 
                 if (previousOwner is not null)
                     pickup.PreviousOwner = previousOwner;
