@@ -276,7 +276,7 @@ namespace Exiled.API.Extensions
         {
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
-                targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
+                targetWriter.WriteUInt64(SyncVarDirtyBits[propertyName]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
             }
 
