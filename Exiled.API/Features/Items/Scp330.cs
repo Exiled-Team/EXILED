@@ -11,6 +11,8 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Usables.Scp330;
 
+    using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -20,7 +22,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
-    public class Scp330 : Usable
+    public partial class Scp330 : Usable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
@@ -69,6 +71,34 @@ namespace Exiled.API.Features.Items
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Adds a collection of candy's to a bag.
+        /// </summary>
+        /// <param name="candies">The <see cref="CandyKindID"/>'s to add.</param>
+        /// <returns><see langword="true"/> if the candy was successfully added to the bag; otherwise, <see langword="false"/>.</returns>
+        public CandyAddStatus AddCandy(IReadOnlyCollection<CandyKindID> candies)
+        {
+            bool addedCandy = false;
+            foreach(CandyKindID candy in candies)
+            {
+                if (!Base.TryAddSpecific(candy))
+                {
+                    if (addedCandy)
+                    {
+                        return CandyAddStatus.SomeCandyAdded;
+                    }
+                    else
+                    {
+                        return CandyAddStatus.NoCandyAdded;
+                    }
+                }
+
+                addedCandy = true;
+            }
+
+            return CandyAddStatus.AllCandyAdded;
         }
 
         /// <summary>
@@ -177,5 +207,21 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing SCP-330 related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
+
+        /// <summary>
+        /// Clones current <see cref="Scp330"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Scp330"/> object. </returns>
+        public override Item Clone()
+        {
+            Scp330 cloneableItem = new();
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.ExposedType = this.ExposedType;
+                cloneableItem.AddCandy(this.Candies);
+            });
+            return cloneableItem;
+        }
     }
 }

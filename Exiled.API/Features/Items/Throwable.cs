@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Items
 {
     using InventorySystem.Items.ThrowableProjectiles;
 
+    using MEC;
+
     using UnityEngine;
 
     /// <summary>
@@ -67,5 +69,20 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Throwable-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
+
+        /// <summary>
+        /// Clones current <see cref="Throwable"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Throwable"/> object. </returns>
+        public override Item Clone()
+        {
+            Throwable cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.PinPullTime = this.PinPullTime;
+            });
+            return cloneableItem;
+        }
     }
 }
