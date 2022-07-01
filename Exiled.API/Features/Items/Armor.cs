@@ -16,6 +16,8 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Armor;
 
+    using MEC;
+
     using NorthwoodLib.Pools;
 
     /// <summary>
@@ -171,6 +173,28 @@ namespace Exiled.API.Features.Items
             get => Base.CategoryLimits;
 
             set => Base.CategoryLimits = value.ToArray();
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Armor"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Armor"/> object. </returns>
+        public override Item Clone()
+        {
+            Armor cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.Weight = this.Weight;
+                cloneableItem.StaminaUseMultiplier = this.StaminaUseMultiplier;
+                cloneableItem.VestEfficacy = this.VestEfficacy;
+                cloneableItem.RemoveExcessOnDrop = this.RemoveExcessOnDrop;
+                cloneableItem.CategoryLimits = this.CategoryLimits;
+                cloneableItem.AmmoLimits = this.AmmoLimits;
+                cloneableItem.VestEfficacy = this.VestEfficacy;
+                cloneableItem.HelmetEfficacy = this.HelmetEfficacy;
+            });
+            return cloneableItem;
         }
     }
 }

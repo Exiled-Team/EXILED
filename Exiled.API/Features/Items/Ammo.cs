@@ -11,6 +11,8 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Firearms.Ammo;
 
+    using MEC;
+
     /// <summary>
     /// A wrapper class for <see cref="AmmoItem"/>.
     /// </summary>
@@ -47,5 +49,15 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="AmmoItem"/> that this class is encapsulating.
         /// </summary>
         public new AmmoItem Base { get; }
+
+        /// <summary>
+        /// Clones current <see cref="Ammo"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Ammo"/> object. </returns>
+        public override Item Clone()
+        {
+            Ammo cloneableItem = new(Type);
+            return cloneableItem;
+        }
     }
 }
