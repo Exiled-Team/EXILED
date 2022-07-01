@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations after kicking a player from the server.
+    /// Contains all information after kicking a player from the server.
     /// </summary>
     public class KickedEventArgs : EventArgs
     {

@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using MapGeneration.Distributors;
 
     /// <summary>
-    /// Contains all informations before a player opens a generator.
+    /// Contains all information before a player opens a generator.
     /// </summary>
     public class OpeningGeneratorEventArgs : EventArgs
     {

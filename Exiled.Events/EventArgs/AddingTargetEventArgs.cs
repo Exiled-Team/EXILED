@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
-    /// Contains all informations before adding a target to SCP-096.
+    /// Contains all information before adding a target to SCP-096.
     /// </summary>
     public class AddingTargetEventArgs : EventArgs
     {
