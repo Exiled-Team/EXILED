@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using CameraShaking;
@@ -30,6 +31,7 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
+    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -198,6 +200,158 @@ namespace Exiled.API.Features.Items
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
         /// </summary>
         internal static Dictionary<ItemType, AttachmentIdentifier[]> AvailableAttachmentsValue { get; } = new();
+
+        /// <summary>
+        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> of which must be added.</param>
+        /// <param name="itemType">The <see cref="ItemType"/> to add.</param>
+        /// <param name="attachments">The <see cref="AttachmentIdentifier"/>[] to add.</param>
+        public static void AddPreference(Player player, ItemType itemType, AttachmentIdentifier[] attachments)
+        {
+            foreach (KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>> kvp in PlayerPreferences)
+            {
+                if (kvp.Key != player)
+                    continue;
+
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary))
+                    dictionary[itemType] = attachments.GetAttachmentsCode();
+            }
+        }
+
+        /// <summary>
+        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> of which must be added.</param>
+        /// <param name="preference">The <see cref="KeyValuePair{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] to add.</param>
+        public static void AddPreference(Player player, KeyValuePair<ItemType, AttachmentIdentifier[]> preference) => AddPreference(player, preference.Key, preference.Value);
+
+        /// <summary>
+        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> of which must be added.</param>
+        /// <param name="preference">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] to add.</param>
+        public static void AddPreference(Player player, Dictionary<ItemType, AttachmentIdentifier[]> preference)
+        {
+            foreach (KeyValuePair<ItemType, AttachmentIdentifier[]> kvp in preference)
+                AddPreference(player, kvp);
+        }
+
+        /// <summary>
+        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
+        /// </summary>
+        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be added.</param>
+        /// <param name="itemType">The <see cref="ItemType"/> to add.</param>
+        /// <param name="attachments">The <see cref="AttachmentIdentifier"/>[] to add.</param>
+        public static void AddPreference(IEnumerable<Player> players, ItemType itemType, AttachmentIdentifier[] attachments)
+        {
+            foreach (Player player in players)
+                AddPreference(player, itemType, attachments);
+        }
+
+        /// <summary>
+        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
+        /// </summary>
+        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be added.</param>
+        /// <param name="preference">The <see cref="KeyValuePair{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] to add.</param>
+        public static void AddPreference(IEnumerable<Player> players, KeyValuePair<ItemType, AttachmentIdentifier[]> preference)
+        {
+            foreach (Player player in players)
+                AddPreference(player, preference.Key, preference.Value);
+        }
+
+        /// <summary>
+        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
+        /// </summary>
+        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be added.</param>
+        /// <param name="preference">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] to add.</param>
+        public static void AddPreference(IEnumerable<Player> players, Dictionary<ItemType, AttachmentIdentifier[]> preference)
+        {
+            foreach ((Player player, KeyValuePair<ItemType, AttachmentIdentifier[]> kvp) in players.SelectMany(player => preference.Select(kvp => (player, kvp))))
+                AddPreference(player, kvp);
+        }
+
+        /// <summary>
+        /// Removes a preference from the <see cref="PlayerPreferences"/> if it already exists.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> of which must be removed.</param>
+        /// <param name="itemType">The <see cref="ItemType"/> to remove.</param>
+        public static void RemovePreference(Player player, ItemType itemType)
+        {
+            foreach (KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>> kvp in PlayerPreferences)
+            {
+                if (kvp.Key != player)
+                    continue;
+
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary))
+                    dictionary[itemType] = (uint)itemType.GetBaseCode();
+            }
+        }
+
+        /// <summary>
+        /// Removes a preference from the <see cref="PlayerPreferences"/> if it already exists.
+        /// </summary>
+        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be removed.</param>
+        /// <param name="itemType">The <see cref="ItemType"/> to remove.</param>
+        public static void RemovePreference(IEnumerable<Player> players, ItemType itemType)
+        {
+            foreach (Player player in players)
+                RemovePreference(player, itemType);
+        }
+
+        /// <summary>
+        /// Removes a preference from the <see cref="PlayerPreferences"/> if it already exists.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> of which must be removed.</param>
+        /// <param name="itemTypes">The <see cref="IEnumerable{T}"/> of <see cref="ItemType"/> to remove.</param>
+        public static void RemovePreference(Player player, IEnumerable<ItemType> itemTypes)
+        {
+            foreach (ItemType itemType in itemTypes)
+                RemovePreference(player, itemType);
+        }
+
+        /// <summary>
+        /// Removes a preference from the <see cref="PlayerPreferences"/> if it already exists.
+        /// </summary>
+        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be removed.</param>
+        /// <param name="itemTypes">The <see cref="IEnumerable{T}"/> of <see cref="ItemType"/> to remove.</param>
+        public static void RemovePreference(IEnumerable<Player> players, IEnumerable<ItemType> itemTypes)
+        {
+            foreach ((Player player, ItemType itemType) in players.SelectMany(player => itemTypes.Select(itemType => (player, itemType))))
+                RemovePreference(player, itemType);
+        }
+
+        /// <summary>
+        /// Clears all the existing preferences from <see cref="PlayerPreferences"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> of which must be cleared.</param>
+        public static void ClearPreferences(Player player)
+        {
+            if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary))
+            {
+                foreach (KeyValuePair<ItemType, uint> kvp in dictionary)
+                    dictionary[kvp.Key] = (uint)kvp.Key.GetBaseCode();
+            }
+        }
+
+        /// <summary>
+        /// Clears all the existing preferences from <see cref="PlayerPreferences"/>.
+        /// </summary>
+        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be cleared.</param>
+        public static void ClearPreferences(IEnumerable<Player> players)
+        {
+            foreach (Player player in players)
+                ClearPreferences(player);
+        }
+
+        /// <summary>
+        /// Clears all the existing preferences from <see cref="PlayerPreferences"/>.
+        /// </summary>
+        public static void ClearPreferences()
+        {
+            foreach (Player player in Player.List)
+                ClearPreferences(player);
+        }
 
         /// <summary>
         /// Adds a <see cref="AttachmentIdentifier"/> to the firearm.
@@ -380,190 +534,40 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> of which must be added.</param>
-        /// <param name="itemType">The <see cref="ItemType"/> to add.</param>
-        /// <param name="attachments">The <see cref="AttachmentIdentifier"/>[] to add.</param>
-        public void AddPreference(Player player, ItemType itemType, AttachmentIdentifier[] attachments)
-        {
-            foreach (KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>> kvp in PlayerPreferences)
-            {
-                if (kvp.Key != player)
-                    continue;
-
-                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary))
-                    dictionary[itemType] = attachments.GetAttachmentsCode();
-            }
-        }
-
-        /// <summary>
-        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> of which must be added.</param>
-        /// <param name="preference">The <see cref="KeyValuePair{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] to add.</param>
-        public void AddPreference(Player player, KeyValuePair<ItemType, AttachmentIdentifier[]> preference) => AddPreference(player, preference.Key, preference.Value);
-
-        /// <summary>
-        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> of which must be added.</param>
-        /// <param name="preference">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] to add.</param>
-        public void AddPreference(Player player, Dictionary<ItemType, AttachmentIdentifier[]> preference)
-        {
-            foreach (KeyValuePair<ItemType, AttachmentIdentifier[]> kvp in preference)
-                AddPreference(player, kvp);
-        }
-
-        /// <summary>
-        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
-        /// </summary>
-        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be added.</param>
-        /// <param name="itemType">The <see cref="ItemType"/> to add.</param>
-        /// <param name="attachments">The <see cref="AttachmentIdentifier"/>[] to add.</param>
-        public void AddPreference(IEnumerable<Player> players, ItemType itemType, AttachmentIdentifier[] attachments)
-        {
-            foreach (Player player in players)
-                AddPreference(player, itemType, attachments);
-        }
-
-        /// <summary>
-        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
-        /// </summary>
-        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be added.</param>
-        /// <param name="preference">The <see cref="KeyValuePair{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] to add.</param>
-        public void AddPreference(IEnumerable<Player> players, KeyValuePair<ItemType, AttachmentIdentifier[]> preference)
-        {
-            foreach (Player player in players)
-                AddPreference(player, preference.Key, preference.Value);
-        }
-
-        /// <summary>
-        /// Adds or replaces an existing preference to the <see cref="PlayerPreferences"/>.
-        /// </summary>
-        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be added.</param>
-        /// <param name="preference">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] to add.</param>
-        public void AddPreference(IEnumerable<Player> players, Dictionary<ItemType, AttachmentIdentifier[]> preference)
-        {
-            foreach ((Player player, KeyValuePair<ItemType, AttachmentIdentifier[]> kvp) in players.SelectMany(player => preference.Select(kvp => (player, kvp))))
-                AddPreference(player, kvp);
-        }
-
-        /// <summary>
-        /// Removes a preference from the <see cref="PlayerPreferences"/> if it already exists.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> of which must be removed.</param>
-        /// <param name="itemType">The <see cref="ItemType"/> to remove.</param>
-        public void RemovePreference(Player player, ItemType itemType)
-        {
-            foreach (KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>> kvp in PlayerPreferences)
-            {
-                if (kvp.Key != player)
-                    continue;
-
-                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary))
-                    dictionary[itemType] = (uint)itemType.GetBaseCode();
-            }
-        }
-
-        /// <summary>
-        /// Removes a preference from the <see cref="PlayerPreferences"/> if it already exists.
-        /// </summary>
-        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be removed.</param>
-        /// <param name="itemType">The <see cref="ItemType"/> to remove.</param>
-        public void RemovePreference(IEnumerable<Player> players, ItemType itemType)
-        {
-            foreach (Player player in players)
-                RemovePreference(player, itemType);
-        }
-
-        /// <summary>
-        /// Removes a preference from the <see cref="PlayerPreferences"/> if it already exists.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> of which must be removed.</param>
-        /// <param name="itemTypes">The <see cref="IEnumerable{T}"/> of <see cref="ItemType"/> to remove.</param>
-        public void RemovePreference(Player player, IEnumerable<ItemType> itemTypes)
-        {
-            foreach (ItemType itemType in itemTypes)
-                RemovePreference(player, itemType);
-        }
-
-        /// <summary>
-        /// Removes a preference from the <see cref="PlayerPreferences"/> if it already exists.
-        /// </summary>
-        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be removed.</param>
-        /// <param name="itemTypes">The <see cref="IEnumerable{T}"/> of <see cref="ItemType"/> to remove.</param>
-        public void RemovePreference(IEnumerable<Player> players, IEnumerable<ItemType> itemTypes)
-        {
-            foreach ((Player player, ItemType itemType) in players.SelectMany(player => itemTypes.Select(itemType => (player, itemType))))
-                RemovePreference(player, itemType);
-        }
-
-        /// <summary>
-        /// Clears all the existing preferences from <see cref="PlayerPreferences"/>.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> of which must be cleared.</param>
-        public void ClearPreferences(Player player)
-        {
-            if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary))
-            {
-                foreach (KeyValuePair<ItemType, uint> kvp in dictionary)
-                    dictionary[kvp.Key] = (uint)kvp.Key.GetBaseCode();
-            }
-        }
-
-        /// <summary>
-        /// Clears all the existing preferences from <see cref="PlayerPreferences"/>.
-        /// </summary>
-        /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be cleared.</param>
-        public void ClearPreferences(IEnumerable<Player> players)
-        {
-            foreach (Player player in players)
-                ClearPreferences(player);
-        }
-
-        /// <summary>
-        /// Spawns the item on the map.
+        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
         /// <param name="identifiers">The attachments to be added.</param>
         /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
-        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public Pickup Spawn(Vector3 position, Quaternion rotation = default, IEnumerable<AttachmentIdentifier> identifiers = null, bool spawn = true)
+        /// <returns>The created <see cref="Pickup"/>.</returns>
+        public Pickup CreatePickup(Vector3 position, Quaternion rotation = default, IEnumerable<AttachmentIdentifier> identifiers = null, bool spawn = true)
         {
-            Base.PickupDropModel.Info.ItemId = Type;
-            Base.PickupDropModel.Info.Position = position;
-            Base.PickupDropModel.Info.Weight = Weight;
-            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
-            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
-
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-            if (ipb is BaseFirearm firearmPickup)
+
+            PickupSyncInfo info = new()
+            {
+                ItemId = Type,
+                Position = position,
+                Weight = ipb.Info.Weight,
+                Rotation = new LowPrecisionQuaternion(rotation),
+            };
+
+            ipb.NetworkInfo = info;
+
+            Pickup pickup = Pickup.Get(ipb);
+
+            if (pickup is FirearmPickup firearmPickup)
             {
                 if (identifiers is not null)
                     AddAttachment(identifiers);
-
-                firearmPickup.Status = new FirearmStatus(Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
-
-                firearmPickup.NetworkStatus = firearmPickup.Status;
+                firearmPickup.Status = new FirearmStatus(Ammo, FirearmStatusFlags.MagazineInserted, AttachmentIdentifiers.GetAttachmentsCode());
             }
 
-            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
-            Pickup pickup = Pickup.Get(ipb);
+            ipb.InfoReceived(default, info);
             if (spawn)
                 pickup.Spawn();
-            pickup.Scale = Scale;
             return pickup;
-        }
-
-        /// <summary>
-        /// Clears all the existing preferences from <see cref="PlayerPreferences"/>.
-        /// </summary>
-        public void ClearPreferences()
-        {
-            foreach (Player player in Player.List)
-                ClearPreferences(player);
         }
     }
 }

@@ -99,6 +99,6 @@ namespace Exiled.API.Features.Items
         /// Returns the FlashGrenade in a human readable format.
         /// </summary>
         /// <returns>A string containing FlashGrenade-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
+        public override string ToString() => $"{Type} ({Serial}) |{FuseTime}|";
     }
 }

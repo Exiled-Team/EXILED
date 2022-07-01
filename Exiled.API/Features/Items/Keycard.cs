@@ -51,6 +51,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Keycard in a human readable format.
         /// </summary>
         /// <returns>A string containing Keycard-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
+        public override string ToString() => $"{Type} ({Serial}) |{Permissions}|";
     }
 }

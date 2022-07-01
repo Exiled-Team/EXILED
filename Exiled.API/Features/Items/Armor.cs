@@ -65,7 +65,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the Weight of the armor.
         /// </summary>
-        public new float Weight
+        public float Weight
         {
             get => Base.Weight;
             set => Base._weight = value;

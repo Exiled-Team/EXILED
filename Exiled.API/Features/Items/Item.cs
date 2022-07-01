@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.API.Extensions;
@@ -33,6 +34,7 @@ namespace Exiled.API.Features.Items
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
+    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -46,23 +48,17 @@ namespace Exiled.API.Features.Items
         internal static readonly Dictionary<ItemBase, Item> BaseToItem = new();
 
         /// <summary>
-        /// A dictionary of all <see cref="Serial"/>s that have been assigned to an item.
-        /// </summary>
-        internal static readonly Dictionary<ushort, Item> SerialToItem = new();
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
         {
             Base = itemBase;
-            Type = itemBase.ItemTypeId;
-            Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
             if (Serial == 0)
             {
                 ushort serial = ItemSerialGenerator.GenerateNext();
                 Serial = serial;
+                Base.OnAdded(null);
 #if DEBUG
                 Log.Debug($"{nameof(Item)}.ctor: Generating new serial number. Serial should now be: {serial}. // {Serial}");
 #endif
@@ -88,14 +84,8 @@ namespace Exiled.API.Features.Items
         public ushort Serial
         {
             get => Base.ItemSerial;
-
             set => Base.ItemSerial = value;
         }
-
-        /// <summary>
-        /// Gets or sets the scale for the item.
-        /// </summary>
-        public Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
         /// Gets the <see cref="ItemBase"/> of the item.
@@ -105,17 +95,12 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
         /// </summary>
-        public ItemType Type { get; internal set; }
+        public ItemType Type => Base.ItemTypeId;
 
         /// <summary>
         /// Gets the <see cref="ItemCategory"/> of the item.
         /// </summary>
         public ItemCategory Category => Base.Category;
-
-        /// <summary>
-        /// Gets the Weight of the item.
-        /// </summary>
-        public float Weight => Base.Weight;
 
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
@@ -253,27 +238,45 @@ namespace Exiled.API.Features.Items
         public void Give(Player player) => player.AddItem(Base);
 
         /// <summary>
-        /// Spawns the item on the map.
+        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
         /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
-        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default, bool spawn = true)
+        /// <returns>The created <see cref="Pickup"/>.</returns>
+        public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Base.PickupDropModel.Info.ItemId = Type;
-            Base.PickupDropModel.Info.Position = position;
-            Base.PickupDropModel.Info.Weight = Weight;
-            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
-            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
-
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+            PickupSyncInfo info = new()
+            {
+                ItemId = Type,
+                Position = position,
+                Weight = ipb.Info.Weight,
+                Rotation = new LowPrecisionQuaternion(rotation),
+            };
+
+            ipb.NetworkInfo = info;
+
             Pickup pickup = Pickup.Get(ipb);
+
+            if (pickup is FirearmPickup firearmPickup)
+            {
+                if (this is Firearm firearm)
+                {
+                    firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearm.Base.Status.Attachments);
+                }
+                else
+                {
+                    Log.Error($"Should never happen {new StackTrace()}");
+                    byte ammo = (Base as InventorySystem.Items.Firearms.Firearm).Status.Ammo;
+                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, (uint)firearmPickup.Type.GetBaseCode());
+                }
+            }
+
+            ipb.InfoReceived(default, info);
             if (spawn)
                 pickup.Spawn();
-            pickup.Scale = Scale;
             return pickup;
         }
 
@@ -281,6 +284,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Item in a human readable format.
         /// </summary>
         /// <returns>A string containing Item-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+        public override string ToString() => $"{Type} ({Serial})";
     }
 }
