@@ -253,13 +253,18 @@ namespace Exiled.API.Features.Items
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
         public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default, IEnumerable<AttachmentIdentifier> identifiers = null)
         {
-            Base.PickupDropModel.Info.ItemId = Type;
-            Base.PickupDropModel.Info.Position = position;
-            Base.PickupDropModel.Info.Weight = Weight;
-            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
-            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
+            PickupSyncInfo info = new()
+            {
+                ItemId = Type,
+                Position = position,
+                Weight = Weight,
+                Rotation = new LowPrecisionQuaternion(rotation),
+            };
 
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+
+            ipb.NetworkInfo = info;
+
             if (ipb is FirearmPickup firearmPickup)
             {
                 if (this is Firearm firearm)
@@ -288,6 +293,7 @@ namespace Exiled.API.Features.Items
             NetworkServer.Spawn(ipb.gameObject);
             ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
             Pickup pickup = Pickup.Get(ipb);
+            pickup.PreviousOwner = Owner;
             pickup.Scale = Scale;
             return pickup;
         }
