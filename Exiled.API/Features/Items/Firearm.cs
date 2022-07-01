@@ -69,15 +69,6 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
-
-            Base.AmmoManagerModule = Base switch
-            {
-                AutomaticFirearm auto => new AutomaticAmmoManager(auto, auto._baseMaxAmmo, 1, auto._boltTravelTime == 0),
-                Shotgun shotgun => new TubularMagazineAmmoManager(shotgun, Serial, shotgun._ammoCapacity, shotgun._numberOfChambers, 0.5f, 3, "ShellsToLoad", ActionName.Zoom, ActionName.Shoot),
-                ParticleDisruptor particleDisruptor => new DisruptorAction(particleDisruptor, 0f, 0f, true),
-                _ => new ClipLoadedInternalMagAmmoManager(Base, 6),
-            };
-            Base._status = new FirearmStatus(MaxAmmo, FirearmStatusFlags.MagazineInserted, 0);
         }
 
         /// <summary>

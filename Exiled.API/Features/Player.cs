@@ -1601,6 +1601,7 @@ namespace Exiled.API.Features
             }
             else
             {
+                item.Base.OnRemoved(null);
                 if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
