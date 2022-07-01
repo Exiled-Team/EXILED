@@ -83,6 +83,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not friendly fire is enabled.
         /// </summary>
+        /// <seealso cref="Player.IsFriendlyFireEnabled"/>
         public static bool FriendlyFire
         {
             get => ServerConsole.FriendlyFire;
@@ -97,6 +98,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the number of players currently on the server.
         /// </summary>
+        /// <seealso cref="Player.List"/>
         public static int PlayerCount => Player.Dictionary.Count;
 
         /// <summary>
@@ -161,6 +163,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Restarts the server, reconnects all players.
         /// </summary>
+        /// <seealso cref="RestartRedirect(ushort)"/>
         public static void Restart()
         {
             Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
@@ -169,6 +172,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shutdowns the server, disconnects all players.
         /// </summary>
+        /// <seealso cref="ShutdownRedirect(ushort)"/>
         public static void Shutdown()
         {
             global::Shutdown.Quit();

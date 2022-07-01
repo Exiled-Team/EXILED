@@ -17,7 +17,7 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// The in-game Scp079Generator.
+    /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
     public class Generator
     {
