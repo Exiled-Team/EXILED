@@ -78,7 +78,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="candies">The <see cref="CandyKindID"/>'s to add.</param>
         /// <returns> <see cref="CandyAddStatus"/> based on insertion status. </returns>
-        public CandyAddStatus AddCandy(IReadOnlyCollection<CandyKindID> candies)
+        public CandyAddStatus AddCandy(IEnumerable<CandyKindID> candies)
         {
             bool addedCandy = false;
             foreach(CandyKindID candy in candies)

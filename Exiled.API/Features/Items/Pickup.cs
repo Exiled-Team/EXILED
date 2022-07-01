@@ -13,6 +13,8 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
 
+    using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -212,5 +214,25 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+
+        /// <summary>
+        /// Clones current <see cref="Pickup"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Pickup"/> object. </returns>
+        public Pickup Clone()
+        {
+            Pickup cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.Locked = Locked;
+                cloneableItem.Spawned = Spawned;
+                cloneableItem.Weight = Weight;
+                cloneableItem.Scale = Scale;
+                cloneableItem.Position = Position;
+                cloneableItem.PreviousOwner = PreviousOwner;
+            });
+            return cloneableItem;
+        }
     }
 }
