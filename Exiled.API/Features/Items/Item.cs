@@ -44,11 +44,6 @@ namespace Exiled.API.Features.Items
         internal static readonly Dictionary<ItemBase, Item> BaseToItem = new();
 
         /// <summary>
-        /// A dictionary of all <see cref="Serial"/>s that have been assigned to an item.
-        /// </summary>
-        internal static readonly Dictionary<ushort, Item> SerialToItem = new();
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
