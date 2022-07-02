@@ -160,7 +160,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public IEnumerable<ArmorAmmoLimit> AmmoLimits
         {
-            get => Base.AmmoLimits.Cast<ArmorAmmoLimit>();
+            get => Base.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
 
             set => Base.AmmoLimits = value.Select(limit => (BodyArmor.ArmorAmmoLimit)limit).ToArray();
         }
