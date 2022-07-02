@@ -87,13 +87,10 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a keycard or not.</returns>
-        public static bool IsKeycard(this ItemType type) => type switch
-        {
-            ItemType.KeycardJanitor or ItemType.KeycardScientist or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or
-            ItemType.KeycardGuard or ItemType.KeycardNTFOfficer or ItemType.KeycardContainmentEngineer or ItemType.KeycardNTFLieutenant or
-            ItemType.KeycardNTFCommander or ItemType.KeycardFacilityManager or ItemType.KeycardChaosInsurgency or ItemType.KeycardO5 => true,
-            _ => false,
-        };
+        public static bool IsKeycard(this ItemType type) => type is ItemType.KeycardJanitor or ItemType.KeycardScientist or
+            ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardGuard or ItemType.KeycardNTFOfficer or
+            ItemType.KeycardContainmentEngineer or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFCommander or
+            ItemType.KeycardFacilityManager or ItemType.KeycardChaosInsurgency or ItemType.KeycardO5;
 
         /// <summary>
         /// Gets the default ammo of a weapon.
