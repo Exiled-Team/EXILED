@@ -1009,7 +1009,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all the current players of a specific role.
         /// </summary>
-        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayers { get; private set; } = new()
+        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayersInternal { get; private set; } = new()
         {
             { RoleType.None, new HashSet<Player>() },
             { RoleType.Scp173, new HashSet<Player>() },
@@ -1036,9 +1036,14 @@ namespace Exiled.API.Features
         };
 
         /// <summary>
+        /// Gets all the current players of a specific role.
+        /// </summary>
+        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayers { get; private set; } = new Dictionary<RoleType, HashSet<Player>>(InstantiatedRolesToPlayersInternal);
+
+        /// <summary>
         /// Gets players per Team.
         /// </summary>
-        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayers { get; private set; } = new()
+        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayersInternal { get; private set; } = new()
         {
             { Team.SCP, new HashSet<Player>() },
             { Team.MTF, new HashSet<Player>() },
@@ -1050,9 +1055,14 @@ namespace Exiled.API.Features
         };
 
         /// <summary>
+        /// Gets players per Team.
+        /// </summary>
+        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayers { get; private set; } = new Dictionary<Team, HashSet<Player>>(InstantiatedTeamToPlayersInternal);
+
+        /// <summary>
         /// Gets players per Side.
         /// </summary>
-        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayers { get; private set; } = new()
+        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayersInternal { get; } = new()
         {
             { Side.ChaosInsurgency, new HashSet<Player>() },
             { Side.Mtf, new HashSet<Player>() },
@@ -1062,9 +1072,45 @@ namespace Exiled.API.Features
         };
 
         /// <summary>
+        /// Gets players per Side.
+        /// </summary>
+        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayers { get; private set; } = new Dictionary<Side, HashSet<Player>>(InstantiatedSideToPlayersInternal);
+
+        /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new();
+
+        /// <summary>
+        /// Resync all instantiated containers by first wiping, then iterating every player.
+        /// </summary>
+        /// <param name="playersToIgnore"> Playes to ignore when resync is occurring (NPC's are an example). </param>
+        public static void ReSyncAllInstantiatedContainers(HashSet<Player> playersToIgnore = null)
+        {
+            ResetAllInstantiatedContainers();
+            ReSyncContainersToDefault();
+            if (playersToIgnore is null)
+            {
+                foreach (Player player in List)
+                {
+                    InstantiatedRolesToPlayers[player.Role].Add(player);
+                    InstantiatedSideToPlayers[player.Role.Side].Add(player);
+                    InstantiatedTeamToPlayers[player.Role.Team].Add(player);
+                }
+
+                return;
+            }
+
+            foreach (Player player in List)
+            {
+                if (!playersToIgnore.Contains(player))
+                {
+                    InstantiatedRolesToPlayers[player.Role].Add(player);
+                    InstantiatedSideToPlayers[player.Role.Side].Add(player);
+                    InstantiatedTeamToPlayers[player.Role.Team].Add(player);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
@@ -2943,5 +2989,25 @@ namespace Exiled.API.Features
         /// <returns>A string containing Player-related data.</returns>
         public override string ToString() =>
             $"{Id} {Nickname} {UserId} {(Role is null ? "No role" : Role)}";
+
+        /// <summary>
+        /// Clears all Instantiated containers for Role, Side, and Team.
+        /// </summary>
+        internal static void ResetAllInstantiatedContainers()
+        {
+            InstantiatedRolesToPlayers.Clear();
+            InstantiatedSideToPlayers.Clear();
+            InstantiatedTeamToPlayers.Clear();
+        }
+
+        /// <summary>
+        /// Resync all containers to default values.
+        /// </summary>
+        internal static void ReSyncContainersToDefault()
+        {
+            InstantiatedRolesToPlayers = new Dictionary<RoleType, HashSet<Player>>(InstantiatedRolesToPlayersInternal);
+            InstantiatedSideToPlayers = new Dictionary<Side, HashSet<Player>>(InstantiatedSideToPlayersInternal);
+            InstantiatedTeamToPlayers = new Dictionary<Team, HashSet<Player>>(InstantiatedTeamToPlayersInternal);
+        }
     }
 }

@@ -78,18 +78,26 @@ namespace Exiled.Events.EventArgs
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the event should consolidate player role to static Instantiate (Role, Side, Team).
+        /// </summary>
+        public bool ConsolidateUserInformation { get; set; } = true;
+
+        /// <summary>
         /// Conslidates all the player information to be easily access through helper functions later on.
         /// </summary>
         internal void ConsolidatePlayerInformation()
         {
-            Player.InstantiatedRolesToPlayers[Player.Role].Remove(Player);
-            Player.InstantiatedRolesToPlayers[NewRole].Add(Player);
+            if (ConsolidateUserInformation)
+            {
+                Player.InstantiatedRolesToPlayers[Player.Role].Remove(Player);
+                Player.InstantiatedRolesToPlayers[NewRole].Add(Player);
 
-            Player.InstantiatedSideToPlayers[Player.Role.Side].Remove(Player);
-            Player.InstantiatedSideToPlayers[NewRole.GetSide()].Add(Player);
+                Player.InstantiatedSideToPlayers[Player.Role.Side].Remove(Player);
+                Player.InstantiatedSideToPlayers[NewRole.GetSide()].Add(Player);
 
-            Player.InstantiatedTeamToPlayers[Player.Role.Team].Remove(Player);
-            Player.InstantiatedTeamToPlayers[NewRole.GetTeam()].Add(Player);
+                Player.InstantiatedTeamToPlayers[Player.Role.Team].Remove(Player);
+                Player.InstantiatedTeamToPlayers[NewRole.GetTeam()].Add(Player);
+            }
         }
     }
 }

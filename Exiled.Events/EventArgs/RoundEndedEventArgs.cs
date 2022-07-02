@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features;
 
     /// <summary>
     /// Contains all information after the end of a round.
@@ -43,5 +44,13 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the time to restart the next round.
         /// </summary>
         public int TimeToRestart { get; set; }
+
+        /// <summary>
+        /// Resync's player information in Player class.
+        /// </summary>
+        public void ReSyncPlayerInformation()
+        {
+            Player.ReSyncAllInstantiatedContainers();
+        }
     }
 }
