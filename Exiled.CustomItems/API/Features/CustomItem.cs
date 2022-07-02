@@ -526,7 +526,7 @@ namespace Exiled.CustomItems.API.Features
         [Obsolete("Use Spawn(Vector3, Player) instead.", true)]
         public virtual Pickup Spawn(Vector3 position)
         {
-            Pickup pickup = CreateCorrectItem().Spawn(position);
+            Pickup pickup = CreateCorrectItem().CreatePickup(position);
             pickup.Weight = Weight;
             TrackedSerials.Add(pickup.Serial);
 
@@ -542,7 +542,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
         {
-            Pickup pickup = item.Spawn(position);
+            Pickup pickup = item.CreatePickup(position);
             pickup.Weight = Weight;
             if (previousOwner is not null)
                 pickup.PreviousOwner = previousOwner;
@@ -560,7 +560,7 @@ namespace Exiled.CustomItems.API.Features
         [Obsolete("Use Spawn(Vector3, Item, Player) instead.", true)]
         public virtual Pickup Spawn(Vector3 position, Item item)
         {
-            Pickup pickup = item.Spawn(position);
+            Pickup pickup = item.CreatePickup(position);
             TrackedSerials.Add(pickup.Serial);
 
             return pickup;

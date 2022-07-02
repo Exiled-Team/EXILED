@@ -171,12 +171,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="items">The items to convert.</param>
         /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
-        public static IEnumerable<ItemType> GetItemTypes(this IEnumerable<Item> items)
-        {
-            Item[] arr = items.ToArray();
-            for (int i = 0; i < arr.Length; i++)
-                yield return arr[i].Type;
-        }
+        public static IEnumerable<ItemType> GetItemTypes(this IEnumerable<Item> items) => items.Select(item => item.Type);
 
         /// <summary>
         /// Gets all <see cref="AttachmentIdentifier"/>s present on an <see cref="ItemType"/>.

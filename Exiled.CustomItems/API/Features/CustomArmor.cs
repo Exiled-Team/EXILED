@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="CustomArmor.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -90,9 +90,23 @@ namespace Exiled.CustomItems.API.Features
             base.UnsubscribeEvents();
         }
 
+        /// <summary>
+        /// Handles tracking items when they are picked up by a player.
+        /// </summary>
+        /// <param name="ev"><see cref="PickingUpArmorEventArgs"/>.</param>
+        protected virtual void OnPickingUp(PickingUpArmorEventArgs ev)
+        {
+        }
+
+        /// <inheritdoc/>
+        protected override void OnPickingUp(PickingUpItemEventArgs ev)
+        {
+            base.OnPickingUp(ev);
+        }
+
         private void OnInternalPickingUpArmor(PickingUpArmorEventArgs ev)
         {
-            if (!Check(ev.Pickup) || ev.Player.Items.Count >= 8)
+            if (!Check(ev.Armor) || ev.Player.Items.Count >= 8)
                 return;
 
             OnPickingUp(ev);
@@ -102,8 +116,8 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            TrackedSerials.Remove(ev.Pickup.Serial);
-            ev.Pickup.Destroy();
+            TrackedSerials.Remove(ev.Armor.Serial);
+            ev.Armor.Destroy();
 
             Give(ev.Player);
         }

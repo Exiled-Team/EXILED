@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
 
     using Exiled.API.Features.Pickups;
-
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;
@@ -149,31 +149,38 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Spawns the bag, allowing to override the exposed type.
+        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> location to spawn it.</param>
         /// <param name="rotation">The <see cref="Quaternion"/> rotation to give the item.</param>
         /// <param name="overrideExposedType">Whether or not to use the <see cref="ExposedType"/> value or the default value.</param>
         /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
-        /// <returns>The <see cref="Pickup"/> spawned.</returns>
-        public Pickup Spawn(Vector3 position, Quaternion rotation = default, bool overrideExposedType = false, bool spawn = true)
+        /// <returns>The created <see cref="Pickup"/>.</returns>
+        public Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool overrideExposedType = false, bool spawn = true)
         {
-            Base.PickupDropModel.Info.ItemId = Type;
-            Base.PickupDropModel.Info.Position = position;
-            Base.PickupDropModel.Info.Weight = Weight;
-            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
-            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
-
             BaseScp330Pickup ipb = (BaseScp330Pickup)Object.Instantiate(Base.PickupDropModel, position, rotation);
+
+            PickupSyncInfo info = new()
+            {
+                ItemId = Type,
+                Position = position,
+                Weight = Weight,
+                Rotation = new LowPrecisionQuaternion(rotation),
+            };
+
+            ipb.NetworkInfo = info;
+            ipb.InfoReceived(default, info);
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (overrideExposedType)
                 ipb.NetworkExposedCandy = ExposedType;
 
-            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
-            Pickup pickup = Pickup.Get(ipb);
+            ipb.transform.localScale = Scale;
+
             if (spawn)
                 pickup.Spawn();
-            pickup.Scale = Scale;
+
             return pickup;
         }
 

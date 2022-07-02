@@ -1595,12 +1595,14 @@ namespace Exiled.API.Features
         /// Drops an item from the player's inventory.
         /// </summary>
         /// <param name="item">The item to be dropped.</param>
-        public void DropItem(Item item) => Inventory.ServerDropItem(item.Serial);
+        /// <returns>dropped <see cref="Pickup"/>.</returns>
+        public Pickup DropItem(Item item) => Pickup.Get(Inventory.ServerDropItem(item.Serial));
 
         /// <summary>
         /// Drops the held item.
         /// </summary>
-        public void DropHeldItem() => DropItem(CurrentItem);
+        /// <returns>dropped <see cref="Pickup"/>.</returns>
+        public Pickup DropHeldItem() => DropItem(CurrentItem);
 
         /// <summary>
         /// Indicates whether the player has an item.
@@ -1650,6 +1652,7 @@ namespace Exiled.API.Features
             }
             else
             {
+                item.Base.OnRemoved(null);
                 if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
@@ -2138,12 +2141,11 @@ namespace Exiled.API.Features
                     ammo = firearm1.Ammo;
                 }
 
+                item.Base.OnRemoved(null);
+
                 itemBase.Owner = ReferenceHub;
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
-                if (itemBase.PickupDropModel is not null)
-                {
-                    itemBase.OnAdded(itemBase.PickupDropModel);
-                }
+                itemBase.OnAdded(itemBase.PickupDropModel);
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
@@ -2161,6 +2163,7 @@ namespace Exiled.API.Features
                 if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
                 {
                     acquisitionConfirmationTrigger.ServerConfirmAcqusition();
+                    acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
                 }
 
                 ItemsValue.Add(item);
