@@ -182,7 +182,7 @@ namespace Exiled.API.Features
             ?? List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPositionRaycasts(position).UniqueId);
 
         /// <summary>
-        /// Gets a <see cref="Room"/> given the specified <see cref="ZoneType"/>.
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="ZoneType"/> or <see langword="null"/> if not found.</returns>

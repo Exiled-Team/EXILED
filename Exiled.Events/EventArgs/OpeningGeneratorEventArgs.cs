@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the generator that is opening.
+        /// Gets the generator that is being opened.
         /// </summary>
         public Generator Generator { get; }
 

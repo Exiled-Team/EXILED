@@ -80,12 +80,12 @@ namespace Exiled.API.Features
         public Transform Transform => GameObject.transform;
 
         /// <summary>
-        /// Gets the <see cref="DoorType"/>.
+        /// Gets the <see cref="DoorType"/> of the door.
         /// </summary>
         public DoorType Type { get; }
 
         /// <summary>
-        /// Gets the <see cref="Room"/>.
+        /// Gets the <see cref="Features.Room"/> that the door is located in.
         /// </summary>
         public Room Room { get; }
 

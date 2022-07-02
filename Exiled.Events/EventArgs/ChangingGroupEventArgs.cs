@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player changes his group.
+    /// Contains all information before a player's user group changes.
     /// </summary>
     public class ChangingGroupEventArgs : EventArgs
     {
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's changing his group.
+        /// Gets the player whose group is changing.
         /// </summary>
         public Player Player { get; }
 
