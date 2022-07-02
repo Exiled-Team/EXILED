@@ -225,7 +225,7 @@ namespace Exiled.API.Extensions
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Length; i++)
-                annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
+                annoucement.Append($"{translations[i]}<size=0><alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha></size><split>");
 
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {
