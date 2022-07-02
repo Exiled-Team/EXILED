@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.Keycards;
 
     /// <summary>
@@ -39,11 +41,11 @@ namespace Exiled.API.Features.Items
         public new KeycardItem Base { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Enums.KeycardPermissions"/> of the keycard.
+        /// Gets or sets the <see cref="KeycardPermissions"/> of the keycard.
         /// </summary>
-        public Enums.KeycardPermissions Permissions
+        public KeycardPermissions Permissions
         {
-            get => (Enums.KeycardPermissions)Base.Permissions;
+            get => (KeycardPermissions)Base.Permissions;
             set => Base.Permissions = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
         }
 
