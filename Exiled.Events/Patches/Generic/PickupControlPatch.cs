@@ -44,8 +44,6 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            LocalBuilder pickup = generator.DeclareLocal(typeof(Pickup));
-
             const int offset = -1;
             int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Ldarg_3) + offset;
@@ -57,7 +55,6 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get))),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, pickup.LocalIndex),
 
                 // Item.Get(itemBase);
                 new(OpCodes.Ldarg_1),
