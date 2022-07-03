@@ -614,15 +614,16 @@ namespace Exiled.API.Features
         public bool IsTutorial => Role?.Type == RoleType.Tutorial;
 
         /// <summary>
-        /// Gets a value indicating whether the player's friendly fire is enabled.
+        /// Gets or sets a value indicating whether the player's friendly fire is enabled.
         /// This property only determines if this player can deal damage to players on the same team;
         /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
         /// </summary>
         public bool IsFriendlyFireEnabled
         {
-            get
+            get => FriendlyFireMultiplier.Count > 0 || CustomRoleFriendlyFireMultiplier.Count > 0;
+            [Obsolete("Use SetFriendlyFire instead.", true)]
+            set
             {
-                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0;
             }
         }
 
