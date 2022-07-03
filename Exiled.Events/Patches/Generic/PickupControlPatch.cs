@@ -43,36 +43,39 @@ namespace Exiled.Events.Patches.Generic
             ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            LocalBuilder pickup = generator.DeclareLocal(typeof(Pickup));
+
             const int offset = -1;
             int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Ldarg_3) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                // item
-                new(OpCodes.Ldarg_1),
-
-                // pickup
+                // pickup = Pickup.Get(pickupBase);
                 new(OpCodes.Ldloc_0),
+                new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get))),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, pickup.LocalIndex),
 
-                // spawn
+                // Item.Get(itemBase);
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get))),
+
+                // pickup.Scale = item.Scale
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Scale))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Scale))),
+
+                // pickup.Spawned = spawn
                 new(OpCodes.Ldarg_3),
-
-                new(OpCodes.Callvirt, Method(typeof(CreatePickupPatch), nameof(CreatePickupPatch.SetPickupInfo))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Spawned))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-
-        private static void SetPickupInfo(ItemBase itemBase, ItemPickupBase itemPickupBase, bool spawned)
-        {
-            Item item = Item.Get(itemBase);
-            Pickup pickup = Pickup.Get(itemPickupBase);
-            pickup.Scale = item.Scale;
-            pickup.Spawned = spawned;
         }
     }
 }
