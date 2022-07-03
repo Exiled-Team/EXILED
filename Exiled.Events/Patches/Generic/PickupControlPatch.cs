@@ -54,7 +54,6 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get))),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup),
 
                 // Item.Get(itemBase);
                 new(OpCodes.Ldarg_1),
