@@ -1009,7 +1009,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all the current players of a specific role.
         /// </summary>
-        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayersInternal { get; private set; } = new()
+        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayersInternal => new()
         {
             { RoleType.None, new HashSet<Player>() },
             { RoleType.Scp173, new HashSet<Player>() },
@@ -1038,12 +1038,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all the current players of a specific role.
         /// </summary>
-        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayers { get; private set; } = new Dictionary<RoleType, HashSet<Player>>(InstantiatedRolesToPlayersInternal);
+        internal static Dictionary<RoleType, HashSet<Player>> InstantiatedRolesToPlayers { get; private set; } = InstantiatedRolesToPlayersInternal;
 
         /// <summary>
         /// Gets players per Team.
         /// </summary>
-        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayersInternal { get; private set; } = new()
+        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayersInternal => new()
         {
             { Team.SCP, new HashSet<Player>() },
             { Team.MTF, new HashSet<Player>() },
@@ -1057,12 +1057,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets players per Team.
         /// </summary>
-        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayers { get; private set; } = new Dictionary<Team, HashSet<Player>>(InstantiatedTeamToPlayersInternal);
+        internal static Dictionary<Team, HashSet<Player>> InstantiatedTeamToPlayers { get; private set; } = InstantiatedTeamToPlayersInternal;
 
         /// <summary>
         /// Gets players per Side.
         /// </summary>
-        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayersInternal { get; } = new()
+        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayersInternal => new()
         {
             { Side.ChaosInsurgency, new HashSet<Player>() },
             { Side.Mtf, new HashSet<Player>() },
@@ -1074,7 +1074,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets players per Side.
         /// </summary>
-        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayers { get; private set; } = new Dictionary<Side, HashSet<Player>>(InstantiatedSideToPlayersInternal);
+        internal static Dictionary<Side, HashSet<Player>> InstantiatedSideToPlayers { get; private set; } = InstantiatedSideToPlayersInternal;
 
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
@@ -1117,9 +1117,9 @@ namespace Exiled.API.Features
         /// </summary>
         public static void ReSyncContainersToDefault()
         {
-            InstantiatedRolesToPlayers = new Dictionary<RoleType, HashSet<Player>>(InstantiatedRolesToPlayersInternal);
-            InstantiatedSideToPlayers = new Dictionary<Side, HashSet<Player>>(InstantiatedSideToPlayersInternal);
-            InstantiatedTeamToPlayers = new Dictionary<Team, HashSet<Player>>(InstantiatedTeamToPlayersInternal);
+            InstantiatedRolesToPlayers = InstantiatedRolesToPlayersInternal;
+            InstantiatedSideToPlayers = InstantiatedSideToPlayersInternal;
+            InstantiatedTeamToPlayers = InstantiatedTeamToPlayersInternal;
         }
 
         /// <summary>
