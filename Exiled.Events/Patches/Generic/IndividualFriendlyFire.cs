@@ -94,7 +94,7 @@ namespace Exiled.Events.Patches.Generic
                     return true;
                 }
 
-                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role} and Victim {victim.Role}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role}, \"{attacker.UniqueRole}\" and Victim {victim.Role}, \"{victim.UniqueRole}\" and what were their unique roles", Loader.Loader.ShouldDebugBeShown);
 
                 if (!string.IsNullOrEmpty(victim.UniqueRole))
                 {
@@ -110,6 +110,18 @@ namespace Exiled.Events.Patches.Generic
                             }
                         }
                     }
+
+                    if (victim.CustomRoleToCustomRoleFriendlyFireMultiplier.Count > 0)
+                    {
+                        if (victim.CustomRoleToCustomRoleFriendlyFireMultiplier.TryGetValue(victim.UniqueRole, out Dictionary<string, float> pairedData))
+                        {
+                            if (pairedData.ContainsKey(attacker.UniqueRole))
+                            {
+                                ffMultiplier = pairedData[attacker.UniqueRole];
+                                return true;
+                            }
+                        }
+                    }
                 }
                 else if(!string.IsNullOrEmpty(attacker.UniqueRole))
                 {
@@ -121,6 +133,18 @@ namespace Exiled.Events.Patches.Generic
                             if (pairedData.ContainsKey(victim.Role))
                             {
                                 ffMultiplier = pairedData[victim.Role];
+                                return true;
+                            }
+                        }
+                    }
+
+                    if (attacker.CustomRoleToCustomRoleFriendlyFireMultiplier.Count > 0)
+                    {
+                        if (attacker.CustomRoleToCustomRoleFriendlyFireMultiplier.TryGetValue(attacker.UniqueRole, out Dictionary<string, float> pairedData))
+                        {
+                            if (pairedData.ContainsKey(victim.UniqueRole))
+                            {
+                                ffMultiplier = pairedData[victim.UniqueRole];
                                 return true;
                             }
                         }
