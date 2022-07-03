@@ -94,7 +94,7 @@ namespace Exiled.Events.Patches.Generic
                     return true;
                 }
 
-                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role}, \"{attacker.UniqueRole}\" and Victim {victim.Role}, \"{victim.UniqueRole}\" and what were their unique roles", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role}, \"{attacker.UniqueRole}\" and Victim {victim.Role}, \"{victim.UniqueRole}\"", Loader.Loader.ShouldDebugBeShown);
 
                 if (!string.IsNullOrEmpty(victim.UniqueRole))
                 {
