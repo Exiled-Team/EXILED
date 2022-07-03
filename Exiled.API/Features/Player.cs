@@ -1234,15 +1234,15 @@ namespace Exiled.API.Features
         /// <param name="roleToAdd"> Role to add. </param>
         /// <param name="ffMult"> Friendly fire multiplier. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddFriendlyFire(RoleType roleToAdd, float ffMult)
+        public FriendlyFireStatusCode TryAddFriendlyFire(RoleType roleToAdd, float ffMult)
         {
             if (FriendlyFireMultiplier.ContainsKey(roleToAdd))
             {
-                return false;
+                return FriendlyFireStatusCode.UnableToAdd;
             }
 
             FriendlyFireMultiplier.Add(roleToAdd, ffMult);
-            return true;
+            return FriendlyFireStatusCode.AddedRole;
         }
 
         /// <summary>
@@ -1250,7 +1250,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="pairedRoleFF"> Role FF multiplier to add. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddFriendlyFire(KeyValuePair<RoleType, float> pairedRoleFF)
+        public FriendlyFireStatusCode TryAddFriendlyFire(KeyValuePair<RoleType, float> pairedRoleFF)
         {
             return TryAddFriendlyFire(pairedRoleFF.Key, pairedRoleFF.Value);
         }
@@ -1261,9 +1261,11 @@ namespace Exiled.API.Features
         /// <param name="ffRules"> Roles to add with friendly fire values. </param>
         /// <param name="overwrite"> Whether to overwrite current values if they exist. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddFriendlyFire(Dictionary<RoleType, float> ffRules, bool overwrite = false)
+        public FriendlyFireStatusCode TryAddFriendlyFire(Dictionary<RoleType, float> ffRules, bool overwrite = false)
         {
             Dictionary<RoleType, float> temporaryFriendlyFireRules = new();
+            bool partialRoleAddition = false;
+            bool atLeastOneAdded = false;
             foreach (KeyValuePair<RoleType, float> roleFF in ffRules)
             {
                 if (overwrite)
@@ -1275,11 +1277,12 @@ namespace Exiled.API.Features
                     if (!this.FriendlyFireMultiplier.ContainsKey(roleFF.Key))
                     {
                         temporaryFriendlyFireRules.Add(roleFF.Key, roleFF.Value);
+                        atLeastOneAdded = true;
                     }
                     else
                     {
                         // Contained Key but overwrite set to false so we do not add any.
-                        return false;
+                        partialRoleAddition = true;
                     }
                 }
             }
@@ -1292,7 +1295,12 @@ namespace Exiled.API.Features
                 }
             }
 
-            return true;
+            if(partialRoleAddition && atLeastOneAdded)
+            {
+                return FriendlyFireStatusCode.AddedSomeRoles;
+            }
+
+            return FriendlyFireStatusCode.AddedAllRoles;
         }
 
         /// <summary>
@@ -1338,7 +1346,7 @@ namespace Exiled.API.Features
         /// <param name="roleType"> Role associated for CustomFF. </param>
         /// <param name="roleFF"> Role to add and FF multiplier. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddCustomRoleFriendlyFire(string roleType, KeyValuePair<RoleType, float> roleFF)
+        public FriendlyFireStatusCode TryAddCustomRoleFriendlyFire(string roleType, KeyValuePair<RoleType, float> roleFF)
         {
             return TryAddCustomRoleFriendlyFire(roleType, roleFF.Key, roleFF.Value);
         }
@@ -1350,13 +1358,13 @@ namespace Exiled.API.Features
         /// <param name="roleToAdd"> Role to add. </param>
         /// <param name="ffMult"> Friendly fire multiplier. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddCustomRoleFriendlyFire(string roleType, RoleType roleToAdd, float ffMult)
+        public FriendlyFireStatusCode TryAddCustomRoleFriendlyFire(string roleType, RoleType roleToAdd, float ffMult)
         {
             if (CustomRoleFriendlyFireMultiplier.TryGetValue(roleType, out Dictionary<RoleType, float> currentPairedData))
             {
                 if (currentPairedData.ContainsKey(roleToAdd))
                 {
-                    return false;
+                    return FriendlyFireStatusCode.UnableToAdd;
                 }
 
                 currentPairedData.Add(roleToAdd, ffMult);
@@ -1366,7 +1374,7 @@ namespace Exiled.API.Features
                 SetCustomRoleFriendlyFire(roleType, roleToAdd, ffMult);
             }
 
-            return true;
+            return FriendlyFireStatusCode.AddedRole;
         }
 
         /// <summary>
@@ -1376,11 +1384,13 @@ namespace Exiled.API.Features
         /// <param name="ffRules"> Roles to add with friendly fire values. </param>
         /// <param name="overwrite"> Whether to overwrite current values if they exist - does NOT delete previous entries if they are not in provided rules. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddCustomRoleFriendlyFire(string customRoleName, Dictionary<RoleType, float> ffRules, bool overwrite = false)
+        public FriendlyFireStatusCode TryAddCustomRoleFriendlyFire(string customRoleName, Dictionary<RoleType, float> ffRules, bool overwrite = false)
         {
             Dictionary<RoleType, float> temporaryFriendlyFireRules = new();
             if (this.CustomRoleFriendlyFireMultiplier.TryGetValue(customRoleName, out Dictionary<RoleType, float> pairedRoleFF))
             {
+                bool partialRoleAddition = false;
+                bool atLeastOneAdded = false;
                 foreach (KeyValuePair<RoleType, float> roleFF in ffRules)
                 {
                     if (overwrite)
@@ -1392,11 +1402,12 @@ namespace Exiled.API.Features
                         if (!pairedRoleFF.ContainsKey(roleFF.Key))
                         {
                             temporaryFriendlyFireRules.Add(roleFF.Key, roleFF.Value);
+                            atLeastOneAdded = true;
                         }
                         else
                         {
                             // Contained Key but overwrite set to false so we do not add any.
-                            return false;
+                            partialRoleAddition = true;
                         }
                     }
                 }
@@ -1408,6 +1419,11 @@ namespace Exiled.API.Features
                         TryAddCustomRoleFriendlyFire(customRoleName, roleFF);
                     }
                 }
+
+                if (partialRoleAddition && atLeastOneAdded)
+                {
+                    return FriendlyFireStatusCode.AddedSomeRoles;
+                }
             }
             else
             {
@@ -1417,7 +1433,7 @@ namespace Exiled.API.Features
                 }
             }
 
-            return true;
+            return FriendlyFireStatusCode.AddedAllRoles;
         }
 
         /// <summary>
@@ -1485,13 +1501,13 @@ namespace Exiled.API.Features
         /// <param name="customRoleToAdd"> Role to add. </param>
         /// <param name="ffMult"> Friendly fire multiplier. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddCustomRoleToCustomRoleFriendlyFire(string roleType, string customRoleToAdd, float ffMult)
+        public FriendlyFireStatusCode TryAddCustomRoleToCustomRoleFriendlyFire(string roleType, string customRoleToAdd, float ffMult)
         {
             if (CustomRoleToCustomRoleFriendlyFireMultiplier.TryGetValue(roleType, out Dictionary<string, float> currentPairedData))
             {
                 if (currentPairedData.ContainsKey(customRoleToAdd))
                 {
-                    return false;
+                    return FriendlyFireStatusCode.UnableToAdd;
                 }
 
                 currentPairedData.Add(customRoleToAdd, ffMult);
@@ -1501,7 +1517,7 @@ namespace Exiled.API.Features
                 SetCustomRoleToCustomRoleFriendlyFireInternal(roleType, customRoleToAdd, ffMult);
             }
 
-            return true;
+            return FriendlyFireStatusCode.AddedRole;
         }
 
         /// <summary>
@@ -1547,7 +1563,7 @@ namespace Exiled.API.Features
         /// <param name="roleType"> Role associated for CustomFF. </param>
         /// <param name="roleFF"> Role to add and FF multiplier. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddCustomRoleToCustomRoleFriendlyFire(string roleType, KeyValuePair<string, float> roleFF)
+        public FriendlyFireStatusCode TryAddCustomRoleToCustomRoleFriendlyFire(string roleType, KeyValuePair<string, float> roleFF)
         {
             return TryAddCustomRoleToCustomRoleFriendlyFire(roleType, roleFF.Key, roleFF.Value);
         }
@@ -1559,11 +1575,13 @@ namespace Exiled.API.Features
         /// <param name="ffRules"> Roles to add with friendly fire values. </param>
         /// <param name="overwrite"> Whether to overwrite current values if they exist - does NOT delete previous entries if they are not in provided rules. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddCustomRoleToCustomRoleFriendlyFire(string customRoleName, Dictionary<string, float> ffRules, bool overwrite = false)
+        public FriendlyFireStatusCode TryAddCustomRoleToCustomRoleFriendlyFire(string customRoleName, Dictionary<string, float> ffRules, bool overwrite = false)
         {
             Dictionary<string, float> temporaryFriendlyFireRules = new();
             if (this.CustomRoleToCustomRoleFriendlyFireMultiplier.TryGetValue(customRoleName, out Dictionary<string, float> pairedRoleFF))
             {
+                bool partialRoleAddition = false;
+                bool atLeastOneAdded = false;
                 foreach (KeyValuePair<string, float> roleFF in ffRules)
                 {
                     if (overwrite)
@@ -1575,11 +1593,12 @@ namespace Exiled.API.Features
                         if (!pairedRoleFF.ContainsKey(roleFF.Key))
                         {
                             temporaryFriendlyFireRules.Add(roleFF.Key, roleFF.Value);
+                            atLeastOneAdded = true;
                         }
                         else
                         {
                             // Contained Key but overwrite set to false so we do not add any.
-                            return false;
+                            partialRoleAddition = true;
                         }
                     }
                 }
@@ -1591,6 +1610,11 @@ namespace Exiled.API.Features
                         TryAddCustomRoleToCustomRoleFriendlyFire(customRoleName, roleFF);
                     }
                 }
+
+                if(partialRoleAddition && atLeastOneAdded)
+                {
+                    return FriendlyFireStatusCode.AddedSomeRoles;
+                }
             }
             else
             {
@@ -1600,7 +1624,7 @@ namespace Exiled.API.Features
                 }
             }
 
-            return true;
+            return FriendlyFireStatusCode.AddedAllRoles;
         }
 
         /// <summary>
