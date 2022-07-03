@@ -1113,6 +1113,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Resync all containers to default values.
+        /// </summary>
+        public static void ReSyncContainersToDefault()
+        {
+            InstantiatedRolesToPlayers = new Dictionary<RoleType, HashSet<Player>>(InstantiatedRolesToPlayersInternal);
+            InstantiatedSideToPlayers = new Dictionary<Side, HashSet<Player>>(InstantiatedSideToPlayersInternal);
+            InstantiatedTeamToPlayers = new Dictionary<Team, HashSet<Player>>(InstantiatedTeamToPlayersInternal);
+        }
+
+        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
         /// </summary>
         /// <param name="side">The players' side.</param>
@@ -2998,16 +3008,6 @@ namespace Exiled.API.Features
             InstantiatedRolesToPlayers.Clear();
             InstantiatedSideToPlayers.Clear();
             InstantiatedTeamToPlayers.Clear();
-        }
-
-        /// <summary>
-        /// Resync all containers to default values.
-        /// </summary>
-        internal static void ReSyncContainersToDefault()
-        {
-            InstantiatedRolesToPlayers = new Dictionary<RoleType, HashSet<Player>>(InstantiatedRolesToPlayersInternal);
-            InstantiatedSideToPlayers = new Dictionary<Side, HashSet<Player>>(InstantiatedSideToPlayersInternal);
-            InstantiatedTeamToPlayers = new Dictionary<Team, HashSet<Player>>(InstantiatedTeamToPlayersInternal);
         }
     }
 }
