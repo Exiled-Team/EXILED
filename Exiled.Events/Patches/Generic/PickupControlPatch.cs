@@ -22,6 +22,7 @@ namespace Exiled.Events.Patches.Generic
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
+    using MapGeneration.Distributors;
 
     using MEC;
 
@@ -32,10 +33,10 @@ namespace Exiled.Events.Patches.Generic
     using Inventory = InventorySystem.Inventory;
 
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerCreatePickup(Inventory, ItemBase, PickupSyncInfo, bool)"/> to save scale for pickups.
+    /// Patches <see cref="InventoryExtensions.ServerCreatePickup(Inventory, ItemBase, PickupSyncInfo, bool)"/> to save scale for pickups and control <see cref="Pickup.Spawned"/> property.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerCreatePickup))]
-    internal static class PickupControlPatch
+    internal static class CreatePickupPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(
             IEnumerable<CodeInstruction> instructions,
@@ -57,7 +58,7 @@ namespace Exiled.Events.Patches.Generic
                 // spawn
                 new(OpCodes.Ldarg_3),
 
-                new(OpCodes.Callvirt, Method(typeof(PickupControlPatch), nameof(PickupControlPatch.SetPickupInfo))),
+                new(OpCodes.Callvirt, Method(typeof(CreatePickupPatch), nameof(CreatePickupPatch.SetPickupInfo))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
