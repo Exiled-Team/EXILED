@@ -615,8 +615,8 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's friendly fire is enabled.
-        /// This property only determines if this player can deal damage to players on the same team;
-        /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
+        /// <br>This property only determines if this player can deal damage to players on the same team;</br>
+        /// <br>This player can be damaged by other players on their own team even if this property is <see langword="false"/>.</br>
         /// </summary>
         public bool IsFriendlyFireEnabled
         {
