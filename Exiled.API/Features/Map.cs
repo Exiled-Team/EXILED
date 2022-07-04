@@ -154,7 +154,7 @@ namespace Exiled.API.Features
                 // Raycasting doesn't make sense,
                 // SCP-079 position is constant,
                 // let it be 'Outside' instead
-                if (ply.Role is Scp079Role role)
+                if (ply.Role.Is(out Scp079Role role))
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
