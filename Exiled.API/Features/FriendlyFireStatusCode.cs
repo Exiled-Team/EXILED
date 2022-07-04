@@ -5,10 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.API.Enums
 {
+    using Exiled.API.Features;
+
     /// <summary>
-    /// Status code for adding FriendlyFire rules.
+    /// Status code for adding FriendlyFire rules. <seealso cref="Player.FriendlyFireMultiplier"/>
     /// </summary>
     public enum FriendlyFireStatusCode
     {
