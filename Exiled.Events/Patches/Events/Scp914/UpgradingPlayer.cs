@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
-            newInstructions.RemoveRange(index, 12);
+            newInstructions.RemoveRange(index, 15);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -101,18 +101,26 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
             });
 
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld);
+
 
             Label continueLabel = generator.DefineLabel();
 
-            newInstructions[index + 13].labels.Add(continueLabel);
+
 
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
+
+            int addOffset = 2;
+            index = newInstructions.FindLastIndex(instr => instr.Calls(Method(typeof(Scp914Upgrader), nameof(Scp914Upgrader.TryGetProcessor)))) + addOffset;
+            Log.Info($"What was the index {index}");
+
+            int cntIndex = newInstructions.FindLastIndex(index, i => i.opcode == OpCodes.Br_S);
+
+            newInstructions[cntIndex].labels.Add(continueLabel);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // setting = curSetting
-                new(OpCodes.Ldloc_S, curSetting.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, curSetting.LocalIndex).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Starg_S, 4),
 
                 // Player.Get(ply)
