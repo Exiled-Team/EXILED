@@ -61,6 +61,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the server's version.
+        /// </summary>
+        public static string Version => GameCore.Version.VersionString;
+
+        /// <summary>
+        /// Gets a value indicating whether or not streaming of this version is allowed.
+        /// </summary>
+        public static bool StreamingAllowed => GameCore.Version.StreamingAllowed;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this server is on a beta version of SCP:SL.
+        /// </summary>
+        public static bool IsBeta => GameCore.Version.PublicBeta || GameCore.Version.PrivateBeta;
+
+        /// <summary>
         /// Gets the RemoteAdmin permissions handler.
         /// </summary>
         public static PermissionsHandler PermissionsHandler => ServerStatic.PermissionsHandler;
