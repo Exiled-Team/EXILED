@@ -10,8 +10,11 @@ namespace Exiled.API.Enums
     using Exiled.API.Features;
 
     /// <summary>
-    /// Status code for adding FriendlyFire rules. <seealso cref="Player.FriendlyFireMultiplier"/>
+    /// Status code for adding FriendlyFire rules.
     /// </summary>
+    /// <seealso cref="Player.FriendlyFireMultiplier"/>
+    /// <seealso cref="Player.CustomRoleFriendlyFireMultiplier"/>
+    /// <seealso cref="Player.CustomRoleToCustomRoleFriendlyFireMultiplier"/>
     public enum FriendlyFireStatusCode
     {
         /// <summary>
