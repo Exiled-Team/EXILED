@@ -18,18 +18,13 @@ namespace Exiled.API.Features
         UnableToAdd,
 
         /// <summary>
-        /// Current role successfully added
-        /// </summary>
-        AddedRole,
-
-        /// <summary>
         /// Partial roles were added, cannot guarantee all.
         /// </summary>
-        AddedSomeRoles,
+        PartialSuccess,
 
         /// <summary>
         /// All roles were successfully added
         /// </summary>
-        AddedAllRoles,
+        Success,
     }
 }

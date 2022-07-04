@@ -1242,7 +1242,7 @@ namespace Exiled.API.Features
             }
 
             FriendlyFireMultiplier.Add(roleToAdd, ffMult);
-            return FriendlyFireStatusCode.AddedRole;
+            return FriendlyFireStatusCode.Success;
         }
 
         /// <summary>
@@ -1297,10 +1297,10 @@ namespace Exiled.API.Features
 
             if(partialRoleAddition && atLeastOneAdded)
             {
-                return FriendlyFireStatusCode.AddedSomeRoles;
+                return FriendlyFireStatusCode.PartialSuccess;
             }
 
-            return FriendlyFireStatusCode.AddedAllRoles;
+            return FriendlyFireStatusCode.Success;
         }
 
         /// <summary>
@@ -1374,7 +1374,7 @@ namespace Exiled.API.Features
                 SetCustomRoleFriendlyFire(roleType, roleToAdd, ffMult);
             }
 
-            return FriendlyFireStatusCode.AddedRole;
+            return FriendlyFireStatusCode.Success;
         }
 
         /// <summary>
@@ -1422,7 +1422,7 @@ namespace Exiled.API.Features
 
                 if (partialRoleAddition && atLeastOneAdded)
                 {
-                    return FriendlyFireStatusCode.AddedSomeRoles;
+                    return FriendlyFireStatusCode.PartialSuccess;
                 }
             }
             else
@@ -1433,7 +1433,7 @@ namespace Exiled.API.Features
                 }
             }
 
-            return FriendlyFireStatusCode.AddedAllRoles;
+            return FriendlyFireStatusCode.Success;
         }
 
         /// <summary>
@@ -1517,7 +1517,7 @@ namespace Exiled.API.Features
                 SetCustomRoleToCustomRoleFriendlyFireInternal(roleType, customRoleToAdd, ffMult);
             }
 
-            return FriendlyFireStatusCode.AddedRole;
+            return FriendlyFireStatusCode.Success;
         }
 
         /// <summary>
@@ -1613,7 +1613,7 @@ namespace Exiled.API.Features
 
                 if(partialRoleAddition && atLeastOneAdded)
                 {
-                    return FriendlyFireStatusCode.AddedSomeRoles;
+                    return FriendlyFireStatusCode.PartialSuccess;
                 }
             }
             else
@@ -1624,7 +1624,7 @@ namespace Exiled.API.Features
                 }
             }
 
-            return FriendlyFireStatusCode.AddedAllRoles;
+            return FriendlyFireStatusCode.Success;
         }
 
         /// <summary>
