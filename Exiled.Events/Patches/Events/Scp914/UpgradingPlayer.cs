@@ -101,17 +101,12 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
             });
 
-
-
             Label continueLabel = generator.DefineLabel();
-
-
 
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
             int addOffset = 2;
             index = newInstructions.FindLastIndex(instr => instr.Calls(Method(typeof(Scp914Upgrader), nameof(Scp914Upgrader.TryGetProcessor)))) + addOffset;
-            Log.Info($"What was the index {index}");
 
             int cntIndex = newInstructions.FindLastIndex(index, i => i.opcode == OpCodes.Br_S);
 
