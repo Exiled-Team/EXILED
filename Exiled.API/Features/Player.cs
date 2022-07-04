@@ -2809,6 +2809,30 @@ namespace Exiled.API.Features
                 case Generator generator:
                     Teleport(generator.Position + Vector3.up);
                     break;
+                case Window window:
+                    Teleport(window.Position + Vector3.up);
+                    break;
+                case Toys.AdminToy toy:
+                    Teleport(toy.Position + Vector3.up);
+                    break;
+                case EActor ea:
+                    Teleport(ea.Position + Vector3.up);
+                    break;
+
+                // Unity
+                case Vector3 v3: // I wouldn't be surprised if someone calls this method with a Vector3.
+                    Teleport(v3);
+                    break;
+                case Component comp:
+                    Teleport(comp.transform.position + Vector3.up);
+                    break;
+                case GameObject go:
+                    Teleport(go.transform.position + Vector3.up);
+                    break;
+
+                default:
+                    Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {obj.GetType()}");
+                    break;
             }
         }
 
@@ -2829,6 +2853,8 @@ namespace Exiled.API.Features
                 nameof(Ragdoll) => Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)],
                 nameof(Locker) => Map.GetRandomLocker(),
                 nameof(Generator) => Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)],
+                nameof(Window) => Window.WindowValue[Random.Range(0, Window.WindowValue.Count)],
+                nameof(Scp914) => Scp914.Scp914Controller,
                 nameof(LockerChamber) => new Func<LockerChamber>(delegate
                 {
                     LockerChamber[] chambers = Map.GetRandomLocker().Chambers;
@@ -2849,6 +2875,12 @@ namespace Exiled.API.Features
 
             Teleport(randomObject);
         }
+
+        /// <summary>
+        /// Teleports player to a random object of a specific type.
+        /// </summary>
+        /// <typeparam name="T">Object for teleport.</typeparam>
+        public void RandomTeleport<T>() => RandomTeleport(typeof(T));
 
         /// <summary>
         /// Adds a component to the player.
