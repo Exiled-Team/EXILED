@@ -2815,6 +2815,9 @@ namespace Exiled.API.Features
                 case Toys.AdminToy toy:
                     Teleport(toy.Position + Vector3.up);
                     break;
+                case Elevator elevator:
+                    Teleport(elevator.Position + Vector3.up);
+                    break;
                 case EActor ea:
                     Teleport(ea.Position + Vector3.up);
                     break;
