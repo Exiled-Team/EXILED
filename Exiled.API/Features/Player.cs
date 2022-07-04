@@ -1204,6 +1204,114 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Try-get a player given a <see cref="CommandSystem.ICommandSender"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="CommandSystem.ICommandSender"/>.</param>
+        /// <param name="player">The player that matches the given <see cref="CommandSystem.ICommandSender"/>, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(CommandSystem.ICommandSender sender, out Player player)
+        {
+            player = Get(sender);
+            return player is not null;
+        }
+
+        /// <summary>
+        /// Try-get a player given a <see cref="CommandSender"/>.
+        /// </summary>
+        /// <param name="sender">The <see cref="CommandSender"/>.</param>
+        /// <param name="player">The player that matches the given <see cref="CommandSender"/>, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(CommandSender sender, out Player player)
+        {
+            player = Get(sender);
+            return player is not null;
+        }
+
+        /// <summary>
+        /// Try-get a player given a <see cref="global::ReferenceHub"/>.
+        /// </summary>
+        /// <param name="referenceHub">The <see cref="global::ReferenceHub"/>.</param>
+        /// <param name="player">The player that matches the given <see cref="global::ReferenceHub"/>, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(ReferenceHub referenceHub, out Player player)
+        {
+            player = Get(referenceHub);
+            return player is not null;
+        }
+
+        /// <summary>
+        /// Try-get a player given a network ID.
+        /// </summary>
+        /// <param name="netId">The network ID.</param>
+        /// <param name="player">The player that matches the given net ID, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(uint netId, out Player player)
+        {
+            player = Get(netId);
+            return player is not null;
+        }
+
+        /// <summary>
+        /// Try-get a player given a <see cref="Mirror.NetworkIdentity"/>.
+        /// </summary>
+        /// <param name="netIdentity">The <see cref="Mirror.NetworkIdentity"/>.</param>
+        /// <param name="player">The player that matches the given <see cref="Mirror.NetworkIdentity"/>, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(NetworkIdentity netIdentity, out Player player)
+        {
+            player = Get(netIdentity);
+            return player is not null;
+        }
+
+        /// <summary>
+        /// Try-get a player given a <see cref="Mirror.NetworkConnection"/>.
+        /// </summary>
+        /// <param name="conn">The <see cref="Mirror.NetworkConnection"/>.</param>
+        /// <param name="player">The player that matches the given <see cref="Mirror.NetworkConnection"/>, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(NetworkConnection conn, out Player player)
+        {
+            player = Get(conn);
+            return player is not null;
+        }
+
+        /// <summary>
+        /// Try-get a player given a <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/>.</param>
+        /// <param name="player">The player that matches the given <see cref="UnityEngine.GameObject"/>, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(GameObject gameObject, out Player player)
+        {
+            player = Get(gameObject);
+            return player is not null;
+        }
+
+        /// <summary>
+        /// Try-get a player given an ID.
+        /// </summary>
+        /// <param name="id">The user ID.</param>
+        /// <param name="player">The player that matches the given ID, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(int id, out Player player)
+        {
+            player = Get(id);
+            return player is not null;
+        }
+
+        /// <summary>
+        /// Try-get a player by identifier.
+        /// </summary>
+        /// <param name="args">The player's nickname, ID, steamID64 or Discord ID.</param>
+        /// <param name="player">The player found or <see langword="null"/> if not found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(string args, out Player player)
+        {
+            player = Get(args);
+            return player is not null;
+        }
+
+        /// <summary>
         /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
         /// </summary>
         /// <param name="roleToAdd"> Role to add. </param>
