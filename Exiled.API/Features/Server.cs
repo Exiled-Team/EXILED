@@ -211,5 +211,24 @@ namespace Exiled.API.Features
         /// <param name="command">The command to be run.</param>
         /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
         public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender ?? Host.Sender);
+
+        /// <summary>
+        /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The returned object type.</typeparam>
+        /// <param name="key">The key of the object to get.</param>
+        /// <param name="result">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter is used.</param>
+        /// <returns><see langword="true"/> if the SessionVariables contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
+        public static bool TryGetSessionVariable<T>(string key, out T result)
+        {
+            if (SessionVariables.TryGetValue(key, out object value) && value is T type)
+            {
+                result = type;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
     }
 }
