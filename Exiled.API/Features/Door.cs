@@ -90,13 +90,30 @@ namespace Exiled.API.Features
         public Room Room { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the door is open.
+        /// Gets or sets a value indicating whether or not the door is open.
         /// </summary>
         public bool IsOpen
         {
             get => Base.IsConsideredOpen();
             set => Base.NetworkTargetState = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is a gate.
+        /// </summary>
+        public bool IsGate => Type is DoorType.GateA or DoorType.GateB or DoorType.GR18Gate or
+            DoorType.Scp049Gate or DoorType.Scp173Gate or DoorType.Scp914Gate or DoorType.SurfaceGate;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is a checkpoint door.
+        /// </summary>
+        public bool IsCheckpoint => Type is DoorType.CheckpointEntrance or DoorType.CheckpointLczA or
+            DoorType.CheckpointLczB;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door requires a keycard to open.
+        /// </summary>
+        public bool IsKeycardDoor => RequiredPermissions.RequiredPermissions != Interactables.Interobjects.DoorUtils.KeycardPermissions.None;
 
         /// <summary>
         /// Gets or sets the door's position.
@@ -113,7 +130,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether SCP-106 can walk through the door.
+        /// Gets or sets a value indicating whether or not SCP-106 can walk through the door.
         /// </summary>
         public bool AllowsScp106
         {
@@ -122,7 +139,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the door is locked.
+        /// Gets a value indicating whether or not the door is locked.
         /// </summary>
         public bool IsLocked => DoorLockType > 0;
 
