@@ -96,6 +96,12 @@ namespace Exiled.Events.Patches.Generic
 
                 Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role}, \"{attacker.UniqueRole}\" and Victim {victim.Role}, \"{victim.UniqueRole}\"", Loader.Loader.ShouldDebugBeShown);
 
+                if(attacker.AlwaysDealsFriendlyFireDamage)
+                {
+                    ffMultiplier = attacker.UniversalFriendlyFireMultiplier;
+                    return true;
+                }
+
                 if (!string.IsNullOrEmpty(victim.UniqueRole))
                 {
                     // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us

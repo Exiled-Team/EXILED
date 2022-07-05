@@ -78,6 +78,8 @@ namespace Exiled.API.Features
         internal readonly List<Item> ItemsValue = new(8);
 #pragma warning restore SA1401
 
+        private const float DefaultFriendlyFireValue = 0.4f;
+
         private readonly IReadOnlyCollection<Item> readOnlyItems;
 
         /// <summary>
@@ -158,6 +160,18 @@ namespace Exiled.API.Features
         /// </summary>
         /// <remarks> Consider adding this as object, Dict so that CustomRoles, and Strings can be parsed. </remarks>
         public Dictionary<string, Dictionary<string, float>> CustomRoleToCustomRoleFriendlyFireMultiplier { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets default NW friendly fire multiplier.
+        /// </summary>
+        public float UniversalFriendlyFireMultiplier { get; set; } = DefaultFriendlyFireValue;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether any target is allowed to take friendly fire damage.
+        /// By default, if this is enabled, all damage is applied to any target.
+        /// Utilizes <see cref="UniversalFriendlyFireMultiplier"/> to damage target.
+        /// </summary>
+        public bool AlwaysDealsFriendlyFireDamage { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
