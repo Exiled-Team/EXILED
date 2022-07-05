@@ -69,6 +69,11 @@ namespace Exiled.API.Features
         public GlassType Type { get; }
 
         /// <summary>
+        /// Gets the window's <see cref="ZoneType"/>.
+        /// </summary>
+        public ZoneType Zone => Room.Zone;
+
+        /// <summary>
         /// Gets or sets the window's position.
         /// </summary>
         public Vector3 Position

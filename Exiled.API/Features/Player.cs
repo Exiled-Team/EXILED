@@ -532,6 +532,11 @@ namespace Exiled.API.Features
         public bool IsJumping { get; internal set; }
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is on the ground.
+        /// </summary>
+        public bool IsGrounded => ReferenceHub.playerMovementSync.NetworkGrounded;
+
+        /// <summary>
         /// Gets a value indicating whether or not the player is sprinting.
         /// </summary>
         public bool IsSprinting => MoveState == PlayerMovementState.Sprinting;
