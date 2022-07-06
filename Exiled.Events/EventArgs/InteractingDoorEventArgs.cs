@@ -23,11 +23,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="door"><inheritdoc cref="Door"/></param>
+        /// <param name="isKeycardThrow"><inheritdoc cref="IsKeycardThrow"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true)
+        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isKeycardThrow, bool isAllowed = true)
         {
             Player = player;
             Door = Door.Get(door);
+            IsKeycardThrow = isKeycardThrow;
             IsAllowed = isAllowed;
         }
 
@@ -40,6 +42,11 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the <see cref="API.Features.Door"/> instance.
         /// </summary>
         public Door Door { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the Interaction occurred due to a card throw.
+        /// </summary>
+        public bool IsKeycardThrow { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with the door.
