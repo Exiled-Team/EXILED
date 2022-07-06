@@ -327,6 +327,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
         /// </summary>
+        [Obsolete("Use StayingOnEnvironmentalHazard event instead.")]
         public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
 
         /// <summary>
@@ -372,6 +373,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
         /// </summary>
+        [Obsolete("Use StayingOnEnvironmentalHazard event instead.")]
         public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
 
         /// <summary>
@@ -440,6 +442,26 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
         public static event CustomEventHandler<ItemAddedEventArgs> ItemAdded;
+
+        /// <summary>
+        /// Invoked before KillPlayer is called.
+        /// </summary>
+        public static event CustomEventHandler<KillingPlayerEventArgs> KillingPlayer;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> enters in an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<EnteringEnvironmentalHazardEventArgs> EnteringEnvironmentalHazard;
+
+        /// <summary>
+        /// Invoked when a <see cref="API.Features.Player"/> stays on an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<StayingOnEnvironmentalHazardEventArgs> StayingOnEnvironmentalHazard;
+
+        /// <summary>
+        /// Invoked when a <see cref="API.Features.Player"/> exists from an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<ExitingEnvironmentalHazardEventArgs> ExitingEnvironmentalHazard;
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
@@ -937,11 +959,35 @@ namespace Exiled.Events.Handlers
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
 
         /// <summary>
+        ///  Called before KillPlayer is called.
+        /// </summary>
+        /// <param name="ev">The <see cref="KillingPlayerEventArgs"/> event handler. </param>
+        public static void OnKillPlayer(KillingPlayerEventArgs ev) => KillingPlayer.InvokeSafely(ev);
+
+        /// <summary>
         /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
         /// <param name="inventory">The <see cref="InventorySystem.Inventory"/> the item was added to.</param>
         /// <param name="itemBase">The added <see cref="InventorySystem.Items.ItemBase"/>.</param>
         /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public static void OnItemAdded(InventorySystem.Inventory inventory, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase) => ItemAdded.InvokeSafely(new ItemAddedEventArgs(inventory, itemBase, pickupBase));
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> enters in an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="EnteringEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnEnteringEnvironmentalHazard(EnteringEnvironmentalHazardEventArgs ev) => EnteringEnvironmentalHazard.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called when a <see cref="API.Features.Player"/> stays on an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="StayingOnEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnStayingOnEnvironmentalHazard(StayingOnEnvironmentalHazardEventArgs ev) => StayingOnEnvironmentalHazard.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> exits from an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="ExitingEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnExitingEnvironmentalHazard(ExitingEnvironmentalHazardEventArgs ev) => ExitingEnvironmentalHazard.InvokeSafely(ev);
     }
 }

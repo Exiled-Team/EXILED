@@ -59,6 +59,8 @@ namespace Exiled.API.Features
 
     using Utils.Networking;
 
+    using static Exiled.API.Features.DamageHandlers.DamageHandlerBase;
+
     using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Exiled.API.Features.Items.Firearm;
@@ -86,7 +88,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// The walk speed of the player.
         /// </summary>
-        private float? walkSpeed;
+        private float? walkingSpeed;
 
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
@@ -123,7 +125,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new(20);
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new(20, new ReferenceHub.GameObjectComparer());
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -338,12 +340,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets walkSpeed of the player.
         /// </summary>
-        public float WalkSpeed
+        public float WalkingSpeed
         {
-            get => walkSpeed ??= ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
+            get => walkingSpeed ??= ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
             set
             {
-                walkSpeed = value;
+                walkingSpeed = value;
                 this.ChangeWalkingSpeed(value, false);
             }
         }
@@ -365,6 +367,11 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the player has scotopia in the darkened room.
+        /// </summary>
+        public bool? HasScotopia { get; set; } = null;
+
+        /// <summary>
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
         /// </summary>
         public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
@@ -372,7 +379,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is fully connected to the server.
         /// </summary>
-        public bool IsConnected => GameObject is not null;
+        public bool IsConnected => GameObject != null;
 
         /// <summary>
         /// Gets a list of player ids who can't see the player.
@@ -607,15 +614,16 @@ namespace Exiled.API.Features
         public bool IsTutorial => Role?.Type == RoleType.Tutorial;
 
         /// <summary>
-        /// Gets a value indicating whether the player's friendly fire is enabled.
-        /// This property only determines if this player can deal damage to players on the same team;
-        /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
+        /// Gets or sets a value indicating whether the player's friendly fire is enabled.
+        /// <br>This property only determines if this player can deal damage to players on the same team;</br>
+        /// <br>This player can be damaged by other players on their own team even if this property is <see langword="false"/>.</br>
         /// </summary>
         public bool IsFriendlyFireEnabled
         {
-            get
+            get => FriendlyFireMultiplier.Count > 0 || CustomRoleFriendlyFireMultiplier.Count > 0;
+            [Obsolete("Use SetFriendlyFire instead.", true)]
+            set
             {
-                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0;
             }
         }
 
@@ -840,7 +848,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the current room the player is in.
+        /// Gets the current <see cref="Room"/> the player is in.
         /// </summary>
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
@@ -1055,7 +1063,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                return referenceHub?.gameObject is null ? null : Get(referenceHub.gameObject);
+                return referenceHub?.gameObject == null ? null : Get(referenceHub.gameObject);
             }
             catch (Exception)
             {
@@ -1092,7 +1100,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
-            if (gameObject is null)
+            if (gameObject == null)
                 return null;
 
             Dictionary.TryGetValue(gameObject, out Player player);
@@ -1729,8 +1737,19 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
-        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CustomHandlerBase.CassieAnnouncement cassieAnnouncement = null) =>
-            Hurt(new CustomDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
+        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null) =>
+            Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
+        /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
+        /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
+        /// <param name="deathText"> The <see langword="string"/> death text to appear on <see cref="Player"/> screen. </param>
+        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null, string deathText = null) =>
+            Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement, deathText));
 
         /// <summary>
         /// Hurts the player.

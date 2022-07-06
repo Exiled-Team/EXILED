@@ -11,6 +11,8 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Loader;
+
     using GameCore;
 
     using HarmonyLib;
@@ -34,25 +36,22 @@ namespace Exiled.Events.Patches.Events.Server
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
                 new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
-                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShowDebugLine))),
+                new(OpCodes.Ldstr, "Round restarting"),
+                new(OpCodes.Call, PropertyGetter(typeof(Loader), nameof(Loader.ShouldDebugBeShown))),
+                new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string), typeof(bool) })),
             });
 
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse);
 
             newInstructions.InsertRange(index + 1, new CodeInstruction[]
             {
-                // ServerStatic.StopNextRound == 1 (restarting)
+                // if(ServerStatic.StopNextRound == ServerStatic.NextRoundAction.Restart)  -> goto normal round restart
                 new(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ceq),
+                new(OpCodes.Beq_S, newInstructions[index].operand),
 
-                // if (prev) -> goto normal round restart
-                new(OpCodes.Brtrue, newInstructions[index].operand),
-
-                // ShouldServerRestart()
+                // if (ShouldServerRestart()) -> goto normal round restart
                 new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
-
-                // if (prev) -> goto normal round restart
                 new(OpCodes.Brtrue, newInstructions[index].operand),
             });
 
@@ -60,11 +59,6 @@ namespace Exiled.Events.Patches.Events.Server
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-
-        private static void ShowDebugLine()
-        {
-            API.Features.Log.Debug("Round restarting", Loader.Loader.ShouldDebugBeShown);
         }
 
         private static bool ShouldServerRestart()

@@ -190,8 +190,8 @@ namespace Exiled.API.Features.Items
                 FlashlightItem flashlight => new Flashlight(flashlight),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
-                    FlashbangGrenade _ => new FlashGrenade(throwable),
-                    ExplosionGrenade _ => new ExplosiveGrenade(throwable),
+                    FlashbangGrenade => new FlashGrenade(throwable),
+                    ExplosionGrenade => new ExplosiveGrenade(throwable),
                     _ => new Throwable(throwable),
                 },
                 _ => new Item(itemBase)
