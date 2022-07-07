@@ -57,6 +57,7 @@ namespace Exiled.Events.Features
         {
             foreach (Type type in EventPatches)
             {
+                // subject to change
                 if (type.GetCustomAttribute<EventPatchAttribute>().Event == @event)
                 {
                     try
