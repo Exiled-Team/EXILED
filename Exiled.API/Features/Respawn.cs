@@ -38,7 +38,7 @@ namespace Exiled.API.Features
         public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
 
         /// <summary>
-        /// Gets a <see cref="DateTime"/> indicating the moment in time the next respawn wave will occur.
+        /// Gets a <see cref="DateTime"/> indicating the moment in UTC time the next respawn wave will occur.
         /// </summary>
         public static DateTime NextTeamTime
             => DateTime.UtcNow.AddSeconds(TimeUntilSpawnWave.TotalSeconds);
