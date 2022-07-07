@@ -164,11 +164,11 @@ namespace Exiled.API.Features.Items
 
             if (overrideExposedType)
                 ipb.NetworkExposedCandy = ExposedType;
-
-            NetworkServer.Spawn(ipb.gameObject);
-            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+            ipb.StoredCandies = Base.Candies;
             Pickup pickup = Pickup.Get(ipb);
             pickup.Scale = Scale;
+            NetworkServer.Spawn(ipb.gameObject);
+            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
             return pickup;
         }
 
