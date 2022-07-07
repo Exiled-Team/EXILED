@@ -91,6 +91,11 @@ namespace Exiled.API.Features
         public static string IpAddress => ServerConsole.Ip;
 
         /// <summary>
+        /// Gets a value indicating whether or not this server is a dedicated server.
+        /// </summary>
+        public static bool IsDedicated => ServerStatic.IsDedicated;
+
+        /// <summary>
         /// Gets the port of the server.
         /// </summary>
         public static ushort Port => ServerStatic.ServerPort;

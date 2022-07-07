@@ -30,7 +30,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the server's config path.
         /// </summary>
-        public static string ServerConfig { get; } = Path.Combine(AppData, "SCP Secret Laboratory", "config", Server.Port.ToString());
+        public static string ServerConfig { get; } = Path.Combine(AppData, "SCP Secret Laboratory", "config", Server.IsDedicated ? Server.Port.ToString() : "nondedicated");
 
         /// <summary>
         /// Gets or sets exiled directory path.
