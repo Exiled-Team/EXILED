@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
         public Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets the player who's interacting with the door.
+        /// Gets the player who's threw the keycard.
         /// </summary>
         public Player Player { get; }
 
