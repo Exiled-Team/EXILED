@@ -38,7 +38,9 @@ namespace Exiled.Events.EventArgs
             Amount = damage;
             Distance = distance;
             ShootingTarget = ShootingTargetToy.Get(shootingTarget);
+            #pragma warning disable CS0618
             Item = player?.CurrentItem;
+            #pragma warning restore CS0618
             DamageHandler = (AttackerDamageHandler)damageHandler;
             HitLocation = hitLocation;
             IsAllowed = isAllowed;
@@ -57,6 +59,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the item which is being used to deal the damage.
         /// </summary>
+        [Obsolete("Use Player.CurrentItem instead of this")]
         public Item Item { get; }
 
         /// <summary>
