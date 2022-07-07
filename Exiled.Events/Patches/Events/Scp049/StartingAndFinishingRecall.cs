@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Interfaces;
 
     using HarmonyLib;
 
