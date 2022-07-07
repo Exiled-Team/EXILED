@@ -34,6 +34,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReceivingPreferenceEventArgs> ReceivingPreference;
 
         /// <summary>
+        /// Invoked before a keycard interacts with a door.
+        /// </summary>
+        public static event CustomEventHandler<ThrowKeycardInteractingEventArgs> ThrowKeycardInteracting;
+
+        /// <summary>
         /// Called before the durability of an item is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingDurabilityEventArgs"/> instance.</param>
@@ -50,5 +55,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs"/> instance.</param>
         public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before keycard interacts with a door.
+        /// </summary>
+        /// <param name="ev">The <see cref="ThrowKeycardInteractingEventArgs"/> instance.</param>
+        public static void OnThrowKeycardInteracting(ThrowKeycardInteractingEventArgs ev) => ThrowKeycardInteracting.InvokeSafely(ev);
     }
 }

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
+namespace Exiled.Events.Patches.Events.Item
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -18,6 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
 
     using InventorySystem.Items.Keycards;
@@ -96,6 +97,9 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new[]
             {
+                // pickup
+                new(OpCodes.Ldarg_0),
+
                 // PreviousOwner.Hub
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new(OpCodes.Ldflda, Field(typeof(KeycardPickup), nameof(KeycardPickup.PreviousOwner))),
@@ -104,9 +108,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // door
                 new(OpCodes.Ldloc_1),
-
-                // true
-                new(OpCodes.Ldc_I4_1),
 
                 // allowed calculate
                 new(OpCodes.Ldloc_S, isUnlocked),
@@ -122,15 +123,19 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.And),
                 new(OpCodes.And),
 
-                // InteractingDoorEventArgs ev = new(player, door, true, isAllowed);
-                // Player.OnInteractingDoor(ev);
+                // ThrowKeycardInteractingEventArgs ev = new(pickup, player, door, isAllowed);
+                // Item.OnThrowKeycardInteracting(ev);
                 // if(!ev.IsAllowed)
                 //     return;
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingDoorEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowKeycardInteractingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingDoor))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnThrowKeycardInteracting))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowKeycardInteractingEventArgs), nameof(ThrowKeycardInteractingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
+
+                // call animation sets(we don't want to call the event more than once)
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Callvirt, Method(typeof(DoorVariant), nameof(DoorVariant.TargetStateChanged))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
