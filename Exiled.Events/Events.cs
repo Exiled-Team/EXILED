@@ -14,7 +14,6 @@ namespace Exiled.Events
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.Events.Features;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -29,14 +28,40 @@ namespace Exiled.Events
         private static Events instance;
 
         /// <summary>
+        /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
+        /// </summary>
+        private int patchesCounter;
+
+        /// <summary>
+        /// The custom <see cref="EventHandler"/> delegate.
+        /// </summary>
+        /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
+        /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
+        public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev)
+            where TEventArgs : System.EventArgs;
+
+        /// <summary>
+        /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
+        /// </summary>
+        public delegate void CustomEventHandler();
+
+        /// <summary>
         /// Gets the plugin instance.
         /// </summary>
         public static Events Instance => instance;
 
-        public Patcher Patcher { get; private set; }
+        /// <summary>
+        /// Gets a set of types and methods for which EXILED patches should not be run.
+        /// </summary>
+        public static HashSet<MethodBase> DisabledPatchesHashSet { get; } = new();
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.First;
+
+        /// <summary>
+        /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
+        /// </summary>
+        public Harmony Harmony { get; private set; }
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -44,17 +69,11 @@ namespace Exiled.Events
             instance = this;
             base.OnEnabled();
 
-            Patcher = new Patcher();
+            Stopwatch watch = Stopwatch.StartNew();
+            Patch();
 
-            if (!Config.UseDynamicPatching)
-            {
-                Stopwatch watch = Stopwatch.StartNew();
-                Patcher.PatchAll();
-
-                watch.Stop();
-                Log.Info($"All Patches completed in {watch.Elapsed}");
-            }
-
+            watch.Stop();
+            Log.Info($"Patching completed in {watch.Elapsed}");
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
@@ -73,9 +92,9 @@ namespace Exiled.Events
         {
             base.OnDisabled();
 
-            Patcher.DisabledPatchesHashSet.Clear();
-            Patcher.UnpatchAll();
-            Patcher = null;
+            Unpatch();
+
+            DisabledPatchesHashSet.Clear();
 
             SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
@@ -88,6 +107,76 @@ namespace Exiled.Events
             Handlers.Map.Generated -= Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
+        }
+
+        /// <summary>
+        /// Patches all events.
+        /// </summary>
+        public void Patch()
+        {
+            try
+            {
+                Harmony = new Harmony($"exiled.events.{++patchesCounter}");
+#if DEBUG
+                bool lastDebugStatus = Harmony.DEBUG;
+                Harmony.DEBUG = true;
+#endif
+                if (PatchByAttributes())
+                {
+                    Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
+                }
+                else
+                {
+                    Log.Error($"Patching failed!");
+                }
+#if DEBUG
+                Harmony.DEBUG = lastDebugStatus;
+#endif
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"Patching failed!\n{exception}");
+            }
+        }
+
+        /// <summary>
+        /// Checks the <see cref="DisabledPatchesHashSet"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
+        /// </summary>
+        public void ReloadDisabledPatches()
+        {
+            foreach (MethodBase method in DisabledPatchesHashSet)
+            {
+                Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
+
+                Log.Info($"Unpatched {method.Name}");
+            }
+        }
+
+        /// <summary>
+        /// Unpatches all events.
+        /// </summary>
+        public void Unpatch()
+        {
+            Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
+            Harmony.UnpatchAll();
+
+            Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
+        }
+
+        private bool PatchByAttributes()
+        {
+            try
+            {
+                Harmony.PatchAll();
+
+                Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"Patching by attributes failed!\n{exception}");
+                return false;
+            }
         }
     }
 }
