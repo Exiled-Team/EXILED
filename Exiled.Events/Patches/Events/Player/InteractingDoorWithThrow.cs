@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events;
     using Exiled.Events.EventArgs;
 
     using Footprinting;
@@ -109,8 +110,15 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // allowed calculate
                 new(OpCodes.Ldloc_S, isUnlocked),
+
                 new(OpCodes.Ldloc_S, havePermissions),
+
                 new(OpCodes.Ldloc_S, notEmptyPermissions),
+                new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanKeycardThrowAffectOnBasicDoors))),
+                new(OpCodes.Or),
+
                 new(OpCodes.And),
                 new(OpCodes.And),
 
