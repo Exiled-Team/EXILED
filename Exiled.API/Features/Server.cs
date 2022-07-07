@@ -76,6 +76,11 @@ namespace Exiled.API.Features
         public static bool IsBeta => GameCore.Version.PublicBeta || GameCore.Version.PrivateBeta;
 
         /// <summary>
+        /// Gets a value indicating the type of build this server is hosted on.
+        /// </summary>
+        public static GameCore.Version.VersionType BuildType => GameCore.Version.BuildType;
+
+        /// <summary>
         /// Gets the RemoteAdmin permissions handler.
         /// </summary>
         public static PermissionsHandler PermissionsHandler => ServerStatic.PermissionsHandler;
@@ -162,6 +167,15 @@ namespace Exiled.API.Features
         {
             get => CustomNetworkManager.HeavilyModded;
             set => CustomNetworkManager.HeavilyModded = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this server has the whitelist enabled.
+        /// </summary>
+        public static bool IsWhitelisted
+        {
+            get => ServerConsole.WhiteListEnabled;
+            set => ServerConsole.WhiteListEnabled = value;
         }
 
         /// <summary>

@@ -33,9 +33,15 @@ namespace Exiled.API.Features
         public static int TimeUntilRespawn => (int)TimeUntilSpawnWave.TotalSeconds;
 
         /// <summary>
-        /// Gets a <see cref="TimeSpan"/> indicating the amount of time before the next respawn will occur.
+        /// Gets a <see cref="TimeSpan"/> indicating the amount of time before the next respawn wave will occur.
         /// </summary>
-        public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(Mathf.RoundToInt(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds));
+        public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
+
+        /// <summary>
+        /// Gets a <see cref="DateTime"/> indicating the moment in time the next respawn wave will occur.
+        /// </summary>
+        public static DateTime NextTeamTime
+            => DateTime.UtcNow.AddSeconds(TimeUntilSpawnWave.TotalSeconds);
 
         /// <summary>
         /// Gets a value indicating whether or not a team is currently being spawned or the animations are playing for a team.
