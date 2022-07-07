@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs
         public Door Door { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the Interaction occurred due to a card throw.
+        /// Gets a value indicating whether or not the Interaction occurred due to a keycard throw.
         /// </summary>
         public bool IsKeycardThrow { get; }
 
