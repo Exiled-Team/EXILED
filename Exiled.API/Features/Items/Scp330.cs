@@ -135,10 +135,11 @@ namespace Exiled.API.Features.Items
             {
                 Scp330Pickup ipb = (Scp330Pickup)Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
                 ipb.NetworkExposedCandy = overrideExposedType ? exposedType : CandyKindID.None;
-                NetworkServer.Spawn(ipb.gameObject);
-                ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+                ipb.StoredCandies.Add(type);
                 Pickup pickup = Pickup.Get(ipb);
                 pickup.Scale = Scale;
+                NetworkServer.Spawn(ipb.gameObject);
+                ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
                 pickups.Add(pickup);
             }
 
