@@ -136,10 +136,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
-                Log.Debug(newInstructions[z]);
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
