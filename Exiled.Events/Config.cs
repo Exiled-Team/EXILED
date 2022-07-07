@@ -16,7 +16,13 @@ namespace Exiled.Events
     {
         /// <inheritdoc/>
         [Description("Indicates whether the plugin is enabled or not")]
-        public bool IsEnabled { get; set; } = true;
+        public bool IsEnabled { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether events are only patched if they have delegates subscribed to them.
+        /// </summary>
+        [Description("Indicates whether events are patched only if they have delegates subscribed to them")]
+        public bool UseDynamicPatching { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether SCP-173 can be blocked or not by the tutorial.
