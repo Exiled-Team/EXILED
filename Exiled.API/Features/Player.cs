@@ -2438,6 +2438,7 @@ namespace Exiled.API.Features
             Throwable throwable = type switch
             {
                 GrenadeType.Flashbang => new FlashGrenade(),
+                GrenadeType.Scp2176 => new Scp2176(),
                 _ => new ExplosiveGrenade(type.GetItemType()),
             };
             ThrowItem(throwable, fullForce);
