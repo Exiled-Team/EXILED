@@ -132,16 +132,24 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnThrowKeycardInteracting))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowKeycardInteractingEventArgs), nameof(ThrowKeycardInteractingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
+            });
 
+            index = newInstructions.Count - 1;
+
+            newInstructions.InsertRange(index, new[]
+            {
                 // call animation sets(we don't want to call the event more than once)
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Callvirt, Method(typeof(DoorVariant), nameof(DoorVariant.TargetStateChanged))),
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new(OpCodes.Callvirt, Method(typeof(DoorVariant), nameof(DoorVariant.Update))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
+            {
+                Log.Debug(newInstructions[z]);
                 yield return newInstructions[z];
+            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
