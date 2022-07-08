@@ -93,10 +93,38 @@ namespace Exiled.API.Extensions
             ItemType.KeycardFacilityManager or ItemType.KeycardChaosInsurgency or ItemType.KeycardO5;
 
         /// <summary>
-        /// Gets the default ammo of a weapon.
+        /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemBase"/>.
         /// </summary>
-        /// <param name="item">The <see cref="ItemType">item</see> that you want to get durability of.</param>
-        /// <returns>Returns the item durability.</returns>
+        /// <param name="type">The <see cref="ItemType"/>.</param>
+        /// <returns>The <see cref="ItemBase"/>, or <see langword="null"/> if not found.</returns>
+        public static ItemBase GetItemBase(this ItemType type)
+        {
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
+                return null;
+
+            return itemBase;
+        }
+
+        /// <summary>
+        /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemBase"/>, casted to <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/>.</param>
+        /// <typeparam name="T">The type to cast the <see cref="ItemBase"/> to.</typeparam>
+        /// <returns>The <see cref="ItemBase"/> casted to <typeparamref name="T"/>, or <see langword="null"/> if not found or couldn't be casted.</returns>
+        public static T GetItemBase<T>(this ItemType type)
+            where T : ItemBase
+        {
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
+                return null;
+
+            return itemBase as T;
+        }
+
+        /// <summary>
+        /// Gets the maximum ammo of a weapon.
+        /// </summary>
+        /// <param name="item">The <see cref="ItemType">weapon</see> that you want to get maximum of.</param>
+        /// <returns>Returns the maximum.</returns>
         public static byte GetMaxAmmo(this ItemType item)
         {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || itemBase is not InventorySystem.Items.Firearms.Firearm firearm)
