@@ -111,13 +111,10 @@ namespace Exiled.API.Features.Items
         {
             FlashGrenade cloneableItem = new();
 
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.BlindCurve = this.BlindCurve;
-                cloneableItem.SurfaceDistanceIntensifier = this.SurfaceDistanceIntensifier;
-                cloneableItem.DeafenCurve = this.DeafenCurve;
-                cloneableItem.FuseTime = this.FuseTime;
-            });
+            cloneableItem.BlindCurve = this.BlindCurve;
+            cloneableItem.SurfaceDistanceIntensifier = this.SurfaceDistanceIntensifier;
+            cloneableItem.DeafenCurve = this.DeafenCurve;
+            cloneableItem.FuseTime = this.FuseTime;
 
             return cloneableItem;
         }

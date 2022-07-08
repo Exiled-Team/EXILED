@@ -62,11 +62,7 @@ namespace Exiled.API.Features.Items
         public override Item Clone()
         {
             Keycard cloneableItem = new(Type);
-
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.Permissions = this.Permissions;
-            });
+            cloneableItem.Permissions = this.Permissions;
 
             return cloneableItem;
         }

@@ -532,11 +532,8 @@ namespace Exiled.API.Features.Items
         {
             Firearm cloneableItem = new(Type);
 
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.Ammo = Ammo;
-                cloneableItem.FireRate = FireRate;
-            });
+            cloneableItem.Ammo = Ammo;
+            cloneableItem.FireRate = FireRate;
 
             return cloneableItem;
         }

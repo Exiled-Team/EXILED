@@ -78,10 +78,8 @@ namespace Exiled.API.Features.Items
         {
             Throwable cloneableItem = new(Type);
 
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.PinPullTime = this.PinPullTime;
-            });
+            cloneableItem.PinPullTime = this.PinPullTime;
+
             return cloneableItem;
         }
     }

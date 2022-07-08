@@ -63,10 +63,8 @@ namespace Exiled.API.Features.Items
         {
             Scp244 cloneableItem = new(Type);
 
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.Primed = this.Primed;
-            });
+            cloneableItem.Primed = Primed;
+
             return cloneableItem;
         }
     }

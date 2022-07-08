@@ -61,12 +61,7 @@ namespace Exiled.API.Features.Items
         public override Item Clone()
         {
             Flashlight cloneableItem = new();
-
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.Active = Active;
-            });
-
+            cloneableItem.Active = Active;
             return cloneableItem;
         }
     }

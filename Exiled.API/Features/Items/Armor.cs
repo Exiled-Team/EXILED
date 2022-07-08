@@ -183,17 +183,15 @@ namespace Exiled.API.Features.Items
         {
             Armor cloneableItem = new(Type);
 
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.Weight = this.Weight;
-                cloneableItem.StaminaUseMultiplier = this.StaminaUseMultiplier;
-                cloneableItem.VestEfficacy = this.VestEfficacy;
-                cloneableItem.RemoveExcessOnDrop = this.RemoveExcessOnDrop;
-                cloneableItem.CategoryLimits = this.CategoryLimits;
-                cloneableItem.AmmoLimits = this.AmmoLimits;
-                cloneableItem.VestEfficacy = this.VestEfficacy;
-                cloneableItem.HelmetEfficacy = this.HelmetEfficacy;
-            });
+            cloneableItem.Weight = this.Weight;
+            cloneableItem.StaminaUseMultiplier = this.StaminaUseMultiplier;
+            cloneableItem.VestEfficacy = this.VestEfficacy;
+            cloneableItem.RemoveExcessOnDrop = this.RemoveExcessOnDrop;
+            cloneableItem.CategoryLimits = this.CategoryLimits;
+            cloneableItem.AmmoLimits = this.AmmoLimits;
+            cloneableItem.VestEfficacy = this.VestEfficacy;
+            cloneableItem.HelmetEfficacy = this.HelmetEfficacy;
+
             return cloneableItem;
         }
     }
