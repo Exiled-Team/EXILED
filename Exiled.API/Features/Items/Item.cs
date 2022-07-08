@@ -256,9 +256,9 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            Pickup pickup = Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
 
-            PickupSyncInfo info = new()
+            pickup.Info = new()
             {
                 ItemId = Type,
                 Position = position,
@@ -266,12 +266,7 @@ namespace Exiled.API.Features.Items
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 
-            ipb.NetworkInfo = info;
-            ipb.InfoReceived(default, info);
-
-            ipb.transform.localScale = Scale;
-
-            Pickup pickup = Pickup.Get(ipb);
+            pickup.Scale = Scale;
 
             if (pickup is FirearmPickup firearmPickup)
             {

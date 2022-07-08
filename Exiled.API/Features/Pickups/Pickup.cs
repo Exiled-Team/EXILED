@@ -125,11 +125,11 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public float Weight
         {
-            get => Base.NetworkInfo.Weight;
+            get => Info.Weight;
             set
             {
                 Base.Info.Weight = value;
-                Base.NetworkInfo = Base.Info;
+                Info = Base.Info;
             }
         }
 
@@ -148,12 +148,21 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public bool Locked
         {
-            get => Base.NetworkInfo.Locked;
+            get => Info.Locked;
             set
             {
                 Base.Info.Locked = value;
-                Base.NetworkInfo = Base.Info;
+                Info = Base.Info;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the pickup information.
+        /// </summary>
+        public PickupSyncInfo Info
+        {
+            get => Base.NetworkInfo;
+            set => Base.NetworkInfo = value;
         }
 
         /// <summary>
@@ -174,7 +183,7 @@ namespace Exiled.API.Features.Pickups
             set
             {
                 Base.Info.InUse = value;
-                Base.NetworkInfo = Base.Info;
+                Info = Base.Info;
             }
         }
 
@@ -187,7 +196,6 @@ namespace Exiled.API.Features.Pickups
             set
             {
                 Base.Rb.position = value;
-
                 Base.RefreshPositionAndRotation();
             }
         }
@@ -201,7 +209,6 @@ namespace Exiled.API.Features.Pickups
             set
             {
                 Base.Rb.rotation = value;
-
                 Base.RefreshPositionAndRotation();
             }
         }

@@ -61,9 +61,9 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Scp244DeployablePickup ipb = (Scp244DeployablePickup)Object.Instantiate(Base.PickupDropModel, position, rotation);
+            Scp244Pickup pickup = (Scp244Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
 
-            PickupSyncInfo info = new()
+            pickup.Info = new()
             {
                 ItemId = Type,
                 Position = position,
@@ -71,14 +71,8 @@ namespace Exiled.API.Features.Items
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 
-            ipb.NetworkInfo = info;
-            ipb.InfoReceived(default, info);
-
-            ipb.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
-
-            ipb.transform.localScale = Scale;
-
-            Pickup pickup = Pickup.Get(ipb);
+            pickup.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
+            pickup.Scale = Scale;
 
             if (spawn)
                 pickup.Spawn();

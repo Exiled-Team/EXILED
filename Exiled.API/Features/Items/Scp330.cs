@@ -159,7 +159,7 @@ namespace Exiled.API.Features.Items
         {
             Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
 
-            PickupSyncInfo info = new()
+            pickup.Info = new()
             {
                 ItemId = Type,
                 Position = position,
@@ -167,11 +167,7 @@ namespace Exiled.API.Features.Items
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 
-            pickup.Base.NetworkInfo = info;
-            pickup.Base.InfoReceived(default, info);
-
             pickup.ExposedCandy = ExposedType;
-
             pickup.Scale = Scale;
 
             if (spawn)
