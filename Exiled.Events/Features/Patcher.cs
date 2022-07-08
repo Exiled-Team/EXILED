@@ -22,14 +22,25 @@ namespace Exiled.Events.Features
     /// <summary>
     /// A tool for patching.
     /// </summary>
-    public class Patcher
+    internal class Patcher
     {
-        private static readonly IEnumerable<Type> EventPatches = Assembly.GetExecutingAssembly().GetTypes().Where((type) => type.CustomAttributes.Any((cad) => cad.AttributeType == typeof(EventPatchAttribute)));
+        private static readonly Dictionary<Type, EventPatchAttribute> EventPatches;
 
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
         /// </summary>
         private static int patchesCounter;
+
+        static Patcher()
+        {
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                EventPatchAttribute epa = type.GetCustomAttribute<EventPatchAttribute>();
+
+                if (epa != null)
+                    EventPatches.Add(type, epa);
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Patcher"/> class.
@@ -55,38 +66,29 @@ namespace Exiled.Events.Features
         /// <param name="event">The <see cref="IEvent"/> all matching patches should target.</param>
         public void Patch(IEvent @event)
         {
-            foreach (Type type in EventPatches)
+            Type currentPatch = null;
+            try
             {
-                // subject to change
-                if (type.GetCustomAttribute<EventPatchAttribute>().Event == @event)
+                foreach (KeyValuePair<Type, EventPatchAttribute> kvp in EventPatches)
                 {
-                    try
+                    if (kvp.Value.Event == @event)
                     {
-                        MethodBase originalMethod = type.GetCustomAttribute<HarmonyPatch>().info.method;
-
-                        MethodInfo prefixBase = type.GetMethod("Prefix");
-                        HarmonyMethod prefix = prefixBase is null ? null : new HarmonyMethod(prefixBase);
-
-                        MethodInfo postfixBase = type.GetMethod("Postfix");
-                        HarmonyMethod postfix = prefixBase is null ? null : new HarmonyMethod(prefixBase);
-
-                        MethodInfo transpilerBase = type.GetMethod("Transpiler");
-                        HarmonyMethod transpiler = prefixBase is null ? null : new HarmonyMethod(prefixBase);
-
-                        MethodInfo patchedMethod = Harmony.Patch(originalMethod, prefix, postfix, transpiler);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error($"Patch for type {type} failed!\n{ex}");
+                        currentPatch = kvp.Key;
+                        Patch(kvp.Key, kvp.Value.PatchedMethod);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Event patch for type {currentPatch} failed!\n{ex}");
             }
         }
 
         /// <summary>
         /// Patches all events.
         /// </summary>
-        public void PatchAll()
+        /// <param name="includeEvents">Whether to patch events as well as all required patches.</param>
+        public void PatchAll(bool includeEvents)
         {
             try
             {
@@ -94,14 +96,18 @@ namespace Exiled.Events.Features
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
+                if (includeEvents)
+                {
+                    foreach (KeyValuePair<Type, EventPatchAttribute> eventPatch in EventPatches)
+                    {
+                        Patch(eventPatch.Key, eventPatch.Value.PatchedMethod);
+                    }
+                }
+
                 if (PatchByAttributes())
-                {
-                    Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
-                }
+                    Log.Debug("Patched successfully!", Loader.ShouldDebugBeShown);
                 else
-                {
                     Log.Error($"Patching failed!");
-                }
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
@@ -133,7 +139,22 @@ namespace Exiled.Events.Features
             Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
             Harmony.UnpatchAll();
 
-            Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
+            Log.Debug("All events have been unpatched. Goodbye!", Loader.ShouldDebugBeShown);
+        }
+
+        private void Patch(Type type, MethodInfo method)
+        {
+            HarmonyMethod prefix = GetHarmonyMethod(type, "Prefix");
+            HarmonyMethod postfix = GetHarmonyMethod(type, "Postfix");
+            HarmonyMethod transpiler = GetHarmonyMethod(type, "Transpiler");
+
+            Harmony.Patch(method, prefix, postfix, transpiler);
+        }
+
+        private HarmonyMethod GetHarmonyMethod(Type type, string name)
+        {
+            MethodInfo method = type.GetMethod(name);
+            return method is null ? null : new HarmonyMethod(method);
         }
 
         private bool PatchByAttributes()

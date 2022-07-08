@@ -33,10 +33,13 @@ namespace Exiled.Events
         /// </summary>
         public static Events Instance => instance;
 
-        public Patcher Patcher { get; private set; }
-
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.First;
+
+        /// <summary>
+        /// Gets the <see cref="Patcher"/> used to employ all patches.
+        /// </summary>
+        internal Patcher Patcher { get; private set; }
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -46,14 +49,11 @@ namespace Exiled.Events
 
             Patcher = new Patcher();
 
-            if (!Config.UseDynamicPatching)
-            {
-                Stopwatch watch = Stopwatch.StartNew();
-                Patcher.PatchAll();
+            Stopwatch watch = Stopwatch.StartNew();
+            Patcher.PatchAll(!Config.UseDynamicPatching);
 
-                watch.Stop();
-                Log.Info($"All Patches completed in {watch.Elapsed}");
-            }
+            watch.Stop();
+            Log.Info($"${(Config.UseDynamicPatching ? "Non-event" : "All")} Patches completed in {watch.Elapsed}");
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
