@@ -372,12 +372,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
         /// </summary>
+        /// <param name="type">The <see cref="DoorDamageType"/> to apply to the door.</param>
         /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
-        public bool BreakDoor()
+        public bool BreakDoor(DoorDamageType type = DoorDamageType.ServerCommand)
         {
             if (Base is IDamageableDoor dmg && !dmg.IsDestroyed)
             {
-                dmg.ServerDamage(ushort.MaxValue, DoorDamageType.ServerCommand);
+                dmg.ServerDamage(ushort.MaxValue, type);
                 return true;
             }
 
