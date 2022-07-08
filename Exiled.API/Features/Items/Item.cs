@@ -268,20 +268,6 @@ namespace Exiled.API.Features.Items
 
             pickup.Scale = Scale;
 
-            if (pickup is FirearmPickup firearmPickup)
-            {
-                if (this is Firearm firearm)
-                {
-                    firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearm.Base.Status.Attachments);
-                }
-                else
-                {
-                    Log.Error($"Should never happen {new StackTrace()}");
-                    byte ammo = (Base as InventorySystem.Items.Firearms.Firearm).Status.Ammo;
-                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, (uint)firearmPickup.Type.GetBaseCode());
-                }
-            }
-
             if (spawn)
                 pickup.Spawn();
 

@@ -529,34 +529,22 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
-        /// <param name="identifiers">The attachments to be added.</param>
         /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
         /// <returns>The created <see cref="Pickup"/>.</returns>
-        public Pickup CreatePickup(Vector3 position, Quaternion rotation = default, IEnumerable<AttachmentIdentifier> identifiers = null, bool spawn = true)
+        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            FirearmPickup pickup = (FirearmPickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
 
-            PickupSyncInfo info = new()
+            pickup.Info = new()
             {
                 ItemId = Type,
                 Position = position,
-                Weight = ipb.Info.Weight,
+                Weight = pickup.Weight,
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 
-            ipb.NetworkInfo = info;
-            ipb.InfoReceived(default, info);
-
-            ipb.transform.localScale = Scale;
-
-            Pickup pickup = Pickup.Get(ipb);
-
-            if (pickup is FirearmPickup firearmPickup)
-            {
-                if (identifiers is not null)
-                    AddAttachment(identifiers);
-                firearmPickup.Status = new FirearmStatus(Ammo, FirearmStatusFlags.MagazineInserted, AttachmentIdentifiers.GetAttachmentsCode());
-            }
+            pickup.Scale = Scale;
+            pickup.Status = Base.Status;
 
             if (spawn)
                 pickup.Spawn();
