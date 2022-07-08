@@ -188,6 +188,7 @@ namespace Exiled.API.Extensions
             GrenadeType.Flashbang => ItemType.GrenadeFlash,
             GrenadeType.Scp018 => ItemType.SCP018,
             GrenadeType.FragGrenade => ItemType.GrenadeHE,
+            GrenadeType.Scp2176 => ItemType.SCP2176,
             _ => ItemType.None,
         };
 
