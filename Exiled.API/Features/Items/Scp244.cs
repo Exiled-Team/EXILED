@@ -7,7 +7,12 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Pickups;
+
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
+
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for SCP-244.
@@ -45,6 +50,40 @@ namespace Exiled.API.Features.Items
         {
             get => Base._primed;
             set => Base._primed = value;
+        }
+
+        /// <summary>
+        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
+        /// </summary>
+        /// <param name="position">The location to spawn the item.</param>
+        /// <param name="rotation">The rotation of the item.</param>
+        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
+        /// <returns>The created <see cref="Pickup"/>.</returns>
+        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
+        {
+            Scp244DeployablePickup ipb = (Scp244DeployablePickup)Object.Instantiate(Base.PickupDropModel, position, rotation);
+
+            PickupSyncInfo info = new()
+            {
+                ItemId = Type,
+                Position = position,
+                Weight = Weight,
+                Rotation = new LowPrecisionQuaternion(rotation),
+            };
+
+            ipb.NetworkInfo = info;
+            ipb.InfoReceived(default, info);
+
+            ipb.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
+
+            ipb.transform.localScale = Scale;
+
+            Pickup pickup = Pickup.Get(ipb);
+
+            if (spawn)
+                pickup.Spawn();
+
+            return pickup;
         }
 
         /// <summary>

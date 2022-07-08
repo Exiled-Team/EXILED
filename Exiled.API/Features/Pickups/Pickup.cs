@@ -51,7 +51,7 @@ namespace Exiled.API.Features.Pickups
         {
             Base = pickupBase;
             Serial = pickupBase.NetworkInfo.Serial == 0 ? ItemSerialGenerator.GenerateNext() : pickupBase.NetworkInfo.Serial;
-            BaseToItem[pickupBase] = this;
+            BaseToItem.Add(pickupBase, this);
         }
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
-        public bool Spawned { get; private set; }
+        public bool Spawned { get; internal set; }
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.

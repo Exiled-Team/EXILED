@@ -171,12 +171,12 @@ namespace Exiled.API.Features.Items
             ipb.NetworkInfo = info;
             ipb.InfoReceived(default, info);
 
-            Pickup pickup = Pickup.Get(ipb);
-
             if (overrideExposedType)
                 ipb.NetworkExposedCandy = ExposedType;
 
             ipb.transform.localScale = Scale;
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();

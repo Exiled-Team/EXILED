@@ -269,6 +269,8 @@ namespace Exiled.API.Features.Items
             ipb.NetworkInfo = info;
             ipb.InfoReceived(default, info);
 
+            ipb.transform.localScale = Scale;
+
             Pickup pickup = Pickup.Get(ipb);
 
             if (pickup is FirearmPickup firearmPickup)
@@ -284,8 +286,6 @@ namespace Exiled.API.Features.Items
                     firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, (uint)firearmPickup.Type.GetBaseCode());
                 }
             }
-
-            ipb.transform.localScale = Scale;
 
             if (spawn)
                 pickup.Spawn();
