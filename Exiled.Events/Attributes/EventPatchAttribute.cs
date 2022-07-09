@@ -9,6 +9,7 @@ namespace Exiled.Events.Attributes
 {
     using System;
 
+    using Exiled.API.Features;
     using Exiled.Events.Interfaces;
 
     /// <summary>
@@ -17,6 +18,9 @@ namespace Exiled.Events.Attributes
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     internal class EventPatchAttribute : Attribute
     {
+        private readonly Type handlerType;
+        private readonly string eventName;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EventPatchAttribute"/> class.
         /// </summary>
@@ -24,12 +28,13 @@ namespace Exiled.Events.Attributes
         /// <param name="handlerType">The name of the event.</param>
         internal EventPatchAttribute(Type handlerType, string eventName)
         {
-            Event = (IEvent)handlerType.GetField(eventName).GetValue(null);
+            this.handlerType = handlerType;
+            this.eventName = eventName;
         }
 
         /// <summary>
         /// Gets the <see cref="IEvent"/> that will be raised by this patch.
         /// </summary>
-        internal IEvent Event { get; }
+        internal IEvent Event => (IEvent)handlerType.GetField(eventName)?.GetValue(null);
     }
 }

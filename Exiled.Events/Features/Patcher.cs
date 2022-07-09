@@ -64,7 +64,10 @@ namespace Exiled.Events.Features
                 foreach (Type type in UnpatchedPatches)
                 {
                     if (type.GetCustomAttributes<EventPatchAttribute>().Any((epa) => epa.Event == @event))
+                    {
                         new PatchClassProcessor(Harmony, type).Patch();
+                        toRemove.Add(type);
+                    }
                 }
 
                 UnpatchedPatches.RemoveWhere((type) => toRemove.Contains(type));
@@ -90,10 +93,11 @@ namespace Exiled.Events.Features
                 List<Type> toRemove = new();
                 foreach (Type type in UnpatchedPatches)
                 {
-                    if (!includeEvents && type.GetCustomAttribute<EventPatchAttribute>() != null)
+                    if (!includeEvents && type.GetCustomAttributes<EventPatchAttribute>().Any())
                         continue;
 
                     new PatchClassProcessor(Harmony, type).Patch();
+                    toRemove.Add(type);
                 }
 
                 UnpatchedPatches.RemoveWhere((type) => toRemove.Contains(type));
@@ -105,7 +109,7 @@ namespace Exiled.Events.Features
             }
             catch (Exception exception)
             {
-                Log.Error($"Patching by atttributes failed!\n{exception}");
+                Log.Error($"Patching by attributes failed!\n{exception}");
             }
         }
 

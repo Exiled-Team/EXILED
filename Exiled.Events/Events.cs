@@ -14,7 +14,9 @@ namespace Exiled.Events
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.Features;
+    using Exiled.Events.Patches.Events.Player;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -51,9 +53,8 @@ namespace Exiled.Events
 
             Stopwatch watch = Stopwatch.StartNew();
             Patcher.PatchAll(!Config.UseDynamicPatching);
-
             watch.Stop();
-            Log.Info($"${(Config.UseDynamicPatching ? "Non-event" : "All")} Patches completed in {watch.Elapsed}");
+            Log.Info($"{(Config.UseDynamicPatching ? "Non-event" : "All")} patches completed in {watch.Elapsed}");
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
