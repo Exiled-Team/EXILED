@@ -2132,10 +2132,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (item is null)
-                    item = Item.Get(itemBase);
-
-                item.Base.OnRemoved(null);
+                item ??= Item.Get(itemBase);
 
                 itemBase.Owner = ReferenceHub;
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
