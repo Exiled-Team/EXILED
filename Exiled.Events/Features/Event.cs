@@ -22,15 +22,11 @@ namespace Exiled.Events.Features
     /// </summary>
     public class Event : IEvent
     {
-        private readonly string name;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Event"/> class.
         /// </summary>
-        /// <param name="name">The name of the event.</param>
-        internal Event(string name)
+        internal Event()
         {
-            this.name = name;
         }
 
         private event CustomEventHandler InnerEvent;
@@ -98,7 +94,7 @@ namespace Exiled.Events.Features
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{name}\"");
+                    Log.Error($"Method \"{handler.Method.Name}\" of the class \"{handler.Method.ReflectedType.FullName}\" caused an exception when handling the event \"{GetType().FullName}\"");
                     Log.Error(ex);
                 }
             }

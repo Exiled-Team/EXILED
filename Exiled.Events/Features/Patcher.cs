@@ -63,7 +63,7 @@ namespace Exiled.Events.Features
                 List<Type> toRemove = new();
                 foreach (Type type in UnpatchedPatches)
                 {
-                    if (type.GetCustomAttribute<EventPatchAttribute>()?.Event == @event)
+                    if (type.GetCustomAttributes<EventPatchAttribute>().Any((epa) => epa.Event == @event))
                         new PatchClassProcessor(Harmony, type).Patch();
                 }
 
