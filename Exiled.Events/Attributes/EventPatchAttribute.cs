@@ -8,7 +8,6 @@
 namespace Exiled.Events.Attributes
 {
     using System;
-    using System.Reflection;
 
     using Exiled.Events.Interfaces;
 
@@ -21,19 +20,11 @@ namespace Exiled.Events.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="EventPatchAttribute"/> class.
         /// </summary>
-        /// <param name="patchedType">The <see cref="Type"/> the patched method exists inside.</param>
-        /// <param name="patchedMethodName">The name of the method to be patched.</param>
         /// <param name="event">The <see cref="IEvent"/> to be raised by this patch.</param>
-        internal EventPatchAttribute(Type patchedType, string patchedMethodName, IEvent @event)
+        internal EventPatchAttribute(IEvent @event)
         {
-            PatchedMethod = patchedType.GetMethod(patchedMethodName);
             Event = @event;
         }
-
-        /// <summary>
-        /// Gets the <see cref="MethodInfo"/> that will be patched.
-        /// </summary>
-        internal MethodInfo PatchedMethod { get; }
 
         /// <summary>
         /// Gets the <see cref="IEvent"/> that will be raised by this patch.

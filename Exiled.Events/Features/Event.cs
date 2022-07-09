@@ -64,6 +64,28 @@ namespace Exiled.Events.Features
         }
 
         /// <summary>
+        /// Subscribes a target <see cref="CustomEventHandler"/> to the inner event if the conditional is true.
+        /// </summary>
+        /// <param name="handler">The handler to add.</param>
+        /// <param name="shouldSubscribe">Whether the handler should be subscribed or not.</param>
+        public void Subscribe(CustomEventHandler handler, bool shouldSubscribe = true)
+        {
+            if (shouldSubscribe)
+                InnerEvent += handler;
+        }
+
+        /// <summary>
+        /// Unsubscribes a target <see cref="CustomEventHandler"/> from the inner event if the conditional is true.
+        /// </summary>
+        /// <param name="handler">The handler to add.</param>
+        /// <param name="shouldUnsubscribe">Whether the handler should be subscribed or not.</param>
+        public void Unsubscribe(CustomEventHandler handler, bool shouldUnsubscribe = true)
+        {
+            if (shouldUnsubscribe)
+                InnerEvent -= handler;
+        }
+
+        /// <summary>
         /// Executes all <see cref="CustomEventHandler"/> listeners safely.
         /// </summary>
         public void InvokeSafely()
