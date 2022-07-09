@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -20,8 +21,9 @@ namespace Exiled.Events.Patches.Events.Server
 
     /// <summary>
     /// Patches <see cref="RoundSummary.SetStartClassList"/>.
-    /// Adds the RoundStarted event.
+    /// Adds the <see cref="Server.RoundStarted"/> event.
     /// </summary>
+    [EventPatch(typeof(Server), nameof(Server.RoundStarted))]
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.SetStartClassList))]
     internal static class RoundStarted
     {

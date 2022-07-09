@@ -18,448 +18,448 @@ namespace Exiled.Events.Handlers
     public static class Player
     {
         /// <summary>
-        /// Invoked before authenticating a <see cref="API.Features.Player"/>.
+        /// Gets or sets the event invoked before authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
-        public static readonly Event<PreAuthenticatingEventArgs> PreAuthenticating = new();
+        public static Event<PreAuthenticatingEventArgs> PreAuthenticating { get; set; } = new();
 
         /// <summary>
-        /// Invoked before kicking a <see cref="API.Features.Player"/> from the server.
+        /// Gets or sets the event invoked before kicking a <see cref="API.Features.Player"/> from the server.
         /// </summary>
-        public static readonly Event<KickingEventArgs> Kicking = new();
+        public static Event<KickingEventArgs> Kicking { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has been kicked from the server.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> has been kicked from the server.
         /// </summary>
-        public static readonly Event<KickedEventArgs> Kicked = new();
+        public static Event<KickedEventArgs> Kicked { get; set; } = new();
 
         /// <summary>
-        /// Invoked before banning a <see cref="API.Features.Player"/> from the server.
+        /// Gets or sets the event invoked before banning a <see cref="API.Features.Player"/> from the server.
         /// </summary>
-        public static readonly Event<BanningEventArgs> Banning = new();
+        public static Event<BanningEventArgs> Banning { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has been banned from the server.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> has been banned from the server.
         /// </summary>
-        public static readonly Event<BannedEventArgs> Banned = new();
+        public static Event<BannedEventArgs> Banned { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Item"/>.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         /// <remarks>
-        /// Invoked after <see cref="UsedItem"/>, if a player's class has
+        /// Gets or sets the event invoked after <see cref="UsedItem"/>, if a player's class has
         /// changed during their health increase, won't fire.
         /// </remarks>
-        public static readonly Event<UsedItemEventArgs> UsedItem = new();
+        public static Event<UsedItemEventArgs> UsedItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> has stopped the use of a <see cref="API.Features.Items.Usable"/>.
         /// </summary>
-        public static readonly Event<CancellingItemUseEventArgs> CancellingItemUse = new();
+        public static Event<CancellingItemUseEventArgs> CancellingItemUse { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> interacted with something.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> interacted with something.
         /// </summary>
-        public static readonly Event<InteractedEventArgs> Interacted = new();
+        public static Event<InteractedEventArgs> Interacted { get; set; } = new();
 
         /// <summary>
-        /// Invoked before spawning a <see cref="API.Features.Player"/> <see cref="API.Features.Ragdoll"/>.
+        /// Gets or sets the event invoked before spawning a <see cref="API.Features.Player"/> <see cref="API.Features.Ragdoll"/>.
         /// </summary>
-        public static readonly Event<SpawningRagdollEventArgs> SpawningRagdoll = new();
+        public static Event<SpawningRagdollEventArgs> SpawningRagdoll { get; set; } = new();
 
         /// <summary>
-        /// Invoked before activating the warhead panel.
+        /// Gets or sets the event invoked before activating the warhead panel.
         /// </summary>
-        public static readonly Event<ActivatingWarheadPanelEventArgs> ActivatingWarheadPanel = new();
+        public static Event<ActivatingWarheadPanelEventArgs> ActivatingWarheadPanel { get; set; } = new();
 
         /// <summary>
-        /// Invoked before activating a workstation.
+        /// Gets or sets the event invoked before activating a workstation.
         /// </summary>
-        public static readonly Event<ActivatingWorkstationEventArgs> ActivatingWorkstation = new();
+        public static Event<ActivatingWorkstationEventArgs> ActivatingWorkstation { get; set; } = new();
 
         /// <summary>
-        /// Invoked before deactivating a workstation.
+        /// Gets or sets the event invoked before deactivating a workstation.
         /// </summary>
-        public static readonly Event<DeactivatingWorkstationEventArgs> DeactivatingWorkstation = new();
+        public static Event<DeactivatingWorkstationEventArgs> DeactivatingWorkstation { get; set; } = new();
 
         /// <summary>
-        /// Invoked before using an <see cref="API.Features.Items.Item"/>.
+        /// Gets or sets the event invoked before using an <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static readonly Event<UsingItemEventArgs> UsingItem = new();
+        public static Event<UsingItemEventArgs> UsingItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has joined the server.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> has joined the server.
         /// </summary>
-        public static readonly Event<JoinedEventArgs> Joined = new();
+        public static Event<JoinedEventArgs> Joined { get; set; } = new();
 
         /// <summary>
-        /// Ivoked after a <see cref="API.Features.Player"/> has been verified.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> has been verified.
         /// </summary>
-        public static readonly Event<VerifiedEventArgs> Verified = new();
+        public static Event<VerifiedEventArgs> Verified { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has left the server.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> has left the server.
         /// </summary>
-        public static readonly Event<LeftEventArgs> Left = new();
+        public static Event<LeftEventArgs> Left { get; set; } = new();
 
         /// <summary>
-        /// Invoked before destroying a <see cref="API.Features.Player"/>.
+        /// Gets or sets the event invoked before destroying a <see cref="API.Features.Player"/>.
         /// </summary>
-        public static readonly Event<DestroyingEventArgs> Destroying = new();
+        public static Event<DestroyingEventArgs> Destroying { get; set; } = new();
 
         /// <summary>
-        /// Invoked before hurting a <see cref="API.Features.Player"/>.
+        /// Gets or sets the event invoked before hurting a <see cref="API.Features.Player"/>.
         /// </summary>
-        public static readonly Event<HurtingEventArgs> Hurting = new();
+        public static Event<HurtingEventArgs> Hurting { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> dies.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> dies.
         /// </summary>
-        public static readonly Event<DyingEventArgs> Dying = new();
+        public static Event<DyingEventArgs> Dying { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> died.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> died.
         /// </summary>
-        public static readonly Event<DiedEventArgs> Died = new();
+        public static Event<DiedEventArgs> Died { get; set; } = new();
 
         /// <summary>
-        /// Invoked before changing a <see cref="API.Features.Player"/> role.
+        /// Gets or sets the event invoked before changing a <see cref="API.Features.Player"/> role.
         /// </summary>
         /// <remarks>If you set IsAllowed to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
-        public static readonly Event<ChangingRoleEventArgs> ChangingRole = new();
+        public static Event<ChangingRoleEventArgs> ChangingRole { get; set; } = new();
 
         /// <summary>
-        /// Invoked before throwing an <see cref="API.Features.Items.Item"/>.
+        /// Gets or sets the event invoked before throwing an <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static readonly Event<ThrowingItemEventArgs> ThrowingItem = new();
+        public static Event<ThrowingItemEventArgs> ThrowingItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked before dropping an <see cref="API.Features.Items.Item"/>.
+        /// Gets or sets the event invoked before dropping an <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static readonly Event<DroppingItemEventArgs> DroppingItem = new();
+        public static Event<DroppingItemEventArgs> DroppingItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked before dropping a null <see cref="API.Features.Items.Item"/>.
+        /// Gets or sets the event invoked before dropping a null <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static readonly Event<DroppingNullEventArgs> DroppingNull = new();
+        public static Event<DroppingNullEventArgs> DroppingNull { get; set; } = new();
 
         /// <summary>
-        /// Invoked before picking up ammo.
+        /// Gets or sets the event invoked before picking up ammo.
         /// </summary>
-        public static readonly Event<PickingUpAmmoEventArgs> PickingUpAmmo = new();
+        public static Event<PickingUpAmmoEventArgs> PickingUpAmmo { get; set; } = new();
 
         /// <summary>
-        /// Invoked before picking up armor.
+        /// Gets or sets the event invoked before picking up armor.
         /// </summary>
-        public static readonly Event<PickingUpArmorEventArgs> PickingUpArmor = new();
+        public static Event<PickingUpArmorEventArgs> PickingUpArmor { get; set; } = new();
 
         /// <summary>
-        /// Invoked before picking up an <see cref="API.Features.Items.Item"/>.
+        /// Gets or sets the event invoked before picking up an <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static readonly Event<PickingUpItemEventArgs> PickingUpItem = new();
+        public static Event<PickingUpItemEventArgs> PickingUpItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked before handcuffing a <see cref="API.Features.Player"/>.
+        /// Gets or sets the event invoked before handcuffing a <see cref="API.Features.Player"/>.
         /// </summary>
-        public static readonly Event<HandcuffingEventArgs> Handcuffing = new();
+        public static Event<HandcuffingEventArgs> Handcuffing { get; set; } = new();
 
         /// <summary>
-        /// Invoked before freeing a handcuffed <see cref="API.Features.Player"/>.
+        /// Gets or sets the event invoked before freeing a handcuffed <see cref="API.Features.Player"/>.
         /// </summary>
-        public static readonly Event<RemovingHandcuffsEventArgs> RemovingHandcuffs = new();
+        public static Event<RemovingHandcuffsEventArgs> RemovingHandcuffs { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> escapes.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> escapes.
         /// </summary>
-        public static readonly Event<EscapingEventArgs> Escaping = new();
+        public static Event<EscapingEventArgs> Escaping { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> begins speaking to the intercom.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> begins speaking to the intercom.
         /// </summary>
-        public static readonly Event<IntercomSpeakingEventArgs> IntercomSpeaking = new();
+        public static Event<IntercomSpeakingEventArgs> IntercomSpeaking { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> gets shot.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> gets shot.
         /// </summary>
-        public static readonly Event<ShotEventArgs> Shot = new();
+        public static Event<ShotEventArgs> Shot { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> shoots a weapon.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> shoots a weapon.
         /// </summary>
-        public static readonly Event<ShootingEventArgs> Shooting = new();
+        public static Event<ShootingEventArgs> Shooting { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> enters the pocket dimension.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> enters the pocket dimension.
         /// </summary>
-        public static readonly Event<EnteringPocketDimensionEventArgs> EnteringPocketDimension = new();
+        public static Event<EnteringPocketDimensionEventArgs> EnteringPocketDimension { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> escapes the pocket dimension.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> escapes the pocket dimension.
         /// </summary>
-        public static readonly Event<EscapingPocketDimensionEventArgs> EscapingPocketDimension = new();
+        public static Event<EscapingPocketDimensionEventArgs> EscapingPocketDimension { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> fails to escape the pocket dimension.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> fails to escape the pocket dimension.
         /// </summary>
-        public static readonly Event<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension = new();
+        public static Event<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> reloads a weapon.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> reloads a weapon.
         /// </summary>
-        public static readonly Event<ReloadingWeaponEventArgs> ReloadingWeapon = new();
+        public static Event<ReloadingWeaponEventArgs> ReloadingWeapon { get; set; } = new();
 
         /// <summary>
-        /// Invoked before spawning a <see cref="API.Features.Player"/>.
+        /// Gets or sets the event invoked before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
-        public static readonly Event<SpawningEventArgs> Spawning = new();
+        public static Event<SpawningEventArgs> Spawning { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> has spawned.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> has spawned.
         /// </summary>
-        public static readonly Event<SpawnedEventArgs> Spawned = new();
+        public static Event<SpawnedEventArgs> Spawned { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> enters the femur breaker.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> enters the femur breaker.
         /// </summary>
-        public static readonly Event<EnteringFemurBreakerEventArgs> EnteringFemurBreaker = new();
+        public static Event<EnteringFemurBreakerEventArgs> EnteringFemurBreaker { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> held <see cref="API.Features.Items.Item"/> changes.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> held <see cref="API.Features.Items.Item"/> changes.
         /// </summary>
-        public static readonly Event<ChangingItemEventArgs> ChangingItem = new();
+        public static Event<ChangingItemEventArgs> ChangingItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked before changing a <see cref="API.Features.Player"/> group.
+        /// Gets or sets the event invoked before changing a <see cref="API.Features.Player"/> group.
         /// </summary>
-        public static readonly Event<ChangingGroupEventArgs> ChangingGroup = new();
+        public static Event<ChangingGroupEventArgs> ChangingGroup { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> interacts with a door.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> interacts with a door.
         /// </summary>
-        public static readonly Event<InteractingDoorEventArgs> InteractingDoor = new();
+        public static Event<InteractingDoorEventArgs> InteractingDoor { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> interacts with an elevator.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> interacts with an elevator.
         /// </summary>
-        public static readonly Event<InteractingElevatorEventArgs> InteractingElevator = new();
+        public static Event<InteractingElevatorEventArgs> InteractingElevator { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> interacts with a locker.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> interacts with a locker.
         /// </summary>
-        public static readonly Event<InteractingLockerEventArgs> InteractingLocker = new();
+        public static Event<InteractingLockerEventArgs> InteractingLocker { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> triggers a tesla gate.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> triggers a tesla gate.
         /// </summary>
-        public static readonly Event<TriggeringTeslaEventArgs> TriggeringTesla = new();
+        public static Event<TriggeringTeslaEventArgs> TriggeringTesla { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> unlocks a generator.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> unlocks a generator.
         /// </summary>
-        public static readonly Event<UnlockingGeneratorEventArgs> UnlockingGenerator = new();
+        public static Event<UnlockingGeneratorEventArgs> UnlockingGenerator { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> opens a generator.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> opens a generator.
         /// </summary>
-        public static readonly Event<OpeningGeneratorEventArgs> OpeningGenerator = new();
+        public static Event<OpeningGeneratorEventArgs> OpeningGenerator { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> closes a generator.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> closes a generator.
         /// </summary>
-        public static readonly Event<ClosingGeneratorEventArgs> ClosingGenerator = new();
+        public static Event<ClosingGeneratorEventArgs> ClosingGenerator { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> turns on the generator by switching lever.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> turns on the generator by switching lever.
         /// </summary>
-        public static readonly Event<ActivatingGeneratorEventArgs> ActivatingGenerator = new();
+        public static Event<ActivatingGeneratorEventArgs> ActivatingGenerator { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> turns off the generator by switching lever.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> turns off the generator by switching lever.
         /// </summary>
-        public static readonly Event<StoppingGeneratorEventArgs> StoppingGenerator = new();
+        public static Event<StoppingGeneratorEventArgs> StoppingGenerator { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> receives a status effect.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> receives a status effect.
         /// </summary>
-        public static readonly Event<ReceivingEffectEventArgs> ReceivingEffect = new();
+        public static Event<ReceivingEffectEventArgs> ReceivingEffect { get; set; } = new();
 
         /// <summary>
-        /// Invoked before an user's mute status is changed.
+        /// Gets or sets the event invoked before an user's mute status is changed.
         /// </summary>
-        public static readonly Event<ChangingMuteStatusEventArgs> ChangingMuteStatus = new();
+        public static Event<ChangingMuteStatusEventArgs> ChangingMuteStatus { get; set; } = new();
 
         /// <summary>
-        /// Invoked before an user's intercom mute status is changed.
+        /// Gets or sets the event invoked before an user's intercom mute status is changed.
         /// </summary>
-        public static readonly Event<ChangingIntercomMuteStatusEventArgs> ChangingIntercomMuteStatus = new();
+        public static Event<ChangingIntercomMuteStatusEventArgs> ChangingIntercomMuteStatus { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a user's radio battery charge is changed.
+        /// Gets or sets the event invoked before a user's radio battery charge is changed.
         /// </summary>
-        public static readonly Event<UsingRadioBatteryEventArgs> UsingRadioBattery = new();
+        public static Event<UsingRadioBatteryEventArgs> UsingRadioBattery { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a user's radio preset is changed.
+        /// Gets or sets the event invoked before a user's radio preset is changed.
         /// </summary>
-        public static readonly Event<ChangingRadioPresetEventArgs> ChangingRadioPreset = new();
+        public static Event<ChangingRadioPresetEventArgs> ChangingRadioPreset { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> MicroHID state is changed.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> MicroHID state is changed.
         /// </summary>
-        public static readonly Event<ChangingMicroHIDStateEventArgs> ChangingMicroHIDState = new();
+        public static Event<ChangingMicroHIDStateEventArgs> ChangingMicroHIDState { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> MicroHID energy is changed.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> MicroHID energy is changed.
         /// </summary>
-        public static readonly Event<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy = new();
+        public static Event<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy { get; set; } = new();
 
         /// <summary>
-        /// Called before processing a hotkey.
+        /// Gets or sets the event invoked before processing a hotkey.
         /// </summary>
-        public static readonly Event<ProcessingHotkeyEventArgs> ProcessingHotkey = new();
+        public static Event<ProcessingHotkeyEventArgs> ProcessingHotkey { get; set; } = new();
 
         /// <summary>
-        /// Invoked before dropping ammo.
+        /// Gets or sets the event invoked before dropping ammo.
         /// </summary>
-        public static readonly Event<DroppingAmmoEventArgs> DroppingAmmo = new();
+        public static Event<DroppingAmmoEventArgs> DroppingAmmo { get; set; } = new();
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
-        /// </summary>
-        [Obsolete("Use StayingOnEnvironmentalHazard event instead.")]
-        public static readonly Event<WalkingOnSinkholeEventArgs> WalkingOnSinkhole = new();
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> interacts with a shooting target.
-        /// </summary>
-        public static readonly Event<InteractingShootingTargetEventArgs> InteractingShootingTarget = new();
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> damages a shooting target.
-        /// </summary>
-        public static readonly Event<DamagingShootingTargetEventArgs> DamagingShootingTarget = new();
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> flips a coin.
-        /// </summary>
-        public static readonly Event<FlippingCoinEventArgs> FlippingCoin = new();
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> toggles the flashlight.
-        /// </summary>
-        public static readonly Event<TogglingFlashlightEventArgs> TogglingFlashlight = new();
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> unloads a weapon.
-        /// </summary>
-        public static readonly Event<UnloadingWeaponEventArgs> UnloadingWeapon = new();
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> triggers an aim action.
-        /// </summary>
-        public static readonly Event<AimingDownSightEventArgs> AimingDownSight = new();
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> toggles the weapon's flashlight.
-        /// </summary>
-        public static readonly Event<TogglingWeaponFlashlightEventArgs> TogglingWeaponFlashlight = new();
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> dryfires a weapon.
-        /// </summary>
-        public static readonly Event<DryfiringWeaponEventArgs> DryfiringWeapon = new();
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> walks on a sinkhole.
         /// </summary>
         [Obsolete("Use StayingOnEnvironmentalHazard event instead.")]
-        public static readonly Event<WalkingOnTantrumEventArgs> WalkingOnTantrum = new();
+        public static Event<WalkingOnSinkholeEventArgs> WalkingOnSinkhole { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> interacts with a shooting target.
         /// </summary>
-        public static readonly Event<VoiceChattingEventArgs> VoiceChatting = new();
+        public static Event<InteractingShootingTargetEventArgs> InteractingShootingTarget { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> makes noise.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> damages a shooting target.
         /// </summary>
-        public static readonly Event<MakingNoiseEventArgs> MakingNoise = new();
+        public static Event<DamagingShootingTargetEventArgs> DamagingShootingTarget { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> jumps.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> flips a coin.
         /// </summary>
-        public static readonly Event<JumpingEventArgs> Jumping = new();
+        public static Event<FlippingCoinEventArgs> FlippingCoin { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> lands.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> toggles the flashlight.
         /// </summary>
-        public static readonly Event<LandingEventArgs> Landing = new();
+        public static Event<TogglingFlashlightEventArgs> TogglingFlashlight { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> presses the transmission key.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> unloads a weapon.
         /// </summary>
-        public static readonly Event<TransmittingEventArgs> Transmitting = new();
+        public static Event<UnloadingWeaponEventArgs> UnloadingWeapon { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> changes move state.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> triggers an aim action.
         /// </summary>
-        public static readonly Event<ChangingMoveStateEventArgs> ChangingMoveState = new();
+        public static Event<AimingDownSightEventArgs> AimingDownSight { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> changed spectated player.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> toggles the weapon's flashlight.
         /// </summary>
-        public static readonly Event<ChangingSpectatedPlayerEventArgs> ChangingSpectatedPlayer = new();
+        public static Event<TogglingWeaponFlashlightEventArgs> TogglingWeaponFlashlight { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> toggles the NoClip mode.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> dryfires a weapon.
         /// </summary>
-        public static readonly Event<TogglingNoClipEventArgs> TogglingNoClip = new();
+        public static Event<DryfiringWeaponEventArgs> DryfiringWeapon { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> walks on a tantrum.
+        /// </summary>
+        [Obsolete("Use StayingOnEnvironmentalHazard event instead.")]
+        public static Event<WalkingOnTantrumEventArgs> WalkingOnTantrum { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
+        /// </summary>
+        public static Event<VoiceChattingEventArgs> VoiceChatting { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> makes noise.
+        /// </summary>
+        public static Event<MakingNoiseEventArgs> MakingNoise { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> jumps.
+        /// </summary>
+        public static Event<JumpingEventArgs> Jumping { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> lands.
+        /// </summary>
+        public static Event<LandingEventArgs> Landing { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> presses the transmission key.
+        /// </summary>
+        public static Event<TransmittingEventArgs> Transmitting { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> changes move state.
+        /// </summary>
+        public static Event<ChangingMoveStateEventArgs> ChangingMoveState { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> changed spectated player.
+        /// </summary>
+        public static Event<ChangingSpectatedPlayerEventArgs> ChangingSpectatedPlayer { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> toggles the NoClip mode.
+        /// </summary>
+        public static Event<TogglingNoClipEventArgs> TogglingNoClip { get; set; } = new();
+
+        /// <summary>
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
         [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
-        public static readonly Event<PickingUpScp330EventArgs> PickingUpScp330 = new();
+        public static Event<PickingUpScp330EventArgs> PickingUpScp330 { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
         [Obsolete("Use Handlers.Scp330.InteractingScp330", true)]
-        public static readonly Event<InteractingScp330EventArgs> InteractingScp330 = new();
+        public static Event<InteractingScp330EventArgs> InteractingScp330 { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> searches a Pickup.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> searches a Pickup.
         /// </summary>
-        public static readonly Event<SearchingPickupEventArgs> SearchingPickup = new();
+        public static Event<SearchingPickupEventArgs> SearchingPickup { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> damage a Window.
         /// </summary>
-        public static readonly Event<DamagingWindowEventArgs> PlayerDamageWindow = new();
+        public static Event<DamagingWindowEventArgs> PlayerDamageWindow { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// Gets or sets the event invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
-        public static readonly Event<ItemAddedEventArgs> ItemAdded = new();
+        public static Event<ItemAddedEventArgs> ItemAdded { get; set; } = new();
 
         /// <summary>
-        /// Invoked before KillPlayer is called.
+        /// Gets or sets the event invoked before KillPlayer is called.
         /// </summary>
-        public static readonly Event<KillingPlayerEventArgs> KillingPlayer = new();
+        public static Event<KillingPlayerEventArgs> KillingPlayer { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> enters in an environmental hazard.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> enters in an environmental hazard.
         /// </summary>
-        public static readonly Event<EnteringEnvironmentalHazardEventArgs> EnteringEnvironmentalHazard = new();
+        public static Event<EnteringEnvironmentalHazardEventArgs> EnteringEnvironmentalHazard { get; set; } = new();
 
         /// <summary>
-        /// Invoked when a <see cref="API.Features.Player"/> stays on an environmental hazard.
+        /// Gets or sets the event invoked when a <see cref="API.Features.Player"/> stays on an environmental hazard.
         /// </summary>
-        public static readonly Event<StayingOnEnvironmentalHazardEventArgs> StayingOnEnvironmentalHazard = new();
+        public static Event<StayingOnEnvironmentalHazardEventArgs> StayingOnEnvironmentalHazard { get; set; } = new();
 
         /// <summary>
-        /// Invoked when a <see cref="API.Features.Player"/> exists from an environmental hazard.
+        /// Gets or sets the event invoked when a <see cref="API.Features.Player"/> exists from an environmental hazard.
         /// </summary>
-        public static readonly Event<ExitingEnvironmentalHazardEventArgs> ExitingEnvironmentalHazard = new();
+        public static Event<ExitingEnvironmentalHazardEventArgs> ExitingEnvironmentalHazard { get; set; } = new();
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
@@ -883,7 +883,7 @@ namespace Exiled.Events.Handlers
         public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
+        /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
         /// </summary>
         /// <param name="ev">The <see cref="VoiceChattingEventArgs"/> instance.</param>
         public static void OnVoiceChatting(VoiceChattingEventArgs ev) => VoiceChatting.InvokeSafely(ev);

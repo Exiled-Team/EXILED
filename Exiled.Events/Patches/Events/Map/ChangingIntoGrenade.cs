@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Patches <see cref="TimedGrenadePickup.Update"/>.
     /// Adds the <see cref="Map.ChangingIntoGrenade"/> event.
     /// </summary>
+    [EventPatch(typeof(Map), nameof(Map.ChangingIntoGrenade))]
     [HarmonyPatch(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup.Update))]
     internal static class ChangingIntoGrenade
     {

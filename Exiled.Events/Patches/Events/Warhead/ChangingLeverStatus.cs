@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Patches <see cref="PlayerInteract.UserCode_CmdUsePanel"/>.
     /// Adds the <see cref="Handlers.Warhead.ChangingLeverStatus"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.ChangingLeverStatus))]
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUsePanel))]
     internal static class ChangingLeverStatus
     {

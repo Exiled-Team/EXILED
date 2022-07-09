@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using Footprinting;
@@ -27,8 +28,9 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="ExplosionGrenade.Explode(Footprint, Vector3, ExplosionGrenade)"/>.
-    /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
+    /// Adds the <see cref="Handlers.Map.ExplodingGrenade"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.ExplodingGrenade))]
     [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.Explode))]
     internal static class ExplodingFragGrenade
     {

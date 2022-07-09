@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,8 +23,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="ServerRoles.SetGroup(UserGroup, bool, bool, bool)"/>.
-    /// Adds the <see cref="ChangingGroup"/> event.
+    /// Adds the <see cref="Handlers.Player.ChangingGroup"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingGroup))]
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetGroup))]
     internal static class ChangingGroup
     {

@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)"/>.
     /// Adds the <see cref="Handlers.Player.Hurting"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Hurting))]
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.DealDamage))]
     internal static class Hurting
     {

@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Player
 {
     using System;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using GameCore;
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="BanPlayer.BanUser(GameObject, long, string, string, bool)"/>.
     /// Adds the <see cref="Handlers.Player.Banning"/> and <see cref="Handlers.Player.Kicking"/>events.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Banning))]
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), typeof(GameObject), typeof(long), typeof(string), typeof(string), typeof(bool))]
     internal static class BanningAndKicking
     {

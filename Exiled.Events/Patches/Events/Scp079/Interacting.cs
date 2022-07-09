@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -23,12 +24,18 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using static HarmonyLib.AccessTools;
 
+    using Scp079 = Exiled.Events.Handlers.Scp079;
+
     using TeslaGate = TeslaGate;
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)"/>.
-    /// Adds the <see cref="InteractingTeslaEventArgs"/>, <see cref="InteractingDoorEventArgs"/>, <see cref="Handlers.Scp079.StartingSpeaker"/> and <see cref="Handlers.Scp079.StoppingSpeaker"/> event for SCP-079.
+    /// Adds the <see cref="Scp079.InteractingTesla"/>, <see cref="Scp079.TriggeringDoor"/>, <see cref="Scp079.StartingSpeaker"/> and <see cref="Scp079.StoppingSpeaker"/> event for SCP-079.
     /// </summary>
+    [EventPatch(typeof(Scp079), nameof(Scp079.InteractingTesla))]
+    [EventPatch(typeof(Scp079), nameof(Scp079.TriggeringDoor))]
+    [EventPatch(typeof(Scp079), nameof(Scp079.StartingSpeaker))]
+    [EventPatch(typeof(Scp079), nameof(Scp079.StoppingSpeaker))]
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_CmdInteract))]
     internal static class Interacting
     {

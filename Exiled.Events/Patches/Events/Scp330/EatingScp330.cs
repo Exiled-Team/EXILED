@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -26,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted"/>.
     /// Adds the <see cref="Handlers.Scp330.EatingScp330"/> and <see cref="Handlers.Scp330.EatenScp330"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp330), nameof(Handlers.Scp330.EatenScp330))]
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerOnUsingCompleted))]
     internal static class EatingScp330
     {

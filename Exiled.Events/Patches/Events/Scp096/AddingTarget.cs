@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -30,6 +31,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Patches <see cref="Scp096.AddTarget"/>.
     /// Adds the <see cref="Handlers.Scp096.AddingTarget"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.AddingTarget))]
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.AddTarget))]
     internal static class AddingTarget
     {

@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -24,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="AnimationController.UserCode_CmdChangeSpeedState"/>.
     /// Adds the <see cref="Player.ChangingMoveState"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingMoveState))]
     [HarmonyPatch(typeof(AnimationController), nameof(AnimationController.UserCode_CmdChangeSpeedState))]
     internal static class ChangingMoveState
     {

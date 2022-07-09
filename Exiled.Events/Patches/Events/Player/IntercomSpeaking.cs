@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,8 +23,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="Intercom.UserCode_CmdSetTransmit(bool)"/>.
-    /// Adds the <see cref="IntercomSpeaking"/> event.
+    /// Adds the <see cref="Handlers.Player.IntercomSpeaking"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.IntercomSpeaking))]
     [HarmonyPatch(typeof(Intercom), nameof(Intercom.RequestTransmission))]
     internal static class IntercomSpeaking
     {

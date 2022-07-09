@@ -16,24 +16,24 @@ namespace Exiled.Events.Handlers
     public static class Scp244
     {
         /// <summary>
-        /// Invoked before picking up an <see cref="API.Features.Items.Scp244"/>.
+        /// Gets or sets the event invoked before picking up an <see cref="API.Features.Items.Scp244"/>.
         /// </summary>
-        public static readonly Event<PickingUpScp244EventArgs> PickingUpScp244 = new();
+        public static Event<PickingUpScp244EventArgs> PickingUpScp244 { get; set; } = new();
 
         /// <summary>
-        /// Invoked before using an <see cref="API.Features.Items.Item"/>.
+        /// Gets or sets the event invoked before using an <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static readonly Event<UsingScp244EventArgs> UsingScp244 = new();
+        public static Event<UsingScp244EventArgs> UsingScp244 { get; set; } = new();
 
         /// <summary>
-        /// Invoked before an Scp244 take damage.
+        /// Gets or sets the event invoked before an Scp244 take damage.
         /// </summary>
-        public static readonly Event<DamagingScp244EventArgs> DamagingScp244 = new();
+        public static Event<DamagingScp244EventArgs> DamagingScp244 { get; set; } = new();
 
         /// <summary>
-        /// Invoked before an Scp244 open because the angle was too low.
+        /// Gets or sets the event invoked before an Scp244 open because the angle was too low.
         /// </summary>
-        public static readonly Event<OpeningScp244EventArgs> OpeningScp244 = new();
+        public static Event<OpeningScp244EventArgs> OpeningScp244 { get; set; } = new();
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up an item.

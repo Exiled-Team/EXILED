@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -26,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches the <see cref="PocketDimensionTeleport.SuccessEscape"/> method.
     /// Adds the <see cref="Exiled.Events.Handlers.Player.EscapingPocketDimension"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EscapingPocketDimension))]
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.SuccessEscape))]
     internal static class EscapingPocketDimension
     {

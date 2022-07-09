@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -28,6 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="Inventory.CurInstance"/>.
     /// Adds the <see cref="Handlers.Player.ChangingItem"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingItem))]
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.ServerSelectItem))]
     internal static class ChangingItem
     {

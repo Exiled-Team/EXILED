@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -26,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     /// <summary>
     /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OpeningScp244))]
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]
     internal static class UpdateScp244
     {

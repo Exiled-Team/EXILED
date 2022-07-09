@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -26,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Patches <see cref="Scp096.ChargePlayer"/>.
     /// Adds the <see cref="Handlers.Scp096.ChargingPlayer"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.ChargingPlayer))]
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.ChargePlayer))]
     internal static class ChargingPlayer
     {

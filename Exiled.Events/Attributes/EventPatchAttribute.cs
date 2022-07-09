@@ -20,10 +20,11 @@ namespace Exiled.Events.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="EventPatchAttribute"/> class.
         /// </summary>
-        /// <param name="event">The <see cref="IEvent"/> to be raised by this patch.</param>
-        internal EventPatchAttribute(IEvent @event)
+        /// <param name="eventName">The <see cref="Type"/> of the handler class that contains the event.</param>
+        /// <param name="handlerType">The name of the event.</param>
+        internal EventPatchAttribute(Type handlerType, string eventName)
         {
-            Event = @event;
+            Event = (IEvent)handlerType.GetField(eventName).GetValue(null);
         }
 
         /// <summary>

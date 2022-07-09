@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="SpectatorManager.CurrentSpectatedPlayer"/> setter.
     /// Adds the <see cref="Player.ChangingSpectatedPlayer"/>.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingSpectatedPlayer))]
     [HarmonyPatch(typeof(SpectatorManager), nameof(SpectatorManager.CurrentSpectatedPlayer), MethodType.Setter)]
     internal static class ChangingSpectatedPlayerPatch
     {

@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -29,6 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="Consumable.ServerOnUsingCompleted"/>
     /// Adds the <see cref="Handlers.Player.UsedItem"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Consumable), nameof(Consumable.ServerOnUsingCompleted))]
     internal static class UsedItem
     {

@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Assets._Scripts.Dissonance;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,8 +23,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patch the <see cref="DissonanceUserSetup.AdministrativelyMuted"/>.
-    /// Adds the <see cref="ChangingMuteStatus"/> event.
+    /// Adds the <see cref="Handlers.Player.ChangingMuteStatus"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingMuteStatus))]
     [HarmonyPatch(typeof(DissonanceUserSetup), nameof(DissonanceUserSetup.AdministrativelyMuted), MethodType.Setter)]
     internal static class ChangingMuteStatus
     {

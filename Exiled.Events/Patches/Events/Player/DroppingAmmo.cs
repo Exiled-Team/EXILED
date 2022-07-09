@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -21,8 +22,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropAmmo"/>.
-    /// Adds the <see cref="DroppingAmmo"/> event.
+    /// Adds the <see cref="Handlers.Player.DroppingAmmo"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DroppingAmmo))]
     [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdDropAmmo))]
     internal static class DroppingAmmo
     {

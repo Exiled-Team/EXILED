@@ -16,29 +16,29 @@ namespace Exiled.Events.Handlers
     public static class Scp914
     {
         /// <summary>
-        /// Invoked before SCP-914 upgrades a item.
+        /// Gets or sets the event invoked before SCP-914 upgrades a item.
         /// </summary>
-        public static readonly Event<UpgradingItemEventArgs> UpgradingItem = new();
+        public static Event<UpgradingItemEventArgs> UpgradingItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked before SCP-914 upgrades an item in a player's inventory.
+        /// Gets or sets the event invoked before SCP-914 upgrades an item in a player's inventory.
         /// </summary>
-        public static readonly Event<UpgradingInventoryItemEventArgs> UpgradingInventoryItem = new();
+        public static Event<UpgradingInventoryItemEventArgs> UpgradingInventoryItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked before SCP-914 upgrades a player.
+        /// Gets or sets the event invoked before SCP-914 upgrades a player.
         /// </summary>
-        public static readonly Event<UpgradingPlayerEventArgs> UpgradingPlayer = new();
+        public static Event<UpgradingPlayerEventArgs> UpgradingPlayer { get; set; } = new();
 
         /// <summary>
-        /// Invoked before activating the SCP-914 machine.
+        /// Gets or sets the event invoked before activating the SCP-914 machine.
         /// </summary>
-        public static readonly Event<ActivatingEventArgs> Activating = new();
+        public static Event<ActivatingEventArgs> Activating { get; set; } = new();
 
         /// <summary>
-        /// Invoked before changing the SCP-914 machine knob setting.
+        /// Gets or sets the event invoked before changing the SCP-914 machine knob setting.
         /// </summary>
-        public static readonly Event<ChangingKnobSettingEventArgs> ChangingKnobSetting = new();
+        public static Event<ChangingKnobSettingEventArgs> ChangingKnobSetting { get; set; } = new();
 
         /// <summary>
         /// Called before SCP-914 upgrades a item.

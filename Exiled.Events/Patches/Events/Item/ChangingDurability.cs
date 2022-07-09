@@ -10,7 +10,9 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -26,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Item
     /// Patches <see cref="Firearm.Status"/>.
     /// Adds the <see cref="Handlers.Item.ChangingDurability"/> event.
     /// </summary>
+    [EventPatch(typeof(Item), nameof(Item.ChangingDurability))]
     [HarmonyPatch(typeof(Firearm), nameof(Firearm.Status), MethodType.Setter)]
     internal static class ChangingDurability
     {

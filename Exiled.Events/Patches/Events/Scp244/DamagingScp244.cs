@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Reflection.Emit;
 
     using Exiled.API.Features.DamageHandlers;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -26,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     /// <summary>
     /// Patches <see cref="Scp244DeployablePickup.Damage"/> to add missing logic to the <see cref="Scp244DeployablePickup"/>.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp244), nameof(Handlers.Scp244.DamagingScp244))]
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.Damage))]
     internal static class DamagingScp244
     {

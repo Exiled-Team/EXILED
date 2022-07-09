@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -24,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="ThrowableNetworkHandler.ServerProcessRequest"/>.
     /// Adds the <see cref="Handlers.Player.ThrowingItem"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ThrowingItem))]
     [HarmonyPatch(typeof(ThrowableNetworkHandler), nameof(ThrowableNetworkHandler.ServerProcessRequest))]
     internal static class ThrowingItem
     {

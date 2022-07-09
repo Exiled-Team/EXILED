@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,8 +23,9 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="CharacterClassManager.RpcPlaceBlood(Vector3, int, float)"/>.
-    /// Adds the <see cref="PlacingBlood"/> event.
+    /// Adds the <see cref="Handlers.Map.PlacingBlood"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.PlacingBlood))]
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.RpcPlaceBlood))]
     internal static class PlacingBlood
     {

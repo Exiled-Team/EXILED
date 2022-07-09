@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="Scp079Generator.ServerInteract(ReferenceHub, byte)"/>.
     /// Adds the <see cref="Player.ActivatingGenerator"/> event.
     /// </summary>
+    [EventPatch(typeof(Player), nameof(Player.ActivatingGenerator))]
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.ServerInteract))]
     internal static class InteractingGeneratorEvents
     {

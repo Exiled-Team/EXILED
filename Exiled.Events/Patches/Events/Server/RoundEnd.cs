@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection.Emit;
 
     using Exiled.API.Enums;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -32,6 +33,8 @@ namespace Exiled.Events.Patches.Events.Server
     /// Patches <see cref="RoundSummary.Start"/>.
     /// Adds the <see cref="Server.EndingRound"/> and <see cref="Server.RoundEnded"/> event.
     /// </summary>
+    [EventPatch(typeof(Server), nameof(Server.EndingRound))]
+    [EventPatch(typeof(Server), nameof(Server.RoundEnded))]
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.Start))]
     internal static class RoundEnd
     {

@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="Scp106PlayerScript.UserCode_CmdMovePlayer(GameObject, int)"/>.
     /// Adds the <see cref="Handlers.Player.EnteringPocketDimension"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.EnteringPocketDimension))]
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdMovePlayer))]
     internal static class EnteringPocketDimension
     {

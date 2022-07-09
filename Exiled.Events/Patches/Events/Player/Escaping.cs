@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -23,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="CharacterClassManager.UserCode_CmdRegisterEscape"/> for <see cref="Handlers.Player.Escaping"/>.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Escaping))]
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.UserCode_CmdRegisterEscape))]
     internal static class Escaping
     {

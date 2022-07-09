@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="PlayableScps.Scp173.ServerDoTantrum"/>.
     /// Adds the <see cref="Handlers.Scp173.PlacingTantrum"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.PlacingTantrum))]
     [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.ServerDoTantrum))]
     internal static class PlacingTantrum
     {

@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Patches <see cref="Scp079PlayerScript.Lvl"/>.
     /// Adds the <see cref="Scp079.GainingLevel"/> event.
     /// </summary>
+    [EventPatch(typeof(Scp079), nameof(Scp079.GainingLevel))]
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.Lvl), MethodType.Setter)]
     internal static class GainingLevel
     {

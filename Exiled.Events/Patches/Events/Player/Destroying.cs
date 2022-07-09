@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Runtime.CompilerServices;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Destroying))]
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
     internal static class Destroying
     {

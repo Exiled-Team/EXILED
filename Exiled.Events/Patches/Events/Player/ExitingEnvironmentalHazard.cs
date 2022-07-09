@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="EnvironmentalHazard.OnExit(ReferenceHub)"/>.
     /// Adds the <see cref="Handlers.Player.ExitingEnvironmentalHazard"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnExitingEnvironmentalHazard))]
     [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnExit))]
     internal static class ExitingEnvironmentalHazard
     {

@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -23,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Patches the <see cref="PlayableScps.Scp096.TryNotToCry"/> method.
     /// Adds the <see cref="Handlers.Scp096.TryingNotToCry"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.TryingNotToCry))]
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.TryNotToCry))]
     internal static class TryingNotToCry
     {

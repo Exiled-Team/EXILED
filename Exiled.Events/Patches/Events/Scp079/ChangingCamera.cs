@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -23,8 +24,9 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)"/>.
-    /// Adds the <see cref="ChangingCamera"/> event.
+    /// Adds the <see cref="Handlers.Scp079.ChangingCamera"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.ChangingCamera))]
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_CmdSwitchCamera))]
     internal static class ChangingCamera
     {

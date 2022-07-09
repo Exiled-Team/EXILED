@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 #pragma warning disable SA1313
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using global::Scp914;
@@ -18,8 +19,9 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     /// <summary>
     /// Patches <see cref="Scp914Controller.ServerInteract"/>.
-    /// Adds the <see cref="Handlers.Scp914.Activating"/> event.
+    /// Adds the <see cref="Handlers.Scp914.Activating"/> and <see cref="Handlers.Scp914.ChangingKnobSetting"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp914), nameof(Handlers.Scp914.ChangingKnobSetting))]
     [HarmonyPatch(typeof(Scp914Controller), nameof(Scp914Controller.ServerInteract))]
     internal static class InteractingEvents
     {

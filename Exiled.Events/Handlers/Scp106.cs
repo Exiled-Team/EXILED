@@ -16,19 +16,19 @@ namespace Exiled.Events.Handlers
     public static class Scp106
     {
         /// <summary>
-        /// Invoked before SCP-106 creates a portal.
+        /// Gets or sets the event invoked before SCP-106 creates a portal.
         /// </summary>
-        public static readonly Event<CreatingPortalEventArgs> CreatingPortal = new();
+        public static Event<CreatingPortalEventArgs> CreatingPortal { get; set; } = new();
 
         /// <summary>
-        /// Invoked before SCP-106 teleports using a portal.
+        /// Gets or sets the event invoked before SCP-106 teleports using a portal.
         /// </summary>
-        public static readonly Event<TeleportingEventArgs> Teleporting = new();
+        public static Event<TeleportingEventArgs> Teleporting { get; set; } = new();
 
         /// <summary>
-        /// Invoked before containing SCP-106.
+        /// Gets or sets the event invoked before containing SCP-106.
         /// </summary>
-        public static readonly Event<ContainingEventArgs> Containing = new();
+        public static Event<ContainingEventArgs> Containing { get; set; } = new();
 
         /// <summary>
         /// Called before SCP-106 creates a portal.

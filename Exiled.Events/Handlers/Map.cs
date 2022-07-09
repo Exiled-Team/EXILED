@@ -19,59 +19,59 @@ namespace Exiled.Events.Handlers
     public static class Map
     {
         /// <summary>
-        /// Invoked before placing decals.
+        /// Gets or sets the event invoked before placing decals.
         /// </summary>
-        public static readonly Event<PlacingBulletHole> PlacingBulletHole = new();
+        public static Event<PlacingBulletHole> PlacingBulletHole { get; set; } = new();
 
         /// <summary>
-        /// Invoked before placing bloods.
+        /// Gets or sets the event invoked before placing bloods.
         /// </summary>
-        public static readonly Event<PlacingBloodEventArgs> PlacingBlood = new();
+        public static Event<PlacingBloodEventArgs> PlacingBlood { get; set; } = new();
 
         /// <summary>
-        /// Invoked before announcing the light containment zone decontamination.
+        /// Gets or sets the event invoked before announcing the light containment zone decontamination.
         /// </summary>
-        public static readonly Event<AnnouncingDecontaminationEventArgs> AnnouncingDecontamination = new();
+        public static Event<AnnouncingDecontaminationEventArgs> AnnouncingDecontamination { get; set; } = new();
 
         /// <summary>
-        /// Invoked before announcing an SCP termination.
+        /// Gets or sets the event invoked before announcing an SCP termination.
         /// </summary>
-        public static readonly Event<AnnouncingScpTerminationEventArgs> AnnouncingScpTermination = new();
+        public static Event<AnnouncingScpTerminationEventArgs> AnnouncingScpTermination { get; set; } = new();
 
         /// <summary>
-        /// Invoked before announcing the NTF entrance.
+        /// Gets or sets the event invoked before announcing the NTF entrance.
         /// </summary>
-        public static readonly Event<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance = new();
+        public static Event<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance { get; set; } = new();
 
         /// <summary>
-        /// Invoked after a <see cref="Scp079Generator"/> has been activated.
+        /// Gets or sets the event invoked after a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
-        public static readonly Event<GeneratorActivatedEventArgs> GeneratorActivated = new();
+        public static Event<GeneratorActivatedEventArgs> GeneratorActivated { get; set; } = new();
 
         /// <summary>
-        /// Invoked before decontaminating the light containment zone.
+        /// Gets or sets the event invoked before decontaminating the light containment zone.
         /// </summary>
-        public static readonly Event<DecontaminatingEventArgs> Decontaminating = new();
+        public static Event<DecontaminatingEventArgs> Decontaminating { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a grenade explodes.
+        /// Gets or sets the event invoked before a grenade explodes.
         /// </summary>
-        public static readonly Event<ExplodingGrenadeEventArgs> ExplodingGrenade = new();
+        public static Event<ExplodingGrenadeEventArgs> ExplodingGrenade { get; set; } = new();
 
         /// <summary>
-        /// Invoked before an item is spawned.
+        /// Gets or sets the event invoked before an item is spawned.
         /// </summary>
-        public static readonly Event<SpawningItemEventArgs> SpawningItem = new();
+        public static Event<SpawningItemEventArgs> SpawningItem { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the map is generated.
+        /// Gets or sets the event invoked after the map is generated.
         /// </summary>
-        public static readonly Event Generated = new();
+        public static Event Generated { get; set; } = new();
 
         /// <summary>
-        /// Invoked before the server changes a pickup into a grenade, when triggered by an explosion.
+        /// Gets or sets the event invoked before the server changes a pickup into a grenade, when triggered by an explosion.
         /// </summary>
-        public static readonly Event<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade = new();
+        public static Event<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade { get; set; } = new();
 
         /// <summary>
         /// Called before placing a decal.

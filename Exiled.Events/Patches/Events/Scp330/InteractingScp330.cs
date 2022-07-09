@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using CustomPlayerEffects;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -29,6 +30,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     /// <summary>
     /// Patches the <see cref="Scp330Interobject.ServerInteract"/> method to add the <see cref="Handlers.Scp330.InteractingScp330"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp330), nameof(Handlers.Scp330.InteractingScp330))]
     [HarmonyPatch(typeof(Scp330Interobject), nameof(Scp330Interobject.ServerInteract))]
 
     public static class InteractingScp330

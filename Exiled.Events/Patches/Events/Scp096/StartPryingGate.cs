@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Patches the <see cref="PlayableScps.Scp096.PryGate"/> method.
     /// Adds the <see cref="Handlers.Scp096.StartPryingGate"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.StartPryingGate))]
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.PryGate))]
     internal static class StartPryingGate
     {

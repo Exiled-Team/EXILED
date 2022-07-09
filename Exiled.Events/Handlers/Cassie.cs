@@ -16,9 +16,9 @@ namespace Exiled.Events.Handlers
     public static class Cassie
     {
         /// <summary>
-        /// Invoked before sending a cassie message.
+        /// Gets or sets the event invoked before sending a cassie message.
         /// </summary>
-        public static readonly Event<SendingCassieMessageEventArgs> SendingCassieMessage = new();
+        public static Event<SendingCassieMessageEventArgs> SendingCassieMessage { get; set; } = new();
 
         /// <summary>
         /// Called before sending a cassie message.

@@ -16,64 +16,64 @@ namespace Exiled.Events.Handlers
     public static class Server
     {
         /// <summary>
-        /// Invoked before waiting for players.
+        /// Gets or sets the event invoked before waiting for players.
         /// </summary>
-        public static readonly Event WaitingForPlayers = new();
+        public static Event WaitingForPlayers { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the start of a new round.
+        /// Gets or sets the event invoked after the start of a new round.
         /// </summary>
-        public static readonly Event RoundStarted = new();
+        public static Event RoundStarted { get; set; } = new();
 
         /// <summary>
-        /// Invoked before ending a round.
+        /// Gets or sets the event invoked before ending a round.
         /// </summary>
-        public static readonly Event<EndingRoundEventArgs> EndingRound = new();
+        public static Event<EndingRoundEventArgs> EndingRound { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the end of a round.
+        /// Gets or sets the event invoked after the end of a round.
         /// </summary>
-        public static readonly Event<RoundEndedEventArgs> RoundEnded = new();
+        public static Event<RoundEndedEventArgs> RoundEnded { get; set; } = new();
 
         /// <summary>
-        /// Invoked before the restart of a round.
+        /// Gets or sets the event invoked before the restart of a round.
         /// </summary>
-        public static readonly Event RestartingRound = new();
+        public static Event RestartingRound { get; set; } = new();
 
         /// <summary>
-        /// Invoked when a player reports a cheater.
+        /// Gets or sets the event invoked when a player reports a cheater.
         /// </summary>
-        public static readonly Event<ReportingCheaterEventArgs> ReportingCheater = new();
+        public static Event<ReportingCheaterEventArgs> ReportingCheater { get; set; } = new();
 
         /// <summary>
-        /// Invoked before respawning a wave of Chaos Insurgency or NTF.
+        /// Gets or sets the event invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
-        public static readonly Event<RespawningTeamEventArgs> RespawningTeam = new();
+        public static Event<RespawningTeamEventArgs> RespawningTeam { get; set; } = new();
 
         /// <summary>
-        /// Invoked when sending a complaint about a player to the local server administrators.
+        /// Gets or sets the event invoked when sending a complaint about a player to the local server administrators.
         /// </summary>
-        public static readonly Event<LocalReportingEventArgs> LocalReporting = new();
+        public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload configs" command is ran.
+        /// Gets or sets the event invoked after the "reload configs" command is ran.
         /// </summary>
-        public static readonly Event ReloadedConfigs = new();
+        public static Event ReloadedConfigs { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload translations" command is ran.
+        /// Gets or sets the event invoked after the "reload translations" command is ran.
         /// </summary>
-        public static readonly Event ReloadedTranslations = new();
+        public static Event ReloadedTranslations { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload gameplay" command is ran.
+        /// Gets or sets the event invoked after the "reload gameplay" command is ran.
         /// </summary>
-        public static readonly Event ReloadedGameplay = new();
+        public static Event ReloadedGameplay { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the "reload remoteadminconfigs" command is ran.
+        /// Gets or sets the event invoked after the "reload remoteadminconfigs" command is ran.
         /// </summary>
-        public static readonly Event ReloadedRA = new();
+        public static Event ReloadedRA { get; set; } = new();
 
         /// <summary>
         /// Called before waiting for players.

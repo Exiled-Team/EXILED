@@ -16,14 +16,14 @@ namespace Exiled.Events.Handlers
     public static class Scp049
     {
         /// <summary>
-        /// Invoked before SCP-049 finishes recalling a player.
+        /// Gets or sets the event invoked before SCP-049 finishes recalling a player.
         /// </summary>
-        public static readonly Event<FinishingRecallEventArgs> FinishingRecall = new();
+        public static Event<FinishingRecallEventArgs> FinishingRecall { get; set; } = new();
 
         /// <summary>
-        /// Invoked before SCP-049 begins recalling a player.
+        /// Gets or sets the event invoked before SCP-049 begins recalling a player.
         /// </summary>
-        public static readonly Event<StartingRecallEventArgs> StartingRecall = new();
+        public static Event<StartingRecallEventArgs> StartingRecall { get; set; } = new();
 
         /// <summary>
         /// Called before SCP-049 finishes recalling a player.

@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -24,6 +25,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Patch the <see cref="AlphaWarheadController.Update"/>.
     /// Adds the <see cref="Handlers.Warhead.Starting"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Update))]
     internal static class StartingByServer
     {

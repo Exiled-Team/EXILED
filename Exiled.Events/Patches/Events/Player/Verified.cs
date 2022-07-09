@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -27,8 +28,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete"/>.
-    /// Adds the <see cref="Handlers.Player.OnVerified"/> event.
+    /// Adds the <see cref="Handlers.Player.Verified"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Verified))]
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
     internal static class Verified
     {

@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -24,6 +25,8 @@ namespace Exiled.Events.Patches.Events.Server
     /// and <see cref="CheaterReport.UserCode_CmdReport(int, string, byte[], bool)"/>.
     /// Adds the <see cref="Server.ReportingCheater"/> and <see cref="Server.LocalReporting"/> events.
     /// </summary>
+    [EventPatch(typeof(Server), nameof(Server.ReportingCheater))]
+    [EventPatch(typeof(Server), nameof(Server.LocalReporting))]
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.UserCode_CmdReport))]
     internal static class Reporting
     {

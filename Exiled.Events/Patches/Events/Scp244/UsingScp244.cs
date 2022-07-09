@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,8 +23,9 @@ namespace Exiled.Events.Patches.Events.Scp244
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp244Item"/> to add missing event handler to the <see cref="Scp244Item.ServerOnUsingCompleted"/>.
+    /// Patches <see cref="Scp244Item"/> to add missing event handler to the <see cref="Handlers.Scp244.UsingScp244"/>.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp244.UsingScp244))]
     [HarmonyPatch(typeof(Scp244Item), nameof(Scp244Item.ServerOnUsingCompleted))]
     internal static class UsingScp244
     {

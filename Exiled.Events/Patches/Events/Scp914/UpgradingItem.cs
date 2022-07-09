@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// Patches <see cref="Scp914Upgrader.ProcessPickup"/>.
     /// Adds the <see cref="Scp914.UpgradingItem"/> event.
     /// </summary>
+    [EventPatch(typeof(Scp914), nameof(Scp914.UpgradingItem))]
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPickup))]
     internal static class UpgradingItem
     {

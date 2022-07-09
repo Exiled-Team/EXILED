@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -23,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="TeslaGateController.FixedUpdate"/>.
     /// Adds the <see cref="Handlers.Player.TriggeringTesla"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.TriggeringTesla))]
     [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
     internal static class TriggeringTesla
     {

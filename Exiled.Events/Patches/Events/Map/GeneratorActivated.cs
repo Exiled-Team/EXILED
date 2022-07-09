@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Diagnostics;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -26,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Patches <see cref="Scp079Generator.Engaged"/>.
     /// Adds the <see cref="Map.GeneratorActivated"/> event.
     /// </summary>
+    [EventPatch(typeof(Map), nameof(Map.GeneratorActivated))]
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.Engaged), MethodType.Setter)]
     internal static class GeneratorActivated
     {

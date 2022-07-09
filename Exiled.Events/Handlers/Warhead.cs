@@ -16,24 +16,24 @@ namespace Exiled.Events.Handlers
     public static class Warhead
     {
         /// <summary>
-        /// Invoked before stopping the warhead.
+        /// Gets or sets the event invoked before stopping the warhead.
         /// </summary>
-        public static readonly Event<StoppingEventArgs> Stopping = new();
+        public static Event<StoppingEventArgs> Stopping { get; set; } = new();
 
         /// <summary>
-        /// Invoked before starting the warhead.
+        /// Gets or sets the event invoked before starting the warhead.
         /// </summary>
-        public static readonly Event<StartingEventArgs> Starting = new();
+        public static Event<StartingEventArgs> Starting { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the warhead has been detonated.
+        /// Gets or sets the event invoked after the warhead has been detonated.
         /// </summary>
-        public static readonly Event Detonated = new();
+        public static Event Detonated { get; set; } = new();
 
         /// <summary>
-        /// Invoked before changing the warhead lever status.
+        /// Gets or sets the event invoked before changing the warhead lever status.
         /// </summary>
-        public static readonly Event<ChangingLeverStatusEventArgs> ChangingLeverStatus = new();
+        public static Event<ChangingLeverStatusEventArgs> ChangingLeverStatus { get; set; } = new();
 
         /// <summary>
         /// Called before stopping the warhead.

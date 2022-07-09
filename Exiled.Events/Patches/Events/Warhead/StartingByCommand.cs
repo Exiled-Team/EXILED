@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using CommandSystem;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -61,6 +62,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// <summary>
     /// Patches <see cref="CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand.Execute"/> to add the <see cref="Handlers.Warhead.Starting"/> event when triggered by a command.
     /// </summary>
+    [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand), nameof(CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand.Execute))]
     internal static class StartingByDetonateCommand
     {
@@ -82,6 +84,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// <summary>
     /// Patches <see cref="CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand.Execute"/> to add the <see cref="Handlers.Warhead.Starting"/> event when triggered by a command.
     /// </summary>
+    [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand), nameof(CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand.Execute))]
     internal static class StartingByInstantCommand
     {
@@ -103,6 +106,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// <summary>
     /// Patches <see cref="CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand.Execute"/> to add the <see cref="Handlers.Warhead.Starting"/> event when triggered by a command.
     /// </summary>
+    [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand), nameof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand.Execute))]
     internal static class StartingByEventDetonateCommand
     {
@@ -124,6 +128,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// <summary>
     /// Patches <see cref="CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand.Execute"/> to add the <see cref="Handlers.Warhead.Starting"/> event when triggered by a command.
     /// </summary>
+    [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand), nameof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand.Execute))]
     internal static class StartingByEventInstantDetonateCommand
     {

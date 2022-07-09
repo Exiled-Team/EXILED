@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Loader;
 
     using GameCore;
@@ -25,8 +26,9 @@ namespace Exiled.Events.Patches.Events.Server
 
     /// <summary>
     /// Patches <see cref="RoundRestart.InitiateRoundRestart"/>.
-    /// Adds the RestartingRound event.
+    /// Adds the <see cref="Handlers.Server.RestartingRound"/>.
     /// </summary>
+    [EventPatch(typeof(Handlers.Server), nameof(Handlers.Server.RestartingRound))]
     [HarmonyPatch(typeof(RoundRestart), nameof(RoundRestart.InitiateRoundRestart))]
     internal static class RestartingRound
     {

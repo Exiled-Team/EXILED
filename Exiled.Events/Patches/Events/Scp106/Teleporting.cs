@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -24,8 +25,9 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     /// <summary>
     /// Patches <see cref="Scp106PlayerScript.UserCode_CmdUsePortal"/>.
-    /// Adds the <see cref="Teleporting"/> event.
+    /// Adds the <see cref="Handlers.Scp106.Teleporting"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp106), nameof(Handlers.Scp106.Teleporting))]
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdUsePortal))]
     internal static class Teleporting
     {

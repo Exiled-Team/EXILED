@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -30,6 +31,11 @@ namespace Exiled.Events.Patches.Events.Player
     /// <see cref="Player.DryfiringWeapon"/>, <see cref="Player.AimingDownSight"/> and
     /// <see cref="Player.TogglingWeaponFlashlight"/> events.
     /// </summary>
+    [EventPatch(typeof(Player), nameof(Player.ReloadingWeapon))]
+    [EventPatch(typeof(Player), nameof(Player.UnloadingWeapon))]
+    [EventPatch(typeof(Player), nameof(Player.DryfiringWeapon))]
+    [EventPatch(typeof(Player), nameof(Player.AimingDownSight))]
+    [EventPatch(typeof(Player), nameof(Player.TogglingWeaponFlashlight))]
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerRequestReceived))]
     internal static class FirearmRequestReceived
     {

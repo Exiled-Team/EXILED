@@ -16,19 +16,19 @@ namespace Exiled.Events.Handlers
     public static class Item
     {
         /// <summary>
-        /// Invoked before the durability of an item is changed.
+        /// Gets or sets the event invoked before the durability of an item is changed.
         /// </summary>
-        public static readonly Event<ChangingDurabilityEventArgs> ChangingDurability = new();
+        public static Event<ChangingDurabilityEventArgs> ChangingDurability { get; set; } = new();
 
         /// <summary>
-        /// Invoked before item attachments are changed.
+        /// Gets or sets the event invoked before item attachments are changed.
         /// </summary>
-        public static readonly Event<ChangingAttachmentsEventArgs> ChangingAttachments = new();
+        public static Event<ChangingAttachmentsEventArgs> ChangingAttachments { get; set; } = new();
 
         /// <summary>
-        /// Invoked before receiving a preference.
+        /// Gets or sets the event invoked before receiving a preference.
         /// </summary>
-        public static readonly Event<ReceivingPreferenceEventArgs> ReceivingPreference = new();
+        public static Event<ReceivingPreferenceEventArgs> ReceivingPreference { get; set; } = new();
 
         /// <summary>
         /// Called before the durability of an item is changed.

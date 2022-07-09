@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
+
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
@@ -18,6 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="SinkholeEnvironmentalHazard"/>.
     /// <br>Adds the <see cref="Handlers.Player.StayingOnEnvironmentalHazard"/> event.</br>
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.StayingOnEnvironmentalHazard))]
     [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.OnStay))]
     internal static class StayingOnSinkholeEnvironmentalHazard
     {

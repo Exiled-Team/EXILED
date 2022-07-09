@@ -16,29 +16,29 @@ namespace Exiled.Events.Handlers
     public static class Scp330
     {
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
-        public static readonly Event<PickingUpScp330EventArgs> PickingUpScp330 = new();
+        public static Event<PickingUpScp330EventArgs> PickingUpScp330 { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
-        public static readonly Event<InteractingScp330EventArgs> InteractingScp330 = new();
+        public static Event<InteractingScp330EventArgs> InteractingScp330 { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> drop a SCP-330 candy.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> drop a SCP-330 candy.
         /// </summary>
-        public static readonly Event<DroppingScp330EventArgs> DroppingScp330 = new();
+        public static Event<DroppingScp330EventArgs> DroppingScp330 { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a player eats a candy from SCP-330.
+        /// Gets or sets the event invoked before a player eats a candy from SCP-330.
         /// </summary>
-        public static readonly Event<EatingScp330EventArgs> EatingScp330 = new();
+        public static Event<EatingScp330EventArgs> EatingScp330 { get; set; } = new();
 
         /// <summary>
-        /// Invoked after the player has eaten a candy from SCP-330.
+        /// Gets or sets the event invoked after the player has eaten a candy from SCP-330.
         /// </summary>
-        public static readonly Event<EatenScp330EventArgs> EatenScp330 = new();
+        public static Event<EatenScp330EventArgs> EatenScp330 { get; set; } = new();
 
         /// <summary>
         /// Called before a player eats a candy from SCP-330.

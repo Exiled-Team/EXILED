@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -21,6 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// patches <see cref="CharacterClassManager.UserCode_CmdToggleNoclip"/> to add the <see cref="Handlers.Player.TogglingNoClip"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.TogglingNoClip))]
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.UserCode_CmdToggleNoclip))]
     internal static class TogglingNoClip
     {

@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -25,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Patches <see cref="PlayerInteract.UserCode_CmdContain106"/>.
     /// Adds the <see cref="Handlers.Scp106.Containing"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp106), nameof(Handlers.Scp106.Containing))]
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdContain106))]
     internal static class Containing
     {

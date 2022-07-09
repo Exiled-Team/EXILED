@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// <summary>
     /// Patches <see cref="Scp914Upgrader.ProcessPlayer"/> to add the <see cref="Handlers.Scp914.UpgradingPlayer"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp914), nameof(Handlers.Scp914.UpgradingPlayer))]
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
     internal static class UpgradingPlayer
     {

@@ -16,19 +16,19 @@ namespace Exiled.Events.Handlers
     public static class Scp173
     {
         /// <summary>
-        /// Invoked before players near SCP-173 blink.
+        /// Gets or sets the event invoked before players near SCP-173 blink.
         /// </summary>
-        public static readonly Event<BlinkingEventArgs> Blinking = new();
+        public static Event<BlinkingEventArgs> Blinking { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a tantrum is placed.
+        /// Gets or sets the event invoked before a tantrum is placed.
         /// </summary>
-        public static readonly Event<PlacingTantrumEventArgs> PlacingTantrum = new();
+        public static Event<PlacingTantrumEventArgs> PlacingTantrum { get; set; } = new();
 
         /// <summary>
-        /// Invoked before using breakneck speeds.
+        /// Gets or sets the event invoked before using breakneck speeds.
         /// </summary>
-        public static readonly Event<UsingBreakneckSpeedsEventArgs> UsingBreakneckSpeeds = new();
+        public static Event<UsingBreakneckSpeedsEventArgs> UsingBreakneckSpeeds { get; set; } = new();
 
         /// <summary>
         /// Called before players near SCP-173 blink.

@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -27,6 +28,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Patches <see cref="NineTailedFoxAnnouncer.AnnounceScpTermination(ReferenceHub, DamageHandlerBase)"/>.
     /// Adds the <see cref="Map.AnnouncingScpTermination"/> event.
     /// </summary>
+    [EventPatch(typeof(Map), nameof(Map.AnnouncingScpTermination))]
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceScpTermination))]
     internal static class AnnouncingScpTermination
     {

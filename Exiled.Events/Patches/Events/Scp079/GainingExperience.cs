@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -29,6 +30,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Patches <see cref="Scp079PlayerScript.UserCode_RpcGainExp(ExpGainType, RoleType)"/>.
     /// Adds the <see cref="Handlers.Scp079.GainingExperience"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.GainingExperience))]
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_RpcGainExp))]
     internal static class GainingExperience
     {
