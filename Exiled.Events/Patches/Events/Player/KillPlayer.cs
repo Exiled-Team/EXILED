@@ -5,18 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
+namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
 
     using HarmonyLib;
 
@@ -24,11 +19,10 @@ namespace Exiled.Events.Patches.Events.Server
 
     using PlayerStatsSystem;
 
-    using static Exiled.Events.Events;
-
     /// <summary>
     /// Prefix of KillPlayer action.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.KillingPlayer))]
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal class KillPlayer
     {
