@@ -23,7 +23,6 @@
     <YamlDotNetVersion>9.1.4</YamlDotNetVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
     <SemanticVersioningVersion>1.3.0</SemanticVersioningVersion>
-    <EXILED_REFERENCES>C:\Users\Ray\Downloads\Dev (4)</EXILED_REFERENCES>
 
     <Copyright>Copyright © $(Authors) 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <RepositoryType>Git</RepositoryType>
