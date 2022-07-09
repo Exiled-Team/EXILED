@@ -2127,7 +2127,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemBase">The item to be added.</param>
         /// <param name="item">The <see cref="Item"/> object of the item.</param>
-        /// <returns>The item that was added.</returns>
+        /// <returns>The <see cref="Item"/> that was added.</returns>
         public Item AddItem(ItemBase itemBase, Item item = null)
         {
             try
