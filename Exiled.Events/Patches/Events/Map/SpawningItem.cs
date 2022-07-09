@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -29,6 +30,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            LocalBuilder ev = generator.DeclareLocal(typeof(SpawningItem));
             Label returnLabel = generator.DefineLabel();
 
             int offset = 1;
@@ -45,9 +47,15 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningItemEventArgs))[0]),
                 new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnSpawningItem))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.Pickup))),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Spawned))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

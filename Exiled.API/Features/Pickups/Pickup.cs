@@ -50,7 +50,6 @@ namespace Exiled.API.Features.Pickups
         internal Pickup(ItemPickupBase pickupBase)
         {
             Base = pickupBase;
-            Serial = pickupBase.NetworkInfo.Serial == 0 ? ItemSerialGenerator.GenerateNext() : pickupBase.NetworkInfo.Serial;
             BaseToItem.Add(pickupBase, this);
         }
 

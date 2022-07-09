@@ -26,12 +26,6 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningItemEventArgs(ItemPickupBase pickupBase, bool isAllowed = true)
         {
-            if (pickupBase.Info.Serial > 0)
-            {
-                pickupBase.Info.Serial = 0;
-                pickupBase.NetworkInfo = pickupBase.Info;
-            }
-
             Pickup = Pickup.Get(pickupBase);
             IsAllowed = isAllowed;
         }
