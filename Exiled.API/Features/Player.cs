@@ -634,15 +634,22 @@ namespace Exiled.API.Features
         public bool IsTutorial => Role?.Type == RoleType.Tutorial;
 
         /// <summary>
-        /// Gets a value indicating whether the player's friendly fire is enabled.
-        /// This property only determines if this player can deal damage to players on the same team;
-        /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
+        /// Gets or sets a value indicating whether the player's friendly fire is enabled.
+        /// This player can be damaged by other players on their own team even if this property is <see langword="false"/> due to other player friendly fire rules.
+        /// If you directly assign this to true, then <see cref="AlwaysDealsFriendlyFireDamage"/> will be assigned to such. Meaning this player
+        /// will be able to do damage to anyone. Only set this if you are 100% certain that is the behavior you want, otherwise,
+        /// customize your damage using <see cref="FriendlyFireMultiplier"/>, <see cref="CustomRoleFriendlyFireMultiplier"/>, and <see cref="CustomRoleToCustomRoleFriendlyFireMultiplier"/>
         /// </summary>
         public bool IsFriendlyFireEnabled
         {
             get
             {
-                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0;
+                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0 || this.CustomRoleToCustomRoleFriendlyFireMultiplier.Count > 0 || this.AlwaysDealsFriendlyFireDamage;
+            }
+
+            set
+            {
+                this.AlwaysDealsFriendlyFireDamage = value;
             }
         }
 
