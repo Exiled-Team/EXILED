@@ -38,9 +38,9 @@ namespace Exiled.Events.Patches.Events.Map
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             // var ev = new SpawningItemEventArgs(ipb, true);
-            //
             // if (!ev.IsAllowed)
             //     return;
+            // ev.Pickup.Spawned = true;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
