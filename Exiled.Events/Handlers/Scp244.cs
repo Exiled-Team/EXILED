@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Scp244 related events.
@@ -20,22 +18,22 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before picking up an <see cref="API.Features.Items.Scp244"/>.
         /// </summary>
-        public static event CustomEventHandler<PickingUpScp244EventArgs> PickingUpScp244;
+        public static readonly Event<PickingUpScp244EventArgs> PickingUpScp244 = new();
 
         /// <summary>
         /// Invoked before using an <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static event CustomEventHandler<UsingScp244EventArgs> UsingScp244;
+        public static readonly Event<UsingScp244EventArgs> UsingScp244 = new();
 
         /// <summary>
         /// Invoked before an Scp244 take damage.
         /// </summary>
-        public static event CustomEventHandler<DamagingScp244EventArgs> DamagingScp244;
+        public static readonly Event<DamagingScp244EventArgs> DamagingScp244 = new();
 
         /// <summary>
         /// Invoked before an Scp244 open because the angle was too low.
         /// </summary>
-        public static event CustomEventHandler<OpeningScp244EventArgs> OpeningScp244;
+        public static readonly Event<OpeningScp244EventArgs> OpeningScp244 = new();
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up an item.

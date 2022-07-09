@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// SCP-079 related events.
@@ -20,52 +18,52 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before SCP-079 switches cameras.
         /// </summary>
-        public static event CustomEventHandler<ChangingCameraEventArgs> ChangingCamera;
+        public static readonly Event<ChangingCameraEventArgs> ChangingCamera = new();
 
         /// <summary>
         /// Invoked before gaining experience with SCP-079
         /// </summary>
-        public static event CustomEventHandler<GainingExperienceEventArgs> GainingExperience;
+        public static readonly Event<GainingExperienceEventArgs> GainingExperience = new();
 
         /// <summary>
         /// Invoked before gaining levels with SCP-079
         /// </summary>
-        public static event CustomEventHandler<GainingLevelEventArgs> GainingLevel;
+        public static readonly Event<GainingLevelEventArgs> GainingLevel = new();
 
         /// <summary>
         /// Invoked before triggering a tesla with SCP-079.
         /// </summary>
-        public static event CustomEventHandler<InteractingTeslaEventArgs> InteractingTesla;
+        public static readonly Event<InteractingTeslaEventArgs> InteractingTesla = new();
 
         /// <summary>
         /// Invoked before triggering a door with SCP-079.
         /// </summary>
-        public static event CustomEventHandler<TriggeringDoorEventArgs> TriggeringDoor;
+        public static readonly Event<TriggeringDoorEventArgs> TriggeringDoor = new();
 
         /// <summary>
         /// Invoked before SCP-079 teleports using an elevator.
         /// </summary>
-        public static event CustomEventHandler<ElevatorTeleportingEventArgs> ElevatorTeleporting;
+        public static readonly Event<ElevatorTeleportingEventArgs> ElevatorTeleporting = new();
 
         /// <summary>
         /// Invoked before SCP-079 lockdowns a room.
         /// </summary>
-        public static event CustomEventHandler<LockingDownEventArgs> LockingDown;
+        public static readonly Event<LockingDownEventArgs> LockingDown = new();
 
         /// <summary>
         /// Invoked before SCP-079 uses a speaker.
         /// </summary>
-        public static event CustomEventHandler<StartingSpeakerEventArgs> StartingSpeaker;
+        public static readonly Event<StartingSpeakerEventArgs> StartingSpeaker = new();
 
         /// <summary>
         /// Invoked before SCP-079 finishes using a speaker.
         /// </summary>
-        public static event CustomEventHandler<StoppingSpeakerEventArgs> StoppingSpeaker;
+        public static readonly Event<StoppingSpeakerEventArgs> StoppingSpeaker = new();
 
         /// <summary>
         /// Invoked after Scp079 recontainment.
         /// </summary>
-        public static event CustomEventHandler<RecontainedEventArgs> Recontained;
+        public static readonly Event<RecontainedEventArgs> Recontained = new();
 
         /// <summary>
         /// Called before SCP-079 switches cameras.

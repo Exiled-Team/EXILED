@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// SCP-096 related events.
@@ -20,37 +18,37 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before SCP-096 is enraged.
         /// </summary>
-        public static event CustomEventHandler<EnragingEventArgs> Enraging;
+        public static readonly Event<EnragingEventArgs> Enraging = new();
 
         /// <summary>
         /// Invoked before SCP-096 calms down.
         /// </summary>
-        public static event CustomEventHandler<CalmingDownEventArgs> CalmingDown;
+        public static readonly Event<CalmingDownEventArgs> CalmingDown = new();
 
         /// <summary>
         /// Invoked before adding a target to SCP-096.
         /// </summary>
-        public static event CustomEventHandler<AddingTargetEventArgs> AddingTarget;
+        public static readonly Event<AddingTargetEventArgs> AddingTarget = new();
 
         /// <summary>
         /// Invoked before SCP-096 begins prying open a gate.
         /// </summary>
-        public static event CustomEventHandler<StartPryingGateEventArgs> StartPryingGate;
+        public static readonly Event<StartPryingGateEventArgs> StartPryingGate = new();
 
         /// <summary>
         /// Invoked before SCP-096 begins charging.
         /// </summary>
-        public static event CustomEventHandler<ChargingEventArgs> Charging;
+        public static readonly Event<ChargingEventArgs> Charging = new();
 
         /// <summary>
         /// Invoked before SCP-096 tries not to cry.
         /// </summary>
-        public static event CustomEventHandler<TryingNotToCryEventArgs> TryingNotToCry;
+        public static readonly Event<TryingNotToCryEventArgs> TryingNotToCry = new();
 
         /// <summary>
         /// Invoked before SCP-096 charges a player.
         /// </summary>
-        public static event CustomEventHandler<ChargingPlayerEventArgs> ChargingPlayer;
+        public static readonly Event<ChargingPlayerEventArgs> ChargingPlayer = new();
 
         /// <summary>
         /// Called before SCP-096 is enraged.

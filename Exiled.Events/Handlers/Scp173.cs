@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// SCP-173 related events.
@@ -20,17 +18,17 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before players near SCP-173 blink.
         /// </summary>
-        public static event CustomEventHandler<BlinkingEventArgs> Blinking;
+        public static readonly Event<BlinkingEventArgs> Blinking = new();
 
         /// <summary>
         /// Invoked before a tantrum is placed.
         /// </summary>
-        public static event CustomEventHandler<PlacingTantrumEventArgs> PlacingTantrum;
+        public static readonly Event<PlacingTantrumEventArgs> PlacingTantrum = new();
 
         /// <summary>
         /// Invoked before using breakneck speeds.
         /// </summary>
-        public static event CustomEventHandler<UsingBreakneckSpeedsEventArgs> UsingBreakneckSpeeds;
+        public static readonly Event<UsingBreakneckSpeedsEventArgs> UsingBreakneckSpeeds = new();
 
         /// <summary>
         /// Called before players near SCP-173 blink.

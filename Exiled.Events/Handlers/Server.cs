@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Server related events.
@@ -20,62 +18,62 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before waiting for players.
         /// </summary>
-        public static event CustomEventHandler WaitingForPlayers;
+        public static readonly Event WaitingForPlayers = new();
 
         /// <summary>
         /// Invoked after the start of a new round.
         /// </summary>
-        public static event CustomEventHandler RoundStarted;
+        public static readonly Event RoundStarted = new();
 
         /// <summary>
         /// Invoked before ending a round.
         /// </summary>
-        public static event CustomEventHandler<EndingRoundEventArgs> EndingRound;
+        public static readonly Event<EndingRoundEventArgs> EndingRound = new();
 
         /// <summary>
         /// Invoked after the end of a round.
         /// </summary>
-        public static event CustomEventHandler<RoundEndedEventArgs> RoundEnded;
+        public static readonly Event<RoundEndedEventArgs> RoundEnded = new();
 
         /// <summary>
         /// Invoked before the restart of a round.
         /// </summary>
-        public static event CustomEventHandler RestartingRound;
+        public static readonly Event RestartingRound = new();
 
         /// <summary>
         /// Invoked when a player reports a cheater.
         /// </summary>
-        public static event CustomEventHandler<ReportingCheaterEventArgs> ReportingCheater;
+        public static readonly Event<ReportingCheaterEventArgs> ReportingCheater = new();
 
         /// <summary>
         /// Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
-        public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
+        public static readonly Event<RespawningTeamEventArgs> RespawningTeam = new();
 
         /// <summary>
         /// Invoked when sending a complaint about a player to the local server administrators.
         /// </summary>
-        public static event CustomEventHandler<LocalReportingEventArgs> LocalReporting;
+        public static readonly Event<LocalReportingEventArgs> LocalReporting = new();
 
         /// <summary>
         /// Invoked after the "reload configs" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedConfigs;
+        public static readonly Event ReloadedConfigs = new();
 
         /// <summary>
         /// Invoked after the "reload translations" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedTranslations;
+        public static readonly Event ReloadedTranslations = new();
 
         /// <summary>
         /// Invoked after the "reload gameplay" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedGameplay;
+        public static readonly Event ReloadedGameplay = new();
 
         /// <summary>
         /// Invoked after the "reload remoteadminconfigs" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadedRA;
+        public static readonly Event ReloadedRA = new();
 
         /// <summary>
         /// Called before waiting for players.

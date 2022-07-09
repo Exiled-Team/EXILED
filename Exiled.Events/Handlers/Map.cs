@@ -9,11 +9,9 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
+    using Exiled.Events.Features;
 
     using MapGeneration.Distributors;
-
-    using static Exiled.Events.Events;
 
     /// <summary>
     /// Map related events.
@@ -23,57 +21,57 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before placing decals.
         /// </summary>
-        public static event CustomEventHandler<PlacingBulletHole> PlacingBulletHole;
+        public static readonly Event<PlacingBulletHole> PlacingBulletHole = new();
 
         /// <summary>
         /// Invoked before placing bloods.
         /// </summary>
-        public static event CustomEventHandler<PlacingBloodEventArgs> PlacingBlood;
+        public static readonly Event<PlacingBloodEventArgs> PlacingBlood = new();
 
         /// <summary>
         /// Invoked before announcing the light containment zone decontamination.
         /// </summary>
-        public static event CustomEventHandler<AnnouncingDecontaminationEventArgs> AnnouncingDecontamination;
+        public static readonly Event<AnnouncingDecontaminationEventArgs> AnnouncingDecontamination = new();
 
         /// <summary>
         /// Invoked before announcing an SCP termination.
         /// </summary>
-        public static event CustomEventHandler<AnnouncingScpTerminationEventArgs> AnnouncingScpTermination;
+        public static readonly Event<AnnouncingScpTerminationEventArgs> AnnouncingScpTermination = new();
 
         /// <summary>
         /// Invoked before announcing the NTF entrance.
         /// </summary>
-        public static event CustomEventHandler<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance;
+        public static readonly Event<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance = new();
 
         /// <summary>
         /// Invoked after a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
-        public static event CustomEventHandler<GeneratorActivatedEventArgs> GeneratorActivated;
+        public static readonly Event<GeneratorActivatedEventArgs> GeneratorActivated = new();
 
         /// <summary>
         /// Invoked before decontaminating the light containment zone.
         /// </summary>
-        public static event CustomEventHandler<DecontaminatingEventArgs> Decontaminating;
+        public static readonly Event<DecontaminatingEventArgs> Decontaminating = new();
 
         /// <summary>
         /// Invoked before a grenade explodes.
         /// </summary>
-        public static event CustomEventHandler<ExplodingGrenadeEventArgs> ExplodingGrenade;
+        public static readonly Event<ExplodingGrenadeEventArgs> ExplodingGrenade = new();
 
         /// <summary>
         /// Invoked before an item is spawned.
         /// </summary>
-        public static event CustomEventHandler<SpawningItemEventArgs> SpawningItem;
+        public static readonly Event<SpawningItemEventArgs> SpawningItem = new();
 
         /// <summary>
         /// Invoked after the map is generated.
         /// </summary>
-        public static event CustomEventHandler Generated;
+        public static readonly Event Generated = new();
 
         /// <summary>
         /// Invoked before the server changes a pickup into a grenade, when triggered by an explosion.
         /// </summary>
-        public static event CustomEventHandler<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade;
+        public static readonly Event<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade = new();
 
         /// <summary>
         /// Called before placing a decal.

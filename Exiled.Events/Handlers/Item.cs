@@ -8,10 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Item related events.
@@ -21,17 +18,17 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before the durability of an item is changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingDurabilityEventArgs> ChangingDurability;
+        public static readonly Event<ChangingDurabilityEventArgs> ChangingDurability = new();
 
         /// <summary>
         /// Invoked before item attachments are changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingAttachmentsEventArgs> ChangingAttachments;
+        public static readonly Event<ChangingAttachmentsEventArgs> ChangingAttachments = new();
 
         /// <summary>
         /// Invoked before receiving a preference.
         /// </summary>
-        public static event CustomEventHandler<ReceivingPreferenceEventArgs> ReceivingPreference;
+        public static readonly Event<ReceivingPreferenceEventArgs> ReceivingPreference = new();
 
         /// <summary>
         /// Called before the durability of an item is changed.

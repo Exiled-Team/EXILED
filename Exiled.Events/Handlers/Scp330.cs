@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Scp330 related events.
@@ -20,27 +18,27 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
-        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
+        public static readonly Event<PickingUpScp330EventArgs> PickingUpScp330 = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
-        public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
+        public static readonly Event<InteractingScp330EventArgs> InteractingScp330 = new();
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> drop a SCP-330 candy.
         /// </summary>
-        public static event CustomEventHandler<DroppingScp330EventArgs> DroppingScp330;
+        public static readonly Event<DroppingScp330EventArgs> DroppingScp330 = new();
 
         /// <summary>
         /// Invoked before a player eats a candy from SCP-330.
         /// </summary>
-        public static event CustomEventHandler<EatingScp330EventArgs> EatingScp330;
+        public static readonly Event<EatingScp330EventArgs> EatingScp330 = new();
 
         /// <summary>
         /// Invoked after the player has eaten a candy from SCP-330.
         /// </summary>
-        public static event CustomEventHandler<EatenScp330EventArgs> EatenScp330;
+        public static readonly Event<EatenScp330EventArgs> EatenScp330 = new();
 
         /// <summary>
         /// Called before a player eats a candy from SCP-330.

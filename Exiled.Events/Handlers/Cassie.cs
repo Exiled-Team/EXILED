@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Cassie related events.
@@ -20,7 +18,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before sending a cassie message.
         /// </summary>
-        public static event CustomEventHandler<SendingCassieMessageEventArgs> SendingCassieMessage;
+        public static readonly Event<SendingCassieMessageEventArgs> SendingCassieMessage = new();
 
         /// <summary>
         /// Called before sending a cassie message.

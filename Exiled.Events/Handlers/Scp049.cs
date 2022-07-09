@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// SCP-049 related events.
@@ -20,12 +18,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before SCP-049 finishes recalling a player.
         /// </summary>
-        public static event CustomEventHandler<FinishingRecallEventArgs> FinishingRecall;
+        public static readonly Event<FinishingRecallEventArgs> FinishingRecall = new();
 
         /// <summary>
         /// Invoked before SCP-049 begins recalling a player.
         /// </summary>
-        public static event CustomEventHandler<StartingRecallEventArgs> StartingRecall;
+        public static readonly Event<StartingRecallEventArgs> StartingRecall = new();
 
         /// <summary>
         /// Called before SCP-049 finishes recalling a player.

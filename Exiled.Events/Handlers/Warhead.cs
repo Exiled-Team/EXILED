@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Handles warhead related events.
@@ -20,22 +18,22 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before stopping the warhead.
         /// </summary>
-        public static event CustomEventHandler<StoppingEventArgs> Stopping;
+        public static readonly Event<StoppingEventArgs> Stopping = new();
 
         /// <summary>
         /// Invoked before starting the warhead.
         /// </summary>
-        public static event CustomEventHandler<StartingEventArgs> Starting;
+        public static readonly Event<StartingEventArgs> Starting = new();
 
         /// <summary>
         /// Invoked after the warhead has been detonated.
         /// </summary>
-        public static event CustomEventHandler Detonated;
+        public static readonly Event Detonated = new();
 
         /// <summary>
         /// Invoked before changing the warhead lever status.
         /// </summary>
-        public static event CustomEventHandler<ChangingLeverStatusEventArgs> ChangingLeverStatus;
+        public static readonly Event<ChangingLeverStatusEventArgs> ChangingLeverStatus = new();
 
         /// <summary>
         /// Called before stopping the warhead.

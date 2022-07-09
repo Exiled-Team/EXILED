@@ -8,9 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// SCP-106 related events.
@@ -20,17 +18,17 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before SCP-106 creates a portal.
         /// </summary>
-        public static event CustomEventHandler<CreatingPortalEventArgs> CreatingPortal;
+        public static readonly Event<CreatingPortalEventArgs> CreatingPortal = new();
 
         /// <summary>
         /// Invoked before SCP-106 teleports using a portal.
         /// </summary>
-        public static event CustomEventHandler<TeleportingEventArgs> Teleporting;
+        public static readonly Event<TeleportingEventArgs> Teleporting = new();
 
         /// <summary>
         /// Invoked before containing SCP-106.
         /// </summary>
-        public static event CustomEventHandler<ContainingEventArgs> Containing;
+        public static readonly Event<ContainingEventArgs> Containing = new();
 
         /// <summary>
         /// Called before SCP-106 creates a portal.
