@@ -71,8 +71,7 @@ namespace Exiled.API.Features.Pickups
                 Weight = value.Weight,
             };
 
-            Base.Info = psi;
-            Base.NetworkInfo = Base.Info;
+            Info = psi;
             BaseToItem.Add(Base, this);
         }
 
@@ -178,7 +177,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public bool InUse
         {
-            get => Base.NetworkInfo.InUse;
+            get => Info.InUse;
             set
             {
                 Base.Info.InUse = value;
@@ -191,7 +190,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public Vector3 Position
         {
-            get => Base.NetworkInfo.Position;
+            get => Base.Rb.position;
             set
             {
                 Base.Rb.position = value;
@@ -204,7 +203,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public Quaternion Rotation
         {
-            get => Base.NetworkInfo.Rotation.Value;
+            get => Base.Rb.rotation;
             set
             {
                 Base.Rb.rotation = value;
