@@ -10,7 +10,6 @@ namespace Exiled.API.Enums
     /// <summary>
     /// All the available warhead statuses.
     /// </summary>
-    /// <seealso cref="Features.Warhead.Status"/>
     public enum WarheadStatus
     {
         /// <summary>

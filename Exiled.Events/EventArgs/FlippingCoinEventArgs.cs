@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player flips a coin.
+    /// Contains all informations before a player flips a coin.
     /// </summary>
     public class FlippingCoinEventArgs : EventArgs
     {

@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player enters the femur breaker.
+    /// Contains all informations before a player enters the femur breaker.
     /// </summary>
     public class EnteringFemurBreakerEventArgs : EventArgs
     {

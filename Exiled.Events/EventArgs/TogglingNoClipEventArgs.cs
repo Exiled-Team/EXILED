@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player toggles the NoClip mode.
+    /// Contains all informations before a player toggles the NoClip mode.
     /// </summary>
     public class TogglingNoClipEventArgs : System.EventArgs
     {

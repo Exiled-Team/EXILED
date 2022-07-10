@@ -141,11 +141,6 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
         /// Gets the camera's name.
         /// </summary>
         public string Name => Base.cameraName;
@@ -228,6 +223,11 @@ namespace Exiled.API.Features
                 };
             }
         }
+
+        /// <summary>
+        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the position of the camera's head.

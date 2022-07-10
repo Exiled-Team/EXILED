@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using Interactables.Interobjects.DoorUtils;
 
     /// <summary>
-    /// Contains all information before a player interacts with a door.
+    /// Contains all informations before a player interacts with a door.
     /// </summary>
     public class InteractingDoorEventArgs : EventArgs
     {

@@ -15,7 +15,7 @@ namespace Exiled.API.Features
     public static class Scp096
     {
         /// <summary>
-        /// Gets a list of players who will be turned away from SCP-096.
+        /// Gets a list of player ids who will be turned away from SCP-096.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
     }

@@ -10,8 +10,6 @@ namespace Exiled.API.Enums
     /// <summary>
     /// The unique type of elevator.
     /// </summary>
-    /// <seealso cref="Features.Lift.Type"/>
-    /// <seealso cref="Features.Lift.Get(ElevatorType)"/>
     public enum ElevatorType : byte
     {
         /// <summary>

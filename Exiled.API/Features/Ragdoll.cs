@@ -13,8 +13,6 @@ namespace Exiled.API.Features
 
     using DeathAnimations;
 
-    using Exiled.API.Enums;
-
     using Mirror;
 
     using PlayableScps;
@@ -103,11 +101,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
-
-        /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/> of the ragdoll.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollInfo">NetworkInfo</see>.
@@ -200,11 +193,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Features.Room"/> the ragdoll is located in.
         /// </summary>
         public Room Room => Map.FindParentRoom(GameObject);
-
-        /// <summary>
-        /// Gets the <see cref="ZoneType"/> the ragdoll is in.
-        /// </summary>
-        public ZoneType Zone => Room.Zone;
 
         /// <summary>
         /// Gets or sets the ragdoll's position.

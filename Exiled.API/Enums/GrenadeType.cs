@@ -7,12 +7,9 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Extensions;
-
     /// <summary>
     /// The unique type of grenade.
     /// </summary>
-    /// <seealso cref="ItemExtensions.GetItemType(GrenadeType)"/>
     public enum GrenadeType
     {
         /// <summary>

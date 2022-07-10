@@ -10,8 +10,6 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of rooms.
     /// </summary>
-    /// <seealso cref="Features.Room.Type"/>
-    /// <seealso cref="Features.Room.Get(RoomType)"/>
     public enum RoomType
     {
         /// <summary>

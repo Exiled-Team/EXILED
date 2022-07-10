@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all information before a players blink near SCP-173.
+    /// Contains all informations before a players blink near SCP-173.
     /// </summary>
     public class BlinkingEventArgs : EventArgs
     {

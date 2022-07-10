@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     /// <summary>
-    /// Contains all information before C.A.S.S.I.E announces the NTF entrance.
+    /// Contains all informations before C.A.S.S.I.E announces the NTF entrance.
     /// </summary>
     public class AnnouncingNtfEntranceEventArgs : EventArgs
     {

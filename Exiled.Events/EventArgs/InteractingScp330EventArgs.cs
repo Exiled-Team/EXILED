@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs
         public int UsageCount { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating the type of candy that will be received from this interaction.
+        /// Gets or sets a value indicating whether the player's has takes.
         /// </summary>
         public CandyKindID Candy { get; set; }
 

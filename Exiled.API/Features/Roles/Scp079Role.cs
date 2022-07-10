@@ -28,7 +28,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp079PlayerScript"/> script for the role.
         /// </summary>
-        public Scp079PlayerScript Script => script ??= Owner.ReferenceHub.scp079PlayerScript;
+        public Scp079PlayerScript Script => script ? script : script = Owner.ReferenceHub.scp079PlayerScript;
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.

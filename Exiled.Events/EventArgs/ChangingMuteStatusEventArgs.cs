@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player's mute status is changed.
+    /// Contains all informations before a player's mute status is changed.
     /// </summary>
     public class ChangingMuteStatusEventArgs : EventArgs
     {

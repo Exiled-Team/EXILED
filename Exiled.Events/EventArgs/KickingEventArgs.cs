@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.Events;
 
     /// <summary>
-    /// Contains all information before kicking a player from the server.
+    /// Contains all informations before kicking a player from the server.
     /// </summary>
     public class KickingEventArgs : EventArgs
     {

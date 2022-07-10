@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using static InventorySystem.Items.Firearms.Attachments.WorkstationController;
 
     /// <summary>
-    /// Contains all information before deactivating a workstation.
+    /// Contains all informations before deactivating a workstation.
     /// </summary>
     public class DeactivatingWorkstationEventArgs : EventArgs
     {

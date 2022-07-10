@@ -37,12 +37,12 @@ namespace Exiled.API.Features
         public static LureSubjectContainer Base { get; internal set; }
 
         /// <summary>
-        /// Gets the Scp106Container's <see cref="UnityEngine.GameObject"/>.
+        /// Gets the LureSubjectContainer <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public static GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the Scp106Container's <see cref="UnityEngine.Transform"/>.
+        /// Gets the LureSubjectContainer <see cref="UnityEngine.Transform"/>.
         /// </summary>
         public static Transform Transform => Base.transform;
 
@@ -80,7 +80,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the <see cref="Player"/> is in the range of the KillZone.
+        /// Gets a value indicating whether the <see cref="Player"/> is in the range of the KillZone.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the range of the KillZone; otherwise, <see langword="false"/>.</returns>

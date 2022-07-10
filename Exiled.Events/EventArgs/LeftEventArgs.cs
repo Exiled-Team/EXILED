@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information after a <see cref="Player"/> disconnects from the server.
+    /// Contains all player's information, after he leaves the server.
     /// </summary>
     public class LeftEventArgs : JoinedEventArgs
     {

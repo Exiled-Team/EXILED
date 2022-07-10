@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using MapGeneration.Distributors;
 
     /// <summary>
-    /// Contains all information before a player ejects a tablet from a generator.
+    /// Contains all informations before a player ejects a tablet from a generator.
     /// </summary>
     public class StoppingGeneratorEventArgs : ActivatingGeneratorEventArgs
     {

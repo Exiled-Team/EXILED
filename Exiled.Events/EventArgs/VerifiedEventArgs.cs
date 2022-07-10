@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information after the server verifies a player.
+    /// Contains all informations after the server verifies a player.
     /// </summary>
     public class VerifiedEventArgs : EventArgs
     {

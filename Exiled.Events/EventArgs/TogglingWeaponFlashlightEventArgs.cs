@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Items;
 
     /// <summary>
-    /// Contains all information before a player toggles a weapon's flashlight.
+    /// Contains all information before a player toggles the weapon's flashlight.
     /// </summary>
     public class TogglingWeaponFlashlightEventArgs : EventArgs
     {

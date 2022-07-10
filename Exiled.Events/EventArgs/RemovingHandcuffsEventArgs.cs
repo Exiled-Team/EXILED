@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before freeing a handcuffed player.
+    /// Contains all informations before freeing a handcuffed player.
     /// </summary>
     public class RemovingHandcuffsEventArgs : HandcuffingEventArgs
     {

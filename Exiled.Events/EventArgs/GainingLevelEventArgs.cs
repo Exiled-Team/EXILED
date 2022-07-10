@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before SCP-079 gains a level.
+    /// Contains all informations before SCP-079 gains a level.
     /// </summary>
     public class GainingLevelEventArgs : EventArgs
     {

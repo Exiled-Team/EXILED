@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains information after SCP-079 recontainment.
+    /// Contains informations after SCP-079 recontainment.
     /// </summary>
     public class RecontainedEventArgs : EventArgs
     {

@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using static InventorySystem.Items.Firearms.Attachments.WorkstationController;
 
     /// <summary>
-    /// Contains all information before a player activates a workstation.
+    /// Contains all informations before a player activates a workstation.
     /// </summary>
     public class ActivatingWorkstationEventArgs : EventArgs
     {

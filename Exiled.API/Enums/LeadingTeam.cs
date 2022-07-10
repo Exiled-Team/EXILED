@@ -7,14 +7,9 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
-
     /// <summary>
     /// The team that is currently leading the round.
     /// </summary>
-    /// <seealso cref="RoleExtensions.GetLeadingTeam(Team)"/>
-    /// <seealso cref="Player.LeadingTeam"/>
     public enum LeadingTeam : byte
     {
         /// <summary>

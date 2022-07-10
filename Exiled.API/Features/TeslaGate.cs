@@ -84,7 +84,7 @@ namespace Exiled.API.Features
         public Room Room => Map.FindParentRoom(GameObject);
 
         /// <summary>
-        /// Gets a value indicating whether or not the tesla gate's shock burst is in progess.
+        /// Gets a value indicating whether the tesla gate' shock burst is in progess.
         /// </summary>
         public bool IsShocking => Base.InProgress;
 
@@ -158,7 +158,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the tesla gate's next burst should be treated as instant burst.
+        /// Gets or sets a value indicating whether the tesla gate's next burst should be treated as instant burst.
         /// <para>The instant burst ignores the standard cooldown time, reducing it to the cooldown time used for bursts triggered by SCP-079.</para>
         /// </summary>
         public bool UseInstantBurst

@@ -9,19 +9,9 @@ namespace Exiled.API.Enums
 {
     using System;
 
-    using Exiled.API.Features;
-
     /// <summary>
     /// Facility zone types.
     /// </summary>
-    /// <seealso cref="Room.Zone"/>
-    /// <seealso cref="Camera.Zone"/>
-    /// <seealso cref="Player.Zone"/>
-    /// <seealso cref="Door.Zone"/>
-    /// <seealso cref="Door.Random(ZoneType, bool)"/>
-    /// <seealso cref="Room.Random(ZoneType)"/>
-    /// <seealso cref="Map.TurnOffAllLights(float, ZoneType)"/>
-    /// <seealso cref="Map.TurnOffAllLights(float, System.Collections.Generic.IEnumerable{ZoneType})"/>
     [Flags]
     public enum ZoneType
     {

@@ -7,13 +7,9 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Features;
-
     /// <summary>
     /// Layers game respawn effects.
     /// </summary>
-    /// <seealso cref="Respawn.PlayEffect(RespawnEffectType)"/>
-    /// <seealso cref="Respawn.PlayEffects(RespawnEffectType[])"/>
     public enum RespawnEffectType : byte
     {
         /// <summary>

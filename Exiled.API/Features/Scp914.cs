@@ -50,11 +50,6 @@ namespace Exiled.API.Features
         public static GameObject GameObject => Scp914Controller.gameObject;
 
         /// <summary>
-        /// Gets SCP-914's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public static Transform Transform => Scp914Controller.transform;
-
-        /// <summary>
         /// Gets the position of SCP-914's intake chamber.
         /// </summary>
         public static Vector3 IntakePosition => Scp914Controller._intakeChamber.localPosition;
@@ -65,17 +60,17 @@ namespace Exiled.API.Features
         public static Vector3 OutputPosition => Scp914Controller._outputChamber.localPosition;
 
         /// <summary>
-        /// Gets a value indicating whether SCP-914 is active and currently processing items.
+        /// Gets a value indicating whether SCP-914 was activated and is currently processing items.
         /// </summary>
         public static bool IsWorking => Scp914Controller._isUpgrading;
 
         /// <summary>
-        /// Gets the intake booth <see cref="UnityEngine.Transform"/>.
+        /// Gets the intake booth <see cref="Transform"/>.
         /// </summary>
         public static Transform IntakeBooth => Scp914Controller._intakeChamber;
 
         /// <summary>
-        ///  Gets the output booth <see cref="UnityEngine.Transform"/>.
+        ///  Gets the output booth <see cref="Transform"/>.
         /// </summary>
         public static Transform OutputBooth => Scp914Controller._outputChamber;
 

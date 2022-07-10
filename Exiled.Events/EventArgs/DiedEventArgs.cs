@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    /// Contains all information after a player dies.
+    /// Contains all informations after a player dies.
     /// </summary>
     public class DiedEventArgs : EventArgs
     {

@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Enums;
 
     /// <summary>
-    /// Contains all information before ending a round.
+    /// Contains all informations before ending a round.
     /// </summary>
     public class EndingRoundEventArgs : EventArgs
     {

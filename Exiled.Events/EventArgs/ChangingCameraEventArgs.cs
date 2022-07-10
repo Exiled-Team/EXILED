@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a SCP-079 changes the current camera.
+    /// Contains all informations before a SCP-079 changes the current camera.
     /// </summary>
     public class ChangingCameraEventArgs : EventArgs
     {

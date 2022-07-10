@@ -38,7 +38,7 @@ namespace Exiled.CustomItems.API
         Inside079Secondary,
 
         /// <summary>
-        /// The inside of SCP-096's locked room behind its spawn.
+        /// The inside of SCP-096's locked room behind his spawn.
         /// </summary>
         Inside096,
 

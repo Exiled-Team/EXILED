@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
-    /// Contains all information before changing item attachments.
+    /// Contains all informations before changing item attachments.
     /// </summary>
     public class ChangingAttachmentsEventArgs : System.EventArgs
     {

@@ -7,18 +7,9 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Extensions;
-
-    using Exiled.API.Features;
-
     /// <summary>
     /// In which side a certain <see cref="RoleType"/> belongs.
     /// </summary>
-    /// <seealso cref="RoleExtensions.GetSide(RoleType)"/>
-    /// <seealso cref="RoleExtensions.GetSide(Team)"/>
-    /// <seealso cref="Player.Get(Side)"/>
-    /// <seealso cref="Round.AliveSides"/>
-    /// <seealso cref="Features.Roles.Role.Side"/>
     public enum Side
     {
         /// <summary>

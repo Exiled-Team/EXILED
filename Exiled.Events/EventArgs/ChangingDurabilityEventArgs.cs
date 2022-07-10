@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Items;
 
     /// <summary>
-    /// Contains all information before changing item durability.
+    /// Contains all informations before changing item durability.
     /// </summary>
     public class ChangingDurabilityEventArgs : System.EventArgs
     {

@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before SCP-049 finishes recalling a player.
+    /// Contains all informations before SCP-049 finishes recalling a player.
     /// </summary>
     public class FinishingRecallEventArgs : EventArgs
     {

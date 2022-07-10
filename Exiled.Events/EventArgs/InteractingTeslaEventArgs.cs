@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Roles;
 
     /// <summary>
-    /// Contains all information before SCP-079 triggers a tesla gate.
+    /// Contains all informations before SCP-079 triggers a tesla gate.
     /// </summary>
     public class InteractingTeslaEventArgs : EventArgs
     {

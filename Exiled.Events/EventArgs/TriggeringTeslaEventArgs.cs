@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before triggering a tesla.
+    /// Contains all informations before triggering a tesla.
     /// </summary>
     public class TriggeringTeslaEventArgs : EventArgs
     {

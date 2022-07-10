@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before stopping the warhead.
+    /// Contains all informations before stopping the warhead.
     /// </summary>
     public class StoppingEventArgs : EventArgs
     {

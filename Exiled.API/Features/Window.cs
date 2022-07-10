@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
-            Room = Map.FindParentRoom(window.gameObject);
+            Room = window.GetComponentInParent<Room>();
             Type = GetGlassType();
         }
 
@@ -43,6 +43,9 @@ namespace Exiled.API.Features
         /// </summary>
         public static IEnumerable<Window> List => WindowValue.AsReadOnly();
 
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
+        /// </summary>
         /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
         /// </summary>
@@ -59,19 +62,14 @@ namespace Exiled.API.Features
         public Transform Transform => Base._transform;
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Room"/> the window is in.
+        /// Gets the <see cref="Room"/>.
         /// </summary>
         public Room Room { get; }
 
         /// <summary>
-        /// Gets the window's <see cref="GlassType"/>.
+        /// Gets the window <see cref="GlassType"/>.
         /// </summary>
         public GlassType Type { get; }
-
-        /// <summary>
-        /// Gets the window's <see cref="ZoneType"/>.
-        /// </summary>
-        public ZoneType Zone => Room.Zone;
 
         /// <summary>
         /// Gets or sets the window's position.
@@ -83,7 +81,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not this window represents the window in front of SCP-079's recontainment button.
+        /// Gets a value indicating whether or not this window is breakable.
         /// </summary>
         public bool Is079Trigger => Recontainer.ActivatorWindow == this;
 

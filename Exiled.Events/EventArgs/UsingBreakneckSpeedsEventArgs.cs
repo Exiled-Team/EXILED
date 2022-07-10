@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Items;
 
     /// <summary>
-    /// Contains all information before an Scp-173 uses breakneck speeds.
+    /// Contains all informations before an Scp-173 uses breakneck speeds.
     /// </summary>
     public class UsingBreakneckSpeedsEventArgs : EventArgs
     {

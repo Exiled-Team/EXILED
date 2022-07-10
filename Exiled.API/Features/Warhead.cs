@@ -40,7 +40,7 @@ namespace Exiled.API.Features
         public static GameObject Lever => sitePanel.lever.gameObject;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the warhead lever is enabled.
+        /// Gets or sets a value indicating whether the warhead lever is enabled or not.
         /// </summary>
         public static bool LeverStatus
         {
@@ -49,7 +49,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the warhead's outside panel has been opened.
+        /// Gets or sets a value indicating whether the warhead has already been activated or not.
         /// </summary>
         public static bool IsKeycardActivated
         {
@@ -85,12 +85,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the warhead has already been detonated.
+        /// Gets a value indicating whether the warhead has already been detonated or not.
         /// </summary>
         public static bool IsDetonated => Controller.detonated;
 
         /// <summary>
-        /// Gets a value indicating whether or not the warhead detonation is in progress.
+        /// Gets a value indicating whether the warhead detonation is in progress or not.
         /// </summary>
         public static bool IsInProgress => Controller.NetworkinProgress;
 
@@ -109,7 +109,7 @@ namespace Exiled.API.Features
         public static float RealDetonationTimer => Controller.RealDetonationTime();
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the warhead can be disabled.
+        /// Gets or sets a value indicating whether the warhead can be disabled or not.
         /// </summary>
         public static bool IsLocked
         {
@@ -118,7 +118,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the warhead can be started.
+        /// Gets a value indicating whether the warhead can be started or not.
         /// </summary>
         public static bool CanBeStarted => Controller.CanDetonate;
 

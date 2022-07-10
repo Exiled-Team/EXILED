@@ -61,26 +61,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the server's version.
-        /// </summary>
-        public static string Version => GameCore.Version.VersionString;
-
-        /// <summary>
-        /// Gets a value indicating whether or not streaming of this version is allowed.
-        /// </summary>
-        public static bool StreamingAllowed => GameCore.Version.StreamingAllowed;
-
-        /// <summary>
-        /// Gets a value indicating whether or not this server is on a beta version of SCP:SL.
-        /// </summary>
-        public static bool IsBeta => GameCore.Version.PublicBeta || GameCore.Version.PrivateBeta;
-
-        /// <summary>
-        /// Gets a value indicating the type of build this server is hosted on.
-        /// </summary>
-        public static GameCore.Version.VersionType BuildType => GameCore.Version.BuildType;
-
-        /// <summary>
         /// Gets the RemoteAdmin permissions handler.
         /// </summary>
         public static PermissionsHandler PermissionsHandler => ServerStatic.PermissionsHandler;
@@ -89,11 +69,6 @@ namespace Exiled.API.Features
         /// Gets the Ip address of the server.
         /// </summary>
         public static string IpAddress => ServerConsole.Ip;
-
-        /// <summary>
-        /// Gets a value indicating whether or not this server is a dedicated server.
-        /// </summary>
-        public static bool IsDedicated => ServerStatic.IsDedicated;
 
         /// <summary>
         /// Gets the port of the server.
@@ -106,9 +81,8 @@ namespace Exiled.API.Features
         public static double Tps => Math.Round(1f / Time.smoothDeltaTime);
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not friendly fire is enabled.
+        /// Gets or sets a value indicating whether friendly fire is enabled or not.
         /// </summary>
-        /// <seealso cref="Player.IsFriendlyFireEnabled"/>
         public static bool FriendlyFire
         {
             get => ServerConsole.FriendlyFire;
@@ -123,7 +97,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the number of players currently on the server.
         /// </summary>
-        /// <seealso cref="Player.List"/>
         public static int PlayerCount => Player.Dictionary.Count;
 
         /// <summary>
@@ -175,15 +148,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not this server has the whitelist enabled.
-        /// </summary>
-        public static bool IsWhitelisted
-        {
-            get => ServerConsole.WhiteListEnabled;
-            set => ServerConsole.WhiteListEnabled = value;
-        }
-
-        /// <summary>
         /// Gets the dictionary of the server's session variables.
         /// <para>
         /// Session variables can be used to save temporary data. Data is stored in a <see cref="Dictionary{TKey, TValue}"/>.
@@ -197,7 +161,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Restarts the server, reconnects all players.
         /// </summary>
-        /// <seealso cref="RestartRedirect(ushort)"/>
         public static void Restart()
         {
             Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
@@ -206,7 +169,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shutdowns the server, disconnects all players.
         /// </summary>
-        /// <seealso cref="ShutdownRedirect(ushort)"/>
         public static void Shutdown()
         {
             global::Shutdown.Quit();
@@ -245,24 +207,5 @@ namespace Exiled.API.Features
         /// <param name="command">The command to be run.</param>
         /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
         public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender ?? Host.Sender);
-
-        /// <summary>
-        /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">The returned object type.</typeparam>
-        /// <param name="key">The key of the object to get.</param>
-        /// <param name="result">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter is used.</param>
-        /// <returns><see langword="true"/> if the SessionVariables contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGetSessionVariable<T>(string key, out T result)
-        {
-            if (SessionVariables.TryGetValue(key, out object value) && value is T type)
-            {
-                result = type;
-                return true;
-            }
-
-            result = default;
-            return false;
-        }
     }
 }

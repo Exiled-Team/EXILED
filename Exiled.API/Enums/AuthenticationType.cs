@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="AuthenticationType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,7 +10,6 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Players authentication types.
     /// </summary>
-    /// <seealso cref="Features.Player.AuthenticationType"/>
     public enum AuthenticationType
     {
         /// <summary>

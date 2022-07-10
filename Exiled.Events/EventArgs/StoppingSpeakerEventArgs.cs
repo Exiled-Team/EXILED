@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before SCP-079 finishes using a speaker.
+    /// Contains all informations before SCP-079 finishes using a speaker.
     /// </summary>
     public class StoppingSpeakerEventArgs : EventArgs
     {

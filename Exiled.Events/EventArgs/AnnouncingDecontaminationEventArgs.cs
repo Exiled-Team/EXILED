@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     /// <summary>
-    /// Contains all information before C.A.S.S.I.E announces light containment zone decontamination.
+    /// Contains all informations before C.A.S.S.I.E announces light containment zone decontamination.
     /// </summary>
     public class AnnouncingDecontaminationEventArgs : EventArgs
     {

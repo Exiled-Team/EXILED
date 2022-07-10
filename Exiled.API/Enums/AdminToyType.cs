@@ -10,7 +10,6 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of admin toys.
     /// </summary>
-    /// <seealso cref="Features.Toys.AdminToy.ToyType"/>
     public enum AdminToyType
     {
         /// <summary>

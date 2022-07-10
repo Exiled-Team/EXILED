@@ -217,7 +217,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to melt.</param>
         /// <returns><see langword="true"/> if the player was melted successfully; otherwise, <see langword="false"/>.</returns>
-        /// <seealso cref="Player.EnableEffect(EffectType, float, bool)"/>
         public static bool TryMeltPlayer(Player player)
         {
             if (player.Position.y is >= 200 or <= -200)

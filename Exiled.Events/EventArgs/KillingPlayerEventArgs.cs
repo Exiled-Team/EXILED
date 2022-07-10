@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs
     using PlayerStatsSystem;
 
     /// <summary>
-    /// Contains all information before player data to kill player is sent.
+    /// Contains all informations before player data to kill player is sent.
     /// </summary>
     public class KillingPlayerEventArgs : EventArgs
     {

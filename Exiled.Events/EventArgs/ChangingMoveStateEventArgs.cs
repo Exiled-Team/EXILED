@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before changing movement state.
+    /// Contains all informations before changing movement state.
     /// </summary>
     public class ChangingMoveStateEventArgs : EventArgs
     {

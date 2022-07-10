@@ -9,13 +9,9 @@ namespace Exiled.API.Enums
 {
     using System;
 
-    using Exiled.API.Features;
-
     /// <summary>
-    /// Represents the state of a <see cref="Generator"/>.
+    /// Generator states.
     /// </summary>
-    /// <seealso cref="Generator.State"/>
-    /// <seealso cref="Generator.Get(GeneratorState)"/>
     [Flags]
     public enum GeneratorState : byte
     {

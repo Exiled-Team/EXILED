@@ -11,8 +11,6 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of SCP-079 cameras.
     /// </summary>
-    /// <seealso cref="Features.Camera.Type"/>
-    /// <seealso cref="Features.Camera.Get(CameraType)"/>
     public enum CameraType
     {
         /// <summary>

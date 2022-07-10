@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
-    /// Contains all information before SCP-096 charges a player.
+    /// Contains all informations before SCP-096 charges a player.
     /// </summary>
     public class ChargingPlayerEventArgs : EventArgs
     {

@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using MapGeneration.Distributors;
 
     /// <summary>
-    /// Contains all information before a player closes a generator.
+    /// Contains all informations before a player closes a generator.
     /// </summary>
     public class ClosingGeneratorEventArgs : OpeningGeneratorEventArgs
     {
