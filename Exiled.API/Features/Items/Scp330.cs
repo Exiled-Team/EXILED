@@ -106,14 +106,7 @@ namespace Exiled.API.Features.Items
             {
                 if (!Base.TryAddSpecific(candy))
                 {
-                    if (addedCandy)
-                    {
-                        return CandyAddStatus.SomeCandyAdded;
-                    }
-                    else
-                    {
-                        return CandyAddStatus.NoCandyAdded;
-                    }
+                    return addedCandy ? CandyAddStatus.SomeCandyAdded : CandyAddStatus.NoCandyAdded;
                 }
 
                 addedCandy = true;
