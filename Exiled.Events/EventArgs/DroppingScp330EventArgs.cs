@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
-    /// Contains all informations before a player drop a candy of SCP-330.
+    /// Contains all information before a player drop a candy of SCP-330.
     /// </summary>
     public class DroppingScp330EventArgs : EventArgs
     {

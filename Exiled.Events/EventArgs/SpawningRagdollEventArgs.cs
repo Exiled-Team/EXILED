@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before spawning a player ragdoll.
+    /// Contains all information before spawning a player ragdoll.
     /// </summary>
     public class SpawningRagdollEventArgs : EventArgs
     {

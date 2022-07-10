@@ -210,7 +210,6 @@ namespace Exiled.API.Features.Items
         /// <br />- All valid armor should be casted to the <see cref="Armor"/> class.
         /// <br />- Explosive grenades and SCP-018 should be casted to the <see cref="ExplosiveGrenade"/> class.
         /// <br />- Flash grenades should be casted to the <see cref="FlashGrenade"/> class.
-        /// <br />- SCP-2176 can be casted to the <see cref="Throwable"/> class.
         /// </para>
         /// <para>
         /// <br />The following have their own respective classes:
@@ -219,6 +218,7 @@ namespace Exiled.API.Features.Items
         /// <br />- The Micro HID can be casted to <see cref="MicroHid"/>.
         /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244"/>.
         /// <br />- SCP-330 can be casted to <see cref="Scp330"/>.
+        /// <br />- SCP-2176 can be casted to the <see cref="Scp2176"/> class.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Item"/> class.
@@ -241,7 +241,7 @@ namespace Exiled.API.Features.Items
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new Keycard(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new Armor(type),
             ItemType.SCP330 => new Scp330(),
-            ItemType.SCP2176 => new Throwable(type),
+            ItemType.SCP2176 => new Scp2176(owner),
             _ => new Item(type),
         };
 

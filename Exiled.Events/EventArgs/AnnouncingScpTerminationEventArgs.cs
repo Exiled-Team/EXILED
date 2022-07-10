@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    /// Contains all informations before C.A.S.S.I.E announces an SCP termination.
+    /// Contains all information before C.A.S.S.I.E announces an SCP termination.
     /// </summary>
     public class AnnouncingScpTerminationEventArgs : EventArgs
     {

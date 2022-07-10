@@ -10,6 +10,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Shooting target types present in the game.
     /// </summary>
+    /// <seealso cref="Features.Toys.ShootingTargetToy.Type"/>
     public enum ShootingTargetType
     {
         /// <summary>
