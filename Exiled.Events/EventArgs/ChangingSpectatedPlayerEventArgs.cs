@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a spectator changes the spectated player.
+    /// Contains all information before a spectator changes the spectated player.
     /// </summary>
     public class ChangingSpectatedPlayerEventArgs : System.EventArgs
     {
