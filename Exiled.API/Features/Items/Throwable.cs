@@ -78,7 +78,7 @@ namespace Exiled.API.Features.Items
         {
             Throwable cloneableItem = new(Type);
 
-            cloneableItem.PinPullTime = this.PinPullTime;
+            cloneableItem.PinPullTime = PinPullTime;
 
             return cloneableItem;
         }

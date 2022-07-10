@@ -236,8 +236,8 @@ namespace Exiled.API.Features.Items
         public override Item Clone()
         {
             Scp330 cloneableItem = new();
-            cloneableItem.ExposedType = this.ExposedType;
-            cloneableItem.AddCandy(this.Candies);
+            cloneableItem.ExposedType = ExposedType;
+            cloneableItem.AddCandy(Candies);
             return cloneableItem;
         }
     }

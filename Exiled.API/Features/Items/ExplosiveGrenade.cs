@@ -126,12 +126,12 @@ namespace Exiled.API.Features.Items
         {
             ExplosiveGrenade cloneableItem = new(Type);
 
-            cloneableItem.MaxRadius = this.MaxRadius;
-            cloneableItem.ScpMultiplier = this.ScpMultiplier;
-            cloneableItem.BurnDuration = this.BurnDuration;
-            cloneableItem.DeafenDuration = this.DeafenDuration;
-            cloneableItem.ConcussDuration = this.ConcussDuration;
-            cloneableItem.FuseTime = this.FuseTime;
+            cloneableItem.MaxRadius = MaxRadius;
+            cloneableItem.ScpMultiplier = ScpMultiplier;
+            cloneableItem.BurnDuration = BurnDuration;
+            cloneableItem.DeafenDuration = DeafenDuration;
+            cloneableItem.ConcussDuration = ConcussDuration;
+            cloneableItem.FuseTime = FuseTime;
 
             return cloneableItem;
         }
