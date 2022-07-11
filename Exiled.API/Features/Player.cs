@@ -2127,37 +2127,30 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemBase">The item to be added.</param>
         /// <param name="item">The <see cref="Item"/> object of the item.</param>
-        /// <returns>The item that was added.</returns>
+        /// <returns>The <see cref="Item"/> that was added.</returns>
         public Item AddItem(ItemBase itemBase, Item item = null)
         {
             try
             {
-                if (item is null)
-                    item = Item.Get(itemBase);
-
-                int ammo = -1;
-                if (item is Firearm firearm1)
-                {
-                    ammo = firearm1.Ammo;
-                }
-
-                item.Base.OnRemoved(null);
+                item ??= Item.Get(itemBase);
 
                 itemBase.Owner = ReferenceHub;
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
-                itemBase.OnAdded(itemBase.PickupDropModel);
 
-                if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
+                itemBase.OnAdded(null);
+
+                if (item is Firearm firearm)
                 {
-                    if (Preferences.TryGetValue(firearm.ItemTypeId, out AttachmentIdentifier[] attachments))
+                    if (Preferences.TryGetValue(firearm.Type, out AttachmentIdentifier[] attachments))
                     {
-                        firearm.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
+                        firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                     }
 
                     FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
                     if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
                         flags |= FirearmStatusFlags.FlashlightEnabled;
-                    firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
+
+                    firearm.Base.Status = new FirearmStatus(firearm.Ammo, flags, firearm.AttachmentIdentifiers.GetAttachmentsCode());
                 }
 
                 if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
