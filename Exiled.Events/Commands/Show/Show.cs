@@ -36,12 +36,13 @@ namespace Exiled.Events.Commands.Show
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(new Plugins());
+            RegisterCommand(new UnpatchedPatches());
         }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available: plugins";
+            response = "Please, specify a valid subcommand! Available: plugins, unpatched";
             return false;
         }
     }

@@ -91,14 +91,40 @@ namespace Exiled.Events.Features
                 Harmony.DEBUG = true;
 #endif
                 List<Type> toRemove = new();
-                foreach (Type type in UnpatchedPatches)
-                {
-                    if (!includeEvents && type.GetCustomAttributes<EventPatchAttribute>().Any())
-                        continue;
 
-                    new PatchClassProcessor(Harmony, type).Patch();
-                    toRemove.Add(type);
+                if (includeEvents)
+                {
+                    UnpatchedPatches.Do((type) =>
+                    {
+                        new PatchClassProcessor(Harmony, type).Patch();
+                        toRemove.Add(type);
+                    });
                 }
+                else
+                {
+                    UnpatchedPatches.DoIf((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any(), (type) =>
+                    {
+                        new PatchClassProcessor(Harmony, type).Patch();
+                        toRemove.Add(type);
+                    });
+                }
+
+                /*if (includeEvents)
+                {
+                    foreach (Type type in UnpatchedPatches)
+                    {
+                        new PatchClassProcessor(Harmony, type).Patch();
+                        toRemove.Add(type);
+                    }
+                }
+                else
+                {
+                    foreach (Type type in UnpatchedPatches.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any()))
+                    {
+                        new PatchClassProcessor(Harmony, type).Patch();
+                        toRemove.Add(type);
+                    }
+                }*/
 
                 UnpatchedPatches.RemoveWhere((type) => toRemove.Contains(type));
 

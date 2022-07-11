@@ -44,11 +44,7 @@ namespace Exiled.Events.Features
         /// <returns>The <see cref="Event{T}"/> with the handler subscribed to it.</returns>
         public static Event<T> operator +(Event<T> @event, CustomEventHandler<T> handler)
         {
-            if (Events.Instance.Config.UseDynamicPatching && @event.InnerEvent is null)
-                Events.Instance.Patcher.Patch(@event);
-
-            @event.InnerEvent += handler;
-
+            @event.Subscribe(handler);
             return @event;
         }
 
@@ -60,7 +56,7 @@ namespace Exiled.Events.Features
         /// <returns>The <see cref="Event{T}"/> with the handler unsubscribed from it.</returns>
         public static Event<T> operator -(Event<T> @event, CustomEventHandler<T> handler)
         {
-            @event.InnerEvent -= handler;
+            @event.Unsubscribe(handler);
             return @event;
         }
 
@@ -72,7 +68,12 @@ namespace Exiled.Events.Features
         public void Subscribe(CustomEventHandler<T> handler, bool shouldSubscribe = true)
         {
             if (shouldSubscribe)
+            {
+                if (Events.Instance.Config.UseDynamicPatching && InnerEvent is null)
+                    Events.Instance.Patcher.Patch(this);
+
                 InnerEvent += handler;
+            }
         }
 
         /// <summary>
