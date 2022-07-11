@@ -2134,10 +2134,9 @@ namespace Exiled.API.Features
             {
                 item ??= Item.Get(itemBase);
 
-                itemBase.Owner = ReferenceHub;
-                Inventory.UserInventory.Items[item.Serial] = itemBase;
+                item.ChangeOwner(item.Owner, this);
 
-                itemBase.OnAdded(null);
+                Inventory.UserInventory.Items[item.Serial] = itemBase;
 
                 if (item is Firearm firearm)
                 {

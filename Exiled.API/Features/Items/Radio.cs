@@ -80,6 +80,18 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.Owner = newOwner.ReferenceHub;
+
+            Base._radio = Base.Owner.GetComponent<global::Radio>();
+
+            Base.CurRange = Base._rangeId;
+        }
+
+        /// <summary>
         /// Turns off the radio.
         /// </summary>
         public void Disable() => Base._radio.ForceDisableRadio();

@@ -8,33 +8,24 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Structs;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Ammo;
     using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
 
-    using Mirror;
-
     using UnityEngine;
 
-    using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
-    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -245,7 +236,21 @@ namespace Exiled.API.Features.Items
         /// Gives this item to a <see cref="Player"/>.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to give the item to.</param>
-        public void Give(Player player) => player.AddItem(Base);
+        public void Give(Player player) => player.AddItem(Base, this);
+
+        /// <summary>
+        /// test.
+        /// </summary>
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal virtual void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.OnRemoved(null);
+
+            Base.Owner = newOwner.ReferenceHub;
+
+            Base.OnAdded(null);
+        }
 
         /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
