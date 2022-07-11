@@ -53,8 +53,6 @@ namespace Exiled.Events.Patches.Events.Player
                     if (p.IsMuted)
                         p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
                 });
-
-                Handlers.Player.OnJoined(new JoinedEventArgs(player));
             }
             catch (Exception e)
             {

@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------
+// <copyright file="Patches.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
 namespace Exiled.Events.Commands.Show
 {
     using System;
@@ -7,7 +14,6 @@ namespace Exiled.Events.Commands.Show
 
     using CommandSystem;
 
-    using Exiled.API.Interfaces;
     using Exiled.Events.Features;
     using Exiled.Permissions.Extensions;
 
@@ -18,21 +24,21 @@ namespace Exiled.Events.Commands.Show
     /// <summary>
     /// The command to show all plugins.
     /// </summary>
-    public sealed class UnpatchedPatches : ICommand
+    public sealed class Patches : ICommand
     {
         /// <inheritdoc/>
-        public string Command { get; } = "unpatched";
+        public string Command { get; } = "patches";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = { "up" };
+        public string[] Aliases { get; } = { "patched" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Get all plugins, names, authors and versions";
+        public string Description { get; } = "Returns information about all patches (whether they are patched or not)";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            const string perm = "ee.showunpatched";
+            const string perm = "ee.showpatches";
             if (!sender.CheckPermission(perm) && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor._roles.RaEverywhere))
             {
                 response = $"You can't show the unpatched patches, you don't have \"{perm}\" permissions.";
@@ -41,11 +47,19 @@ namespace Exiled.Events.Commands.Show
 
             StringBuilder sb = StringBuilderPool.Shared.Rent();
 
-            sb.AppendLine("All unpatched patches:");
+            sb.AppendLine("All patches:");
+            sb.AppendLine("Patched:");
 
-            foreach (Type type in Patcher.UnpatchedPatches)
+            foreach (Type patch in Patcher.GetAllPatches().Where((type) => !Patcher.UnpatchedPatches.Contains(type)))
             {
-                sb.AppendLine(type.FullName);
+                sb.AppendLine($"\t{patch.FullName}");
+            }
+
+            sb.AppendLine("Unpatched: ");
+
+            foreach (Type patch in Patcher.UnpatchedPatches)
+            {
+                sb.AppendLine($"\t{patch.FullName}");
             }
 
             response = sb.ToString();

@@ -7,8 +7,10 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
+    using System;
     using System.Collections.Generic;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -18,6 +20,7 @@ namespace Exiled.Events.Handlers.Internal
     using InventorySystem;
 
     using Item = Exiled.API.Features.Items.Item;
+    using Log = Exiled.API.Features.Log;
 
     /// <summary>
     /// Handles some round clean-up events and some others related to players.
@@ -75,6 +78,18 @@ namespace Exiled.Events.Handlers.Internal
 
             if (ev.NewRole == RoleType.Spectator && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropEverything();
+        }
+
+        /// <inheritdoc cref="Player.Verified"/>
+        public static void OnVerified(VerifiedEventArgs ev)
+        {
+#if DEBUG
+            Log.Debug($"{ev.Player.Nickname} has verified!");
+#endif
+            API.Features.Player.Dictionary.Add(ev.Player.GameObject, ev.Player);
+            ev.Player.IsVerified = true;
+            ev.Player.RawUserId = ev.Player.UserId.GetRawUserId();
+            Log.SendRaw($"Player {ev.Player.Nickname} ({ev.Player.UserId}) ({ev.Player.Id}) connected with the IP: {ev.Player.IPAddress}", ConsoleColor.Green);
         }
     }
 }

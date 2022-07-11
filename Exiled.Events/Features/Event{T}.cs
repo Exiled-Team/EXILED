@@ -15,10 +15,10 @@ namespace Exiled.Events.Features
     /// <summary>
     /// The custom <see cref="EventHandler"/> delegate.
     /// </summary>
-    /// <typeparam name="T">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
+    /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
     /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
-    public delegate void CustomEventHandler<T>(T ev)
-        where T : EventArgs;
+    public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev)
+        where TEventArgs : EventArgs;
 
     /// <summary>
     /// An implementation of the <see cref="IEvent"/> interface that encapsulates an event with arguments.

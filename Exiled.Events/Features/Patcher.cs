@@ -91,40 +91,11 @@ namespace Exiled.Events.Features
                 Harmony.DEBUG = true;
 #endif
                 List<Type> toRemove = new();
-
-                if (includeEvents)
+                UnpatchedPatches.DoIf((type) => !includeEvents && !type.GetCustomAttributes<EventPatchAttribute>().Any(), (type) =>
                 {
-                    UnpatchedPatches.Do((type) =>
-                    {
-                        new PatchClassProcessor(Harmony, type).Patch();
-                        toRemove.Add(type);
-                    });
-                }
-                else
-                {
-                    UnpatchedPatches.DoIf((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any(), (type) =>
-                    {
-                        new PatchClassProcessor(Harmony, type).Patch();
-                        toRemove.Add(type);
-                    });
-                }
-
-                /*if (includeEvents)
-                {
-                    foreach (Type type in UnpatchedPatches)
-                    {
-                        new PatchClassProcessor(Harmony, type).Patch();
-                        toRemove.Add(type);
-                    }
-                }
-                else
-                {
-                    foreach (Type type in UnpatchedPatches.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any()))
-                    {
-                        new PatchClassProcessor(Harmony, type).Patch();
-                        toRemove.Add(type);
-                    }
-                }*/
+                    new PatchClassProcessor(Harmony, type).Patch();
+                    toRemove.Add(type);
+                });
 
                 UnpatchedPatches.RemoveWhere((type) => toRemove.Contains(type));
 
@@ -164,6 +135,10 @@ namespace Exiled.Events.Features
             Log.Debug("All events have been unpatched. Goodbye!", Loader.ShouldDebugBeShown);
         }
 
-        private static HashSet<Type> GetAllPatches() => Assembly.GetExecutingAssembly().GetTypes().Where((type) => type.CustomAttributes.Any((customAtt) => customAtt.AttributeType == typeof(HarmonyPatch))).ToHashSet();
+        /// <summary>
+        /// Gets all types that have a <see cref="HarmonyPatch"/> attributed to them.
+        /// </summary>
+        /// <returns>A <see cref="HashSet{T}"/> of all patch types.</returns>
+        internal static HashSet<Type> GetAllPatches() => Assembly.GetExecutingAssembly().GetTypes().Where((type) => type.CustomAttributes.Any((customAtt) => customAtt.AttributeType == typeof(HarmonyPatch))).ToHashSet();
     }
 }
