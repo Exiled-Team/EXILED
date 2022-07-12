@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     /// <summary>
-    /// Contains all informations before decontaminating the light containment zone.
+    /// Contains all information before decontaminating the light containment zone.
     /// </summary>
     public class DecontaminatingEventArgs : EventArgs
     {

@@ -33,6 +33,8 @@ namespace Exiled.CustomItems.API.Features
 
     using MEC;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using YamlDotNet.Serialization;
@@ -311,7 +313,7 @@ namespace Exiled.CustomItems.API.Features
                             {
                                 if (property.GetValue(overrideClass ?? plugin.Config) is IEnumerable enumerable)
                                 {
-                                    List<CustomItem> list = new();
+                                    List<CustomItem> list = ListPool<CustomItem>.Shared.Rent();
                                     foreach (object item in enumerable)
                                     {
                                         if (item is CustomItem ci)
@@ -332,6 +334,8 @@ namespace Exiled.CustomItems.API.Features
                                         flag = true;
                                         items.Add(item);
                                     }
+
+                                    ListPool<CustomItem>.Shared.Return(list);
                                 }
 
                                 continue;
@@ -921,7 +925,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Shows a message to the player when he pickups a custom item.
+        /// Shows a message to the player upon picking up a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowPickedUpMessage(Player player)
@@ -930,7 +934,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Shows a message to the player when he selects a custom item.
+        /// Shows a message to the player upon selecting a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)

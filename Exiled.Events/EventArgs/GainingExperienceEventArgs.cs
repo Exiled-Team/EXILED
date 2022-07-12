@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before SCP-079 gains experience.
+    /// Contains all information before SCP-079 gains experience.
     /// </summary>
     public class GainingExperienceEventArgs : EventArgs
     {

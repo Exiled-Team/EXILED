@@ -10,6 +10,8 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of blood decals.
     /// </summary>
+    /// <seealso cref="Features.Map.PlaceBlood(UnityEngine.Vector3, BloodType, float)"/>
+    /// <seealso cref="Features.Player.PlaceBlood(BloodType, float)"/>
     public enum BloodType
     {
         /// <summary>
