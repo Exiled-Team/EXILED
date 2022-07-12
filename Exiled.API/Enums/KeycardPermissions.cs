@@ -9,9 +9,15 @@ namespace Exiled.API.Enums
 {
     using System;
 
+    using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
     /// <summary>
     /// The types of permissions assigned to keycards.
     /// </summary>
+    /// <seealso cref="Generator.KeycardPermissions"/>
+    /// <seealso cref="Generator.SetPermissionFlag(KeycardPermissions, bool)"/>
+    /// <seealso cref="Keycard.Permissions"/>
     [Flags]
     public enum KeycardPermissions
     {

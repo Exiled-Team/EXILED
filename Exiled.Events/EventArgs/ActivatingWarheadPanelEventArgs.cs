@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player activates the warhead panel.
+    /// Contains all information before a player activates the warhead panel.
     /// </summary>
     public class ActivatingWarheadPanelEventArgs : EventArgs
     {

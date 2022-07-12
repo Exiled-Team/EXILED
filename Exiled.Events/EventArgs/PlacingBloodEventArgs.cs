@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before placing a blood decal.
+    /// Contains all information before placing a blood decal.
     /// </summary>
     public class PlacingBloodEventArgs : EventArgs
     {

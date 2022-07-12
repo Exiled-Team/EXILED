@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Roles
     using System;
 
     /// <summary>
-    /// Defines a role that represents a human class.
+    /// Defines a role that represents a spectator.
     /// </summary>
     public class SpectatorRole : Role
     {
