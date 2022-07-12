@@ -15,8 +15,6 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using MEC;
-
     using Mirror;
 
     using UnityEngine;

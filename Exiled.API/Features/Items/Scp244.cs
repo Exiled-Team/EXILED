@@ -9,8 +9,6 @@ namespace Exiled.API.Features.Items
 {
     using InventorySystem.Items.Usables.Scp244;
 
-    using MEC;
-
     /// <summary>
     /// A wrapper class for SCP-244.
     /// </summary>

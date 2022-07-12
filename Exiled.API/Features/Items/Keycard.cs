@@ -9,8 +9,6 @@ namespace Exiled.API.Features.Items
 {
     using InventorySystem.Items.Keycards;
 
-    using MEC;
-
     /// <summary>
     /// A wrapper class for <see cref="KeycardItem"/>.
     /// </summary>

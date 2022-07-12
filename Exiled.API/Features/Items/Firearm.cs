@@ -23,8 +23,6 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
 
-    using MEC;
-
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
     /// </summary>
