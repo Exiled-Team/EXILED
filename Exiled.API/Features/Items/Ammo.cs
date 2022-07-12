@@ -11,8 +11,6 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Firearms.Ammo;
 
-    using MEC;
-
     /// <summary>
     /// A wrapper class for <see cref="AmmoItem"/>.
     /// </summary>
