@@ -41,6 +41,7 @@ namespace Exiled.Events.Patches.Generic
             ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
             const int offset = -2;
             int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Callvirt &&
