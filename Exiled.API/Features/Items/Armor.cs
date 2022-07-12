@@ -185,7 +185,6 @@ namespace Exiled.API.Features.Items
 
             cloneableItem.Weight = Weight;
             cloneableItem.StaminaUseMultiplier = StaminaUseMultiplier;
-            cloneableItem.VestEfficacy = VestEfficacy;
             cloneableItem.RemoveExcessOnDrop = RemoveExcessOnDrop;
             cloneableItem.CategoryLimits = CategoryLimits;
             cloneableItem.AmmoLimits = AmmoLimits;
