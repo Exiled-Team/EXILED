@@ -649,15 +649,13 @@ namespace Exiled.API.Features
         /// This player can be damaged by other players on their own team even if this property is <see langword="false"/> due to other player friendly fire rules.
         /// If you directly assign this to true, then <see cref="AlwaysDealsFriendlyFireDamage"/> will be assigned to such. Meaning this player
         /// will be able to do damage to anyone. Only set this if you are 100% certain that is the behavior you want, otherwise,
-        /// customize your damage using <see cref="FriendlyFireMultiplier"/>, <see cref="CustomRoleFriendlyFireMultiplier"/>, and <see cref="CustomRoleToCustomRoleFriendlyFireMultiplier"/>
+        /// customize your damage using <see cref="FriendlyFireMultiplier"/>, <see cref="CustomRoleFriendlyFireMultiplier"/>, and <see cref="CustomRoleToCustomRoleFriendlyFireMultiplier"/>.
         /// </summary>
         public bool IsFriendlyFireEnabled
         {
-            get => FriendlyFireMultiplier.Count > 0 || CustomRoleFriendlyFireMultiplier.Count > 0;
-            [Obsolete("Use SetFriendlyFire instead.", true)]
-            set
+            get
             {
-                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0;
+                return this.FriendlyFireMultiplier.Count > 0 || this.CustomRoleFriendlyFireMultiplier.Count > 0 || this.CustomRoleToCustomRoleFriendlyFireMultiplier.Count > 0 || this.AlwaysDealsFriendlyFireDamage;
             }
 
             set
@@ -1403,7 +1401,7 @@ namespace Exiled.API.Features
         /// <param name="ffRules"> Roles to add with friendly fire values. </param>
         /// <param name="overwrite"> Whether to overwrite current values if they exist. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddFriendlyFire(Dictionary<RoleType, float> ffRules, bool overwrite = false)
+        public FriendlyFireStatusCode TryAddFriendlyFire(Dictionary<RoleType, float> ffRules, bool overwrite = false)
         {
             Dictionary<RoleType, float> temporaryFriendlyFireRules = new();
             bool partialRoleAddition = false;
@@ -1440,6 +1438,10 @@ namespace Exiled.API.Features
             if(partialRoleAddition && atLeastOneAdded)
             {
                 return FriendlyFireStatusCode.PartialSuccess;
+            }
+            else if (!partialRoleAddition && !atLeastOneAdded)
+            {
+                return FriendlyFireStatusCode.UnableToAdd;
             }
 
             return FriendlyFireStatusCode.Success;
@@ -1488,7 +1490,7 @@ namespace Exiled.API.Features
         /// <param name="roleType"> Role associated for CustomFF. </param>
         /// <param name="roleFF"> Role to add and FF multiplier. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddCustomRoleFriendlyFire(string roleType, KeyValuePair<RoleType, float> roleFF)
+        public FriendlyFireStatusCode TryAddCustomRoleFriendlyFire(string roleType, KeyValuePair<RoleType, float> roleFF)
         {
             return TryAddCustomRoleFriendlyFire(roleType, roleFF.Key, roleFF.Value);
         }
@@ -1565,6 +1567,10 @@ namespace Exiled.API.Features
                 if (partialRoleAddition && atLeastOneAdded)
                 {
                     return FriendlyFireStatusCode.PartialSuccess;
+                }
+                else if (!partialRoleAddition && !atLeastOneAdded)
+                {
+                    return FriendlyFireStatusCode.UnableToAdd;
                 }
             }
             else
@@ -1756,6 +1762,10 @@ namespace Exiled.API.Features
                 if(partialRoleAddition && atLeastOneAdded)
                 {
                     return FriendlyFireStatusCode.PartialSuccess;
+                }
+                else if(!partialRoleAddition && !atLeastOneAdded)
+                {
+                    return FriendlyFireStatusCode.UnableToAdd;
                 }
             }
             else
