@@ -2128,25 +2128,11 @@ namespace Exiled.API.Features
             {
                 item ??= Item.Get(itemBase);
 
-                item.ChangeOwner(item.Owner, this);
-
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
 
-                if (item is Firearm firearm)
-                {
-                    if (Preferences.TryGetValue(firearm.Type, out AttachmentIdentifier[] attachments))
-                    {
-                        firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
-                    }
+                item.ChangeOwner(item.Owner, this);
 
-                    FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                    if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
-                        flags |= FirearmStatusFlags.FlashlightEnabled;
-
-                    firearm.Base.Status = new FirearmStatus(firearm.Ammo, flags, firearm.AttachmentIdentifiers.GetAttachmentsCode());
-                }
-
-                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                if (Inventory.isLocalPlayer && itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
                 {
                     acquisitionConfirmationTrigger.ServerConfirmAcqusition();
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;

@@ -156,6 +156,7 @@ namespace Exiled.API.Features.Items
         internal override void ChangeOwner(Player oldOwner, Player newOwner)
         {
             Base.Owner = newOwner.ReferenceHub;
+            Base.ServerRefreshBag();
         }
 
         /// <summary>
