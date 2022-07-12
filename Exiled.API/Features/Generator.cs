@@ -17,7 +17,7 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// The in-game Scp079Generator.
+    /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
     public class Generator
     {
@@ -46,6 +46,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
@@ -183,11 +188,6 @@ namespace Exiled.API.Features
         /// Gets the generator position.
         /// </summary>
         public Vector3 Position => Base.transform.position;
-
-        /// <summary>
-        /// Gets the generator transform.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the generator rotation.

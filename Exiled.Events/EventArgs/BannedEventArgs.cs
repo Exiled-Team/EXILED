@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations after banning a player from the server.
+    /// Contains all information after banning a player from the server.
     /// </summary>
     public class BannedEventArgs : EventArgs
     {
