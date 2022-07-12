@@ -273,6 +273,25 @@ namespace Exiled.API.Features.Pickups
         };
 
         /// <summary>
+        /// Gets all <see cref="Pickup"/> with the given <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to look for.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
+        public static IEnumerable<Pickup> Get(ItemType type)
+        {
+            List<Pickup> pickups = new();
+            foreach (Pickup p in Map.Pickups)
+            {
+                if (p.Type == type)
+                {
+                    pickups.Add(p);
+                }
+            }
+
+            return pickups;
+        }
+
+        /// <summary>
         /// Spawns pickup on server.
         /// </summary>
         public void Spawn()
