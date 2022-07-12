@@ -1609,7 +1609,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns><see langword="true"/>, if the player has it; otherwise, <see langword="false"/>.</returns>
-        public bool HasItem(Item item) => Inventory.UserInventory.Items.ContainsValue(item.Base);
+        public bool HasItem(Item item) => Items.Contains(item);
 
         /// <summary>
         /// Indicates whether the player has an item type.
@@ -1617,7 +1617,7 @@ namespace Exiled.API.Features
         /// <param name="type">The type to search for.</param>
         /// <returns><see langword="true"/>, if the player has it; otherwise, <see langword="false"/>.</returns>
         public bool HasItem(ItemType type) =>
-            Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == type);
+            Items.Any(tempItem => tempItem.Type == type);
 
         /// <summary>
         /// Counts how many items of a certain <see cref="ItemType"/> a player has.
@@ -1625,7 +1625,7 @@ namespace Exiled.API.Features
         /// <param name="item">The item to search for.</param>
         /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
         public int CountItem(ItemType item) =>
-            Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
+            Items.Count(tempItem => tempItem.Type == item);
 
         /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
@@ -1652,7 +1652,8 @@ namespace Exiled.API.Features
             }
             else
             {
-                item.Base.OnRemoved(null);
+                item.ChangeOwner(this, Server.Host);
+
                 if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 

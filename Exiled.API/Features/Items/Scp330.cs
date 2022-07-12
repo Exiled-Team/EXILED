@@ -149,6 +149,16 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="oldOwner"></param>
+        /// <param name="newOwner"></param>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.Owner = newOwner.ReferenceHub;
+        }
+
+        /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> location to spawn it.</param>
