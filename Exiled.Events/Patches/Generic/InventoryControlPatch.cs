@@ -141,14 +141,6 @@ namespace Exiled.Events.Patches.Generic
             player.ItemsValue.Remove(Item.Get(itemBase));
             Timing.CallDelayed(0.15f, () =>
             {
-                if (player.Inventory.UserInventory.Items.ContainsKey(serial))
-                {
-                    player.Inventory.UserInventory.Items.Remove(serial);
-                    player.Inventory.SendItemsNextFrame = true;
-#if DEBUG
-                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
-#endif
-                }
 #if DEBUG
                 Log.Debug($"Item ({serial}) removed from {player.Nickname}");
                 Log.Debug(
