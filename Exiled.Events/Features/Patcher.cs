@@ -91,11 +91,12 @@ namespace Exiled.Events.Features
                 Harmony.DEBUG = true;
 #endif
                 List<Type> toRemove = new();
-                UnpatchedPatches.DoIf((type) => !includeEvents && !type.GetCustomAttributes<EventPatchAttribute>().Any(), (type) =>
+                IEnumerable<Type> toPatch = includeEvents ? UnpatchedPatches : UnpatchedPatches.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any());
+                foreach (Type patch in toPatch)
                 {
-                    new PatchClassProcessor(Harmony, type).Patch();
-                    toRemove.Add(type);
-                });
+                    new PatchClassProcessor(Harmony, patch).Patch();
+                    toRemove.Add(patch);
+                }
 
                 UnpatchedPatches.RemoveWhere((type) => toRemove.Contains(type));
 

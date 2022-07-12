@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles._hub))),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Player))[0]),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(JoinedEventArgs))[0]),
-                new(OpCodes.Call,  Method(typeof(Handlers.Player), nameof(Handlers.Player.OnVerified))),
+                new(OpCodes.Call,  Method(typeof(Handlers.Player), nameof(Handlers.Player.OnJoined))),
 
                 new CodeInstruction(OpCodes.Nop).WithLabels(callJoined),
 

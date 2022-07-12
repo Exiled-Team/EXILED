@@ -17,8 +17,7 @@ namespace Exiled.Events.Features
     /// </summary>
     /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
     /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
-    public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev)
-        where TEventArgs : EventArgs;
+    public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev);
 
     /// <summary>
     /// An implementation of the <see cref="IEvent"/> interface that encapsulates an event with arguments.
@@ -69,8 +68,10 @@ namespace Exiled.Events.Features
         {
             if (shouldSubscribe)
             {
+                Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
+
                 if (Events.Instance.Config.UseDynamicPatching && InnerEvent is null)
-                    Events.Instance.Patcher.Patch(this);
+                    Events.Instance.Patcher?.Patch(this);
 
                 InnerEvent += handler;
             }

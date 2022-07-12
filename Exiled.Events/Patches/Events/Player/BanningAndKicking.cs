@@ -27,6 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.Banning"/> and <see cref="Handlers.Player.Kicking"/>events.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Banning))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Kicking))]
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), typeof(GameObject), typeof(long), typeof(string), typeof(string), typeof(bool))]
     internal static class BanningAndKicking
     {

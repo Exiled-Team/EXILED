@@ -823,12 +823,6 @@ namespace Exiled.Events.Handlers
         public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
-        /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
-        public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a shooting target.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
@@ -875,12 +869,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DryfiringWeaponEventArgs"/> instance.</param>
         public static void OnDryfiringWeapon(DryfiringWeaponEventArgs ev) => DryfiringWeapon.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
-        /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
-        public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
 
         /// <summary>
         /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> presses the voicechat key.

@@ -65,6 +65,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="Scp268.ServerOnUsingCompleted"/>
     /// Adds the <see cref="Handlers.Player.UsedItem"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsedItem))]
     [HarmonyPatch(typeof(Scp268), nameof(Scp268.ServerOnUsingCompleted))]
     internal static class UsedItem268
     {

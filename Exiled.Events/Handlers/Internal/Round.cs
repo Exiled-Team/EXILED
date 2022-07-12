@@ -23,6 +23,7 @@ namespace Exiled.Events.Handlers.Internal
 
     using Item = Exiled.API.Features.Items.Item;
     using Log = Exiled.API.Features.Log;
+    using Scp173 = Exiled.API.Features.Scp173;
 
     /// <summary>
     /// Handles some round clean-up events and some others related to players.
@@ -80,6 +81,13 @@ namespace Exiled.Events.Handlers.Internal
 
             if (ev.NewRole == RoleType.Spectator && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropEverything();
+
+            if (ev.NewRole is RoleType.Scp173)
+                Scp173.TurnedPlayers.Remove(ev.Player);
+
+            ev.Player.Role = API.Features.Roles.Role.Create(ev.NewRole, ev.Player);
+
+            ev.Player.MaxHealth = CharacterClassManager._staticClasses.SafeGet(ev.NewRole).maxHP;
         }
 
         /// <inheritdoc cref="Player.Verified"/>

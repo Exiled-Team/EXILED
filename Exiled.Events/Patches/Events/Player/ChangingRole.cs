@@ -33,7 +33,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="CharacterClassManager.SetClassIDAdv(RoleType, bool, CharacterClassManager.SpawnReason, bool)"/>.
     /// Adds the <see cref="Player.ChangingRole"/> and <see cref="Player.Escaping"/> events.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Escaping))]
+    [EventPatch(typeof(Player), nameof(Player.ChangingRole))]
+    [EventPatch(typeof(Player), nameof(Player.Escaping))]
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassIDAdv))]
     internal static class ChangingRole
     {
@@ -102,21 +103,6 @@ namespace Exiled.Events.Patches.Events.Player
                 // escape = ev.IsEscaped
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
                 new(OpCodes.Starg_S, 3),
-
-                // ev.Player.MaxHealth = this.Classes.SafeGet(ev.NewRole)
-                new(OpCodes.Ldloc_S, player.LocalIndex),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.Classes))),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(RoleExtensionMethods), nameof(RoleExtensionMethods.SafeGet), new[] { typeof(Role[]), typeof(RoleType) })),
-                new(OpCodes.Ldfld, Field(typeof(Role), nameof(Role.maxHP))),
-                new(OpCodes.Call, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.MaxHealth))),
-
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
-                new(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
             });
 
             offset = 0;
@@ -160,16 +146,6 @@ namespace Exiled.Events.Patches.Events.Player
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-
-        private static void UpdatePlayerRole(RoleType newRole, API.Features.Player player)
-        {
-            if (newRole is RoleType.Scp173)
-            {
-                Scp173.TurnedPlayers.Remove(player);
-            }
-
-            player.Role = API.Features.Roles.Role.Create(newRole, player);
         }
 
         private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason)
