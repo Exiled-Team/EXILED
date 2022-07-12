@@ -81,14 +81,7 @@ namespace Exiled.API.Features
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
 
-        /// <summary>
-        /// The running speed of the player.
-        /// </summary>
         private float? runningSpeed;
-
-        /// <summary>
-        /// The walk speed of the player.
-        /// </summary>
         private float? walkingSpeed;
 
         private ReferenceHub referenceHub;
@@ -100,7 +93,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
-        public Player(ReferenceHub referenceHub)
+        internal Player(ReferenceHub referenceHub)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
@@ -111,7 +104,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
-        public Player(GameObject gameObject)
+        internal Player(GameObject gameObject)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
