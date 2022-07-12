@@ -107,6 +107,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Patches <see cref="Scp096.EndCharge"/>.
     /// Serves to clear the ChargedPlayers.
     /// </summary>
+    [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.ChargingPlayer))]
     [HarmonyPatch(typeof(Scp096), nameof(PlayableScps.Scp096.EndCharge))]
     internal static class ChargeEnded
     {

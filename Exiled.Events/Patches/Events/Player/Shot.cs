@@ -32,6 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shooting))]
     [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerPerformShot))]
     internal static class Shot
     {
@@ -94,6 +95,8 @@ namespace Exiled.Events.Patches.Events.Player
         /// Patches <see cref="BuckshotHitreg.ShootPellet"/>.
         /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
         /// </summary>
+        [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shot))]
+        [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Shooting))]
         [HarmonyPatch(typeof(BuckshotHitreg), nameof(BuckshotHitreg.ShootPellet))]
         internal static class ShotPellets
         {

@@ -116,5 +116,11 @@ namespace Exiled.Events.Handlers.Internal
                     ev.Player.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
             });
         }
+
+         /// <inheritdoc cref="Player.Left"/>
+        public static void OnLeft(LeftEventArgs ev)
+        {
+            Log.SendRaw($"Player {ev.Player.Nickname} has disconnected", ConsoleColor.Green);
+        }
     }
 }

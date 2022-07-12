@@ -65,6 +65,7 @@ namespace Exiled.Events
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
             Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
             Handlers.Player.Joined += Handlers.Internal.Round.OnJoined;
+            Handlers.Player.Left += Handlers.Internal.Round.OnLeft;
             PlayerMovementSync.OnPlayerSpawned += Handlers.Player.OnSpawned;
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
