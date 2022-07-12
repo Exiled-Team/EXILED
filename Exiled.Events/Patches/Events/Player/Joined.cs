@@ -34,33 +34,6 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Awake))]
     internal static class Joined
     {
-        internal static void CallEvent(ReferenceHub hub, out API.Features.Player player)
-        {
-            try
-            {
-#if DEBUG
-                API.Features.Log.Debug("Creating new player object");
-#endif
-                player = new API.Features.Player(hub);
-#if DEBUG
-                API.Features.Log.Debug($"Object exists {player is not null}");
-                API.Features.Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
-#endif
-                API.Features.Player.UnverifiedPlayers.Add(hub, player);
-                API.Features.Player p = player;
-                Timing.CallDelayed(0.25f, () =>
-                {
-                    if (p.IsMuted)
-                        p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
-                });
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"{nameof(CallEvent)}: {e}\n{e.StackTrace}");
-                player = null;
-            }
-        }
-
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
@@ -91,10 +64,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Bge_S, je),
                 new(OpCodes.Ldc_I4_4),
                 new(OpCodes.Call, Method(typeof(MultiAdminFeatures), nameof(MultiAdminFeatures.CallEvent))),
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(je),
-                new(OpCodes.Ldloca_S, out_ply),
-                new(OpCodes.Call, Method(typeof(Joined), nameof(Joined.CallEvent))),
                 new(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(je),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Player))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(JoinedEventArgs))[0]),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnJoined))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

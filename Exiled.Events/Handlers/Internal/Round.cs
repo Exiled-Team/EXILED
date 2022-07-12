@@ -19,6 +19,8 @@ namespace Exiled.Events.Handlers.Internal
 
     using InventorySystem;
 
+    using MEC;
+
     using Item = Exiled.API.Features.Items.Item;
     using Log = Exiled.API.Features.Log;
 
@@ -90,6 +92,21 @@ namespace Exiled.Events.Handlers.Internal
             ev.Player.IsVerified = true;
             ev.Player.RawUserId = ev.Player.UserId.GetRawUserId();
             Log.SendRaw($"Player {ev.Player.Nickname} ({ev.Player.UserId}) ({ev.Player.Id}) connected with the IP: {ev.Player.IPAddress}", ConsoleColor.Green);
+        }
+
+        /// <inheritdoc cref="Player.Joined"/>
+        public static void OnJoined(JoinedEventArgs ev)
+        {
+#if DEBUG
+            Log.Debug($"Object exists {ev.Player is not null}");
+            Log.Debug($"Created player object for {ev.Player.ReferenceHub.nicknameSync.Network_displayName}", true);
+#endif
+            API.Features.Player.UnverifiedPlayers.Add(ev.Player.ReferenceHub, ev.Player);
+            Timing.CallDelayed(0.25f, () =>
+            {
+                if (ev.Player.IsMuted)
+                    ev.Player.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
+            });
         }
     }
 }
