@@ -67,7 +67,7 @@ namespace Exiled.Events.Features
                 Log.Assert(Events.Instance is not null, $"{nameof(Events.Instance)} is null, please ensure you have exiled_events enabled!");
 
                 if (Events.Instance.Config.UseDynamicPatching && InnerEvent is null)
-                    Events.Instance.Patcher?.Patch(this);
+                    Events.Instance.Patcher.Patch(this);
 
                 InnerEvent += handler;
             }
