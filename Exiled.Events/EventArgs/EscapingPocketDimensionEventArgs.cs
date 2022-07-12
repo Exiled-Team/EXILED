@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before a player escapes the pocket dimension.
+    /// Contains all information before a player escapes the pocket dimension.
     /// </summary>
     public class EscapingPocketDimensionEventArgs : EventArgs
     {

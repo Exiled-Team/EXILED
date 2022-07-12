@@ -24,11 +24,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the time elapsed from the start of the round.
         /// </summary>
+        /// <seealso cref="StartedTime"/>
         public static TimeSpan ElapsedTime => RoundStart.RoundLength;
 
         /// <summary>
         /// Gets the start time of the round.
         /// </summary>
+        /// <seealso cref="ElapsedTime"/>
+        /// <seealso cref="IsStarted"/>
         public static DateTime StartedTime => DateTime.Now - ElapsedTime;
 
         /// <summary>
@@ -185,7 +188,7 @@ namespace Exiled.API.Features
         /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
         /// <param name="forceEnd">
-        /// Indicates whether or not it'll force the restart with no check if it's lock.
+        /// Indicates whether or not it'll force the restart with no check if it's locked.
         /// </param>
         /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
         public static bool EndRound(bool forceEnd = false)
