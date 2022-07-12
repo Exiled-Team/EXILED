@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
-    /// Contains all informations after a player has eaten SCP-330.
+    /// Contains all information after a player has eaten SCP-330.
     /// </summary>
     public class EatenScp330EventArgs : EventArgs
     {

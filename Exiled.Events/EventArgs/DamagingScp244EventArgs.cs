@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    /// Contains all informations before damage is dealt to a <see cref="Scp244DeployablePickup"/>.
+    /// Contains all information before damage is dealt to a <see cref="Scp244DeployablePickup"/>.
     /// </summary>
     public class DamagingScp244EventArgs : EventArgs
     {

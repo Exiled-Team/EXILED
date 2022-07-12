@@ -137,8 +137,8 @@ namespace Exiled.API.Features.Items
             for (int i = 0; i < count; i++)
             {
                 Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, Owner.Position, default));
-                if (exposedType is not CandyKindID.None)
-                    pickup.ExposedCandy = exposedType;
+                pickup.ExposedCandy = exposedType;
+                pickup.Candies.Add(type);
                 pickup.Base.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
                 pickup.Scale = Scale;
                 pickup.Spawn();
@@ -167,6 +167,7 @@ namespace Exiled.API.Features.Items
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 
+            pickup.Candies = new(Base.Candies);
             pickup.ExposedCandy = ExposedType;
             pickup.Scale = Scale;
 
