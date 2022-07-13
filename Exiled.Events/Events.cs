@@ -57,7 +57,6 @@ namespace Exiled.Events
             Log.Info($"{(Config.UseDynamicPatching ? "Non-event" : "All")} patches completed in {watch.Elapsed}");
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
-            MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
@@ -66,8 +65,11 @@ namespace Exiled.Events
             Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
             Handlers.Player.Joined += Handlers.Internal.Round.OnJoined;
             Handlers.Player.Left += Handlers.Internal.Round.OnLeft;
+            Handlers.Player.Destroying += Handlers.Internal.Round.OnDestroying;
+
             PlayerMovementSync.OnPlayerSpawned += Handlers.Player.OnSpawned;
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
+            MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
             ServerConsole.ReloadServerName();
         }
@@ -88,11 +90,13 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
             Handlers.Player.Verified -= Handlers.Internal.Round.OnVerified;
+            Handlers.Player.Joined -= Handlers.Internal.Round.OnJoined;
+            Handlers.Player.Left -= Handlers.Internal.Round.OnLeft;
+            Handlers.Player.Destroying -= Handlers.Internal.Round.OnDestroying;
+
             PlayerMovementSync.OnPlayerSpawned -= Handlers.Player.OnSpawned;
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
-            Handlers.Map.Generated -= Handlers.Internal.MapGenerated.OnMapGenerated;
-
-            MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
+            MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Internal.MapGenerated.OnMapGenerated;
         }
     }
 }

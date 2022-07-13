@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="AnimationController.UserCode_CmdChangeSpeedState"/>.
     /// Adds the <see cref="Player.ChangingMoveState"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingMoveState))]
+    [EventPatch(typeof(Player), nameof(Player.ChangingMoveState))]
     [HarmonyPatch(typeof(AnimationController), nameof(AnimationController.UserCode_CmdChangeSpeedState))]
     internal static class ChangingMoveState
     {
@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnChangingMoveState))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingMoveState))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMoveStateEventArgs), nameof(ChangingMoveStateEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

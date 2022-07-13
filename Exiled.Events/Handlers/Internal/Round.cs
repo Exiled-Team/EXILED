@@ -9,6 +9,7 @@ namespace Exiled.Events.Handlers.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
@@ -23,6 +24,8 @@ namespace Exiled.Events.Handlers.Internal
 
     using Item = Exiled.API.Features.Items.Item;
     using Log = Exiled.API.Features.Log;
+    using Player = Exiled.API.Features.Player;
+    using PlayerHandler = Exiled.Events.Handlers.Player;
     using Scp173 = Exiled.API.Features.Scp173;
 
     /// <summary>
@@ -73,7 +76,7 @@ namespace Exiled.Events.Handlers.Internal
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_START);
         }
 
-        /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
+        /// <inheritdoc cref="PlayerHandler.OnChangingRole(ChangingRoleEventArgs)"/>
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))
@@ -90,7 +93,7 @@ namespace Exiled.Events.Handlers.Internal
             ev.Player.MaxHealth = CharacterClassManager._staticClasses.SafeGet(ev.NewRole).maxHP;
         }
 
-        /// <inheritdoc cref="Player.Verified"/>
+        /// <inheritdoc cref="PlayerHandler.Verified"/>
         public static void OnVerified(VerifiedEventArgs ev)
         {
 #if DEBUG
@@ -102,7 +105,7 @@ namespace Exiled.Events.Handlers.Internal
             Log.SendRaw($"Player {ev.Player.Nickname} ({ev.Player.UserId}) ({ev.Player.Id}) connected with the IP: {ev.Player.IPAddress}", ConsoleColor.Green);
         }
 
-        /// <inheritdoc cref="Player.Joined"/>
+        /// <inheritdoc cref="PlayerHandler.Joined"/>
         public static void OnJoined(JoinedEventArgs ev)
         {
 #if DEBUG
@@ -117,10 +120,21 @@ namespace Exiled.Events.Handlers.Internal
             });
         }
 
-         /// <inheritdoc cref="Player.Left"/>
+         /// <inheritdoc cref="PlayerHandler.Left"/>
         public static void OnLeft(LeftEventArgs ev)
         {
             Log.SendRaw($"Player {ev.Player.Nickname} has disconnected", ConsoleColor.Green);
+        }
+
+        /// <inheritdoc cref="PlayerHandler.Destroying"/>
+        public static void OnDestroying(DestroyingEventArgs ev)
+        {
+            Player.Dictionary.Remove(ev.Player.GameObject);
+            Player.UnverifiedPlayers.Remove(ev.Player.ReferenceHub);
+            Player.IdsCache.Remove(ev.Player.Id);
+
+            if (ev.Player.UserId is not null)
+                Player.UserIdsCache.Remove(ev.Player.UserId);
         }
     }
 }

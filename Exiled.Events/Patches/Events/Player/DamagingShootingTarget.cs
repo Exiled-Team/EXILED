@@ -28,9 +28,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)"/>.
-    /// Adds the <see cref="Handlers.Player.DamagingShootingTarget"/> event.
+    /// Adds the <see cref="Player.DamagingShootingTarget"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DamagingShootingTarget))]
+    [EventPatch(typeof(Player), nameof(Player.DamagingShootingTarget))]
     [HarmonyPatch(typeof(ShootingTarget), nameof(ShootingTarget.Damage))]
     internal static class DamagingShootingTarget
     {

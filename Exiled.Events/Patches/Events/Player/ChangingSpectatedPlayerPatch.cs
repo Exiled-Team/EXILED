@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="SpectatorManager.CurrentSpectatedPlayer"/> setter.
     /// Adds the <see cref="Player.ChangingSpectatedPlayer"/>.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingSpectatedPlayer))]
+    [EventPatch(typeof(Player), nameof(Player.ChangingSpectatedPlayer))]
     [HarmonyPatch(typeof(SpectatorManager), nameof(SpectatorManager.CurrentSpectatedPlayer), MethodType.Setter)]
     internal static class ChangingSpectatedPlayerPatch
     {

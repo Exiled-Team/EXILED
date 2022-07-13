@@ -9,7 +9,6 @@ namespace Exiled.Events.Attributes
 {
     using System;
 
-    using Exiled.API.Features;
     using Exiled.Events.Interfaces;
 
     /// <summary>
