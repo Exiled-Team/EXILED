@@ -26,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="PlayerStats.KillPlayer(DamageHandlerBase)"/>.
     /// Adds the <see cref="Handlers.Player.Died"/> event.
     /// </summary>
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Dying))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Died))]
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal static class Died
