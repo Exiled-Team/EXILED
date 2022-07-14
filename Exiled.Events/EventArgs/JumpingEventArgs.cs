@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before a player jumps.
+    /// Contains all information before a player jumps.
     /// </summary>
     public class JumpingEventArgs : EventArgs
     {

@@ -104,7 +104,7 @@ namespace Exiled.API.Features
                     break;
 
                 case DamageType.MicroHid:
-                    InventorySystem.Items.MicroHID.MicroHIDItem microHidOwner = new InventorySystem.Items.MicroHID.MicroHIDItem();
+                    InventorySystem.Items.MicroHID.MicroHIDItem microHidOwner = new();
                     microHidOwner.Owner = attacker.ReferenceHub;
                     Base = new MicroHidDamageHandler(microHidOwner, damage);
                     break;
