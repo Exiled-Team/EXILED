@@ -28,7 +28,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106PlayerScript"/> script for the role.
         /// </summary>
-        public Scp106PlayerScript Script => script ??= Owner.ReferenceHub.scp106PlayerScript;
+        public Scp106PlayerScript Script => script ? script : script = Owner.ReferenceHub.scp106PlayerScript;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of an object.
