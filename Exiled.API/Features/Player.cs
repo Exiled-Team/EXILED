@@ -1074,7 +1074,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                return referenceHub?.gameObject == null ? null : Get(referenceHub.gameObject);
+                return referenceHub == null || referenceHub.gameObject == null ? null : Get(referenceHub.gameObject);
             }
             catch (Exception)
             {
