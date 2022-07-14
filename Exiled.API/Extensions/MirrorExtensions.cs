@@ -244,6 +244,7 @@ namespace Exiled.API.Extensions
         /// <param name="player">Player to change.</param>
         /// <param name="multiplier">Speed multiplier.</param>
         /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
+        [Obsolete("Use Player.WalkingSpeed", false)] // TODO : Put this Internal or private
         public static void ChangeWalkingSpeed(this Player player, float multiplier, bool useCap = true)
         {
             if (useCap)
@@ -257,6 +258,7 @@ namespace Exiled.API.Extensions
         /// <param name="player">Player to change.</param>
         /// <param name="multiplier">Speed multiplier.</param>
         /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
+        [Obsolete("Use Player.RunningSpeed", false)] // TODO : Put this Internal or private
         public static void ChangeRunningSpeed(this Player player, float multiplier, bool useCap = true)
         {
             if (useCap)
