@@ -3041,6 +3041,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Reset the player speed limit.
+        /// </summary>
+        public void ResetSpeed()
+        {
+            walkingSpeed = null;
+            runningSpeed = null;
+        }
+
+        /// <summary>
         /// Converts the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
