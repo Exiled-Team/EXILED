@@ -333,9 +333,7 @@ namespace Exiled.API.Features
             set
             {
                 runningSpeed = value;
-#pragma warning disable CS0618
                 this.ChangeRunningSpeed(value, false);
-#pragma warning restore CS0618
             }
         }
 
@@ -348,9 +346,7 @@ namespace Exiled.API.Features
             set
             {
                 walkingSpeed = value;
-#pragma warning disable CS0618
                 this.ChangeWalkingSpeed(value, false);
-#pragma warning restore CS0618
             }
         }
 
