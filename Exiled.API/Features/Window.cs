@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
-            Room = Map.FindParentRoom(window.gameObject);
+            Room = window.GetComponentInParent<Room>();
             Type = GetGlassType();
         }
 
