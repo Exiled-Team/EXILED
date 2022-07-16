@@ -521,31 +521,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        /// <param name="oldOwner"></param>
-        /// <param name="newOwner"></param>
-        internal override void ChangeOwner(Player oldOwner, Player newOwner)
-        {
-            Base.Owner = newOwner.ReferenceHub;
-
-            Base.HitregModule = Base switch
-            {
-                AutomaticFirearm automaticFirearm =>
-                    new SingleBulletHitreg(automaticFirearm, automaticFirearm.Owner, automaticFirearm._recoilPattern),
-                Shotgun shotgun =>
-                    new BuckshotHitreg(shotgun, shotgun.Owner, shotgun._buckshotStats),
-                ParticleDisruptor particleDisruptor =>
-                    new DisruptorHitreg(particleDisruptor, particleDisruptor.Owner, particleDisruptor._explosionSettings),
-                Revolver revolver =>
-                    new SingleBulletHitreg(revolver, revolver.Owner),
-                _ => throw new NotImplementedException("Should never happend"),
-            };
-
-            Base._footprintValid = false;
-        }
-
-        /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
@@ -571,6 +546,31 @@ namespace Exiled.API.Features.Items
                 pickup.Spawn();
 
             return pickup;
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.Owner = newOwner.ReferenceHub;
+
+            Base.HitregModule = Base switch
+            {
+                AutomaticFirearm automaticFirearm =>
+                    new SingleBulletHitreg(automaticFirearm, automaticFirearm.Owner, automaticFirearm._recoilPattern),
+                Shotgun shotgun =>
+                    new BuckshotHitreg(shotgun, shotgun.Owner, shotgun._buckshotStats),
+                ParticleDisruptor particleDisruptor =>
+                    new DisruptorHitreg(particleDisruptor, particleDisruptor.Owner, particleDisruptor._explosionSettings),
+                Revolver revolver =>
+                    new SingleBulletHitreg(revolver, revolver.Owner),
+                _ => throw new NotImplementedException("Should never happend"),
+            };
+
+            Base._footprintValid = false;
         }
     }
 }

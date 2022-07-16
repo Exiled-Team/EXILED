@@ -149,17 +149,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        /// <param name="oldOwner"></param>
-        /// <param name="newOwner"></param>
-        internal override void ChangeOwner(Player oldOwner, Player newOwner)
-        {
-            Base.Owner = newOwner.ReferenceHub;
-            Base.ServerRefreshBag();
-        }
-
-        /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> location to spawn it.</param>
@@ -192,5 +181,16 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing SCP-330 related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.Owner = newOwner.ReferenceHub;
+            Base.ServerRefreshBag();
+        }
     }
 }

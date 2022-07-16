@@ -65,6 +65,7 @@ namespace Exiled.API.Features
     using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Exiled.API.Features.Items.Firearm;
+    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
     using Random = UnityEngine.Random;
 
     /// <summary>
@@ -2074,15 +2075,15 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
-        public void AddItem(Item item, IEnumerable<AttachmentIdentifier> identifiers)
+        public void AddItem(Firearm item, IEnumerable<AttachmentIdentifier> identifiers)
         {
             try
             {
                 if (item.Base is null)
-                    item = new Item(item.Type);
+                    item = new Firearm(item.Type);
 
-                if (item is Firearm firearm && identifiers is not null)
-                    firearm.AddAttachment(identifiers);
+                if (identifiers is not null)
+                    item.AddAttachment(identifiers);
 
                 AddItem(item.Base, item);
             }
@@ -2103,17 +2104,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Adds an item to the player's inventory.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> of the item to be added.</param>
+        /// <param name="pickup">The <see cref="FirearmPickup"/> of the item to be added.</param>
         /// <param name="identifiers">The attachments to be added to <see cref="Pickup"/> of the item.</param>
         /// <returns>The <see cref="Item"/> that was added.</returns>
-        public Item AddItem(Pickup pickup, IEnumerable<AttachmentIdentifier> identifiers)
+        public Item AddItem(FirearmPickup pickup, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            Item item = Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
+            Firearm firearm = (Firearm)Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
 
-            if (item is Firearm firearm && identifiers is not null)
+            if (identifiers is not null)
                 firearm.AddAttachment(identifiers);
 
-            return item;
+            return firearm;
         }
 
         /// <summary>
@@ -2168,15 +2169,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Add the amount of items to the player's inventory.
         /// </summary>
-        /// <param name="item">The item to be added.</param>
+        /// <param name="firearm">The firearm to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
-        public void AddItem(Item item, int amount, IEnumerable<AttachmentIdentifier> identifiers)
+        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers)
         {
             if (amount > 0)
             {
                 for (int i = 0; i < amount; i++)
-                    AddItem(item, identifiers);
+                    AddItem(firearm, identifiers);
             }
         }
 
@@ -2193,12 +2194,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Add the list of items to the player's inventory.
         /// </summary>
-        /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="Item"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
-        public void AddItem(Dictionary<Item, IEnumerable<AttachmentIdentifier>> items)
+        /// <param name="firearms">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="Firearm"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
+        public void AddItem(Dictionary<Firearm, IEnumerable<AttachmentIdentifier>> firearms)
         {
-            if (items.Count > 0)
+            if (firearms.Count > 0)
             {
-                foreach (KeyValuePair<Item, IEnumerable<AttachmentIdentifier>> item in items)
+                foreach (KeyValuePair<Firearm, IEnumerable<AttachmentIdentifier>> item in firearms)
                     AddItem(item.Key, item.Value);
             }
         }

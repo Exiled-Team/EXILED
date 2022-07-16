@@ -80,18 +80,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        internal override void ChangeOwner(Player oldOwner, Player newOwner)
-        {
-            Base.Owner = newOwner.ReferenceHub;
-
-            Base._radio = Base.Owner.GetComponent<global::Radio>();
-
-            Base.CurRange = Base._rangeId;
-        }
-
-        /// <summary>
         /// Turns off the radio.
         /// </summary>
         public void Disable() => Base._radio.ForceDisableRadio();
@@ -101,5 +89,19 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Radio-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.Owner = newOwner.ReferenceHub;
+
+            Base._radio = newOwner.ReferenceHub.GetComponent<global::Radio>();
+
+            Base.CurRange = Base._rangeId;
+        }
     }
 }

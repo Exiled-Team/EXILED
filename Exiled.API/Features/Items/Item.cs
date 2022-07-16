@@ -239,20 +239,6 @@ namespace Exiled.API.Features.Items
         public void Give(Player player) => player.AddItem(Base, this);
 
         /// <summary>
-        /// test.
-        /// </summary>
-        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
-        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
-        internal virtual void ChangeOwner(Player oldOwner, Player newOwner)
-        {
-            Base.OnRemoved(null);
-
-            Base.Owner = newOwner.ReferenceHub;
-
-            Base.OnAdded(null);
-        }
-
-        /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
@@ -284,5 +270,19 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Item-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+
+        /// <summary>
+        /// test.
+        /// </summary>
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal virtual void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.OnRemoved(null);
+
+            Base.Owner = newOwner.ReferenceHub;
+
+            Base.OnAdded(null);
+        }
     }
 }
