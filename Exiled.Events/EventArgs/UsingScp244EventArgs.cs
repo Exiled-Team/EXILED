@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Usables.Scp244;
 
     /// <summary>
-    /// Contains all informations before radio battery charge is changed.
+    /// Contains all information before radio battery charge is changed.
     /// </summary>
     public class UsingScp244EventArgs : EventArgs
     {

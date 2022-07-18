@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations after a player dequipes a medical item.
+    /// Contains all information after a player dequipes a medical item.
     /// </summary>
     public class DequippedMedicalItemEventArgs : EventArgs
     {

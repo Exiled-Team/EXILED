@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains informations before a report is sent to local administrators.
+    /// Contains information before a report is sent to local administrators.
     /// </summary>
     public class LocalReportingEventArgs : EventArgs
     {

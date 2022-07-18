@@ -29,7 +29,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the amount of seconds before the next respawn will occur.
         /// </summary>
-        public static int TimeUntilRespawn => Mathf.RoundToInt(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
+        [Obsolete("Use TimeUntilSpawnWave.TotalSeconds.")]
+        public static int TimeUntilRespawn => (int)TimeUntilSpawnWave.TotalSeconds;
+
+        /// <summary>
+        /// Gets a <see cref="TimeSpan"/> indicating the amount of time before the next respawn wave will occur.
+        /// </summary>
+        public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
+
+        /// <summary>
+        /// Gets a <see cref="DateTime"/> indicating the moment in UTC time the next respawn wave will occur.
+        /// </summary>
+        public static DateTime NextTeamTime
+            => DateTime.UtcNow.AddSeconds(TimeUntilSpawnWave.TotalSeconds);
 
         /// <summary>
         /// Gets a value indicating whether or not a team is currently being spawned or the animations are playing for a team.
@@ -39,6 +51,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the amount of spawn tickets belonging to the NTF.
         /// </summary>
+        /// <seealso cref="ChaosTickets"/>
         public static int NtfTickets
         {
             get => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.NineTailedFox);
@@ -48,6 +61,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the amount of spawn tickets belonging to the Chaos Insurgency.
         /// </summary>
+        /// <seealso cref="NtfTickets"/>
         public static int ChaosTickets
         {
             get => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);

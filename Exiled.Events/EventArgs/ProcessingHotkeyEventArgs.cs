@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before pressing a hotkey.
+    /// Contains all information before pressing a hotkey.
     /// </summary>
     public class ProcessingHotkeyEventArgs : EventArgs
     {
