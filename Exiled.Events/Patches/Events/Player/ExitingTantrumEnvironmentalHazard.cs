@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ExitingEnvironmentalHazard.cs" company="Exiled Team">
+// <copyright file="ExitingTantrumEnvironmentalHazard.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,25 +19,20 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="EnvironmentalHazard.OnExit(ReferenceHub)"/> with <see cref="SinkholeEnvironmentalHazard"/>.
+    /// Patches <see cref="TantrumEnvironmentalHazard.OnExit(ReferenceHub)"/>.
     /// Adds the <see cref="Handlers.Player.ExitingEnvironmentalHazard"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnExit))]
-    internal static class ExitingEnvironmentalHazard
+    internal class ExitingTantrumEnvironmentalHazard
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label ret = generator.DefineLabel();
-            Label cnt = generator.DefineLabel();
 
             newInstructions.InsertRange(0, new[]
             {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Isinst, typeof(SinkholeEnvironmentalHazard)),
-                new(OpCodes.Brfalse_S, cnt),
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldc_I4_1),
@@ -46,7 +41,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnExitingEnvironmentalHazard))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ExitingEnvironmentalHazardEventArgs), nameof(ExitingEnvironmentalHazardEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
-                new CodeInstruction(OpCodes.Nop).WithLabels(cnt),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
