@@ -52,6 +52,5 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Badge-related data.</returns>
         public override string ToString() => $"{Text} ({Color}) [{Type}] *{IsGlobal}*";
-
     }
 }
