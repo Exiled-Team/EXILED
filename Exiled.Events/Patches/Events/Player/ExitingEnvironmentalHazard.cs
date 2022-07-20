@@ -32,6 +32,8 @@ namespace Exiled.Events.Patches.Events.Player
             Label ret = generator.DefineLabel();
             Label cnt = generator.DefineLabel();
 
+            // We add type check because SinkholeEnvironmentalHazard dont override OnExit method
+            // Without type check, the TantrumEnvironmentalHazard::OnExit event will be called several times
             newInstructions.InsertRange(0, new[]
             {
                 new(OpCodes.Ldarg_0),
