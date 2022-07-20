@@ -22,6 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="TantrumEnvironmentalHazard.OnExit(ReferenceHub)"/>.
     /// Adds the <see cref="Handlers.Player.ExitingEnvironmentalHazard"/> event.
     /// </summary>
+    [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.OnExit))]
     internal class ExitingTantrumEnvironmentalHazard
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
