@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ThrowKeycardInteractingEventArgs.cs" company="Exiled Team">
+// <copyright file="KeycardInteractingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,16 +19,16 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a keycard interacts with a door.
     /// </summary>
-    public class ThrowKeycardInteractingEventArgs : EventArgs
+    public class KeycardInteractingEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThrowKeycardInteractingEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="KeycardInteractingEventArgs"/> class.
         /// </summary>
         /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="door"><inheritdoc cref="Door"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ThrowKeycardInteractingEventArgs(KeycardPickup pickup, Player player, DoorVariant door, bool isAllowed = true)
+        public KeycardInteractingEventArgs(KeycardPickup pickup, Player player, DoorVariant door, bool isAllowed = true)
         {
             Pickup = Pickup.Get(pickup);
             Player = player;

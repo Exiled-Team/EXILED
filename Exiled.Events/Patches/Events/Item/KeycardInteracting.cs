@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="InteractingDoorWithThrow.cs" company="Exiled Team">
+// <copyright file="KeycardInteracting.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -18,7 +18,6 @@ namespace Exiled.Events.Patches.Events.Item
 
     using HarmonyLib;
 
-    using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
 
     using InventorySystem.Items.Keycards;
@@ -34,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Item
     /// Adds the <see cref="Handlers.Player.InteractingDoor"/> event.
     /// </summary>
     [HarmonyPatch(typeof(KeycardPickup), nameof(KeycardPickup.ProcessCollision))]
-    internal static class InteractingDoorWithThrow
+    internal static class KeycardInteracting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -117,7 +116,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Ldloc_S, notEmptyPermissions),
                 new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanKeycardThrowAffectOnBasicDoors))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanKeycardThrowAffectDoors))),
                 new(OpCodes.Or),
 
                 new(OpCodes.And),
@@ -127,10 +126,10 @@ namespace Exiled.Events.Patches.Events.Item
                 // Item.OnThrowKeycardInteracting(ev);
                 // if(!ev.IsAllowed)
                 //     return;
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowKeycardInteractingEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(KeycardInteractingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnThrowKeycardInteracting))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowKeycardInteractingEventArgs), nameof(ThrowKeycardInteractingEventArgs.IsAllowed))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnKeycardInteracting))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(KeycardInteractingEventArgs), nameof(KeycardInteractingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
 

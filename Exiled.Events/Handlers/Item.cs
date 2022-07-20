@@ -36,7 +36,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a keycard interacts with a door.
         /// </summary>
-        public static event CustomEventHandler<ThrowKeycardInteractingEventArgs> ThrowKeycardInteracting;
+        public static event CustomEventHandler<KeycardInteractingEventArgs> KeycardInteracting;
 
         /// <summary>
         /// Called before the durability of an item is changed.
@@ -59,7 +59,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before keycard interacts with a door.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrowKeycardInteractingEventArgs"/> instance.</param>
-        public static void OnThrowKeycardInteracting(ThrowKeycardInteractingEventArgs ev) => ThrowKeycardInteracting.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="KeycardInteractingEventArgs"/> instance.</param>
+        public static void OnKeycardInteracting(KeycardInteractingEventArgs ev) => KeycardInteracting.InvokeSafely(ev);
     }
 }
