@@ -3041,7 +3041,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Reset the player speed limit.
+        /// Reset the player speed.
         /// </summary>
         public void ResetSpeed()
         {
