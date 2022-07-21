@@ -75,9 +75,7 @@ namespace Exiled.API.Features.Items
         public override Item Clone()
         {
             Throwable cloneableItem = new(Type);
-
             cloneableItem.PinPullTime = PinPullTime;
-
             return cloneableItem;
         }
     }
