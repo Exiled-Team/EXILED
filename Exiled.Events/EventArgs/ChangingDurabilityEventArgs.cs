@@ -28,8 +28,12 @@ namespace Exiled.Events.EventArgs
             if (firearm is not InventorySystem.Items.Firearms.Firearm firearmBase)
                 return;
 
+            Item item = Item.Get(firearmBase);
+            if(item is not Firearm firearmItem)
+                return;
+
             Player = player;
-            Firearm = (Firearm)Item.Get(firearmBase);
+            Firearm = firearmItem;
             OldDurability = oldDurability;
             NewDurability = newDurability;
             IsAllowed = isAllowed;
