@@ -31,31 +31,17 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
 
-            Label cnt = generator.DefineLabel();
             Label ret = generator.DefineLabel();
 
-            int offset = -1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
-
-            newInstructions.RemoveAt(index);
+            int offset = -2;
+            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter)))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Stloc_S, isAllowed.LocalIndex),
-                new(OpCodes.Br_S, cnt),
-            });
-
-            offset = -2;
-            index = newInstructions.FindIndex(i => i.Calls(Method(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter)))) + offset;
-
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(cnt),
+                new CodeInstruction(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
+                new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringEnvironmentalHazardEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringEnvironmentalHazard))),
