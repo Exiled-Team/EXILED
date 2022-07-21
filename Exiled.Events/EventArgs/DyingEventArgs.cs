@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         {
             Handler = new CustomDamageHandler(target, damageHandler);
             ItemsToDrop = new List<Item>(target.Items.ToList());
-            Killer = Handler.SafeBaseCast(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
+            Killer = Handler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Target = target;
         }
 

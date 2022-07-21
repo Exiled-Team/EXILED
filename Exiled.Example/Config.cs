@@ -46,19 +46,19 @@ namespace Exiled.Example
         /// Gets the list of strings config.
         /// </summary>
         [Description("This is a list of strings config")]
-        public List<string> StringsList { get; private set; } = new List<string>() { "First element", "Second element", "Third element" };
+        public List<string> StringsList { get; private set; } = new() { "First element", "Second element", "Third element" };
 
         /// <summary>
         /// Gets the list of ints config.
         /// </summary>
         [Description("This is a list of ints config")]
-        public List<int> IntsList { get; private set; } = new List<int>() { 1, 2, 3 };
+        public List<int> IntsList { get; private set; } = new() { 1, 2, 3 };
 
         /// <summary>
         /// Gets the dictionary of string as key and int as value config.
         /// </summary>
         [Description("This is a dictionary of strings as key and int as value config")]
-        public Dictionary<string, int> StringIntDictionary { get; private set; } = new Dictionary<string, int>()
+        public Dictionary<string, int> StringIntDictionary { get; private set; } = new()
         {
             { "First Key", 1 },
             { "Second Key", 2 },
@@ -69,7 +69,7 @@ namespace Exiled.Example
         /// Gets the dictionary of string as key and <see cref="Dictionary{TKey, TValue}"/> as value config.
         /// </summary>
         [Description("This is a dictionary of strings as key and Dictionary<string, int> as value config")]
-        public Dictionary<string, Dictionary<string, int>> NestedDictionaries { get; private set; } = new Dictionary<string, Dictionary<string, int>>()
+        public Dictionary<string, Dictionary<string, int>> NestedDictionaries { get; private set; } = new()
         {
             {
                 "First Key", new Dictionary<string, int>()
@@ -101,25 +101,25 @@ namespace Exiled.Example
         /// Gets the joined broadcast.
         /// </summary>
         [Description("This is an example on how to use the Broadcast class, to send a broadcast to joined players")]
-        public Broadcast JoinedBroadcast { get; private set; } = new Broadcast("Welcome to the server!", 15);
+        public Broadcast JoinedBroadcast { get; private set; } = new("Welcome to the server!", 15);
 
         /// <summary>
         /// Gets the Vector3 config.
         /// </summary>
         [Description("This is a Vector3 config, the same can be done by using a Vector2 or a Vector4")]
-        public Vector3 Vector3 { get; private set; } = new Vector3(1.3f, -2.5f, 3);
+        public Vector3 Vector3 { get; private set; } = new(1.3f, -2.5f, 3);
 
         /// <summary>
-        /// Gets the <see cref="List{T}"/> of <see cref="AttachmentNameTranslation"/> config.
+        /// Gets the <see cref="List{T}"/> of <see cref="AttachmentName"/> config.
         /// </summary>
         [Description("This is a list of AttachmentNameTranslation config")]
-        public List<AttachmentNameTranslation> Attachments { get; private set; } = new List<AttachmentNameTranslation>()
+        public List<AttachmentName> Attachments { get; private set; } = new()
         {
-            AttachmentNameTranslation.AmmoCounter,
-            AttachmentNameTranslation.DotSight,
-            AttachmentNameTranslation.RifleBody,
-            AttachmentNameTranslation.RecoilReducingStock,
-            AttachmentNameTranslation.StandardMagAP,
+            AttachmentName.AmmoCounter,
+            AttachmentName.DotSight,
+            AttachmentName.RifleBody,
+            AttachmentName.RecoilReducingStock,
+            AttachmentName.StandardMagAP,
         };
     }
 }

@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -30,37 +29,37 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            int offset = -1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
             Label returnLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingEventArgs));
             LocalBuilder role = generator.DeclareLocal(typeof(RoleType));
 
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscaping))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.NewRole))),
-                new CodeInstruction(OpCodes.Stloc, role.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscaping))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse, returnLabel),
+                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.NewRole))),
+                new(OpCodes.Stloc, role.LocalIndex),
             });
 
-            foreach (CodeInstruction ins in newInstructions.FindAll(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))))
+            for(int i = 0; i < newInstructions.Count; i++)
             {
-                index = newInstructions.IndexOf(ins) - 5;
-                newInstructions.RemoveAt(index);
-                newInstructions.Insert(index, new CodeInstruction(OpCodes.Ldloc, role.LocalIndex));
+                if(newInstructions[i].opcode == OpCodes.Call && (MethodInfo)newInstructions[i].operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass)))
+                {
+                    int index = i - 5;
+                    newInstructions[index] = new(OpCodes.Ldloc_S, role.LocalIndex);
+                }
             }
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

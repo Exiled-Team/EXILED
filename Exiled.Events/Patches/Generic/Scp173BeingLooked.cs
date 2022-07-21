@@ -7,10 +7,8 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118
-#pragma warning disable SA1313
     using System.Collections.Generic;
-    using System.Reflection;
+
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -19,7 +17,9 @@ namespace Exiled.Events.Patches.Generic
 
     using NorthwoodLib.Pools;
 
-    using static Exiled.Events.Events;
+    using PlayableScps;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -29,45 +29,67 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
     internal static class Scp173BeingLooked
     {
+        /// <summary>
+        /// Checks if the current player is to be skipped.
+        /// </summary>
+        /// <param name="instance"> Scp173 instance <see cref="PlayableScps.Scp173"/>. </param>
+        /// <param name="curPlayerHub"> Current player referencehub. </param>
+        /// <returns> True if to be skipped, false if not. </returns>
+        public static bool SkipPlayer(ref PlayableScps.Scp173 instance, ReferenceHub curPlayerHub)
+        {
+            Player player = Player.Get(curPlayerHub);
+            if (player is not null)
+            {
+                if (player.Role.Type == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
+                {
+                    instance._observingPlayers.Remove(curPlayerHub);
+                    return true;
+                }
+                else if (API.Features.Scp173.TurnedPlayers.Contains(player))
+                {
+                    instance._observingPlayers.Remove(curPlayerHub);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int offset = -3;
+            Label cnt = generator.DefineLabel();
 
-            // Search for the only "HashSet<ReferenceHub>.Add()".
-            int index = newInstructions.FindLastIndex(instruction =>
-                instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand ==
-                Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Add))) + offset;
+            int removeTurnedPeanutOffset = 2;
+            int removeTurnedPeanut = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Count)))) + removeTurnedPeanutOffset;
 
-            // Declare Player, to be able to store its instance with "stloc.2".
-            LocalBuilder player = generator.DeclareLocal(typeof(Player));
-
-            // Define the continue label and add it.
-            Label continueLabel = generator.DefineLabel();
-            newInstructions[index + 5].labels.Add(continueLabel);
-
-            // Player player = Player.Get(gameObject);
-            //
-            // if (player == null || (player.Role == RoleType.Tutorial && Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
-            //   continue;
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(removeTurnedPeanut, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldloc_3),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, player.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
-                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.RoleType))),
-                new CodeInstruction(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
-                new CodeInstruction(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
-                new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
+                new(OpCodes.Call, PropertyGetter(typeof(API.Features.Scp173), nameof(API.Features.Scp173.TurnedPlayers))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(PlayableScp), nameof(PlayableScp.Hub))),
+                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Remove))),
+                new(OpCodes.Pop),
             });
+
+            int skipPlayerCheckOffset = 2;
+            int skipPlayerCheck = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(PlayerMovementSync), nameof(PlayerMovementSync.RealModelPosition)))) + skipPlayerCheckOffset;
+
+            newInstructions.InsertRange(skipPlayerCheck, new CodeInstruction[]
+            {
+                new(OpCodes.Ldarga, 0),
+                new(OpCodes.Ldloc_3),
+                new(OpCodes.Call, Method(typeof(Scp173BeingLooked), nameof(Scp173BeingLooked.SkipPlayer), new[] { typeof(API.Features.Scp173).MakeByRefType(), typeof(ReferenceHub) })),
+
+                // If true, skip adding to watching
+                new(OpCodes.Brtrue, cnt),
+            });
+
+            int continueBr = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br);
+
+            newInstructions[continueBr].labels.Add(cnt);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

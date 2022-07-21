@@ -8,6 +8,9 @@
 namespace Exiled.API.Features
 {
     using System;
+    using System.Collections.Generic;
+
+    using Exiled.API.Enums;
 
     using GameCore;
 
@@ -21,17 +24,30 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the time elapsed from the start of the round.
         /// </summary>
+        /// <seealso cref="StartedTime"/>
         public static TimeSpan ElapsedTime => RoundStart.RoundLength;
 
         /// <summary>
         /// Gets the start time of the round.
         /// </summary>
+        /// <seealso cref="ElapsedTime"/>
+        /// <seealso cref="IsStarted"/>
         public static DateTime StartedTime => DateTime.Now - ElapsedTime;
 
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => RoundSummary.RoundInProgress();
+        public static bool IsStarted => ReferenceHub.LocalHub is not null && RoundSummary.RoundInProgress();
+
+        /// <summary>
+        /// Gets a value indicating whether the round is ended or not.
+        /// </summary>
+        public static bool IsEnded => RoundSummary.singleton.RoundEnded;
+
+        /// <summary>
+        /// Gets a value indicating whether the round is lobby or not.
+        /// </summary>
+        public static bool IsLobby => !(IsEnded || IsStarted);
 
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
@@ -52,34 +68,81 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the number of players who have escaped as <see cref="RoleType.ClassD"/>.
+        /// Gets or sets the number of players who have escaped as <see cref="RoleType.ClassD"/>.
         /// </summary>
-        public static int EscapedDClasses => RoundSummary.EscapedClassD;
+        public static int EscapedDClasses
+        {
+            get => RoundSummary.EscapedClassD;
+            set => RoundSummary.EscapedClassD = value;
+        }
 
         /// <summary>
-        /// Gets the number of players who have escaped as <see cref="RoleType.Scientist"/>.
+        /// Gets or sets the number of players who have escaped as <see cref="RoleType.Scientist"/>.
         /// </summary>
-        public static int EscapedScientists => RoundSummary.EscapedScientists;
+        public static int EscapedScientists
+        {
+            get => RoundSummary.EscapedScientists;
+            set => RoundSummary.EscapedScientists = value;
+        }
 
         /// <summary>
-        /// Gets the number of kills.
+        /// Gets or sets the number of kills.
         /// </summary>
-        public static int Kills => RoundSummary.Kills;
+        public static int Kills
+        {
+            get => RoundSummary.Kills;
+            set => RoundSummary.Kills = value;
+        }
 
         /// <summary>
-        /// Gets the number of kills made by SCPs.
+        /// Gets or sets the number of surviving SCPs.
         /// </summary>
-        public static int KillsByScp => RoundSummary.KilledBySCPs;
+        public static int SurvivingSCPs
+        {
+            get => RoundSummary.SurvivingSCPs;
+            set => RoundSummary.SurvivingSCPs = value;
+        }
 
         /// <summary>
-        /// Gets the number of players who have been turned into zombies.
+        /// Gets or sets the number of kills made by SCPs.
         /// </summary>
-        public static int ChangedIntoZombies => RoundSummary.ChangedIntoZombies;
+        public static int KillsByScp
+        {
+            get => RoundSummary.KilledBySCPs;
+            set => RoundSummary.KilledBySCPs = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the number of players who have been turned into zombies.
+        /// </summary>
+        public static int ChangedIntoZombies
+        {
+            get => RoundSummary.ChangedIntoZombies;
+            set => RoundSummary.ChangedIntoZombies = value;
+        }
 
         /// <summary>
         /// Gets the number of rounds since the server started.
         /// </summary>
         public static int UptimeRounds => RoundRestart.UptimeRounds;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> indicating the sides that are currently alive.
+        /// </summary>
+        public static IEnumerable<Side> AliveSides
+        {
+            get
+            {
+                List<Side> sides = new(4);
+                foreach (Player ply in Player.Get(ply => ply.IsAlive))
+                {
+                    if (!sides.Contains(ply.Role.Side))
+                        sides.Add(ply.Role.Side);
+                }
+
+                return sides;
+            }
+        }
 
         /// <summary>
         /// Restarts the round with custom settings.
@@ -124,15 +187,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
+        /// <param name="forceEnd">
+        /// Indicates whether or not it'll force the restart with no check if it's locked.
+        /// </param>
         /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
-        public static bool ForceEnd()
+        public static bool EndRound(bool forceEnd = false)
         {
-            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2)
+            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2 && !forceEnd)
             {
                 return false;
             }
 
-            if (IsStarted && !IsLocked)
+            if ((IsStarted && !IsLocked) || forceEnd)
             {
                 RoundSummary.singleton.ForceEnd();
                 return true;

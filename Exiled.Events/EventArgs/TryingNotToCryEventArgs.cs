@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
-    /// Contains all informations before SCP-096 tries not to cry.
+    /// Contains all information before SCP-096 tries not to cry.
     /// </summary>
     public class TryingNotToCryEventArgs : EventArgs
     {
@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Door"/> to be cried on.
+        /// Gets the <see cref="API.Features.Door"/> to be cried on.
         /// </summary>
         public Door Door { get; }
 

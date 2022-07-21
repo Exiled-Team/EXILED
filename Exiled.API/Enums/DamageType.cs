@@ -7,9 +7,15 @@
 
 namespace Exiled.API.Enums
 {
+    using Exiled.API.Features;
+
     /// <summary>
     /// Identifiers for types of damage.
     /// </summary>
+    /// <seealso cref="Player.Hurt(float, DamageType, string)"/>
+    /// <seealso cref="Player.Hurt(Player, float, DamageType, Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement)"/>
+    /// <seealso cref="Player.Hurt(Player, float, DamageType, Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement, string)"/>
+    /// <seealso cref="Player.Kill(DamageType, string)"/>
     public enum DamageType
     {
         /// <summary>
@@ -48,12 +54,12 @@ namespace Exiled.API.Enums
         Bleeding,
 
         /// <summary>
-        /// Damage dealt by a <see cref="API.Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
+        /// Damage dealt by a <see cref="Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
         /// </summary>
         Firearm,
 
         /// <summary>
-        /// Damage dealt by a <see cref="API.Features.Items.MicroHid"/>.
+        /// Damage dealt by a <see cref="Features.Items.MicroHid"/>.
         /// </summary>
         MicroHid,
 
@@ -196,5 +202,10 @@ namespace Exiled.API.Enums
         /// <see cref="EffectType.Hypothermia"/>.
         /// </summary>
         Hypothermia,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.ParticleDisruptor"/>.
+        /// </summary>
+        ParticleDisruptor,
     }
 }

@@ -24,7 +24,7 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ExplodingGrenadeEventArgs : EventArgs
     {
-        private static Dictionary<Type, GrenadeType> grenadeDictionary = new Dictionary<Type, GrenadeType>()
+        private static Dictionary<Type, GrenadeType> grenadeDictionary = new()
         {
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
             { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
@@ -46,11 +46,11 @@ namespace Exiled.Events.EventArgs
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
             {
-                if (!(Grenade is ExplosionGrenade) || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
+                if (Grenade is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
                     continue;
 
                 Player player = Player.Get(hub);
-                if (player == null)
+                if (player is null)
                     continue;
 
                 if (!TargetsToAffect.Contains(player))
@@ -89,7 +89,7 @@ namespace Exiled.Events.EventArgs
         public List<Player> TargetsToAffect { get; }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Enums.GrenadeType"/> of the grenade.
+        /// Gets the <see cref="API.Enums.GrenadeType"/> of the grenade.
         /// </summary>
         public GrenadeType GrenadeType { get; }
 

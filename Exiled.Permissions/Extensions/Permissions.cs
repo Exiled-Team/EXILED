@@ -47,7 +47,7 @@ namespace Exiled.Permissions.Extensions
         /// <summary>
         /// Gets groups list.
         /// </summary>
-        public static Dictionary<string, Group> Groups { get; internal set; } = new Dictionary<string, Group>();
+        public static Dictionary<string, Group> Groups { get; internal set; } = new();
 
         /// <summary>
         /// Gets the default group.
@@ -89,7 +89,7 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         public static void Reload()
         {
-            if (ServerStatic.PermissionsHandler == null)
+            if (ServerStatic.PermissionsHandler is null)
             {
                 Log.Error("Your Remote Admin config is broken. You have to fix it because the game won't even start with a broken config.");
 
@@ -100,7 +100,7 @@ namespace Exiled.Permissions.Extensions
             try
             {
                 Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
-                Dictionary<string, Group> deserializedPerms = new Dictionary<string, Group>();
+                Dictionary<string, Group> deserializedPerms = new();
                 foreach (KeyValuePair<string, object> group in rawDeserializedPerms)
                 {
                     try
@@ -178,7 +178,7 @@ namespace Exiled.Permissions.Extensions
             {
                 Player player = Player.Get(sender.SenderId);
 
-                if (player == null)
+                if (player is null)
                     return false;
 
                 return player == Server.Host || player.CheckPermission(permission);
@@ -201,7 +201,7 @@ namespace Exiled.Permissions.Extensions
             if (Server.Host == player)
                 return true;
 
-            if (player == null || player.GameObject == null || Groups == null || Groups.Count == 0)
+            if (player is null || player.GameObject == null || Groups is null || Groups.Count == 0)
             {
                 return false;
             }
@@ -209,16 +209,16 @@ namespace Exiled.Permissions.Extensions
             Log.Debug($"UserID: {player.UserId} | PlayerId: {player.Id}", Instance.Config.ShouldDebugBeShown);
             Log.Debug($"Permission string: {permission}", Instance.Config.ShouldDebugBeShown);
 
-            string plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value.EqualsTo(player.Group)).Key : null;
+            string plyGroupKey = player.Group is not null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value.EqualsTo(player.Group)).Key : null;
             Log.Debug($"GroupKey: {plyGroupKey ?? "(null)"}", Instance.Config.ShouldDebugBeShown);
 
-            if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out Group group))
+            if (plyGroupKey is null || !Groups.TryGetValue(plyGroupKey, out Group group))
             {
                 Log.Debug("The source group is null, the default group is used", Instance.Config.ShouldDebugBeShown);
                 group = DefaultGroup;
             }
 
-            if (group == null)
+            if (group is null)
             {
                 Log.Debug("There's no default group, returning false...", Instance.Config.ShouldDebugBeShown);
                 return false;

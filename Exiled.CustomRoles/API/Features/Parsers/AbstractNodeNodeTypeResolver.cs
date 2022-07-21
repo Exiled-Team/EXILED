@@ -52,7 +52,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
                 return false;
             }
 
-            var supportedTypes = typeDiscriminators.Where(t => t.BaseType == expectedType).ToList();
+            IEnumerable<ITypeDiscriminator> supportedTypes = typeDiscriminators.Where(t => t.BaseType == expectedType);
             if (!supportedTypes.Any())
                 return original.Deserialize(reader, expectedType, nestedObjectDeserializer, out value);
 
@@ -92,12 +92,12 @@ namespace Exiled.CustomRoles.API.Features.Parsers
 
         private static LinkedList<ParsingEvent> ReadNestedMapping(IParser reader)
         {
-            var result = new LinkedList<ParsingEvent>();
+            LinkedList<ParsingEvent> result = new();
             result.AddLast(reader.Consume<MappingStart>());
-            var depth = 0;
+            int depth = 0;
             do
             {
-                var next = reader.Consume<ParsingEvent>();
+                ParsingEvent next = reader.Consume<ParsingEvent>();
                 depth += next.NestingIncrease;
                 result.AddLast(next);
             }

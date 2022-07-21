@@ -17,10 +17,15 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// The in-game Scp079Generator.
+    /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
     public class Generator
     {
+        /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
+        /// </summary>
+        internal static readonly List<Generator> GeneratorValues = new();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Generator"/> class.
         /// </summary>
@@ -41,6 +46,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
@@ -175,6 +185,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the generator position.
+        /// </summary>
+        public Vector3 Position => Base.transform.position;
+
+        /// <summary>
+        /// Gets the generator rotation.
+        /// </summary>
+        public Quaternion Rotation => Base.transform.rotation;
+
+        /// <summary>
         /// Gets or sets the required permissions to interact with the generator.
         /// </summary>
         public KeycardPermissions KeycardPermissions
@@ -184,11 +204,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
-        /// </summary>
-        internal static List<Generator> GeneratorValues { get; } = new List<Generator>();
-
-        /// <summary>
         /// Gets the <see cref="Generator"/> belonging to the <see cref="Scp079Generator"/>, if any.
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/> instance.</param>
@@ -196,10 +211,10 @@ namespace Exiled.API.Features
         public static Generator Get(Scp079Generator scp079Generator) => List.FirstOrDefault(generator => generator.Base == scp079Generator);
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances with the given <see cref="GeneratorState"/>.
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> given the specified <see cref="GeneratorState"/>.
         /// </summary>
-        /// <param name="state">The given <see cref="GeneratorState"/>.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/>.</returns>
+        /// <param name="state">The <see cref="GeneratorState"/> to search for.</param>
+        /// <returns>The <see cref="Generator"/> with the given <see cref="GeneratorState"/> or <see langword="null"/> if not found.</returns>
         public static IEnumerable<Generator> Get(GeneratorState state) => List.Where(generator => generator.Base.HasFlag(generator.Base.Network_flags, (Scp079Generator.GeneratorFlags)state));
 
         /// <summary>
@@ -221,5 +236,11 @@ namespace Exiled.API.Features
             else
                 Base._requiredPermission &= ~permission;
         }
+
+        /// <summary>
+        /// Returns the Generator in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Generator-related data.</returns>
+        public override string ToString() => $"{State} {KeycardPermissions}";
     }
 }

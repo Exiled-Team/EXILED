@@ -7,8 +7,11 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using MEC;
 
     using UnityEngine;
 
@@ -20,25 +23,35 @@ namespace Exiled.API.Features
     public class TeslaGate
     {
         /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="TeslaGate"/> on the map.
+        /// </summary>
+        internal static readonly List<TeslaGate> TeslasValue = new(10);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         internal TeslaGate(BaseTeslaGate baseTeslaGate) => Base = baseTeslaGate;
 
         /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains all the <see cref="TeslaGate"/> instances.
+        /// </summary>
+        public static IEnumerable<TeslaGate> List => TeslasValue;
+
+        /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Player"/> which contains all the players ignored by tesla gates.
         /// </summary>
-        public static HashSet<Player> IgnoredPlayers { get; set; } = new HashSet<Player>();
+        public static HashSet<Player> IgnoredPlayers { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="RoleType"/> which contains all the roles ignored by tesla gates.
         /// </summary>
-        public static List<RoleType> IgnoredRoles { get; set; } = new List<RoleType>();
+        public static List<RoleType> IgnoredRoles { get; set; } = new();
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Team"/> which contains all the teams ignored by tesla gates.
         /// </summary>
-        public static List<Team> IgnoredTeams { get; set; } = new List<Team>();
+        public static List<Team> IgnoredTeams { get; set; } = new();
 
         /// <summary>
         /// Gets the base <see cref="BaseTeslaGate"/>.
@@ -58,7 +71,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the tesla gate's position.
         /// </summary>
-        public Vector3 Position => Base.localPosition;
+        public Vector3 Position => Transform.position;
 
         /// <summary>
         /// Gets the tesla gate's rotation.
@@ -66,12 +79,12 @@ namespace Exiled.API.Features
         public Quaternion Rotation => Quaternion.Euler(Base.localRotation);
 
         /// <summary>
-        /// Gets the tesla gate's <see cref="API.Features.Room"/> which is located in.
+        /// Gets the tesla gate's <see cref="Features.Room"/> which is located in.
         /// </summary>
         public Room Room => Map.FindParentRoom(GameObject);
 
         /// <summary>
-        /// Gets a value indicating whether the tesla gate' shock burst is in progess.
+        /// Gets a value indicating whether or not the tesla gate's shock burst is in progess.
         /// </summary>
         public bool IsShocking => Base.InProgress;
 
@@ -145,7 +158,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the tesla gate's next burst should be treated as instant burst.
+        /// Gets or sets a value indicating whether or not the tesla gate's next burst should be treated as instant burst.
         /// <para>The instant burst ignores the standard cooldown time, reducing it to the cooldown time used for bursts triggered by SCP-079.</para>
         /// </summary>
         public bool UseInstantBurst
@@ -179,7 +192,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <returns>The corresponding <see cref="TeslaGate"/> instance.</returns>
-        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => Map.TeslaGates.FirstOrDefault(teslaGate => teslaGate.Base == baseTeslaGate);
+        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => List.FirstOrDefault(teslaGate => teslaGate.Base == baseTeslaGate);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<TeslaGate> Get(Func<TeslaGate, bool> predicate) => List.Where(predicate);
 
         /// <summary>
         /// Triggers the tesla gate.
@@ -190,8 +210,46 @@ namespace Exiled.API.Features
             if (isInstantBurst)
                 Base.RpcInstantBurst();
             else
-                Base.RpcPlayAnimation();
+                Base.ServerSideCode();
         }
+
+        /// <summary>
+        /// Force triggers the tesla gate ignoring the delay between each burst.
+        /// </summary>
+        public void ForceTrigger()
+        {
+            Timing.RunCoroutine(Base.ServerSideWaitForAnimation());
+            Base.RpcPlayAnimation();
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="Player"/> is in the hurt range of a specific tesla gate.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the hurt range of the tesla gate; otherwise, <see langword="false"/>.</returns>
+        public bool PlayerInHurtRange(Player player) => Base.PlayerInHurtRange(player.GameObject);
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="Player"/> is in the idle range of a specific tesla gate.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the idle range of the tesla gate; otherwise, <see langword="false"/>.</returns>
+        public bool PlayerInIdleRange(Player player) => Base.PlayerInIdleRange(player.ReferenceHub);
+
+        /// <summary>
+        /// Gets a value indicating whether the <see cref="Player"/> is in the trigger range of a specific tesla gate.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the trigger range of the tesla gate; otherwise, <see langword="false"/>.</returns>
+        public bool PlayerInTriggerRange(Player player) => Base.PlayerInRange(player.ReferenceHub);
+
+        /// <summary>
+        /// Gets a value indicating whether the tesla gate can be idle by a specific <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if the given <see cref="Player"/> can idle the tesla gate; otherwise, <see langword="false"/>.</returns>
+        public bool CanBeIdle(Player player) => player.IsAlive && !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) &&
+                                                     !IgnoredTeams.Contains(player.Role.Team) && PlayerInIdleRange(player);
 
         /// <summary>
         /// Gets a value indicating whether the tesla gate can be triggered by a specific <see cref="Player"/>.
@@ -199,6 +257,6 @@ namespace Exiled.API.Features
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> can trigger the tesla gate; otherwise, <see langword="false"/>.</returns>
         public bool CanBeTriggered(Player player) => !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) &&
-                                                     !IgnoredTeams.Contains(player.Role.Team) && PlayersInTriggerRange.Contains(player);
+                                                     !IgnoredTeams.Contains(player.Role.Team) && PlayerInTriggerRange(player);
     }
 }

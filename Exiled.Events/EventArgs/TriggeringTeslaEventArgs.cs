@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before triggering a tesla.
+    /// Contains all information before triggering a tesla.
     /// </summary>
     public class TriggeringTeslaEventArgs : EventArgs
     {
@@ -21,14 +21,12 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="teslaGate"><inheritdoc cref="Tesla"/></param>
-        /// <param name="isInHurtingRange"><inheritdoc cref="IsInHurtingRange"/></param>
-        /// <param name="isTriggerable"><inheritdoc cref="IsTriggerable"/></param>
-        public TriggeringTeslaEventArgs(Player player, TeslaGate teslaGate, bool isInHurtingRange, bool isTriggerable)
+        public TriggeringTeslaEventArgs(Player player, TeslaGate teslaGate)
         {
             Player = player;
             Tesla = teslaGate;
-            IsInHurtingRange = isInHurtingRange;
-            IsTriggerable = isTriggerable;
+            IsInHurtingRange = Tesla.PlayerInHurtRange(player);
+            IsTriggerable = Tesla.PlayerInTriggerRange(player);
         }
 
         /// <summary>

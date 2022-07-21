@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection.Emit;
@@ -46,30 +45,30 @@ namespace Exiled.Events.Patches.Events.Map
             //
             // if (!ev.IsAllowed)
             //   return;
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(GeneratorActivatedEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.OnGeneratorActivated))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, retModLabel),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GeneratorActivatedEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnGeneratorActivated))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, retModLabel),
             });
 
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(retModLabel),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brtrue, returnLabel),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079Generator), nameof(Scp079Generator._leverStopwatch))),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Stopwatch), nameof(Stopwatch.Restart))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                new(OpCodes.Brtrue, returnLabel),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(Scp079Generator), nameof(Scp079Generator._leverStopwatch))),
+                new(OpCodes.Callvirt, Method(typeof(Stopwatch), nameof(Stopwatch.Restart))),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

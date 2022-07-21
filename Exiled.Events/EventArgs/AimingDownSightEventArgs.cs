@@ -25,14 +25,18 @@ namespace Exiled.Events.EventArgs
         /// <param name="adsOut"><inheritdoc cref="AdsOut"/></param>
         public AimingDownSightEventArgs(Player player, bool adsIn, bool adsOut)
         {
-            Firearm = player.CurrentItem as Firearm;
+            if (player?.CurrentItem is Firearm firearm)
+                Firearm = firearm;
+            else
+                Firearm = null;
+
             Player = player;
             AdsIn = adsIn;
             AdsOut = adsOut;
         }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Items.Firearm"/> used to trigger the aim action.
+        /// Gets the <see cref="API.Features.Items.Firearm"/> used to trigger the aim action.
         /// </summary>
         public Firearm Firearm { get; }
 

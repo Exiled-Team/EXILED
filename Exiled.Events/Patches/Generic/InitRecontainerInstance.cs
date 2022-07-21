@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -25,14 +24,14 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Recontainer079), nameof(Recontainer079.Start))]
     internal class InitRecontainerInstance
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

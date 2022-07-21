@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before banning a player from the server.
+    /// Contains all information before banning a player from the server.
     /// </summary>
     public class BanningEventArgs : KickingEventArgs
     {
@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="target">The ban target.</param>
         /// <param name="issuer">The ban issuer.</param>
-        /// <param name="duration">The ban minutes duration.</param>
+        /// <param name="duration">The ban seconds duration.</param>
         /// <param name="reason">The ban reason.</param>
         /// <param name="fullMessage">The ban full message.</param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>

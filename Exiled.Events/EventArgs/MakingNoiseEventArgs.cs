@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player makes noise.
+    /// Contains all information before a player makes noise.
     /// </summary>
     public class MakingNoiseEventArgs : EventArgs
     {

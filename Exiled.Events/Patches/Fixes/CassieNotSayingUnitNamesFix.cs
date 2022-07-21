@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
 
     using System.Text.RegularExpressions;
 
@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Fixes
         {
             try
             {
-                string[] array = Regex.Replace(regular, "<[^>]*?>", string.Empty).Split(new char[] { '-' });
+                string[] array = Regex.Replace(regular, "<[^>]*?>", string.Empty).Split('-');
 
                 __result = $"NATO_{array[0][0]} {array[1]}";
             }

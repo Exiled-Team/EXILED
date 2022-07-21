@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -21,7 +22,12 @@ namespace Exiled.API.Features
     /// </summary>
     public class Camera
     {
-        private static readonly Dictionary<string, CameraType> NameToCameraType = new Dictionary<string, CameraType>
+        /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="Camera"/>s on the map.
+        /// </summary>
+        internal static readonly List<Camera> CamerasValue = new(250);
+
+        private static readonly Dictionary<string, CameraType> NameToCameraType = new()
         {
             // Light Containment
             ["173 chamber"] = CameraType.Lcz173Chamber,
@@ -114,6 +120,17 @@ namespace Exiled.API.Features
         internal Camera(Camera079 camera079) => Base = camera079;
 
         /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances.
+        /// </summary>
+        public static IEnumerable<Camera> List => CamerasValue;
+
+        /// <summary>
+        /// Gets a random <see cref="Camera"/>.
+        /// </summary>
+        /// <returns><see cref="Camera"/> object.</returns>
+        public static Camera Random => List.ElementAt(UnityEngine.Random.Range(0, List.Count()));
+
+        /// <summary>
         /// Gets the base <see cref="Camera079"/>.
         /// </summary>
         public Camera079 Base { get; }
@@ -122,6 +139,11 @@ namespace Exiled.API.Features
         /// Gets the camera's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the camera's name.
@@ -151,96 +173,61 @@ namespace Exiled.API.Features
             get
             {
                 string cameraName = Name.ToLower();
+                if (NameToCameraType.ContainsKey(cameraName))
+                    return NameToCameraType[cameraName];
 
-                if (Room == null)
-                    return NameToCameraType.ContainsKey(cameraName) ? NameToCameraType[cameraName] : CameraType.Unknown;
+                if (Room is null)
+                    return CameraType.Unknown;
 
-                switch (cameraName)
+                return cameraName switch
                 {
-                    case "corner":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczCorner;
-                            case ZoneType.HeavyContainment:
-                                return CameraType.HczCorner;
-                            case ZoneType.Entrance:
-                                return CameraType.EzCorner;
-                        }
-
-                        break;
-                    case "x-type inters":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczXIntersection;
-                            case ZoneType.HeavyContainment:
-                                return CameraType.HczXIntersection;
-                        }
-
-                        break;
-                    case "t-type inters":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczTIntersection;
-                            case ZoneType.HeavyContainment:
-                                return CameraType.HczTIntersection;
-                        }
-
-                        break;
-                    case "straight":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczHall;
-                            case ZoneType.HeavyContainment:
-                                return CameraType.HczHall;
-                        }
-
-                        break;
-                    case "offices":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczCafe;
-                            case ZoneType.Entrance:
-                                return CameraType.EzOffice;
-                        }
-
-                        break;
-                    case "gate a":
-                        switch (Zone)
-                        {
-                            case ZoneType.Entrance:
-                                return CameraType.EzGateA;
-                            case ZoneType.Surface:
-                                return CameraType.SurfaceGateA;
-                        }
-
-                        break;
-                    case "gate b":
-                        switch (Zone)
-                        {
-                            case ZoneType.Entrance:
-                                return CameraType.EzGateB;
-                            case ZoneType.Surface:
-                                return CameraType.SurfaceGate;
-                        }
-
-                        break;
-                }
-
-                // If it's not a room name shared by multiple zones, or the given room is null, look in the dictionary.
-                // Entrance Zone T-halls, X-halls, and straight halls are named differently than LCZ and HCZ.
-                return NameToCameraType.ContainsKey(cameraName) ? NameToCameraType[cameraName] : CameraType.Unknown;
+                    "corner" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczCorner,
+                        ZoneType.HeavyContainment => CameraType.HczCorner,
+                        ZoneType.Entrance => CameraType.EzCorner,
+                        _ => CameraType.Unknown,
+                    },
+                    "x-type inters" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczXIntersection,
+                        ZoneType.HeavyContainment => CameraType.HczXIntersection,
+                        _ => CameraType.Unknown,
+                    },
+                    "t-type inters" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczTIntersection,
+                        ZoneType.HeavyContainment => CameraType.HczTIntersection,
+                        _ => CameraType.Unknown,
+                    },
+                    "straight" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczHall,
+                        ZoneType.HeavyContainment => CameraType.HczHall,
+                        _ => CameraType.Unknown,
+                    },
+                    "offices" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczCafe,
+                        ZoneType.HeavyContainment => CameraType.EzOffice,
+                        _ => CameraType.Unknown,
+                    },
+                    "gate a" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.EzGateA,
+                        ZoneType.HeavyContainment => CameraType.SurfaceGateA,
+                        _ => CameraType.Unknown,
+                    },
+                    "gate b" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.EzGateB,
+                        ZoneType.HeavyContainment => CameraType.SurfaceGate,
+                        _ => CameraType.Unknown,
+                    },
+                    _ => CameraType.Unknown,
+                };
             }
         }
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the position of the camera's head.
@@ -362,7 +349,7 @@ namespace Exiled.API.Features
                 {
                     while (enumerator.MoveNext())
                     {
-                        if (enumerator.Current.currentCamera == null || enumerator.Current.currentCamera != Base)
+                        if (enumerator.Current.currentCamera is null || enumerator.Current.currentCamera != Base)
                             continue;
 
                         return true;
@@ -374,11 +361,9 @@ namespace Exiled.API.Features
 
             set
             {
-                using (List<Scp079PlayerScript>.Enumerator enumerator = Scp079PlayerScript.instances.GetEnumerator())
-                {
-                    while (enumerator.MoveNext())
-                        enumerator.Current.RpcSwitchCamera(Id, true);
-                }
+                using List<Scp079PlayerScript>.Enumerator enumerator = Scp079PlayerScript.instances.GetEnumerator();
+                while (enumerator.MoveNext())
+                    enumerator.Current.RpcSwitchCamera(Id, true);
             }
         }
 
@@ -394,27 +379,40 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base <see cref="Camera079"/>.</param>
         /// <returns>A <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(Camera079 camera079) => Map.Cameras.FirstOrDefault(camera => camera.Base == camera079);
+        public static Camera Get(Camera079 camera079) => List.FirstOrDefault(camera => camera.Base == camera079);
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified id.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
         /// <returns>The <see cref="Camera"/> with the given id or <see langword="null"/> if not found.</returns>
-        public static Camera Get(uint cameraId) => Map.Cameras.FirstOrDefault(camera => camera.Id == cameraId);
+        public static Camera Get(uint cameraId) => List.FirstOrDefault(camera => camera.Id == cameraId);
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified name.
         /// </summary>
         /// <param name="cameraName">The name of the camera.</param>
         /// <returns>The <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(string cameraName) => Map.Cameras.FirstOrDefault(camera => camera.Name == cameraName);
+        public static Camera Get(string cameraName) => List.FirstOrDefault(camera => camera.Name == cameraName);
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified <see cref="CameraType"/>.
         /// </summary>
         /// <param name="cameraType">The <see cref="CameraType"/> to search for.</param>
         /// <returns>The <see cref="Camera"/> with the given <see cref="CameraType"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(CameraType cameraType) => Map.Cameras.FirstOrDefault(camera => camera.Type == cameraType);
+        public static Camera Get(CameraType cameraType) => List.FirstOrDefault(camera => camera.Type == cameraType);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Returns the Camera in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Camera-related data.</returns>
+        public override string ToString() => $"{Zone} {Type} {Name} {Id} {IsBeingUsed}";
     }
 }

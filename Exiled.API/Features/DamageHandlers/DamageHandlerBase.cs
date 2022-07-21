@@ -13,6 +13,7 @@ namespace Exiled.API.Features.DamageHandlers
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
 
     using PlayerStatsSystem;
 
@@ -86,50 +87,31 @@ namespace Exiled.API.Features.DamageHandlers
         {
             get
             {
-                if (!(damageType is DamageType.Unknown))
+                if (damageType != DamageType.Unknown)
                     return damageType;
 
                 switch (Base)
                 {
-                    case CustomReasonDamageHandler _:
+                    case CustomReasonDamageHandler:
                         return DamageType.Custom;
-                    case WarheadDamageHandler _:
+                    case WarheadDamageHandler:
                         return DamageType.Warhead;
-                    case ExplosionDamageHandler _:
+                    case ExplosionDamageHandler:
                         return DamageType.Explosion;
-                    case Scp018DamageHandler _:
+                    case Scp018DamageHandler:
                         return DamageType.Scp018;
-                    case RecontainmentDamageHandler _:
+                    case RecontainmentDamageHandler:
                         return DamageType.Recontainment;
+                    case MicroHidDamageHandler:
+                        return DamageType.MicroHid;
+                    case DisruptorDamageHandler:
+                        return DamageType.ParticleDisruptor;
                     case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
 
-                            if (TranslationConversion.ContainsKey(translation))
-                                return TranslationConversion[translation];
-
-                            if (translation.Id == DeathTranslations.Asphyxiated.Id)
-                                return DamageType.Asphyxiation;
-                            if (translation.Id == DeathTranslations.Bleeding.Id)
-                                return DamageType.Bleeding;
-                            if (translation.Id == DeathTranslations.Decontamination.Id)
-                                return DamageType.Decontamination;
-                            if (translation.Id == DeathTranslations.Poisoned.Id)
-                                return DamageType.Poison;
-                            if (translation.Id == DeathTranslations.Falldown.Id)
-                                return DamageType.Falldown;
-                            if (translation.Id == DeathTranslations.Tesla.Id)
-                                return DamageType.Tesla;
-                            if (translation.Id == DeathTranslations.Scp207.Id)
-                                return DamageType.Scp207;
-                            if (translation.Id == DeathTranslations.Crushed.Id)
-                                return DamageType.Crushed;
-                            if (translation.Id == DeathTranslations.UsedAs106Bait.Id)
-                                return DamageType.FemurBreaker;
-                            if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
-                                return DamageType.FriendlyFireDetector;
-                            if (translation.Id == DeathTranslations.SeveredHands.Id)
-                                return DamageType.SeveredHands;
+                            if (DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id))
+                                return DamageTypeExtensions.TranslationIdConversion[translation.Id];
 
                             Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                             break;
@@ -151,37 +133,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets the <see cref="PlayerStatsSystem.DeathTranslation"/>.
         /// </summary>
-        public virtual DeathTranslation DeathTranslation => TranslationConversion.FirstOrDefault(translation => translation.Value == Type).Key;
-
-        /// <summary>
-        /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
-        /// </summary>
-        internal static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
-        {
-            { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
-            { DeathTranslations.Bleeding, DamageType.Bleeding },
-            { DeathTranslations.Crushed, DamageType.Crushed },
-            { DeathTranslations.Decontamination, DamageType.Decontamination },
-            { DeathTranslations.Explosion, DamageType.Explosion },
-            { DeathTranslations.Falldown, DamageType.Falldown },
-            { DeathTranslations.Poisoned, DamageType.Poison },
-            { DeathTranslations.Recontained, DamageType.Recontainment },
-            { DeathTranslations.Scp049, DamageType.Scp049 },
-            { DeathTranslations.Scp096, DamageType.Scp096 },
-            { DeathTranslations.Scp173, DamageType.Scp173 },
-            { DeathTranslations.Scp207, DamageType.Scp207 },
-            { DeathTranslations.Scp939, DamageType.Scp939 },
-            { DeathTranslations.Tesla, DamageType.Tesla },
-            { DeathTranslations.Unknown, DamageType.Unknown },
-            { DeathTranslations.Warhead, DamageType.Warhead },
-            { DeathTranslations.Zombie, DamageType.Scp0492 },
-            { DeathTranslations.BulletWounds, DamageType.Firearm },
-            { DeathTranslations.PocketDecay, DamageType.PocketDimension },
-            { DeathTranslations.SeveredHands, DamageType.SeveredHands },
-            { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
-            { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
-            { DeathTranslations.MicroHID, DamageType.MicroHid },
-        };
+        public virtual DeathTranslation DeathTranslation => DamageTypeExtensions.TranslationConversion.FirstOrDefault(translation => translation.Value == Type).Key;
 
         /// <summary>
         /// Implicitly converts the given <see cref="DamageHandlerBase"/> instance to a <see cref="BaseHandler"/> object.
@@ -209,7 +161,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
         /// <returns>A <see cref="BaseHandler"/> object.</returns>
-        public T Cast<T>()
+        public T As<T>()
             where T : BaseHandler => Base as T;
 
         /// <summary>
@@ -217,7 +169,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
         /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
-        public T BaseCast<T>()
+        public T BaseAs<T>()
             where T : DamageHandlerBase => this as T;
 
         /// <summary>
@@ -226,12 +178,12 @@ namespace Exiled.API.Features.DamageHandlers
         /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
         /// <param name="param">The casted <see cref="BaseHandler"/>.</param>
         /// <returns>A <see cref="BaseHandler"/> object.</returns>
-        public bool SafeCast<T>(out T param)
+        public bool Is<T>(out T param)
             where T : BaseHandler
         {
             param = default;
 
-            if (!(Base is T cast))
+            if (Base is not T cast)
                 return false;
 
             param = cast;
@@ -244,12 +196,12 @@ namespace Exiled.API.Features.DamageHandlers
         /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
         /// <param name="param">The casted <see cref="DamageHandlerBase"/>.</param>
         /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
-        public bool SafeBaseCast<T>(out T param)
+        public bool BaseIs<T>(out T param)
             where T : DamageHandlerBase
         {
             param = default;
 
-            if (!(this is T cast))
+            if (this is not T cast)
                 return false;
 
             param = cast;
@@ -295,7 +247,7 @@ namespace Exiled.API.Features.DamageHandlers
             /// </summary>
             /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> instance.</param>
             public static implicit operator BaseHandler.CassieAnnouncement(CassieAnnouncement cassieAnnouncement) =>
-                new BaseHandler.CassieAnnouncement()
+                new()
                 {
                     Announcement = cassieAnnouncement.Announcement,
                     SubtitleParts = cassieAnnouncement.SubtitleParts.ToArray(),
@@ -306,7 +258,7 @@ namespace Exiled.API.Features.DamageHandlers
             /// </summary>
             /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> instance.</param>
             public static implicit operator CassieAnnouncement(BaseHandler.CassieAnnouncement cassieAnnouncement) =>
-                new CassieAnnouncement(cassieAnnouncement.Announcement, cassieAnnouncement.SubtitleParts);
+                new(cassieAnnouncement.Announcement, cassieAnnouncement.SubtitleParts);
         }
     }
 }

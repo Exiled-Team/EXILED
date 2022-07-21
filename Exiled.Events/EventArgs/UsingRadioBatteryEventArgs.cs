@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Radio;
 
     /// <summary>
-    /// Contains all informations before radio battery charge is changed.
+    /// Contains all information before radio battery charge is changed.
     /// </summary>
     public class UsingRadioBatteryEventArgs : EventArgs
     {
@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Items.Radio"/> which is being used.
+        /// Gets the <see cref="API.Features.Items.Radio"/> which is being used.
         /// </summary>
         public Radio Radio { get; }
 

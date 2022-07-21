@@ -43,7 +43,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
         public bool MoveNext()
         {
             current = current.Next;
-            return current != null;
+            return current is not null;
         }
 
         /// <summary>

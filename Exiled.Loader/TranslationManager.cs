@@ -11,10 +11,12 @@ namespace Exiled.Loader
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
+
     using YamlDotNet.Core;
 
     /// <summary>
@@ -34,11 +36,11 @@ namespace Exiled.Loader
                 Log.Info($"Loading plugin translations... ({Loader.Config.ConfigType})");
 
                 Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
-                SortedDictionary<string, ITranslation> deserializedTranslations = new SortedDictionary<string, ITranslation>(StringComparer.Ordinal);
+                SortedDictionary<string, ITranslation> deserializedTranslations = new(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
-                    if (plugin.InternalTranslation == null)
+                    if (plugin.InternalTranslation is null)
                         continue;
 
                     deserializedTranslations.Add(plugin.Prefix, plugin.LoadTranslation(rawDeserializedTranslations));
@@ -69,16 +71,11 @@ namespace Exiled.Loader
         /// <param name="plugin">The plugin which its translation has to be loaded.</param>
         /// <param name="rawTranslations">The raw translations to check whether or not the plugin already has a translation config.</param>
         /// <returns>The <see cref="ITranslation"/> of the desired plugin.</returns>
-        public static ITranslation LoadTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations = null)
+        public static ITranslation LoadTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations = null) => Loader.Config.ConfigType switch
         {
-            switch (Loader.Config.ConfigType)
-            {
-                case ConfigType.Separated:
-                    return plugin.LoadSeparatedTranslation();
-                default:
-                    return plugin.LoadDefaultTranslation(rawTranslations);
-            }
-        }
+            ConfigType.Separated => plugin.LoadSeparatedTranslation(),
+            _ => plugin.LoadDefaultTranslation(rawTranslations),
+        };
 
         /// <summary>
         /// Reads, Loads and Saves plugin translations.
@@ -141,7 +138,7 @@ namespace Exiled.Loader
         {
             try
             {
-                if (translations == null || translations.Count == 0)
+                if (translations is null || translations.Count == 0)
                     return false;
 
                 if (Loader.Config.ConfigType == ConfigType.Default)
@@ -212,7 +209,7 @@ namespace Exiled.Loader
         /// <returns>The <see cref="ITranslation"/> of the desired plugin.</returns>
         private static ITranslation LoadDefaultTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations)
         {
-            if (rawTranslations == null)
+            if (rawTranslations is null)
             {
                 rawTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
             }

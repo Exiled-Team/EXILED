@@ -33,7 +33,7 @@ namespace Exiled.CustomRoles.Commands
         /// <summary>
         /// Gets the <see cref="Give"/> command instance.
         /// </summary>
-        public static Give Instance { get; } = new Give();
+        public static Give Instance { get; } = new();
 
         /// <inheritdoc/>
         public string Command { get; } = "give";
@@ -92,9 +92,10 @@ namespace Exiled.CustomRoles.Commands
                         role.AddRole(player);
 
                     response = $"Custom role {role.Name} given to all players.";
+                    ListPool<Player>.Shared.Return(players);
                     return true;
                 default:
-                    if (!(Player.Get(identifier) is Player ply))
+                    if (Player.Get(identifier) is not Player ply)
                     {
                         response = $"Unable to find a player: {identifier}";
                         return false;

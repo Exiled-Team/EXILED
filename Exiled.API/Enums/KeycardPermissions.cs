@@ -9,9 +9,15 @@ namespace Exiled.API.Enums
 {
     using System;
 
+    using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
     /// <summary>
     /// The types of permissions assigned to keycards.
     /// </summary>
+    /// <seealso cref="Generator.KeycardPermissions"/>
+    /// <seealso cref="Generator.SetPermissionFlag(KeycardPermissions, bool)"/>
+    /// <seealso cref="Keycard.Permissions"/>
     [Flags]
     public enum KeycardPermissions
     {
@@ -41,7 +47,7 @@ namespace Exiled.API.Enums
         AlphaWarhead = 8,
 
         /// <summary>
-        /// Opens <see cref="DoorType.Scp914"/>.
+        /// Opens <see cref="DoorType.Scp914Gate"/>.
         /// </summary>
         ContainmentLevelOne = 16, // 0x0010
 

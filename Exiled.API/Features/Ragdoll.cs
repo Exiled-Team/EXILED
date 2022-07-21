@@ -7,10 +7,13 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using DeathAnimations;
+
+    using Exiled.API.Enums;
 
     using Mirror;
 
@@ -40,10 +43,10 @@ namespace Exiled.API.Features
         /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
         public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
         {
-            GameObject model_ragdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
-            if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            GameObject modelRagdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
+            if (modelRagdoll is null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
-            ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, model_ragdoll.transform.localPosition, model_ragdoll.transform.localRotation);
+            ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, modelRagdoll.transform.localPosition, modelRagdoll.transform.localRotation);
             this.ragdoll = ragdoll;
             Map.RagdollsValue.Add(this);
             if (canBeSpawned)
@@ -57,8 +60,8 @@ namespace Exiled.API.Features
         /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
         public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
         {
-            GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
-            if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            GameObject modelRagdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
+            if (modelRagdoll is null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = ragdollInfo;
             this.ragdoll = ragdoll;
@@ -102,6 +105,11 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.Transform"/> of the ragdoll.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollInfo">NetworkInfo</see>.
         /// </summary>
         public RagdollInfo NetworkInfo
@@ -126,22 +134,21 @@ namespace Exiled.API.Features
         public DeathAnimation[] DeathAnimations => ragdoll.AllDeathAnimations;
 
         /// <summary>
-        /// Gets a value indicating whether the ragdoll has been already cleaned up.
+        /// Gets a value indicating whether or not the ragdoll has been already cleaned up.
         /// </summary>
         public bool IsCleanedUp => ragdoll._cleanedUp;
 
         /// <summary>
-        /// Gets or sets a value indicating whether can be cleaned up.
+        /// Gets or sets a value indicating whether or not the ragdoll can be cleaned up.
         /// </summary>
         public bool CanBeCleanedUp
         {
             get => IgnoredRagdolls.Contains(Base);
             set
             {
-                if (!value || IgnoredRagdolls.Contains(Base))
+                if (!value)
                 {
-                    if (!value && IgnoredRagdolls.Contains(Base))
-                        IgnoredRagdolls.Remove(Base);
+                    IgnoredRagdolls.Remove(Base);
                 }
                 else
                 {
@@ -151,7 +158,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the ragdoll is currently playing animations.
+        /// Gets a value indicating whether or not the ragdoll is currently playing animations.
         /// </summary>
         public bool IsPlayingAnimations => ragdoll._playingLocalAnims;
 
@@ -175,6 +182,11 @@ namespace Exiled.API.Features
         public Player Owner => Player.Get(ragdoll.Info.OwnerHub);
 
         /// <summary>
+        /// Gets the time that the ragdoll was spawned.
+        /// </summary>
+        public DateTime CreationTime => new((long)NetworkInfo.CreationTime);
+
+        /// <summary>
         /// Gets the <see cref="RoleType"/> of the ragdoll.
         /// </summary>
         public RoleType Role => NetworkInfo.RoleType;
@@ -188,6 +200,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Features.Room"/> the ragdoll is located in.
         /// </summary>
         public Room Room => Map.FindParentRoom(GameObject);
+
+        /// <summary>
+        /// Gets the <see cref="ZoneType"/> the ragdoll is in.
+        /// </summary>
+        public ZoneType Zone => Room.Zone;
 
         /// <summary>
         /// Gets or sets the ragdoll's position.
@@ -239,7 +256,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="RagDoll"/>'s that will be ignored by clean up event.
         /// </summary>
-        internal static HashSet<RagDoll> IgnoredRagdolls { get; set; } = new HashSet<RagDoll>();
+        internal static HashSet<RagDoll> IgnoredRagdolls { get; set; } = new();
 
         /// <summary>
         /// Gets the <see cref="Ragdoll"/> belonging to the <see cref="RagDoll"/>, if any.
@@ -267,13 +284,23 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The ragdoll's <see cref="Player">owner</see>.</param>
         /// <param name="handler">The player's <see cref="DamageHandlerBase"/>.</param>
-        public static void Spawn(Player player, DamageHandlerBase handler) => ServerSpawnRagdoll(player.ReferenceHub, handler);
+        [Obsolete("Use Spawn(Player, Exiled.API.Features.DamageHandlers.DamageHandlerBase) instead.", true)]
+        public static void Spawn(Player player, DamageHandlerBase handler) => _ = new Ragdoll(player, handler, true);
 
         /// <summary>
         /// Spawns a <see cref="Ragdoll"/> on the map.
         /// </summary>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
-        public static void Spawn(RagdollInfo ragdollInfo) => ServerSpawnRagdoll(ragdollInfo.OwnerHub, ragdollInfo.Handler);
+        [Obsolete("Use Spawn(Player, Exiled.API.Features.DamageHandlers.DamageHandlerBase) instead.", true)]
+        public static void Spawn(RagdollInfo ragdollInfo) => _ = new Ragdoll(ragdollInfo, true);
+
+        /// <summary>
+        /// Spawns a <see cref="Ragdoll"/> on the map.
+        /// </summary>
+        /// <param name="player">The ragdoll's <see cref="Player"/> owner.</param>
+        /// <param name="handler">The ragdoll's <see cref="DamageHandlerBase"/>.</param>
+        /// <returns>The created <see cref="Ragdoll"/>.</returns>
+        public static Ragdoll Spawn(Player player, DamageHandlers.DamageHandlerBase handler) => new(player, handler, true);
 
         /// <summary>
         /// Deletes the ragdoll.
@@ -293,5 +320,11 @@ namespace Exiled.API.Features
         /// Un-spawns the ragdoll.
         /// </summary>
         public void UnSpawn() => NetworkServer.UnSpawn(GameObject);
+
+        /// <summary>
+        /// Returns the Ragdoll in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Ragdoll-related data.</returns>
+        public override string ToString() => $"{Owner} {Name} {DeathReason} {Role} {CreationTime} {AllowRecall}";
     }
 }

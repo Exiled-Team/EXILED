@@ -21,7 +21,7 @@ namespace Exiled.CustomRoles.Commands.List
         /// <summary>
         /// Gets the <see cref="List"/> command instance.
         /// </summary>
-        public static List Instance { get; } = new List();
+        public static List Instance { get; } = new();
 
         /// <inheritdoc/>
         public override string Command { get; } = "list";
@@ -41,7 +41,7 @@ namespace Exiled.CustomRoles.Commands.List
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Invalid subcommand! Available: registered, tracked.";
+            response = "Invalid subcommand! Available: registered.";
             return false;
         }
     }

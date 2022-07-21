@@ -8,10 +8,11 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all the information after a <see cref="Exiled.API.Features.Player"/> lands on the ground.
+    /// Contains all the information after a <see cref="API.Features.Player"/> lands on the ground.
     /// </summary>
     public class LandingEventArgs : EventArgs
     {
@@ -22,7 +23,7 @@ namespace Exiled.Events.EventArgs
         public LandingEventArgs(Player player) => Player = player;
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Player"/> who's landing.
+        /// Gets the <see cref="API.Features.Player"/> who's landing.
         /// </summary>
         public Player Player { get; }
     }

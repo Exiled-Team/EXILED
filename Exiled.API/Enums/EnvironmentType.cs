@@ -31,5 +31,10 @@ namespace Exiled.API.Enums
         /// The ptb environment, for Public Test Builds.
         /// </summary>
         Ptb,
+
+        /// <summary>
+        /// The Production environemnt, for public, with debug.
+        /// </summary>
+        ProductionDebug,
     }
 }

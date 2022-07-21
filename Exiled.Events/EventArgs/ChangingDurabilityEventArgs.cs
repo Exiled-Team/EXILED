@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Items;
 
     /// <summary>
-    /// Contains all informations before changing item durability.
+    /// Contains all information before changing item durability.
     /// </summary>
     public class ChangingDurabilityEventArgs : System.EventArgs
     {
@@ -23,10 +23,17 @@ namespace Exiled.Events.EventArgs
         /// <param name="oldDurability"><inheritdoc cref="OldDurability"/></param>
         /// <param name="newDurability"><inheritdoc cref="NewDurability"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingDurabilityEventArgs(Player player, InventorySystem.Items.Firearms.Firearm firearm, byte oldDurability, byte newDurability, bool isAllowed = true)
+        public ChangingDurabilityEventArgs(Player player, InventorySystem.Items.ItemBase firearm, byte oldDurability, byte newDurability, bool isAllowed = true)
         {
+            if (firearm is not InventorySystem.Items.Firearms.Firearm firearmBase)
+                return;
+
+            Item item = Item.Get(firearmBase);
+            if(item is not Firearm firearmItem)
+                return;
+
             Player = player;
-            Firearm = (Firearm)Item.Get(firearm);
+            Firearm = firearmItem;
             OldDurability = oldDurability;
             NewDurability = newDurability;
             IsAllowed = isAllowed;

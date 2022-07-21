@@ -27,7 +27,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances used for the containment zone.
         /// </summary>
-        public static IEnumerable<Door> ContainmentGates => Map.Doors.Where(door => Base._containmentGates.Contains(door.Base));
+        public static IEnumerable<Door> ContainmentGates => Door.Get(door => Base._containmentGates.Contains(door.Base));
 
         /// <summary>
         /// Gets a value indicating whether the C.A.S.S.I.E is currently busy.
@@ -87,7 +87,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the activator's window.
         /// </summary>
-        public static BreakableWindow ActivatorWindow => Base._activatorGlass;
+        public static Window ActivatorWindow => Window.Get(Base._activatorGlass);
 
         /// <summary>
         /// Gets the activator's position.
@@ -169,7 +169,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances locked during the overcharge procedure.
         /// </summary>
-        public static IEnumerable<Door> LockedDoors => Map.Doors.Where(door => Base._lockedDoors.Contains(door.Base));
+        public static IEnumerable<Door> LockedDoors => Door.Get(door => Base._lockedDoors.Contains(door.Base));
 
         /// <summary>
         /// Tries to kill SCP-079.
@@ -219,5 +219,10 @@ namespace Exiled.API.Features
         /// Refreshes the activator.
         /// </summary>
         public static void RefreshActivator() => Base.RefreshActivator();
+
+        /// <summary>
+        /// Breaks the glass protecting the activator button.
+        /// </summary>
+        public static void BreakGlass() => ActivatorWindow.BreakWindow();
     }
 }

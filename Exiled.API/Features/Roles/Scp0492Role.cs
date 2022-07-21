@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.Roles
 {
-    using UnityEngine;
-
     /// <summary>
     /// Defines a role that represents SCP-049-2.
     /// </summary>
@@ -30,12 +28,17 @@ namespace Exiled.API.Features.Roles
         public override Player Owner { get; }
 
         /// <summary>
+        /// Gets the <see cref="Scp049_2PlayerScript"/> for this role.
+        /// </summary>
+        public Scp049_2PlayerScript Script => script ??= Owner.ReferenceHub.characterClassManager.Scp0492;
+
+        /// <summary>
         /// Gets or sets the SCP-049-2 attack distance.
         /// </summary>
         public float AttackDistance
         {
-            get => script.distance;
-            set => script.distance = value;
+            get => Script.distance;
+            set => Script.distance = value;
         }
 
         /// <summary>
@@ -43,8 +46,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackDamage
         {
-            get => script.damage;
-            set => script.damage = value;
+            get => Script.damage;
+            set => Script.damage = value;
         }
 
         /// <summary>
@@ -52,8 +55,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackCooldown
         {
-            get => script.attackCooldown;
-            set => script.attackCooldown = value;
+            get => Script.attackCooldown;
+            set => Script.attackCooldown = value;
         }
 
         /// <inheritdoc/>

@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Roles
     using System;
 
     /// <summary>
-    /// Defines a role that represents a human class.
+    /// Defines a role that represents a spectator.
     /// </summary>
     public class SpectatorRole : Role
     {
@@ -29,7 +29,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="DateTime"/> at which the player died.
         /// </summary>
-        public DateTime DeathTime => new DateTime(Owner.ReferenceHub.characterClassManager.DeathTime);
+        public DateTime DeathTime => new(Owner.ReferenceHub.characterClassManager.DeathTime);
 
         /// <summary>
         /// Gets the total amount of time the player has been dead.
@@ -44,17 +44,14 @@ namespace Exiled.API.Features.Roles
             get
             {
                 Player spectatedPlayer = Player.Get(Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
-
-                if (spectatedPlayer == Owner)
-                    return null;
-
-                return spectatedPlayer;
+                return spectatedPlayer != Owner ? spectatedPlayer : null;
             }
 
+            [Obsolete("Client side feature.", true)]
             set
             {
                 if (Owner.IsAlive)
-                    throw new System.InvalidOperationException("The spectated player cannot be set on an alive player.");
+                    throw new InvalidOperationException("The spectated player cannot be set on an alive player.");
 
                 Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
                 Owner.ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);

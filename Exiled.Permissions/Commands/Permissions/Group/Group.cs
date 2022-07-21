@@ -14,6 +14,8 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
     using Exiled.Permissions.Extensions;
 
+    using NorthwoodLib.Pools;
+
     /// <summary>
     /// Handles commands about permissions groups.
     /// </summary>
@@ -28,7 +30,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         public override string Command { get; } = "groups";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = new string[] { "grps" };
+        public override string[] Aliases { get; } = new[] { "grps" };
 
         /// <inheritdoc/>
         public override string Description { get; } = "Handles commands about permissions groups.";
@@ -63,11 +65,11 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
             Permissions.Groups.TryGetValue(arguments.At(0), out Features.Group group);
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
 
             stringBuilder.AppendLine($"Group: {arguments.At(0)}");
 
-            if (group == null)
+            if (group is null)
             {
                 stringBuilder.AppendLine($"Group is null.");
                 response = stringBuilder.ToString();
@@ -93,6 +95,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
             }
 
             response = stringBuilder.ToString();
+            StringBuilderPool.Shared.Return(stringBuilder);
             return true;
         }
     }

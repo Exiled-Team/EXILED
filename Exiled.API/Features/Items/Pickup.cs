@@ -25,7 +25,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new Dictionary<ItemPickupBase, Pickup>();
+        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new();
 
         private ushort id;
 
@@ -131,6 +131,15 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets the previous owner of this item.
+        /// </summary>
+        public Player PreviousOwner
+        {
+            get => Player.Get(Base.PreviousOwner.Hub);
+            set => Base.PreviousOwner = value.Footprint;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the pickup is currently in use.
         /// </summary>
         public bool InUse
@@ -189,9 +198,28 @@ namespace Exiled.API.Features.Items
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> to convert into a <see cref="Pickup"/>.</param>
         /// <returns>The <see cref="Pickup"/> wrapper for the given <see cref="ItemPickupBase"/>.</returns>
         public static Pickup Get(ItemPickupBase pickupBase) =>
-            pickupBase == null ? null :
+            pickupBase is null ? null :
             BaseToItem.ContainsKey(pickupBase) ? BaseToItem[pickupBase] :
             new Pickup(pickupBase);
+
+        /// <summary>
+        /// Gets all <see cref="Pickup"/> with the given <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to look for.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
+        public static IEnumerable<Pickup> Get(ItemType type)
+        {
+            List<Pickup> pickups = new();
+            foreach (Pickup p in Map.Pickups)
+            {
+                if (p.Type == type)
+                {
+                    pickups.Add(p);
+                }
+            }
+
+            return pickups;
+        }
 
         /// <summary>
         /// Destroys the pickup.
@@ -202,9 +230,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
     }
 }

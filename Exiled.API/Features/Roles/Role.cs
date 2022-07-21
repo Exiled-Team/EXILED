@@ -7,7 +7,10 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
+
+    using UnityEngine;
 
     /// <summary>
     /// Defines the class for role-related classes.
@@ -37,12 +40,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this role.
         /// </summary>
-        public Enums.Side Side => Type.GetSide();
+        public Side Side => Type.GetSide();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this role.
         /// </summary>
-        public UnityEngine.Color Color => Type.GetColor();
+        public Color Color => Type.GetColor();
 
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
@@ -59,6 +62,32 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="role">The role.</param>
         public static implicit operator RoleType(Role role) => role?.Type ?? RoleType.None;
+
+        /// <summary>
+        /// Returns whether or not 2 roles are the same.
+        /// </summary>
+        /// <param name="role1">The role.</param>
+        /// <param name="role2">The other role.</param>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
+        public static bool operator ==(Role role1, Role role2)
+        {
+            if (role1 is null)
+                return role2 is null;
+            return role1.Equals(role2);
+        }
+
+        /// <summary>
+        /// Returns whether or not the two roles are different.
+        /// </summary>
+        /// <param name="role1">The role.</param>
+        /// <param name="role2">The other role.</param>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
+        public static bool operator !=(Role role1, Role role2)
+        {
+            if (role1 is null)
+                return role2 is not null;
+            return !role1.Equals(role2);
+        }
 
         /// <summary>
         /// Returns whether or not the role has the same RoleType as the given <paramref name="type"/>.
@@ -102,8 +131,7 @@ namespace Exiled.API.Features.Roles
         /// <typeparam name="T">The type of the class.</typeparam>
         /// <returns>The casted class, if possible.</returns>
         public T As<T>()
-            where T : Role
-            => this as T;
+            where T : Role => this as T;
 
         /// <summary>
         /// Safely casts the role to the specified role type.
@@ -111,18 +139,21 @@ namespace Exiled.API.Features.Roles
         /// <typeparam name="T">The type of the class.</typeparam>
         /// <param name="role">The casted class, if possible.</param>
         /// <returns><see langword="true"/> if the cast was successful; otherwise, <see langword="false"/>.</returns>
-        public bool As<T>(out T role)
+        public bool Is<T>(out T role)
             where T : Role
         {
-            role = As<T>();
-            return role != null;
+            role = this is T t ? t : null;
+            return role is not null;
         }
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
 
-        /// <inheritdoc/>
-        public override string ToString() => Type.ToString();
+        /// <summary>
+        /// Returns the role in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing role-related data.</returns>
+        public override string ToString() => $"{Side} {Team} {Type} {IsValid}";
 
         /// <inheritdoc/>
         public override int GetHashCode() => base.GetHashCode();
@@ -133,30 +164,18 @@ namespace Exiled.API.Features.Roles
         /// <param name="type">The RoleType.</param>
         /// <param name="player">The Player.</param>
         /// <returns>A role.</returns>
-        internal static Role Create(RoleType type, Player player)
+        internal static Role Create(RoleType type, Player player) => type switch
         {
-            switch (type)
-            {
-                case RoleType.Scp049:
-                    return new Scp049Role(player);
-                case RoleType.Scp0492:
-                    return new Scp0492Role(player);
-                case RoleType.Scp079:
-                    return new Scp079Role(player);
-                case RoleType.Scp096:
-                    return new Scp096Role(player);
-                case RoleType.Scp106:
-                    return new Scp106Role(player);
-                case RoleType.Scp173:
-                    return new Scp173Role(player);
-                case RoleType.Scp93953:
-                case RoleType.Scp93989:
-                    return new Scp939Role(player, type);
-                case RoleType.Spectator:
-                    return new SpectatorRole(player);
-                default:
-                    return new HumanRole(player, type);
-            }
-        }
+            RoleType.Scp049 => new Scp049Role(player),
+            RoleType.Scp0492 => new Scp0492Role(player),
+            RoleType.Scp079 => new Scp079Role(player),
+            RoleType.Scp096 => new Scp096Role(player),
+            RoleType.Scp106 => new Scp106Role(player),
+            RoleType.Scp173 => new Scp173Role(player),
+            RoleType.Scp93953 or RoleType.Scp93989 => new Scp939Role(player, type),
+            RoleType.Spectator => new SpectatorRole(player),
+            RoleType.None => new NoneRole(player),
+            _ => new HumanRole(player, type),
+        };
     }
 }

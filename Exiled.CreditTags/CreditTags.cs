@@ -27,7 +27,7 @@ namespace Exiled.CreditTags
     {
         private const string Url = "https://exiled.host/utilities/checkcredits.php";
 
-        private static readonly CreditTags Singleton = new CreditTags();
+        private static readonly CreditTags Singleton = new();
 
         private CreditsHandler handler;
 
@@ -46,11 +46,11 @@ namespace Exiled.CreditTags
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of Exiled Credit ranks.
         /// </summary>
-        internal Dictionary<RankType, Rank> Ranks { get; } = new Dictionary<RankType, Rank>
+        internal Dictionary<RankType, Rank> Ranks { get; } = new()
         {
-            [RankType.Dev] = new Rank("Exiled Developer", "aqua", "33DEFF"),
-            [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "B733FF"),
-            [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "E60909"),
+            [RankType.Dev] = new Rank("Exiled Developer", "aqua", "00FFFF"),
+            [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "FF0090"),
+            [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "DC143C"),
             [RankType.TournamentParticipant] = new Rank("Exiled Tournament Participant", "pink", "FF96DE"),
             [RankType.TournamentChampion] = new Rank("Exiled Tournament Champion", "deep_pink", "FF1493"),
         };
@@ -58,7 +58,7 @@ namespace Exiled.CreditTags
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of recently cached userIds and their ranks.
         /// </summary>
-        internal Dictionary<string, RankType> RankCache { get; } = new Dictionary<string, RankType>();
+        internal Dictionary<string, RankType> RankCache { get; } = new();
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -101,7 +101,7 @@ namespace Exiled.CreditTags
 
             void SuccessHandler(string result)
             {
-                if (Enum.TryParse<RankType>(result, out RankType kind))
+                if (Enum.TryParse(result, out RankType kind))
                 {
                     RankCache[player.UserId] = kind;
                     ShowRank(kind);
@@ -126,7 +126,7 @@ namespace Exiled.CreditTags
                 bool canReceiveCreditBadge = force ||
                                              (((string.IsNullOrEmpty(player.RankName) &&
                                                 string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge)) ||
-                                               Config.BadgeOverride) && player.GlobalBadge == null);
+                                               Config.BadgeOverride) && player.GlobalBadge is null);
                 bool canReceiveCreditCustomInfo =
                     string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride;
 
@@ -137,7 +137,7 @@ namespace Exiled.CreditTags
                         case InfoSide.Badge:
                             if (canReceiveCreditBadge)
                             {
-                              SetCreditBadge(player, value);
+                                SetCreditBadge(player, value);
                             }
 
                             break;

@@ -9,8 +9,11 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     using MEC;
+
+    using NorthwoodLib.Pools;
 
     using PlayerStatsSystem;
 
@@ -49,6 +52,26 @@ namespace Exiled.API.Features
         /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
         public static void Message(string message, bool isHeld = false, bool isNoisy = true, bool isSubtitles = false) =>
             RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy, isSubtitles);
+
+        /// <summary>
+        /// Reproduce a non-glitched C.A.S.S.I.E message with a possibility to custom the subtitles.
+        /// </summary>
+        /// <param name="message">The message to be reproduced.</param>
+        /// <param name="translation">The translation should be show in the subtitles.</param>
+        /// <param name="isHeld">Indicates whether C.A.S.S.I.E has to hold the message.</param>
+        /// <param name="isNoisy">Indicates whether C.A.S.S.I.E has to make noises or not during the message.</param>
+        /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
+        public static void MessageTranslated(string message, string translation, bool isHeld = false, bool isNoisy = true, bool isSubtitles = true)
+        {
+            StringBuilder announcement = StringBuilderPool.Shared.Rent();
+            string[] cassies = message.Split('\n');
+            string[] translations = translation.Split('\n');
+            for (int i = 0; i < cassies.Length; i++)
+                announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
+
+            RespawnEffectsController.PlayCassieAnnouncement(announcement.ToString(), isHeld, isNoisy, isSubtitles);
+            StringBuilderPool.Shared.Return(announcement);
+        }
 
         /// <summary>
         /// Reproduce a glitchy C.A.S.S.I.E announcement.
@@ -122,13 +145,13 @@ namespace Exiled.API.Features
         public static void CustomScpTermination(string scpName, CustomHandlerBase info)
         {
             string result = scpName;
-            if (info.SafeCast(out MicroHidDamageHandler _))
+            if (info.Is(out MicroHidDamageHandler _))
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info.SafeCast(out WarheadDamageHandler _))
+            else if (info.Is(out WarheadDamageHandler _))
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info.SafeCast(out UniversalDamageHandler _))
+            else if (info.Is(out UniversalDamageHandler _))
                 result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (info.SafeBaseCast(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
+            else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";

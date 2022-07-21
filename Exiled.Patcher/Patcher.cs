@@ -38,7 +38,7 @@ namespace Exiled.Patcher
 
                 ModuleDefMD module = ModuleDefMD.Load(path);
 
-                if (module == null)
+                if (module is null)
                 {
                     Console.WriteLine($"File {path} not found!");
                     return;
@@ -60,7 +60,7 @@ namespace Exiled.Patcher
 
                 TypeDef modClass = bootstrap.Types[0];
 
-                foreach (var type in bootstrap.Types)
+                foreach (TypeDef type in bootstrap.Types)
                 {
                     if (type.Name == "Bootstrap")
                     {
@@ -69,7 +69,7 @@ namespace Exiled.Patcher
                     }
                 }
 
-                var modRefType = modClass;
+                TypeDef modRefType = modClass;
 
                 bootstrap.Types.Remove(modClass);
 
@@ -79,7 +79,7 @@ namespace Exiled.Patcher
 
                 MethodDef call = FindMethod(modRefType, "Load");
 
-                if (call == null)
+                if (call is null)
                 {
                     Console.WriteLine($"Failed to get the \"{call.Name}\" method! Maybe you don't have permission?");
                     return;
@@ -93,7 +93,7 @@ namespace Exiled.Patcher
 
                 MethodDef start = FindMethod(typeDef, "Start");
 
-                if (start == null)
+                if (start is null)
                 {
                     start = new MethodDefUser("Start", MethodSig.CreateInstance(module.CorLibTypes.Void), MethodImplAttributes.IL | MethodImplAttributes.Managed, MethodAttributes.Private | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
                     typeDef.Methods.Add(start);
@@ -115,9 +115,9 @@ namespace Exiled.Patcher
 
         private static MethodDef FindMethod(TypeDef type, string methodName)
         {
-            if (type != null)
+            if (type is not null)
             {
-                foreach (var method in type.Methods)
+                foreach (MethodDef method in type.Methods)
                 {
                     if (method.Name == methodName)
                         return method;
@@ -129,9 +129,9 @@ namespace Exiled.Patcher
 
         private static TypeDef FindType(AssemblyDef assembly, string path)
         {
-            foreach (var module in assembly.Modules)
+            foreach (ModuleDef module in assembly.Modules)
             {
-                foreach (var type in module.Types)
+                foreach (TypeDef type in module.Types)
                 {
                     if (type.FullName == path)
                         return type;

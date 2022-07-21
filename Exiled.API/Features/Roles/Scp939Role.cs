@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using System.Collections.Generic;
+
     using PlayableScps;
 
     /// <summary>
@@ -25,25 +27,35 @@ namespace Exiled.API.Features.Roles
         {
             Owner = player;
             RoleType = scp939Type;
-            script = player.ReferenceHub.scpsController.CurrentScp as Scp939;
+            script = player.CurrentScp as Scp939;
         }
 
         /// <inheritdoc/>
         public override Player Owner { get; }
 
         /// <summary>
+        /// Gets the <see cref="Scp939"/> script for this role.
+        /// </summary>
+        public Scp939 Script => script ??= Owner.CurrentScp as Scp939;
+
+        /// <summary>
         /// Gets or sets the amount of time before SCP-939 can attack again.
         /// </summary>
         public float AttackCooldown
         {
-            get => script.CurrentBiteCooldown;
-            set => script.CurrentBiteCooldown = value;
+            get => Script.CurrentBiteCooldown;
+            set => Script.CurrentBiteCooldown = value;
         }
 
         /// <summary>
         /// Gets SCP-939's move speed.
         /// </summary>
-        public float MoveSpeed => script.GetMovementSpeed();
+        public float MoveSpeed => Script.GetMovementSpeed();
+
+        /// <summary>
+        /// Gets a list of players this SCP-939 instance can see regardless of their movement.
+        /// </summary>
+        public List<Player> VisiblePlayers { get; } = new();
 
         /// <inheritdoc/>
         internal override RoleType RoleType { get; }

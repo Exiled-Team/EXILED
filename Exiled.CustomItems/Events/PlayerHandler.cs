@@ -42,7 +42,7 @@ namespace Exiled.CustomItems
             {
                 foreach (Player player in Player.List)
                 {
-                    if (player == ev.Player || player.ReferenceHub.nicknameSync.Network_displayName == null)
+                    if (player == ev.Player || player.ReferenceHub.nicknameSync.Network_displayName is null)
                         continue;
 
                     ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), player.DisplayNickname);

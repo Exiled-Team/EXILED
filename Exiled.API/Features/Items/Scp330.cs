@@ -115,7 +115,7 @@ namespace Exiled.API.Features.Items
                 }
             }
 
-            List<Pickup> pickups = new List<Pickup>();
+            List<Pickup> pickups = new();
 
             if (count > 1 && !dropIndividual)
             {
@@ -135,10 +135,11 @@ namespace Exiled.API.Features.Items
             {
                 Scp330Pickup ipb = (Scp330Pickup)Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
                 ipb.NetworkExposedCandy = overrideExposedType ? exposedType : CandyKindID.None;
-                NetworkServer.Spawn(ipb.gameObject);
-                ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+                ipb.StoredCandies.Add(type);
                 Pickup pickup = Pickup.Get(ipb);
                 pickup.Scale = Scale;
+                NetworkServer.Spawn(ipb.gameObject);
+                ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
                 pickups.Add(pickup);
             }
 
@@ -164,11 +165,11 @@ namespace Exiled.API.Features.Items
 
             if (overrideExposedType)
                 ipb.NetworkExposedCandy = ExposedType;
-
-            NetworkServer.Spawn(ipb.gameObject);
-            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+            ipb.StoredCandies = Base.Candies;
             Pickup pickup = Pickup.Get(ipb);
             pickup.Scale = Scale;
+            NetworkServer.Spawn(ipb.gameObject);
+            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
             return pickup;
         }
 
@@ -176,9 +177,6 @@ namespace Exiled.API.Features.Items
         /// Returns the SCP-330 in a human readable format.
         /// </summary>
         /// <returns>A string containing SCP-330 related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
     }
 }

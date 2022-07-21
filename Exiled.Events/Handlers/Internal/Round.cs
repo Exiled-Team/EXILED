@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
+    using System.Collections.Generic;
+
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -54,6 +56,9 @@ namespace Exiled.Events.Handlers.Internal
             API.Features.TeslaGate.IgnoredPlayers.Clear();
             API.Features.TeslaGate.IgnoredRoles.Clear();
             API.Features.TeslaGate.IgnoredTeams.Clear();
+            API.Features.Scp106Container.IgnoredPlayers.Clear();
+            API.Features.Scp106Container.IgnoredRoles = new List<RoleType> { RoleType.Spectator };
+            API.Features.Scp106Container.IgnoredTeams = new List<Team> { Team.SCP };
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>

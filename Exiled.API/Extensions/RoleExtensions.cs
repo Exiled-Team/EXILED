@@ -8,7 +8,9 @@
 namespace Exiled.API.Extensions
 {
     using System;
+
     using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
@@ -35,88 +37,51 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="team">The <see cref="Team"/> to get the <see cref="Side"/> of.</param>
         /// <returns><see cref="Side"/>.</returns>.
-        public static Side GetSide(this Team team)
+        public static Side GetSide(this Team team) => team switch
         {
-            switch (team)
-            {
-                case Team.SCP:
-                    return Side.Scp;
-                case Team.MTF:
-                case Team.RSC:
-                    return Side.Mtf;
-                case Team.CHI:
-                case Team.CDP:
-                    return Side.ChaosInsurgency;
-                case Team.TUT:
-                    return Side.Tutorial;
-                default:
-                    return Side.None;
-            }
-        }
+            Team.SCP => Side.Scp,
+            Team.MTF or Team.RSC => Side.Mtf,
+            Team.CHI or Team.CDP => Side.ChaosInsurgency,
+            Team.TUT => Side.Tutorial,
+            _ => Side.None,
+        };
 
         /// <summary>
         /// Get the <see cref="Team"/> of the given <see cref="RoleType"/>.
         /// </summary>
         /// <param name="roleType">Role.</param>
         /// <returns><see cref="Team"/>.</returns>
-        public static Team GetTeam(this RoleType roleType)
+        public static Team GetTeam(this RoleType roleType) => roleType switch
         {
-            switch (roleType)
-            {
-                case RoleType.ChaosConscript:
-                case RoleType.ChaosMarauder:
-                case RoleType.ChaosRepressor:
-                case RoleType.ChaosRifleman:
-                    return Team.CHI;
-                case RoleType.Scientist:
-                    return Team.RSC;
-                case RoleType.ClassD:
-                    return Team.CDP;
-                case RoleType.Scp049:
-                case RoleType.Scp93953:
-                case RoleType.Scp93989:
-                case RoleType.Scp0492:
-                case RoleType.Scp079:
-                case RoleType.Scp096:
-                case RoleType.Scp106:
-                case RoleType.Scp173:
-                    return Team.SCP;
-                case RoleType.Spectator:
-                    return Team.RIP;
-                case RoleType.FacilityGuard:
-                case RoleType.NtfCaptain:
-                case RoleType.NtfPrivate:
-                case RoleType.NtfSergeant:
-                case RoleType.NtfSpecialist:
-                    return Team.MTF;
-                case RoleType.Tutorial:
-                    return Team.TUT;
-                default:
-                    return Team.RIP;
-            }
-        }
+            RoleType.ChaosConscript or RoleType.ChaosMarauder or RoleType.ChaosRepressor or RoleType.ChaosRifleman => Team.CHI,
+            RoleType.Scientist => Team.RSC,
+            RoleType.ClassD => Team.CDP,
+            RoleType.Scp049 or RoleType.Scp93953 or RoleType.Scp93989 or RoleType.Scp0492 or RoleType.Scp079 or RoleType.Scp096 or RoleType.Scp106 or RoleType.Scp173 => Team.SCP,
+            RoleType.Spectator => Team.RIP,
+            RoleType.FacilityGuard or RoleType.NtfCaptain or RoleType.NtfPrivate or RoleType.NtfSergeant or RoleType.NtfSpecialist => Team.MTF,
+            RoleType.Tutorial => Team.TUT,
+            _ => Team.RIP,
+        };
+
+        /// <summary>
+        /// Gets the full name of the given <see cref="RoleType"/>.
+        /// </summary>
+        /// <param name="roleType">Role.</param>
+        /// <returns>The full name.</returns>
+        public static string GetFullName(this RoleType roleType) => CharacterClassManager._staticClasses.SafeGet(roleType).fullName;
 
         /// <summary>
         /// Get the <see cref="LeadingTeam"/>.
         /// </summary>
         /// <param name="team">Team.</param>
         /// <returns><see cref="LeadingTeam"/>.</returns>
-        public static LeadingTeam GetLeadingTeam(this Team team)
+        public static LeadingTeam GetLeadingTeam(this Team team) => team switch
         {
-            switch (team)
-            {
-                case Team.CDP:
-                case Team.CHI:
-                    return LeadingTeam.ChaosInsurgency;
-                case Team.MTF:
-                case Team.RSC:
-                    return LeadingTeam.FacilityForces;
-                case Team.SCP:
-                    return LeadingTeam.Anomalies;
-                default:
-                    return LeadingTeam.Draw;
-            }
-        }
+            Team.CDP or Team.CHI => LeadingTeam.ChaosInsurgency,
+            Team.MTF or Team.RSC => LeadingTeam.FacilityForces,
+            Team.SCP => LeadingTeam.Anomalies,
+            _ => LeadingTeam.Draw,
+        };
 
         /// <summary>
         /// Gets a random spawn point of a <see cref="RoleType"/>.
@@ -127,7 +92,7 @@ namespace Exiled.API.Extensions
         {
             GameObject randomPosition = SpawnpointManager.GetRandomPosition(roleType);
 
-            return randomPosition == null ? new Tuple<Vector3, float>(Vector3.zero, 0f) : new Tuple<Vector3, float>(randomPosition.transform.position, randomPosition.transform.rotation.eulerAngles.y);
+            return randomPosition is null ? new Tuple<Vector3, float>(Vector3.zero, 0f) : new Tuple<Vector3, float>(randomPosition.transform.position, randomPosition.transform.rotation.eulerAngles.y);
         }
     }
 }

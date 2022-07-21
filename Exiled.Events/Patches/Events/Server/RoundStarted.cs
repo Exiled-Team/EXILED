@@ -8,7 +8,7 @@
 namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313
-#pragma warning disable SA1118
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -29,9 +29,9 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstruction = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstruction.InsertRange(newInstruction.Count - 1, new[]
+            newInstruction.InsertRange(newInstruction.Count - 1, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Server), nameof(Server.OnRoundStarted))),
+                new(OpCodes.Call, AccessTools.Method(typeof(Server), nameof(Server.OnRoundStarted))),
             });
 
             for (int z = 0; z < newInstruction.Count; z++)

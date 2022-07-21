@@ -14,6 +14,8 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp079Role : Role
     {
+        private Scp079PlayerScript script;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp079Role"/> class.
         /// </summary>
@@ -22,6 +24,11 @@ namespace Exiled.API.Features.Roles
 
         /// <inheritdoc/>
         public override Player Owner { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Scp079PlayerScript"/> script for the role.
+        /// </summary>
+        public Scp079PlayerScript Script => script ??= Owner.ReferenceHub.scp079PlayerScript;
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
@@ -37,11 +44,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public Scp079PlayerScript.Ability079[] Abilities
         {
-            get => Owner.ReferenceHub.scp079PlayerScript?.abilities;
+            get => Script?.abilities;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript != null)
-                    Owner.ReferenceHub.scp079PlayerScript.abilities = value;
+                if (Script is not null)
+                    Script.abilities = value;
             }
         }
 
@@ -50,11 +57,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public Scp079PlayerScript.Level079[] Levels
         {
-            get => Owner.ReferenceHub.scp079PlayerScript?.levels;
+            get => Script?.levels;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript != null)
-                    Owner.ReferenceHub.scp079PlayerScript.levels = value;
+                if (Script is not null)
+                    Script.levels = value;
             }
         }
 
@@ -63,11 +70,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public string Speaker
         {
-            get => Owner.ReferenceHub.scp079PlayerScript?.Speaker;
+            get => Script?.Speaker;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript != null)
-                    Owner.ReferenceHub.scp079PlayerScript.Speaker = value;
+                if (Script is not null)
+                    Script.Speaker = value;
             }
         }
 
@@ -76,11 +83,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public SyncList<uint> LockedDoors
         {
-            get => Owner.ReferenceHub.scp079PlayerScript?.lockedDoors;
+            get => Script?.lockedDoors;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript != null)
-                    Owner.ReferenceHub.scp079PlayerScript.lockedDoors = value;
+                if (Script is not null)
+                    Script.lockedDoors = value;
             }
         }
 
@@ -89,14 +96,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Experience
         {
-            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Exp : float.NaN;
+            get => Script?.Exp ?? float.NaN;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript == null)
+                if (Script is null)
                     return;
 
-                Owner.ReferenceHub.scp079PlayerScript.Exp = value;
-                Owner.ReferenceHub.scp079PlayerScript.OnExpChange();
+                Script.Exp = value;
+                Script.OnExpChange();
             }
         }
 
@@ -105,13 +112,13 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public byte Level
         {
-            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
+            get => Script?.Lvl ?? byte.MinValue;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript == null || Owner.ReferenceHub.scp079PlayerScript.Lvl == value)
+                if (Script is null || Script.Lvl == value)
                     return;
 
-                Owner.ReferenceHub.scp079PlayerScript.ForceLevel(value, true);
+                Script.ForceLevel(value, true);
             }
         }
 
@@ -120,14 +127,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float MaxEnergy
         {
-            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.NetworkmaxMana : float.NaN;
+            get => Script?.NetworkmaxMana ?? float.NaN;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript == null)
+                if (Script is null)
                     return;
 
-                Owner.ReferenceHub.scp079PlayerScript.NetworkmaxMana = value;
-                Owner.ReferenceHub.scp079PlayerScript.levels[Level].maxMana = value;
+                Script.NetworkmaxMana = value;
+                Script.levels[Level].maxMana = value;
             }
         }
 
@@ -136,13 +143,13 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Energy
         {
-            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Mana : float.NaN;
+            get => Script?.Mana ?? float.NaN;
             set
             {
-                if (Owner.ReferenceHub.scp079PlayerScript == null)
+                if (Script is null)
                     return;
 
-                Owner.ReferenceHub.scp079PlayerScript.Mana = value;
+                Script.Mana = value;
             }
         }
 
@@ -153,7 +160,7 @@ namespace Exiled.API.Features.Roles
         /// Sets the camera SCP-079 is currently located at.
         /// </summary>
         /// <param name="cameraId">Camera ID.</param>
-        public void SetCamera(ushort cameraId) => Owner.ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
+        public void SetCamera(ushort cameraId) => Script?.RpcSwitchCamera(cameraId, false);
 
         /// <summary>
         /// Sets the camera SCP-079 is currently located at.

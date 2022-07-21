@@ -11,6 +11,8 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of SCP-079 cameras.
     /// </summary>
+    /// <seealso cref="Features.Camera.Type"/>
+    /// <seealso cref="Features.Camera.Get(CameraType)"/>
     public enum CameraType
     {
         /// <summary>
@@ -149,7 +151,7 @@ namespace Exiled.API.Enums
         Hcz049Hall,
 
         /// <summary>
-        /// Represents the camera that faces toward the <c>049_ARMORY</c> <see cref="Exiled.API.Features.Door"/>.
+        /// Represents the camera that faces toward the <c>049_ARMORY</c> <see cref="Features.Door"/>.
         /// </summary>
         Hcz049Armory,
 

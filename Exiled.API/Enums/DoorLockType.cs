@@ -9,9 +9,14 @@ namespace Exiled.API.Enums
 {
     using System;
 
+    using Exiled.API.Features;
+
     /// <summary>
     /// All possible door locks.
     /// </summary>
+    /// <seealso cref="Door.Lock(DoorLockType)"/>
+    /// <seealso cref="Door.LockAll(float, DoorLockType)"/>
+    /// <seealso cref="Door.ChangeLock(DoorLockType)"/>
     [Flags]
     public enum DoorLockType
     {
@@ -64,5 +69,10 @@ namespace Exiled.API.Enums
         /// Isloation.
         /// </summary>
         Isolation = 256, // 0x0100
+
+        /// <summary>
+        /// Locked down by SCP-2176.
+        /// </summary>
+        Lockdown2176 = 512,
     }
 }

@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
-    /// A wrapper class for <see cref="InventorySystem.Items.MicroHID.MicroHIDItem"/>.
+    /// A wrapper class for <see cref="MicroHIDItem"/>.
     /// </summary>
     public class MicroHid : Item
     {
@@ -68,9 +68,6 @@ namespace Exiled.API.Features.Items
         /// Returns the MicroHid in a human readable format.
         /// </summary>
         /// <returns>A string containing MicroHid-related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{State}-";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{State}-";
     }
 }

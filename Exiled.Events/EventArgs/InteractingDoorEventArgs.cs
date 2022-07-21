@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using Interactables.Interobjects.DoorUtils;
 
     /// <summary>
-    /// Contains all informations before a player interacts with a door.
+    /// Contains all information before a player interacts with a door.
     /// </summary>
     public class InteractingDoorEventArgs : EventArgs
     {
@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Exiled.API.Features.Door"/> instance.
+        /// Gets or sets the <see cref="API.Features.Door"/> instance.
         /// </summary>
         public Door Door { get; set; }
 

@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
-#pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -39,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Server
         private static IEnumerator<float> Process(RoundSummary roundSummary)
         {
             float time = Time.unscaledTime;
-            while (roundSummary != null)
+            while (roundSummary is not null)
             {
                 yield return Timing.WaitForSeconds(2.5f);
 
@@ -49,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Server
                 RoundSummary.SumInfo_ClassList newList = default;
                 foreach (KeyValuePair<GameObject, ReferenceHub> keyValuePair in ReferenceHub.GetAllHubs())
                 {
-                    if (keyValuePair.Value == null)
+                    if (keyValuePair.Value is null)
                         continue;
 
                     CharacterClassManager component = keyValuePair.Value.characterClassManager;
@@ -95,7 +94,9 @@ namespace Exiled.Events.Patches.Events.Server
                 float num6 = (roundSummary.classlistStart.class_ds == 0) ? 0f : (num4 / roundSummary.classlistStart.class_ds);
                 float num7 = (roundSummary.classlistStart.scientists == 0) ? 1f : (num5 / roundSummary.classlistStart.scientists);
 
-                if (newList.class_ds == 0 && num1 == 0)
+                RoundSummary.SurvivingSCPs = newList.scps_except_zombies;
+
+                if (newList.class_ds <= 0 && num1 <= 0)
                 {
                     roundSummary.RoundEnded = true;
                 }
@@ -112,21 +113,14 @@ namespace Exiled.Events.Patches.Events.Server
                         roundSummary.RoundEnded = true;
                 }
 
-                EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
+                EndingRoundEventArgs endingRoundEventArgs = new(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
-                {
-                    if (num5 > 0)
-                        endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
-                }
-                else if (num4 > 0)
-                {
-                    endingRoundEventArgs.LeadingTeam = LeadingTeam.ChaosInsurgency;
-                }
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedScientists >= RoundSummary.EscapedClassD ? LeadingTeam.FacilityForces : LeadingTeam.Draw;
                 else if (num3 > 0)
-                {
-                    endingRoundEventArgs.LeadingTeam = LeadingTeam.Anomalies;
-                }
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD > RoundSummary.SurvivingSCPs ? LeadingTeam.ChaosInsurgency : (RoundSummary.SurvivingSCPs > RoundSummary.EscapedScientists ? LeadingTeam.Anomalies : LeadingTeam.Draw);
+                else if (num2 > 0)
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists ? LeadingTeam.ChaosInsurgency : LeadingTeam.Draw;
 
                 Server.OnEndingRound(endingRoundEventArgs);
 
@@ -141,9 +135,9 @@ namespace Exiled.Events.Patches.Events.Server
                     yield return Timing.WaitForSeconds(1.5f);
                     int timeToRoundRestart = Mathf.Clamp(ConfigFile.ServerConfig.GetInt("auto_round_restart_time", 10), 5, 1000);
 
-                    if (roundSummary != null)
+                    if (roundSummary is not null)
                     {
-                        RoundEndedEventArgs roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
+                        RoundEndedEventArgs roundEndedEventArgs = new(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
@@ -165,17 +159,16 @@ namespace Exiled.Events.Patches.Events.Server
             {
                 if (instruction.opcode == OpCodes.Call)
                 {
-                    if (instruction.operand != null
-                        && instruction.operand is MethodBase methodBase
+                    if (instruction.operand is MethodBase methodBase
                         && methodBase.Name != nameof(RoundSummary._ProcessServerSideCode))
                     {
                         yield return instruction;
                     }
                     else
                     {
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
-                        yield return new CodeInstruction(OpCodes.Ldarg_0);
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
+                        yield return new(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
+                        yield return new(OpCodes.Ldarg_0);
+                        yield return new(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
                         {
                             Type[] generics = m.GetGenericArguments();
                             ParameterInfo[] paramseters = m.GetParameters();

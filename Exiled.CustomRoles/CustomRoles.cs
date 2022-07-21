@@ -34,6 +34,7 @@ namespace Exiled.CustomRoles
         {
             Loader.Deserializer = new DeserializerBuilder()
                 .WithTypeConverter(new VectorsConverter())
+                .WithTypeConverter(new ColorConverter())
                 .WithTypeConverter(new AttachmentIdentifiersConverter())
                 .WithNodeDeserializer(
                     inner => new ValidatingNodeDeserializer(inner),
@@ -57,7 +58,7 @@ namespace Exiled.CustomRoles
         /// <summary>
         /// Gets a list of players to stop spawning ragdolls for.
         /// </summary>
-        internal List<Player> StopRagdollPlayers { get; } = new List<Player>();
+        internal List<Player> StopRagdollPlayers { get; } = new();
 
         /// <inheritdoc/>
         public override void OnEnabled()

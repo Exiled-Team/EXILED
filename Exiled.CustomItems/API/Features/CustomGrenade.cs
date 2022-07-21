@@ -30,7 +30,9 @@ namespace Exiled.CustomItems.API.Features
 
     using YamlDotNet.Serialization;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The Custom Grenade base class.
+    /// </summary>
     public abstract class CustomGrenade : CustomItem
     {
         /// <summary>
@@ -41,7 +43,7 @@ namespace Exiled.CustomItems.API.Features
             get => base.Type;
             set
             {
-                if (!value.IsThrowable())
+                if (!value.IsThrowable() && value != ItemType.None)
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid grenade type.");
 
                 base.Type = value;
@@ -62,7 +64,7 @@ namespace Exiled.CustomItems.API.Features
         /// Gets a value indicating what thrown grenades are currently being tracked.
         /// </summary>
         [YamlIgnore]
-        protected HashSet<ThrownProjectile> Tracked { get; } = new HashSet<ThrownProjectile>();
+        protected HashSet<ThrownProjectile> Tracked { get; } = new();
 
         /// <summary>
         /// Gives the <see cref="CustomItem"/> to a player.
@@ -82,14 +84,14 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Pickup"/> being spawned.</returns>
         public virtual Pickup Throw(Vector3 position, float force, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHE, Player player = null)
         {
-            if (player == null)
+            if (player is null)
                 player = Server.Host;
 
             Throwable throwable = (Throwable)Item.Create(grenadeType, player);
 
             ThrownProjectile thrownProjectile = UnityEngine.Object.Instantiate(throwable.Base.Projectile, position, throwable.Owner.CameraTransform.rotation);
             Transform transform = thrownProjectile.transform;
-            PickupSyncInfo newInfo = new PickupSyncInfo()
+            PickupSyncInfo newInfo = new()
             {
                 ItemId = throwable.Type,
                 Locked = !throwable.Base._repickupable,
