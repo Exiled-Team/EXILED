@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="EnteringSinkholeEnvironmentalHazard.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -41,6 +41,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new[]
             {
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Ceq),
                 new CodeInstruction(OpCodes.Stloc_S, isAllowed.LocalIndex),
                 new(OpCodes.Br_S, cnt),
             });

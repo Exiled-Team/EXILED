@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using CustomPlayerEffects;
+
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -29,7 +31,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label ret = generator.DefineLabel();
             Label cnt = generator.DefineLabel();
 
             // We add type check because SinkholeEnvironmentalHazard dont override OnExit method
@@ -47,11 +48,23 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnExitingEnvironmentalHazard))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ExitingEnvironmentalHazardEventArgs), nameof(ExitingEnvironmentalHazardEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, ret),
+
+                // If IsAllowed == false, we dont remove RefHub from AffectedPlayers, only dont removing effect
+                new(OpCodes.Brfalse_S, cnt),
+
+                // null check
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Brfalse_S, cnt),
+
+                // exit effect for 1 second, cause we disable effect in OnStay
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))),
+                new(OpCodes.Ldc_R4, 1f),
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableEffect), new[] { typeof(float), typeof(bool) }, new[] { typeof(SinkHole) })),
+
                 new CodeInstruction(OpCodes.Nop).WithLabels(cnt),
             });
-
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
