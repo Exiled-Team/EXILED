@@ -25,6 +25,7 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             EnvironmentalHazard = environmentalHazard;
+            IsAllowed = true;
         }
 
         /// <summary>
@@ -36,5 +37,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the environmental hazard that the player is staying on.
         /// </summary>
         public EnvironmentalHazard EnvironmentalHazard { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the player should be affected by the environmental hazard.
+        /// </summary>
+        [Obsolete("Not used(I'm too lazy to come up with a clever message here :( )")]
+        public bool IsAllowed { get; set; }
     }
 }
