@@ -31,7 +31,10 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new[]
+            int offset = 1;
+            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter)))) + offset;
+
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
