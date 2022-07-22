@@ -25,7 +25,6 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             EnvironmentalHazard = environmentalHazard;
-            IsAllowed = true;
         }
 
         /// <summary>
