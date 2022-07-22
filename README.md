@@ -1,9 +1,5 @@
 # EXILED - EXtended In-runtime Library for External Development
-
-![EXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=master)
-<a href="https://github.com/Exiled-Team/EXILED/releases">
-  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
-</a>
+[![Exiled CI](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg)](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml)
 ![Github All Downloads](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat)
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
 <a href="https://discord.gg/PyUkWTg">
