@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using CustomPlayerEffects;
 
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Patches.Fixes;
 
     using HarmonyLib;
 
@@ -23,9 +24,12 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="EnvironmentalHazard.OnExit(ReferenceHub)"/> with <see cref="SinkholeEnvironmentalHazard"/>.
     /// Adds the <see cref="Handlers.Player.ExitingEnvironmentalHazard"/> event.
+    /// <br>Adds the better effect logic.</br>
     /// </summary>
+    /// <seealso cref="StayingOnSinkholeEnvironmentalHazard"/>
+    /// <seealso cref="SinkholeEffectFix"/>
     [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnExit))]
-    internal static class ExitingEnvironmentalHazard
+    internal static class ExitingSinkholeEnvironmentalHazard
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
