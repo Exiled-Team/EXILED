@@ -33,8 +33,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label ret = generator.DefineLabel();
 
-            int offset = 1;
-            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter)))) + offset;
+            int offset = -1;
+            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(CharacterClassManager), nameof(CharacterClassManager.IsAnyScp)))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {

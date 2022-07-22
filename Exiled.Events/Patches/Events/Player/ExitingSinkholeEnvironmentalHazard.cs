@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             // We add type check because SinkholeEnvironmentalHazard dont override OnExit method
             // Without type check, the TantrumEnvironmentalHazard::OnExit event will be called several times
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Isinst, typeof(SinkholeEnvironmentalHazard)),
@@ -59,6 +59,12 @@ namespace Exiled.Events.Patches.Events.Player
                 // null check
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Brfalse_S, cnt),
+
+                // SCP check
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.characterClassManager))),
+                new(OpCodes.Callvirt, Method(typeof(CharacterClassManager), nameof(CharacterClassManager.IsAnyScp))),
+                new(OpCodes.Brtrue_S, cnt),
 
                 // exit effect for 1 second, cause we disable effect in OnStay
                 new(OpCodes.Ldarg_1),
