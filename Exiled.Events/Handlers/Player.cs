@@ -828,7 +828,7 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
         /// </summary>
         /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
-        [Obsolete("Use OnStayingOnEnvironmentalHazard event instead.")]
+        [Obsolete("Use OnStayingOnEnvironmentalHazard instead.")]
         public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
 
         /// <summary>
@@ -883,7 +883,7 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
         /// </summary>
         /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
-        [Obsolete("Use OnStayingOnEnvironmentalHazard event instead.")]
+        [Obsolete("Use OnStayingOnEnvironmentalHazard instead.")]
         public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
 
         /// <summary>
