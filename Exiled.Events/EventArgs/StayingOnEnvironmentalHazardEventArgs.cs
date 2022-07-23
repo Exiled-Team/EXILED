@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should be affected by the environmental hazard.
         /// </summary>
-        [Obsolete("Not used(I'm too lazy to come up with a clever message here :( )")]
+        [Obsolete("IsAllowed has been deprecated, use EnteringEnvironmentalHazardEventArgs::IsAllowed instead.", true)]
         public bool IsAllowed { get; set; }
     }
 }
