@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player walks over a sinkhole.
     /// </summary>
-    [Obsolete("Use StayingOnEnvironmentalHazardEventArgs event instead.")]
+    [Obsolete("Use StayingOnEnvironmentalHazardEventArgs event instead.", true)]
     public class WalkingOnSinkholeEventArgs : EventArgs
     {
         /// <summary>

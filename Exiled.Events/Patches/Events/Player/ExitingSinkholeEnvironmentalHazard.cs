@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Player
             // Without type check, the TantrumEnvironmentalHazard::OnExit event will be called several times
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
-                new(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new(OpCodes.Isinst, typeof(SinkholeEnvironmentalHazard)),
                 new(OpCodes.Brfalse_S, cnt),
                 new(OpCodes.Ldarg_1),
@@ -72,9 +72,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_R4, 1f),
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Callvirt, Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableEffect), new[] { typeof(float), typeof(bool) }, new[] { typeof(SinkHole) })),
-
-                new CodeInstruction(OpCodes.Nop).WithLabels(cnt),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(cnt);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

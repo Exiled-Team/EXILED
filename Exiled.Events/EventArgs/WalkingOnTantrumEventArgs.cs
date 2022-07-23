@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player walks over a tantrum.
     /// </summary>
-    [Obsolete("Use StayingOnEnvironmentalHazardEventArgs event instead.")]
+    [Obsolete("Use StayingOnEnvironmentalHazardEventArgs event instead.", true)]
     public class WalkingOnTantrumEventArgs : EventArgs
     {
         /// <summary>
