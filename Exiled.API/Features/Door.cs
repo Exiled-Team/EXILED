@@ -407,6 +407,11 @@ namespace Exiled.API.Features
         public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
 
         /// <summary>
+        /// Locks a door by appling the <see cref="DoorLockType.AdminCommand" /> lock type.
+        /// </summary>
+        public void Lock() => ChangeLock(DoorLockType.AdminCommand);
+
+        /// <summary>
         /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
@@ -416,11 +421,6 @@ namespace Exiled.API.Features
             ChangeLock(flagsToUnlock);
             DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
         }
-
-        /// <summary>
-        /// Locks a door by appling the <see cref="DoorLockType.AdminCommand" /> lock type.
-        /// </summary>
-        public void Lock() => ChangeLock(DoorLockType.AdminCommand);
 
         /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
