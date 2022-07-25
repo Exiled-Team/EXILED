@@ -61,7 +61,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StartingRecallEventArgs), nameof(StartingRecallEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
-            
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Beq_S);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
