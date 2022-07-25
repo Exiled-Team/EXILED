@@ -277,7 +277,7 @@ namespace Exiled.API.Features
             {
                 door.IsOpen = false;
                 door.Lock(lockType);
-                MEC.Timing.CallDelayed(duration, () => door.Unlock());
+                MEC.Timing.CallDelayed(duration, () => door.Lock(DoorLockType.None));
             }
         }
 
@@ -299,7 +299,7 @@ namespace Exiled.API.Features
         public static void UnlockAll()
         {
             foreach (Door door in List)
-                door.Unlock();
+                door.Lock(DoorLockType.None);
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace Exiled.API.Features
         public static void UnlockAll(Func<Door, bool> predicate)
         {
             foreach (Door door in Get(predicate))
-                door.Unlock();
+                door.Lock(DoorLockType.None);
         }
 
         /// <summary>
