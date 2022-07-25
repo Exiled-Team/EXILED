@@ -418,6 +418,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Locks a door by appling the <see cref="DoorLockType.AdminCommand" /> lock type.
+        /// </summary>
+        public void Lock() => ChangeLock(DoorLockType.AdminCommand);
+
+
+        /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
         internal static void RegisterDoorTypesOnLevelLoad()
