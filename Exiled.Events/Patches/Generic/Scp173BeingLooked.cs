@@ -7,54 +7,89 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
+
     using System.Reflection.Emit;
+
+    using Exiled.API.Features;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
+    using PlayableScps;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
     /// </summary>
-    // [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
+    [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
     internal static class Scp173BeingLooked
     {
+        /// <summary>
+        /// Checks if the current player is to be skipped.
+        /// </summary>
+        /// <param name="instance"> Scp173 instance <see cref="PlayableScps.Scp173"/>. </param>
+        /// <param name="curPlayerHub"> Current player referencehub. </param>
+        /// <returns> True if to be skipped, false if not. </returns>
+        public static bool SkipPlayer(ref PlayableScps.Scp173 instance, ReferenceHub curPlayerHub)
+        {
+            Player player = Player.Get(curPlayerHub);
+            if (player is not null)
+            {
+                if (player.Role.Type == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
+                {
+                    instance._observingPlayers.Remove(curPlayerHub);
+                    return true;
+                }
+                else if (API.Features.Scp173.TurnedPlayers.Contains(player))
+                {
+                    instance._observingPlayers.Remove(curPlayerHub);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Beq_S) + offset;
-            int curIdx = index;
+            Label cnt = generator.DefineLabel();
 
-            Label cdc = generator.DefineLabel();
-            Label jne = generator.DefineLabel();
+            int removeTurnedPeanutOffset = 2;
+            int removeTurnedPeanut = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Count)))) + removeTurnedPeanutOffset;
 
-            newInstructions[index].labels.Add(cdc);
-            offset = -4;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse) + offset;
-            newInstructions[index].labels.Add(jne);
-            index = curIdx;
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(removeTurnedPeanut, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldloc_S, 4),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
-                new(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
-                new(OpCodes.Bne_Un_S, cdc),
                 new(OpCodes.Call, PropertyGetter(typeof(API.Features.Scp173), nameof(API.Features.Scp173.TurnedPlayers))),
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Callvirt, Method(typeof(HashSet<API.Features.Player>), nameof(HashSet<API.Features.Player>.Contains))),
-                new(OpCodes.Brtrue_S, jne),
-                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Exiled.Events.Events.Config.CanTutorialBlockScp173))),
-                new(OpCodes.Brfalse_S, jne),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(PlayableScp), nameof(PlayableScp.Hub))),
+                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Remove))),
+                new(OpCodes.Pop),
             });
+
+            int skipPlayerCheckOffset = 2;
+            int skipPlayerCheck = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(PlayerMovementSync), nameof(PlayerMovementSync.RealModelPosition)))) + skipPlayerCheckOffset;
+
+            newInstructions.InsertRange(skipPlayerCheck, new CodeInstruction[]
+            {
+                new(OpCodes.Ldarga, 0),
+                new(OpCodes.Ldloc_3),
+                new(OpCodes.Call, Method(typeof(Scp173BeingLooked), nameof(Scp173BeingLooked.SkipPlayer), new[] { typeof(API.Features.Scp173).MakeByRefType(), typeof(ReferenceHub) })),
+
+                // If true, skip adding to watching
+                new(OpCodes.Brtrue, cnt),
+            });
+
+            int continueBr = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br);
+
+            newInstructions[continueBr].labels.Add(cnt);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

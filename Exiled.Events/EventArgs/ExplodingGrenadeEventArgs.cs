@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
             {
-                if (!(Grenade is ExplosionGrenade) || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
+                if (Grenade is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
                     continue;
 
                 Player player = Player.Get(hub);

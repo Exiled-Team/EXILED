@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Interactables.Interobjects.DoorUtils;
 
     /// <summary>
-    /// Contains all informations before SCP-079 interacts with a door.
+    /// Contains all information before SCP-079 interacts with a door.
     /// </summary>
     public class TriggeringDoorEventArgs : InteractingDoorEventArgs
     {

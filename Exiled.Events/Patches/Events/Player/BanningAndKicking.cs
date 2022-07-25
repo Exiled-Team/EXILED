@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System;
+
     using Exiled.Events.EventArgs;
 
     using GameCore;

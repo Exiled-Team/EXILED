@@ -12,6 +12,8 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of doors.
     /// </summary>
+    /// <seealso cref="Features.Door.Type"/>
+    /// <seealso cref="Features.Door.Get(DoorType)"/>
     public enum DoorType
     {
         /// <summary>

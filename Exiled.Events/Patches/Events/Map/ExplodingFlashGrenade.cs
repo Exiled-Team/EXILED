@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -38,14 +37,20 @@ namespace Exiled.Events.Patches.Events.Map
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // Remove check if player is thrower. Grenade on self should affect themself.
+            int removeSelfCheckOffset = -4;
+            int removeSelfCheck = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Footprint), nameof(Footprint.Hub)))) + removeSelfCheckOffset;
+            newInstructions.RemoveRange(removeSelfCheck, 7);
+
             int offset = -3;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
             Label returnLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(ExplodingGrenadeEventArgs));
             LocalBuilder list = generator.DeclareLocal(typeof(List<ReferenceHub>));
             int instructionsToRemove = 4;
-            for (int i = 0; i < instructionsToRemove; i++)
-                newInstructions.RemoveAt(index);
+
+            newInstructions.RemoveRange(index, instructionsToRemove);
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
@@ -120,7 +125,11 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
+                if(Exiled.Events.Events.Instance.Config.CanFlashbangsAffectThrower && Player.Get(grenade.PreviousOwner.Hub) == player)
+                {
+                    grenade.ProcessPlayer(player.ReferenceHub);
+                }
+                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
                 {
                     grenade.ProcessPlayer(player.ReferenceHub);
                 }

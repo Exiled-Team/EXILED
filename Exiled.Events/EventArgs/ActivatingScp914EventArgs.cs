@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player activates SCP-914.
+    /// Contains all information before a player activates SCP-914.
     /// </summary>
     public class ActivatingScp914EventArgs : EventArgs
     {

@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
-    /// Contains all informations before adding a target to SCP-096.
+    /// Contains all information before adding a target to SCP-096.
     /// </summary>
     public class AddingTargetEventArgs : EventArgs
     {
@@ -52,7 +52,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets how much time is added to SCP-096's enrage timer if <see cref="IsAllowed"/> is <see langword="true"/>.
         /// </summary>
-        /// <remarks>This does not affect anything if he doesn't already have any targets before this event is called.</remarks>
+        /// <remarks>This does not affect anything if SCP-096 doesn't already have any targets before this event is called.</remarks>
         public float EnrageTimeToAdd { get; set; }
 
         /// <summary>

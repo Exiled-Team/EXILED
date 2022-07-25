@@ -22,7 +22,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation.Id"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = new()
+        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = new() // TODO: ReadOnlyDictionary
         {
             { DeathTranslations.Asphyxiated.Id, DamageType.Asphyxiation },
             { DeathTranslations.Bleeding.Id, DamageType.Bleeding },
@@ -53,7 +53,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
+        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new() // TODO: ReadOnlyDictionary
         {
             { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
             { DeathTranslations.Bleeding, DamageType.Bleeding },
@@ -84,7 +84,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new()
+        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new() // TODO: ReadOnlyDictionary
         {
             { ItemType.GunCrossvec, DamageType.Crossvec },
             { ItemType.GunLogicer, DamageType.Logicer },
@@ -145,20 +145,22 @@ namespace Exiled.API.Extensions
         {
             switch (damageHandlerBase)
             {
-                case CustomReasonDamageHandler _:
+                case CustomReasonDamageHandler:
                     return DamageType.Custom;
-                case WarheadDamageHandler _:
+                case WarheadDamageHandler:
                     return DamageType.Warhead;
-                case ExplosionDamageHandler _:
+                case ExplosionDamageHandler:
                     return DamageType.Explosion;
-                case Scp018DamageHandler _:
+                case Scp018DamageHandler:
                     return DamageType.Scp018;
-                case RecontainmentDamageHandler _:
+                case RecontainmentDamageHandler:
                     return DamageType.Recontainment;
-                case Scp096DamageHandler _:
+                case Scp096DamageHandler:
                     return DamageType.Scp096;
-                case MicroHidDamageHandler _:
+                case MicroHidDamageHandler:
                     return DamageType.MicroHid;
+                case DisruptorDamageHandler:
+                    return DamageType.ParticleDisruptor;
 
                 case FirearmDamageHandler firearmDamageHandler:
                 {

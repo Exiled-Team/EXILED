@@ -4,8 +4,6 @@ on:
   release:
     types: [published]
   workflow_dispatch:
-    branches:
-      - dev
 
 env:
   EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/References.zip

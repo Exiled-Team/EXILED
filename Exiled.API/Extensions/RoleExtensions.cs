@@ -8,7 +8,9 @@
 namespace Exiled.API.Extensions
 {
     using System;
+
     using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
@@ -60,6 +62,13 @@ namespace Exiled.API.Extensions
             RoleType.Tutorial => Team.TUT,
             _ => Team.RIP,
         };
+
+        /// <summary>
+        /// Gets the full name of the given <see cref="RoleType"/>.
+        /// </summary>
+        /// <param name="roleType">Role.</param>
+        /// <returns>The full name.</returns>
+        public static string GetFullName(this RoleType roleType) => CharacterClassManager._staticClasses.SafeGet(roleType).fullName;
 
         /// <summary>
         /// Get the <see cref="LeadingTeam"/>.

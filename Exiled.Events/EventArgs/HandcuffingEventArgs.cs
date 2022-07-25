@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before handcuffing a player.
+    /// Contains all information before handcuffing a player.
     /// </summary>
     public class HandcuffingEventArgs : EventArgs
     {

@@ -8,11 +8,13 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using Exiled.API.Features;
+
     using MapGeneration.Distributors;
 
     /// <summary>
-    /// Contains all informations before a player interacts with a locker.
+    /// Contains all information before a player interacts with a locker.
     /// </summary>
     public class InteractingLockerEventArgs : EventArgs
     {
