@@ -3053,7 +3053,6 @@ namespace Exiled.API.Features
         /// Converts the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
-        public override string ToString() =>
-            $"{Id} {Nickname} {UserId} {(Role is null ? "No role" : Role)}";
+        public override string ToString() => $"{Id} ({Nickname}) [{UserId}] *{(Role is null ? "No role" : Role)}*";
     }
 }

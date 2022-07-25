@@ -477,6 +477,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Returns the Door in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Door-related data.</returns>
+        public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* |{Health}/{MaxHealth}| ={RequiredPermissions.RequiredPermissions}= -{IgnoredDamageTypes}-";
+
+        /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
         /// </summary>
         /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
