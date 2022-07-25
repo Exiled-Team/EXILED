@@ -422,7 +422,6 @@ namespace Exiled.API.Features
         /// </summary>
         public void Lock() => ChangeLock(DoorLockType.AdminCommand);
 
-
         /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
