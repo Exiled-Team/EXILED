@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Scp049
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = -4;
+            const int offset = -4;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stfld &&
             (FieldInfo)instruction.operand == Field(typeof(Scp049), nameof(Scp049._recallHubServer))) + offset;
@@ -61,9 +61,8 @@ namespace Exiled.Events.Patches.Events.Scp049
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StartingRecallEventArgs), nameof(StartingRecallEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
-
-            offset = 0;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Beq_S) + offset;
+            
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Beq_S);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
