@@ -3041,6 +3041,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Resets the player speed.
+        /// </summary>
+        public void ResetSpeed()
+        {
+            WalkingSpeed = ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
+            RunningSpeed = ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier;
+        }
+
+        /// <summary>
         /// Converts the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
