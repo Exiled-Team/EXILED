@@ -276,8 +276,8 @@ namespace Exiled.API.Features
             foreach (Door door in Get(door => zoneType != ZoneType.Unspecified && door.Zone == zoneType))
             {
                 door.IsOpen = false;
-                door.Lock(lockType);
-                MEC.Timing.CallDelayed(duration, () => door.Lock(DoorLockType.None));
+                door.ChangeLock(lockType);
+                MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
             }
         }
 
@@ -299,7 +299,7 @@ namespace Exiled.API.Features
         public static void UnlockAll()
         {
             foreach (Door door in List)
-                door.Lock(DoorLockType.None);
+                door.ChangeLock(DoorLockType.None);
         }
 
         /// <summary>
@@ -321,7 +321,7 @@ namespace Exiled.API.Features
         public static void UnlockAll(Func<Door, bool> predicate)
         {
             foreach (Door door in Get(predicate))
-                door.Lock(DoorLockType.None);
+                door.ChangeLock(DoorLockType.None);
         }
 
         /// <summary>
@@ -374,16 +374,7 @@ namespace Exiled.API.Features
         /// Locks the door with the given lock type.
         /// </summary>
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
-        [Obsolete("Use Lock() instead", true)]
         public void ChangeLock(DoorLockType lockType)
-        {
-        }
-
-        /// <summary>
-        /// Locks the door with the given lock type.
-        /// </summary>
-        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
-        public void Lock(DoorLockType lockType)
         {
             if (lockType == DoorLockType.None)
             {
@@ -406,7 +397,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Unlocks and clears all active locks on the door.
         /// </summary>
-        public void Unlock() => Lock(DoorLockType.None);
+        public void Unlock() => ChangeLock(DoorLockType.None);
 
         /// <summary>
         /// Unlocks and clears all active locks on the door after a specified length of time.
@@ -422,7 +413,7 @@ namespace Exiled.API.Features
         /// <param name="flagsToUnlock">The door.</param>
         public void Lock(float time, DoorLockType flagsToUnlock)
         {
-            Lock(flagsToUnlock);
+            ChangeLock(flagsToUnlock);
             DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
         }
 
