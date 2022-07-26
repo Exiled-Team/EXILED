@@ -11,11 +11,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using System.Reflection.Emit;
 
-<<<<<<< HEAD
-    using Exiled.Events.Attributes;
-=======
     using Exiled.Events.Patches.Fixes;
->>>>>>> dev
+    using Exiled.Events.Attributes;
 
     using HarmonyLib;
 
@@ -26,12 +23,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// <br>Adds the <see cref="Handlers.Player.StayingOnEnvironmentalHazard"/> event.</br>
     /// <br>Adds the better effect logic.</br>
     /// </summary>
-<<<<<<< HEAD
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.StayingOnEnvironmentalHazard))]
-=======
     /// <seealso cref="SinkholeEffectFix"/>
     /// <seealso cref="ExitingSinkholeEnvironmentalHazard"/>
->>>>>>> dev
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.StayingOnEnvironmentalHazard))]
     [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.OnStay))]
     internal static class StayingOnSinkholeEnvironmentalHazard
     {

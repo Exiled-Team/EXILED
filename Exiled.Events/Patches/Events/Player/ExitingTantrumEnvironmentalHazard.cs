@@ -23,14 +23,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="TantrumEnvironmentalHazard.OnExit(ReferenceHub)"/>.
     /// Adds the <see cref="Handlers.Player.ExitingEnvironmentalHazard"/> event.
     /// </summary>
-<<<<<<< HEAD:Exiled.Events/Patches/Events/Player/ExitingEnvironmentalHazard.cs
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnExitingEnvironmentalHazard))]
-    [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnExit))]
-    internal static class ExitingEnvironmentalHazard
-=======
     [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.OnExit))]
     internal class ExitingTantrumEnvironmentalHazard
->>>>>>> dev:Exiled.Events/Patches/Events/Player/ExitingTantrumEnvironmentalHazard.cs
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
