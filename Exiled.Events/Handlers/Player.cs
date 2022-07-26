@@ -326,7 +326,7 @@ namespace Exiled.Events.Handlers
         /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> walks on a sinkhole.
         /// </summary>
         [Obsolete("Use StayingOnEnvironmentalHazard event instead.", true)]
-        public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
+        public static Event<WalkingOnSinkholeEventArgs> WalkingOnSinkhole { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> interacts with a shooting target.
@@ -372,7 +372,7 @@ namespace Exiled.Events.Handlers
         /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> walks on a tantrum.
         /// </summary>
         [Obsolete("Use StayingOnEnvironmentalHazard event instead.", true)]
-        public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
+        public static Event<WalkingOnTantrumEventArgs> WalkingOnTantrum { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the event invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
