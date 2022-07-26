@@ -45,11 +45,6 @@ namespace Exiled.API.Features.Items
         internal static readonly Dictionary<ItemBase, Item> BaseToItem = new();
 
         /// <summary>
-        /// A dictionary of all <see cref="Serial"/>s that have been assigned to an item.
-        /// </summary>
-        internal static readonly Dictionary<ushort, Item> SerialToItem = new();
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
@@ -69,7 +64,6 @@ namespace Exiled.API.Features.Items
 #if DEBUG
             Log.Debug($"{nameof(Item)}.ctor: New item created with Serial: {Serial}");
 #endif
-            SerialToItem.Add(Serial, this);
             BaseToItem.Add(itemBase, this);
         }
 
@@ -210,12 +204,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="serial">The Item serial.</param>
         /// <returns>Returns the Item found or <see langword="null"/> if not found.</returns>
-        public static Item Get(ushort serial)
-        {
-            if (SerialToItem.TryGetValue(serial, out Item item))
-                return item;
-            return null;
-        }
+        public static Item Get(ushort serial) => List.FirstOrDefault(x => x.Serial == serial)
 
         /// <summary>
         /// Creates a new <see cref="Item"/> with the proper inherited subclass.
