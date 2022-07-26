@@ -204,7 +204,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="serial">The Item serial.</param>
         /// <returns>Returns the Item found or <see langword="null"/> if not found.</returns>
-        public static Item Get(ushort serial) => List.FirstOrDefault(x => x.Serial == serial)
+        public static Item Get(ushort serial) => List.FirstOrDefault(x => x.Serial == serial);
 
         /// <summary>
         /// Creates a new <see cref="Item"/> with the proper inherited subclass.
