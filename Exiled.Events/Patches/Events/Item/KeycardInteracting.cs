@@ -139,7 +139,7 @@ namespace Exiled.Events.Patches.Events.Item
             {
                 // call animation sets(we don't want to call the event more than once)
                 new CodeInstruction(OpCodes.Ldloc_1),
-                new(OpCodes.Callvirt, Method(typeof(DoorVariant), nameof(DoorVariant.Update))),
+                new(OpCodes.Callvirt, Method(typeof(DoorVariant), nameof(DoorVariant.TargetStateChanged))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
