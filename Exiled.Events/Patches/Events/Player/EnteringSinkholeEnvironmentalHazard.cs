@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ExitingEnvironmentalHazard.cs" company="Exiled Team">
+// <copyright file="EnteringSinkholeEnvironmentalHazard.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -20,29 +19,33 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="EnvironmentalHazard.OnExit(ReferenceHub)"/>.
-    /// Adds the <see cref="Handlers.Player.ExitingEnvironmentalHazard"/> event.
+    /// Patches <see cref="SinkholeEnvironmentalHazard.OnEnter(ReferenceHub)"/>.
+    /// Adds the <see cref="Handlers.Player.EnteringEnvironmentalHazard"/> event.
     /// </summary>
-    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.OnExitingEnvironmentalHazard))]
-    [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnExit))]
-    internal static class ExitingEnvironmentalHazard
+    [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.OnEnter))]
+    internal static class EnteringSinkholeEnvironmentalHazard
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
+
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            int offset = -1;
+            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(CharacterClassManager), nameof(CharacterClassManager.IsAnyScp)))) + offset;
+
+            newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ExitingEnvironmentalHazardEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringEnvironmentalHazardEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnExitingEnvironmentalHazard))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ExitingEnvironmentalHazardEventArgs), nameof(ExitingEnvironmentalHazardEventArgs.IsAllowed))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringEnvironmentalHazard))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringEnvironmentalHazardEventArgs), nameof(EnteringEnvironmentalHazardEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
 

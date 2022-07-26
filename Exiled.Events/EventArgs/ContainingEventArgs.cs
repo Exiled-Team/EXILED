@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before containing SCP-106.
+    /// Contains all information before containing SCP-106.
     /// </summary>
     public class ContainingEventArgs : EventArgs
     {

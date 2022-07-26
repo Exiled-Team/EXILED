@@ -145,20 +145,22 @@ namespace Exiled.API.Extensions
         {
             switch (damageHandlerBase)
             {
-                case CustomReasonDamageHandler _:
+                case CustomReasonDamageHandler:
                     return DamageType.Custom;
-                case WarheadDamageHandler _:
+                case WarheadDamageHandler:
                     return DamageType.Warhead;
-                case ExplosionDamageHandler _:
+                case ExplosionDamageHandler:
                     return DamageType.Explosion;
-                case Scp018DamageHandler _:
+                case Scp018DamageHandler:
                     return DamageType.Scp018;
-                case RecontainmentDamageHandler _:
+                case RecontainmentDamageHandler:
                     return DamageType.Recontainment;
-                case Scp096DamageHandler _:
+                case Scp096DamageHandler:
                     return DamageType.Scp096;
-                case MicroHidDamageHandler _:
+                case MicroHidDamageHandler:
                     return DamageType.MicroHid;
+                case DisruptorDamageHandler:
+                    return DamageType.ParticleDisruptor;
 
                 case FirearmDamageHandler firearmDamageHandler:
                 {

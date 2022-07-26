@@ -13,6 +13,8 @@ namespace Exiled.API.Features
 
     using MEC;
 
+    using NorthwoodLib.Pools;
+
     using PlayerStatsSystem;
 
     using Respawning;
@@ -61,13 +63,14 @@ namespace Exiled.API.Features
         /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
         public static void MessageTranslated(string message, string translation, bool isHeld = false, bool isNoisy = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = new();
+            StringBuilder announcement = StringBuilderPool.Shared.Rent();
             string[] cassies = message.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Length; i++)
-                annoucement.Append($"{translations[i].Replace(' ', ' ')}<alpha=#00> {cassies[i]} </alpha><split>");
+                announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
 
-            RespawnEffectsController.PlayCassieAnnouncement(annoucement.ToString(), isHeld, isNoisy, isSubtitles);
+            RespawnEffectsController.PlayCassieAnnouncement(announcement.ToString(), isHeld, isNoisy, isSubtitles);
+            StringBuilderPool.Shared.Return(announcement);
         }
 
         /// <summary>

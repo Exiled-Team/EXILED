@@ -80,7 +80,7 @@ namespace Exiled.API.Features.Toys
         /// <param name="position">The position of the <see cref="Primitive"/>.</param>
         /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
         /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
-        /// <param name="spawn">Whether the <see cref="Primitive"/> should be initially spawned.</param>
+        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
@@ -94,6 +94,32 @@ namespace Exiled.API.Features.Toys
                 primitive.Spawn();
 
             primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+
+            return primitive;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Primitive"/>.
+        /// </summary>
+        /// <param name="primitiveType">The type of primitive to spawn.</param>
+        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
+        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
+        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
+        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
+        /// <returns>The new <see cref="Primitive"/>.</returns>
+        public static Primitive Create(PrimitiveType primitiveType = PrimitiveType.Sphere, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
+        {
+            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+
+            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
+            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+
+            if (spawn)
+                primitive.Spawn();
+
+            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+            primitive.Base.NetworkPrimitiveType = primitiveType;
 
             return primitive;
         }

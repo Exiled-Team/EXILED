@@ -14,8 +14,11 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Items;
 
     using Interactables.Interobjects.DoorUtils;
+
+    using InventorySystem.Items.Pickups;
 
     using MapGeneration;
 
@@ -87,6 +90,24 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Door> Doors { get; private set; }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IEnumerable<Pickup> Pickups
+        {
+            get
+            {
+                List<Pickup> pickups = new();
+                foreach (Pickup pickup in Map.Pickups)
+                {
+                    if (Map.FindParentRoom(pickup.GameObject) == this)
+                        pickups.Add(pickup);
+                }
+
+                return pickups;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the intensity of the lights in the room.
@@ -161,7 +182,7 @@ namespace Exiled.API.Features
             ?? List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPositionRaycasts(position).UniqueId);
 
         /// <summary>
-        /// Gets a <see cref="Room"/> given the specified <see cref="ZoneType"/>.
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="ZoneType"/> or <see langword="null"/> if not found.</returns>
@@ -250,7 +271,7 @@ namespace Exiled.API.Features
         /// Returns the Room in a human-readable format.
         /// </summary>
         /// <returns>A string containing Room-related data.</returns>
-        public override string ToString() => $"{Type} {Zone} {Doors} {Cameras} {TeslaGate}";
+        public override string ToString() => $"{Type} ({Zone}) [{Doors?.Count()}] *{Cameras}* |{TeslaGate}|";
 
         /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
