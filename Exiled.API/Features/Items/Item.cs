@@ -69,6 +69,7 @@ namespace Exiled.API.Features.Items
 #if DEBUG
             Log.Debug($"{nameof(Item)}.ctor: New item created with Serial: {Serial}");
 #endif
+            SerialToItem.Add(Serial, this);
             BaseToItem.Add(itemBase, this);
         }
 
@@ -80,6 +81,11 @@ namespace Exiled.API.Features.Items
             : this(Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
+
+        /// <summary>
+        /// Gets a list of all <see cref="Item"/>'s on the server.
+        /// </summary>
+        public static IEnumerable<Item> List => BaseToItem.Values;
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.
@@ -197,6 +203,18 @@ namespace Exiled.API.Features.Items
                 },
                 _ => new Item(itemBase)
             };
+        }
+
+        /// <summary>
+        /// Gets the Item belonging to the specified serial.
+        /// </summary>
+        /// <param name="serial">The Item serial.</param>
+        /// <returns>Returns the Item found or <see langword="null"/> if not found.</returns>
+        public static Item Get(ushort serial)
+        {
+            if (SerialToItem.TryGetValue(serial, out Item item))
+                return item;
+            return null;
         }
 
         /// <summary>
