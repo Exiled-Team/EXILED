@@ -19,6 +19,8 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
 
+    using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -289,6 +291,26 @@ namespace Exiled.API.Features.Pickups
             }
 
             return pickups;
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Pickup"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Pickup"/> object. </returns>
+        public Pickup Clone()
+        {
+            Pickup cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.Locked = Locked;
+                cloneableItem.Spawned = Spawned;
+                cloneableItem.Weight = Weight;
+                cloneableItem.Scale = Scale;
+                cloneableItem.Position = Position;
+                cloneableItem.PreviousOwner = PreviousOwner;
+            });
+            return cloneableItem;
         }
 
         /// <summary>
