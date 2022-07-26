@@ -568,5 +568,19 @@ namespace Exiled.API.Features.Items
 
             return pickup;
         }
+
+        /// <summary>
+        /// Clones current <see cref="Firearm"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Firearm"/> object. </returns>
+        public override Item Clone()
+        {
+            Firearm cloneableItem = new(Type);
+
+            cloneableItem.Ammo = Ammo;
+            cloneableItem.FireRate = FireRate;
+
+            return cloneableItem;
+        }
     }
 }

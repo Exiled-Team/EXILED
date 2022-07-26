@@ -40,13 +40,10 @@ namespace Exiled.Events.Patches.Generic
             Player player = Player.Get(curPlayerHub);
             if (player is not null)
             {
-                if (player.Role.Type == RoleType.Tutorial)
+                if (player.Role.Type == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
                 {
-                    if (!Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
-                    {
-                        instance._observingPlayers.Remove(curPlayerHub);
-                        return true;
-                    }
+                    instance._observingPlayers.Remove(curPlayerHub);
+                    return true;
                 }
                 else if (API.Features.Scp173.TurnedPlayers.Contains(player))
                 {

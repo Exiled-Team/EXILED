@@ -13,6 +13,8 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
 
+    using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -22,9 +24,30 @@ namespace Exiled.API.Features.Items
     using Scp330Pickup = Exiled.API.Features.Pickups.Scp330Pickup;
 
     /// <summary>
+    /// Candy enumeration status.
+    /// </summary>
+    public enum CandyAddStatus
+    {
+        /// <summary>
+        /// If no candy was able to be added.
+        /// </summary>
+        NoCandyAdded,
+
+        /// <summary>
+        /// If at least one candy was added.
+        /// </summary>
+        SomeCandyAdded,
+
+        /// <summary>
+        /// If all candies provided were added.
+        /// </summary>
+        AllCandyAdded,
+    }
+
+    /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
-    public class Scp330 : Usable
+    public partial class Scp330 : Usable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
@@ -73,6 +96,27 @@ namespace Exiled.API.Features.Items
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Adds a collection of candy's to a bag.
+        /// </summary>
+        /// <param name="candies">The <see cref="CandyKindID"/>'s to add.</param>
+        /// <returns> <see cref="CandyAddStatus"/> based on insertion status. </returns>
+        public CandyAddStatus AddCandy(IEnumerable<CandyKindID> candies)
+        {
+            bool addedCandy = false;
+            foreach(CandyKindID candy in candies)
+            {
+                if (!Base.TryAddSpecific(candy))
+                {
+                    return addedCandy ? CandyAddStatus.SomeCandyAdded : CandyAddStatus.NoCandyAdded;
+                }
+
+                addedCandy = true;
+            }
+
+            return CandyAddStatus.AllCandyAdded;
         }
 
         /// <summary>
@@ -182,5 +226,17 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing SCP-330 related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
+
+        /// <summary>
+        /// Clones current <see cref="Scp330"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Scp330"/> object. </returns>
+        public override Item Clone()
+        {
+            Scp330 cloneableItem = new();
+            cloneableItem.ExposedType = ExposedType;
+            cloneableItem.AddCandy(Candies);
+            return cloneableItem;
+        }
     }
 }
