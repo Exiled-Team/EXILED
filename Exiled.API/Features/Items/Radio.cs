@@ -104,6 +104,12 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Returns the Radio in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Radio-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
+
+        /// <summary>
         /// <inheritdoc/>
         /// </summary>
         /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
@@ -116,11 +122,5 @@ namespace Exiled.API.Features.Items
 
             Base.CurRange = Base._rangeId;
         }
-
-        /// <summary>
-        /// Returns the Radio in a human readable format.
-        /// </summary>
-        /// <returns>A string containing Radio-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
     }
 }

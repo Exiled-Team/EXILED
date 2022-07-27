@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -27,5 +29,6 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ItemPickupBase), nameof(ItemPickupBase.DestroySelf))]
     internal class PickupListRemove
     {
+        private static void Prefix(ItemPickupBase __instance) => Pickup.BaseToItem.Remove(__instance);
     }
 }

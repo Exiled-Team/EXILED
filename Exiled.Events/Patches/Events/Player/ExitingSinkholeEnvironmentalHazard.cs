@@ -27,7 +27,6 @@ namespace Exiled.Events.Patches.Events.Player
     /// <br>Adds the better effect logic.</br>
     /// </summary>
     /// <seealso cref="StayingOnSinkholeEnvironmentalHazard"/>
-    /// <seealso cref="SinkholeEffectFix"/>
     [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnExit))]
     internal static class ExitingSinkholeEnvironmentalHazard
     {
