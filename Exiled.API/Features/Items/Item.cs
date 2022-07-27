@@ -273,6 +273,17 @@ namespace Exiled.API.Features.Items
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
 
         /// <summary>
+        /// Clones the current item
+        /// with a different serial.
+        /// </summary>
+        /// <returns> Cloned item object. </returns>
+        public virtual Item Clone()
+        {
+            Item generatedItem = Create(Type);
+            return generatedItem;
+        }
+
+        /// <summary>
         /// test.
         /// </summary>
         /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
@@ -283,17 +294,7 @@ namespace Exiled.API.Features.Items
 
             Base.Owner = newOwner.ReferenceHub;
 
-        }
-
-        // <summary>
-        /// Clones the current item
-            Base.OnAdded(null); with a different serial.
-        /// </summary>
-        /// <returns> Cloned item object. </returns>
-        public virtual Item Clone()
-        {
-            Item generatedItem = Item.Create(Type);
-            return generatedItem;
+            Base.OnAdded(null);
         }
     }
 }

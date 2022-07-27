@@ -93,20 +93,6 @@ namespace Exiled.API.Features.Items
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
 
         /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
-        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
-        internal override void ChangeOwner(Player oldOwner, Player newOwner)
-        {
-            Base.Owner = newOwner.ReferenceHub;
-
-            Base._radio = newOwner.ReferenceHub.GetComponent<global::Radio>();
-
-            Base.CurRange = Base._rangeId;
-        }
-
-        /// <summary>
         /// Clones current <see cref="Radio"/> object.
         /// </summary>
         /// <returns> New <see cref="Radio"/> object. </returns>
@@ -121,6 +107,20 @@ namespace Exiled.API.Features.Items
                 radio.RangeSettings = RangeSettings;
             });
             return radio;
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.Owner = newOwner.ReferenceHub;
+
+            Base._radio = newOwner.ReferenceHub.GetComponent<global::Radio>();
+
+            Base.CurRange = Base._rangeId;
         }
     }
 }

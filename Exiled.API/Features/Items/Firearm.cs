@@ -566,6 +566,20 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Clones current <see cref="Firearm"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Firearm"/> object. </returns>
+        public override Item Clone()
+        {
+            Firearm cloneableItem = new(Type);
+
+            cloneableItem.Ammo = Ammo;
+            cloneableItem.FireRate = FireRate;
+
+            return cloneableItem;
+        }
+
+        /// <summary>
         /// <inheritdoc/>
         /// </summary>
         /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
@@ -588,20 +602,6 @@ namespace Exiled.API.Features.Items
             };
 
             Base._footprintValid = false;
-        }
-
-        /// <summary>
-        /// Clones current <see cref="Firearm"/> object.
-        /// </summary>
-        /// <returns> New <see cref="Firearm"/> object. </returns>
-        public override Item Clone()
-        {
-            Firearm cloneableItem = new(Type);
-
-            cloneableItem.Ammo = Ammo;
-            cloneableItem.FireRate = FireRate;
-
-            return cloneableItem;
         }
     }
 }
