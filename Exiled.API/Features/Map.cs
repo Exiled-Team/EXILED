@@ -84,8 +84,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// gets all <see cref="Pickup"/>s on the map.
         /// </summary>
-        public static ReadOnlyCollection<Pickup> Pickups
-        {
+        public static ReadOnlyCollection<Pickup> Pickups => Pickup.List.ToList().AsReadOnly();
+        /*{
             get
             {
                 List<Pickup> pickups = new();
@@ -97,7 +97,7 @@ namespace Exiled.API.Features
 
                 return pickups.AsReadOnly();
             }
-        }
+        }*/
 
         /// <summary>
         /// Gets all <see cref="Ragdoll"/> objects.
