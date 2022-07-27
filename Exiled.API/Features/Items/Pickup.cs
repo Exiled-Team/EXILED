@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using InventorySystem;
     using InventorySystem.Items;
@@ -55,6 +56,11 @@ namespace Exiled.API.Features.Items
             Serial = itemBase.PickupDropModel.NetworkInfo.Serial;
             BaseToItem.Add(itemBase.PickupDropModel, this);
         }
+
+        /// <summary>
+        /// Gets a list of all <see cref="Pickup"/>'s on the server.
+        /// </summary>
+        public static IEnumerable<Pickup> List => BaseToItem.Values;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
@@ -203,6 +209,13 @@ namespace Exiled.API.Features.Items
             pickupBase is null ? null :
             BaseToItem.ContainsKey(pickupBase) ? BaseToItem[pickupBase] :
             new Pickup(pickupBase);
+
+        /// <summary>
+        /// Gets the Pickup belonging to the specified serial.
+        /// </summary>
+        /// <param name="serial">The Pickup serial.</param>
+        /// <returns>Returns the Pickup found or <see langword="null"/> if not found.</returns>
+        public static Pickup Get(ushort serial) => List.FirstOrDefault(x => x.Serial == serial);
 
         /// <summary>
         /// Gets all <see cref="Pickup"/> with the given <see cref="ItemType"/>.
