@@ -159,7 +159,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.
         /// </summary>
-        public Player Owner => Player.Get(Base.Owner);
+        public Player Owner => Player.Get(Base.Owner) ?? Server.Host;
 
         /// <summary>
         /// Gets an existing <see cref="Item"/> or creates a new instance of one.
@@ -370,6 +370,6 @@ namespace Exiled.API.Features.Items
         /// Returns the Item in a human readable format.
         /// </summary>
         /// <returns>A string containing Item-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
     }
 }
