@@ -52,7 +52,7 @@ namespace Exiled.Events.Patches.Generic
             {
                 // pickup = Pickup.Get(pickupBase);
                 new(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get))),
+                new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
                 new(OpCodes.Dup),
 
                 // Item.Get(itemBase);
