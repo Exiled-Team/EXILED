@@ -64,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Item
 
                 // Item::Get(firearm)
                 new(OpCodes.Ldloc_1),
-                new(OpCodes.Call, Method(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Get))),
+                new(OpCodes.Call, Method(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Get), new[] { typeof(InventorySystem.Items.ItemBase) })),
                 new(OpCodes.Castclass, typeof(API.Features.Items.Firearm)),
 
                 // AttachmentsChangeRequest::AttachmentsCode

@@ -50,12 +50,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Returns the Keycard in a human readable format.
-        /// </summary>
-        /// <returns>A string containing Keycard-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
-
-        /// <summary>
         /// Clones current <see cref="Keycard"/> object.
         /// </summary>
         /// <returns> New <see cref="Keycard"/> object. </returns>
@@ -66,5 +60,11 @@ namespace Exiled.API.Features.Items
 
             return cloneableItem;
         }
+
+        /// <summary>
+        /// Returns the Keycard in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Keycard-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
     }
 }

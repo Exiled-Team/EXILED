@@ -222,12 +222,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Returns the SCP-330 in a human readable format.
-        /// </summary>
-        /// <returns>A string containing SCP-330 related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
-
-        /// <summary>
         /// Clones current <see cref="Scp330"/> object.
         /// </summary>
         /// <returns> New <see cref="Scp330"/> object. </returns>
@@ -249,5 +243,11 @@ namespace Exiled.API.Features.Items
             Base.Owner = newOwner.ReferenceHub;
             Base.ServerRefreshBag();
         }
+		
+        /// <summary>
+        /// Returns the SCP-330 in a human readable format.
+        /// </summary>
+        /// <returns>A string containing SCP-330 related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
     }
 }
