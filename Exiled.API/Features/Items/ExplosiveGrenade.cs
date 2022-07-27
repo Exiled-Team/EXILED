@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Items
             grenade._deafenedDuration = DeafenDuration;
             grenade._concussedDuration = ConcussDuration;
             grenade._fuseTime = FuseTime;
-            grenade.PreviousOwner = new Footprint(owner.ReferenceHub ?? Server.Host.ReferenceHub);
+            grenade.PreviousOwner = new Footprint((owner ?? Server.Host).ReferenceHub);
             NetworkServer.Spawn(grenade.gameObject);
             grenade.ServerActivate();
         }
