@@ -282,7 +282,7 @@ namespace Exiled.API.Features.Pickups
         public static IEnumerable<Pickup> Get(ItemType type)
         {
             List<Pickup> pickups = new();
-            foreach (Pickup p in Map.Pickups)
+            foreach (Pickup p in List)
             {
                 if (p.Type == type)
                 {

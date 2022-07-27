@@ -9,24 +9,30 @@ namespace Exiled.API.Features.Items
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Ammo;
     using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
 
+    using Mirror;
+
     using UnityEngine;
 
+    using FirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -279,12 +285,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Returns the Item in a human readable format.
-        /// </summary>
-        /// <returns>A string containing Item-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
-
-        /// <summary>
         /// Clones the current item
         /// with a different serial.
         /// Spawns the item on the map.
@@ -347,6 +347,12 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Returns the Item in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Item-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
+
+        /// <summary>
         /// test.
         /// </summary>
         /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
@@ -359,11 +365,5 @@ namespace Exiled.API.Features.Items
 
             Base.OnAdded(null);
         }
-
-        /// <summary>
-        /// Returns the Item in a human readable format.
-        /// </summary>
-        /// <returns>A string containing Item-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
     }
 }

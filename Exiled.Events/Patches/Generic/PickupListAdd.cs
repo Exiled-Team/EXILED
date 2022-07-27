@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
 
     using HarmonyLib;
 
@@ -26,22 +27,5 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ItemPickupBase), nameof(ItemPickupBase.Awake))]
     public static class PickupListAdd
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(codeInstructions);
-
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldsfld, Field(typeof(Pickup), nameof(Pickup.BaseToItem))),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Pickup))[0]),
-                new(OpCodes.Callvirt, Method(typeof(List<Pickup>), nameof(List<Pickup>.Add))),
-            });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
     }
 }

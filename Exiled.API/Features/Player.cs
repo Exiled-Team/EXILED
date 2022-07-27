@@ -81,6 +81,7 @@ namespace Exiled.API.Features
 #pragma warning restore SA1401
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
+        private readonly HashSet<EActor> components = new();
 
         private float? runningSpeed;
         private float? walkingSpeed;
@@ -88,7 +89,6 @@ namespace Exiled.API.Features
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
-        private HashSet<EActor> components = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -2835,7 +2835,7 @@ namespace Exiled.API.Features
                 nameof(Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
                 nameof(TeslaGate) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
                 nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
-                nameof(Pickup) => Map.Pickups[Random.Range(0, Map.Pickups.Count)],
+                nameof(Pickup) => Pickup.BaseToItem.ElementAt(Random.Range(0, Pickup.BaseToItem.Count)).Value,
                 nameof(Ragdoll) => Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)],
                 nameof(Locker) => Map.GetRandomLocker(),
                 nameof(Generator) => Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)],

@@ -99,11 +99,11 @@ namespace Exiled.API.Features
         {
             get
             {
+                Component[] itempickupbase = GetComponentsInChildren(typeof(ItemPickupBase));
                 List<Pickup> pickups = new();
-                foreach (Pickup pickup in Map.Pickups)
+                foreach (ItemPickupBase pickup in itempickupbase)
                 {
-                    if (Map.FindParentRoom(pickup.GameObject) == this)
-                        pickups.Add(pickup);
+                    pickups.Add(Pickup.Get(pickup));
                 }
 
                 return pickups;

@@ -83,24 +83,6 @@ namespace Exiled.API.Features
         public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
 
         /// <summary>
-        /// gets all <see cref="Pickup"/>s on the map.
-        /// </summary>
-        public static ReadOnlyCollection<Pickup> Pickups => Pickup.List.ToList().AsReadOnly();
-        /*{
-            get
-            {
-                List<Pickup> pickups = new();
-                foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>())
-                {
-                    if (Pickup.Get(itemPickupBase) is Pickup pickup)
-                        pickups.Add(pickup);
-                }
-
-                return pickups.AsReadOnly();
-            }
-        }*/
-
-        /// <summary>
         /// Gets all <see cref="Ragdoll"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Ragdoll> Ragdolls => ReadOnlyRagdollsValue;
@@ -272,8 +254,8 @@ namespace Exiled.API.Features
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
             List<Pickup> pickups = (type != ItemType.None
-                ? Pickups.Where(p => p.Type == type)
-                : Pickups).ToList();
+                ? Pickup.List.Where(p => p.Type == type)
+                : Pickup.List).ToList();
             return pickups[Random.Range(0, pickups.Count)];
         }
 
