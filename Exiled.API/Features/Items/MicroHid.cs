@@ -67,12 +67,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Returns the MicroHid in a human readable format.
-        /// </summary>
-        /// <returns>A string containing MicroHid-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{State}-";
-
-        /// <summary>
         /// Clones current <see cref="MicroHid"/> object.
         /// </summary>
         /// <returns> New <see cref="MicroHid"/> object. </returns>
@@ -88,5 +82,11 @@ namespace Exiled.API.Features.Items
 
             return cloneableItem;
         }
+
+        /// <summary>
+        /// Returns the MicroHid in a human readable format.
+        /// </summary>
+        /// <returns>A string containing MicroHid-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{State}-";
     }
 }

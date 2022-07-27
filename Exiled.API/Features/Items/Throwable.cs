@@ -63,12 +63,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Returns the Throwable in a human readable format.
-        /// </summary>
-        /// <returns>A string containing Throwable-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
-
-        /// <summary>
         /// Clones current <see cref="Throwable"/> object.
         /// </summary>
         /// <returns> New <see cref="Throwable"/> object. </returns>
@@ -78,5 +72,11 @@ namespace Exiled.API.Features.Items
             cloneableItem.PinPullTime = PinPullTime;
             return cloneableItem;
         }
+
+        /// <summary>
+        /// Returns the Throwable in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Throwable-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
     }
 }

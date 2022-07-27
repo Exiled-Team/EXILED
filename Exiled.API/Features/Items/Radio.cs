@@ -87,12 +87,6 @@ namespace Exiled.API.Features.Items
         public void Disable() => Base._radio.ForceDisableRadio();
 
         /// <summary>
-        /// Returns the Radio in a human readable format.
-        /// </summary>
-        /// <returns>A string containing Radio-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
-
-        /// <summary>
         /// Clones current <see cref="Radio"/> object.
         /// </summary>
         /// <returns> New <see cref="Radio"/> object. </returns>
@@ -108,5 +102,11 @@ namespace Exiled.API.Features.Items
             });
             return radio;
         }
+
+        /// <summary>
+        /// Returns the Radio in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Radio-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
     }
 }

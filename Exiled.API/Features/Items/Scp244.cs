@@ -48,12 +48,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Returns the SCP-244 in a human readable format.
-        /// </summary>
-        /// <returns>A string containing SCP-244 related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Primed}-";
-
-        /// <summary>
         /// Clones current <see cref="Scp244"/> object.
         /// </summary>
         /// <returns> New <see cref="Scp244"/> object. </returns>
@@ -65,5 +59,11 @@ namespace Exiled.API.Features.Items
 
             return cloneableItem;
         }
+
+        /// <summary>
+        /// Returns the SCP-244 in a human readable format.
+        /// </summary>
+        /// <returns>A string containing SCP-244 related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Primed}-";
     }
 }
