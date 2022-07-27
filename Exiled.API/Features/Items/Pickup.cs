@@ -242,12 +242,6 @@ namespace Exiled.API.Features.Items
         public void Destroy() => Base.DestroySelf();
 
         /// <summary>
-        /// Returns the Pickup in a human readable format.
-        /// </summary>
-        /// <returns>A string containing Pickup-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
-
-        /// <summary>
         /// Clones current <see cref="Pickup"/> object.
         /// </summary>
         /// <returns> New <see cref="Pickup"/> object. </returns>
@@ -266,5 +260,11 @@ namespace Exiled.API.Features.Items
             });
             return cloneableItem;
         }
+
+        /// <summary>
+        /// Returns the Pickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Pickup-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
     }
 }

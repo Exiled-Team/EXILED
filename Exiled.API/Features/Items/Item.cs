@@ -357,19 +357,19 @@ namespace Exiled.API.Features.Items
         public virtual Pickup Spawn(Vector3 position) => Spawn(position, default);
 
         /// <summary>
-        /// Returns the Item in a human readable format.
-        /// </summary>
-        /// <returns>A string containing Item-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
-
-        /// <summary>
         /// Clones the current item with a different serial.
         /// </summary>
         /// <returns> Cloned item object. </returns>
         public virtual Item Clone()
         {
-            Item generatedItem = Item.Create(Type);
+            Item generatedItem = Create(Type);
             return generatedItem;
         }
+
+        /// <summary>
+        /// Returns the Item in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Item-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
     }
 }
