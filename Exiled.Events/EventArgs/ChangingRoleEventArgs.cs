@@ -52,12 +52,12 @@ namespace Exiled.Events.EventArgs
         public RoleType NewRole { get; set; }
 
         /// <summary>
-        /// Gets base items that the player will receive. (Changing this will overwrite their current inventory if Lite is true!).
+        /// Gets base items that the player will receive. (Changing this will overwrite their current inventory if <see cref="Lite"/> is true!).
         /// </summary>
         public List<ItemType> Items { get; } = new();
 
         /// <summary>
-        /// Gets the base ammo values for the new role. (Changing this will overwrite their current inventory if Lite is true!).
+        /// Gets the base ammo values for the new role. (Changing this will overwrite their current inventory if <see cref="Lite"/> is true!).
         /// </summary>
         public Dictionary<ItemType, ushort> Ammo { get; } = new();
 
@@ -67,7 +67,7 @@ namespace Exiled.Events.EventArgs
         public SpawnReason Reason { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the position and items has to be preserved after changing the role.
+        /// Gets or sets a value indicating whether or not the position and items are preserved after changing the role.
         /// </summary>
         public bool Lite { get; set; }
 

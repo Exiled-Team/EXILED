@@ -12,6 +12,8 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Radio;
 
+    using MEC;
+
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
@@ -102,6 +104,23 @@ namespace Exiled.API.Features.Items
             Base._radio = newOwner.ReferenceHub.GetComponent<global::Radio>();
 
             Base.CurRange = Base._rangeId;
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Radio"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Radio"/> object. </returns>
+        public override Item Clone()
+        {
+            Radio radio = new();
+
+            Timing.CallDelayed(1f, () =>
+            {
+                radio.BatteryLevel = BatteryLevel;
+                radio.Range = Range;
+                radio.RangeSettings = RangeSettings;
+            });
+            return radio;
         }
     }
 }

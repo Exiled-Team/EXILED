@@ -19,6 +19,8 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
 
+    using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -271,6 +273,45 @@ namespace Exiled.API.Features.Pickups
             ItemType.SCP330 => new Scp330Pickup(),
             _ => new Pickup(type),
         };
+
+        /// <summary>
+        /// Gets all <see cref="Pickup"/> with the given <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to look for.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
+        public static IEnumerable<Pickup> Get(ItemType type)
+        {
+            List<Pickup> pickups = new();
+            foreach (Pickup p in Map.Pickups)
+            {
+                if (p.Type == type)
+                {
+                    pickups.Add(p);
+                }
+            }
+
+            return pickups;
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Pickup"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Pickup"/> object. </returns>
+        public Pickup Clone()
+        {
+            Pickup cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.Locked = Locked;
+                cloneableItem.Spawned = Spawned;
+                cloneableItem.Weight = Weight;
+                cloneableItem.Scale = Scale;
+                cloneableItem.Position = Position;
+                cloneableItem.PreviousOwner = PreviousOwner;
+            });
+            return cloneableItem;
+        }
 
         /// <summary>
         /// Spawns pickup on server.
