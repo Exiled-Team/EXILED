@@ -41,7 +41,8 @@ namespace Exiled.Events.Patches.Generic
             ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            const int offset = 1;
+
+            const int offset = -2;
             int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Callvirt &&
                 (MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded))) + offset;
@@ -134,26 +135,19 @@ namespace Exiled.Events.Patches.Generic
             Log.Debug(
                     $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
             foreach (Item item in player.Items)
-                    Log.Debug($"{item.Type} ({item.Serial})");
+                    Log.Debug($"{item})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
+
             Timing.CallDelayed(0.15f, () =>
             {
-                if (player.Inventory.UserInventory.Items.ContainsKey(serial))
-                {
-                    player.Inventory.UserInventory.Items.Remove(serial);
-                    player.Inventory.SendItemsNextFrame = true;
-#if DEBUG
-                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
-#endif
-                }
 #if DEBUG
                 Log.Debug($"Item ({serial}) removed from {player.Nickname}");
-                Log.Debug(
-                        $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+
                 foreach (Item item in player.Items)
-                        Log.Debug($"{item.Type} ({item.Serial})");
+                        Log.Debug($"{item})");
 #endif
             });
         }

@@ -9,7 +9,6 @@ namespace Exiled.API.Features.Items
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
 
     using CameraShaking;
@@ -24,13 +23,10 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
-    using InventorySystem.Items.Pickups;
-
-    using Mirror;
 
     using UnityEngine;
 
-    using BaseFirearm = InventorySystem.Items.Firearms.FirearmPickup;
+    using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
     using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
     using Object = UnityEngine.Object;
 
@@ -65,7 +61,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Firearm"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="InventorySystem.Items.Firearms.Firearm"/> class.</param>
-        public Firearm(InventorySystem.Items.Firearms.Firearm itemBase)
+        public Firearm(BaseFirearm itemBase)
             : base(itemBase)
         {
             Base = itemBase;
@@ -76,7 +72,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the firearm.</param>
         internal Firearm(ItemType type)
-            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
@@ -581,6 +577,31 @@ namespace Exiled.API.Features.Items
             cloneableItem.FireRate = FireRate;
 
             return cloneableItem;
+        }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.Owner = newOwner.ReferenceHub;
+
+            Base.HitregModule = Base switch
+            {
+                AutomaticFirearm automaticFirearm =>
+                    new SingleBulletHitreg(automaticFirearm, automaticFirearm.Owner, automaticFirearm._recoilPattern),
+                Shotgun shotgun =>
+                    new BuckshotHitreg(shotgun, shotgun.Owner, shotgun._buckshotStats),
+                ParticleDisruptor particleDisruptor =>
+                    new DisruptorHitreg(particleDisruptor, particleDisruptor.Owner, particleDisruptor._explosionSettings),
+                Revolver revolver =>
+                    new SingleBulletHitreg(revolver, revolver.Owner),
+                _ => throw new NotImplementedException("Should never happend"),
+            };
+
+            Base._footprintValid = false;
         }
     }
 }

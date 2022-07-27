@@ -238,5 +238,16 @@ namespace Exiled.API.Features.Items
             cloneableItem.AddCandy(Candies);
             return cloneableItem;
         }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner)
+        {
+            Base.Owner = newOwner.ReferenceHub;
+            Base.ServerRefreshBag();
+        }
     }
 }

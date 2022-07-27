@@ -65,6 +65,7 @@ namespace Exiled.API.Features
     using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Exiled.API.Features.Items.Firearm;
+    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
     using Random = UnityEngine.Random;
 
     /// <summary>
@@ -81,14 +82,7 @@ namespace Exiled.API.Features
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
 
-        /// <summary>
-        /// The running speed of the player.
-        /// </summary>
         private float? runningSpeed;
-
-        /// <summary>
-        /// The walk speed of the player.
-        /// </summary>
         private float? walkingSpeed;
 
         private ReferenceHub referenceHub;
@@ -100,7 +94,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
-        public Player(ReferenceHub referenceHub)
+        internal Player(ReferenceHub referenceHub)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
@@ -111,7 +105,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
-        public Player(GameObject gameObject)
+        internal Player(GameObject gameObject)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
@@ -1729,7 +1723,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns><see langword="true"/>, if the player has it; otherwise, <see langword="false"/>.</returns>
-        public bool HasItem(Item item) => Inventory.UserInventory.Items.ContainsValue(item.Base);
+        public bool HasItem(Item item) => Items.Contains(item);
 
         /// <summary>
         /// Indicates whether or not the player has an item type.
@@ -1737,7 +1731,7 @@ namespace Exiled.API.Features
         /// <param name="type">The type to search for.</param>
         /// <returns><see langword="true"/>, if the player has it; otherwise, <see langword="false"/>.</returns>
         public bool HasItem(ItemType type) =>
-            Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == type);
+            Items.Any(tempItem => tempItem.Type == type);
 
         /// <summary>
         /// Counts how many items of a certain <see cref="ItemType"/> a player has.
@@ -1745,7 +1739,7 @@ namespace Exiled.API.Features
         /// <param name="item">The item to search for.</param>
         /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
         public int CountItem(ItemType item) =>
-            Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
+            Items.Count(tempItem => tempItem.Type == item);
 
         /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
@@ -1772,7 +1766,8 @@ namespace Exiled.API.Features
             }
             else
             {
-                item.Base.OnRemoved(null);
+                item.ChangeOwner(this, Server.Host);
+
                 if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
                     Inventory.NetworkCurItem = ItemIdentifier.None;
 
@@ -2202,15 +2197,15 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
-        public void AddItem(Item item, IEnumerable<AttachmentIdentifier> identifiers)
+        public void AddItem(Firearm item, IEnumerable<AttachmentIdentifier> identifiers)
         {
             try
             {
                 if (item.Base is null)
-                    item = new Item(item.Type);
+                    item = new Firearm(item.Type);
 
-                if (item is Firearm firearm && identifiers is not null)
-                    firearm.AddAttachment(identifiers);
+                if (identifiers is not null)
+                    item.AddAttachment(identifiers);
 
                 AddItem(item.Base, item);
             }
@@ -2231,17 +2226,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Adds an item to the player's inventory.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> of the item to be added.</param>
+        /// <param name="pickup">The <see cref="FirearmPickup"/> of the item to be added.</param>
         /// <param name="identifiers">The attachments to be added to <see cref="Pickup"/> of the item.</param>
         /// <returns>The <see cref="Item"/> that was added.</returns>
-        public Item AddItem(Pickup pickup, IEnumerable<AttachmentIdentifier> identifiers)
+        public Item AddItem(FirearmPickup pickup, IEnumerable<AttachmentIdentifier> identifiers)
         {
-            Item item = Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
+            Firearm firearm = (Firearm)Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
 
-            if (item is Firearm firearm && identifiers is not null)
+            if (identifiers is not null)
                 firearm.AddAttachment(identifiers);
 
-            return item;
+            return firearm;
         }
 
         /// <summary>
@@ -2256,26 +2251,11 @@ namespace Exiled.API.Features
             {
                 item ??= Item.Get(itemBase);
 
-                itemBase.Owner = ReferenceHub;
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
 
-                itemBase.OnAdded(null);
+                item.ChangeOwner(item.Owner, this);
 
-                if (item is Firearm firearm)
-                {
-                    if (Preferences.TryGetValue(firearm.Type, out AttachmentIdentifier[] attachments))
-                    {
-                        firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
-                    }
-
-                    FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                    if (firearm.Attachments.Any(a => a.Name == AttachmentName.Flashlight))
-                        flags |= FirearmStatusFlags.FlashlightEnabled;
-
-                    firearm.Base.Status = new FirearmStatus(firearm.Ammo, flags, firearm.AttachmentIdentifiers.GetAttachmentsCode());
-                }
-
-                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                if (Inventory.isLocalPlayer && itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
                 {
                     acquisitionConfirmationTrigger.ServerConfirmAcqusition();
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
@@ -2311,15 +2291,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Add the amount of items to the player's inventory.
         /// </summary>
-        /// <param name="item">The item to be added.</param>
+        /// <param name="firearm">The firearm to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
         /// <param name="identifiers">The attachments to be added to the item.</param>
-        public void AddItem(Item item, int amount, IEnumerable<AttachmentIdentifier> identifiers)
+        public void AddItem(Firearm firearm, int amount, IEnumerable<AttachmentIdentifier> identifiers)
         {
             if (amount > 0)
             {
                 for (int i = 0; i < amount; i++)
-                    AddItem(item, identifiers);
+                    AddItem(firearm, identifiers);
             }
         }
 
@@ -2336,12 +2316,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Add the list of items to the player's inventory.
         /// </summary>
-        /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="Item"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
-        public void AddItem(Dictionary<Item, IEnumerable<AttachmentIdentifier>> items)
+        /// <param name="firearms">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="Firearm"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
+        public void AddItem(Dictionary<Firearm, IEnumerable<AttachmentIdentifier>> firearms)
         {
-            if (items.Count > 0)
+            if (firearms.Count > 0)
             {
-                foreach (KeyValuePair<Item, IEnumerable<AttachmentIdentifier>> item in items)
+                foreach (KeyValuePair<Firearm, IEnumerable<AttachmentIdentifier>> item in firearms)
                     AddItem(item.Key, item.Value);
             }
         }
