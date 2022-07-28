@@ -355,6 +355,7 @@ namespace Exiled.API.Features
             Generator.GeneratorValues.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
+            RagdollsValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Scp079Interactable.InteractablesByRoomId.Clear();
         }
