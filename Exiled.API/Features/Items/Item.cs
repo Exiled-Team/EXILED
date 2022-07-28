@@ -116,46 +116,6 @@ namespace Exiled.API.Features.Items
         public float Weight => Base.Weight;
 
         /// <summary>
-        /// Gets a value indicating whether or not this item is ammunition.
-        /// </summary>
-        public bool IsAmmo => Type.IsAmmo();
-
-        /// <summary>
-        /// Gets a value indicating whether or not this item is armor.
-        /// </summary>
-        public bool IsArmor => Type.IsArmor();
-
-        /// <summary>
-        /// Gets a value indicating whether or not this item is a keycard.
-        /// </summary>
-        public bool IsKeycard => Type.IsKeycard();
-
-        /// <summary>
-        /// Gets a value indicating whether or not this item is a medical item.
-        /// </summary>
-        public bool IsMedical => Type.IsMedical();
-
-        /// <summary>
-        /// Gets a value indicating whether or not this item is an SCP item.
-        /// </summary>
-        public bool IsScp => Type.IsScp();
-
-        /// <summary>
-        /// Gets a value indicating whether or not this item is a throwable item.
-        /// </summary>
-        public bool IsThrowable => Type.IsThrowable();
-
-        /// <summary>
-        /// Gets a value indicating whether or not this item is a utility item.
-        /// </summary>
-        public bool IsUtility => Type.IsUtility();
-
-        /// <summary>
-        /// Gets a value indicating whether or not this item is a weapon.
-        /// </summary>
-        public bool IsWeapon => Type.IsWeapon();
-
-        /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.
         /// </summary>
         public Player Owner => Player.Get(Base.Owner) ?? Server.Host;

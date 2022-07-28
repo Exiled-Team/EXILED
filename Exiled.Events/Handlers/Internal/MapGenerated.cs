@@ -14,9 +14,11 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Structs;
 
     using InventorySystem.Items.Firearms.Attachments.Components;
+    using InventorySystem.Items.Pickups;
 
     using MapGeneration;
     using MapGeneration.Distributors;

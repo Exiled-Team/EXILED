@@ -29,10 +29,6 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnWaitingForPlayers()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
-            Item.BaseToItem.Clear();
-            Pickup.BaseToItem.Clear();
-            ExplosiveGrenade.GrenadeToItem.Clear();
-            FlashGrenade.GrenadeToItem.Clear();
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
             {

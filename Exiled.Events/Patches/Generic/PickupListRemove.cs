@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Pickup), nameof(Pickup.BaseToItem))).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Pickup), nameof(Pickup.BaseToPickup))).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemPickupBase, Pickup>), nameof(Dictionary<ItemPickupBase, Pickup>.Remove))),
                 new(OpCodes.Pop),
