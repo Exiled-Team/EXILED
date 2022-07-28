@@ -14,9 +14,11 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Structs;
 
     using InventorySystem.Items.Firearms.Attachments.Components;
+    using InventorySystem.Items.Pickups;
 
     using MapGeneration;
     using MapGeneration.Distributors;
@@ -69,6 +71,7 @@ namespace Exiled.Events.Handlers.Internal
             GeneratePocketTeleports();
             GenerateAttachments();
             GenerateLockers();
+            GeneratePickups();
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
             Handlers.Map.OnGenerated();
             Timing.CallDelayed(0.1f, Handlers.Server.OnWaitingForPlayers);
@@ -116,6 +119,12 @@ namespace Exiled.Events.Handlers.Internal
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
 
         private static void GenerateLockers() => Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>());
+
+        private static void GeneratePickups()
+        {
+            foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>())
+                Pickup.Get(itemPickupBase);
+        }
 
         private static void GenerateAttachments()
         {

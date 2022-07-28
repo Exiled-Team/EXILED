@@ -29,6 +29,6 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ItemPickupBase), nameof(ItemPickupBase.DestroySelf))]
     internal static class PickupListRemove
     {
-        private static void Prefix(ItemPickupBase __instance) => Pickup.BaseToItem.Remove(__instance);
+        private static void Prefix(ItemPickupBase __instance) => Pickup.BaseToPickup.Remove(__instance);
     }
 }

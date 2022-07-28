@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new();
+        public static readonly Dictionary<ItemPickupBase, Pickup> BaseToPickup = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
@@ -52,7 +52,7 @@ namespace Exiled.API.Features.Pickups
         internal Pickup(ItemPickupBase pickupBase)
         {
             Base = pickupBase;
-            BaseToItem.Add(pickupBase, this);
+            BaseToPickup.Add(pickupBase, this);
         }
 
         /// <summary>
@@ -74,13 +74,13 @@ namespace Exiled.API.Features.Pickups
             };
 
             Info = psi;
-            BaseToItem.Add(Base, this);
+            BaseToPickup.Add(Base, this);
         }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> which contains all the <see cref="Pickup"/> instances.
         /// </summary>
-        public static IEnumerable<Pickup> List => BaseToItem.Values;
+        public static IEnumerable<Pickup> List => BaseToPickup.Values.ToList().AsReadOnly();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
@@ -227,7 +227,7 @@ namespace Exiled.API.Features.Pickups
         {
             if (pickupBase is null)
                 return null;
-            if (BaseToItem.TryGetValue(pickupBase, out Pickup pickup))
+            if (BaseToPickup.TryGetValue(pickupBase, out Pickup pickup))
                 return pickup;
 
             return pickupBase switch

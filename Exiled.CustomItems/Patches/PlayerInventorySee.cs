@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="PlayerInventorySee.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -51,7 +51,7 @@ namespace Exiled.CustomItems.Patches
 
             newInstruction.InsertRange(index, new[]
             {
-                new(OpCodes.Call,  Method(typeof(Item), nameof(Item.Get))),
+                new(OpCodes.Call,  Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, item.LocalIndex),
                 new(OpCodes.Brfalse_S, continueLabel),

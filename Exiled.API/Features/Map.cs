@@ -345,6 +345,8 @@ namespace Exiled.API.Features
             LockersValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Scp079Interactable.InteractablesByRoomId.Clear();
+            ExplosiveGrenade.GrenadeToItem.Clear();
+            FlashGrenade.GrenadeToItem.Clear();
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Generic
 
                 // Item.Get(itemBase);
                 new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get))),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
 
                 // pickup.Scale = item.Scale
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Scale))),
