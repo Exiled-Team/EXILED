@@ -140,6 +140,8 @@ namespace Exiled.Events.Patches.Generic
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
 
+            Item.BaseToItem.Remove(itemBase);
+
             Timing.CallDelayed(0.15f, () =>
             {
 #if DEBUG

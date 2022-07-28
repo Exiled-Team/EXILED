@@ -29,6 +29,21 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ItemPickupBase), nameof(ItemPickupBase.Awake))]
     internal static class PickupListAdd
     {
-        private static void Postfix(ItemPickupBase __instance) => Pickup.Get(__instance);
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            newInstructions.InsertRange(newInstructions.Count - 1, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new(OpCodes.Call, Method(typeof(Pickup), nameof(Pickup.Get), new[] { typeof(ItemPickupBase) })),
+                new(OpCodes.Pop),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
     }
 }

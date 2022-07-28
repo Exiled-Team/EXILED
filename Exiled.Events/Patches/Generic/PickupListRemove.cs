@@ -29,6 +29,24 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(ItemPickupBase), nameof(ItemPickupBase.DestroySelf))]
     internal static class PickupListRemove
     {
-        private static void Prefix(ItemPickupBase __instance) => Pickup.BaseToItem.Remove(__instance);
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldarg_0);
+
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Pickup), nameof(Pickup.BaseToItem))).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemPickupBase, Pickup>), nameof(Dictionary<ItemPickupBase, Pickup>.Remove))),
+                new(OpCodes.Pop),
+            });
+
+            for(int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
     }
 }
