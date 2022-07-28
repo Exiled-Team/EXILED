@@ -341,6 +341,8 @@ namespace Exiled.API.Features
             Lift.LiftsValue.Clear();
             TeslaGate.TeslasValue.Clear();
             Generator.GeneratorValues.Clear();
+            Pickup.BaseToPickup.Clear();
+            Item.BaseToItem.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
