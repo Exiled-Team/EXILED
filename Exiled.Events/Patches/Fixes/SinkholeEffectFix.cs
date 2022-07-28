@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Fixes
     using Exiled.Events.Patches.Events.Player;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;

@@ -12,12 +12,6 @@
   <Import Project="../EXILED.props" />
 
   <ItemGroup>
-    <Compile Remove="Patches\Fixes\AntiCheatSpeedFix.cs" />
-    <Compile Remove="Patches\Fixes\KillPlayer.cs" />
-    <Compile Remove="Patches\Fixes\SinkholeEffectFix.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
     <ProjectReference Include="..\Exiled.Loader\Exiled.Loader.csproj" />
     <ProjectReference Include="..\Exiled.Permissions\Exiled.Permissions.csproj" />
