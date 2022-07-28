@@ -2832,7 +2832,7 @@ namespace Exiled.API.Features
             {
                 nameof(Camera) => Camera.CamerasValue[Random.Range(0, Camera.CamerasValue.Count)],
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
+                nameof(Room) => Room.List.ElementAt(Random.Range(0, Room.RoomIdentifiersToRooms.Count)),
                 nameof(TeslaGate) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
                 nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
                 nameof(Pickup) => Pickup.BaseToPickup.ElementAt(Random.Range(0, Pickup.BaseToPickup.Count)).Value,

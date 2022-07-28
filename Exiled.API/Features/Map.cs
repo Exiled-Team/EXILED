@@ -141,6 +141,12 @@ namespace Exiled.API.Features
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
+            if (room != null)
+                return room;
+
+            // Try to get room using NW methods
+            room = Room.Get(objectInRoom.transform.position);
+
             if (room is null)
             {
                 // Then try for objects that aren't children, like players and pickups.
@@ -334,7 +340,7 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
-            Room.RoomsValue.Clear();
+            Room.RoomIdentifiersToRooms.Clear();
             Door.DoorVariantToDoor.Clear();
             Camera.CamerasValue.Clear();
             Window.WindowValue.Clear();

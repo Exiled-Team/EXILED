@@ -33,14 +33,14 @@ namespace Exiled.API.Features
     public class Room : MonoBehaviour
     {
         /// <summary>
-        /// A <see cref="List{T}"/> of <see cref="Room"/>s on the map.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="MapGeneration.RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
         /// </summary>
-        internal static readonly List<Room> RoomsValue = new(250);
+        internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifiersToRooms = new();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
         /// </summary>
-        public static IEnumerable<Room> List => RoomsValue;
+        public static IEnumerable<Room> List => RoomIdentifiersToRooms.Values;
 
         /// <summary>
         /// Gets the <see cref="Room"/> name.
@@ -85,7 +85,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && !(player.CurrentRoom is null) && player.CurrentRoom.Transform == Transform);
+        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom is not null && player.CurrentRoom.Transform == Transform);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
@@ -99,11 +99,13 @@ namespace Exiled.API.Features
         {
             get
             {
-                Component[] itempickupbase = GetComponentsInChildren(typeof(ItemPickupBase));
                 List<Pickup> pickups = new();
-                foreach (ItemPickupBase pickup in itempickupbase)
+                foreach (Pickup pickup in Pickup.List)
                 {
-                    pickups.Add(Pickup.Get(pickup));
+                    if(Map.FindParentRoom(pickup.GameObject) is Room room && room == this)
+                    {
+                        pickups.Add(pickup);
+                    }
                 }
 
                 return pickups;
@@ -179,8 +181,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="Vector3"/> or <see langword="null"/> if not found.</returns>
-        public static Room Get(Vector3 position) => List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPosition(position).UniqueId)
-            ?? List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPositionRaycasts(position).UniqueId);
+        public static Room Get(Vector3 position) => RoomIdUtils.RoomAtPosition(position) is RoomIdentifier identifier ? RoomIdentifiersToRooms[identifier] : null;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.
@@ -203,7 +204,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Room"/> object.</returns>
         public static Room Random(ZoneType zoneType = ZoneType.Unspecified)
         {
-            List<Room> rooms = zoneType is not ZoneType.Unspecified ? Get(r => r.Zone == zoneType).ToList() : RoomsValue;
+            List<Room> rooms = zoneType is not ZoneType.Unspecified ? Get(r => r.Zone == zoneType).ToList() : List.ToList();
             return rooms[UnityEngine.Random.Range(0, rooms.Count)];
         }
 
@@ -409,6 +410,7 @@ namespace Exiled.API.Features
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
+            RoomIdentifiersToRooms.Add(RoomIdentifier, this);
 
             FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
             Doors = doors;
