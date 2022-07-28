@@ -10,6 +10,7 @@ namespace Exiled.API.Features.DamageHandlers
     using CustomPlayerEffects;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
     using PlayerStatsSystem;
@@ -37,7 +38,7 @@ namespace Exiled.API.Features.DamageHandlers
             {
                 if (Attacker.IsScp)
                     CustomBase = new ScpDamageHandler(target, baseHandler);
-                else if (Attacker.CurrentItem is not null && Attacker.CurrentItem.IsWeapon &&
+                else if (Attacker.CurrentItem is not null && Attacker.CurrentItem.Type.IsWeapon() &&
                          baseHandler is BaseFirearmHandler)
                     CustomBase = new FirearmDamageHandler(Attacker.CurrentItem, target, baseHandler);
                 else
