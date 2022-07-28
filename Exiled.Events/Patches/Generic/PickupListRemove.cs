@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Generic
             {
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Pickup), nameof(Pickup.BaseToPickup))).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemPickupBase, Pickup>), nameof(Dictionary<ItemPickupBase, Pickup>.Remove))),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemPickupBase, Pickup>), nameof(Dictionary<ItemPickupBase, Pickup>.Remove), new[] { typeof(ItemPickupBase) })),
                 new(OpCodes.Pop),
             });
 
