@@ -8,14 +8,11 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
-
     using System.Reflection.Emit;
 
-    using Exiled.Events.Patches.Fixes;
     using Exiled.Events.Attributes;
-
+    using Exiled.Events.Patches.Fixes;
     using HarmonyLib;
-
     using NorthwoodLib.Pools;
 
     /// <summary>
