@@ -91,6 +91,11 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets a value indicating whether if the item are in an inventory.
+        /// </summary>
+        public bool IsInInventory => Owner.Items.Contains(this);
+
+        /// <summary>
         /// Gets or sets the scale for the item.
         /// </summary>
         public Vector3 Scale { get; set; } = Vector3.one;

@@ -1425,8 +1425,10 @@ namespace Exiled.API.Features
             }
             else
             {
-                Dictionary<RoleType, float> newFFRules = new();
-                newFFRules.Add(roleToAdd, ffMult);
+                Dictionary<RoleType, float> newFFRules = new()
+                {
+                    { roleToAdd, ffMult },
+                };
                 CustomRoleFriendlyFireMultiplier.Add(roleType, newFFRules);
             }
         }
