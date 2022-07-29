@@ -7,6 +7,11 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -28,6 +33,11 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Gets the <see cref="EffectGrenade"/> that this class is encapsulating.
         /// </summary>
         public new EffectGrenade Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Enums.GrenadeType"/> of the item.
+        /// </summary>
+        public GrenadeType GrenadeType => Type.GetGrenadeType();
 
         /// <summary>
         /// Returns the EffectGrenadePickup in a human readable format.

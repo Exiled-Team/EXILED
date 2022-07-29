@@ -179,6 +179,20 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
+        /// Converts a valid ammo <see cref="ItemType"/> into an <see cref="AmmoType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to convert.</param>
+        /// <returns>The ammo type of the given item type.</returns>
+        public static GrenadeType GetGrenadeType(this ItemType type) => type switch
+        {
+            ItemType.GrenadeFlash => GrenadeType.Flashbang,
+            ItemType.GrenadeHE => GrenadeType.FragGrenade,
+            ItemType.SCP018 => GrenadeType.Scp018,
+            ItemType.SCP2176 => GrenadeType.Scp2176,
+            _ => GrenadeType.None,
+        };
+
+        /// <summary>
         /// Converts a <see cref="GrenadeType"/> into the corresponding <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type">The <see cref="GrenadeType"/> to convert.</param>

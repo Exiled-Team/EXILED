@@ -16,6 +16,11 @@ namespace Exiled.API.Enums
     public enum GrenadeType
     {
         /// <summary>
+        /// Not grenade.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// Frag grenade.
         /// Used by <see cref="ItemType.GrenadeHE"/>.
         /// </summary>
