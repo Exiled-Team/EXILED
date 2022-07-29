@@ -179,7 +179,6 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
         public static bool IsValidSentence(string sentence)
         {
-            bool result = false;
             foreach (string word in sentence.Split(' '))
             {
                 if (string.IsNullOrWhiteSpace(word) || IsValid(word))
@@ -187,7 +186,7 @@ namespace Exiled.API.Features
                 return false;
             }
 
-            return result;
+            return true;
         }
     }
 }
