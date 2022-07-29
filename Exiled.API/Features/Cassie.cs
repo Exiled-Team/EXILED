@@ -173,10 +173,10 @@ namespace Exiled.API.Features
         public static bool IsValid(string word) => Announcer.voiceLines.Any(line => line.apiName.ToUpper() == word.ToUpper());
 
         /// <summary>
-        /// Gets a value indicating whether or not the given word is a valid C.A.S.S.I.E word.
+        /// Gets a value indicating whether or not the given word is a valid C.A.S.S.I.E sentence.
         /// </summary>
         /// <param name="sentence">The sentence to check.</param>
-        /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/> if the sentence is valid; otherwise, <see langword="false"/>.</returns>
         public static bool IsValidSentence(string sentence)
         {
             foreach (string word in sentence.Split(' '))
