@@ -125,9 +125,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDying(DyingEventArgs)"/>
         public void OnDying(DyingEventArgs ev)
         {
-            if (ev.Killer is null)
-                return;
-            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {ev.Killer.Nickname} ({ev.Killer.Role})!");
+            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {(ev.Killer is null ? ev.Handler.Type.ToString() : $"{ev.Killer.Nickname} ({ev.Killer.Role})")}!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnPreAuthenticating(PreAuthenticatingEventArgs)"/>
