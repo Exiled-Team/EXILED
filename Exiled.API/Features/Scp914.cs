@@ -19,8 +19,6 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Scp914
     {
-        private static Scp914Controller scp914Controller;
-
         /// <summary>
         /// Gets the cached <see cref="global::Scp914.Scp914Controller"/>.
         /// </summary>
