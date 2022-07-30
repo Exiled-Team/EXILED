@@ -84,7 +84,7 @@ namespace Exiled.API.Features
         /// <remarks>There are two sounds only.
         /// The values to identify them are <c>0</c>, which stands for the soundId played when SCP-914 is being activated,
         /// and <c>1</c>, which stands for the soundId played when SCP-914's knob state is being changed.</remarks>
-        public static void PlaySound(byte soundId) => scp914Controller.RpcPlaySound(soundId);
+        public static void PlaySound(byte soundId) => Scp914Controller.RpcPlaySound(soundId);
 
         /// <summary>
         /// Starts SCP-914.
