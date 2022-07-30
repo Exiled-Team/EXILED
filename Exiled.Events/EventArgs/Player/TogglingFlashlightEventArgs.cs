@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Player
         public TogglingFlashlightEventArgs(Player player, FlashlightItem flashlight, bool newState, bool isAllowed = true)
         {
             Player = player;
-            Flashlight = (Flashlight) Item.Get(flashlight);
+            Flashlight = (Flashlight)Item.Get(flashlight);
             NewState = newState;
             IsAllowed = isAllowed;
         }

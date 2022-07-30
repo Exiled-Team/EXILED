@@ -14,7 +14,7 @@ namespace Exiled.CustomItems
     /// </summary>
     internal sealed class RoundHandler
     {
-        /// <inheritdoc cref="Events.Handlers.Server.OnRoundStarted"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
             foreach (CustomItem customItem in CustomItem.Registered)

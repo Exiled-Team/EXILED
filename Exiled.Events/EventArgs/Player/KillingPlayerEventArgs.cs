@@ -4,28 +4,29 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace Exiled.Events.EventArgs
+namespace Exiled.Events.EventArgs.Player
 {
     using System;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     using PlayerStatsSystem;
 
     /// <summary>
     /// Contains all information before player data to kill player is sent.
     /// </summary>
-    public class KillingPlayerEventArgs : EventArgs
+    public class KillingPlayerEventArgs : IPlayerEvent
     {
         /// <summary>
         ///  Initializes a new instance of the <see cref="KillingPlayerEventArgs"/> class.
         /// </summary>
         /// <param name="player"> Current player. </param>
         /// <param name="handler"> DamageHandler instance. </param>
-        public KillingPlayerEventArgs(Player player, ref PlayerStatsSystem.DamageHandlerBase handler)
+        public KillingPlayerEventArgs(Player player, ref DamageHandlerBase handler)
         {
-            this.Player = player;
-            this.Handler = handler;
+            Player = player;
+            Handler = handler;
         }
 
         /// <summary>

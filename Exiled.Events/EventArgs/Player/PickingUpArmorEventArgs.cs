@@ -11,13 +11,14 @@ namespace Exiled.Events.EventArgs.Player
 
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
-
+    using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Pickup;
     using InventorySystem.Items.Pickups;
 
     /// <summary>
     ///     Contains all information before a player picks up <see cref="API.Features.Items.Armor" />.
     /// </summary>
-    public class PickingUpArmorEventArgs : EventArgs
+    public class PickingUpArmorEventArgs : IPickupArmorEvent, IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PickingUpArmorEventArgs" /> class.

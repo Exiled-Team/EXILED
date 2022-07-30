@@ -10,11 +10,12 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     /// <summary>
     ///     Contains all information when a player aims.
     /// </summary>
-    public class AimingDownSightEventArgs : IPlayerEvent, IFirearmEvent
+    public class AimingDownSightEventArgs : IPlayerEvent, IItemFirearmEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="AimingDownSightEventArgs" /> class.

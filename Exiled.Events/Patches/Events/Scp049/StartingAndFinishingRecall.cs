@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             const int offset = -4;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stfld &&
-                                                                 (FieldInfo) instruction.operand == Field(typeof(Scp049), nameof(Scp049._recallHubServer))) + offset;
+                                                                 (FieldInfo)instruction.operand == Field(typeof(Scp049), nameof(Scp049._recallHubServer))) + offset;
 
             LocalBuilder finishRecallAllowed = generator.DeclareLocal(typeof(bool));
 

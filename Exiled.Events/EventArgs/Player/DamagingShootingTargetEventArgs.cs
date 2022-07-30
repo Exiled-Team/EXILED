@@ -13,6 +13,7 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Toys;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using PlayerStatsSystem;
 
@@ -54,7 +55,7 @@ namespace Exiled.Events.EventArgs.Player
             Distance = distance;
             ShootingTarget = ShootingTargetToy.Get(shootingTarget);
             Item = player.CurrentItem;
-            DamageHandler = (AttackerDamageHandler) damageHandler;
+            DamageHandler = (AttackerDamageHandler)damageHandler;
             HitLocation = hitLocation;
             IsAllowed = isAllowed;
         }

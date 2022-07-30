@@ -17,12 +17,10 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
     using Exiled.Loader;
@@ -192,7 +190,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Checks to see if this item is a custom item.
         /// </summary>
-        /// <param name="item">The <see cref="Events.Handlers.Item"/> to check.</param>
+        /// <param name="item">The <see cref="Exiled.Events.Handlers.Item"/> to check.</param>
         /// <param name="customItem">The <see cref="CustomItem"/> this item is.</param>
         /// <returns>True if the item is a custom item.</returns>
         public static bool TryGet(Item item, out CustomItem customItem)

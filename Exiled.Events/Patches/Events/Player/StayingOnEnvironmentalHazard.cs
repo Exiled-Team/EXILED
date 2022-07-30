@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Environmental;
 
     using HarmonyLib;
 
@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="EnvironmentalHazard.OnStay(ReferenceHub)"/>.
-    /// Adds the <see cref="Handlers.Player.StayingOnEnvironmentalHazard"/> event.
+    /// Adds the <see cref="Handlers.EnvironementalHazard.StayingOnEnvironmentalHazard"/> event.
     /// </summary>
     [HarmonyPatch(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnStay))]
     internal static class StayingOnEnvironmentalHazard
@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
             new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
             new(OpCodes.Ldarg_0),
             new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StayingOnEnvironmentalHazardEventArgs))[0]),
-            new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnStayingOnEnvironmentalHazard))),
+            new(OpCodes.Call, Method(typeof(Handlers.EnvironementalHazard), nameof(Handlers.EnvironementalHazard.OnStayingOnEnvironmentalHazard))),
         };
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

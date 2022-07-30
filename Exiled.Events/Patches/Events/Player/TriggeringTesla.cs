@@ -52,6 +52,7 @@ namespace Exiled.Events.Patches.Events.Player
                     bool isTriggerable = false;
 
                     foreach (Player player in Player.List)
+                    {
                         try
                         {
                             if (player is null || !teslaGate.CanBeIdle(player))
@@ -74,6 +75,7 @@ namespace Exiled.Events.Patches.Events.Player
                             Log.Error($"{nameof(TriggeringTesla)}.Prefix: {e}");
 #endif
                         }
+                    }
 
                     if (isTriggerable)
                         teslaGate.Trigger();

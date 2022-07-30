@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Threading.Tasks;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Extensions;
 
     using HarmonyLib;

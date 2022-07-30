@@ -79,7 +79,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Ldloc, eventHandler),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Candy))),
                 new CodeInstruction(OpCodes.Ldloca_S, 3),
-                new CodeInstruction(OpCodes.Call,
+                new CodeInstruction(
+                    OpCodes.Call,
                     Method(typeof(InteractingScp330), nameof(ServerProcessPickup), new[] { typeof(ReferenceHub), typeof(CandyKindID), typeof(Scp330Bag).MakeByRefType() })),
             });
 
@@ -131,7 +132,8 @@ namespace Exiled.Events.Patches.Events.Scp330
             if (!Scp330Bag.TryGetBag(ply, out bag))
             {
                 ply.inventory.ServerAddItem(ItemType.SCP330);
-                if (!Scp330Bag.TryGetBag(ply, out bag)) return false;
+                if (!Scp330Bag.TryGetBag(ply, out bag))
+                    return false;
 
                 bag.Candies = new List<CandyKindID> { candy };
                 bag.ServerRefreshBag();
@@ -140,7 +142,8 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             bool result = bag.TryAddSpecific(candy);
 
-            if (bag.AcquisitionAlreadyReceived) bag.ServerRefreshBag();
+            if (bag.AcquisitionAlreadyReceived)
+                bag.ServerRefreshBag();
 
             return result;
         }

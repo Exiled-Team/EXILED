@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int offset = -2;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-                                                                 (MethodInfo) instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryReload))) + offset;
+                                                                 (MethodInfo)instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryReload))) + offset;
 
             Label returnLabel = generator.DefineLabel();
             Label skipAdsLabel = generator.DefineLabel();
@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -2;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-                                                             (MethodInfo) instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryUnload))) + offset;
+                                                             (MethodInfo)instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryUnload))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -77,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -2;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-                                                             (MethodInfo) instruction.operand == Method(typeof(IActionModule), nameof(IActionModule.ServerAuthorizeDryFire))) + offset;
+                                                             (MethodInfo)instruction.operand == Method(typeof(IActionModule), nameof(IActionModule.ServerAuthorizeDryFire))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -111,7 +111,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -3;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                                                             (FieldInfo) instruction.operand == Field(typeof(FirearmStatus), nameof(FirearmStatus.Flags))) + offset;
+                                                             (FieldInfo)instruction.operand == Field(typeof(FirearmStatus), nameof(FirearmStatus.Flags))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {

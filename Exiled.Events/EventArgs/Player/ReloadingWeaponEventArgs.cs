@@ -10,11 +10,12 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     /// <summary>
     ///     Contains all information before a player's weapon is reloaded.
     /// </summary>
-    public class ReloadingWeaponEventArgs : IPlayerEvent, IFirearmEvent, IDeniableEvent
+    public class ReloadingWeaponEventArgs : IPlayerEvent, IItemFirearmEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ReloadingWeaponEventArgs" /> class.

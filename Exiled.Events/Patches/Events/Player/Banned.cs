@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int offset = -6;
             int index = newInstructions.FindIndex(i =>
-                i.opcode == OpCodes.Call && (MethodInfo) i.operand ==
+                i.opcode == OpCodes.Call && (MethodInfo)i.operand ==
                 Method(typeof(FileManager), nameof(FileManager.AppendFile))) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]

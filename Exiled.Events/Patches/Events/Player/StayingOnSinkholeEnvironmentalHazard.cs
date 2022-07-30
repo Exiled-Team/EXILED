@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="SinkholeEnvironmentalHazard"/>.
-    /// <br>Adds the <see cref="Handlers.Player.StayingOnEnvironmentalHazard"/> event.</br>
+    /// <br>Adds the <see cref="Handlers.EnvironementalHazard.StayingOnEnvironmentalHazard"/> event.</br>
     /// <br>Adds the better effect logic.</br>
     /// </summary>
     /// <seealso cref="SinkholeEffectFix"/>

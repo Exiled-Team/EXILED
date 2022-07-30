@@ -5,16 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
+namespace Exiled.Events.EventArgs.Environmental
 {
     using System;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information when a player stays on an environmental hazard.
     /// </summary>
-    public class StayingOnEnvironmentalHazardEventArgs : EventArgs
+    public class StayingOnEnvironmentalHazardEventArgs : IPlayerEvent, IEnvironmentalHazardEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StayingOnEnvironmentalHazardEventArgs"/> class.
@@ -36,11 +37,5 @@ namespace Exiled.Events.EventArgs
         /// Gets the environmental hazard that the player is staying on.
         /// </summary>
         public EnvironmentalHazard EnvironmentalHazard { get; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the player should be affected by the environmental hazard.
-        /// </summary>
-        [Obsolete("IsAllowed has been deprecated, use EnteringEnvironmentalHazardEventArgs::IsAllowed instead.", true)]
-        public bool IsAllowed { get; set; }
     }
 }

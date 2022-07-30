@@ -10,13 +10,14 @@ namespace Exiled.Events.EventArgs.Item
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using InventorySystem.Items;
 
     /// <summary>
     ///     Contains all information before changing item durability.
     /// </summary>
-    public class ChangingDurabilityEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent
+    public class ChangingDurabilityEventArgs : IPlayerEvent, IDeniableEvent, IItemFirearmEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingDurabilityEventArgs" /> class.
@@ -42,7 +43,7 @@ namespace Exiled.Events.EventArgs.Item
                 return;
 
             Player = player;
-            Firearm = (Firearm) Item.Get(firearmBase);
+            Firearm = (Firearm)Item.Get(firearmBase);
             OldDurability = oldDurability;
             NewDurability = newDurability;
             IsAllowed = isAllowed;

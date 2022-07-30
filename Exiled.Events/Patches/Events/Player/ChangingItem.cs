@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             const int offset = 3;
             int index = newInstructions.FindLastIndex(i =>
-                i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(EquipDequipModifierExtensions), nameof(EquipDequipModifierExtensions.CanEquip))) + offset;
+                i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(EquipDequipModifierExtensions), nameof(EquipDequipModifierExtensions.CanEquip))) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingItemEventArgs));
             Label returnLabel = generator.DefineLabel();
             Label continueLabel = generator.DefineLabel();

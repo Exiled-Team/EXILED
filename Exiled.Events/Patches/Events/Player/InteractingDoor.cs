@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (__instance.ActiveLocks != 0)
                 {
-                    DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason) __instance.ActiveLocks);
+                    DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)__instance.ActiveLocks);
                     if ((!mode.HasFlagFast(DoorLockMode.CanClose)
                          || !mode.HasFlagFast(DoorLockMode.CanOpen))
                         && (!mode.HasFlagFast(DoorLockMode.ScpOverride)

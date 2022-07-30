@@ -5,16 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
+namespace Exiled.Events.EventArgs.Environmental
 {
     using System;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information before a player exits an environmental hazard.
     /// </summary>
-    public class ExitingEnvironmentalHazardEventArgs : EventArgs
+    public class ExitingEnvironmentalHazardEventArgs : IDeniableEvent, IPlayerEvent, IEnvironmentalHazardEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExitingEnvironmentalHazardEventArgs"/> class.

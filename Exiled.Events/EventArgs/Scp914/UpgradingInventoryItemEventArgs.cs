@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp914
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using global::Scp914;
 

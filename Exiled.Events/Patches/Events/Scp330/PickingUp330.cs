@@ -64,7 +64,8 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 
-            for (int z = 0; z < newInstructions.Count; z++) yield return newInstructions[z];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

@@ -10,7 +10,7 @@ namespace Exiled.CustomItems.API.EventArgs
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
     using Exiled.Events.EventArgs.Player;
 
     using Item = Exiled.API.Features.Items.Item;

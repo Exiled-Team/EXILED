@@ -53,6 +53,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                     CharacterClassManager component = keyValuePair.Value.characterClassManager;
                     if (component.Classes.CheckBounds(component.CurClass))
+                    {
                         switch (component.CurRole.team)
                         {
                             case Team.SCP:
@@ -76,12 +77,13 @@ namespace Exiled.Events.Patches.Events.Server
                             default:
                                 continue;
                         }
+                    }
                 }
 
                 yield return Timing.WaitForOneFrame;
                 newList.warhead_kills = AlphaWarheadController.Host.detonated ? AlphaWarheadController.Host.warheadKills : -1;
                 yield return Timing.WaitForOneFrame;
-                newList.time = (int) Time.realtimeSinceStartup;
+                newList.time = (int)Time.realtimeSinceStartup;
                 yield return Timing.WaitForOneFrame;
                 RoundSummary.roundTime = newList.time - roundSummary.classlistStart.time;
                 int num1 = newList.mtf_and_guards + newList.scientists;
@@ -114,12 +116,18 @@ namespace Exiled.Events.Patches.Events.Server
                 EndingRoundEventArgs endingRoundEventArgs = new(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
+                {
                     endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedScientists >= RoundSummary.EscapedClassD ? LeadingTeam.FacilityForces : LeadingTeam.Draw;
+                }
                 else if (num3 > 0)
+                {
                     endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD > RoundSummary.SurvivingSCPs ? LeadingTeam.ChaosInsurgency :
                         RoundSummary.SurvivingSCPs > RoundSummary.EscapedScientists ? LeadingTeam.Anomalies : LeadingTeam.Draw;
+                }
                 else if (num2 > 0)
+                {
                     endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists ? LeadingTeam.ChaosInsurgency : LeadingTeam.Draw;
+                }
 
                 Server.OnEndingRound(endingRoundEventArgs);
 
@@ -140,8 +148,14 @@ namespace Exiled.Events.Patches.Events.Server
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
-                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam) roundEndedEventArgs.LeadingTeam,
-                            RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, roundEndedEventArgs.TimeToRestart);
+                        roundSummary.RpcShowRoundSummary(
+                            roundSummary.classlistStart,
+                            roundEndedEventArgs.ClassList,
+                            (RoundSummary.LeadingTeam)roundEndedEventArgs.LeadingTeam,
+                            RoundSummary.EscapedClassD,
+                            RoundSummary.EscapedScientists,
+                            RoundSummary.KilledBySCPs,
+                            roundEndedEventArgs.TimeToRestart);
                     }
 
                     yield return Timing.WaitForSeconds(timeToRoundRestart - 1);
@@ -156,6 +170,7 @@ namespace Exiled.Events.Patches.Events.Server
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             foreach (CodeInstruction instruction in instructions)
+            {
                 if (instruction.opcode == OpCodes.Call)
                 {
                     if (instruction.operand is MethodBase methodBase
@@ -183,6 +198,7 @@ namespace Exiled.Events.Patches.Events.Server
                 {
                     yield return instruction;
                 }
+            }
         }
     }
 }

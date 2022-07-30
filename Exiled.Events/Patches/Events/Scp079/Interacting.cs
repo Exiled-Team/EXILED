@@ -48,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             int offset = -1;
 
             // Find "TeslaGate::RpcInstantBurst", then add the offset to get "ldloc.s".
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo) i.operand == Method(typeof(TeslaGate), nameof(TeslaGate.RpcInstantBurst))) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(TeslaGate), nameof(TeslaGate.RpcInstantBurst))) + offset;
 
             // Get the return label.
             Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
@@ -101,7 +101,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Find the first ',', then add the offset to get "ldloc.3".
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S &&
-                                                             (sbyte) instruction.operand == ',') + offset;
+                                                             (sbyte)instruction.operand == ',') + offset;
 
             // var ev = new TriggeringDoorEventArgs(Player.Get(this.gameObject), doorVariant, manaFromLabel, manaFromLabel <= this.curMana);
             //
@@ -161,7 +161,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Find the operand "Room Lockdown", then add the offset to get "ldloc.3"
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
-                                                             (string) instruction.operand == "Room Lockdown") + offset;
+                                                             (string)instruction.operand == "Room Lockdown") + offset;
 
             // var roomGameObject = GameObject.Find(this.currentZone + "/" + this.currentRoom);
             // var ev = new LockingDownEventArgs(player, roomGameObject, manaFromLabel, manaFromLabel <= this.curMana);
@@ -214,7 +214,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             offset = -1;
 
             // Find the first 1.5f, then add the offset to get "ldloc.3".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_R4 && (float) instruction.operand == 1.5f) + offset;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_R4 && (float)instruction.operand == 1.5f) + offset;
 
             // var ev = new StartingSpeakerEventArgs(Player.Get(this.gameObject), Map.FindParentRoom(this.currentCamera.gameObject), manaFromLabel, manaFromLabel * 1.5f <= this.curMana);
             //
@@ -276,7 +276,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Find the first string.Empty, then add the offset to get "ldarg.0".
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldsfld &&
-                                                             (FieldInfo) instruction.operand == Field(typeof(string), nameof(string.Empty))) + offset;
+                                                             (FieldInfo)instruction.operand == Field(typeof(string), nameof(string.Empty))) + offset;
 
             // if (string.IsNullOrEmpty(this.Speaker)
             //   return;
@@ -332,7 +332,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Find first "ldstr Elevator Teleport", then add the offset to get "ldloc.3".
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
-                                                             (string) instruction.operand == "Elevator Teleport") + offset;
+                                                             (string)instruction.operand == "Elevator Teleport") + offset;
 
             // Declare a local variable of the type "ElevatorTeleportingEventArgs";
             LocalBuilder elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportingEventArgs));

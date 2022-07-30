@@ -37,8 +37,8 @@ namespace Exiled.Events.EventArgs.Player
         public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true)
         {
             Player = player;
-            Item = (Throwable) API.Features.Items.Item.Get(item);
-            RequestType = (ThrowRequest) request;
+            Item = (Throwable)API.Features.Items.Item.Get(item);
+            RequestType = (ThrowRequest)request;
             IsAllowed = isAllowed;
         }
 

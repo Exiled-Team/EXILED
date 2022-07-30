@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = 2;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(UsableItemsController), nameof(UsableItemsController.GetCooldown))) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(UsableItemsController), nameof(UsableItemsController.GetCooldown))) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(UsingItemEventArgs));
             Label returnLabel = generator.DefineLabel();
 
@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             offset = -3;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo) i.operand == Method(typeof(UsableItem), nameof(UsableItem.OnUsingCancelled))) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(UsableItem), nameof(UsableItem.OnUsingCancelled))) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {

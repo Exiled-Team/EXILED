@@ -5,14 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
+namespace Exiled.Events.EventArgs.Player
 {
     using System;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-
+    using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
+    using Exiled.Events.EventArgs.Interfaces.Pickup;
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -20,7 +22,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information after adding an item to a player's inventory.
     /// </summary>
-    public class ItemAddedEventArgs : EventArgs
+    public class ItemAddedEventArgs : IPlayerEvent, IItemEvent, IPickupEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemAddedEventArgs"/> class.

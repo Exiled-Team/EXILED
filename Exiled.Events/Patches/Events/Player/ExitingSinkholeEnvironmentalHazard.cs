@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using CustomPlayerEffects;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Environmental;
     using Exiled.Events.Patches.Fixes;
 
     using HarmonyLib;
@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="EnvironmentalHazard.OnExit(ReferenceHub)"/> with <see cref="SinkholeEnvironmentalHazard"/>.
-    /// Adds the <see cref="Handlers.Player.ExitingEnvironmentalHazard"/> event.
+    /// Adds the <see cref="Exiled.Events.Handlers.EnvironementalHazard.ExitingEnvironmentalHazard"/> event.
     /// <br>Adds the better effect logic.</br>
     /// </summary>
     /// <seealso cref="StayingOnSinkholeEnvironmentalHazard"/>
@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ExitingEnvironmentalHazardEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnExitingEnvironmentalHazard))),
+                new(OpCodes.Call, Method(typeof(Handlers.EnvironementalHazard), nameof(Handlers.EnvironementalHazard.OnExitingEnvironmentalHazard))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ExitingEnvironmentalHazardEventArgs), nameof(ExitingEnvironmentalHazardEventArgs.IsAllowed))),
 
                 // If IsAllowed == false, we dont remove RefHub from AffectedPlayers, only dont removing effect

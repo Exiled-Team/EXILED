@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="TantrumEnvironmentalHazard"/>.
-    /// <br>Adds the <see cref="Handlers.Player.StayingOnEnvironmentalHazard"/> event.</br>
+    /// <br>Adds the <see cref="Handlers.EnvironementalHazard.StayingOnEnvironmentalHazard"/> event.</br>
     /// </summary>
     [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.OnUpdate))]
     internal static class StayingOnTantrumEnvironmentalHazard

@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -3;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                                                             (FieldInfo) instruction.operand == Field(typeof(Role), nameof(Role.team))) + offset;
+                                                             (FieldInfo)instruction.operand == Field(typeof(Role), nameof(Role.team))) + offset;
 
             newInstructions.RemoveRange(index, 10);
 
