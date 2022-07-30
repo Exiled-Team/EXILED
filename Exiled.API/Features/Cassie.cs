@@ -177,6 +177,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="sentence">The sentence to check.</param>
         /// <returns><see langword="true"/> if the sentence is valid; otherwise, <see langword="false"/>.</returns>
-        public static bool IsValidSentence(string sentence) => sentence.Split(' ').Any(word => !string.IsNullOrWhiteSpace(word) && IsValid(word));
+        public static bool IsValidSentence(string sentence) => sentence.Split(' ').All(word => string.IsNullOrWhiteSpace(word) || IsValid(word));
     }
 }
