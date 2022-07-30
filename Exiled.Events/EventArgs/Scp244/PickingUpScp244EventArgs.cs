@@ -9,14 +9,14 @@ namespace Exiled.Events.EventArgs.Scp244
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
-
     using InventorySystem.Items.Usables.Scp244;
 
     /// <summary>
     ///     Contains all information before a player picks up an SCP-244.
     /// </summary>
-    public class PickingUpScp244EventArgs : IPlayerEvent, IPickupEvent, IDeniableEvent
+    public class PickingUpScp244EventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PickingUpScp244EventArgs" /> class.
@@ -30,28 +30,22 @@ namespace Exiled.Events.EventArgs.Scp244
         public PickingUpScp244EventArgs(Player player, Scp244DeployablePickup scp244)
         {
             Player = player;
-            Scp244 = scp244;
-            Pickup = Pickup.Get(scp244);
+            Scp244 = (Scp244Pickup)Pickup.Get(scp244);
         }
-
-        /// <summary>
-        ///     Gets a value representing the <see cref="Scp244DeployablePickup" /> being picked up.
-        /// </summary>
-        public Scp244DeployablePickup Scp244 { get; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can interact with SCP-330.
-        /// </summary>
-        public bool IsAllowed { get; set; } = true;
-
-        /// <summary>
-        ///     Gets a value representing the <see cref="API.Features.Items.Pickup" /> being picked up.
-        /// </summary>
-        public Pickup Pickup { get; }
 
         /// <summary>
         ///     Gets the player who's interacting with SCP-244.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets a value representing the <see cref="Scp244Pickup"/> being picked up.
+        /// </summary>
+        public Scp244Pickup Scp244 { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether or not the player can interact with SCP-330.
+        /// </summary>
+        public bool IsAllowed { get; set; } = true;
     }
 }

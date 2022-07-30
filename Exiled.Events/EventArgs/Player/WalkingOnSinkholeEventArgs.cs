@@ -7,12 +7,15 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     ///     Contains all information before a player walks over a sinkhole.
     /// </summary>
+    [Obsolete("Use StayingOnEnvironmentalHazardEventArgs event instead.", true)]
     public class WalkingOnSinkholeEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>

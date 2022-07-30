@@ -64,6 +64,13 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
+        /// Gets the full name of the given <see cref="RoleType"/>.
+        /// </summary>
+        /// <param name="roleType">Role.</param>
+        /// <returns>The full name.</returns>
+        public static string GetFullName(this RoleType roleType) => CharacterClassManager._staticClasses.SafeGet(roleType).fullName;
+
+        /// <summary>
         /// Get the <see cref="LeadingTeam"/>.
         /// </summary>
         /// <param name="team">Team.</param>

@@ -20,6 +20,7 @@ namespace Exiled.Events.Patches.Generic
 
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
 
     using MEC;
 
@@ -40,6 +41,7 @@ namespace Exiled.Events.Patches.Generic
             ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
             const int offset = -2;
             int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Callvirt &&
@@ -55,7 +57,10 @@ namespace Exiled.Events.Patches.Generic
                 // itemInstance
                 new(OpCodes.Ldloc_1),
 
-                // AddItem(player, itemInstance)
+                // pickup
+                new(OpCodes.Ldarg_3),
+
+                // AddItem(player, itemInstance, pickup)
                 new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
             });
 
@@ -65,7 +70,16 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void AddItem(Player player, ItemBase item) => player?.ItemsValue.Add(Item.Get(item));
+        private static void AddItem(Player player, ItemBase itemBase, ItemPickupBase itemPickupBase)
+        {
+            Item item = Item.Get(itemBase);
+            if(itemPickupBase != null)
+            {
+                item.Scale = itemPickupBase.transform.localScale;
+            }
+
+            player?.ItemsValue.Add(item);
+        }
     }
 
     /// <summary>
@@ -121,26 +135,21 @@ namespace Exiled.Events.Patches.Generic
             Log.Debug(
                     $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
             foreach (Item item in player.Items)
-                    Log.Debug($"{item.Type} ({item.Serial})");
+                    Log.Debug($"{item})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
+
+            Item.BaseToItem.Remove(itemBase);
+
             Timing.CallDelayed(0.15f, () =>
             {
-                if (player.Inventory.UserInventory.Items.ContainsKey(serial))
-                {
-                    player.Inventory.UserInventory.Items.Remove(serial);
-                    player.Inventory.SendItemsNextFrame = true;
-#if DEBUG
-                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
-#endif
-                }
 #if DEBUG
                 Log.Debug($"Item ({serial}) removed from {player.Nickname}");
-                Log.Debug(
-                        $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+
                 foreach (Item item in player.Items)
-                        Log.Debug($"{item.Type} ({item.Serial})");
+                        Log.Debug($"{item})");
 #endif
             });
         }

@@ -14,29 +14,27 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
+    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
-
     using Footprinting;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
     using MEC;
-
     using Mirror;
-
     using UnityEngine;
-
     using YamlDotNet.Serialization;
 
     using Item = Exiled.API.Features.Items.Item;
     using Player = Exiled.API.Features.Player;
     using Server = Exiled.API.Features.Server;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The Custom Grenade base class.
+    /// </summary>
     public abstract class CustomGrenade : CustomItem
     {
         /// <summary>
@@ -218,7 +216,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
         {
-            if (!Check(ev.Pickup))
+            if (!Check(ev.Projectile))
                 return;
 
             ev.FuseTime = FuseTime;
@@ -228,8 +226,8 @@ namespace Exiled.CustomItems.API.Features
 
             if (ev.IsAllowed)
             {
-                Timing.CallDelayed(0.25f, () => Throw(ev.Pickup.Position, 0f, ev.FuseTime, ev.Type));
-                ev.Pickup.Destroy();
+                Timing.CallDelayed(0.25f, () => Throw(ev.Projectile.Position, 0f, ev.FuseTime, ev.Type));
+                ev.Projectile.Destroy();
                 ev.IsAllowed = false;
             }
         }

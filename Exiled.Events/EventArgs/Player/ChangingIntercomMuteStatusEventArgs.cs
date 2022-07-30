@@ -35,6 +35,11 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
+        ///     Gets the player who's being intercom muted/unmuted.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <summary>
         ///     Gets a value indicating whether the player is being intercom muted or unmuted.
         /// </summary>
         public bool IsMuted { get; }
@@ -43,10 +48,5 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets or sets a value indicating whether or not the player can be intercom muted/unmuted.
         /// </summary>
         public bool IsAllowed { get; set; }
-
-        /// <summary>
-        ///     Gets the player who's being intercom muted/unmuted.
-        /// </summary>
-        public Player Player { get; }
     }
 }

@@ -39,7 +39,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) is changing his role! The new role will be {ev.NewRole}!");
+            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) is changing roles! The new role will be {ev.NewRole}!");
             if (ev.NewRole == RoleType.Tutorial)
             {
                 ev.Items.Clear();
@@ -60,7 +60,7 @@ namespace Exiled.Example.Events
                     firearm.Recoil = new RecoilSettings(0, 0, 0, 0, 0, 0);
                 }
             });
-            Log.Info($"{ev.Player.Nickname} is changing his {(ev.Player?.CurrentItem is null ? "NONE" : ev.Player?.CurrentItem?.Type.ToString())} item to {(ev.NewItem is null ? "NONE" : ev.NewItem.Type.ToString())}!");
+            Log.Info($"{ev.Player.Nickname} is changing their {(ev.Player?.CurrentItem is null ? "NONE" : ev.Player?.CurrentItem?.Type.ToString())} item to {(ev.NewItem is null ? "NONE" : ev.NewItem.Type.ToString())}!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnTeleporting(TeleportingEventArgs)"/>
@@ -108,11 +108,8 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnJoined(JoinedEventArgs)"/>
         public void OnVerified(VerifiedEventArgs ev)
         {
-            if (!Instance.Config.JoinedBroadcast.Show)
-                return;
-
             Log.Info($"{ev.Player.Nickname} has authenticated! Their Player ID is {ev.Player.Id} and UserId is {ev.Player.UserId}");
-            ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type, false);
+            ev.Player.Broadcast(Instance.Config.JoinedBroadcast, false);
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnUnlockingGenerator(UnlockingGeneratorEventArgs)"/>
@@ -130,7 +127,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDying(DyingEventArgs)"/>
         public void OnDying(DyingEventArgs ev)
         {
-            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {ev.Player.Nickname} ({ev.Player.Role})!");
+            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {(ev.Target is null ? ev.DamageHandler.Type.ToString() : $"{ev.Player.Nickname} ({ev.Player.Role})")}!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnPreAuthenticating(PreAuthenticatingEventArgs)"/>

@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp244
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
 
     using InventorySystem.Items.Usables.Scp244;
@@ -25,44 +26,32 @@ namespace Exiled.Events.EventArgs.Scp244
     public class DamagingScp244EventArgs : IPickupEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DamagingScp244EventArgs" /> class.
+        /// Initializes a new instance of the <see cref="DamagingScp244EventArgs"/> class.
         /// </summary>
-        /// <param name="scp244">
-        ///     <inheritdoc cref="Scp244" />
-        /// </param>
+        /// <param name="scp244"><inheritdoc cref="Scp244"/></param>
         /// <param name="damage">The damage being dealt.</param>
-        /// <param name="handler">
-        ///     <inheritdoc cref="DamageHandler" />
-        /// </param>
+        /// <param name="handler"><inheritdoc cref="Handler"/></param>
         public DamagingScp244EventArgs(Scp244DeployablePickup scp244, float damage, DamageHandlerBase handler)
         {
             IsAllowed = handler is ExplosionDamageHandler;
-            Scp244 = scp244;
-            Pickup = Pickup.Get(scp244);
-            DamageHandler = new DamageHandler(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler)
-            {
-                Damage = damage,
-            };
+            Scp244 = (Scp244Pickup)Pickup.Get(scp244);
+            Handler = new(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler);
+            Handler.Damage = damage;
         }
 
         /// <summary>
-        ///     Gets the <see cref="Scp244DeployablePickup" /> object that is damaged.
+        /// Gets the <see cref="Scp244DeployablePickup"/> object that is damaged.
         /// </summary>
-        public Scp244DeployablePickup Scp244 { get; }
+        public Scp244Pickup Scp244 { get; }
 
         /// <summary>
-        ///     Gets the Damage handler for this event.
+        /// Gets the Damage handler for this event.
         /// </summary>
-        public DamageHandler DamageHandler { get; }
+        public DamageHandler Handler { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the window can be broken.
+        /// Gets or sets a value indicating whether the window can be broken.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
-
-        /// <summary>
-        ///     Gets the <see cref="Pickup" /> object that is damaged.
-        /// </summary>
-        public Pickup Pickup { get; }
+        public bool IsAllowed { get; set; }
     }
 }

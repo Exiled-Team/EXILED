@@ -46,13 +46,13 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.RemoveRange(removeSelfCheck, 7);
 
             int offset = -3;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
             Label returnLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(ExplodingGrenadeEventArgs));
             LocalBuilder list = generator.DeclareLocal(typeof(List<ReferenceHub>));
             int instructionsToRemove = 4;
-            for (int i = 0; i < instructionsToRemove; i++)
-                newInstructions.RemoveAt(index);
+
+            newInstructions.RemoveRange(index, instructionsToRemove);
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
@@ -129,9 +129,12 @@ namespace Exiled.Events.Patches.Events.Map
         private static void ProcessPlayers(FlashbangGrenade grenade, List<Player> players)
         {
             foreach (Player player in players)
-                if (Player.Get(grenade.PreviousOwner.Hub) == player)
+            {
+                if (Exiled.Events.Events.Instance.Config.CanFlashbangsAffectThrower && Player.Get(grenade.PreviousOwner.Hub) == player)
                     grenade.ProcessPlayer(player.ReferenceHub);
-                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass)) grenade.ProcessPlayer(player.ReferenceHub);
+                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
+                    grenade.ProcessPlayer(player.ReferenceHub);
+            }
         }
     }
 }

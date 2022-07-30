@@ -7,8 +7,11 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
-    using Exiled.API.Features.Items;
+    using System;
+
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Pickup;
 
     using InventorySystem.Items.Pickups;
 
@@ -28,24 +31,18 @@ namespace Exiled.Events.EventArgs.Map
         /// </param>
         public SpawningItemEventArgs(ItemPickupBase pickupBase, bool isAllowed = true)
         {
-            if (pickupBase.Info.Serial > 0)
-            {
-                pickupBase.Info.Serial = 0;
-                pickupBase.NetworkInfo = pickupBase.Info;
-            }
-
             Pickup = Pickup.Get(pickupBase);
             IsAllowed = isAllowed;
         }
 
         /// <summary>
+        ///     Gets a value indicating whether is the Pickup.
+        /// </summary>
+        public Pickup Pickup { get; }
+
+        /// <summary>
         ///     Gets or sets a value indicating whether or not the item can be spawned.
         /// </summary>
         public bool IsAllowed { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating the pickup being spawned.
-        /// </summary>
-        public Pickup Pickup { get; set; }
     }
 }

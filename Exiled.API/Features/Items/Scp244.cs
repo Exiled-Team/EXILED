@@ -7,7 +7,12 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Pickups;
+
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
+
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for SCP-244.
@@ -45,6 +50,47 @@ namespace Exiled.API.Features.Items
         {
             get => Base._primed;
             set => Base._primed = value;
+        }
+
+        /// <summary>
+        /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
+        /// </summary>
+        /// <param name="position">The location to spawn the item.</param>
+        /// <param name="rotation">The rotation of the item.</param>
+        /// <param name="spawn">Whether the <see cref="Pickup"/> should be initially spawned.</param>
+        /// <returns>The created <see cref="Pickup"/>.</returns>
+        public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
+        {
+            Scp244Pickup pickup = (Scp244Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+
+            pickup.Info = new()
+            {
+                ItemId = Type,
+                Position = position,
+                Weight = Weight,
+                Rotation = new LowPrecisionQuaternion(rotation),
+            };
+
+            pickup.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
+            pickup.Scale = Scale;
+
+            if (spawn)
+                pickup.Spawn();
+
+            return pickup;
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Scp244"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Scp244"/> object. </returns>
+        public override Item Clone()
+        {
+            Scp244 cloneableItem = new(Type);
+
+            cloneableItem.Primed = Primed;
+
+            return cloneableItem;
         }
 
         /// <summary>

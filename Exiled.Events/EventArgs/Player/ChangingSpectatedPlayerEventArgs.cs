@@ -49,13 +49,13 @@ namespace Exiled.Events.EventArgs.Player
         public Player NewTarget { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not spectated player value can be activated.
-        /// </summary>
-        public bool IsAllowed { get; set; }
-
-        /// <summary>
         ///     Gets player that is changing spectated player.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether or not spectated player value can be activated.
+        /// </summary>
+        public bool IsAllowed { get; set; }
     }
 }

@@ -8,7 +8,9 @@
 namespace Exiled.Events.EventArgs.Scp914
 {
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Pickup;
 
     using global::Scp914;
 

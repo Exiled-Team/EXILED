@@ -7,6 +7,10 @@
 
 namespace Exiled.API.Features
 {
+    using UnityEngine;
+
+    using BaseIntercom = global::Intercom;
+
     /// <summary>
     /// A set of tools to easily handle the Intercom.
     /// </summary>
@@ -17,36 +21,47 @@ namespace Exiled.API.Features
         /// </summary>
         public static string DisplayText
         {
-            get => global::Intercom.host.CustomContent;
-            set => global::Intercom.host.CustomContent = value;
+            get => BaseIntercom.host.CustomContent;
+            set => BaseIntercom.host.CustomContent = value;
         }
 
         /// <summary>
         /// Gets or sets the current state of the intercom.
         /// </summary>
-        public static global::Intercom.State State
+        public static BaseIntercom.State State
         {
-            get => global::Intercom.host.IntercomState;
-            set => global::Intercom.host.IntercomState = value;
+            get => BaseIntercom.host.IntercomState;
+            set => BaseIntercom.host.IntercomState = value;
         }
+
+        /// <summary>
+        /// Gets the intercom's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public static GameObject GameObject => BaseIntercom.host.gameObject;
+
+        /// <summary>
+        /// Gets the intercom's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public static Transform Transform => BaseIntercom.host.transform;
 
         /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
         /// </summary>
-        public static bool InUse => State is global::Intercom.State.Transmitting or global::Intercom.State.TransmittingBypass or global::Intercom.State.AdminSpeaking;
+        public static bool InUse => State is BaseIntercom.State.Transmitting or BaseIntercom.State.TransmittingBypass or BaseIntercom.State.AdminSpeaking;
 
         /// <summary>
-        /// Gets the <see cref="Player"/> that is using the intercom.<br>Will be <see langword="null"/> if <see cref="InUse"/> is <see langword="false"/>.</br>
+        /// Gets the <see cref="Player"/> that is using the intercom.
         /// </summary>
-        public static Player Speaker => !InUse ? null : Player.Get(global::Intercom.host.speaker);
+        /// <remarks>Will be <see langword="null"/> if <see cref="InUse"/> is <see langword="false"/>.</remarks>
+        public static Player Speaker => !InUse ? null : Player.Get(BaseIntercom.host.speaker);
 
         /// <summary>
         /// Gets or sets the remaining cooldown of the intercom.
         /// </summary>
         public static float RemainingCooldown
         {
-            get => global::Intercom.host.remainingCooldown;
-            set => global::Intercom.host.remainingCooldown = value;
+            get => BaseIntercom.host.remainingCooldown;
+            set => BaseIntercom.host.remainingCooldown = value;
         }
 
         /// <summary>
@@ -54,8 +69,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static float SpeechRemainingTime
         {
-            get => !InUse ? 0f : global::Intercom.host.speechRemainingTime;
-            set => global::Intercom.host.speechRemainingTime = value;
+            get => !InUse ? 0f : BaseIntercom.host.speechRemainingTime;
+            set => BaseIntercom.host.speechRemainingTime = value;
         }
 
         /// <summary>
@@ -63,7 +78,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="start">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
         /// <param name="transmitterId">Sets the transmitterId.</param>
-        public static void PlaySound(bool start, int transmitterId = 0) => global::Intercom.host.RpcPlaySound(start, transmitterId);
+        public static void PlaySound(bool start, int transmitterId = 0) => BaseIntercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
         /// Reset the intercom's cooldown.

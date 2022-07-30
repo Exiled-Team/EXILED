@@ -15,7 +15,7 @@ namespace Exiled.CustomItems.API.EventArgs
     using InventorySystem.Items;
 
     /// <summary>
-    /// Contains all informations of a <see cref="CustomItem"/> before a <see cref="Player"/> changes roles.
+    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> changes roles.
     /// </summary>
     public class OwnerChangingRoleEventArgs : ChangingRoleEventArgs
     {

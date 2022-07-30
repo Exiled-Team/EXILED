@@ -86,7 +86,7 @@ namespace Exiled.Events.Patches.Events.Player
             };
             int offset = 1;
 
-            foreach (CodeInstruction instruction in newInstructions.FindAll(i => i.opcode == OpCodes.Stfld && (FieldInfo) i.operand == Field(typeof(MicroHIDItem), nameof(MicroHIDItem.State))))
+            foreach (CodeInstruction instruction in newInstructions.FindAll(i => i.opcode == OpCodes.Stfld && (FieldInfo)i.operand == Field(typeof(MicroHIDItem), nameof(MicroHIDItem.State))))
                 newInstructions.InsertRange(newInstructions.IndexOf(instruction) + offset, instructionsToAdd);
 
             for (int z = 0; z < newInstructions.Count; z++)

@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public UsingRadioBatteryEventArgs(RadioItem radio, Player player, float drain, bool isAllowed = true)
         {
-            Radio = (Radio) Item.Get(radio);
+            Radio = (Radio)Item.Get(radio);
             Player = player;
             Drain = drain;
             IsAllowed = isAllowed;

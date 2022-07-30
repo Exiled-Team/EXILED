@@ -15,13 +15,14 @@ namespace Exiled.Events.EventArgs.Item
     using Exiled.API.Features.Items;
     using Exiled.API.Structs;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
     ///     Contains all information before changing item attachments.
     /// </summary>
-    public class ChangingAttachmentsEventArgs : IPlayerEvent, IDeniableEvent, IFirearmEvent
+    public class ChangingAttachmentsEventArgs : IPlayerEvent, IDeniableEvent, IItemFirearmEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingAttachmentsEventArgs" /> class.

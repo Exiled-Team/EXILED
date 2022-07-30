@@ -14,9 +14,13 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Structs;
 
+    using global::Scp914;
+
     using InventorySystem.Items.Firearms.Attachments.Components;
+    using InventorySystem.Items.Pickups;
 
     using MapGeneration;
     using MapGeneration.Distributors;
@@ -65,6 +69,9 @@ namespace Exiled.Events.Handlers.Internal
             API.Features.Server.Host = new Player(PlayerManager.localPlayer);
             API.Features.Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
             API.Features.Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
+            Warhead.SitePanel = Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
+            Warhead.OutsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
+            Scp914.Scp914Controller = Object.FindObjectOfType<Scp914Controller>();
             GenerateTeslaGates();
             GenerateCameras();
             GenerateRooms();
@@ -88,7 +95,7 @@ namespace Exiled.Events.Handlers.Internal
                 throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
 
             foreach (GameObject roomObject in roomObjects)
-                Room.RoomsValue.Add(Room.CreateComponent(roomObject));
+                Room.CreateComponent(roomObject);
 
             ListPool<GameObject>.Shared.Return(roomObjects);
         }

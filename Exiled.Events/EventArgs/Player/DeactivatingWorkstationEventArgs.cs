@@ -36,6 +36,11 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
+        ///     Gets the <see cref="Exiled.API.Features.Player" /> last user of the workstation.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <summary>
         ///     Gets the workstation.
         /// </summary>
         public WorkstationController WorkstationController { get; }
@@ -49,10 +54,5 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets or sets a value indicating whether or not the workstation can be deactivated.
         /// </summary>
         public bool IsAllowed { get; set; }
-
-        /// <summary>
-        ///     Gets the <see cref="Exiled.API.Features.Player" /> last user of the workstation.
-        /// </summary>
-        public Player Player { get; }
     }
 }

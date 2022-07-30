@@ -10,56 +10,56 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Firearms base codes.
     /// </summary>
-    public enum BaseCode
+    public enum BaseCode : uint
     {
         /// <summary>
         /// The COM15's base code.
         /// </summary>
-        GunCOM15 = 43,
+        GunCOM15 = 43u,
 
         /// <summary>
         /// The COM18's base code.
         /// </summary>
-        GunCOM18 = 37,
+        GunCOM18 = 37u,
 
         /// <summary>
         /// The Revolver's base code.
         /// </summary>
-        GunRevolver = 297,
+        GunRevolver = 297u,
 
         /// <summary>
         /// The E11SR's base code.
         /// </summary>
-        GunE11SR = 4737569,
+        GunE11SR = 4737569u,
 
         /// <summary>
         /// The Crossvec's base code.
         /// </summary>
-        GunCrossvec = 1105,
+        GunCrossvec = 1105u,
 
         /// <summary>
         /// The FSP9's base code.
         /// </summary>
-        GunFSP9 = 5193,
+        GunFSP9 = 5193u,
 
         /// <summary>
         /// The Logicer's base code.
         /// </summary>
-        GunLogicer = 273,
+        GunLogicer = 273u,
 
         /// <summary>
         /// The AK's base code.
         /// </summary>
-        GunAK = 70161,
+        GunAK = 70161u,
 
         /// <summary>
         /// The Shotgun's base code.
         /// </summary>
-        GunShotgun = 37,
+        GunShotgun = 37u,
 
         /// <summary>
         /// The Disruptor's base code.
         /// </summary>
-        Disruptor = 1,
+        Disruptor = 1u,
     }
 }

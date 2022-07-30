@@ -193,7 +193,7 @@ namespace Exiled.Events.EventArgs.Player
 
             NetDataWriter rejectData = new();
 
-            rejectData.Put((byte) rejectionReason);
+            rejectData.Put((byte)rejectionReason);
 
             switch (rejectionReason)
             {

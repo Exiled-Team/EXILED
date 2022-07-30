@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -28,7 +29,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the amount of seconds before the next respawn will occur.
         /// </summary>
-        public static int TimeUntilRespawn => Mathf.RoundToInt(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
+        [Obsolete("Use TimeUntilSpawnWave.TotalSeconds.")]
+        public static int TimeUntilRespawn => (int)TimeUntilSpawnWave.TotalSeconds;
+
+        /// <summary>
+        /// Gets a <see cref="TimeSpan"/> indicating the amount of time before the next respawn wave will occur.
+        /// </summary>
+        public static TimeSpan TimeUntilSpawnWave => TimeSpan.FromSeconds(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
+
+        /// <summary>
+        /// Gets a <see cref="DateTime"/> indicating the moment in UTC time the next respawn wave will occur.
+        /// </summary>
+        public static DateTime NextTeamTime
+            => DateTime.UtcNow.AddSeconds(TimeUntilSpawnWave.TotalSeconds);
 
         /// <summary>
         /// Gets a value indicating whether or not a team is currently being spawned or the animations are playing for a team.
@@ -38,6 +51,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the amount of spawn tickets belonging to the NTF.
         /// </summary>
+        /// <seealso cref="ChaosTickets"/>
         public static uint NtfTickets
         {
             get => (uint)RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.NineTailedFox);
@@ -47,6 +61,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the amount of spawn tickets belonging to the Chaos Insurgency.
         /// </summary>
+        /// <seealso cref="NtfTickets"/>
         public static uint ChaosTickets
         {
             get => (uint)RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);
@@ -56,7 +71,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the actual <see cref="RespawnEffectsController"/>.
         /// </summary>
-        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller is not null);
+        [Obsolete("Using this will lead to indefinable errors", true)]
+        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller != null);
 
         /// <summary>
         /// Play an effect when a certain class spawns.
@@ -74,7 +90,14 @@ namespace Exiled.API.Features
         /// Play effects when a certain class spawns.
         /// </summary>
         /// <param name="effects">The effects to be played.</param>
-        public static void PlayEffects(byte[] effects) => Controller.RpcPlayEffects(effects);
+        public static void PlayEffects(byte[] effects)
+        {
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                    controller.RpcPlayEffects(effects);
+            }
+        }
 
         /// <summary>
         /// Play effects when a certain class spawns.
@@ -121,11 +144,12 @@ namespace Exiled.API.Features
         /// <param name="playEffects">Whether or not effects will be played with the spawn.</param>
         public static void ForceWave(SpawnableTeamType team, bool playEffects = false)
         {
-            RespawnManager.Singleton.ForceSpawnTeam(team);
             if (playEffects)
             {
                 RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.Selection, team);
             }
+
+            RespawnManager.Singleton.ForceSpawnTeam(team);
         }
     }
 }

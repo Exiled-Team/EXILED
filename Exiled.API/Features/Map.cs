@@ -16,6 +16,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Toys;
 
@@ -66,8 +67,6 @@ namespace Exiled.API.Features
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
-        private static System.Random random = new();
-
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
@@ -82,24 +81,6 @@ namespace Exiled.API.Features
         /// Gets all <see cref="Locker"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
-
-        /// <summary>
-        /// gets all <see cref="Pickup"/>s on the map.
-        /// </summary>
-        public static ReadOnlyCollection<Pickup> Pickups
-        {
-            get
-            {
-                List<Pickup> pickups = new();
-                foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>())
-                {
-                    if (Pickup.Get(itemPickupBase) is Pickup pickup)
-                        pickups.Add(pickup);
-                }
-
-                return pickups.AsReadOnly();
-            }
-        }
 
         /// <summary>
         /// Gets all <see cref="Ragdoll"/> objects.
@@ -160,12 +141,23 @@ namespace Exiled.API.Features
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
+            if (room != null)
+                return room;
+
+            // Try to get room using NW methods
+            room = Room.Get(objectInRoom.transform.position);
+
             if (room is null)
             {
                 // Then try for objects that aren't children, like players and pickups.
-                Ray ray = new(objectInRoom.transform.position, Vector3.down);
+                Ray downRay = new(objectInRoom.transform.position, Vector3.down);
 
-                if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
+                if (Physics.RaycastNonAlloc(downRay, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
+                    return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
+
+                Ray upRay = new(objectInRoom.transform.position, Vector3.up);
+
+                if (Physics.RaycastNonAlloc(upRay, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                     return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
 
                 // Always default to surface transform, since it's static.
@@ -268,9 +260,9 @@ namespace Exiled.API.Features
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
             List<Pickup> pickups = (type != ItemType.None
-                ? Pickups.Where(p => p.Type == type)
-                : Pickups).ToList();
-            return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
+                ? Pickup.List.Where(p => p.Type == type)
+                : Pickup.List).ToList();
+            return pickups[Random.Range(0, pickups.Count)];
         }
 
         /// <summary>
@@ -348,17 +340,21 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
-            Room.RoomsValue.Clear();
+            Room.RoomIdentifiersToRooms.Clear();
             Door.DoorVariantToDoor.Clear();
             Camera.CamerasValue.Clear();
             Window.WindowValue.Clear();
             Lift.LiftsValue.Clear();
             TeslaGate.TeslasValue.Clear();
             Generator.GeneratorValues.Clear();
+            Pickup.BaseToPickup.Clear();
+            Item.BaseToItem.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Scp079Interactable.InteractablesByRoomId.Clear();
+            ExplosiveGrenade.GrenadeToItem.Clear();
+            FlashGrenade.GrenadeToItem.Clear();
         }
     }
 }

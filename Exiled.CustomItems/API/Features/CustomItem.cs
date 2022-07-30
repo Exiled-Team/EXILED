@@ -18,6 +18,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
@@ -34,12 +35,15 @@ namespace Exiled.CustomItems.API.Features
 
     using MEC;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using YamlDotNet.Serialization;
 
     using static CustomItems;
 
+    using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Firearm = Exiled.API.Features.Items.Firearm;
     using Item = Exiled.API.Features.Items.Item;
     using Map = Exiled.API.Features.Map;
@@ -312,7 +316,7 @@ namespace Exiled.CustomItems.API.Features
                             {
                                 if (property.GetValue(overrideClass ?? plugin.Config) is IEnumerable enumerable)
                                 {
-                                    List<CustomItem> list = new();
+                                    List<CustomItem> list = ListPool<CustomItem>.Shared.Rent();
                                     foreach (object item in enumerable)
                                     {
                                         if (item is CustomItem ci)
@@ -333,6 +337,8 @@ namespace Exiled.CustomItems.API.Features
                                         flag = true;
                                         items.Add(item);
                                     }
+
+                                    ListPool<CustomItem>.Shared.Return(list);
                                 }
 
                                 continue;
@@ -527,7 +533,7 @@ namespace Exiled.CustomItems.API.Features
         [Obsolete("Use Spawn(Vector3, Player) instead.", true)]
         public virtual Pickup Spawn(Vector3 position)
         {
-            Pickup pickup = CreateCorrectItem().Spawn(position);
+            Pickup pickup = CreateCorrectItem().CreatePickup(position);
             pickup.Weight = Weight;
             TrackedSerials.Add(pickup.Serial);
 
@@ -543,7 +549,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
         {
-            Pickup pickup = item.Spawn(position);
+            Pickup pickup = item.CreatePickup(position);
             pickup.Weight = Weight;
             if (previousOwner is not null)
                 pickup.PreviousOwner = previousOwner;
@@ -561,7 +567,7 @@ namespace Exiled.CustomItems.API.Features
         [Obsolete("Use Spawn(Vector3, Item, Player) instead.", true)]
         public virtual Pickup Spawn(Vector3 position, Item item)
         {
-            Pickup pickup = item.Spawn(position);
+            Pickup pickup = item.CreatePickup(position);
             TrackedSerials.Add(pickup.Serial);
 
             return pickup;
@@ -641,7 +647,7 @@ namespace Exiled.CustomItems.API.Features
                 else
                 {
                     Pickup pickup = Spawn(spawnPoint.Position, (Player)null);
-                    if (pickup.Base is FirearmPickup firearmPickup && this is CustomWeapon customWeapon)
+                    if (pickup.Base is BaseFirearmPickup firearmPickup && this is CustomWeapon customWeapon)
                     {
                         firearmPickup.Status = new FirearmStatus(customWeapon.ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
                         firearmPickup.NetworkStatus = firearmPickup.Status;
@@ -911,9 +917,7 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player)
-        {
-        }
+        protected virtual void OnAcquired(Player player) => ShowPickedUpMessage(player);
 
         /// <summary>
         /// Clears the lists of item uniqIDs and Pickups since any still in the list will be invalid.
@@ -924,7 +928,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Shows a message to the player when he pickups a custom item.
+        /// Shows a message to the player upon picking up a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowPickedUpMessage(Player player)
@@ -933,7 +937,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Shows a message to the player when he selects a custom item.
+        /// Shows a message to the player upon selecting a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)

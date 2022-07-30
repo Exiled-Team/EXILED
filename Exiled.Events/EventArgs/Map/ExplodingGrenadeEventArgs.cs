@@ -7,17 +7,15 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
-    using System;
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.Events.EventArgs.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
-
     using NorthwoodLib.Pools;
-
     using UnityEngine;
 
     /// <summary>
@@ -25,14 +23,6 @@ namespace Exiled.Events.EventArgs.Map
     /// </summary>
     public class ExplodingGrenadeEventArgs : IPlayerEvent, IDeniableEvent
     {
-        private static readonly Dictionary<Type, GrenadeType> grenadeDictionary = new()
-        {
-            { typeof(FlashbangGrenade), GrenadeType.Flashbang },
-            { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
-            { typeof(Scp018Projectile), GrenadeType.Scp018 },
-            { typeof(Scp2176Projectile), GrenadeType.Scp2176 },
-        };
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs" /> class.
         /// </summary>
@@ -48,12 +38,11 @@ namespace Exiled.Events.EventArgs.Map
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
         {
             Player = thrower ?? Server.Host;
-            GrenadeType = grenadeDictionary[grenade.GetType()];
-            Grenade = grenade;
+            Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
             {
-                if (Grenade is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
+                if (Grenade.Base is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
                     continue;
 
                 Player player = Player.Get(hub);
@@ -80,8 +69,7 @@ namespace Exiled.Events.EventArgs.Map
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
         {
             Player = thrower ?? Server.Host;
-            GrenadeType = grenadeDictionary[grenade.GetType()];
-            Grenade = grenade;
+            Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             TargetsToAffect.AddRange(players);
         }
@@ -92,14 +80,9 @@ namespace Exiled.Events.EventArgs.Map
         public List<Player> TargetsToAffect { get; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Enums.GrenadeType" /> of the grenade.
-        /// </summary>
-        public GrenadeType GrenadeType { get; }
-
-        /// <summary>
         ///     Gets the grenade that is exploding.
         /// </summary>
-        public EffectGrenade Grenade { get; }
+        public EffectGrenadeProjectile Grenade { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the grenade can be thrown.

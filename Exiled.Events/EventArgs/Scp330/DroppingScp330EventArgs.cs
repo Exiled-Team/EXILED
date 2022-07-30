@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Scp330
         public DroppingScp330EventArgs(Player player, Scp330Bag scp330, CandyKindID candy)
         {
             Player = player;
-            Scp330 = (Scp330) Item.Get(scp330);
+            Scp330 = (Scp330)Item.Get(scp330);
             Candy = candy;
         }
 

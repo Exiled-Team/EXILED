@@ -13,6 +13,7 @@ namespace Exiled.Example.Commands
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
 
     /// <summary>
     /// This is an example of how commands should be made.
@@ -34,7 +35,7 @@ namespace Exiled.Example.Commands
         {
             Player player = Player.Get(((CommandSender)sender).SenderId);
             Log.Warn($"{player.Items.Count} -- {player.Inventory.UserInventory.Items.Count}");
-            foreach (Pickup pickup in Map.Pickups)
+            foreach (Pickup pickup in Pickup.List)
                 Log.Warn($"{pickup.Type} ({pickup.Serial}) -- {pickup.Position}");
             foreach (PocketDimensionTeleport teleport in Map.PocketDimensionTeleports)
                 Log.Warn($"{teleport._type}");

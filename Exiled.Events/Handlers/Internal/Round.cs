@@ -10,7 +10,6 @@ namespace Exiled.Events.Handlers.Internal
     using System.Collections.Generic;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
     using Exiled.Loader.Features;
@@ -26,14 +25,12 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnWaitingForPlayers()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
-            Item.BaseToItem.Clear();
-            Pickup.BaseToItem.Clear();
-            ExplosiveGrenade.GrenadeToItem.Clear();
-            FlashGrenade.GrenadeToItem.Clear();
 
-            if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart) ConfigManager.Reload();
+            if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
+                ConfigManager.Reload();
 
-            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart) TranslationManager.Reload();
+            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart)
+                TranslationManager.Reload();
 
             RoundSummary.RoundLock = false;
         }

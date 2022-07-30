@@ -10,13 +10,11 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
-
     using HarmonyLib;
-
     using MapGeneration.Distributors;
-
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
@@ -32,6 +30,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            LocalBuilder ev = generator.DeclareLocal(typeof(SpawningItem));
             Label returnLabel = generator.DefineLabel();
 
             int offset = 1;
@@ -39,18 +38,24 @@ namespace Exiled.Events.Patches.Events.Map
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             // var ev = new SpawningItemEventArgs(ipb, true);
-            //
             // if (!ev.IsAllowed)
             //     return;
+            // ev.Pickup.Spawned = true;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningItemEventArgs))[0]),
                 new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnSpawningItem))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.Pickup))),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Spawned))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

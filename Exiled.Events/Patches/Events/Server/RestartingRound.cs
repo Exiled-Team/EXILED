@@ -38,26 +38,23 @@ namespace Exiled.Events.Patches.Events.Server
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRestartingRound))),
-                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(ShowDebugLine))),
+                new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
+                new(OpCodes.Ldstr, "Round restarting"),
+                new(OpCodes.Call, PropertyGetter(typeof(Loader), nameof(Loader.ShouldDebugBeShown))),
+                new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string), typeof(bool) })),
             });
 
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse);
 
             newInstructions.InsertRange(index + 1, new CodeInstruction[]
             {
-                // ServerStatic.StopNextRound == 1 (restarting)
+                // if(ServerStatic.StopNextRound == ServerStatic.NextRoundAction.Restart)  -> goto normal round restart
                 new(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ceq),
+                new(OpCodes.Beq_S, newInstructions[index].operand),
 
-                // if (prev) -> goto normal round restart
-                new(OpCodes.Brtrue, newInstructions[index].operand),
-
-                // ShouldServerRestart()
-                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(ShouldServerRestart))),
-
-                // if (prev) -> goto normal round restart
+                // if (ShouldServerRestart()) -> goto normal round restart
+                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
                 new(OpCodes.Brtrue, newInstructions[index].operand),
             });
 

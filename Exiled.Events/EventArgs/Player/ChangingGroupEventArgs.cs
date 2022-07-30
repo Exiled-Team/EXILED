@@ -35,7 +35,12 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the player's new group.
+        ///     Gets the player who's changing his group.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <summary>
+        /// Gets or sets the player's new group.
         /// </summary>
         public UserGroup NewGroup { get; set; }
 
@@ -43,10 +48,5 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets or sets a value indicating whether or not the player can change groups.
         /// </summary>
         public bool IsAllowed { get; set; }
-
-        /// <summary>
-        ///     Gets the player who's changing his group.
-        /// </summary>
-        public Player Player { get; }
     }
 }

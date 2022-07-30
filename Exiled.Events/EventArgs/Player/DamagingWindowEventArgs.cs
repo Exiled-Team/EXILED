@@ -32,8 +32,10 @@ namespace Exiled.Events.EventArgs.Player
         public DamagingWindowEventArgs(BreakableWindow window, float damage, DamageHandlerBase handler)
         {
             Window = Window.Get(window);
-            Handler = new DamageHandler(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler);
-            Handler.Damage = damage;
+            Handler = new DamageHandler(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler)
+            {
+                Damage = damage,
+            };
             Player = Handler.Attacker;
         }
 
@@ -48,13 +50,13 @@ namespace Exiled.Events.EventArgs.Player
         public DamageHandler Handler { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the window can be broken.
-        /// </summary>
-        public bool IsAllowed { get; set; } = true;
-
-        /// <summary>
         ///     Gets the <see cref="Exiled.API.Features.Player" /> causing the damage.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the window can be broken.
+        /// </summary>
+        public bool IsAllowed { get; set; } = true;
     }
 }

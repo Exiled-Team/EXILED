@@ -9,14 +9,15 @@ namespace Exiled.Events.EventArgs.Map
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.Events.EventArgs.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
     ///     Contains all information for when the server is turning a pickup into a live grenade.
     /// </summary>
-    public class ChangingIntoGrenadeEventArgs : IPickupEvent, IDeniableEvent
+    public class ChangingIntoGrenadeEventArgs : IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingIntoGrenadeEventArgs" /> class.
@@ -26,10 +27,15 @@ namespace Exiled.Events.EventArgs.Map
         {
             if (pickup is null)
                 Log.Error($"{nameof(ChangingIntoGrenadeEventArgs)}: Pickup is null!");
-            Pickup = Pickup.Get(pickup);
+            Projectile = (Projectile)Pickup.Get(pickup);
             Type = pickup is not null ? pickup.Info.ItemId : ItemType.None;
-            FuseTime = Pickup.Base is TimeGrenade timeGrenade ? timeGrenade._fuseTime : 3f;
+            FuseTime = Projectile is TimeGrenadeProjectile timeGrenade ? timeGrenade.FuseTime : 3f;
         }
+
+        /// <summary>
+        /// Gets a value indicating the pickup being changed.
+        /// </summary>
+        public Projectile Projectile { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating what type of grenade will be spawned.
@@ -45,10 +51,5 @@ namespace Exiled.Events.EventArgs.Map
         ///     Gets or sets a value indicating whether the pickup will be changed.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
-
-        /// <summary>
-        ///     Gets a value indicating the pickup being changed.
-        /// </summary>
-        public Pickup Pickup { get; }
     }
 }
