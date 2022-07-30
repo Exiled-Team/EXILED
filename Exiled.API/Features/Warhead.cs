@@ -16,9 +16,6 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Warhead
     {
-        private static AlphaWarheadNukesitePanel sitePanel;
-        private static AlphaWarheadOutsitePanel outsitePanel;
-
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
@@ -27,17 +24,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadNukesitePanel SitePanel => sitePanel ??= Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
+        public static AlphaWarheadNukesitePanel SitePanel { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel => outsitePanel ??= Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
+        public static AlphaWarheadOutsitePanel OutsitePanel { get; internal set; }
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> of the warhead lever.
         /// </summary>
-        public static GameObject Lever => sitePanel.lever.gameObject;
+        public static GameObject Lever => SitePanel.lever.gameObject;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the warhead lever is enabled.
