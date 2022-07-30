@@ -41,7 +41,7 @@ namespace Exiled.API.Enums
         AlphaWarhead = 8,
 
         /// <summary>
-        /// Opens <see cref="DoorType.Scp914"/>.
+        /// Opens <see cref="DoorType.Scp914Gate"/>.
         /// </summary>
         ContainmentLevelOne = 16, // 0x0010
 

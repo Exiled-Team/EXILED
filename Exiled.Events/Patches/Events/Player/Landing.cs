@@ -38,7 +38,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LandingEventArgs))[0]),
+                new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnLanding))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(LandingEventArgs), nameof(LandingEventArgs.Player))),
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.IsJumping))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

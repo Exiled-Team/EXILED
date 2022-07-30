@@ -153,6 +153,14 @@ namespace Exiled.API.Features
         public static Room Get(RoomType roomType) => Get(room => room.Type == roomType).FirstOrDefault();
 
         /// <summary>
+        /// Gets a <see cref="Room"/> given the specified <see cref="Vector3"/>.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> to search for.</param>
+        /// <returns>The <see cref="Room"/> with the given <see cref="Vector3"/> or <see langword="null"/> if not found.</returns>
+        public static Room Get(Vector3 position) => List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPosition(position).UniqueId)
+            ?? List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPositionRaycasts(position).UniqueId);
+
+        /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="ZoneType"/>.
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to search for.</param>
@@ -173,7 +181,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Room"/> object.</returns>
         public static Room Random(ZoneType zoneType = ZoneType.Unspecified)
         {
-            List<Room> rooms = zoneType != ZoneType.Unspecified ? Room.Get(r => r.Zone == zoneType).ToList() : Room.RoomsValue;
+            List<Room> rooms = zoneType is not ZoneType.Unspecified ? Get(r => r.Zone == zoneType).ToList() : RoomsValue;
             return rooms[UnityEngine.Random.Range(0, rooms.Count)];
         }
 
@@ -342,7 +350,7 @@ namespace Exiled.API.Features
                                 case Scp079Interactable.InteractableType.Door:
                                 {
                                     if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                        doors.Add(Door.Get(doorVariant));
+                                        doors.Add(Door.Get(doorVariant, this));
                                     break;
                                 }
 

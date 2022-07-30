@@ -45,20 +45,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SendSpawnMessage
-        {
-            get
-            {
-                if (sendSpawnMessage is null)
-                {
-                    sendSpawnMessage = typeof(NetworkServer).GetMethod(
-                        "SendSpawnMessage",
-                        BindingFlags.NonPublic | BindingFlags.Static);
-                }
-
-                return sendSpawnMessage;
-            }
-        }
+        public static MethodInfo SendSpawnMessage => sendSpawnMessage ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
         /// Gets or sets the name of the server.
@@ -99,7 +86,11 @@ namespace Exiled.API.Features
         public static bool FriendlyFire
         {
             get => ServerConsole.FriendlyFire;
-            set => ServerConsole.FriendlyFire = value;
+            set
+            {
+                ServerConsole.FriendlyFire = value;
+                ServerConfigSynchronizer.Singleton.RefreshMainBools();
+            }
         }
 
         /// <summary>

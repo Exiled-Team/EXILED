@@ -7,11 +7,7 @@
 
 namespace Exiled.API.Features.Roles
 {
-    using System;
-
     using Exiled.API.Extensions;
-
-    using MEC;
 
     /// <summary>
     /// Defines the class for role-related classes.

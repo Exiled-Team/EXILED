@@ -51,17 +51,28 @@ namespace Exiled.Events.Patches.Events.Player
 
                     foreach (Player player in Player.List)
                     {
-                        if (!teslaGate.CanBeIdle(player))
-                            continue;
+                        try
+                        {
+                            if (player is null || !teslaGate.CanBeIdle(player))
+                                continue;
 
-                        TriggeringTeslaEventArgs ev = new(player, teslaGate);
-                        Handlers.Player.OnTriggeringTesla(ev);
+                            TriggeringTeslaEventArgs ev = new(player, teslaGate);
+                            Handlers.Player.OnTriggeringTesla(ev);
 
-                        if (ev.IsTriggerable && !isTriggerable)
-                            isTriggerable = ev.IsTriggerable;
+                            if (ev.IsTriggerable && !isTriggerable)
+                                isTriggerable = ev.IsTriggerable;
 
-                        if (ev.IsInIdleRange && !inIdleRange)
-                            inIdleRange = ev.IsInIdleRange;
+                            if (ev.IsInIdleRange && !inIdleRange)
+                                inIdleRange = ev.IsInIdleRange;
+                        }
+#pragma warning disable CS0168
+                        catch (Exception e)
+#pragma warning restore CS0168
+                        {
+#if DEBUG
+                            Log.Error($"{nameof(TriggeringTesla)}.Prefix: {e}");
+#endif
+                        }
                     }
 
                     if (isTriggerable)

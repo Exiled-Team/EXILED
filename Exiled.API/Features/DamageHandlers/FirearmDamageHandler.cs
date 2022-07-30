@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
-    using System.Collections.Generic;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;

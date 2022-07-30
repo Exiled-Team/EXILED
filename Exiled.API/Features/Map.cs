@@ -15,12 +15,9 @@ namespace Exiled.API.Features
     using System.Text.RegularExpressions;
 
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Toys;
-
-    using Interactables.Interobjects.DoorUtils;
 
     using InventorySystem.Items.Pickups;
 
@@ -34,7 +31,6 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
-    using CameraType = Exiled.API.Enums.CameraType;
     using Object = UnityEngine.Object;
     using Random = UnityEngine.Random;
 
@@ -353,7 +349,7 @@ namespace Exiled.API.Features
         internal static void ClearCache()
         {
             Room.RoomsValue.Clear();
-            Door.DoorsValue.Clear();
+            Door.DoorVariantToDoor.Clear();
             Camera.CamerasValue.Clear();
             Window.WindowValue.Clear();
             Lift.LiftsValue.Clear();

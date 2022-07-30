@@ -59,11 +59,12 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateCache()
         {
+            Warhead.Controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
+            Warhead.Controller.detonated = false;
             Server.Host = new Player(PlayerManager.localPlayer);
             Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
             Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
             GenerateTeslaGates();
-            GenerateDoors();
             GenerateCameras();
             GenerateRooms();
             GenerateWindow();
@@ -89,12 +90,6 @@ namespace Exiled.Events.Handlers.Internal
                 Room.RoomsValue.Add(Room.CreateComponent(roomObject));
 
             ListPool<GameObject>.Shared.Return(roomObjects);
-        }
-
-        private static void GenerateDoors()
-        {
-            foreach (DoorVariant doorVariant in Object.FindObjectsOfType<DoorVariant>())
-                Door.DoorsValue.Add(Door.Get(doorVariant));
         }
 
         private static void GenerateWindow()
@@ -141,7 +136,7 @@ namespace Exiled.Events.Handlers.Internal
                 List<AttachmentIdentifier> attachmentIdentifiers = new();
                 foreach (Attachment att in firearm.Attachments)
                 {
-                    attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));
+                    attachmentIdentifiers.Add(new(code, att.Name, att.Slot));
                     code *= 2U;
                 }
 

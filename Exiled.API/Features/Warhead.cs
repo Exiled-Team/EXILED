@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
@@ -14,51 +16,23 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Warhead
     {
-        private static AlphaWarheadController controller;
         private static AlphaWarheadNukesitePanel sitePanel;
         private static AlphaWarheadOutsitePanel outsitePanel;
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
-        public static AlphaWarheadController Controller
-        {
-            get
-            {
-                if (controller is null)
-                    controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
-
-                return controller;
-            }
-        }
+        public static AlphaWarheadController Controller { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadNukesitePanel SitePanel
-        {
-            get
-            {
-                if (sitePanel is null)
-                    sitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
-
-                return sitePanel;
-            }
-        }
+        public static AlphaWarheadNukesitePanel SitePanel => sitePanel ??= Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel
-        {
-            get
-            {
-                if (outsitePanel is null)
-                    outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
-
-                return outsitePanel;
-            }
-        }
+        public static AlphaWarheadOutsitePanel OutsitePanel => outsitePanel ??= Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> of the warhead lever.
@@ -81,6 +55,33 @@ namespace Exiled.API.Features
         {
             get => OutsitePanel.NetworkkeycardEntered;
             set => OutsitePanel.NetworkkeycardEntered = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the warhead status.
+        /// </summary>
+        public static WarheadStatus Status
+        {
+            get => IsInProgress ? IsDetonated ? WarheadStatus.Detonated : WarheadStatus.InProgress : LeverStatus ? WarheadStatus.Armed : WarheadStatus.NotArmed;
+            set
+            {
+                switch (value)
+                {
+                    case WarheadStatus.NotArmed:
+                    case WarheadStatus.Armed:
+                        Stop();
+                        LeverStatus = value is WarheadStatus.Armed;
+                        break;
+
+                    case WarheadStatus.InProgress:
+                        Start();
+                        break;
+
+                    case WarheadStatus.Detonated:
+                        Detonate();
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the warhead can be started or not.
         /// </summary>
-        public static bool CanBeStarted => AlphaWarheadController.Host.CanDetonate;
+        public static bool CanBeStarted => Controller.CanDetonate;
 
         /// <summary>
         /// Starts the warhead countdown.

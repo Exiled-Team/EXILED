@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using System;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -211,6 +213,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
         public static event CustomEventHandler<SpawningEventArgs> Spawning;
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> has spawned.
+        /// </summary>
+        public static event CustomEventHandler<SpawnedEventArgs> Spawned;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> enters the femur breaker.
@@ -655,6 +662,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawningEventArgs"/> instance.</param>
         public static void OnSpawning(SpawningEventArgs ev) => Spawning.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> has spawned.
+        /// </summary>
+        /// <param name="referenceHub">The <see cref="ReferenceHub"/> instance.</param>
+        public static void OnSpawned(ReferenceHub referenceHub) => Spawned.InvokeSafely(new SpawnedEventArgs(referenceHub));
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> enters the femur breaker.

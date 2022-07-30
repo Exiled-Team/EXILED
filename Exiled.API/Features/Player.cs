@@ -10,7 +10,6 @@ namespace Exiled.API.Features
 #pragma warning disable 1584
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -22,7 +21,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
-    using Exiled.API.Interfaces;
     using Exiled.API.Structs;
 
     using Footprinting;
@@ -459,7 +457,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is jumping.
         /// </summary>
-        public bool IsJumping => ReferenceHub.fpc.isJumping;
+        public bool IsJumping { get; internal set; }
 
         /// <summary>
         /// Gets a value indicating whether the player is sprinting.
@@ -909,10 +907,10 @@ namespace Exiled.API.Features
             {
                 foreach (ReferenceHub referenceHub in ReferenceHub.spectatorManager.ServerCurrentSpectatingPlayers)
                 {
-                    Player spectator = Get(referenceHub);
+                    if (referenceHub == ReferenceHub)
+                        continue;
 
-                    if (spectator == this || spectator.IsDead)
-                        yield return spectator;
+                    yield return Get(referenceHub);
                 }
             }
         }
@@ -1180,6 +1178,16 @@ namespace Exiled.API.Features
                 ServerStatic.GetPermissionsHandler()._members[UserId] = name;
             else
                 ServerStatic.GetPermissionsHandler()._members.Add(UserId, name);
+        }
+
+        /// <summary>
+        /// Handcuff the player as administrator.
+        /// </summary>
+        public void Handcuff()
+        {
+            ReferenceHub.inventory.SetDisarmedStatus(null);
+            DisarmedPlayers.Entries.Add(new DisarmedPlayers.DisarmedEntry(referenceHub.networkIdentity.netId, 0U));
+            new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated(0);
         }
 
         /// <summary>
@@ -1836,10 +1844,9 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if a candy was given.</returns>
         public bool TryAddCandy(CandyKindID candyType)
         {
-            bool flag = false;
             if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
             {
-                flag = bag.TryAddSpecific(candyType);
+                bool flag = bag.TryAddSpecific(candyType);
                 if (flag)
                     bag.ServerRefreshBag();
                 return flag;
@@ -1868,7 +1875,7 @@ namespace Exiled.API.Features
 
             Timing.CallDelayed(0.5f, () =>
             {
-                if (!newItems.Any())
+                if (newItems.IsEmpty())
                     return;
 
                 foreach (ItemType item in newItems)
@@ -2255,6 +2262,9 @@ namespace Exiled.API.Features
         {
             switch (obj)
             {
+                case Camera camera:
+                    Teleport(camera.Position + Vector3.down);
+                    break;
                 case Door door:
                     Teleport(door.Position + Vector3.up);
                     break;
@@ -2299,7 +2309,8 @@ namespace Exiled.API.Features
         {
             object randomObject = type.Name switch
             {
-                nameof(Door) => Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)],
+                nameof(Camera) => Camera.CamerasValue[Random.Range(0, Camera.CamerasValue.Count)],
+                nameof(Door) => Door.Random(),
                 nameof(Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
                 nameof(TeslaGate) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
                 nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
