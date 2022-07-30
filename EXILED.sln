@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.CreditTags", "Exiled
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.CustomRoles", "Exiled.CustomRoles\Exiled.CustomRoles.csproj", "{417C3309-8B93-4218-A1D1-D4BB7B09BE0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Launcher", "Exiled.Launcher\Exiled.Launcher.csproj", "{E260EF89-E44F-48A1-A261-38B88FD1A302}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +96,12 @@ Global
 		{417C3309-8B93-4218-A1D1-D4BB7B09BE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{417C3309-8B93-4218-A1D1-D4BB7B09BE0F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{417C3309-8B93-4218-A1D1-D4BB7B09BE0F}.Programs|Any CPU.ActiveCfg = Programs|Any CPU
+		{E260EF89-E44F-48A1-A261-38B88FD1A302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E260EF89-E44F-48A1-A261-38B88FD1A302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E260EF89-E44F-48A1-A261-38B88FD1A302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E260EF89-E44F-48A1-A261-38B88FD1A302}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E260EF89-E44F-48A1-A261-38B88FD1A302}.Programs|Any CPU.ActiveCfg = Debug|Any CPU
+		{E260EF89-E44F-48A1-A261-38B88FD1A302}.Programs|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
