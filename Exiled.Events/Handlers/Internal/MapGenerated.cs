@@ -17,6 +17,8 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.API.Features.Pickups;
     using Exiled.API.Structs;
 
+    using global::Scp914;
+
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Pickups;
 
@@ -59,10 +61,12 @@ namespace Exiled.Events.Handlers.Internal
         private static void GenerateCache()
         {
             Warhead.Controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
-            Warhead.Controller.detonated = false;
+            Warhead.SitePanel = Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
+            Warhead.OutsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
             Server.Host = new Player(PlayerManager.localPlayer);
             Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
             Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
+            Scp914.Scp914Controller = Object.FindObjectOfType<Scp914Controller>();
             GenerateTeslaGates();
             GenerateCameras();
             GenerateRooms();
