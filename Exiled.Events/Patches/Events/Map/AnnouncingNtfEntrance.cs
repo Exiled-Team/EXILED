@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     ///     Patch the <see cref="NineTailedFoxNamingRule.PlayEntranceAnnouncement(string)" />.
-    ///     Adds the <see cref="Map.AnnouncingNtfEntrance" /> event.
+    ///     Adds the <see cref="Cassie.AnnouncingNtfEntrance" /> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.PlayEntranceAnnouncement))]
     internal static class AnnouncingNtfEntrance
@@ -79,7 +79,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingNtfEntrance))),
+                new(OpCodes.Call, Method(typeof(Cassie), nameof(Cassie.OnAnnouncingNtfEntrance))),
 
                 // if(!ev.IsAllowed)
                 //     return;

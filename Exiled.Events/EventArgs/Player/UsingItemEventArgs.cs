@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs.Player
         ///     <inheritdoc cref="Cooldown" />
         /// </param>
         /// <param name="item">
-        ///     <inheritdoc cref="UsedItemEventArgs.Item" />
+        ///     <inheritdoc cref="UsedItemEventArgs.Usable" />
         /// </param>
         public UsingItemEventArgs(Player player, UsableItem item, float cooldown)
             : base(player, item)

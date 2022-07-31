@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         /// <param name="player">The player who's stopping the use of the medical item.</param>
         /// <param name="item">
-        ///     <inheritdoc cref="UsedItemEventArgs.Item" />
+        ///     <inheritdoc cref="UsedItemEventArgs.Usable" />
         /// </param>
         public CancellingItemUseEventArgs(Player player, UsableItem item)
             : base(player, item, 0)

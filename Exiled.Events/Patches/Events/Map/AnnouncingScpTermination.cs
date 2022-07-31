@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// <summary>
     ///     Patches
     ///     <see cref="NineTailedFoxAnnouncer.AnnounceScpTermination(ReferenceHub, PlayerStatsSystem.DamageHandlerBase)" />.
-    ///     Adds the <see cref="Map.AnnouncingScpTermination" /> event.
+    ///     Adds the <see cref="Cassie.AnnouncingScpTermination" /> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceScpTermination))]
     internal static class AnnouncingScpTermination
@@ -52,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingScpTermination))),
+                new(OpCodes.Call, Method(typeof(Cassie), nameof(Cassie.OnAnnouncingScpTermination))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

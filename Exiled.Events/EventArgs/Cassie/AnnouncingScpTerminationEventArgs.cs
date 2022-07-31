@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Cassie
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.EventArgs.Interfaces;
 
-    using CustomAttackerHandler = API.Features.DamageHandlers.AttackerDamageHandler;
+    using CustomAttackerHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>

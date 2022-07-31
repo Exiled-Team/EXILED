@@ -146,10 +146,10 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnUsingItem(UsingItemEventArgs)"/>
         public void OnUsingItem(UsingItemEventArgs ev)
         {
-            Log.Info($"{ev.Player.Nickname} is trying to use {ev.Item.Type}.");
-            if (ev.Item.Type == ItemType.Adrenaline)
+            Log.Info($"{ev.Player.Nickname} is trying to use {ev.Usable.Type}.");
+            if (ev.Usable.Type == ItemType.Adrenaline)
             {
-                Log.Info($"{ev.Player.Nickname} was stopped from using their {ev.Item.Type}!");
+                Log.Info($"{ev.Player.Nickname} was stopped from using their {ev.Usable.Type}!");
                 ev.IsAllowed = false;
             }
         }

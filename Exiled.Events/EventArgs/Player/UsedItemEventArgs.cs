@@ -12,6 +12,7 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using InventorySystem.Items.Usables;
 
@@ -34,7 +35,7 @@ namespace Exiled.Events.EventArgs.Player
             try
             {
                 Player = player;
-                Item = item is null ? null : (Usable)API.Features.Items.Item.Get(item);
+                Usable = item is null ? null : (Usable)API.Features.Items.Item.Get(item);
             }
             catch (Exception e)
             {
@@ -45,7 +46,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets the item that the player used.
         /// </summary>
-        public Usable Item { get; }
+        public Usable Usable { get; }
 
         /// <summary>
         ///     Gets the player who used the item.
