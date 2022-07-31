@@ -10,13 +10,14 @@ namespace Exiled.Events.EventArgs.Scp330
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
     ///     Contains all information before a player drop a candy of SCP-330.
     /// </summary>
-    public class DroppingScp330EventArgs : IPlayerEvent, IDeniableEvent
+    public class DroppingScp330EventArgs : IPlayerEvent, IDeniableEvent, IItemScp330Event
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DroppingScp330EventArgs" /> class.

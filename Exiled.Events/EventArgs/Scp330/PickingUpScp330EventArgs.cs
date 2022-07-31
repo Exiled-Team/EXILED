@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Scp330
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Pickup;
 
     using BaseScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
     using Scp330Pickup = Exiled.API.Features.Pickups.Scp330Pickup;
@@ -17,7 +18,7 @@ namespace Exiled.Events.EventArgs.Scp330
     /// <summary>
     ///     Contains all information before a player picks up an SCP-330.
     /// </summary>
-    public class PickingUpScp330EventArgs : IPlayerEvent, IDeniableEvent
+    public class PickingUpScp330EventArgs : IPlayerEvent, IDeniableEvent, IPickupScp330Event
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PickingUpScp330EventArgs" /> class.
