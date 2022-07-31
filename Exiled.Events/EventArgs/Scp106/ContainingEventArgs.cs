@@ -15,7 +15,6 @@ namespace Exiled.Events.EventArgs.Scp106
     /// </summary>
     public class ContainingEventArgs : IPlayerEvent, IDeniableEvent
     {
-#pragma warning disable SA1625 // Element documentation should not be copied and pasted
         /// <summary>
         ///     Initializes a new instance of the <see cref="ContainingEventArgs" /> class.
         /// </summary>
@@ -28,7 +27,6 @@ namespace Exiled.Events.EventArgs.Scp106
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-#pragma warning restore SA1625 // Element documentation should not be copied and pasted
         public ContainingEventArgs(Player player, Player buttonPresser, bool isAllowed = true)
         {
             Scp106 = player;

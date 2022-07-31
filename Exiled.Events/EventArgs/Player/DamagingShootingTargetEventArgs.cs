@@ -8,21 +8,18 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using AdminToys;
-
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Toys;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Interfaces.Item;
-
     using PlayerStatsSystem;
-
     using UnityEngine;
 
+    using AttackerDamageHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
     using BaseAttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
     using BaseDamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
-    using AttackerDamageHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
 
     /// <summary>
     ///     Contains all information before a player damages a shooting target.
