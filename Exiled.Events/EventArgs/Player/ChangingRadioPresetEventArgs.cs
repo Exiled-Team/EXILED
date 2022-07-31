@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs.Player
 {
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     /// <summary>
     ///     Contains all information before radio preset is changed.

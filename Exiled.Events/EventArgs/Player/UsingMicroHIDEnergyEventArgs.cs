@@ -10,13 +10,14 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
     ///     Contains all information before MicroHID energy is changed.
     /// </summary>
-    public class UsingMicroHIDEnergyEventArgs : IPlayerEvent, IDeniableEvent
+    public class UsingMicroHIDEnergyEventArgs : IPlayerEvent, IDeniableEvent, IItemMicroHidEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingMicroHIDEnergyEventArgs" /> class.

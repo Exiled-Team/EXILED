@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Player
     using AdminToys;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Toys;
     using Exiled.Events.EventArgs.Interfaces;
@@ -18,6 +19,10 @@ namespace Exiled.Events.EventArgs.Player
     using PlayerStatsSystem;
 
     using UnityEngine;
+
+    using BaseAttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
+    using BaseDamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
+    using AttackerDamageHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
 
     /// <summary>
     ///     Contains all information before a player damages a shooting target.
@@ -48,14 +53,17 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public DamagingShootingTargetEventArgs(Player player, float damage, float distance, Vector3 hitLocation, ShootingTarget shootingTarget, DamageHandlerBase damageHandler, bool isAllowed = true)
+        public DamagingShootingTargetEventArgs(Player player, float damage, float distance, Vector3 hitLocation, ShootingTarget shootingTarget, BaseDamageHandlerBase damageHandler, bool isAllowed = true)
         {
             Player = player;
             Amount = damage;
             Distance = distance;
             ShootingTarget = ShootingTargetToy.Get(shootingTarget);
-            Item = player.CurrentItem;
-            DamageHandler = (AttackerDamageHandler)damageHandler;
+            Item = player?.CurrentItem;
+            DamageHandler = (AttackerDamageHandler)new DamageHandler(damageHandler is BaseAttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, damageHandler)
+            {
+                Damage = damage,
+            };
             HitLocation = hitLocation;
             IsAllowed = isAllowed;
         }

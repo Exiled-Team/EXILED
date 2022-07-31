@@ -17,8 +17,6 @@ namespace Exiled.Events.EventArgs.Player
     /// </summary>
     public class ReceivingEffectEventArgs : IPlayerEvent, IDeniableEvent
     {
-        private byte state;
-
         /// <summary>
         ///     Initializes a new instance of the <see cref="ReceivingEffectEventArgs" /> class.
         /// </summary>
@@ -30,7 +28,7 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = player;
             Effect = effect;
-            this.state = state;
+            State = state;
             CurrentState = currentState;
         }
 
@@ -45,19 +43,9 @@ namespace Exiled.Events.EventArgs.Player
         public float Duration { get; set; } = 0.0f;
 
         /// <summary>
-        ///     Gets or sets the value of the new state of the effect. Setting this to <c>0</c> is the same as setting IsAllowed to
-        ///     <see langword="false" />.
+        ///     Gets or sets the value of the new state of the effect.
         /// </summary>
-        public byte State
-        {
-            get => state;
-            set
-            {
-                state = value;
-                if (state == 0)
-                    IsAllowed = false;
-            }
-        }
+        public byte State { get; set; }
 
         /// <summary>
         ///     Gets the value of the current state of this effect on the player.

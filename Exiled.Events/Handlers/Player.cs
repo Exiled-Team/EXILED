@@ -376,12 +376,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DryfiringWeaponEventArgs> DryfiringWeapon;
 
         /// <summary>
-        ///     Called before a <see cref="API.Features.Player" /> walks on a tantrum.
-        /// </summary>
-        [Obsolete("Use StayingOnEnvironmentalHazard event instead.", true)]
-        public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
-
-        /// <summary>
         ///     Invoked after a <see cref="API.Features.Player" /> presses the voicechat key.
         /// </summary>
         public static event CustomEventHandler<VoiceChattingEventArgs> VoiceChatting;
@@ -1064,13 +1058,6 @@ namespace Exiled.Events.Handlers
         {
             DryfiringWeapon.InvokeSafely(ev);
         }
-
-        /// <summary>
-        ///     Called before a <see cref="API.Features.Player" /> walks on a tantrum.
-        /// </summary>
-        /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
-        [Obsolete("Use OnStayingOnEnvironmentalHazard instead.", true)]
-        public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
 
         /// <summary>
         ///     Invoked after a <see cref="API.Features.Player" /> presses the voicechat key.

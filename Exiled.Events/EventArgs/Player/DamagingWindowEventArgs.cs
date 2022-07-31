@@ -11,8 +11,9 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.EventArgs.Interfaces;
 
-    using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
-    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
+    using BaseAttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
+    using BaseDamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
+    using AttackerDamageHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
 
     /// <summary>
     ///     Contains all information before damage is dealt to a <see cref="BreakableWindow" />.
@@ -29,10 +30,10 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="handler">
         ///     <inheritdoc cref="Handler" />
         /// </param>
-        public DamagingWindowEventArgs(BreakableWindow window, float damage, DamageHandlerBase handler)
+        public DamagingWindowEventArgs(BreakableWindow window, float damage, BaseDamageHandlerBase handler)
         {
             Window = Window.Get(window);
-            Handler = new DamageHandler(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler)
+            Handler = (AttackerDamageHandler)new DamageHandler(handler is BaseAttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler)
             {
                 Damage = damage,
             };
@@ -45,9 +46,9 @@ namespace Exiled.Events.EventArgs.Player
         public Window Window { get; }
 
         /// <summary>
-        ///     Gets or sets the Damage handler for this event.
+        ///     Gets or sets the <see cref="AttackerDamageHandler" />.
         /// </summary>
-        public DamageHandler Handler { get; set; }
+        public AttackerDamageHandler Handler { get; set; }
 
         /// <summary>
         ///     Gets the <see cref="Exiled.API.Features.Player" /> causing the damage.

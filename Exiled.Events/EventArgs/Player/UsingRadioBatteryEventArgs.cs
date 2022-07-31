@@ -10,13 +10,14 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using InventorySystem.Items.Radio;
 
     /// <summary>
     ///     Contains all information before radio battery charge is changed.
     /// </summary>
-    public class UsingRadioBatteryEventArgs : IPlayerEvent, IDeniableEvent
+    public class UsingRadioBatteryEventArgs : IPlayerEvent, IDeniableEvent, IItemRadioEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingRadioBatteryEventArgs" /> class.
