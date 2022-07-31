@@ -58,6 +58,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<LocalReportingEventArgs> LocalReporting;
 
         /// <summary>
+        /// Invoked before the player will be added to player list.
+        /// </summary>
+        public static event CustomEventHandler<AddingPlayerEventArgs> AddingPlayer;
+
+        /// <summary>
+        /// Invoked before the player will be removed to player list.
+        /// </summary>
+        public static event CustomEventHandler<RemovingPlayerEventArgs> RemovingPlayer;
+
+        /// <summary>
         /// Invoked after the "reload configs" command is ran.
         /// </summary>
         public static event CustomEventHandler ReloadedConfigs;
@@ -121,6 +131,18 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
         public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before adding the player to player list.
+        /// </summary>
+        /// <param name="ev">the <see cref="AddingPlayerEventArgs"/> instance.</param>
+        public static void OnAddingPlayer(AddingPlayerEventArgs ev) => AddingPlayer.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before removing the player from player list.
+        /// </summary>
+        /// <param name="ev">The <see cref="RemovingPlayerEventArgs"/> instance.</param>
+        public static void OnRemovingPlayer(RemovingPlayerEventArgs ev) => RemovingPlayer.InvokeSafely(ev);
 
         /// <summary>
         /// Called after the "reload configs" command is ran.
