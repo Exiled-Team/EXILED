@@ -105,13 +105,13 @@ namespace Exiled.API.Features.Roles
         /// Places a Tantrum (SCP-173's ability) under the player.
         /// </summary>
         /// <param name="failIfObserved">Whether or not to place the tantrum if SCP-173 is currently being viewed.</param>
-        /// <returns>The tantrum's <see cref="UnityEngine.GameObject"/>, or <see langword="null"/> if it cannot be placed.</returns>
-        public UnityEngine.GameObject Tantrum(bool failIfObserved = false)
+        /// <returns>The tantrum's <see cref="TantrumEnvironmentalHazard"/>, or <see langword="null"/> if it cannot be placed.</returns>
+        public TantrumEnvironmentalHazard Tantrum(bool failIfObserved = false)
         {
             if (failIfObserved && IsObserved)
                 return null;
 
-            return Owner.PlaceTantrum();
+            return Owner.PlaceTantrum().GetComponent<TantrumEnvironmentalHazard>();
         }
     }
 }
