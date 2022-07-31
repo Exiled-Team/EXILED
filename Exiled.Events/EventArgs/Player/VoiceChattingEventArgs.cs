@@ -50,11 +50,6 @@ namespace Exiled.Events.EventArgs.Player
         public Radio Radio { get; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Radio" />'s DissonanceUserSetup.
-        /// </summary>
-        public DissonanceUserSetup DissonanceUserSetup { get; }
-
-        /// <summary>
         ///     Gets a value indicating whether or not the player is voicechatting.
         /// </summary>
         public bool IsVoiceChatting { get; }
