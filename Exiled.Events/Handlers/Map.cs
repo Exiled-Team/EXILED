@@ -9,8 +9,10 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.Events.EventArgs.Cassie;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Extensions;
+
     using MapGeneration.Distributors;
 
     using static Events;
@@ -29,21 +31,6 @@ namespace Exiled.Events.Handlers
         ///     Invoked before placing bloods.
         /// </summary>
         public static event CustomEventHandler<PlacingBloodEventArgs> PlacingBlood;
-
-        /// <summary>
-        ///     Invoked before announcing the light containment zone decontamination.
-        /// </summary>
-        public static event CustomEventHandler<AnnouncingDecontaminationEventArgs> AnnouncingDecontamination;
-
-        /// <summary>
-        ///     Invoked before announcing an SCP termination.
-        /// </summary>
-        public static event CustomEventHandler<AnnouncingScpTerminationEventArgs> AnnouncingScpTermination;
-
-        /// <summary>
-        ///     Invoked before announcing the NTF entrance.
-        /// </summary>
-        public static event CustomEventHandler<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance;
 
         /// <summary>
         ///     Invoked after a <see cref="Scp079Generator" /> has been activated.
@@ -91,33 +78,6 @@ namespace Exiled.Events.Handlers
         public static void OnPlacingBlood(PlacingBloodEventArgs ev)
         {
             PlacingBlood.InvokeSafely(ev);
-        }
-
-        /// <summary>
-        ///     Called before announcing the light containment zone decontamination.
-        /// </summary>
-        /// <param name="ev">The <see cref="AnnouncingDecontaminationEventArgs" /> instance.</param>
-        public static void OnAnnouncingDecontamination(AnnouncingDecontaminationEventArgs ev)
-        {
-            AnnouncingDecontamination.InvokeSafely(ev);
-        }
-
-        /// <summary>
-        ///     Called before announcing an SCP termination.
-        /// </summary>
-        /// <param name="ev">The <see cref="AnnouncingScpTerminationEventArgs" /> instance.</param>
-        public static void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev)
-        {
-            AnnouncingScpTermination.InvokeSafely(ev);
-        }
-
-        /// <summary>
-        ///     Called before announcing the NTF entrance.
-        /// </summary>
-        /// <param name="ev">The <see cref="AnnouncingNtfEntranceEventArgs" /> instance.</param>
-        public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
-        {
-            AnnouncingNtfEntrance.InvokeSafely(ev);
         }
 
         /// <summary>

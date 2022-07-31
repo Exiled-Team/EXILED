@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Map
+namespace Exiled.Events.EventArgs.Cassie
 {
     using Exiled.Events.EventArgs.Interfaces;
 

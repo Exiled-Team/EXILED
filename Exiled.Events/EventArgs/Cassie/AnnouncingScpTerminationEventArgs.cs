@@ -5,13 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Map
+namespace Exiled.Events.EventArgs.Cassie
 {
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.EventArgs.Interfaces;
 
-    using CustomAttackerHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
+    using CustomAttackerHandler = API.Features.DamageHandlers.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
@@ -62,7 +62,7 @@ namespace Exiled.Events.EventArgs.Map
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets the <see cref="API.Features.DamageHandlers.CustomDamageHandler" />.
+        ///     Gets or sets the <see cref="CustomDamageHandler" />.
         /// </summary>
         public CustomDamageHandler DamageHandler { get; set; }
 

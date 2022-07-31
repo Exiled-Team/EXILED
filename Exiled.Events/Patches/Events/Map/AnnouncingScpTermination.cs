@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.API.Features.DamageHandlers;
-    using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.EventArgs.Cassie;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;

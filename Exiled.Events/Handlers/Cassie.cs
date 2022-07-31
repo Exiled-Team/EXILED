@@ -23,12 +23,54 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SendingCassieMessageEventArgs> SendingCassieMessage;
 
         /// <summary>
+        ///     Invoked before announcing the light containment zone decontamination.
+        /// </summary>
+        public static event CustomEventHandler<AnnouncingDecontaminationEventArgs> AnnouncingDecontamination;
+
+        /// <summary>
+        ///     Invoked before announcing an SCP termination.
+        /// </summary>
+        public static event CustomEventHandler<AnnouncingScpTerminationEventArgs> AnnouncingScpTermination;
+
+        /// <summary>
+        ///     Invoked before announcing the NTF entrance.
+        /// </summary>
+        public static event CustomEventHandler<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance;
+
+        /// <summary>
         ///     Called before sending a cassie message.
         /// </summary>
         /// <param name="ev">The <see cref="SendingCassieMessageEventArgs" /> instance.</param>
         public static void OnSendingCassieMessage(SendingCassieMessageEventArgs ev)
         {
             SendingCassieMessage.InvokeSafely(ev);
+        }
+
+        /// <summary>
+        ///     Called before announcing the light containment zone decontamination.
+        /// </summary>
+        /// <param name="ev">The <see cref="AnnouncingDecontaminationEventArgs" /> instance.</param>
+        public static void OnAnnouncingDecontamination(AnnouncingDecontaminationEventArgs ev)
+        {
+            AnnouncingDecontamination.InvokeSafely(ev);
+        }
+
+        /// <summary>
+        ///     Called before announcing an SCP termination.
+        /// </summary>
+        /// <param name="ev">The <see cref="AnnouncingScpTerminationEventArgs" /> instance.</param>
+        public static void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev)
+        {
+            AnnouncingScpTermination.InvokeSafely(ev);
+        }
+
+        /// <summary>
+        ///     Called before announcing the NTF entrance.
+        /// </summary>
+        /// <param name="ev">The <see cref="AnnouncingNtfEntranceEventArgs" /> instance.</param>
+        public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
+        {
+            AnnouncingNtfEntrance.InvokeSafely(ev);
         }
     }
 }
