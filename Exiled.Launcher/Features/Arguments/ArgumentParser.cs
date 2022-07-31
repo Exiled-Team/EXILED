@@ -18,6 +18,14 @@ public static class ArgumentParser
                 return launcherArguments;
             }
 
+            if (arg is "-ea" or "--external-arguments")
+            {
+                for (int j = i + 1; j < args.Length; j++)
+                    launcherArguments.ExternalArguments.Add(args[j]);
+
+                return launcherArguments;
+            }
+
             foreach (var possibleArgument in typeof(LauncherArguments).GetProperties())
             {
                 Attribute? attribute = possibleArgument.GetCustomAttribute(typeof(ArgumentOptionAttribute));

@@ -7,3 +7,5 @@ if (arguments.Help)
     ArgumentParser.ShowHelp();
     return;
 }
+
+

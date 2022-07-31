@@ -3,7 +3,7 @@
 public class LauncherArguments
 {
     [ArgumentOption("-h", "--help", "The command to see all possible arguments.")]
-    public bool Help { get; set; } = false;
+    public bool Help { get; set; }
 
     [ArgumentOption("-sp", "--starting-point", "The application that is ran just after exiled is updated and installed.")]
     public string StartingPoint { get; set; } = "LocalAdmin.exe";
@@ -16,4 +16,7 @@ public class LauncherArguments
 
     [ArgumentOption("-ie", "--inject-exiled", "Should Exiled be injected? Yes/No (y/n).")]
     public bool InjectExiled { get; set; } = true;
+
+    [ArgumentOption("-ea", "--external-arguments", "The arguments to pass to the starting point.")]
+    public List<string> ExternalArguments { get; set; } = new();
 }
