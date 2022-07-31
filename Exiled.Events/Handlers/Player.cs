@@ -330,12 +330,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
 
         /// <summary>
-        ///     Called before a <see cref="API.Features.Player" /> walks on a sinkhole.
-        /// </summary>
-        [Obsolete("Use StayingOnEnvironmentalHazard event instead.", true)]
-        public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
-
-        /// <summary>
         ///     Invoked before a <see cref="API.Features.Player" /> interacts with a shooting target.
         /// </summary>
         public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
@@ -979,13 +973,6 @@ namespace Exiled.Events.Handlers
         {
             DroppingAmmo.InvokeSafely(ev);
         }
-
-        /// <summary>
-        ///     Called before a <see cref="API.Features.Player" /> walks on a sinkhole.
-        /// </summary>
-        /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
-        [Obsolete("Use OnStayingOnEnvironmentalHazard instead.", true)]
-        public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before a <see cref="API.Features.Player" /> interacts with a shooting target.

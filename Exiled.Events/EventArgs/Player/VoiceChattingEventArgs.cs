@@ -8,14 +8,18 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using Assets._Scripts.Dissonance;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
+
+    using BaseRadio = Radio;
+    using Item = Exiled.API.Features.Items.Item;
+    using Radio = Exiled.API.Features.Items.Radio;
 
     /// <summary>
     ///     Contains all information after a player presses the voicechat key.
     /// </summary>
-    public class VoiceChattingEventArgs : IPlayerEvent, IDeniableEvent
+    public class VoiceChattingEventArgs : IPlayerEvent, IDeniableEvent, IItemRadioEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="VoiceChattingEventArgs" /> class.
@@ -26,20 +30,16 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="radio">
         ///     <inheritdoc cref="Radio" />
         /// </param>
-        /// <param name="dissonanceUserSetup">
-        ///     <inheritdoc cref="DissonanceUserSetup" />
-        /// </param>
         /// <param name="isVoiceChatting">
         ///     <inheritdoc cref="IsVoiceChatting" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public VoiceChattingEventArgs(Player player, Radio radio, DissonanceUserSetup dissonanceUserSetup, bool isVoiceChatting, bool isAllowed = true)
+        public VoiceChattingEventArgs(Player player, BaseRadio radio, bool isVoiceChatting, bool isAllowed = true)
         {
             Player = player;
-            Radio = radio;
-            DissonanceUserSetup = dissonanceUserSetup;
+            Radio = (Radio)Item.Get(radio.RadioItem);
             IsVoiceChatting = isVoiceChatting;
             IsAllowed = isAllowed;
         }
