@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs.Scp244
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Pickup;
+
     using InventorySystem.Items.Usables.Scp244;
     using PlayerStatsSystem;
 
@@ -20,7 +22,7 @@ namespace Exiled.Events.EventArgs.Scp244
     /// <summary>
     ///     Contains all information before damage is dealt to a <see cref="Scp244DeployablePickup" />.
     /// </summary>
-    public class DamagingScp244EventArgs : IDeniableEvent
+    public class DamagingScp244EventArgs : IDeniableEvent, IPickupScp244Event
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DamagingScp244EventArgs" /> class.

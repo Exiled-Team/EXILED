@@ -11,12 +11,14 @@ namespace Exiled.Events.EventArgs.Scp244
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Pickup;
+
     using InventorySystem.Items.Usables.Scp244;
 
     /// <summary>
     ///     Contains all information before a player picks up an SCP-244.
     /// </summary>
-    public class PickingUpScp244EventArgs : IPlayerEvent, IDeniableEvent
+    public class PickingUpScp244EventArgs : IPlayerEvent, IDeniableEvent, IPickupScp244Event
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PickingUpScp244EventArgs" /> class.

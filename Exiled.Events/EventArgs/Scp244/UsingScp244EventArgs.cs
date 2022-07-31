@@ -10,13 +10,14 @@ namespace Exiled.Events.EventArgs.Scp244
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
 
     using InventorySystem.Items.Usables.Scp244;
 
     /// <summary>
     ///     Contains all information before radio battery charge is changed.
     /// </summary>
-    public class UsingScp244EventArgs : IPlayerEvent, IDeniableEvent
+    public class UsingScp244EventArgs : IPlayerEvent, IDeniableEvent, IItemScp244Event
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingScp244EventArgs" /> class.

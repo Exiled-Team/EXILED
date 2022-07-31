@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Scp173
     /// <summary>
     ///     Contains all information before the tantrum is placed.
     /// </summary>
-    public class PlacingTantrumEventArgs : IPlayerEvent, IDeniableEvent
+    public class PlacingTantrumEventArgs : IPlayerEvent, IDeniableEvent, IEnvironmentalHazardEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlacingTantrumEventArgs" /> class.
@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Scp173
         ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="gameObject">
-        ///     <inheritdoc cref="GameObject" />
+        ///     <inheritdoc cref="EnvironmentalHazard" />
         /// </param>
         /// <param name="cooldown">
         ///     <inheritdoc cref="Cooldown" />
@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Scp173
         {
             Scp173 = scp173;
             Player = player;
-            GameObject = gameObject;
+            EnvironmentalHazard = gameObject.GetComponent<EnvironmentalHazard>();
             Cooldown = cooldown;
             IsAllowed = isAllowed;
         }
@@ -52,9 +52,9 @@ namespace Exiled.Events.EventArgs.Scp173
         public Scp173 Scp173 { get; }
 
         /// <summary>
-        ///     Gets the tantrum <see cref="UnityEngine.GameObject" />.
+        ///     Gets the tantrum <see cref="EnvironmentalHazard" />.
         /// </summary>
-        public GameObject GameObject { get; }
+        public EnvironmentalHazard EnvironmentalHazard { get; }
 
         /// <summary>
         ///     Gets or sets the tantrum cooldown.
