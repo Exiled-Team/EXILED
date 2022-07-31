@@ -8,4 +8,5 @@ if (arguments.Help)
     return;
 }
 
-
+// var f = new ProcessStartInfo(arguments.StartingPoint, arguments.ExternalArguments);
+// Process.Start(f);

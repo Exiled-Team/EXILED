@@ -22,5 +22,5 @@ public class LauncherArguments
     public bool InjectExiled { get; set; } = true;
 
     [ArgumentOption("-ea", "--external-arguments", "The arguments to pass to the starting point.")]
-    public List<string> ExternalArguments { get; set; } = new();
+    public List<string> ExternalArguments { get; } = new();
 }
