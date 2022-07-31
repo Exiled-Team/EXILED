@@ -6,7 +6,11 @@ public class LauncherArguments
     public bool Help { get; set; }
 
     [ArgumentOption("-sp", "--starting-point", "The application that is ran just after exiled is updated and installed.")]
+#if LINUX
+    public string StartingPoint { get; set; } = "LocalAdmin";
+#else
     public string StartingPoint { get; set; } = "LocalAdmin.exe";
+#endif
 
     [ArgumentOption("-v", "--exiled-version", "The desired exiled version, accepts latest, a version number and none.")]
     public string ExiledVersion { get; set; } = "latest";

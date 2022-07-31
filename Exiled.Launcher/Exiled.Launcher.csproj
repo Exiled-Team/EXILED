@@ -11,4 +11,7 @@
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
+    <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+      <DefineConstants>LINUX</DefineConstants>
+    </PropertyGroup>
 </Project>
