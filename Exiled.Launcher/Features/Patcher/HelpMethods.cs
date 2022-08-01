@@ -1,8 +1,15 @@
-﻿using dnlib.DotNet;
+﻿// -----------------------------------------------------------------------
+// <copyright file="HelpMethods.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using dnlib.DotNet;
 
 namespace Exiled.Launcher.Features.Patcher;
 
-public class HelpMethods
+public static class HelpMethods
 {
     public static TypeDef? FindServerConsoleDefinition(ModuleDefMD assembly)
     {
