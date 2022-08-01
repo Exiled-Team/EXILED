@@ -1,58 +1,56 @@
 // -----------------------------------------------------------------------
-// <copyright file="DroppingAmmoEventArgs.cs" company="Exiled Team">
+// <copyright file="DroppingItemEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Item
+namespace Exiled.Events.EventArgs.Player
 {
-    using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Interfaces.Item;
+
+    using InventorySystem.Items;
 
     /// <summary>
     ///     Contains all information before a player drops an item.
     /// </summary>
-    public class DroppingAmmoEventArgs : IPlayerEvent, IDeniableEvent
+    public class DroppingItemEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
         private bool isAllowed = true;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DroppingAmmoEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="DroppingItemEventArgs" /> class.
         /// </summary>
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
-        /// <param name="ammoType">
-        ///     <inheritdoc cref="AmmoType" />
+        /// <param name="item">
+        ///     <inheritdoc cref="Item" />
         /// </param>
-        /// <param name="amount">
-        ///     <inheritdoc cref="int" />
+        /// <param name="isThrown">
+        ///     <inheritdoc cref="IsThrown" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public DroppingAmmoEventArgs(Player player, AmmoType ammoType, ushort amount, bool isAllowed = true)
+        public DroppingItemEventArgs(Player player, ItemBase item, bool isThrown, bool isAllowed = true)
         {
             Player = player;
-            AmmoType = ammoType;
-            Amount = amount;
+            Item = Item.Get(item);
             IsAllowed = isAllowed;
+            IsThrown = isThrown;
         }
 
         /// <summary>
-        ///     Gets the type of ammo being dropped.
+        ///     Gets or sets a value indicating whether or not the item was thrown.
         /// </summary>
-        public AmmoType AmmoType { get; }
+        public bool IsThrown { get; set; }
 
         /// <summary>
-        ///     Gets or sets the amount of ammo being dropped.
-        /// </summary>
-        public int Amount { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the ammo can be dropped.
+        ///     Gets or sets a value indicating whether or not the item can be dropped.
         /// </summary>
         public bool IsAllowed
         {
@@ -72,7 +70,12 @@ namespace Exiled.Events.EventArgs.Item
         }
 
         /// <summary>
-        ///     Gets the player who's dropping the ammo.
+        ///     Gets the item to be dropped.
+        /// </summary>
+        public Item Item { get; }
+
+        /// <summary>
+        ///     Gets the player who's dropping the item.
         /// </summary>
         public Player Player { get; }
     }

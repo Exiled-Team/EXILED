@@ -21,7 +21,6 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
-    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
     using Exiled.Loader;

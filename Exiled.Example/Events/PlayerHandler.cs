@@ -13,7 +13,6 @@ namespace Exiled.Example.Events
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.EventArgs.Scp914;

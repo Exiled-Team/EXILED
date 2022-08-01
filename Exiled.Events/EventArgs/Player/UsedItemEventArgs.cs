@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Item
+namespace Exiled.Events.EventArgs.Player
 {
     using System;
 
@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Item
             try
             {
                 Player = player;
-                Usable = item is null ? null : (Usable)Item.Get(item);
+                Usable = item is null ? null : (Usable)API.Features.Items.Item.Get(item);
             }
             catch (Exception e)
             {

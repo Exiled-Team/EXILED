@@ -16,22 +16,16 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
-
     using Footprinting;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
     using MEC;
-
     using Mirror;
-
     using UnityEngine;
-
     using YamlDotNet.Serialization;
 
     using Item = Exiled.API.Features.Items.Item;

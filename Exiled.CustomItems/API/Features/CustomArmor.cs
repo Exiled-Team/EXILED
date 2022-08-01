@@ -14,7 +14,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.EventArgs.Item;
+    using Exiled.Events.EventArgs.Player;
 
     using MEC;
 
