@@ -695,7 +695,6 @@ namespace Exiled.Events.Handlers
             DamagingShootingTarget.InvokeSafely(ev);
         }
 
-
         /// <summary>
         ///     Invoked after a <see cref="API.Features.Player" /> presses the voicechat key.
         /// </summary>
