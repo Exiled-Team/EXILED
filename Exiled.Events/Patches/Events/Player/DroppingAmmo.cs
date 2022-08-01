@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
 
                 // Player.OnDroppingAmmo(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDroppingAmmo))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnDroppingAmmo))),
 
                 // if (!ev.IsAllowed) return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingAmmoEventArgs), nameof(DroppingAmmoEventArgs.IsAllowed))),

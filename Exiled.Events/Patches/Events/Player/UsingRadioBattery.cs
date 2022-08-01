@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="RadioItem.Update" />.
-    ///     Adds the <see cref="Handlers.Player.UsingRadioBattery" /> event.
+    ///     Adds the <see cref="Handlers.Item.UsingRadioBattery" /> event.
     /// </summary>
     [HarmonyPatch(typeof(RadioItem), nameof(RadioItem.Update))]
     internal static class UsingRadioBattery
@@ -74,8 +74,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Handlers.Player.OnUsingRadioBattery(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingRadioBattery))),
+                // Handlers.Item.OnUsingRadioBattery(ev)
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnUsingRadioBattery))),
 
                 // if (!ev.IsAllowed)
                 //   return;

@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="UsableItemsController.ServerReceivedStatus" />.
-    ///     Adds the <see cref="Handlers.Player.UsingItem" /> event.
+    ///     Adds the <see cref="Handlers.Item.UsingItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.ServerReceivedStatus))]
     internal static class UsingAndCancellingItemUse
@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingItem))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnUsingItem))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UsingItemEventArgs), nameof(UsingItemEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(CurrentlyUsedItem), nameof(CurrentlyUsedItem.Item))),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CancellingItemUseEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnCancellingItemUse))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnCancellingItemUse))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(CancellingItemUseEventArgs), nameof(CancellingItemUseEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });

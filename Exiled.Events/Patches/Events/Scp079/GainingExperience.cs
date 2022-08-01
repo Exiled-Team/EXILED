@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Search for the first "call NetworkServer.active".
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-                                                                 (MethodInfo) instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
+                                                                 (MethodInfo)instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
 
             // ev.Amount = num2
             // goto continueLabel

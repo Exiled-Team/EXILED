@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived" />.
-    ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
+    ///     Adds the <see cref="Handlers.Item.Shooting" /> and <see cref="Handlers.Item.Shot" /> events.
     /// </summary>
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerShotReceived))]
     internal static class Shooting
@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShooting))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnShooting))),
 
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.IsAllowed))),
                 new(OpCodes.Stloc_S, cmp.LocalIndex),

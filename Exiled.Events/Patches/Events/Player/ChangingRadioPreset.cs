@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="Radio.NetworkcurRangeId" />.
-    ///     Adds the <see cref="Handlers.Player.ChangingRadioPreset" /> event.
+    ///     Adds the <see cref="Handlers.Item.ChangingRadioPreset" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Radio), nameof(Radio.NetworkcurRangeId), MethodType.Setter)]
     internal static class ChangingRadioPreset
@@ -59,8 +59,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Handlers.Player.OnChangingRadioPreset(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingRadioPreset))),
+                // Handlers.Item.OnChangingRadioPreset(ev)
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingRadioPreset))),
 
                 // if (!ev.IsAllowed)
                 //     return;

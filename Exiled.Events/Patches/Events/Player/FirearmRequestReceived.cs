@@ -27,9 +27,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived" />.
-    ///     Adds <see cref="Player.ReloadingWeapon" />, <see cref="Player.UnloadingWeapon" />,
-    ///     <see cref="Player.DryfiringWeapon" />, <see cref="Player.AimingDownSight" /> and
-    ///     <see cref="Player.TogglingWeaponFlashlight" /> events.
+    ///     Adds <see cref="Player.ReloadingWeapon" />, <see cref="Handlers.Item.UnloadingWeapon" />,
+    ///     <see cref="Handlers.Item.DryfiringWeapon" />, <see cref="Handlers.Item.AimingDownSight" /> and
+    ///     <see cref="Handlers.Item.TogglingWeaponFlashlight" /> events.
     /// </summary>
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerRequestReceived))]
     internal static class FirearmRequestReceived
@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UnloadingWeaponEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnUnloadingWeapon))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnUnloadingWeapon))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UnloadingWeaponEventArgs), nameof(UnloadingWeaponEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
             });
@@ -87,7 +87,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DryfiringWeaponEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDryfiringWeapon))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnDryfiringWeapon))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DryfiringWeaponEventArgs), nameof(DryfiringWeaponEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
             });
@@ -106,7 +106,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnAimingDownSight))),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.OnAimingDownSight))),
                 new CodeInstruction(OpCodes.Nop).WithLabels(skipAdsLabel),
             });
 
@@ -121,7 +121,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnAimingDownSight))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Item.OnAimingDownSight))),
             });
 
             offset = -6;
@@ -137,7 +137,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnTogglingWeaponFlashlight))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnTogglingWeaponFlashlight))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingWeaponFlashlightEventArgs), nameof(TogglingWeaponFlashlightEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

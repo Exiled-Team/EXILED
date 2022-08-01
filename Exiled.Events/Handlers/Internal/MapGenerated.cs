@@ -103,7 +103,7 @@ namespace Exiled.Events.Handlers.Internal
         private static void GenerateWindow()
         {
             foreach (BreakableWindow breakableWindow in Object.FindObjectsOfType<BreakableWindow>())
-                Window.WindowValue.Add(Window.Get(breakableWindow));
+                Window.BreakableWindowToWindow.Add(breakableWindow, Window.Get(breakableWindow));
         }
 
         private static void GenerateCameras()

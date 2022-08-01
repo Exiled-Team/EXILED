@@ -80,14 +80,14 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Exiled.Events.Handlers.Player.PickingUpArmor += OnInternalPickingUpArmor;
+            Exiled.Events.Handlers.Item.PickingUpArmor += OnInternalPickingUpArmor;
             base.SubscribeEvents();
         }
 
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Exiled.Events.Handlers.Player.PickingUpArmor -= OnInternalPickingUpArmor;
+            Exiled.Events.Handlers.Item.PickingUpArmor -= OnInternalPickingUpArmor;
             base.UnsubscribeEvents();
         }
 

@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="SearchCoordinator.ReceiveRequestUnsafe" />.
-    ///     Adds the <see cref="Handlers.Player.SearchingPickup" /> event.
+    ///     Adds the <see cref="Handlers.Item.SearchingPickup" /> event.
     /// </summary>
     [HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]
     internal static class SearchingPickupEvent
@@ -77,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSearchPickupRequest))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnSearchPickupRequest))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SearchingPickupEventArgs), nameof(SearchingPickupEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, allowLabel),
 

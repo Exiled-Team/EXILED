@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="MicroHIDItem.ExecuteServerside" />.
-    ///     Adds the <see cref="Handlers.Player.OnUsingMicroHIDEnergy" /> event.
+    ///     Adds the <see cref="Handlers.Item.OnUsingMicroHIDEnergy" /> event.
     /// </summary>
     [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]
     internal static class UsingMicroHIDEnergy
@@ -68,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
 
                 // Handlers.Player.UsingMicroHIDEnergy(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingMicroHIDEnergy))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnUsingMicroHIDEnergy))),
 
                 // num = ev.Drain
                 new(OpCodes.Call, PropertyGetter(typeof(UsingMicroHIDEnergyEventArgs), nameof(UsingMicroHIDEnergyEventArgs.Drain))),

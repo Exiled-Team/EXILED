@@ -2841,7 +2841,7 @@ namespace Exiled.API.Features
                 nameof(Ragdoll) => Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)],
                 nameof(Locker) => Map.GetRandomLocker(),
                 nameof(Generator) => Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)],
-                nameof(Window) => Window.WindowValue[Random.Range(0, Window.WindowValue.Count)],
+                nameof(Window) => Window.List.ElementAt(Random.Range(0, Window.List.Count())),
                 nameof(Scp914) => Scp914.Scp914Controller,
                 nameof(LockerChamber) => new Func<LockerChamber>(delegate
                 {
