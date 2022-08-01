@@ -817,10 +817,10 @@ namespace Exiled.CustomItems.API.Features
         protected virtual void SubscribeEvents()
         {
             Exiled.Events.Handlers.Player.Dying += OnInternalOwnerDying;
-            Exiled.Events.Handlers.Item.DroppingItem += OnInternalDropping;
-            Exiled.Events.Handlers.Item.ChangingItem += OnInternalChanging;
+            Exiled.Events.Handlers.Player.DroppingItem += OnInternalDropping;
+            Exiled.Events.Handlers.Player.ChangingItem += OnInternalChanging;
             Exiled.Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
-            Exiled.Events.Handlers.Item.PickingUpItem += OnInternalPickingUp;
+            Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
             Exiled.Events.Handlers.Scp914.UpgradingItem += OnInternalUpgradingItem;
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
@@ -834,10 +834,10 @@ namespace Exiled.CustomItems.API.Features
         protected virtual void UnsubscribeEvents()
         {
             Exiled.Events.Handlers.Player.Dying -= OnInternalOwnerDying;
-            Exiled.Events.Handlers.Item.DroppingItem -= OnInternalDropping;
-            Exiled.Events.Handlers.Item.ChangingItem -= OnInternalChanging;
+            Exiled.Events.Handlers.Player.DroppingItem -= OnInternalDropping;
+            Exiled.Events.Handlers.Player.ChangingItem -= OnInternalChanging;
             Exiled.Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
-            Exiled.Events.Handlers.Item.PickingUpItem -= OnInternalPickingUp;
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
             Exiled.Events.Handlers.Scp914.UpgradingItem -= OnInternalUpgradingItem;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;

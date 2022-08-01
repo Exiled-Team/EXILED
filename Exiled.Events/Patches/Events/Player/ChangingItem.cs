@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="Inventory.CurInstance" />.
-    ///     Adds the <see cref="Handlers.Item.ChangingItem" /> event.
+    ///     Adds the <see cref="Handlers.Player.ChangingItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.ServerSelectItem))]
     internal static class ChangingItem
@@ -59,8 +59,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Handlers.Item.OnChangingItem(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingItem))),
+                // Handlers.Player.OnChangingItem(ev);
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingItem))),
 
                 // if (!ev.IsAllowed)
                 //    return;

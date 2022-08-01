@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem" />.
-    ///     Adds the <see cref="Handlers.Item.DroppingItem" /> and <see cref="Handlers.Item.DroppingNull" /> events.
+    ///     Adds the <see cref="Player.DroppingItem" /> and <see cref="Player.DroppingNull" /> events.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropItem))]
     internal static class ItemDrop
@@ -42,12 +42,12 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(0, new[]
             {
                 // if (!player.TryGetItem(itemSerial, out Item item)) {
-                //    Handlers.Item.OnDroppingNull(new DroppingNullEventArgs(Player));
+                //    Handlers.Player.OnDroppingNull(new DroppingNullEventArgs(Player));
                 //    return;
                 // }
                 //
                 // var ev = new DroppingItemEventArgs(player, item, isThrow, true);
-                // Handlers.Item.OnDroppingItem(ev);
+                // Handlers.Player.OnDroppingItem(ev);
                 // if (!ev.IsAllowed)
                 //     return;
                 // isThrow = ev.IsThrown;
@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingNothingEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnDroppingNull))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNull))),
                 new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(notNullLabel),
                 new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
@@ -75,7 +75,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnDroppingItem))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingItem))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingItemEventArgs), nameof(DroppingItemEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

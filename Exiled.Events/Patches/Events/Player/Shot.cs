@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived" />.
-    ///     Adds the <see cref="Handlers.Item.Shooting" /> and <see cref="Handlers.Item.Shot" /> events.
+    ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
     [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerPerformShot))]
     internal static class Shot
@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnShot(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnShot))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
 
                 // if (!ev.CanHurt)
                 //    return;
@@ -90,7 +90,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         /// <summary>
         ///     Patches <see cref="BuckshotHitreg.ShootPellet" />.
-        ///     Adds the <see cref="Handlers.Item.Shooting" /> and <see cref="Handlers.Item.Shot" /> events.
+        ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
         /// </summary>
         [HarmonyPatch(typeof(BuckshotHitreg), nameof(BuckshotHitreg.ShootPellet))]
         internal static class ShotPellets
@@ -129,7 +129,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc, ev.LocalIndex),
 
                     // Handlers.Player.OnShot(ev)
-                    new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnShot))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
 
                     // if (!ev.CanHurt)
                     //    return;

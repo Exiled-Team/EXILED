@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patch the <see cref="Inventory.UserCode_CmdProcessHotkey" />.
-    ///     Adds the <see cref="Handlers.Item.ProcessingHotkey" /> event.
+    ///     Adds the <see cref="Handlers.Player.ProcessingHotkey" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdProcessHotkey))]
     internal static class ProcessingHotkey
@@ -93,7 +93,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ProcessingHotkeyEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnProcessingHotkey))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnProcessingHotkey))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ProcessingHotkeyEventArgs), nameof(ProcessingHotkeyEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });

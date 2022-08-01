@@ -80,11 +80,16 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.Dying += playerHandler.OnDying;
             Exiled.Events.Handlers.Player.Died += playerHandler.OnDied;
             Exiled.Events.Handlers.Player.ChangingRole += playerHandler.OnChangingRole;
+            Exiled.Events.Handlers.Player.ChangingItem += playerHandler.OnChangingItem;
+            Exiled.Events.Handlers.Player.UsingItem += playerHandler.OnUsingItem;
+            Exiled.Events.Handlers.Player.PickingUpItem += playerHandler.OnPickingUpItem;
+            Exiled.Events.Handlers.Player.DroppingItem += playerHandler.OnDroppingItem;
             Exiled.Events.Handlers.Player.Verified += playerHandler.OnVerified;
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension += playerHandler.OnFailingEscapePocketDimension;
             Exiled.Events.Handlers.Player.EscapingPocketDimension += playerHandler.OnEscapingPocketDimension;
             Exiled.Events.Handlers.Player.UnlockingGenerator += playerHandler.OnUnlockingGenerator;
             Exiled.Events.Handlers.Player.PreAuthenticating += playerHandler.OnPreAuthenticating;
+            Exiled.Events.Handlers.Player.Shooting += playerHandler.OnShooting;
             Exiled.Events.Handlers.Player.ReloadingWeapon += playerHandler.OnReloading;
             Exiled.Events.Handlers.Player.ReceivingEffect += playerHandler.OnReceivingEffect;
 
@@ -102,11 +107,6 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Map.ExplodingGrenade += mapHandler.OnExplodingGrenade;
             Exiled.Events.Handlers.Map.GeneratorActivated += mapHandler.OnGeneratorActivated;
 
-            Exiled.Events.Handlers.Item.ChangingItem += playerHandler.OnChangingItem;
-            Exiled.Events.Handlers.Item.UsingItem += playerHandler.OnUsingItem;
-            Exiled.Events.Handlers.Item.PickingUpItem += playerHandler.OnPickingUpItem;
-            Exiled.Events.Handlers.Item.DroppingItem += playerHandler.OnDroppingItem;
-            Exiled.Events.Handlers.Item.Shooting += playerHandler.OnShooting;
             Exiled.Events.Handlers.Item.ChangingDurability += itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments += itemHandler.OnChangingAttachments;
             Exiled.Events.Handlers.Item.ReceivingPreference += itemHandler.OnReceivingPreference;
@@ -128,6 +128,8 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.Dying -= playerHandler.OnDying;
             Exiled.Events.Handlers.Player.Died -= playerHandler.OnDied;
             Exiled.Events.Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;
+            Exiled.Events.Handlers.Player.ChangingItem -= playerHandler.OnChangingItem;
+            Exiled.Events.Handlers.Player.PickingUpItem += playerHandler.OnPickingUpItem;
             Exiled.Events.Handlers.Player.Verified -= playerHandler.OnVerified;
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension -= playerHandler.OnFailingEscapePocketDimension;
             Exiled.Events.Handlers.Player.EscapingPocketDimension -= playerHandler.OnEscapingPocketDimension;
@@ -147,8 +149,6 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Map.ExplodingGrenade -= mapHandler.OnExplodingGrenade;
             Exiled.Events.Handlers.Map.GeneratorActivated -= mapHandler.OnGeneratorActivated;
 
-            Exiled.Events.Handlers.Item.ChangingItem -= playerHandler.OnChangingItem;
-            Exiled.Events.Handlers.Item.PickingUpItem -= playerHandler.OnPickingUpItem;
             Exiled.Events.Handlers.Item.ChangingDurability -= itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments -= itemHandler.OnChangingAttachments;
             Exiled.Events.Handlers.Item.ReceivingPreference -= itemHandler.OnReceivingPreference;

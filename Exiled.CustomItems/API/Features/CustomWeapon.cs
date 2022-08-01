@@ -229,8 +229,8 @@ namespace Exiled.CustomItems.API.Features
         protected override void SubscribeEvents()
         {
             Exiled.Events.Handlers.Player.ReloadingWeapon += OnInternalReloading;
-            Exiled.Events.Handlers.Item.Shooting += OnInternalShooting;
-            Exiled.Events.Handlers.Item.Shot += OnInternalShot;
+            Exiled.Events.Handlers.Player.Shooting += OnInternalShooting;
+            Exiled.Events.Handlers.Player.Shot += OnInternalShot;
             Exiled.Events.Handlers.Player.Hurting += OnInternalHurting;
 
             base.SubscribeEvents();
@@ -240,8 +240,8 @@ namespace Exiled.CustomItems.API.Features
         protected override void UnsubscribeEvents()
         {
             Exiled.Events.Handlers.Player.ReloadingWeapon -= OnInternalReloading;
-            Exiled.Events.Handlers.Item.Shooting -= OnInternalShooting;
-            Exiled.Events.Handlers.Item.Shot -= OnInternalShot;
+            Exiled.Events.Handlers.Player.Shooting -= OnInternalShooting;
+            Exiled.Events.Handlers.Player.Shot -= OnInternalShot;
             Exiled.Events.Handlers.Player.Hurting -= OnInternalHurting;
 
             base.UnsubscribeEvents();

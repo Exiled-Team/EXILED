@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="MicroHIDItem.ServerSendStatus(HidStatusMessageType, byte)" />.
-    ///     Adds the <see cref="Handlers.Item.OnChangingMicroHIDState" /> event.
+    ///     Adds the <see cref="Handlers.Player.OnChangingMicroHIDState" /> event.
     /// </summary>
     [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]
     internal static class ChangingMicroHIDState
@@ -61,8 +61,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
-                // Handlers.Item.OnChangingMicroHIDState(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingMicroHIDState))),
+                // Handlers.Player.OnChangingMicroHIDState(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingMicroHIDState))),
 
                 // if (!ev.IsAllowed)
                 // goto RETURN_LABEL

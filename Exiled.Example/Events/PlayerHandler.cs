@@ -50,7 +50,7 @@ namespace Exiled.Example.Events
             }
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingItem(ChangingItemEventArgs)"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingItem(ChangingItemEventArgs)"/>
         public void OnChangingItem(ChangingItemEventArgs ev)
         {
             Timing.CallDelayed(2f, () =>
@@ -137,14 +137,14 @@ namespace Exiled.Example.Events
             Log.Info($"{ev.UserId} is pre-authenticating from {ev.Country} ({ev.Request.RemoteEndPoint}) with flags {ev.Flags}!");
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnPickingUpItem(PickingUpItemEventArgs)"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnPickingUpItem(PickingUpItemEventArgs)"/>
         public void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} has picked up a {ev.Pickup.Type}! Weight: {ev.Pickup.Weight} Serial: {ev.Pickup.Serial}.");
             Log.Warn($"{ev.Pickup.Base.Info.Serial} -- {ev.Pickup.Base.NetworkInfo.Serial}");
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnUsingItem(UsingItemEventArgs)"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnUsingItem(UsingItemEventArgs)"/>
         public void OnUsingItem(UsingItemEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} is trying to use {ev.Usable.Type}.");
@@ -155,7 +155,7 @@ namespace Exiled.Example.Events
             }
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnShooting(ShootingEventArgs)"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnShooting(ShootingEventArgs)"/>
         public void OnShooting(ShootingEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} is shooting a {ev.Player.CurrentItem.Type}! Target Pos: {ev.ShotPosition} Target object ID: {ev.TargetNetId} Allowed: {ev.IsAllowed}");
@@ -184,7 +184,7 @@ namespace Exiled.Example.Events
             Log.Info($"SCP-914 is processing {ev.Player.Nickname} on {ev.KnobSetting}. Upgrade Items: {ev.UpgradeItems} Held Items only: {ev.HeldOnly}");
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnDroppingItem(DroppingItemEventArgs)"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDroppingItem(DroppingItemEventArgs)"/>
         public void OnDroppingItem(DroppingItemEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} is dropping {ev.Item.Type}!");

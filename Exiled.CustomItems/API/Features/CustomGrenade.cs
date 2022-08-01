@@ -128,7 +128,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Exiled.Events.Handlers.Item.ThrowingItem += OnInternalThrowing;
+            Exiled.Events.Handlers.Player.ThrowingItem += OnInternalThrowing;
             Exiled.Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
             Exiled.Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
 
@@ -138,7 +138,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Exiled.Events.Handlers.Item.ThrowingItem -= OnInternalThrowing;
+            Exiled.Events.Handlers.Player.ThrowingItem -= OnInternalThrowing;
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
             Exiled.Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
 

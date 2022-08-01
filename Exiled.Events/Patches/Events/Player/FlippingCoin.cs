@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     ///     Patches
     ///     <see cref="CoinNetworkHandler.ServerProcessMessage(NetworkConnection, CoinNetworkHandler.CoinFlipMessage)" />.
-    ///     Adds the <see cref="Handlers.Item.FlippingCoin" /> event.
+    ///     Adds the <see cref="Handlers.Player.FlippingCoin" /> event.
     /// </summary>
     [HarmonyPatch(typeof(CoinNetworkHandler), nameof(CoinNetworkHandler.ServerProcessMessage))]
     internal static class FlippingCoin
@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // OnFlippingCoin(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnFlippingCoin))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFlippingCoin))),
 
                 // if (ev.IsAllowed)
                 //   return
