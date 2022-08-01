@@ -1,4 +1,11 @@
-﻿namespace Exiled.Launcher.Features.Arguments;
+﻿// -----------------------------------------------------------------------
+// <copyright file="LauncherArguments.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.Launcher.Features.Arguments;
 
 public class LauncherArguments
 {
@@ -11,6 +18,9 @@ public class LauncherArguments
 #else
     public string StartingPoint { get; set; } = "LocalAdmin.exe";
 #endif
+
+    [ArgumentOption("-sf", "--server-folder", "The data folder of the server. (SCPSL_Data)")]
+    public string ServerFolder { get; set; } = "SCPSL_Data";
 
     [ArgumentOption("-v", "--exiled-version", "The desired exiled version, accepts latest, a version number and none.")]
     public string ExiledVersion { get; set; } = "latest";
