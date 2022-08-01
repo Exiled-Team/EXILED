@@ -46,8 +46,6 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 1;
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Stopwatch), nameof(Stopwatch.Stop)))) + offset;
 
-            // player = Player.Get(ply)
-            // I dont want write those instructions inside every event ctor
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
@@ -117,7 +115,6 @@ namespace Exiled.Events.Patches.Events.Player
             // remove base game unlocking(we will unlock generator after UnlockingGeneratorEventArgs invoke and allowed check)
             newInstructions.RemoveRange(index, 4);
 
-            // ctor arguments
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
@@ -128,7 +125,6 @@ namespace Exiled.Events.Patches.Events.Player
             offset = -1;
             index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(Scp079Generator), nameof(Scp079Generator.RpcDenied)))) + offset;
 
-            // ctor arguments
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).MoveLabelsFrom(newInstructions[index]),
@@ -141,14 +137,6 @@ namespace Exiled.Events.Patches.Events.Player
             // remove base game RpcDenied(same as unlocking)
             newInstructions.RemoveRange(index, 2);
 
-            // UnlockingGeneratorEventArgs ev = new(player, this, canUnlock);
-            // Player.OnUnlockingGenerator(ev);
-            // if(!ev.IsAllowed)
-            // {
-            //     this.RpcDenied();
-            //     break;
-            // }
-            // this.ServerSetFlag(GeneratorFlags.Unlocked, true);
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UnlockingGeneratorEventArgs))[0]).MoveLabelsFrom(newInstructions[index]),
@@ -212,13 +200,6 @@ namespace Exiled.Events.Patches.Events.Player
             offset = 2;
             index = newInstructions.FindLastIndex(i => i.Calls(PropertyGetter(typeof(Scp079Generator), nameof(Scp079Generator.Engaged)))) + offset;
 
-            // StoppingGeneratorEventArgs ev = new(player, this, true);
-            // Player.OnStoppingGenerator(ev);
-            // if(!ev.IsAllowed)
-            // {
-            //     this.RpcDenied();
-            //     break;
-            // }
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
