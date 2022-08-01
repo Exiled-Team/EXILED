@@ -129,7 +129,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.Died -= playerHandler.OnDied;
             Exiled.Events.Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;
             Exiled.Events.Handlers.Player.ChangingItem -= playerHandler.OnChangingItem;
-            Exiled.Events.Handlers.Player.PickingUpItem += playerHandler.OnPickingUpItem;
+            Exiled.Events.Handlers.Player.PickingUpItem -= playerHandler.OnPickingUpItem;
             Exiled.Events.Handlers.Player.Verified -= playerHandler.OnVerified;
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension -= playerHandler.OnFailingEscapePocketDimension;
             Exiled.Events.Handlers.Player.EscapingPocketDimension -= playerHandler.OnEscapingPocketDimension;

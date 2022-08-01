@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
+namespace Exiled.Events.Patches.Events.Cassie
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Events.Map
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
-
-    using Player = Exiled.API.Features.Player;
 
     /// <summary>
     ///     Patches
@@ -45,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.InsertRange(0, new[]
             {
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingScpTerminationEventArgs))[0]),

@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs.Environmental;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Extensions;
 
     using static Events;

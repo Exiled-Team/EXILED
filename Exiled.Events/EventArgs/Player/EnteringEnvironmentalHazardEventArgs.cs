@@ -5,12 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Environmental
+namespace Exiled.Events.EventArgs.Player
 {
     using System;
-    using Exiled.Events.EventArgs.Interfaces;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information before a player enters in an environmental hazard.

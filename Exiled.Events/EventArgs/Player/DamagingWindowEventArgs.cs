@@ -11,9 +11,9 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.EventArgs.Interfaces;
 
+    using AttackerDamageHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
     using BaseAttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
     using BaseDamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
-    using AttackerDamageHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
 
     /// <summary>
     ///     Contains all information before damage is dealt to a <see cref="BreakableWindow" />.

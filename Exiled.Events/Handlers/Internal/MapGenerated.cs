@@ -91,7 +91,7 @@ namespace Exiled.Events.Handlers.Internal
             List<GameObject> roomObjects = ListPool<GameObject>.Shared.Rent(Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject));
 
             // If no rooms were found, it means a plugin is trying to access this before the map is created.
-            if (roomObjects.Count == 0)
+            if (roomObjects.Any())
                 throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
 
             foreach (GameObject roomObject in roomObjects)
@@ -103,7 +103,7 @@ namespace Exiled.Events.Handlers.Internal
         private static void GenerateWindow()
         {
             foreach (BreakableWindow breakableWindow in Object.FindObjectsOfType<BreakableWindow>())
-                Window.WindowValue.Add(Window.Get(breakableWindow));
+                Window.BreakableWindowToWindow.Add(breakableWindow, Window.Get(breakableWindow));
         }
 
         private static void GenerateCameras()
