@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Environmental
+namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Environmental
 
     /// <summary>
     /// Patches <see cref="EnvironmentalHazard.OnExit(ReferenceHub)"/> with <see cref="SinkholeEnvironmentalHazard"/>.
-    /// Adds the <see cref="Handlers.EnvironementalHazard.ExitingEnvironmentalHazard"/> event.
+    /// Adds the <see cref="Exiled.Events.Handlers.EnvironementalHazard.ExitingEnvironmentalHazard"/> event.
     /// <br>Adds the better effect logic.</br>
     /// </summary>
     /// <seealso cref="StayingOnSinkholeEnvironmentalHazard"/>

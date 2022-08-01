@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.Patches.Events.Environmental;
+    using Exiled.Events.Patches.Events.Player;
 
     using HarmonyLib;
 

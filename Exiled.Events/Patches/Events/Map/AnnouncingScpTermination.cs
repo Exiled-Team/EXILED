@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Cassie
+namespace Exiled.Events.Patches.Events.Map
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Cassie
 
     using static HarmonyLib.AccessTools;
 
-    using Player = API.Features.Player;
+    using Player = Exiled.API.Features.Player;
 
     /// <summary>
     ///     Patches

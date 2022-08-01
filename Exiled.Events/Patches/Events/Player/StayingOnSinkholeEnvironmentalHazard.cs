@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Environmental
+namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
 
