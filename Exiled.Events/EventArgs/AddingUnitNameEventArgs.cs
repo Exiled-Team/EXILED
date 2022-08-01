@@ -3,7 +3,7 @@
     using Respawning;
 
     /// <summary>
-    /// Contains all information before adding a new unit name
+    /// Contains all information before adding a new unit name.
     /// </summary>
     public class AddingUnitNameEventArgs : System.EventArgs
     {
@@ -21,9 +21,9 @@
         }
 
         /// <summary>
-        /// Gets or sets a value indicating what the spawnable team is.
+        /// Gets a value indicating what the spawnable team is.
         /// </summary>
-        public SpawnableTeamType Team { get; set; }
+        public SpawnableTeamType Team { get; }
 
         /// <summary>
         /// Gets or sets the next unit name.

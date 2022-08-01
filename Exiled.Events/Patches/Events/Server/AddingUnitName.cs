@@ -12,11 +12,16 @@
     [HarmonyPatch(typeof(UnitNamingRule), nameof(UnitNamingRule.AddCombination))]
     internal static class AddingUnitName
     {
-        private static bool Prefix(string regular, SpawnableTeamType type)
+        private static bool Prefix(ref string regular, SpawnableTeamType type)
         {
             AddingUnitNameEventArgs ev = new AddingUnitNameEventArgs(regular, type);
             Handlers.Server.OnAddingUnitName(ev);
-            return ev.IsAllowed;
+
+            if (!ev.IsAllowed)
+                return false;
+
+            regular = ev.UnitName;
+            return true;
         }
     }
 }
