@@ -343,7 +343,7 @@ namespace Exiled.API.Features
             Room.RoomIdentifiersToRooms.Clear();
             Door.DoorVariantToDoor.Clear();
             Camera.CamerasValue.Clear();
-            Window.WindowValue.Clear();
+            Window.BreakableWindowToWindow.Clear();
             Lift.LiftsValue.Clear();
             TeslaGate.TeslasValue.Clear();
             Generator.GeneratorValues.Clear();
