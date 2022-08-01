@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
+namespace Exiled.Events.Patches.Events.Item
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -21,10 +21,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
-    using Item = Exiled.API.Features.Items.Item;
+    using Item = API.Features.Items.Item;
 
     /// <summary>
-    ///     Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem" />.
+    ///     Patches <see cref="Inventory.UserCode_CmdDropItem" />.
     ///     Adds the <see cref="Handlers.Item.DroppingItem" /> and <see cref="Handlers.Item.DroppingNull" /> events.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropItem))]

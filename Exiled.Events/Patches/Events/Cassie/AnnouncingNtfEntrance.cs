@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Map
+namespace Exiled.Events.Patches.Events.Cassie
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
