@@ -14,49 +14,34 @@ namespace Exiled.API.Features
     using System.Runtime.CompilerServices;
 
     using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.API.Structs;
-
     using Footprinting;
-
     using global::Scp914;
-
     using Hints;
-
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
-
     using MapGeneration.Distributors;
-
     using MEC;
-
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
-
     using NorthwoodLib;
     using NorthwoodLib.Pools;
-
     using PlayableScps;
-
     using PlayerStatsSystem;
-
     using RemoteAdmin;
-
     using RoundRestarting;
-
     using UnityEngine;
-
     using Utils.Networking;
 
     using static Exiled.API.Features.DamageHandlers.DamageHandlerBase;
@@ -1910,6 +1895,36 @@ namespace Exiled.API.Features
                 ((HealthStat)ReferenceHub.playerStats.StatModules[0]).ServerHeal(amount);
             else
                 Health += amount;
+        }
+
+        /// <summary>
+        /// Heals the player.
+        /// </summary>
+        /// <param name="itemType">The item to be used as a heal item.</param>
+        public void Heal(ItemType itemType)
+        {
+            switch (itemType)
+            {
+                case ItemType.Adrenaline:
+                    ReferenceHub.fpc.ModifyStamina(100f);
+                    ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(40f);
+                    ReferenceHub.playerEffectsController.EnableEffect<Invigorated>(8f, true);
+                    break;
+                case ItemType.Medkit:
+                    ReferenceHub.playerStats.GetModule<HealthStat>().ServerHeal(65f);
+                    break;
+                case ItemType.SCP500:
+                    AnimationCurve animationCurveScp500 = (Item.Create(ItemType.SCP500).Base as Scp500)?._healProgress;
+                    UsableItemsController.GetHandler(ReferenceHub).ActiveRegenerations.Add(new RegenerationProcess(animationCurveScp500, 0.1f, MaxHealth));
+                    DisableAllEffects();
+                    break;
+                case ItemType.Painkillers:
+                    AnimationCurve animationCurvePainKillers = (Item.Create(ItemType.Painkillers).Base as Painkillers)?._healProgress;
+                    UsableItemsController.GetHandler(ReferenceHub).ActiveRegenerations.Add(new RegenerationProcess(animationCurvePainKillers, 0.06666667f, 50f));
+                    break;
+                default:
+                    throw new InvalidOperationException($"Failed to use {itemType.ToString()} as a heal item.");
+            }
         }
 
         /// <summary>
