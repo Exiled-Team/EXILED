@@ -52,11 +52,13 @@ namespace Exiled.API.Features.Items
         public Item(ItemBase itemBase)
         {
             Base = itemBase;
-            if (Serial == 0)
+            BaseToItem.Add(itemBase, this);
+
+            if (Serial == 0 && itemBase.Owner == null)
             {
                 ushort serial = ItemSerialGenerator.GenerateNext();
                 Serial = serial;
-                Base.OnAdded(null);
+                itemBase.OnAdded(null);
 #if DEBUG
                 Log.Debug($"{nameof(Item)}.ctor: Generating new serial number. Serial should now be: {serial}. // {Serial}");
 #endif
@@ -64,7 +66,6 @@ namespace Exiled.API.Features.Items
 #if DEBUG
             Log.Debug($"{nameof(Item)}.ctor: New item created with Serial: {Serial}");
 #endif
-            BaseToItem.Add(itemBase, this);
         }
 
         /// <summary>
