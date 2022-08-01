@@ -75,14 +75,6 @@ namespace Exiled.Events.EventArgs.Map
         }
 
         /// <summary>
-        ///     Finalizes an instance of the <see cref="ExplodingGrenadeEventArgs" /> class.
-        /// </summary>
-        ~ExplodingGrenadeEventArgs()
-        {
-            ListPool<Player>.Shared.Return(TargetsToAffect);
-        }
-
-        /// <summary>
         ///     Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.
         /// </summary>
         public List<Player> TargetsToAffect { get; }
@@ -101,5 +93,13 @@ namespace Exiled.Events.EventArgs.Map
         ///     Gets the player who thrown the grenade.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Finalizes an instance of the <see cref="ExplodingGrenadeEventArgs" /> class.
+        /// </summary>
+        ~ExplodingGrenadeEventArgs()
+        {
+            ListPool<Player>.Shared.Return(TargetsToAffect);
+        }
     }
 }

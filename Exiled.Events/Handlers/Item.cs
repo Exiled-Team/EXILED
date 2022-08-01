@@ -37,6 +37,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
 
+
         /// <summary>
         ///     Invoked after a <see cref="API.Features.Player" /> uses an <see cref="API.Features.Items.Item" />.
         /// </summary>
@@ -51,6 +52,7 @@ namespace Exiled.Events.Handlers
         ///     <see cref="API.Features.Items.Usable" />.
         /// </summary>
         public static event CustomEventHandler<CancellingItemUseEventArgs> CancellingItemUse;
+
 
         /// <summary>
         ///     Invoked before throwing an <see cref="API.Features.Items.Item" />.
@@ -91,6 +93,7 @@ namespace Exiled.Events.Handlers
         ///     Invoked before picking up an <see cref="API.Features.Items.Item" />.
         /// </summary>
         public static event CustomEventHandler<PickingUpItemEventArgs> PickingUpItem;
+
 
         /// <summary>
         ///     Invoked before a user's radio battery charge is changed.
