@@ -1,11 +1,19 @@
-﻿namespace Exiled.Events.EventArgs
+﻿// -----------------------------------------------------------------------
+// <copyright file="RemovingPlayerEventArgs.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.Events.EventArgs
 {
     using UnityEngine;
 
     /// <summary>
     /// Contains all information before adding the a player in player list.
     /// </summary>
-    public class RemovingPlayerEventArgs : System.EventArgs
+    /// <remarks>If your server has a idle mode, don't forget to set this mode if there are no players.</remarks>
+    public class RemovingPlayerEventArgs : AddingPlayerEventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RemovingPlayerEventArgs"/> class.
@@ -14,25 +22,8 @@
         /// <param name="maxPlayers">The maximum number of players.</param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
         public RemovingPlayerEventArgs(GameObject gameObject, int maxPlayers, bool isAllowed = true)
+            : base(gameObject, maxPlayers, isAllowed)
         {
-            GameObject = gameObject;
-            MaxPlayers = maxPlayers;
-            IsAllowed = isAllowed;
         }
-
-        /// <summary>
-        /// Gets the <see cref="GameObject"/> of the player.
-        /// </summary>
-        public GameObject GameObject { get; }
-
-        /// <summary>
-        /// Gets the maximum number of players.
-        /// </summary>
-        public int MaxPlayers { get; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the player will be removed from Player list.
-        /// </summary>
-        public bool IsAllowed { get; set; }
     }
 }
