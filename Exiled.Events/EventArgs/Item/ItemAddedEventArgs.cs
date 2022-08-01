@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Player
+namespace Exiled.Events.EventArgs.Item
 {
     using System;
 
@@ -15,6 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Interfaces.Item;
     using Exiled.Events.EventArgs.Interfaces.Pickup;
+
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;

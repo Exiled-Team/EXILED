@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Player
+namespace Exiled.Events.EventArgs.Scp330
 {
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;

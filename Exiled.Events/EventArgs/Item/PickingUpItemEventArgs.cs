@@ -5,13 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Player
+namespace Exiled.Events.EventArgs.Item
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.EventArgs.Interfaces.Pickup;
+
     using InventorySystem.Items.Pickups;
 
     /// <summary>

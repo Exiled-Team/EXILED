@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp330;
     using Exiled.Events.Handlers;
 
