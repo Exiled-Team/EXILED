@@ -48,6 +48,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReportingCheaterEventArgs> ReportingCheater;
 
         /// <summary>
+        /// Invoked before executing respawning effects.
+        /// </summary>
+        public static event CustomEventHandler<ExecutingRespawningEffectsEventArgs> ExecutingRespawningEffects;
+
+        /// <summary>
         /// Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
@@ -109,6 +114,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ReportingCheaterEventArgs"/> instance.</param>
         public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before executing respawning effects.
+        /// </summary>
+        /// <param name="ev">The <see cref="ExecutingRespawningEffectsEventArgs"/> instance.</param>
+        public static void OnExecutingRespawningEffects(ExecutingRespawningEffectsEventArgs ev) => ExecutingRespawningEffects.InvokeSafely(ev);
 
         /// <summary>
         /// Called before respawning a wave of Chaos Insurgency or NTF.
