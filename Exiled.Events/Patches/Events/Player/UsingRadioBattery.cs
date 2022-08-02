@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
 
             Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
-            Label continueLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            Label continueLabel = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(UsingRadioBatteryEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
