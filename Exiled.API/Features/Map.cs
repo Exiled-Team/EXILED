@@ -161,9 +161,14 @@ namespace Exiled.API.Features
             if (room is null)
             {
                 // Then try for objects that aren't children, like players and pickups.
-                Ray ray = new(objectInRoom.transform.position, Vector3.down);
+                Ray downRay = new(objectInRoom.transform.position, Vector3.down);
 
-                if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
+                if (Physics.RaycastNonAlloc(downRay, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
+                    return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
+
+                Ray upRay = new(objectInRoom.transform.position, Vector3.up);
+
+                if (Physics.RaycastNonAlloc(upRay, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                     return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
 
                 // Always default to surface transform, since it's static.

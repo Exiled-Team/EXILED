@@ -60,5 +60,11 @@ namespace Exiled.API.Features
         /// </summary>
         [Description("Indicates whether the broadcast should be shown or not")]
         public bool Show { get; set; }
+
+        /// <summary>
+        /// Returns the Broadcast in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Broadcast-related data.</returns>
+        public override string ToString() => $"({Content}) {Duration} {Type}";
     }
 }

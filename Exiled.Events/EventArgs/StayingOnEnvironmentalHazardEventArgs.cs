@@ -21,12 +21,10 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="environmentalHazard"><inheritdoc cref="EnvironmentalHazard"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StayingOnEnvironmentalHazardEventArgs(Player player, EnvironmentalHazard environmentalHazard, bool isAllowed = true)
+        public StayingOnEnvironmentalHazardEventArgs(Player player, EnvironmentalHazard environmentalHazard)
         {
             Player = player;
             EnvironmentalHazard = environmentalHazard;
-            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -42,6 +40,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should be affected by the environmental hazard.
         /// </summary>
+        [Obsolete("IsAllowed has been deprecated, use EnteringEnvironmentalHazardEventArgs::IsAllowed instead.", true)]
         public bool IsAllowed { get; set; }
     }
 }
