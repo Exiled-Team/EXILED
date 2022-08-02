@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Structs
 {
-    using System;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
