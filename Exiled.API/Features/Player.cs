@@ -1898,7 +1898,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Heals the player.
+        /// Heals the player by applying an item effect.
         /// </summary>
         /// <param name="itemType">The item to be used as a heal item.</param>
         public void Heal(ItemType itemType)
