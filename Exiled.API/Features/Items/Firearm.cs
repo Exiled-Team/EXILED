@@ -574,7 +574,14 @@ namespace Exiled.API.Features.Items
             Firearm cloneableItem = new(Type);
 
             cloneableItem.Ammo = Ammo;
-            cloneableItem.FireRate = FireRate;
+
+            if(cloneableItem.Base is AutomaticFirearm automaticFirearm)
+            {
+                cloneableItem.FireRate = FireRate;
+                cloneableItem.Recoil = Recoil;
+            }
+
+            cloneableItem.AddAttachment(AttachmentIdentifiers);
 
             return cloneableItem;
         }
