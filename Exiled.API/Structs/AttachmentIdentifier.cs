@@ -248,5 +248,14 @@ namespace Exiled.API.Structs
         /// <param name="attachmentIdentifier">The <see cref="AttachmentIdentifier"/> to compare with the current instance.</param>
         /// <returns><see langword="true"/> if <see cref="AttachmentIdentifier"/> and this instance represent the same value; otherwise, <see langword="false"/>.</returns>
         public bool Equals(AttachmentIdentifier attachmentIdentifier) => this == attachmentIdentifier;
+
+        /// <summary>
+        /// Clones the current <see cref="AttachmentIdentifier"/> object.
+        /// </summary>
+        /// <returns>A new <see cref="AttachmentIdentifier"/> object.</returns>
+        public AttachmentIdentifier Clone()
+        {
+            return new AttachmentIdentifier(Code, Name, Slot);
+        }
     }
 }

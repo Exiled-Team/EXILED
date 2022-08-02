@@ -69,6 +69,11 @@ namespace Exiled.API.Features
         public Transform Transform => Base.transform;
 
         /// <summary>
+        /// Gets the tesla gate's <see cref="Mirror.NetworkIdentity"/>.
+        /// </summary>
+        public Mirror.NetworkIdentity NetIdentity => Base.netIdentity;
+
+        /// <summary>
         /// Gets the tesla gate's position.
         /// </summary>
         public Vector3 Position => Transform.position;

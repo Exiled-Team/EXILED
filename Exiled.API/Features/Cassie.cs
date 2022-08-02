@@ -113,7 +113,7 @@ namespace Exiled.API.Features
             => Announcer.CalculateDuration(message, rawNumber);
 
         /// <summary>
-        /// Converts a Team into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
+        /// Converts a <see cref="Team"/> into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
         /// </summary>
         /// <param name="team"><see cref="Team"/>.</param>
         /// <param name="unitName">Unit Name.</param>

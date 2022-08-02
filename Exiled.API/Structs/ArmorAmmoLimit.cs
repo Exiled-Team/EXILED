@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Structs
 {
+    using System;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
@@ -51,5 +53,14 @@ namespace Exiled.API.Structs
         /// <param name="armorLimit">armor limit.</param>
         public static explicit operator BodyArmor.ArmorAmmoLimit(ArmorAmmoLimit armorLimit) =>
             new BodyArmor.ArmorAmmoLimit { AmmoType = armorLimit.AmmoType.GetItemType(), Limit = armorLimit.Limit };
+
+        /// <summary>
+        /// Clones the current <see cref="ArmorAmmoLimit"/> object.
+        /// </summary>
+        /// <returns>A new <see cref="ArmorAmmoLimit"/> object.</returns>
+        public ArmorAmmoLimit Clone()
+        {
+            return new ArmorAmmoLimit(AmmoType, Limit);
+        }
     }
 }

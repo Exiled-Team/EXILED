@@ -66,5 +66,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Broadcast-related data.</returns>
         public override string ToString() => $"({Content}) {Duration} {Type}";
+
+        /// <summary>
+        /// Clones the current <see cref="Broadcast"/> object.
+        /// </summary>
+        /// <returns>A new <see cref="Broadcast"/> object.</returns>
+        public Broadcast Clone()
+        {
+            return new Broadcast(Content, Duration, Show, Type);
+        }
     }
 }

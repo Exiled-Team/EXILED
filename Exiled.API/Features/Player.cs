@@ -1657,6 +1657,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Handcuff the player as administrator.
         /// </summary>
+        /// <seealso cref="Handcuff(Player)"/>
+        /// <seealso cref="RemoveHandcuffs()"/>
         public void Handcuff()
         {
             ReferenceHub.inventory.SetDisarmedStatus(null);
@@ -1668,6 +1670,8 @@ namespace Exiled.API.Features
         /// Handcuff the player.
         /// </summary>
         /// <param name="cuffer">The cuffer player.</param>
+        /// <seealso cref="Handcuff()"/>
+        /// <seealso cref="RemoveHandcuffs()"/>
         public void Handcuff(Player cuffer)
         {
             if (cuffer?.ReferenceHub is null)
@@ -1682,6 +1686,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Removes handcuffs.
         /// </summary>
+        /// <seealso cref="Handcuff()"/>
+        /// <seealso cref="Handcuff(Player)"/>
         public void RemoveHandcuffs()
         {
             Inventory.SetDisarmedStatus(null);
@@ -1743,6 +1749,14 @@ namespace Exiled.API.Features
         /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
         public int CountItem(ItemType item) =>
             Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
+
+        /// <summary>
+        /// Counts how many items of a certain <see cref="ItemCategory"/> a player has.
+        /// </summary>
+        /// <param name="category">The item category to search for.</param>
+        /// <returns>How many items of that <see cref="ItemCategory"/> the player has.</returns>
+        public int CountItem(ItemCategory category) =>
+            Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category);
 
         /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
