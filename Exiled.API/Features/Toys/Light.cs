@@ -33,6 +33,21 @@ namespace Exiled.API.Features.Toys
         public LightSourceToy Base { get; }
 
         /// <summary>
+        /// Gets the light's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the light's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets the light's <see cref="Mirror.NetworkIdentity"/>.
+        /// </summary>
+        public Mirror.NetworkIdentity NetIdentity => Base.netIdentity;
+
+        /// <summary>
         /// Gets or sets the intensity of the light.
         /// </summary>
         public float Intensity

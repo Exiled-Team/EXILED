@@ -44,6 +44,21 @@ namespace Exiled.API.Features.Toys
         public PrimitiveObjectToy Base { get; }
 
         /// <summary>
+        /// Gets the primitive's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the primitive's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets the primitive's <see cref="Mirror.NetworkIdentity"/>.
+        /// </summary>
+        public Mirror.NetworkIdentity NetIdentity => Base.netIdentity;
+
+        /// <summary>
         /// Gets or sets the type of the primitive.
         /// </summary>
         public PrimitiveType Type
