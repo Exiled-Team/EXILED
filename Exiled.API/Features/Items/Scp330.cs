@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Features.Pickups;
 
@@ -98,7 +99,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to be removed.</param>
         /// <param name="removeAll">Whether or not to only remove all matching candy. (If <see langword="true"/>, all candies of the given type are removed).</param>
-        /// <returns>The total amount of candies that were dropped from the bag.</returns>
+        /// <returns>The total amount of candies that were removed from the bag.</returns>
         public int RemoveCandy(CandyKindID type, bool removeAll = false)
         {
             int amount = 0;
@@ -108,6 +109,22 @@ namespace Exiled.API.Features.Items
                 amount++;
                 if (!removeAll)
                     break;
+            }
+
+            return amount;
+        }
+
+        /// <summary>
+        /// Removes all candy from the bag.
+        /// </summary>
+        /// <returns>The total amount of candies that were removed from the bag.</returns>
+        public int RemoveAllCandy()
+        {
+            int amount = 0;
+            for (int i = Base.Candies.Count(); i > 0; i--)
+            {
+                Base.TryRemove(0);
+                amount++;
             }
 
             return amount;
