@@ -120,7 +120,8 @@ namespace Exiled.API.Features.Items
 
             Base._radio = newOwner.ReferenceHub.GetComponent<global::Radio>();
 
-            Base.CurRange = Base._rangeId;
+            if (newOwner != Server.Host)
+                Base.CurRange = Base._rangeId;
         }
     }
 }

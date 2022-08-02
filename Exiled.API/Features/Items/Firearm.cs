@@ -601,6 +601,7 @@ namespace Exiled.API.Features.Items
                 _ => throw new NotImplementedException("Should never happend"),
             };
 
+            Base._sendStatusNextFrame = true;
             Base._footprintValid = false;
         }
     }
