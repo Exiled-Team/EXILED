@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="InventorySystem.Items.Firearms.Firearm"/> that this class is encapsulating.
         /// </summary>
-        public new InventorySystem.Items.Firearms.Firearm Base { get; }
+        public new BaseFirearm Base { get; }
 
         /// <summary>
         /// Gets or sets the amount of ammo in the firearm.
@@ -571,10 +571,11 @@ namespace Exiled.API.Features.Items
         /// <returns> New <see cref="Firearm"/> object. </returns>
         public override Item Clone()
         {
-            Firearm cloneableItem = new(Type);
-
-            cloneableItem.Ammo = Ammo;
-            cloneableItem.FireRate = FireRate;
+            Firearm cloneableItem = new(Type)
+            {
+                Ammo = Ammo,
+                FireRate = FireRate,
+            };
 
             return cloneableItem;
         }

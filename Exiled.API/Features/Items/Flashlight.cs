@@ -58,8 +58,10 @@ namespace Exiled.API.Features.Items
         /// <returns> New <see cref="Flashlight"/> object. </returns>
         public override Item Clone()
         {
-            Flashlight cloneableItem = new();
-            cloneableItem.Active = Active;
+            Flashlight cloneableItem = new()
+            {
+                Active = Active,
+            };
             return cloneableItem;
         }
 
