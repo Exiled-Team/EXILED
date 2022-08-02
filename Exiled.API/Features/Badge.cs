@@ -59,7 +59,7 @@ namespace Exiled.API.Features
         /// <returns>A new <see cref="Badge"/> object.</returns>
         public Badge Clone()
         {
-            return new Badge(Text, Color, Type, IsGlobal);
+            return new(Text, Color, Type, IsGlobal);
         }
     }
 }

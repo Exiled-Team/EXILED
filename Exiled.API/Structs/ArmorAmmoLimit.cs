@@ -58,7 +58,7 @@ namespace Exiled.API.Structs
         /// <returns>A new <see cref="ArmorAmmoLimit"/> object.</returns>
         public ArmorAmmoLimit Clone()
         {
-            return new ArmorAmmoLimit(AmmoType, Limit);
+            return new(AmmoType, Limit);
         }
     }
 }

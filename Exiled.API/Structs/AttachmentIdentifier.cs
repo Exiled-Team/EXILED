@@ -255,7 +255,7 @@ namespace Exiled.API.Structs
         /// <returns>A new <see cref="AttachmentIdentifier"/> object.</returns>
         public AttachmentIdentifier Clone()
         {
-            return new AttachmentIdentifier(Code, Name, Slot);
+            return new(Code, Name, Slot);
         }
     }
 }

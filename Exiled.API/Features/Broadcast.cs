@@ -73,7 +73,7 @@ namespace Exiled.API.Features
         /// <returns>A new <see cref="Broadcast"/> object.</returns>
         public Broadcast Clone()
         {
-            return new Broadcast(Content, Duration, Show, Type);
+            return new(Content, Duration, Show, Type);
         }
     }
 }
