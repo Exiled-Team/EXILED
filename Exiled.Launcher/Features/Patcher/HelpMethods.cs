@@ -22,14 +22,25 @@ public static class HelpMethods
         return null;
     }
 
-    public static MethodDef? FindStartMethodDefinition(TypeDef serverConsole)
+    public static MethodDef? FindMethodDefinition(TypeDef serverConsole, string name)
     {
         foreach (var method in serverConsole.Methods)
         {
-            if (method.Name == "Start")
+            if (method.Name == name)
                 return method;
         }
 
         return null;
+    }
+
+    public static bool IsPatched(ModuleDefMD module)
+    {
+        foreach (var type in module.Types)
+        {
+            if (type.Namespace == "Exiled")
+                return true;
+        }
+
+        return false;
     }
 }
