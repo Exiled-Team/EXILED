@@ -23,13 +23,13 @@ namespace Exiled.CustomItems.API.Features
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using MEC;
-
     using Mirror;
 
     using UnityEngine;
 
     using YamlDotNet.Serialization;
+
+    using Server = Exiled.API.Features.Server;
 
     /// <summary>
     /// The Custom Grenade base class.
@@ -73,50 +73,6 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the item.</param>
         public override void Give(Player player, bool displayMessage = true) => Give(player, new Throwable((ThrowableItem)player.Inventory.CreateItemInstance(Type, true)), displayMessage);
-
-        /// <summary>
-        /// Spawns a live grenade object on the map.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
-        /// <param name="force">The amount of force to throw with.</param>
-        /// <param name="fuseTime">The <see cref="float"/> fuse time of the grenade.</param>
-        /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
-        /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
-        /// <returns>The <see cref="Pickup"/> being spawned.</returns>
-        public virtual Pickup Throw(Vector3 position, float force, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHE, Player player = null)
-        {
-            if (player is null)
-                player = Server.Host;
-
-            Throwable throwable = (Throwable)Item.Create(grenadeType, player);
-
-            ThrownProjectile thrownProjectile = UnityEngine.Object.Instantiate(throwable.Base.Projectile, position, throwable.Owner.CameraTransform.rotation);
-            Transform transform = thrownProjectile.transform;
-            PickupSyncInfo newInfo = new()
-            {
-                ItemId = throwable.Type,
-                Locked = !throwable.Base._repickupable,
-                Serial = ItemSerialGenerator.GenerateNext(),
-                Weight = Weight,
-                Position = transform.position,
-                Rotation = new LowPrecisionQuaternion(transform.rotation),
-            };
-            if (thrownProjectile is TimeGrenade time)
-                time._fuseTime = fuseTime;
-            thrownProjectile.NetworkInfo = newInfo;
-            thrownProjectile.PreviousOwner = new Footprint(throwable.Owner.ReferenceHub);
-            NetworkServer.Spawn(thrownProjectile.gameObject);
-            thrownProjectile.InfoReceived(default, newInfo);
-            if (thrownProjectile.TryGetComponent(out Rigidbody component))
-                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(player.ReferenceHub.playerMovementSync.PlayerVelocity), force, throwable.Base.FullThrowSettings.UpwardsFactor);
-            thrownProjectile.ServerActivate();
-            Tracked.Add(thrownProjectile);
-
-            if (ExplodeOnCollision)
-                thrownProjectile.gameObject.AddComponent<Exiled.API.Features.Components.CollisionHandler>().Init(player.GameObject, (EffectGrenade)thrownProjectile);
-
-            return Pickup.Get(thrownProjectile);
-        }
 
         /// <inheritdoc/>
         protected override void SubscribeEvents()
@@ -235,12 +191,10 @@ namespace Exiled.CustomItems.API.Features
 
             OnChangingIntoGrenade(ev);
 
-            if (ev.IsAllowed)
-            {
-                Timing.CallDelayed(0.25f, () => Throw(ev.Projectile.Position, 0f, ev.FuseTime, ev.Type));
-                ev.Projectile.Destroy();
-                ev.IsAllowed = false;
-            }
+            Tracked.Add(ev.Projectile.Base);
+
+            if (ExplodeOnCollision)
+                ev.Projectile.GameObject.AddComponent<Exiled.API.Features.Components.CollisionHandler>().Init((ev.Projectile.PreviousOwner ?? Server.Host).GameObject, ev.Projectile.Base);
         }
     }
 }
