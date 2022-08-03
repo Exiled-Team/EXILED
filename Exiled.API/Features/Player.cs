@@ -1916,7 +1916,16 @@ namespace Exiled.API.Features
         /// Used an item for giving effect of it.
         /// </summary>
         /// <param name="usableItem">The item to be used.</param>
-        public void UseItem(ItemType usableItem) => (Item.Create(usableItem, this) as Usable)?.Base.ServerOnUsingCompleted();
+        public void UseItem(ItemType usableItem)
+        {
+            if (Item.Create(usableItem, this) is not Usable item)
+                throw new Exception($"The provided item [{usableItem}] is not a usable item.");
+
+            item.Base.Owner = referenceHub;
+            item.Base.ServerOnUsingCompleted();
+            if (item.Base is not null)
+                item.Destroy();
+        }
 
         /// <summary>
         /// Kills the player.
