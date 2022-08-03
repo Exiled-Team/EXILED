@@ -90,6 +90,21 @@ namespace Exiled.API.Features
         public Room Room { get; }
 
         /// <summary>
+        /// Gets a value indicating whether or not the door is fully close.
+        /// </summary>
+        public bool IsFullyClose => ExactState is 0;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the door is fully open.
+        /// </summary>
+        public bool IsFullyOpen => ExactState is 1;
+
+        /// <summary>
+        /// Gets a value indicating how mush the door is open 1 are fully open and 0 are fully close.
+        /// </summary>
+        public float ExactState => Base.GetExactState();
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the door is open.
         /// </summary>
         public bool IsOpen
