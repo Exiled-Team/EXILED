@@ -1913,7 +1913,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Used an item for giving effect of it.
+        /// Uses an item for giving its effect.
         /// </summary>
         /// <param name="usableItem">The item to be used.</param>
         public void UseItem(ItemType usableItem)
