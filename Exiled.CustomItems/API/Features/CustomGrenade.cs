@@ -121,7 +121,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingItem += OnInternalThrowing;
+            Events.Handlers.Player.ThrowingRequest += OnInternalThrowingRequest;
             Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
 
@@ -131,7 +131,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingItem -= OnInternalThrowing;
+            Events.Handlers.Player.ThrowingRequest -= OnInternalThrowingRequest;
             Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
 
@@ -141,8 +141,8 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Handles tracking thrown custom grenades.
         /// </summary>
-        /// <param name="ev"><see cref="ThrowingItemEventArgs"/>.</param>
-        protected virtual void OnThrowing(ThrowingItemEventArgs ev)
+        /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
+        protected virtual void OnThrowingRequest(ThrowingRequestEventArgs ev)
         {
         }
 
@@ -177,21 +177,19 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>True if it is a custom grenade.</returns>
         protected bool Check(ThrownProjectile grenade) => TrackedSerials.Contains(grenade.Info.Serial);
 
-        private void OnInternalThrowing(ThrowingItemEventArgs ev)
+        private void OnInternalThrowingRequest(ThrowingRequestEventArgs ev)
         {
             if (!Check(ev.Player.CurrentItem))
                 return;
 
-            Log.Debug($"{ev.Player.Nickname} has thrown a {Name}!", CustomItems.Instance.Config.Debug);
+            Log.Debug($"{ev.Player.Nickname} send throw request, item: {Name}!", CustomItems.Instance.Config.Debug);
             if (ev.RequestType == ThrowRequest.BeginThrow)
             {
-                OnThrowing(ev);
-                if (!ev.IsAllowed)
-                    ev.IsAllowed = false;
+                OnThrowingRequest(ev);
                 return;
             }
 
-            OnThrowing(ev);
+            OnThrowingRequest(ev);
 
             switch (ev.Item)
             {

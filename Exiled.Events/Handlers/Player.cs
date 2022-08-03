@@ -135,6 +135,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ThrowingItemEventArgs> ThrowingItem;
 
         /// <summary>
+        /// Invoked before receving a throwing request an <see cref="API.Features.Items.Item"/>.
+        /// </summary>
+        public static event CustomEventHandler<ThrowingRequestEventArgs> ThrowingRequest;
+
+        /// <summary>
         /// Invoked before dropping an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         public static event CustomEventHandler<DroppingItemEventArgs> DroppingItem;
@@ -595,6 +600,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ThrowingItemEventArgs"/> instance.</param>
         public static void OnThrowingItem(ThrowingItemEventArgs ev) => ThrowingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before receving a throwing request.
+        /// </summary>
+        /// <param name="ev">The <see cref="ThrowingRequestEventArgs"/> instance.</param>
+        public static void OnThrowingRequest(ThrowingRequestEventArgs ev) => ThrowingRequest.InvokeSafely(ev);
 
         /// <summary>
         /// Called before dropping an item.
