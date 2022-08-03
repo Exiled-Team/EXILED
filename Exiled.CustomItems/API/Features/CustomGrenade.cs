@@ -122,6 +122,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void SubscribeEvents()
         {
             Events.Handlers.Player.ThrowingRequest += OnInternalThrowingRequest;
+            Events.Handlers.Player.ThrowingItem += OnInternalThrowingItem;
             Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
 
@@ -132,6 +133,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void UnsubscribeEvents()
         {
             Events.Handlers.Player.ThrowingRequest -= OnInternalThrowingRequest;
+            Events.Handlers.Player.ThrowingItem -= OnInternalThrowingItem;
             Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
 
@@ -139,10 +141,18 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Handles tracking thrown custom grenades.
+        /// Handles tracking thrown requests by custom grenades.
         /// </summary>
         /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
         protected virtual void OnThrowingRequest(ThrowingRequestEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles tracking thrown custom grenades.
+        /// </summary>
+        /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
+        protected virtual void OnThrowingItem(ThrowingItemEventArgs ev)
         {
         }
 
@@ -200,6 +210,10 @@ namespace Exiled.CustomItems.API.Features
                     flashGrenade.FuseTime = FuseTime;
                     break;
             }
+        }
+
+        private void OnInternalThrowingItem(ThrowingItemEventArgs ev)
+        {
         }
 
         private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)

@@ -22,6 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Respawning;
 
+    using UnityEngine;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
@@ -42,8 +44,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.RemoveRange(index, 3);
 
-            offset = -9;
-            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkServer), nameof(NetworkServer.Spawn)))) + offset;
+            offset = -3;
+            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
