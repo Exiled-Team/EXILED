@@ -5,16 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Reflection;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
 
-using dnlib.DotNet;
-using dnlib.DotNet.Emit;
-
-using FieldAttributes = dnlib.DotNet.FieldAttributes;
-using MethodAttributes = dnlib.DotNet.MethodAttributes;
-using MethodImplAttributes = dnlib.DotNet.MethodImplAttributes;
-using PropertyAttributes = dnlib.DotNet.PropertyAttributes;
-using TypeAttributes = dnlib.DotNet.TypeAttributes;
+using OpCodes = Mono.Cecil.Cil.OpCodes;
 
 namespace Exiled.Launcher.Features.Patcher;
 
@@ -22,17 +16,16 @@ public static class AssemblyPatcher
 {
     public static void Patch(string path)
     {
-        ModuleDefMD assembly = ModuleDefMD.Load(path);
+        using ModuleDefinition assembly = ModuleDefinition.ReadModule(path, new ReaderParameters()
+        {
+            AssemblyResolver = new CustomAssemblyResolver(path)
+        });
 
         if (assembly is null)
         {
             Console.WriteLine($"[Patcher] Assembly in {path} not found. Could not patch.");
             return;
         }
-
-        assembly.Context = ModuleDef.CreateModuleContext();
-
-        ((AssemblyResolver)assembly.Context.AssemblyResolver).AddToCache(assembly);
 
         if (HelpMethods.IsPatched(assembly))
         {
@@ -42,17 +35,17 @@ public static class AssemblyPatcher
 
         Console.WriteLine("[Patcher] Finding ServerConsole::Start() method.");
 
-        TypeDef? serverConsoleDef = HelpMethods.FindServerConsoleDefinition(assembly);
+        TypeDefinition? serverConsoleClass = HelpMethods.GetType(assembly, "ServerConsole");
 
-        if (serverConsoleDef is null)
+        if (serverConsoleClass is null)
         {
             Console.WriteLine("[Patcher] Could not find ServerConsole.");
             return;
         }
 
-        MethodDef? startMethodDef = HelpMethods.FindMethodDefinition(serverConsoleDef, "Start");
+        MethodDefinition? serverConsoleStartMethod = serverConsoleClass.GetMethod("Start");
 
-        if (startMethodDef is null)
+        if (serverConsoleStartMethod is null)
         {
             Console.WriteLine("[Patcher] Could not find ServerConsole::Start()");
             return;
@@ -60,36 +53,42 @@ public static class AssemblyPatcher
 
         Console.WriteLine("[Patcher] Hooking Exiled.Bootstrap to ServerConsole::Start()");
 
-        TypeDef bootstrapType = new TypeDefUser("Exiled", "Bootstrap", assembly.CorLibTypes.Object.TypeDefOrRef);
-        bootstrapType.Attributes = TypeAttributes.Public | TypeAttributes.Class;
+        TypeDefinition bootstrap = new TypeDefinition("Exiled", "Bootstrap", TypeAttributes.Public | TypeAttributes.Class);
+        assembly.Types.Add(bootstrap);
 
-        PropertyDef isLoadedDef = new PropertyDefUser("IsLoaded", new PropertySig(false, assembly.CorLibTypes.Boolean));
-        bootstrapType.Properties.Add(isLoadedDef);
+        PropertyDefinition isLoadedProperty = new PropertyDefinition("IsLoaded", PropertyAttributes.None, new TypeReference("System", "Boolean", null, null, true));
+        bootstrap.Properties.Add(isLoadedProperty);
 
-        MethodDef loadMethodDef = new MethodDefUser("Load", MethodSig.CreateStatic(assembly.CorLibTypes.Void),
-            MethodImplAttributes.IL | MethodImplAttributes.Managed,
-            MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig |
-            MethodAttributes.ReuseSlot);
-        bootstrapType.Methods.Add(loadMethodDef);
+        MethodDefinition loadMethod = new MethodDefinition("Load",
+            MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot,
+            new TypeReference("System", "Void", null, null));
+        bootstrap.Methods.Add(loadMethod);
 
-        CilBody loadMethodBody = new CilBody();
-        loadMethodDef.Body = loadMethodBody;
+        MethodDefinition? addLog = serverConsoleClass.GetMethod("AddLog");
 
-        TypeRef serverConsoleRef = new TypeRefUser(assembly, "ServerConsole");
-        MemberRef addLogRef = new MemberRefUser(assembly, "AddLog", MethodSig.CreateStatic(assembly.CorLibTypes.Void, assembly.CorLibTypes.String, assembly.CorLibTypes.GetTypeRef("System", "ConsoleColor").ToTypeSig()), serverConsoleRef);
+        if (addLog is null)
+        {
+            Console.WriteLine("[Patcher] Couldn't find method ServerConsole::AddLog()");
+            return;
+        }
 
-        //loadMethodBody.Instructions.Add(OpCodes.Call.ToInstruction(isLoadedDef.GetMethod));
-        //loadMethodBody.Instructions.Add(OpCodes.Stloc_0.ToInstruction());
-        //loadMethodBody.Instructions.Add(OpCodes.Ldloc_0.ToInstruction());
-        //loadMethodBody.Instructions.Add(OpCodes.Brfalse_S.ToInstruction());
-        loadMethodBody.Instructions.Add(OpCodes.Ldstr.ToInstruction("[Exiled.Bootstrap] Exiled has already been loaded!"));
-        loadMethodBody.Instructions.Add(OpCodes.Ldc_I4_4.ToInstruction());
-        loadMethodBody.Instructions.Add(OpCodes.Call.ToInstruction(addLogRef));
-        loadMethodBody.Instructions.Add(OpCodes.Ret.ToInstruction());
+        MethodBody loadBody = loadMethod.Body;
+        ILProcessor generator = loadBody.GetILProcessor();
 
-        assembly.Types.Add(bootstrapType);
-        startMethodDef.Body.Instructions.Insert(0, OpCodes.Call.ToInstruction(loadMethodDef));
+        Instruction loadedJmp = Instruction.Create(OpCodes.Nop);
 
-        assembly.Write(path + "a");
+       /* generator.Emit(OpCodes.Call, isLoadedProperty.GetMethod);
+        generator.Emit(OpCodes.Stloc_0);
+        generator.Emit(OpCodes.Ldloc_0);
+        generator.Emit(OpCodes.Brfalse_S, loadedJmp);*/
+        generator.Emit(OpCodes.Ldstr, "[Exiled.Bootstrap] Exiled has already been loaded!");
+        generator.Emit(OpCodes.Ldc_I4_4);
+        generator.Emit(OpCodes.Call, addLog);
+        generator.Append(loadedJmp);
+        generator.Emit(OpCodes.Ret);
+
+        serverConsoleStartMethod.Body.Instructions.Insert(0, Instruction.Create(OpCodes.Call, loadMethod));
+
+        assembly.Write(path+"a");
     }
 }

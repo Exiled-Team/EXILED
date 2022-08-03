@@ -5,13 +5,46 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using dnlib.DotNet;
+using Mono.Cecil;
 
 namespace Exiled.Launcher.Features.Patcher;
 
 public static class HelpMethods
 {
-    public static TypeDef? FindServerConsoleDefinition(ModuleDefMD assembly)
+    public static bool IsPatched(ModuleDefinition module)
+    {
+        foreach (var type in module.Types)
+        {
+            if (type.Namespace == "Exiled")
+                return true;
+        }
+
+        return false;
+    }
+
+    public static TypeDefinition? GetType(this ModuleDefinition module, string name)
+    {
+        foreach (var type in module.Types)
+        {
+            if (type.Name == name)
+                return type;
+        }
+
+        return null;
+    }
+
+    public static MethodDefinition? GetMethod(this TypeDefinition typeDefinition, string name)
+    {
+        foreach (var method in typeDefinition.Methods)
+        {
+            if (method.Name == name)
+                return method;
+        }
+
+        return null;
+    }
+
+    /*public static TypeDef? FindServerConsoleDefinition(ModuleDefMD assembly)
     {
         foreach (var type in assembly.Types)
         {
@@ -42,5 +75,5 @@ public static class HelpMethods
         }
 
         return false;
-    }
+    }*/
 }
