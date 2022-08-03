@@ -1913,6 +1913,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Used an item for giving effect of it.
+        /// </summary>
+        /// <param name="usableItem">The item to be used.</param>
+        public void UseItem(ItemType usableItem) => (Item.Create(usableItem, this) as Usable)?.Base.ServerOnUsingCompleted();
+
+        /// <summary>
         /// Kills the player.
         /// </summary>
         /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
