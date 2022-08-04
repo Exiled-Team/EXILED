@@ -1849,7 +1849,8 @@ namespace Exiled.API.Features
         /// Hurts the player.
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
-        public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
+        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
+        public bool Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
 
         /// <summary>
         /// Hurts the player.
@@ -1858,7 +1859,8 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
-        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null) =>
+        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
+        public bool Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null) =>
             Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
 
         /// <summary>
@@ -1869,7 +1871,8 @@ namespace Exiled.API.Features
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
         /// <param name="deathText"> The <see langword="string"/> death text to appear on <see cref="Player"/> screen. </param>
-        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null, string deathText = null) =>
+        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
+        public bool Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null, string deathText = null) =>
             Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement, deathText));
 
         /// <summary>
@@ -1879,7 +1882,8 @@ namespace Exiled.API.Features
         /// <param name="damage">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="force">The throw force.</param>
         /// <param name="armorPenetration">The armor penetration amount.</param>
-        public void Hurt(Player attacker, float damage, Vector3 force = default, int armorPenetration = 0) =>
+        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
+        public bool Hurt(Player attacker, float damage, Vector3 force = default, int armorPenetration = 0) =>
             Hurt(new ExplosionDamageHandler(attacker.Footprint, force, damage, armorPenetration));
 
         /// <summary>
@@ -1888,7 +1892,8 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
-        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "") =>
+        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
+        public bool Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "") =>
             Hurt(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, amount, cassieAnnouncement));
 
         /// <summary>
@@ -1897,7 +1902,8 @@ namespace Exiled.API.Features
         /// <param name="damage">The amount of damage to deal.</param>
         /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
-        public void Hurt(float damage, string damageReason, string cassieAnnouncement = "") =>
+        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
+        public bool Hurt(float damage, string damageReason, string cassieAnnouncement = "") =>
             Hurt(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
 
         /// <summary>

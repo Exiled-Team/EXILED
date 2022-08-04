@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="InventorySystem.Items.Firearms.Firearm"/> that this class is encapsulating.
         /// </summary>
-        public new InventorySystem.Items.Firearms.Firearm Base { get; }
+        public new BaseFirearm Base { get; }
 
         /// <summary>
         /// Gets or sets the amount of ammo in the firearm.

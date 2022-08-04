@@ -8,41 +8,16 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Features.Pickups;
-    using InventorySystem.Items.Pickups;
+
     using InventorySystem.Items.Usables.Scp330;
-
-    using MEC;
-
-    using Mirror;
 
     using UnityEngine;
 
-    using BaseScp330Pickup = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
     using Object = UnityEngine.Object;
     using Scp330Pickup = Exiled.API.Features.Pickups.Scp330Pickup;
-
-    /// <summary>
-    /// Candy enumeration status.
-    /// </summary>
-    public enum CandyAddStatus
-    {
-        /// <summary>
-        /// If no candy was able to be added.
-        /// </summary>
-        NoCandyAdded,
-
-        /// <summary>
-        /// If at least one candy was added.
-        /// </summary>
-        SomeCandyAdded,
-
-        /// <summary>
-        /// If all candies provided were added.
-        /// </summary>
-        AllCandyAdded,
-    }
 
     /// <summary>
     /// A wrapper class for SCP-330 bags.
@@ -102,21 +77,21 @@ namespace Exiled.API.Features.Items
         /// Adds a collection of candy's to a bag.
         /// </summary>
         /// <param name="candies">The <see cref="CandyKindID"/>'s to add.</param>
-        /// <returns> <see cref="CandyAddStatus"/> based on insertion status. </returns>
-        public CandyAddStatus AddCandy(IEnumerable<CandyKindID> candies)
+        /// <returns> based on number of candy added. </returns>
+        public int AddCandy(IEnumerable<CandyKindID> candies)
         {
-            bool addedCandy = false;
+            int validCandy = 0;
             foreach(CandyKindID candy in candies)
             {
                 if (!Base.TryAddSpecific(candy))
                 {
-                    return addedCandy ? CandyAddStatus.SomeCandyAdded : CandyAddStatus.NoCandyAdded;
+                    return validCandy;
                 }
 
-                addedCandy = true;
+                validCandy++;
             }
 
-            return CandyAddStatus.AllCandyAdded;
+            return validCandy;
         }
 
         /// <summary>
@@ -124,7 +99,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to be removed.</param>
         /// <param name="removeAll">Whether or not to only remove all matching candy. (If <see langword="true"/>, all candies of the given type are removed).</param>
-        /// <returns>The total amount of candies that were dropped from the bag.</returns>
+        /// <returns>The total amount of candies that were removed from the bag.</returns>
         public int RemoveCandy(CandyKindID type, bool removeAll = false)
         {
             int amount = 0;
@@ -134,6 +109,22 @@ namespace Exiled.API.Features.Items
                 amount++;
                 if (!removeAll)
                     break;
+            }
+
+            return amount;
+        }
+
+        /// <summary>
+        /// Removes all candy from the bag.
+        /// </summary>
+        /// <returns>The total amount of candies that were removed from the bag.</returns>
+        public int RemoveAllCandy()
+        {
+            int amount = 0;
+            for (int i = Base.Candies.Count(); i > 0; i--)
+            {
+                Base.TryRemove(0);
+                amount++;
             }
 
             return amount;
@@ -227,8 +218,10 @@ namespace Exiled.API.Features.Items
         /// <returns> New <see cref="Scp330"/> object. </returns>
         public override Item Clone()
         {
-            Scp330 cloneableItem = new();
-            cloneableItem.ExposedType = ExposedType;
+            Scp330 cloneableItem = new()
+            {
+                ExposedType = ExposedType,
+            };
             cloneableItem.AddCandy(Candies);
             return cloneableItem;
         }
