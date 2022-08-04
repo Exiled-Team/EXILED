@@ -252,6 +252,11 @@ namespace Exiled.API.Features.Items
         public void Give(Player player) => player.AddItem(Base);
 
         /// <summary>
+        /// Destroy this item.
+        /// </summary>
+        public void Destroy() => Owner.RemoveItem(this);
+
+        /// <summary>
         /// Spawns the item on the map.
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
