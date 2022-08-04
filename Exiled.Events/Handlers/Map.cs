@@ -76,7 +76,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade;
 
         /// <summary>
-        /// Invoked before the server execute a blackout.
+        /// Invoked before turning off lights.
         /// </summary>
         public static event CustomEventHandler<TurningOffLightsEventArgs> TurningOffLights;
 
@@ -146,9 +146,9 @@ namespace Exiled.Events.Handlers
         public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before the server changes a <see cref="Pickup"/> into a live Grenade when hit by an explosion.
+        /// Called before turning off lights.
         /// </summary>
-        /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="TurningOffLightsEventArgs"/> instance.</param>
         public static void OnTurningOffLights(TurningOffLightsEventArgs ev) => TurningOffLights.InvokeSafely(ev);
     }
 }
