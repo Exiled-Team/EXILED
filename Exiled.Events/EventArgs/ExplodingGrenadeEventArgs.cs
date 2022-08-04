@@ -36,6 +36,34 @@ namespace Exiled.Events.EventArgs
         {
             Thrower = thrower ?? Server.Host;
             Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
+            Position = Grenade.Position;
+            TargetsToAffect = ListPool<Player>.Shared.Rent();
+            foreach (Collider collider in targets)
+            {
+                if (Grenade.Base is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
+                    continue;
+
+                Player player = Player.Get(hub);
+                if (player is null)
+                    continue;
+
+                if (!TargetsToAffect.Contains(player))
+                    TargetsToAffect.Add(player);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
+        /// </summary>
+        /// <param name="thrower"><inheritdoc cref="Thrower"/></param>
+        /// <param name="position"><inheritdoc cref="Position"/></param>
+        /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
+        /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
+        public ExplodingGrenadeEventArgs(Player thrower, Vector3 position, EffectGrenade grenade, Collider[] targets)
+        {
+            Thrower = thrower ?? Server.Host;
+            Position = position;
+            Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
             {
@@ -61,6 +89,7 @@ namespace Exiled.Events.EventArgs
         {
             Thrower = thrower ?? Server.Host;
             Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
+            Position = Grenade.Position;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             TargetsToAffect.AddRange(players);
         }
@@ -74,6 +103,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who thrown the grenade.
         /// </summary>
         public Player Thrower { get; }
+
+        /// <summary>
+        /// Gets the position where is exploding.
+        /// </summary>
+        public Vector3 Position { get; }
 
         /// <summary>
         /// Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.
