@@ -14,15 +14,21 @@ namespace Exiled.API.Features
     using System.Runtime.CompilerServices;
 
     using CustomPlayerEffects;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
+    using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.API.Structs;
+
     using Footprinting;
+
     using global::Scp914;
+
     using Hints;
+
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
@@ -31,17 +37,27 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
+
     using MapGeneration.Distributors;
+
     using MEC;
+
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
+
     using NorthwoodLib;
     using NorthwoodLib.Pools;
+
     using PlayableScps;
+
     using PlayerStatsSystem;
+
     using RemoteAdmin;
+
     using RoundRestarting;
+
     using UnityEngine;
+
     using Utils.Networking;
 
     using static Exiled.API.Features.DamageHandlers.DamageHandlerBase;
