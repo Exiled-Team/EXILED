@@ -10,7 +10,7 @@ public class CustomAssemblyResolver : BaseAssemblyResolver
     public CustomAssemblyResolver(string path)
     {
         _defaultResolver = new DefaultAssemblyResolver();
-        _baseDirectory = new FileInfo(path).DirectoryName ?? "";
+        _baseDirectory = path;
     }
 
     public override AssemblyDefinition Resolve(AssemblyNameReference name)

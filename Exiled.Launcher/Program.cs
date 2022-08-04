@@ -30,20 +30,24 @@ if (!File.Exists(arguments.StartingPoint))
 
 if (arguments.InjectExiled)
 {
-    string serverAssembly = Path.Combine(arguments.ServerFolder, "Managed", "Assembly-CSharp.dll");
-
-    if (!File.Exists(serverAssembly))
+    try
     {
-        Console.WriteLine("Could not inject exiled.");
-        Console.WriteLine($"Game assembly not found in path {serverAssembly}. Make sure the specified server folder is right.");
+        Stopwatch sw = Stopwatch.StartNew();
+        AssemblyPatcher.Patch(Path.Combine(arguments.ServerFolder, "Managed"));
+        sw.Stop();
+
+        Console.WriteLine($"Assembly patched! {sw.ElapsedMilliseconds}ms");
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine("An error occurred while patching the assembly:");
+        Console.WriteLine(e);
         Thread.Sleep(5000);
         return;
     }
-
-    AssemblyPatcher.Patch(serverAssembly);
 }
 
-Thread.Sleep(5000);
+Thread.Sleep(10000);
 
 // Starting Point Launcher
 ProcessStartInfo startInfo = new ProcessStartInfo(arguments.StartingPoint, string.Join(' ', arguments.ExternalArguments));

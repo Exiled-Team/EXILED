@@ -33,11 +33,22 @@ public static class HelpMethods
         return null;
     }
 
-    public static MethodDefinition? GetMethod(this TypeDefinition typeDefinition, string name)
+    public static MethodDefinition? GetMethod(this TypeDefinition? typeDefinition, string name)
     {
         foreach (var method in typeDefinition.Methods)
         {
             if (method.Name == name)
+                return method;
+        }
+
+        return null;
+    }
+
+    public static MethodDefinition? GetMethod(this TypeDefinition? typeDefinition, string name, int paramNum)
+    {
+        foreach (var method in typeDefinition.Methods)
+        {
+            if (method.Name == name && method.Parameters.Count == paramNum)
                 return method;
         }
 

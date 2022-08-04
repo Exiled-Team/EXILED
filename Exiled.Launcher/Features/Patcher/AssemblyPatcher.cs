@@ -16,14 +16,16 @@ public static class AssemblyPatcher
 {
     public static void Patch(string path)
     {
-        using ModuleDefinition assembly = ModuleDefinition.ReadModule(path, new ReaderParameters()
+        string assemblyPath = Path.Combine(path, "Assembly-CSharp.dll");
+
+        using ModuleDefinition assembly = ModuleDefinition.ReadModule(assemblyPath, new ReaderParameters()
         {
             AssemblyResolver = new CustomAssemblyResolver(path)
         });
 
         if (assembly is null)
         {
-            Console.WriteLine($"[Patcher] Assembly in {path} not found. Could not patch.");
+            Console.WriteLine($"[Patcher] Assembly in {assemblyPath} not found. Could not patch.");
             return;
         }
 
@@ -56,39 +58,86 @@ public static class AssemblyPatcher
         TypeDefinition bootstrap = new TypeDefinition("Exiled", "Bootstrap", TypeAttributes.Public | TypeAttributes.Class);
         assembly.Types.Add(bootstrap);
 
-        PropertyDefinition isLoadedProperty = new PropertyDefinition("IsLoaded", PropertyAttributes.None, new TypeReference("System", "Boolean", null, null, true));
-        bootstrap.Properties.Add(isLoadedProperty);
+        TypeReference boolRef = assembly.ImportReference(typeof(bool));
+        TypeReference voidRef = assembly.ImportReference(typeof(void));
+
+        FieldDefinition isLoadedField = new FieldDefinition("isLoaded", FieldAttributes.Private | FieldAttributes.Static, boolRef);
+        bootstrap.Fields.Add(isLoadedField);
 
         MethodDefinition loadMethod = new MethodDefinition("Load",
             MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot,
-            new TypeReference("System", "Void", null, null));
+            voidRef);
         bootstrap.Methods.Add(loadMethod);
 
-        MethodDefinition? addLog = serverConsoleClass.GetMethod("AddLog");
+        ModuleDefinition mscorlib = ModuleDefinition.ReadModule(Path.Combine(path, "mscorlib.dll"));
+        ModuleDefinition nwLib = ModuleDefinition.ReadModule(Path.Combine(path, "NorthwoodLib.dll"));
 
-        if (addLog is null)
-        {
-            Console.WriteLine("[Patcher] Couldn't find method ServerConsole::AddLog()");
-            return;
-        }
+        MethodReference getFolderPath = assembly.ImportReference(mscorlib.GetType("System", "Environment").GetMethod("GetFolderPath"));
+        MethodReference pathCombine2 = assembly.ImportReference(mscorlib.GetType("System.IO", "Path").GetMethod("Combine", 2));
+        MethodReference pathCombine3 = assembly.ImportReference(mscorlib.GetType("System.IO", "Path").GetMethod("Combine", 3));
+        MethodReference directoryExists = assembly.ImportReference(mscorlib.GetType("System.IO", "Directory").GetMethod("Exists", 1));
+        MethodReference getCurDir = assembly.ImportReference(mscorlib.GetType("System", "Environment").GetMethod("get_CurrentDirectory"));
+        MethodReference stringContain = assembly.ImportReference(nwLib.GetType("NorthwoodLib", "StringUtils").GetMethod("Contains", 3));
+
+        MethodDefinition? addLog = serverConsoleClass.GetMethod("AddLog");
 
         MethodBody loadBody = loadMethod.Body;
         ILProcessor generator = loadBody.GetILProcessor();
 
-        Instruction loadedJmp = Instruction.Create(OpCodes.Nop);
+        Instruction loadBreakpoint = Instruction.Create(OpCodes.Ldstr, "[Exiled.Bootstrap] Exiled is loading...");
+        Instruction testingBreakpoint = Instruction.Create(OpCodes.Ldloc_1);
 
-       /* generator.Emit(OpCodes.Call, isLoadedProperty.GetMethod);
-        generator.Emit(OpCodes.Stloc_0);
-        generator.Emit(OpCodes.Ldloc_0);
-        generator.Emit(OpCodes.Brfalse_S, loadedJmp);*/
+        Instruction retLabel = Instruction.Create(OpCodes.Ret);
+
+        // If isLoaded
+        generator.Emit(OpCodes.Ldsfld, isLoadedField);
+        generator.Emit(OpCodes.Brfalse_S, loadBreakpoint);
+
+        // AddLog
         generator.Emit(OpCodes.Ldstr, "[Exiled.Bootstrap] Exiled has already been loaded!");
         generator.Emit(OpCodes.Ldc_I4_4);
         generator.Emit(OpCodes.Call, addLog);
-        generator.Append(loadedJmp);
-        generator.Emit(OpCodes.Ret);
+        generator.Emit(OpCodes.Br, retLabel); // try with br
+
+        // AddLog
+        generator.Append(loadBreakpoint);
+        generator.Emit(OpCodes.Ldc_I4_4);
+        generator.Emit(OpCodes.Call, addLog);
+
+        // Path.Combine
+        generator.Emit(OpCodes.Ldc_I4, 26);
+        generator.Emit(OpCodes.Call, getFolderPath);
+        generator.Emit(OpCodes.Ldstr, "EXILED");
+        generator.Emit(OpCodes.Call, pathCombine2);
+        generator.Emit(OpCodes.Stloc_1);
+
+        generator.Emit(OpCodes.Call, getCurDir);
+        generator.Emit(OpCodes.Ldstr, "testing");
+        generator.Emit(OpCodes.Ldc_I4_5);
+        generator.Emit(OpCodes.Call, stringContain);
+        generator.Emit(OpCodes.Brfalse_S, testingBreakpoint);
+        generator.Emit(OpCodes.Ldc_I4, 26);
+        generator.Emit(OpCodes.Call, getFolderPath);
+        generator.Emit(OpCodes.Ldstr, "EXILED-Testing");
+        generator.Emit(OpCodes.Call, pathCombine2);
+        generator.Emit(OpCodes.Stloc_1);
+
+        generator.Emit(OpCodes.Ldstr, "Plugins");
+        generator.Emit(OpCodes.Ldstr, "dependencies");
+        generator.Emit(OpCodes.Call, pathCombine3);
+        generator.Emit(OpCodes.Stloc_2);
+
+        generator.Append(testingBreakpoint);
+        generator.Emit(OpCodes.Call, directoryExists);
+        generator.Emit(OpCodes.Ldc_I4_0);
+        generator.Emit(OpCodes.Ceq);
+        // todo: continue
+
+        // End
+        generator.Append(retLabel);
 
         serverConsoleStartMethod.Body.Instructions.Insert(0, Instruction.Create(OpCodes.Call, loadMethod));
 
-        assembly.Write(path+"a");
+        assembly.Write(assemblyPath+"a");
     }
 }
