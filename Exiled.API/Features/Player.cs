@@ -1913,17 +1913,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Uses an item for giving its effect.
+        /// Forces the player to use an item.
         /// </summary>
-        /// <param name="usableItem">The item to be used.</param>
-        public void UseItem(ItemType usableItem)
-        {
-            if (Item.Create(usableItem, this) is not Usable item)
-                throw new Exception($"The provided item [{usableItem}] is not a usable item.");
+        /// <param name="usableItem">The ItemType to be used.</param>
+        public void UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem));
 
-            item.Base.Owner = referenceHub;
-            item.Base.ServerOnUsingCompleted();
-            if (item.Base is not null)
+        /// <summary>
+        /// Forces the player to use an item.
+        /// </summary>
+        /// <param name="item">The item to be used.</param>
+        public void UseItem(Item item)
+        {
+            if (item is not Usable usableItem)
+                throw new Exception($"The provided item [{item}] is not a usable item.");
+
+            usableItem.Base.Owner = referenceHub;
+            usableItem.Base.ServerOnUsingCompleted();
+            if (usableItem.Base is not null)
                 item.Destroy();
         }
 
