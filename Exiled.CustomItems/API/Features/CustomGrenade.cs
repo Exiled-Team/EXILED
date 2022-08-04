@@ -61,18 +61,24 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         public abstract float FuseTime { get; set; }
 
+        // TODO: reimplement
+        /*
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.
         /// </summary>
         [YamlIgnore]
         protected HashSet<ThrownProjectile> Tracked { get; } = new();
+        */
 
         /// <summary>
         /// Gives the <see cref="CustomItem"/> to a player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public override void Give(Player player, bool displayMessage = true) => Give(player, new Throwable((ThrowableItem)player.Inventory.CreateItemInstance(Type, true)), displayMessage);
+        public override void Give(Player player, bool displayMessage = true)
+        {
+            Give(player, CreateCorrectItem(), displayMessage);
+        }
 
         /// <inheritdoc/>
         protected override void SubscribeEvents()
@@ -80,7 +86,7 @@ namespace Exiled.CustomItems.API.Features
             Events.Handlers.Player.ThrowingRequest += OnInternalThrowingRequest;
             Events.Handlers.Player.ThrowingItem += OnInternalThrowingItem;
             Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
-            Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
+            Events.Handlers.Map.ChangedIntoGrenade += OnInternalChangedIntoGrenade;
 
             base.SubscribeEvents();
         }
@@ -91,7 +97,7 @@ namespace Exiled.CustomItems.API.Features
             Events.Handlers.Player.ThrowingRequest -= OnInternalThrowingRequest;
             Events.Handlers.Player.ThrowingItem -= OnInternalThrowingItem;
             Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
-            Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
+            Events.Handlers.Map.ChangedIntoGrenade -= OnInternalChangedIntoGrenade;
 
             base.UnsubscribeEvents();
         }
@@ -123,17 +129,9 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Handles the tracking of custom grenade pickups that are changed into live grenades by a frag grenade explosion.
         /// </summary>
-        /// <param name="ev"><see cref="ChangingIntoGrenadeEventArgs"/>.</param>
-        protected virtual void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
+        /// <param name="ev"><see cref="ChangedIntoGrenadeEventArgs"/>.</param>
+        protected virtual void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)
         {
-        }
-
-        /// <inheritdoc/>
-        protected override void OnWaitingForPlayers()
-        {
-            Tracked.Clear();
-
-            base.OnWaitingForPlayers();
         }
 
         /// <summary>
@@ -183,20 +181,17 @@ namespace Exiled.CustomItems.API.Features
             }
         }
 
-        private void OnInternalChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
+        private void OnInternalChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)
         {
-            if (!Check(ev.Projectile))
+            if (!Check(ev.Pickup))
                 return;
 
             ev.FuseTime = FuseTime;
-            ev.Type = Type;
 
-            OnChangingIntoGrenade(ev);
-
-            Tracked.Add(ev.Projectile.Base);
+            OnChangedIntoGrenade(ev);
 
             if (ExplodeOnCollision)
-                ev.Projectile.GameObject.AddComponent<Exiled.API.Features.Components.CollisionHandler>().Init((ev.Projectile.PreviousOwner ?? Server.Host).GameObject, ev.Projectile.Base);
+                ev.Projectile.GameObject.AddComponent<Exiled.API.Features.Components.CollisionHandler>().Init((ev.Pickup.PreviousOwner ?? Server.Host).GameObject, ev.Projectile.Base);
         }
     }
 }

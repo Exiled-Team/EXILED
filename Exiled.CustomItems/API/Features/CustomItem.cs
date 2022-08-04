@@ -949,8 +949,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Item"/> created.</returns>
         protected Item CreateCorrectItem(ItemBase itemBase = null)
         {
-            if (itemBase is null)
-                itemBase = Server.Host.Inventory.CreateItemInstance(Type, false);
+            itemBase ??= Server.Host.Inventory.CreateItemInstance(Type, false);
             return Item.Get(itemBase);
         }
 
@@ -1046,40 +1045,6 @@ namespace Exiled.CustomItems.API.Features
                 return;
 
             OnDropping(ev);
-
-            if (!ev.IsAllowed)
-                return;
-
-            ev.IsAllowed = false;
-
-#if DEBUG
-            Log.Debug($"{ev.Player.Nickname} is dropping a {Name} ({ev.Item.Serial})");
-#endif
-            TrackedSerials.Remove(ev.Item.Serial);
-
-            ev.Player.RemoveItem(ev.Item);
-            if (ev.Player.Inventory.UserInventory.Items.ContainsKey(ev.Item.Serial))
-            {
-                ev.Player.Inventory.UserInventory.Items.Remove(ev.Item.Serial);
-                ev.Player.Inventory.SendItemsNextFrame = true;
-            }
-
-            Pickup pickup = Spawn(ev.Player, ev.Item, ev.Player);
-            if (pickup.Base.Rb is not null && ev.IsThrown)
-            {
-                Vector3 vector = (ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity / 3f) + (ev.Player.ReferenceHub.PlayerCameraReference.forward * 6f * (Mathf.Clamp01(Mathf.InverseLerp(7f, 0.1f, pickup.Base.Rb.mass)) + 0.3f));
-                vector.x = Mathf.Max(Mathf.Abs(ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity.x), Mathf.Abs(vector.x)) * (float)((vector.x < 0f) ? -1 : 1);
-                vector.y = Mathf.Max(Mathf.Abs(ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity.y), Mathf.Abs(vector.y)) * (float)((vector.y < 0f) ? -1 : 1);
-                vector.z = Mathf.Max(Mathf.Abs(ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity.z), Mathf.Abs(vector.z)) * (float)((vector.z < 0f) ? -1 : 1);
-                pickup.Base.Rb.position = ev.Player.ReferenceHub.PlayerCameraReference.position;
-                pickup.Base.Rb.velocity = vector;
-                pickup.Base.Rb.angularVelocity = Vector3.Lerp(ev.Item.Base.ThrowSettings.RandomTorqueA, ev.Item.Base.ThrowSettings.RandomTorqueB, UnityEngine.Random.value);
-                float magnitude = pickup.Base.Rb.angularVelocity.magnitude;
-                if (magnitude > pickup.Base.Rb.maxAngularVelocity)
-                {
-                    pickup.Base.Rb.maxAngularVelocity = magnitude;
-                }
-            }
         }
 
         private void OnInternalPickingUp(PickingUpItemEventArgs ev)
