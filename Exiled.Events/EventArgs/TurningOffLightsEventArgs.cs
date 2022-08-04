@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="FlickerableLightControllerHandler"/>.
+        /// Gets the <see cref="FlickerableLightController"/>.
         /// </summary>
         public FlickerableLightController FlickerableLightControllerHandler { get; }
 
