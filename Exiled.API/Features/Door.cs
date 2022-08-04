@@ -90,9 +90,9 @@ namespace Exiled.API.Features
         public Room Room { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the door is fully close.
+        /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClose => ExactState is 0;
+        public bool IsFullyClosed => ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is fully open.
@@ -100,9 +100,9 @@ namespace Exiled.API.Features
         public bool IsFullyOpen => ExactState is 1;
 
         /// <summary>
-        /// Gets a value indicating whether or not the door is in movement.
+        /// Gets a value indicating whether or not the door is moving.
         /// </summary>
-        public bool IsInMovement => ExactState is not 0 or 1;
+        public bool IsMoving => ExactState is not 0 or 1;
 
         /// <summary>
         /// Gets a value indicating how mush the door is open 1 are fully open and 0 are fully close.
