@@ -28,15 +28,15 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             RoleType = roleType;
-            (Vector3 postion, float rotation) = roleType.GetRandomSpawnProperties();
-            if (postion == Vector3.zero)
+            (Vector3 position, float rotation) = roleType.GetRandomSpawnProperties();
+            if (position == Vector3.zero)
             {
                 Position = player.ReferenceHub.characterClassManager.DeathPosition;
                 RotationY = new PlayerMovementSync.PlayerRotation(0f, 0f);
             }
             else
             {
-                Position = postion;
+                Position = position;
                 RotationY = new PlayerMovementSync.PlayerRotation(0f, rotation);
             }
         }
