@@ -170,6 +170,8 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalThrowingItem(ThrowingItemEventArgs ev)
         {
+            if (Check(ev.Item))
+                OnThrowingItem(ev);
         }
 
         private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
