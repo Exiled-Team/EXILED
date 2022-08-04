@@ -53,7 +53,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
 
         /// <summary>
-        /// Invoked before a unit name will be added.
+        /// Invoked before adding an unit name.
         /// </summary>
         public static event CustomEventHandler<AddingUnitNameEventArgs> AddingUnitName;
 

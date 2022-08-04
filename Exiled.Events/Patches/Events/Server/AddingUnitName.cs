@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Server
     {
         private static bool Prefix(ref string regular, SpawnableTeamType type)
         {
-            AddingUnitNameEventArgs ev = new AddingUnitNameEventArgs(regular, type);
+            AddingUnitNameEventArgs ev = new AddingUnitNameEventArgs(regular);
             Handlers.Server.OnAddingUnitName(ev);
 
             if (!ev.IsAllowed)
