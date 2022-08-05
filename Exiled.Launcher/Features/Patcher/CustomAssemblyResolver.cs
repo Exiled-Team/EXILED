@@ -1,4 +1,11 @@
-﻿using Mono.Cecil;
+﻿// -----------------------------------------------------------------------
+// <copyright file="CustomAssemblyResolver.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using Mono.Cecil;
 
 namespace Exiled.Launcher.Features.Patcher;
 

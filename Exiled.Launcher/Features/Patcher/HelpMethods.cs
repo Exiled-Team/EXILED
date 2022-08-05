@@ -35,6 +35,9 @@ public static class HelpMethods
 
     public static MethodDefinition? GetMethod(this TypeDefinition? typeDefinition, string name)
     {
+        if (typeDefinition is null)
+            return null;
+
         foreach (var method in typeDefinition.Methods)
         {
             if (method.Name == name)
@@ -46,6 +49,9 @@ public static class HelpMethods
 
     public static MethodDefinition? GetMethod(this TypeDefinition? typeDefinition, string name, int paramNum)
     {
+        if (typeDefinition is null)
+            return null;
+
         foreach (var method in typeDefinition.Methods)
         {
             if (method.Name == name && method.Parameters.Count == paramNum)
@@ -54,37 +60,4 @@ public static class HelpMethods
 
         return null;
     }
-
-    /*public static TypeDef? FindServerConsoleDefinition(ModuleDefMD assembly)
-    {
-        foreach (var type in assembly.Types)
-        {
-            if (type.FullName == "ServerConsole")
-                return type;
-        }
-
-        return null;
-    }
-
-    public static MethodDef? FindMethodDefinition(TypeDef serverConsole, string name)
-    {
-        foreach (var method in serverConsole.Methods)
-        {
-            if (method.Name == name)
-                return method;
-        }
-
-        return null;
-    }
-
-    public static bool IsPatched(ModuleDefMD module)
-    {
-        foreach (var type in module.Types)
-        {
-            if (type.Namespace == "Exiled")
-                return true;
-        }
-
-        return false;
-    }*/
 }
