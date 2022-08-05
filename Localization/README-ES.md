@@ -34,7 +34,7 @@ Si eliges el instalador automático (sí se ejecuta correctamente) se encargará
   - Colócalo en tu carpeta del servidor (descarga el servidor dedicado si no lo has hecho todavía).
   - Haz doble-clic en **`Exiled.Installer.exe`** o descarga **[este archivo .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** y colócalo en la carpeta del servidor para descargar la última versión de prueba.
   - Para conseguir e instalar plugins, mira el apartado [Instalando plugins](#installing-plugins) más abajo.
-**Nota:** Si estás instalando EXILED en un servidor remoto, asegurate de iniciar el .exe con el mismo usuario que tiene el servidor de SCP:SL (o uno con permisos de Administrador)
+**Nota:** Si estás instalando EXILED en un servidor remoto, asegúrate de iniciar el .exe con el mismo usuario que tiene el servidor de SCP:SL (o uno con permisos de Administrador)
 
 ### Instalación manual
   - Descarga **`Exiled.tar.gz` [de aquí](https://github.com/galaxy119/EXILED/releases)**
@@ -47,7 +47,7 @@ Si eliges el instalador automático (sí se ejecuta correctamente) se encargará
       Presiona Win + R y escribe `%appdata%`
 
 ### Instalando plugins
-¡Ya estaría! EXILED debería estar instalado y activo la próxima vez que inicies el servidor. Recuerda que EXILED por si solo no hace absolutamente nada, así que asegurate de que instalas plugins desde **[nuestro servidor de Discord](https://discord.gg/PyUkWTg)**
+¡Ya estaría! EXILED debería estar instalado y activo la próxima vez que inicies el servidor. Recuerda que EXILED por si solo no hace absolutamente nada, así que asegúrate de que instalas plugins desde **[nuestro servidor de Discord](https://discord.gg/PyUkWTg)**
 - Para instalar un plugin simplemente:
   - Descarga un plugin de [*su* página de versiones](https://i.imgur.com/u34wgPD.jpg) (**¡DEBE ser un `.dll`!**)
   - Colócalo en: ``C:\Users\(Usuario)\AppData\Roaming\EXILED\Plugins`` (muévete a esta carpeta presionando Win + R, después escribiendo `%appdata%`)
