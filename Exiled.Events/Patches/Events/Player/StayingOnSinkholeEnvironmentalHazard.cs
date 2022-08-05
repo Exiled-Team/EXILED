@@ -8,7 +8,10 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
+
     using System.Reflection.Emit;
+
+    using Exiled.Events.Patches.Fixes;
 
     using HarmonyLib;
 
@@ -17,7 +20,10 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="SinkholeEnvironmentalHazard"/>.
     /// <br>Adds the <see cref="Handlers.Player.StayingOnEnvironmentalHazard"/> event.</br>
+    /// <br>Adds the better effect logic.</br>
     /// </summary>
+    /// <seealso cref="SinkholeEffectFix"/>
+    /// <seealso cref="ExitingSinkholeEnvironmentalHazard"/>
     [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.OnStay))]
     internal static class StayingOnSinkholeEnvironmentalHazard
     {
@@ -27,9 +33,10 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, StayingOnEnvironmentalHazard.GetInstructions(ret));
+            newInstructions.Clear();
 
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+            newInstructions.AddRange(StayingOnEnvironmentalHazard.GetInstructions(ret));
+            newInstructions.Add(new CodeInstruction(OpCodes.Ret).WithLabels(ret));
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

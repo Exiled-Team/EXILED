@@ -413,6 +413,6 @@ namespace Exiled.API.Features
         /// Returns the Camera in a human-readable format.
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>
-        public override string ToString() => $"{Zone} {Type} {Name} {Id} {IsBeingUsed}";
+        public override string ToString() => $"{Zone} ({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
     }
 }

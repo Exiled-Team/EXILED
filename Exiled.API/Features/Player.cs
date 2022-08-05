@@ -595,25 +595,25 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is dead.
         /// </summary>
-        public bool IsDead => Role?.Team == Team.RIP;
+        public bool IsDead => Role?.Team is Team.RIP;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsNTF => Role?.Team == Team.MTF;
+        public bool IsNTF => Role?.Team is Team.MTF;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any Chaos rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsCHI => Role?.Team == Team.CHI;
+        public bool IsCHI => Role?.Team is Team.CHI;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any SCP.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsScp => Role?.Team == Team.SCP;
+        public bool IsScp => Role?.Team is Team.SCP;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any human rank.
@@ -623,7 +623,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
         /// </summary>
-        public bool IsTutorial => Role?.Type == RoleType.Tutorial;
+        public bool IsTutorial => Role?.Type is RoleType.Tutorial;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player's friendly fire is enabled.
@@ -1075,7 +1075,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                return referenceHub?.gameObject == null ? null : Get(referenceHub.gameObject);
+                return referenceHub == null || referenceHub.gameObject == null ? null : Get(referenceHub.gameObject);
             }
             catch (Exception)
             {
@@ -1941,6 +1941,19 @@ namespace Exiled.API.Features
                 default:
                     throw new InvalidOperationException($"Failed to use {itemType.ToString()} as a heal item.");
             }
+
+        /// Uses an item for giving its effect.
+        /// </summary>
+        /// <param name="usableItem">The item to be used.</param>
+        public void UseItem(ItemType usableItem)
+        {
+            if (Item.Create(usableItem, this) is not Usable item)
+                throw new Exception($"The provided item [{usableItem}] is not a usable item.");
+
+            item.Base.Owner = referenceHub;
+            item.Base.ServerOnUsingCompleted();
+            if (item.Base is not null)
+                item.Destroy();
         }
 
         /// <summary>
@@ -3072,10 +3085,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Resets the player speed.
+        /// </summary>
+        public void ResetSpeed()
+        {
+            WalkingSpeed = ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
+            RunningSpeed = ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier;
+        }
+
+        /// <summary>
         /// Converts the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
-        public override string ToString() =>
-            $"{Id} {Nickname} {UserId} {(Role is null ? "No role" : Role)}";
+        public override string ToString() => $"{Id} ({Nickname}) [{UserId}] *{(Role is null ? "No role" : Role)}*";
     }
 }

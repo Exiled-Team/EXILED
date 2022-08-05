@@ -44,7 +44,7 @@ namespace Exiled.API.Features
         public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
         {
             GameObject modelRagdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
-            if (modelRagdoll is null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
+            if (modelRagdoll == null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, modelRagdoll.transform.localPosition, modelRagdoll.transform.localRotation);
             this.ragdoll = ragdoll;
@@ -61,7 +61,7 @@ namespace Exiled.API.Features
         public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
         {
             GameObject modelRagdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
-            if (modelRagdoll is null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
+            if (modelRagdoll == null || !Object.Instantiate(modelRagdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = ragdollInfo;
             this.ragdoll = ragdoll;
@@ -325,6 +325,6 @@ namespace Exiled.API.Features
         /// Returns the Ragdoll in a human-readable format.
         /// </summary>
         /// <returns>A string containing Ragdoll-related data.</returns>
-        public override string ToString() => $"{Owner} {Name} {DeathReason} {Role} {CreationTime} {AllowRecall}";
+        public override string ToString() => $"{Owner} ({Name}) [{DeathReason}] *{Role}* |{CreationTime}| ={AllowRecall}=";
     }
 }
