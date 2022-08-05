@@ -47,8 +47,6 @@ if (arguments.InjectExiled)
     }
 }
 
-Thread.Sleep(10000);
-
 // Starting Point Launcher
 ProcessStartInfo startInfo = new ProcessStartInfo(arguments.StartingPoint, string.Join(' ', arguments.ExternalArguments));
 Process startingPoint = Process.Start(startInfo)!;

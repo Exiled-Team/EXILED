@@ -119,6 +119,10 @@ public static class AssemblyPatcher
 
         Instruction retLabel = Instruction.Create(OpCodes.Ret);
 
+        generator.Emit(OpCodes.Ldstr, "[Exiled.Bootstrap] Trying to load EXILED!");
+        generator.Emit(OpCodes.Ldc_I4_4);
+        generator.Emit(OpCodes.Call, addLog);
+
         // If isLoaded
         generator.Emit(OpCodes.Ldsfld, isLoadedField);
         generator.Emit(OpCodes.Brfalse_S, loadBreakpoint);
@@ -256,6 +260,9 @@ public static class AssemblyPatcher
 
         serverConsoleStartMethod.Body.Instructions.Insert(0, Instruction.Create(OpCodes.Call, loadMethod));
 
-        assembly.Write(assemblyPath+".dll");
+        assembly.Write(assemblyPath+".tmp");
+        assembly.Dispose();
+
+        File.Move(assemblyPath+".tmp", assemblyPath, true);
     }
 }
