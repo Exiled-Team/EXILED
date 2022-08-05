@@ -1083,6 +1083,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the <see cref="Collider"/>, if any.
+        /// </summary>
+        /// <param name="collider"><see cref="Collider"/>.</param>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
+        public static Player Get(Collider collider) => !ReferenceHub.TryGetHub(collider.transform.root.gameObject, out ReferenceHub hub) ? null : Get(hub);
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
         /// </summary>
         /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
