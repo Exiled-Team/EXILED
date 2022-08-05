@@ -11,11 +11,11 @@
 </a>
 
 
-EXILED es una plataforma de desarrollo de plugin para servidores de SCP: Secret Laboratory. Ofrece un sistema de eventos para desarrolladores y poder modificar o cambiar código del juego, o implementar sus propias funciones.
-Todos los eventos de EXILED están hechos con Harmony, lo que significa que no requieren editar los códigos de asamblea de los servidores para funcionar, esto ofrece dos beneficios únicos.
+EXILED es una plataforma de desarrollo de plugins para servidores de SCP: Secret Laboratory. Ofrece un sistema de eventos para desarrolladores y poder modificar o cambiar código del juego, o implementar sus propias funciones.
+Todos los eventos de EXILED están hechos con Harmony, lo que significa que no requiere editar el código del juego/servidor para funcionar, esto ofrece dos beneficios únicos.
 
  - Primeramente, toda la plataforma de desarrollo puede ser publicada y distribuida, lo cual permite que los desarrolladores puedan entender mejor *como funciona*, al igual que sugerir ideas o cambiar alguna opción.
- - Segundo, ya que todo el código relacionado con EXILED está afuera de los archivos de asamblea, cosas como actualizaciones pequeñas tendrán un pequeño (si acaso) efecto en el programa. Esto permite que siga siendo compatible con actualizaciones futuras, también hace el proceso de actualización cuando de verdad *es* necesario.
+ - Segundo, ya que todo el código relacionado con EXILED está fuera de los archivos de asamblea, cosas como actualizaciones pequeñas tendrán un pequeño (si acaso) efecto en el programa. Esto permite que siga siendo compatible con actualizaciones futuras, también hace el proceso de actualización cuando de verdad *es* necesario.
 
 # READMEs Traducidas
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
@@ -33,7 +33,7 @@ Si elijes el instalador automático (sí se ejecuta correctamente) se encargará
   - Descarga **`Exiled.Installer-Win.exe` [de aquí](https://github.com/galaxy119/EXILED/releases)** (selecciona Assets -> descarga el Instalador)
   - Colócalo en tu carpeta del servidor (descarga el servidor dedicado si no lo has hecho todavía)
   - Haz doble clic en **`Exiled.Installer.exe`** o **[descarga este .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** y colócalo en la carpeta del servidor para descargar la última versión de prueba
-  - Para instalar y  conseguir plugins, mira el apartado [Instalando plugins](#installing-plugins) abajo.
+  - Para instalar y conseguir plugins, mire el apartado [Instalando plugins](#installing-plugins) abajo.
 **Nota:** Si estás instalando EXILED en un servidor remoto, asegurate de ejecutar el .exe como el mismo usuario que ejecutó el servidor de SCP: SL (o un Administrador)
 
 ### Instalación manual
