@@ -5,12 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Enums;
-
 namespace Exiled.Events.Handlers
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 

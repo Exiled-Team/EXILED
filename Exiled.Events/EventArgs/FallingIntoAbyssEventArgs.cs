@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player falls into abyss in <see cref="RoomType.HczArmory"/>
+    /// Contains all information before a player falls into abyss in <see cref="RoomType.HczArmory"/>.
     /// </summary>
     public class FallingIntoAbyssEventArgs : System.EventArgs
     {
