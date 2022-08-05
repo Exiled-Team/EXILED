@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="FlickerableLightController.ServerFlickerLights"/>.
-    /// Adds the <see cref="Exiled.Events.Handlers.Map.TurningOffLights"/> event.
+    /// Adds the <see cref="Exiled.Events.Patches.Events.Map.AnnouncingDecontamination"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FlickerableLightController), nameof(FlickerableLightController.ServerFlickerLights))]
     internal static class TurningOffLights
