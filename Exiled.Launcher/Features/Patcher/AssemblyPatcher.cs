@@ -7,6 +7,7 @@
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
 
 using OpCodes = Mono.Cecil.Cil.OpCodes;
 
@@ -76,6 +77,7 @@ public static class AssemblyPatcher
         MethodReference pathCombine2 = assembly.ImportReference(mscorlib.GetType("System.IO", "Path").GetMethod("Combine", 2));
         MethodReference pathCombine3 = assembly.ImportReference(mscorlib.GetType("System.IO", "Path").GetMethod("Combine", 3));
         MethodReference directoryExists = assembly.ImportReference(mscorlib.GetType("System.IO", "Directory").GetMethod("Exists", 1));
+        MethodReference directoryCreate = assembly.ImportReference(mscorlib.GetType("System.IO", "Directory").GetMethod("CreateDirectory", 1));
         MethodReference getCurDir = assembly.ImportReference(mscorlib.GetType("System", "Environment").GetMethod("get_CurrentDirectory"));
         MethodReference stringContain = assembly.ImportReference(nwLib.GetType("NorthwoodLib", "StringUtils").GetMethod("Contains", 3));
 
@@ -86,6 +88,8 @@ public static class AssemblyPatcher
 
         Instruction loadBreakpoint = Instruction.Create(OpCodes.Ldstr, "[Exiled.Bootstrap] Exiled is loading...");
         Instruction testingBreakpoint = Instruction.Create(OpCodes.Ldloc_1);
+        //Instruction dependenciesBreakpoint = Instruction.Create(OpCodes.Ldloc_1);
+        Instruction dependenciesBreakpoint = Instruction.Create(OpCodes.Nop);
 
         Instruction retLabel = Instruction.Create(OpCodes.Ret);
 
@@ -121,20 +125,28 @@ public static class AssemblyPatcher
         generator.Emit(OpCodes.Ldstr, "EXILED-Testing");
         generator.Emit(OpCodes.Call, pathCombine2);
         generator.Emit(OpCodes.Stloc_1);
+        generator.Append(testingBreakpoint);
 
         generator.Emit(OpCodes.Ldstr, "Plugins");
         generator.Emit(OpCodes.Ldstr, "dependencies");
         generator.Emit(OpCodes.Call, pathCombine3);
         generator.Emit(OpCodes.Stloc_2);
+        generator.Emit(OpCodes.Ldloc_1);
 
-        generator.Append(testingBreakpoint);
         generator.Emit(OpCodes.Call, directoryExists);
         generator.Emit(OpCodes.Ldc_I4_0);
         generator.Emit(OpCodes.Ceq);
-        // todo: continue
+        generator.Emit(OpCodes.Brfalse_S, dependenciesBreakpoint);
+        generator.Emit(OpCodes.Ldloc_1);
+        generator.Emit(OpCodes.Call, directoryCreate);
+        generator.Emit(OpCodes.Pop);
+
+        generator.Append(dependenciesBreakpoint);
 
         // End
         generator.Append(retLabel);
+
+        loadBody.Optimize();
 
         serverConsoleStartMethod.Body.Instructions.Insert(0, Instruction.Create(OpCodes.Call, loadMethod));
 
