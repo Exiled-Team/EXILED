@@ -18,9 +18,13 @@ public static class AssemblyPatcher
     {
         string assemblyPath = Path.Combine(path, "Assembly-CSharp.dll");
 
+        DefaultAssemblyResolver resolver = new DefaultAssemblyResolver();
+        resolver.AddSearchDirectory(path);
+
         using ModuleDefinition assembly = ModuleDefinition.ReadModule(assemblyPath, new ReaderParameters()
         {
-            AssemblyResolver = new CustomAssemblyResolver(path)
+            AssemblyResolver = resolver,
+            ReadWrite = true
         });
 
         if (assembly is null)
@@ -55,7 +59,7 @@ public static class AssemblyPatcher
 
         Console.WriteLine("[Patcher] Hooking Exiled.Bootstrap to ServerConsole::Start()");
 
-        TypeDefinition bootstrap = new TypeDefinition("Exiled", "Bootstrap", TypeAttributes.Public | TypeAttributes.Class);
+        TypeDefinition bootstrap = new TypeDefinition("Exiled", "Bootstrap", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed);
         assembly.Types.Add(bootstrap);
 
         TypeReference boolRef = assembly.ImportReference(typeof(bool));
@@ -260,9 +264,6 @@ public static class AssemblyPatcher
 
         serverConsoleStartMethod.Body.Instructions.Insert(0, Instruction.Create(OpCodes.Call, loadMethod));
 
-        assembly.Write(assemblyPath+".tmp");
-        assembly.Dispose();
-
-        File.Move(assemblyPath+".tmp", assemblyPath, true);
+        assembly.Write();
     }
 }
