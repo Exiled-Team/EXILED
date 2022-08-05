@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Enums;
+
 namespace Exiled.Events.Handlers
 {
     using System;
@@ -203,6 +205,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> fails to escape the pocket dimension.
         /// </summary>
         public static event CustomEventHandler<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> falls into abyss in <see cref="RoomType.HczArmory"/>.
+        /// </summary>
+        public static event CustomEventHandler<FallingIntoAbyssEventArgs> FallingIntoAbyss;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> reloads a weapon.
@@ -679,6 +686,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="FailingEscapePocketDimensionEventArgs"/> instance.</param>
         public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev) => FailingEscapePocketDimension.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> falls into abyss in <see cref="RoomType.HczArmory"/>.
+        /// </summary>
+        /// <param name="ev">The <see cref="FallingIntoAbyssEventArgs"/> instance.</param>
+        public static void OnFallingIntoAbyss(FallingIntoAbyssEventArgs ev) => FallingIntoAbyss.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> reloads a weapon.
