@@ -59,20 +59,17 @@ public static class AssemblyPatcher
 
         Console.WriteLine("[Patcher] Hooking Exiled.Bootstrap to ServerConsole::Start()");
 
-        TypeDefinition bootstrap = new TypeDefinition("Exiled", "Bootstrap", TypeAttributes.Public | TypeAttributes.Class | TypeAttributes.Sealed);
-        assembly.Types.Add(bootstrap);
-
         TypeReference boolRef = assembly.ImportReference(typeof(bool));
         TypeReference voidRef = assembly.ImportReference(typeof(void));
         TypeReference stringRef = assembly.ImportReference(typeof(string));
 
-        FieldDefinition isLoadedField = new FieldDefinition("isLoaded", FieldAttributes.Private | FieldAttributes.Static, boolRef);
-        bootstrap.Fields.Add(isLoadedField);
+        FieldDefinition isLoadedField = new FieldDefinition("isExiledLoaded", FieldAttributes.Private | FieldAttributes.Static, boolRef);
+        serverConsoleClass.Fields.Add(isLoadedField);
 
-        MethodDefinition loadMethod = new MethodDefinition("Load",
-            MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot,
+        MethodDefinition loadMethod = new MethodDefinition("LoadExiled",
+            MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig | MethodAttributes.ReuseSlot,
             voidRef);
-        bootstrap.Methods.Add(loadMethod);
+        serverConsoleClass.Methods.Add(loadMethod);
 
         using ModuleDefinition mscorlib = ModuleDefinition.ReadModule(Path.Combine(path, "mscorlib.dll"));
         using ModuleDefinition nwLib = ModuleDefinition.ReadModule(Path.Combine(path, "NorthwoodLib.dll"));
@@ -122,10 +119,6 @@ public static class AssemblyPatcher
         Instruction finalMethodLabel = Instruction.Create(OpCodes.Ldc_I4_1);
 
         Instruction retLabel = Instruction.Create(OpCodes.Ret);
-
-        generator.Emit(OpCodes.Ldstr, "[Exiled.Bootstrap] Trying to load EXILED!");
-        generator.Emit(OpCodes.Ldc_I4_4);
-        generator.Emit(OpCodes.Call, addLog);
 
         // If isLoaded
         generator.Emit(OpCodes.Ldsfld, isLoadedField);

@@ -28,6 +28,9 @@ public class LauncherArguments
     [ArgumentOption("-pr", "--pre-releases", "Download pre releases, Yes/No (y/n).")]
     public bool DownloadPreReleases { get; set; } = true;
 
+    [ArgumentOption("-gt", "--github-token", "The github token to avoid rate limits.")]
+    public string GithubToken { get; set; } = string.Empty;
+
     [ArgumentOption("-ie", "--inject-exiled", "Should Exiled be injected? Yes/No (y/n).")]
     public bool InjectExiled { get; set; } = true;
 
