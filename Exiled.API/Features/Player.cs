@@ -1930,13 +1930,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Uses an item for giving its effect.
+        /// Uses an item by applying its effects to the player.
         /// </summary>
         /// <param name="usableItem">The item to be used.</param>
+        /// <exception cref="ArgumentException">The provided item is not a <see cref="Usable"/> item.</exception>
         public void UseItem(ItemType usableItem)
         {
             if (Item.Create(usableItem, this) is not Usable item)
-                throw new Exception($"The provided item [{usableItem}] is not a usable item.");
+                throw new ArgumentException($"The provided item [{usableItem}] is not a usable item.", nameof(usableItem));
 
             item.Base.Owner = referenceHub;
             item.Base.ServerOnUsingCompleted();
