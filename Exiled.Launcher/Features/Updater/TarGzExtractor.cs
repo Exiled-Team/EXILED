@@ -81,9 +81,11 @@ public class TarGzExtractor
             stream.Seek(376L, SeekOrigin.Current);
 
             var output = Path.Combine(outputDir, name);
+
             if (!Directory.Exists(Path.GetDirectoryName(output)))
                 Directory.CreateDirectory(Path.GetDirectoryName(output)!);
-            if (!name.Equals("./", StringComparison.InvariantCulture))
+
+            if (!name.EndsWith("/", StringComparison.InvariantCulture))
             {
                 using var str = File.Open(output, FileMode.OpenOrCreate, FileAccess.Write);
                 var buf = new byte[size];

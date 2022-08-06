@@ -30,6 +30,7 @@ public class InstallManager : IDisposable
         preReleases = arguments.DownloadPreReleases;
         desiredVersion = arguments.ExiledVersion;
 
+        httpClient.DefaultRequestHeaders.Add("User-Agent", "Exiled-Launcher");
         if (!string.IsNullOrEmpty(arguments.GithubToken))
         {
             httpClient.DefaultRequestHeaders.Add("Authorization",  "Basic " + Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(arguments.GithubToken)));
@@ -60,7 +61,7 @@ public class InstallManager : IDisposable
             return false;
         }
 
-        Console.WriteLine($"- Found the desired release. Name: {target.Name} | Prerelease : {target.Prerelease}");
+        Console.WriteLine($"- Found the desired release. Name: {target.Name} | Version: {target.TagName} | Prerelease: {target.Prerelease}");
         Console.WriteLine("Installing release.");
 
         GithubWrapper.Asset? asset =  target.Assets.FirstOrDefault(x => x.Name == ExiledAssetName);
@@ -75,19 +76,26 @@ public class InstallManager : IDisposable
         {
             Console.WriteLine("Downloading the release.");
             string tmpDownload = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ExiledAssetName);
-            HttpResponseMessage res = httpClient.GetAsync(asset.BrowserDownloadUrl).GetAwaiter().GetResult();
+            Console.WriteLine("Dest url: " + asset.BrowserDownloadUrl);
+            using HttpResponseMessage res = httpClient.GetAsync(asset.BrowserDownloadUrl).GetAwaiter().GetResult();
 
             if (res.StatusCode == HttpStatusCode.TooManyRequests)
             {
-                Console.WriteLine("You have been ratelimited by github, therefore Exiled couldn't be installed.");
+                Console.WriteLine("You have been rate limited by github, therefore Exiled couldn't be installed.");
                 Console.WriteLine("Skyping installation.");
                 return false;
             }
 
             Console.WriteLine("Writing the file.");
+
+            using (var fs = File.OpenWrite(tmpDownload))
+            {
+                res.Content.ReadAsStream().CopyTo(fs);
+            }
+
             File.WriteAllBytes(tmpDownload, res.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult());
             Console.WriteLine("Extracting the file.");
-            TarGzExtractor.ExtractTarGz(tmpDownload,Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)));
+            TarGzExtractor.ExtractTarGz(tmpDownload, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
             Console.WriteLine("Removing unnecessary files");
             File.Delete(tmpDownload);
             File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Assembly-CSharp.dll"));
@@ -107,7 +115,7 @@ public class InstallManager : IDisposable
         Console.WriteLine("Fetching Releases:");
         try
         {
-            HttpResponseMessage res
+            using HttpResponseMessage res
                 = httpClient.GetAsync($"https://api.github.com/repos/{RepoID}/releases").GetAwaiter().GetResult();
 
             if (res.StatusCode == HttpStatusCode.TooManyRequests)
@@ -119,7 +127,7 @@ public class InstallManager : IDisposable
 
             string response = res.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             releases = JsonSerializer.Deserialize<List<GithubWrapper.Release>>(response)!;
-            Console.WriteLine($" - Found {releases.Count} releases.");
+            Console.WriteLine($"- Found {releases.Count} releases.");
             return true;
         }
         catch (Exception e)
