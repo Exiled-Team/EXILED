@@ -1758,8 +1758,11 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="category">The category to search for.</param>
         /// <returns>How many items of that <see cref="ItemCategory"/> the player has.</returns>
-        public int CountItem(ItemCategory category) =>
-            Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category);
+        public int CountItem(ItemCategory category) => category switch
+        {
+            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Where(ammo => ammo.Value > 0).Count(),
+            _ => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category),
+        };
 
         /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
