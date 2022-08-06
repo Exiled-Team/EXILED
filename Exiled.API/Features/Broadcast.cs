@@ -68,7 +68,7 @@ namespace Exiled.API.Features
         public override string ToString() => $"({Content}) {Duration} {Type}";
 
         /// <summary>
-        /// Returns a copy of this <see cref="Broadcast"/>.
+        /// Clones this <see cref="Broadcast"/>.
         /// </summary>
         /// <returns>A new <see cref="Broadcast"/> with matching properties.</returns>
         public Broadcast Clone() =>

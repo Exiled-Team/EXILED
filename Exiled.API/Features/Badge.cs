@@ -54,7 +54,7 @@ namespace Exiled.API.Features
         public override string ToString() => $"{Text} ({Color}) [{Type}] *{IsGlobal}*";
 
         /// <summary>
-        /// Returns a copy of this <see cref="Badge"/>.
+        /// Clones this <see cref="Badge"/>.
         /// </summary>
         /// <returns>A new <see cref="Badge"/> with matching properties.</returns>
         public Badge Clone() =>

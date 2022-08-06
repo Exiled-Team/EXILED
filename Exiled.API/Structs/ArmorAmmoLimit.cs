@@ -53,7 +53,7 @@ namespace Exiled.API.Structs
             new BodyArmor.ArmorAmmoLimit { AmmoType = armorLimit.AmmoType.GetItemType(), Limit = armorLimit.Limit };
 
         /// <summary>
-        /// Returns a copy of this <see cref="ArmorAmmoLimit"/>.
+        /// Clones this <see cref="ArmorAmmoLimit"/>.
         /// </summary>
         /// <returns>A new <see cref="ArmorAmmoLimit"/> with matching properties.</returns>
         public ArmorAmmoLimit Clone() =>

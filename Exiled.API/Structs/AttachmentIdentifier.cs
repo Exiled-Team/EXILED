@@ -227,7 +227,7 @@ namespace Exiled.API.Structs
         }
 
         /// <summary>
-        /// Returns a copy of this <see cref="AttachmentIdentifier"/>.
+        /// Clones this <see cref="AttachmentIdentifier"/>.
         /// </summary>
         /// <returns>A new <see cref="AttachmentIdentifier"/> with matching properties.</returns>
         public AttachmentIdentifier Clone() =>
