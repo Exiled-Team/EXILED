@@ -1745,6 +1745,14 @@ namespace Exiled.API.Features
             Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
 
         /// <summary>
+        /// Counts how many items of a certain <see cref="ItemCategory"/> a player has.
+        /// </summary>
+        /// <param name="category">The category to search for.</param>
+        /// <returns>How many items of that <see cref="ItemCategory"/> the player has.</returns>
+        public int CountItem(ItemCategory category) =>
+            Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category);
+
+        /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to remove.</param>
