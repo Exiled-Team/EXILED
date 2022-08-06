@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        proj_name: [Exiled.Installer, Exiled.Patcher]
+        proj_name: [Launcher]
         include:
         - os: ubuntu-latest
           target: linux-x64
@@ -29,7 +29,7 @@ jobs:
       run: dotnet restore ${{ matrix.proj_name }} -r ${{ matrix.target }}
 
     - name: Build ${{ matrix.proj_name }}@${{ matrix.target }}
-      run: dotnet publish ${{ matrix.proj_name }} -r ${{ matrix.target }} -c release -o builds/${{ matrix.target }} --self-contained true
+      run: dotnet publish ${{ matrix.proj_name }} -r ${{ matrix.target }} -c release -o builds/${{ matrix.target }} --self-contained true  --property:PublishSingleFile=true --property:PublishTrimmed=true
 
     - name: Upload ${{ matrix.proj_name }}@${{ matrix.target }} build
       uses: actions/upload-artifact@v2
