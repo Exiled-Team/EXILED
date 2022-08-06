@@ -5,6 +5,9 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <ApplicationIcon>..\assets\logo.ico</ApplicationIcon>
+        <Company>Exiled-Team</Company>
+        <SignAssembly>true</SignAssembly>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -23,5 +26,11 @@
 
     <ItemGroup>
       <PackageReference Include="Mono.Cecil" Version="0.11.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\assets\Exiled_Icon.ico">
+        <Link>Exiled_Icon.ico</Link>
+      </None>
     </ItemGroup>
 </Project>
