@@ -8,20 +8,18 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-using OpCodes = Mono.Cecil.Cil.OpCodes;
-
 namespace Exiled.Launcher.Features.Patcher;
 
-public static class AssemblyPatcher
+public class AssemblyPatcher
 {
-    public static void Patch(string path)
+    public void Patch(string path)
     {
         string assemblyPath = Path.Combine(path, "Assembly-CSharp.dll");
 
         DefaultAssemblyResolver resolver = new DefaultAssemblyResolver();
         resolver.AddSearchDirectory(path);
 
-        using ModuleDefinition assembly = ModuleDefinition.ReadModule(assemblyPath, new ReaderParameters()
+        using ModuleDefinition assembly = ModuleDefinition.ReadModule(assemblyPath, new ReaderParameters
         {
             AssemblyResolver = resolver,
             ReadWrite = true
