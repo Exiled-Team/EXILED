@@ -55,7 +55,7 @@ public class InstallManager : IDisposable
 
             foreach (var release in releases)
             {
-                Console.WriteLine($"Id: {release.Id} | Tag: {release.TagName} | Name: {release.Name} | Publish Date: {release.PublishedAt}");
+                Console.WriteLine($"Id: {release.Id} | Tag: {release.TagName} | Name: {release.Name} | Prerelease: {release.Prerelease} | Publish Date: {release.PublishedAt}");
             }
 
             return false;
@@ -116,7 +116,7 @@ public class InstallManager : IDisposable
         try
         {
             using HttpResponseMessage res
-                = httpClient.GetAsync($"https://api.github.com/repos/{RepoID}/releases").GetAwaiter().GetResult();
+                = httpClient.GetAsync($"https://api.github.com/repos/{RepoID}/releases?per_page=100").GetAwaiter().GetResult();
 
             if (res.StatusCode == HttpStatusCode.TooManyRequests)
             {
