@@ -226,6 +226,13 @@ namespace Exiled.API.Structs
             return false;
         }
 
+        /// <summary>
+        /// Returns a copy of this <see cref="AttachmentIdentifier"/>.
+        /// </summary>
+        /// <returns>A new <see cref="AttachmentIdentifier"/> with matching properties.</returns>
+        public AttachmentIdentifier Clone() =>
+            new AttachmentIdentifier(Code, Name, Slot);
+
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
 

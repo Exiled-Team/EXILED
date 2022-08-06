@@ -52,5 +52,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Badge-related data.</returns>
         public override string ToString() => $"{Text} ({Color}) [{Type}] *{IsGlobal}*";
+
+        /// <summary>
+        /// Returns a copy of this <see cref="Badge"/>.
+        /// </summary>
+        /// <returns>A new <see cref="Badge"/> with matching properties.</returns>
+        public Badge Clone() =>
+            new Badge(Text, Color, Type, IsGlobal);
     }
 }
