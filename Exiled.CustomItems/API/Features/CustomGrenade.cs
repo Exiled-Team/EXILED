@@ -8,26 +8,15 @@
 namespace Exiled.CustomItems.API.Features
 {
     using System;
-    using System.Collections.Generic;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.Events.EventArgs;
 
-    using Footprinting;
-
-    using InventorySystem.Items;
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using Mirror;
-
-    using UnityEngine;
-
-    using YamlDotNet.Serialization;
 
     using Server = Exiled.API.Features.Server;
 
@@ -60,6 +49,13 @@ namespace Exiled.CustomItems.API.Features
         /// Gets or sets a value indicating how long the grenade's fuse time should be.
         /// </summary>
         public abstract float FuseTime { get; set; }
+
+        /// <summary>
+        /// Checks to see if the grenade is a tracked custom grenade.
+        /// </summary>
+        /// <param name="grenade">The <see cref="Projectile">grenade</see> to check.</param>
+        /// <returns>True if it is a custom grenade.</returns>
+        public virtual bool Check(Projectile grenade) => TrackedSerials.Contains(grenade.Serial);
 
         // TODO: reimplement
         /*
@@ -123,13 +119,6 @@ namespace Exiled.CustomItems.API.Features
         protected virtual void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev)
         {
         }
-
-        /// <summary>
-        /// Checks to see if the grenade is a tracked custom grenade.
-        /// </summary>
-        /// <param name="grenade">The <see cref="GameObject"/> of the grenade to check.</param>
-        /// <returns>True if it is a custom grenade.</returns>
-        protected bool Check(ThrownProjectile grenade) => TrackedSerials.Contains(grenade.Info.Serial);
 
         private void OnInternalThrowingRequest(ThrowingRequestEventArgs ev)
         {
