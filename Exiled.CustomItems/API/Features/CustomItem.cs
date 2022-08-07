@@ -959,9 +959,9 @@ namespace Exiled.CustomItems.API.Features
                 ev.Player.RemoveItem(item);
 
                 Spawn(ev.Player, item, ev.Player);
-
-                MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
+
+            MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
         }
 
         private void OnInternalOwnerDying(DyingEventArgs ev)
@@ -981,9 +981,9 @@ namespace Exiled.CustomItems.API.Features
                 TrackedSerials.Remove(item.Serial);
 
                 Spawn(ev.Target, item, ev.Target);
-
-                MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
+
+            MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
         }
 
         private void OnInternalOwnerEscaping(EscapingEventArgs ev)
@@ -1003,9 +1003,9 @@ namespace Exiled.CustomItems.API.Features
                 TrackedSerials.Remove(item.Serial);
 
                 Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item, null));
-
-                MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
+
+            MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
         }
 
         private void OnInternalOwnerHandcuffing(HandcuffingEventArgs ev)
