@@ -520,7 +520,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="previousOwner">The <see cref="Pickup.PreviousOwner"/> of the item. Can be null.</param>
         /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(Vector3 position, Player previousOwner = null) => Spawn(position, CreateCorrectItem(), previousOwner);
+        public virtual Pickup Spawn(Vector3 position, Player previousOwner = null) => Spawn(position, Item.Create(Type), previousOwner);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific position.
@@ -530,7 +530,7 @@ namespace Exiled.CustomItems.API.Features
         [Obsolete("Use Spawn(Vector3, Player) instead.", true)]
         public virtual Pickup Spawn(Vector3 position)
         {
-            Pickup pickup = CreateCorrectItem().CreatePickup(position);
+            Pickup pickup = Item.Create(Type).CreatePickup(position);
             pickup.Weight = Weight;
             TrackedSerials.Add(pickup.Serial);
 
@@ -720,7 +720,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public virtual void Give(Player player, bool displayMessage = true) => Give(player, CreateCorrectItem(player.Inventory.CreateItemInstance(Type, true)), displayMessage);
+        public virtual void Give(Player player, bool displayMessage = true) => Give(player, Item.Create(Type), displayMessage);
 
         /// <summary>
         /// Called when the item is registered.
@@ -940,17 +940,6 @@ namespace Exiled.CustomItems.API.Features
         protected virtual void ShowSelectedMessage(Player player)
         {
             player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
-        }
-
-        /// <summary>
-        /// This method will take the item's <see cref="Type"/> and create a new <see cref="Item"/> of the correct subtype for the <see cref="ItemType"/>.
-        /// </summary>
-        /// <param name="itemBase">The <see cref="ItemBase"/> to be used for creation, if any.</param>
-        /// <returns>The <see cref="Item"/> created.</returns>
-        protected Item CreateCorrectItem(ItemBase itemBase = null)
-        {
-            itemBase ??= Server.Host.Inventory.CreateItemInstance(Type, false);
-            return Item.Get(itemBase);
         }
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
