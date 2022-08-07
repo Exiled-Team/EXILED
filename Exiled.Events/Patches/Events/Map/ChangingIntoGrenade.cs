@@ -143,10 +143,7 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
-                API.Features.Log.Debug(newInstructions[z]);
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
