@@ -350,7 +350,7 @@ namespace Exiled.API.Features.Items
             uint code = 1;
             foreach (Attachment attachment in Base.Attachments)
             {
-                if (attachment.Name == identifier.Name && attachment.IsEnabled)
+                if (attachment.Slot == identifier.Slot && attachment.IsEnabled)
                 {
                     toRemove = code;
                     break;
@@ -373,7 +373,7 @@ namespace Exiled.API.Features.Items
         /// Adds a <see cref="Attachment"/> of the specified <see cref="AttachmentName"/> to the firearm.
         /// </summary>
         /// <param name="attachmentName">The <see cref="AttachmentName"/> to add.</param>
-        public void AddAttachment(AttachmentName attachmentName) => AddAttachment(new AttachmentIdentifier(attachmentName));
+        public void AddAttachment(AttachmentName attachmentName) => AddAttachment(AttachmentIdentifier.Get(Type, attachmentName));
 
         /// <summary>
         /// Adds a <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to the firearm.
@@ -392,7 +392,7 @@ namespace Exiled.API.Features.Items
         public void AddAttachment(IEnumerable<AttachmentName> attachmentNames)
         {
             foreach (AttachmentName attachmentName in attachmentNames)
-                AddAttachment(new AttachmentIdentifier(attachmentName));
+                AddAttachment(attachmentName);
         }
 
         /// <summary>
@@ -532,7 +532,7 @@ namespace Exiled.API.Features.Items
             if (Attachments.All(attachment => attachment.Name != attachmentName))
                 return false;
 
-            firearmAttachment = GetAttachment(new AttachmentIdentifier(attachmentName));
+            firearmAttachment = GetAttachment(AttachmentIdentifier.Get(Type, attachmentName));
 
             return true;
         }
