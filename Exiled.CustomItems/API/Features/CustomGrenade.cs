@@ -70,16 +70,6 @@ namespace Exiled.CustomItems.API.Features
         protected HashSet<ThrownProjectile> Tracked { get; } = new();
         */
 
-        /// <summary>
-        /// Gives the <see cref="CustomItem"/> to a player.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
-        /// <param name="displayMessage">Indicates whether or not <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public override void Give(Player player, bool displayMessage = true)
-        {
-            Give(player, CreateCorrectItem(), displayMessage);
-        }
-
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
