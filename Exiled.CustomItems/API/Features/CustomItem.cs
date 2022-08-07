@@ -513,7 +513,8 @@ namespace Exiled.CustomItems.API.Features
             Pickup pickup = item.CreatePickup(position);
             pickup.Weight = Weight;
 
-            pickup.PreviousOwner = previousOwner;
+            if (previousOwner is not null)
+                pickup.PreviousOwner = previousOwner;
 
             TrackedSerials.Add(pickup.Serial);
 
