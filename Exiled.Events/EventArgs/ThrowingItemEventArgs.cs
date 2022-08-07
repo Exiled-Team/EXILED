@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="projectile"<inheritdoc cref="Grenade"/>
+        /// <param name="projectile"><inheritdoc cref="Grenade"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrownProjectile projectile, bool isAllowed = true)
         {
