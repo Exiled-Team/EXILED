@@ -431,6 +431,9 @@ namespace Exiled.Loader
 
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
+            if(plugin.IgnoreRequiredVersionCheck)
+                return false;
+
             Version requiredVersion = plugin.RequiredExiledVersion;
             Version actualVersion = Version;
 
