@@ -18,11 +18,6 @@ namespace Exiled.Events.Handlers
     public static class Scp244
     {
         /// <summary>
-        /// Invoked before picking up an <see cref="API.Features.Items.Scp244"/>.
-        /// </summary>
-        public static event CustomEventHandler<PickingUpScp244EventArgs> PickingUpScp244;
-
-        /// <summary>
         /// Invoked before using an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         public static event CustomEventHandler<UsingScp244EventArgs> UsingScp244;
@@ -36,12 +31,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before an Scp244 open because the angle was too low.
         /// </summary>
         public static event CustomEventHandler<OpeningScp244EventArgs> OpeningScp244;
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> picks up an item.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpScp244EventArgs"/> instance.</param>
-        public static void OnPickingUpScp244(PickingUpScp244EventArgs ev) => PickingUpScp244.InvokeSafely(ev);
 
         /// <summary>
         /// Called before using a usable item.

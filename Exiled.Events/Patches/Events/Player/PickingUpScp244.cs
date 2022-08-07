@@ -5,9 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp244
+namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -23,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp244SearchCompletor"/> to add missing event handler to the <see cref="Scp244SearchCompletor"/>.
+    /// Patches <see cref="Scp244SearchCompletor"/> to add missing <see cref="Handlers.Player.PickingUpItem"/> event to the <see cref="Scp244SearchCompletor"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Complete))]
     internal static class PickingUpScp244
@@ -42,10 +41,10 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Ldfld, Field(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpScp244EventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpItemEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnPickingUpScp244))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpScp244EventArgs), nameof(PickingUpScp244EventArgs.IsAllowed))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUpItem))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });
 
