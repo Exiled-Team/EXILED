@@ -15,7 +15,7 @@ public static class HelpMethods
     {
         foreach (var type in module.Types)
         {
-            if (type.Name == "ServerConsole")
+            if (type.Name == "ServerConsole" || type.Namespace == "Exiled.Bootstrap")
             {
                 return type.GetMethod("LoadExiled") is not null;
             }
