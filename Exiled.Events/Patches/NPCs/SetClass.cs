@@ -8,7 +8,9 @@
 namespace Exiled.Events.Patches.NPCs
 {
     using Exiled.API.Extensions;
+
     using HarmonyLib;
+
     using UnityEngine;
 
 #pragma warning disable SA1118

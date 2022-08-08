@@ -8,13 +8,19 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System;
+
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
     using Mirror;
+
     using UnityEngine;
+
     using Server = Exiled.API.Features.Server;
 
     /// <summary>

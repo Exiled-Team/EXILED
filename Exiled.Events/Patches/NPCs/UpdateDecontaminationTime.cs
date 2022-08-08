@@ -9,10 +9,15 @@ namespace Exiled.Events.Patches.NPCs
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using Exiled.API.Extensions;
+
     using HarmonyLib;
+
     using LightContainmentZoneDecontamination;
+
     using NorthwoodLib.Pools;
+
     using UnityEngine;
 
 #pragma warning disable SA1118

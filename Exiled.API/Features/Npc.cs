@@ -8,8 +8,11 @@
 namespace Exiled.API.Features
 {
     using System.Collections.Generic;
+
     using Exiled.API.Enums;
+
     using Mirror;
+
     using UnityEngine;
 
     /// <summary>

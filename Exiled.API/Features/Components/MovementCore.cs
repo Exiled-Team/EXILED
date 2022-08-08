@@ -8,8 +8,11 @@
 namespace Exiled.API.Features.Components
 {
     using System.Collections.Generic;
+
     using Exiled.API.Enums;
+
     using MEC;
+
     using UnityEngine;
 
     /// <summary>

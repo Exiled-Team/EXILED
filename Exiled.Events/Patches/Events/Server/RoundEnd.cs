@@ -11,15 +11,22 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
     using MEC;
+
     using RoundRestarting;
+
     using UnityEngine;
+
     using Console = GameCore.Console;
 
     /// <summary>

@@ -8,8 +8,10 @@
 namespace Exiled.Events.Patches.NPCs
 {
     using System.Linq;
+
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+
     using HarmonyLib;
 
 #pragma warning disable SA1313
