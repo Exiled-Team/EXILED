@@ -100,12 +100,12 @@ namespace Exiled.API.Features
         public bool IsFullyOpen => ExactState is 1;
 
         /// <summary>
-        /// Gets a value indicating whether or not the door is open.
+        /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
         public bool IsMoving => ExactState is not(0 or 1);
 
         /// <summary>
-        /// Gets a value indicating how mush the door is open 1 are fully open and 0 are fully close.
+        /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
         /// </summary>
         public float ExactState => Base.GetExactState();
 
