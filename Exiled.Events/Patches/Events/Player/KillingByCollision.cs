@@ -20,10 +20,17 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(Collider other)
         {
-            KillingByCollisionEventArgs ev = new KillingByCollisionEventArgs(API.Features.Player.Get(other.transform.root.gameObject));
+            if (!ReferenceHub.TryGetHub(other.transform.root.gameObject, out ReferenceHub referenceHub))
+                return false;
+
+            KillingByCollisionEventArgs ev = new KillingByCollisionEventArgs(API.Features.Player.Get(referenceHub));
             Handlers.Player.OnKillingByCollision(ev);
 
-            return ev.IsAllowed;
+            if (!ev.IsAllowed)
+                return false;
+
+            referenceHub.playerStats.DealDamage(new PlayerStatsSystem.UniversalDamageHandler(-1f, PlayerStatsSystem.DeathTranslations.Crushed));
+            return false;
         }
     }
 }
