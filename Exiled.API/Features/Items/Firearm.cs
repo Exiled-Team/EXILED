@@ -74,6 +74,7 @@ namespace Exiled.API.Features.Items
         internal Firearm(ItemType type)
             : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(type, false))
         {
+            Base.Status = new FirearmStatus(Base.Status.Ammo, Base.Status.Flags & ~FirearmStatusFlags.None | FirearmStatusFlags.MagazineInserted, Base.Status.Attachments);
         }
 
         /// <inheritdoc cref="AvailableAttachmentsValue"/>.
@@ -553,6 +554,7 @@ namespace Exiled.API.Features.Items
                 ItemId = Type,
                 Position = position,
                 Weight = pickup.Weight,
+                Serial = Serial,
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 

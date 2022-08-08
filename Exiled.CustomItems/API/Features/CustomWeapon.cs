@@ -30,6 +30,7 @@ namespace Exiled.CustomItems.API.Features
 
     using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Firearm = Exiled.API.Features.Items.Firearm;
+    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
@@ -84,7 +85,10 @@ namespace Exiled.CustomItems.API.Features
             if (Attachments is not null && !Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
 
+            firearm.Ammo = ClipSize;
+
             Pickup pickup = firearm.CreatePickup(position);
+
             if (pickup is null)
             {
                 Log.Debug($"{nameof(Spawn)}: Pickup is null.", Instance.Config.Debug);
@@ -96,16 +100,6 @@ namespace Exiled.CustomItems.API.Features
                 pickup.PreviousOwner = previousOwner;
 
             TrackedSerials.Add(pickup.Serial);
-
-            Timing.CallDelayed(1f, () =>
-            {
-                if (pickup.Base is BaseFirearmPickup firearmPickup)
-                {
-                    firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
-                    firearmPickup.NetworkStatus = firearmPickup.Status;
-                    Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
-                }
-            });
 
             return pickup;
         }
@@ -121,7 +115,8 @@ namespace Exiled.CustomItems.API.Features
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
                 Pickup pickup = firearm.CreatePickup(position);
 
-                pickup.PreviousOwner = previousOwner;
+                if (previousOwner is not null)
+                    pickup.PreviousOwner = previousOwner;
 
                 TrackedSerials.Add(pickup.Serial);
 

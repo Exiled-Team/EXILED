@@ -239,6 +239,7 @@ namespace Exiled.API.Features.Items
                 ItemId = Type,
                 Position = position,
                 Weight = Weight,
+                Serial = Serial,
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 
