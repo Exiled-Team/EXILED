@@ -148,7 +148,7 @@ namespace Exiled.API.Features
         public static void Shake()
         {
             foreach (Player player in Player.List)
-                Controller.TargetRpcShake(player.Connection, false, false);
+                Controller.TargetRpcShake(player.Connection, false, player.IsGodModeEnabled);
         }
     }
 }

@@ -94,8 +94,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
                     stringBuilder.AppendLine($"- {permission}");
             }
 
-            response = stringBuilder.ToString();
-            StringBuilderPool.Shared.Return(stringBuilder);
+            response = StringBuilderPool.Shared.ToStringReturn(stringBuilder);
             return true;
         }
     }
