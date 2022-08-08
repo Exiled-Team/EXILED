@@ -65,7 +65,7 @@ namespace Exiled.API.Interfaces
         Version RequiredExiledVersion { get; }
 
         /// <summary>
-        /// Gets a value indicating if a plugin should bypass the required EXILED version check.
+        /// Gets a value indicating whether a plugin should bypass the required EXILED version check.
         /// This should only be used by plugins which do not need to be updated across major version updates.
         /// </summary>
         bool IgnoreRequiredVersionCheck { get; }
