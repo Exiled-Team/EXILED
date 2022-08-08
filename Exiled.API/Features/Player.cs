@@ -2800,6 +2800,15 @@ namespace Exiled.API.Features
                 case DoorType doorType:
                     Teleport(Door.Get(doorType).Position + Vector3.up);
                     break;
+                case RoomType roomType:
+                    Teleport(Room.Get(roomType).Position + Vector3.up);
+                    break;
+                case Enums.CameraType cameraType:
+                    Teleport(Camera.Get(cameraType).Position);
+                    break;
+                case ElevatorType elevatorType:
+                    Teleport(Lift.Get(elevatorType).Position + Vector3.up);
+                    break;
                 case Room room:
                     Teleport(room.Position + Vector3.up);
                     break;
