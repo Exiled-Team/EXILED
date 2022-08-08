@@ -8,7 +8,7 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// Indicates the direction a player is moving.
+    /// Indicates the direction a player is moving in.
     /// </summary>
     public enum MovementDirection
     {
@@ -18,12 +18,12 @@ namespace Exiled.API.Enums
         None,
 
         /// <summary>
-        /// The player is moving forwards.
+        /// The player is moving forward.
         /// </summary>
         Forward,
 
         /// <summary>
-        /// The player is moving backwards.
+        /// The player is moving backward.
         /// </summary>
         Backwards,
 

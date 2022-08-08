@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerManager.AddPlayer"/> to reduce the total player count from the amount of spawned npcs.
+    /// Patches <see cref="PlayerManager.AddPlayer"/> to reduce the total player count from the amount of spawned NPCs.
     /// </summary>
     [HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.AddPlayer))]
     internal static class AddPlayer

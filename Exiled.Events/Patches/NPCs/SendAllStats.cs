@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.NPCs
 
 #pragma warning disable SA1118
     /// <summary>
-    /// Patches <see cref="SyncedStatMessages.SendAllStats"/> to sending stats to null connections.
+    /// Patches <see cref="SyncedStatMessages.SendAllStats"/> to sending stats to null connections (such as NPCs).
     /// </summary>
     [HarmonyPatch(typeof(SyncedStatMessages), nameof(SyncedStatMessages.SendAllStats))]
     internal static class SendAllStats

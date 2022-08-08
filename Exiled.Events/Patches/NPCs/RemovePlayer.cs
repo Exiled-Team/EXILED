@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerManager.RemovePlayer"/> to reduce the total player count from the amount of spawned npcs.
+    /// Patches <see cref="PlayerManager.RemovePlayer"/> to reduce the total player count from the amount of spawned NPCs.
     /// </summary>
     [HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.RemovePlayer))]
     internal static class RemovePlayer

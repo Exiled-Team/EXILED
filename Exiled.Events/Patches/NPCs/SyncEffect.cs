@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerEffectsController.ServerSyncEffect"/> to stop the syncing of effects to a client that does not exist.
+    /// Patches <see cref="PlayerEffectsController.ServerSyncEffect"/> to stop the syncing of effects to a client that does not exist (such as NPCs).
     /// </summary>
     [HarmonyPatch(typeof(PlayerEffectsController), nameof(PlayerEffectsController.ServerSyncEffect))]
     internal static class SyncEffect

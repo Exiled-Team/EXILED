@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.NPCs
 
 #pragma warning disable SA1118
     /// <summary>
-    /// Patches <see cref="PlayerMovementSync.TargetForceRotation"/> to prevent the sending of target messages to null connections.
+    /// Patches <see cref="PlayerMovementSync.TargetForceRotation"/> to prevent the sending of target messages to null connections (such as NPCs).
     /// </summary>
     [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.TargetForceRotation))]
     internal static class TargetForceRotation

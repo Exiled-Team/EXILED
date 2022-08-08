@@ -17,7 +17,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.LateUpdate"/> to prevent more NREs.
+    /// Patches <see cref="Scp106PlayerScript.LateUpdate"/> to prevent some NREs with NPCs.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.LateUpdate))]
     internal static class Scp106LateUpdate

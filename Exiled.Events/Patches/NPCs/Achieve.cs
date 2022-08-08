@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.NPCs
 
 #pragma warning disable SA1118
     /// <summary>
-    /// Patches <see cref="AchievementHandlerBase.ServerAchieve"/> to prevent sending achievement messages to null connections.
+    /// Patches <see cref="AchievementHandlerBase.ServerAchieve"/> to prevent sending achievement messages to null connections (such as NPCs).
     /// </summary>
     [HarmonyPatch(typeof(AchievementHandlerBase), nameof(AchievementHandlerBase.ServerAchieve))]
     internal static class Achieve

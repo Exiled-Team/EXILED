@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.NPCs
 
 #pragma warning disable SA1313
     /// <summary>
-    /// Patches <see cref="RoundSummary.CountTeam"/> to ignore npcs.
+    /// Patches <see cref="RoundSummary.CountTeam"/> to ignore NPCs.
     /// </summary>
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.CountTeam))]
     internal static class CountTeam

@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp096.OnUpdate"/> to prevent 096 from shitting itself.
+    /// Patches <see cref="Scp096.OnUpdate"/> to prevent issues with NPCs.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.OnUpdate))]
     internal static class Scp096Update

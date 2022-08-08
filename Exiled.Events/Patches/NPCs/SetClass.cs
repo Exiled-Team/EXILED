@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.NPCs
 
 #pragma warning disable SA1118
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.SetPlayersClass"/> to force the lite argument to be true if the target is an npc.
+    /// Patches <see cref="CharacterClassManager.SetPlayersClass"/> to force the lite argument to be true if the target is an NPC.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))]
     internal static class SetClass

@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="StandardHitregBase.ShowHitIndicator"/> to prevent sending hit indicators to null connections.
+    /// Patches <see cref="StandardHitregBase.ShowHitIndicator"/> to prevent sending hit indicators to null connections (such as NPCs).
     /// </summary>
     [HarmonyPatch(typeof(StandardHitregBase), nameof(StandardHitregBase.ShowHitIndicator))]
     internal static class ShowHitIndicator

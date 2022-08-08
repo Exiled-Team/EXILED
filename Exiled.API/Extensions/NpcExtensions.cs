@@ -16,24 +16,24 @@ namespace Exiled.API.Extensions
     public static class NpcExtensions
     {
         /// <summary>
-        /// Checks if a <see cref="Player"/> is an npc.
+        /// Checks if a <see cref="Player"/> is an NPC.
         /// </summary>
         /// <param name="player">The player to check.</param>
-        /// <returns>A value indicating the player is an NPC.</returns>
+        /// <returns>A value indicating if the player is an NPC.</returns>
         public static bool IsNpc(this Player player) => player.GameObject.IsNpc();
 
         /// <summary>
-        /// Checks if a <see cref="ReferenceHub"/> is an npc.
+        /// Checks if a <see cref="ReferenceHub"/> is an NPC.
         /// </summary>
         /// <param name="referenceHub">The player to check.</param>
-        /// <returns>A value indicating the player is an NPC.</returns>
+        /// <returns>A value indicating if the player is an NPC.</returns>
         public static bool IsNpc(this ReferenceHub referenceHub) => referenceHub.gameObject.IsNpc();
 
         /// <summary>
-        /// Checks a <see cref="GameObject"/> to see if it belongs to an npc.
+        /// Checks if a <see cref="GameObject"/> is an NPC.
         /// </summary>
-        /// <param name="gameObject">The object to check.</param>
-        /// <returns>A value indicating the gameobject is an NPC.</returns>
+        /// <param name="gameObject">The game object to check.</param>
+        /// <returns>A value indicating if the gameobject is an NPC.</returns>
         public static bool IsNpc(this GameObject gameObject) => Npc.Dictionary.ContainsKey(gameObject);
     }
 }

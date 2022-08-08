@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Player.Scale"/> to prevent network garbage with npcs.
+    /// Patches <see cref="Player.Scale"/> to prevent network garbage with NPCs.
     /// </summary>
     [HarmonyPatch(typeof(Player), nameof(Player.Scale), MethodType.Setter)]
     internal static class SetScale

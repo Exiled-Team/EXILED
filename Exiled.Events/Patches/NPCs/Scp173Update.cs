@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp173.OnUpdate"/> to prevent 173 from shitting itself.
+    /// Patches <see cref="Scp173.OnUpdate"/> to prevent issues with NPCs.
     /// </summary>
     [HarmonyPatch(typeof(Scp173), nameof(Scp173.OnUpdate))]
     internal static class Scp173Update

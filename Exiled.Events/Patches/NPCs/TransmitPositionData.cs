@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerPositionManager.TransmitData"/> to prevent the updating of networked positions on npcs.
+    /// Patches <see cref="PlayerPositionManager.TransmitData"/> to prevent the updating of networked positions on NPCs.
     /// </summary>
     [HarmonyPatch(typeof(PlayerPositionManager), nameof(PlayerPositionManager.TransmitData))]
     internal static class TransmitPositionData

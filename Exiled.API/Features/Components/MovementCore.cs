@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Components
     using UnityEngine;
 
     /// <summary>
-    /// Handles the movements of a fake player.
+    /// Handles the movements of an NPC.
     /// </summary>
     public class MovementCore
     {
@@ -24,7 +24,7 @@ namespace Exiled.API.Features.Components
         /// <summary>
         /// Initializes a new instance of the <see cref="MovementCore"/> class.
         /// </summary>
-        /// <param name="npc">The npc to control.</param>
+        /// <param name="npc">The NPC to control the movement of.</param>
         public MovementCore(Npc npc)
         {
             this.npc = npc;
@@ -33,12 +33,12 @@ namespace Exiled.API.Features.Components
         }
 
         /// <summary>
-        /// Gets or sets the object to follow.
+        /// Gets or sets a game object that the NPC should follow.
         /// </summary>
         public GameObject FollowTarget { get; set; }
 
         /// <summary>
-        /// Gets or sets the movement type of the pet.
+        /// Gets or sets the movement type of the NPC.
         /// </summary>
         public PlayerMovementState Movement
         {
@@ -47,7 +47,7 @@ namespace Exiled.API.Features.Components
         }
 
         /// <summary>
-        /// Gets or sets the direction the pet is moving.
+        /// Gets or sets the direction that the NPC is moving in.
         /// </summary>
         public MovementDirection Direction { get; set; } = MovementDirection.Forward;
 

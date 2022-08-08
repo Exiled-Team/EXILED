@@ -13,7 +13,7 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// Represents the core of an npc.
+    /// Represents an NPC.
     /// </summary>
     public class Npc
     {
@@ -22,10 +22,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Npc"/> class.
         /// </summary>
-        /// <param name="roleType">The role of the npc.</param>
-        /// <param name="name">The name of the npc.</param>
-        /// <param name="scale">The size of the npc.</param>
-        /// <param name="triggerScps">Whether or not the npc should trigger scps.</param>
+        /// <param name="roleType">The role of the NPC.</param>
+        /// <param name="name">The name of the NPC.</param>
+        /// <param name="scale">The size of the NPC.</param>
+        /// <param name="triggerScps">Whether the NPC should trigger SCPs.</param>
         public Npc(RoleType roleType, string name, Vector3 scale, bool triggerScps = false)
         {
             GameObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
@@ -51,12 +51,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="Dictionary{TKey,TValue}"/> containing all <see cref="Npc"/>'s on the server.
+        /// Gets a <see cref="Dictionary{TKey,TValue}"/> containing all <see cref="Npc"/>s on the server.
         /// </summary>
         public static Dictionary<GameObject, Npc> Dictionary { get; } = new();
 
         /// <summary>
-        /// Gets a list of all <see cref="Npc"/>s on the server.
+        /// Gets a list of all the <see cref="Npc"/>s on the server.
         /// </summary>
         public static IEnumerable<Npc> List => Dictionary.Values;
 
@@ -71,12 +71,12 @@ namespace Exiled.API.Features
         public ReferenceHub ReferenceHub { get; }
 
         /// <summary>
-        /// Gets the created <see cref="Exiled.API.Features.Player"/> to represent the npc.
+        /// Gets the <see cref="Exiled.API.Features.Player"/> to represent the NPC.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the npc should trigger scps.
+        /// Gets or sets a value indicating whether the NPC should trigger SCPs.
         /// </summary>
         public bool TriggerScps { get; set; }
 
@@ -172,7 +172,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Destroys the fake player.
+        /// Destroys the NPC.
         /// </summary>
         public void Destroy()
         {

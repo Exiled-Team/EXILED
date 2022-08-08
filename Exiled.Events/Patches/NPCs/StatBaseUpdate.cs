@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="SyncedStatBase.Update"/> to prevent sending to null connections.
+    /// Patches <see cref="SyncedStatBase.Update"/> to prevent sending to null connections (such as NPCs).
     /// </summary>
     [HarmonyPatch(typeof(SyncedStatBase), nameof(SyncedStatBase.Update))]
     internal static class StatBaseUpdate

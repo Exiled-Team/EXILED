@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Prevents an NRE caused by <see cref="QueryProcessor.Start"/> from more accessing of connectionToClient on npcs.
+    /// Prevents an NRE caused by <see cref="QueryProcessor.Start"/> from accessing of connectionToClient on NPCs.
     /// </summary>
     [HarmonyPatch(typeof(QueryProcessor), nameof(QueryProcessor.Start))]
     internal static class StartQueryProcessor

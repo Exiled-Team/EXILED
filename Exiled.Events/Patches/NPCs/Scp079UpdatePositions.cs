@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.UpdateScpPositions"/> to prevent tracking of npcs.
+    /// Patches <see cref="Scp079PlayerScript.UpdateScpPositions"/> to prevent tracking of NPCs.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UpdateScpPositions))]
     internal static class Scp079UpdatePositions

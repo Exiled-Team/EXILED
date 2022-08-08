@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.NPCs
 
 #pragma warning disable SA1313
     /// <summary>
-    /// Patches <see cref="RoundSummary.CountRole"/> to skip npcs.
+    /// Patches <see cref="RoundSummary.CountRole"/> to skip NPCs.
     /// </summary>
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.CountRole))]
     internal static class CountRole

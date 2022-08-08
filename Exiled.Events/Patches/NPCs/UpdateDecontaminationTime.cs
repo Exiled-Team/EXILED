@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.NPCs
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="DecontaminationController.UpdateTime"/> to prevent the sending of networked subtitles to npcs.
+    /// Patches <see cref="DecontaminationController.UpdateTime"/> to prevent the sending of networked subtitles to NPCs.
     /// </summary>
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.UpdateTime))]
     internal static class UpdateDecontaminationTime
