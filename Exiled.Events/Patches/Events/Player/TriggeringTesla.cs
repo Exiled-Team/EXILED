@@ -7,8 +7,9 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System;
 #pragma warning disable SA1313
+    using System;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -73,13 +74,13 @@ namespace Exiled.Events.Patches.Events.Player
                             Log.Error($"{nameof(TriggeringTesla)}.Prefix: {e}");
 #endif
                         }
-
-                        if (isTriggerable)
-                            teslaGate.Trigger();
-
-                        if (inIdleRange != teslaGate.IsIdling)
-                            teslaGate.IsIdling = inIdleRange;
                     }
+
+                    if (isTriggerable)
+                        teslaGate.Trigger();
+
+                    if (inIdleRange != teslaGate.IsIdling)
+                        teslaGate.IsIdling = inIdleRange;
                 }
 
                 return false;

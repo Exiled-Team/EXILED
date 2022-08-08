@@ -32,6 +32,8 @@ namespace Exiled.CustomItems.API.Features
 
     using MEC;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using YamlDotNet.Serialization;
@@ -222,7 +224,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(id, out CustomItem item))
                 return false;
 
-            pickup = item.Spawn(position);
+            pickup = item.Spawn(position, (Player)null);
 
             return true;
         }
@@ -241,7 +243,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(name, out CustomItem item))
                 return false;
 
-            pickup = item.Spawn(position);
+            pickup = item.Spawn(position, (Player)null);
 
             return true;
         }
@@ -309,7 +311,7 @@ namespace Exiled.CustomItems.API.Features
                             {
                                 if (property.GetValue(overrideClass ?? plugin.Config) is IEnumerable enumerable)
                                 {
-                                    List<CustomItem> list = new();
+                                    List<CustomItem> list = ListPool<CustomItem>.Shared.Rent();
                                     foreach (object item in enumerable)
                                     {
                                         if (item is CustomItem ci)
@@ -330,6 +332,8 @@ namespace Exiled.CustomItems.API.Features
                                         flag = true;
                                         items.Add(item);
                                     }
+
+                                    ListPool<CustomItem>.Shared.Return(list);
                                 }
 
                                 continue;
@@ -391,8 +395,7 @@ namespace Exiled.CustomItems.API.Features
                         }
                     }
 
-                    if (customItem is null)
-                        customItem = (CustomItem)Activator.CreateInstance(type);
+                    customItem ??= (CustomItem)Activator.CreateInstance(type);
 
                     if (customItem.Type == ItemType.None)
                         customItem.Type = ((CustomItemAttribute)attribute).ItemType;
@@ -459,7 +462,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z));
+        public virtual Pickup Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z), (Player)null);
 
         /// <summary>
         /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> in a specific location.
@@ -469,14 +472,32 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="z">The z coordinate.</param>
         /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(float x, float y, float z, Item item) => Spawn(new Vector3(x, y, z), item);
+        public virtual Pickup Spawn(float x, float y, float z, Item item) => Spawn(new Vector3(x, y, z), item, null);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        [Obsolete("Use Spawn(Player, Player) instead.", true)]
         public virtual Pickup Spawn(Player player) => Spawn(player.Position);
+
+        /// <summary>
+        /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is, and optionally sets the previous owner.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
+        /// <param name="previousOwner">The previous owner of the pickup, can be null.</param>
+        /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(Player player, Player previousOwner = null) => Spawn(player.Position, previousOwner);
+
+        /// <summary>
+        /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is, and optionally sets the previous owner.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
+        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        /// <param name="previousOwner">The previous owner of the pickup, can be null.</param>
+        /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(Player player, Item item, Player previousOwner = null) => Spawn(player.Position, item, previousOwner);
 
         /// <summary>
         /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
@@ -484,17 +505,49 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(Player player, Item item) => Spawn(player.Position, item);
+        [Obsolete("Use Spawn(Player, Item, Player) instead.", true)]
+        public virtual Pickup Spawn(Player player, Item item)
+        {
+            Pickup pickup = Spawn(player.Position, item);
+            return pickup;
+        }
+
+        /// <summary>
+        /// Spawns the <see cref="CustomItem"/> in a specific position.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
+        /// <param name="previousOwner">The <see cref="Pickup.PreviousOwner"/> of the item. Can be null.</param>
+        /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(Vector3 position, Player previousOwner = null) => Spawn(position, CreateCorrectItem(), previousOwner);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific position.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        [Obsolete("Use Spawn(Vector3, Player) instead.", true)]
         public virtual Pickup Spawn(Vector3 position)
         {
             Pickup pickup = CreateCorrectItem().Spawn(position);
             pickup.Weight = Weight;
+            TrackedSerials.Add(pickup.Serial);
+
+            return pickup;
+        }
+
+        /// <summary>
+        /// Spawns the <see cref="CustomItem"/> in a specific position.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
+        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        /// <param name="previousOwner">The <see cref="Pickup.PreviousOwner"/> of the item. Can be null.</param>
+        /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
+        {
+            Pickup pickup = item.Spawn(position);
+            pickup.Weight = Weight;
+            if (previousOwner is not null)
+                pickup.PreviousOwner = previousOwner;
             TrackedSerials.Add(pickup.Serial);
 
             return pickup;
@@ -506,6 +559,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        [Obsolete("Use Spawn(Vector3, Item, Player) instead.", true)]
         public virtual Pickup Spawn(Vector3 position, Item item)
         {
             Pickup pickup = item.Spawn(position);
@@ -574,7 +628,7 @@ namespace Exiled.CustomItems.API.Features
                         }
 
                         Vector3 position = chamber._spawnpoint.transform.position;
-                        Spawn(position);
+                        Spawn(position, (Player)null);
                         Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})", Instance.Config.Debug);
 
                         break;
@@ -583,11 +637,11 @@ namespace Exiled.CustomItems.API.Features
                 else if (spawnPoint is RoleSpawnPoint roleSpawnPoint)
                 {
                     Vector3 position = roleSpawnPoint.Role.GetRandomSpawnProperties().Item1;
-                    Spawn(position);
+                    Spawn(position, (Player)null);
                 }
                 else
                 {
-                    Pickup pickup = Spawn(spawnPoint.Position);
+                    Pickup pickup = Spawn(spawnPoint.Position, (Player)null);
                     if (pickup.Base is FirearmPickup firearmPickup && this is CustomWeapon customWeapon)
                     {
                         firearmPickup.Status = new FirearmStatus(customWeapon.ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
@@ -858,9 +912,7 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player)
-        {
-        }
+        protected virtual void OnAcquired(Player player) => ShowPickedUpMessage(player);
 
         /// <summary>
         /// Clears the lists of item uniqIDs and Pickups since any still in the list will be invalid.
@@ -871,7 +923,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Shows a message to the player when he pickups a custom item.
+        /// Shows a message to the player upon picking up a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowPickedUpMessage(Player player)
@@ -880,7 +932,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Shows a message to the player when he selects a custom item.
+        /// Shows a message to the player upon selecting a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)
@@ -916,7 +968,7 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Player.RemoveItem(item);
 
-                Spawn(ev.Player, item);
+                Spawn(ev.Player, item, ev.Player);
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -938,7 +990,7 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Remove(item.Serial);
 
-                Spawn(ev.Target, item);
+                Spawn(ev.Target, item, ev.Target);
 
                 MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -960,7 +1012,7 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Remove(item.Serial);
 
-                Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item));
+                Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item, null));
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -982,7 +1034,7 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Remove(item.Serial);
 
-                Spawn(ev.Target, item);
+                Spawn(ev.Target, item, ev.Target);
             }
         }
 
@@ -1010,7 +1062,7 @@ namespace Exiled.CustomItems.API.Features
                 ev.Player.Inventory.SendItemsNextFrame = true;
             }
 
-            Pickup pickup = Spawn(ev.Player, ev.Item);
+            Pickup pickup = Spawn(ev.Player, ev.Item, ev.Player);
             if (pickup.Base.Rb is not null && ev.IsThrown)
             {
                 Vector3 vector = (ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity / 3f) + (ev.Player.ReferenceHub.PlayerCameraReference.forward * 6f * (Mathf.Clamp01(Mathf.InverseLerp(7f, 0.1f, pickup.Base.Rb.mass)) + 0.3f));

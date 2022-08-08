@@ -7,11 +7,10 @@
 
 namespace Exiled.API.Features.Roles
 {
-    using System;
-
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
-    using MEC;
+    using UnityEngine;
 
     /// <summary>
     /// Defines the class for role-related classes.
@@ -41,12 +40,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this role.
         /// </summary>
-        public Enums.Side Side => Type.GetSide();
+        public Side Side => Type.GetSide();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this role.
         /// </summary>
-        public UnityEngine.Color Color => Type.GetColor();
+        public Color Color => Type.GetColor();
 
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
@@ -86,7 +85,7 @@ namespace Exiled.API.Features.Roles
         public static bool operator !=(Role role1, Role role2)
         {
             if (role1 is null)
-                return !(role2 is null);
+                return role2 is not null;
             return !role1.Equals(role2);
         }
 
@@ -144,14 +143,17 @@ namespace Exiled.API.Features.Roles
             where T : Role
         {
             role = this is T t ? t : null;
-            return this is T;
+            return role is not null;
         }
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
 
-        /// <inheritdoc/>
-        public override string ToString() => Type.ToString();
+        /// <summary>
+        /// Returns the role in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing role-related data.</returns>
+        public override string ToString() => $"{Side} {Team} {Type} {IsValid}";
 
         /// <inheritdoc/>
         public override int GetHashCode() => base.GetHashCode();

@@ -20,6 +20,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayableScps;
 
     using UnityEngine;

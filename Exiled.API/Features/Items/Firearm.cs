@@ -63,6 +63,7 @@ namespace Exiled.API.Features.Items
             {
                 AutomaticFirearm auto => new AutomaticAmmoManager(auto, auto._baseMaxAmmo, 1, auto._boltTravelTime == 0),
                 Shotgun shotgun => new TubularMagazineAmmoManager(shotgun, Serial, shotgun._ammoCapacity, shotgun._numberOfChambers, 0.5f, 3, "ShellsToLoad", ActionName.Zoom, ActionName.Shoot),
+                ParticleDisruptor particleDisruptor => new DisruptorAction(particleDisruptor, 0f, 0f, true),
                 _ => new ClipLoadedInternalMagAmmoManager(Base, 6),
             };
             Base._status = new FirearmStatus(MaxAmmo, FirearmStatusFlags.MagazineInserted, 0);
@@ -214,6 +215,8 @@ namespace Exiled.API.Features.Items
                 identifier.Code;
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~toRemove | newCode, true);
+
+            Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -257,6 +260,11 @@ namespace Exiled.API.Features.Items
                 identifier.Code;
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
+
+            if (identifier.Name == AttachmentName.Flashlight)
+                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
+            else
+                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -273,6 +281,11 @@ namespace Exiled.API.Features.Items
             uint code = AvailableAttachments[Type].FirstOrDefault(attId => attId == firearmAttachment).Code;
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
+
+            if (attachmentName == AttachmentName.Flashlight)
+                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
+            else
+                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -289,6 +302,11 @@ namespace Exiled.API.Features.Items
             uint code = AvailableAttachments[Type].FirstOrDefault(attId => attId == firearmAttachment).Code;
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
+
+            if (firearmAttachment.Name == AttachmentName.Flashlight)
+                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
+            else
+                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -519,6 +537,20 @@ namespace Exiled.API.Features.Items
         {
             foreach (Player player in Player.List)
                 ClearPreferences(player);
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Firearm"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Firearm"/> object. </returns>
+        public override Item Clone()
+        {
+            Firearm cloneableItem = new(Type);
+
+            cloneableItem.Ammo = Ammo;
+            cloneableItem.FireRate = FireRate;
+
+            return cloneableItem;
         }
     }
 }

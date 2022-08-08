@@ -21,6 +21,8 @@ namespace Exiled.API.Extensions
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
     using Respawning;
 
     using UnityEngine;
@@ -34,8 +36,8 @@ namespace Exiled.API.Extensions
         private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new();
         private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new(WriterExtensionsValue);
         private static readonly ReadOnlyDictionary<string, ulong> ReadOnlySyncVarDirtyBitsValue = new(SyncVarDirtyBitsValue);
-        private static MethodInfo setDirtyBitsMethodInfoValue = null;
-        private static MethodInfo sendSpawnMessageMethodInfoValue = null;
+        private static MethodInfo setDirtyBitsMethodInfoValue;
+        private static MethodInfo sendSpawnMessageMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -95,40 +97,20 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets a <see cref="NetworkBehaviour.SetDirtyBit(ulong)"/>'s <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SetDirtyBitsMethodInfo
-        {
-            get
-            {
-                if (setDirtyBitsMethodInfoValue is null)
-                {
-                    setDirtyBitsMethodInfoValue = typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
-                }
-
-                return setDirtyBitsMethodInfoValue;
-            }
-        }
+        public static MethodInfo SetDirtyBitsMethodInfo =>
+            setDirtyBitsMethodInfoValue ??= typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
 
         /// <summary>
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SendSpawnMessageMethodInfo
-        {
-            get
-            {
-                if (sendSpawnMessageMethodInfoValue is null)
-                {
-                    sendSpawnMessageMethodInfoValue = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
-                }
-
-                return sendSpawnMessageMethodInfoValue;
-            }
-        }
+        public static MethodInfo SendSpawnMessageMethodInfo =>
+            sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
         /// Shaking target <see cref="Player"/> window.
         /// </summary>
         /// <param name="player">Target to shake.</param>
-        public static void Shake(this Player player) => SendFakeTargetRpc(player, AlphaWarheadController.Host.netIdentity, typeof(AlphaWarheadController), nameof(AlphaWarheadController.TargetRpcShake), false);
+        public static void Shake(this Player player) => AlphaWarheadController.Host.TargetRpcShake(player.Connection, false, true);
 
         /// <summary>
         /// Play beep sound to <see cref="Player"/>.
@@ -216,7 +198,16 @@ namespace Exiled.API.Extensions
         /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
         /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
         /// <param name="isSubtitles">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isSubtitles.</param>
-        public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+        public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false)
+        {
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+                }
+            }
+        }
 
         /// <summary>
         /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
@@ -230,13 +221,21 @@ namespace Exiled.API.Extensions
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = new();
+            StringBuilder annoucement = StringBuilderPool.Shared.Rent();
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
-            for (int i = 0; i < cassies.Count(); i++)
-                annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
+            for (int i = 0; i < cassies.Length; i++)
+                annoucement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
 
-            SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+                }
+            }
+
+            StringBuilderPool.Shared.Return(annoucement);
         }
 
         /// <summary>
@@ -249,7 +248,6 @@ namespace Exiled.API.Extensions
         {
             if (useCap)
                 multiplier = Mathf.Clamp(multiplier, -2f, 2f);
-
             SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
         }
 
@@ -263,7 +261,6 @@ namespace Exiled.API.Extensions
         {
             if (useCap)
                 multiplier = Mathf.Clamp(multiplier, -1.4f, 1.4f);
-
             SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), multiplier);
         }
 
@@ -279,7 +276,7 @@ namespace Exiled.API.Extensions
         {
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
-                targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
+                targetWriter.WriteUInt64(SyncVarDirtyBits[propertyName]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
             }
 

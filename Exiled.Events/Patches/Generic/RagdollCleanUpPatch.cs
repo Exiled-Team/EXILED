@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable 1584
-#pragma warning disable SA1118 // Parameter should not span multiple lines
     using System.Collections.Generic;
     using System.Reflection.Emit;
 

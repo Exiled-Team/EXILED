@@ -69,6 +69,11 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
+        /// Gets the lift's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => GameObject.transform;
+
+        /// <summary>
         /// Gets the lift's position.
         /// </summary>
         public Vector3 Position => Base.transform.position;
@@ -90,7 +95,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
         /// </summary>
-        #pragma warning disable SA1122
+#pragma warning disable SA1122
         public ElevatorType Type => Name switch
         {
             "SCP-049" => ElevatorType.Scp049,
@@ -101,7 +106,7 @@ namespace Exiled.API.Features
             "" => ElevatorType.Nuke,
             _ => ElevatorType.Unknown,
         };
-        #pragma warning restore SA1122
+#pragma warning restore SA1122
 
         /// <summary>
         /// Gets a value indicating whether the lift is operative.
@@ -212,9 +217,10 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to melt.</param>
         /// <returns><see langword="true"/> if the player was melted successfully; otherwise, <see langword="false"/>.</returns>
+        /// <seealso cref="Player.EnableEffect(EffectType, float, bool)"/>
         public static bool TryMeltPlayer(Player player)
         {
-            if (player.Position.y >= 200 || player.Position.y <= -200)
+            if (player.Position.y is >= 200 or <= -200)
                 return false;
 
             player.EnableEffect(EffectType.Decontaminating);
@@ -232,5 +238,11 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns><see langword="true"/> if the lift was started successfully; otherwise, <see langword="false"/>.</returns>
         public bool TryStart() => Base.UseLift();
+
+        /// <summary>
+        /// Returns the Lift in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Lift-related data.</returns>
+        public override string ToString() => $"{Type} {Status} [{MovingSpeed}] *{IsLocked}* |{IsLockable}|";
     }
 }

@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -60,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Brfalse, returnLabel),
             });
 
-            offset = 2;
+            offset = -2;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
             (MethodInfo)instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryUnload))) + offset;
 

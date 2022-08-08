@@ -28,6 +28,11 @@ namespace Exiled.API.Features
         public static string ManagedAssemblies { get; } = Path.Combine(Path.Combine(Environment.CurrentDirectory, "SCPSL_Data"), "Managed");
 
         /// <summary>
+        /// Gets the server's config path.
+        /// </summary>
+        public static string ServerConfig { get; } = FileManager.GetAppFolder(serverConfig: true);
+
+        /// <summary>
         /// Gets or sets exiled directory path.
         /// </summary>
         public static string Exiled { get; set; }

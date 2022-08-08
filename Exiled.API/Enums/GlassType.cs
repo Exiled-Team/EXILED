@@ -12,6 +12,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of Window.
     /// </summary>
+    /// <seealso cref="Window.Type"/>
     public enum GlassType
     {
         /// <summary>

@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before SCP-079 changes rooms via elevator.
+    /// Contains all information before SCP-079 changes rooms via elevator.
     /// </summary>
     public class ElevatorTeleportEventArgs : ElevatorTeleportingEventArgs
     {

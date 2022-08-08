@@ -30,7 +30,9 @@ namespace Exiled.CustomItems.API.Features
     using Firearm = Exiled.API.Features.Items.Firearm;
     using Player = Exiled.API.Features.Player;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The Custom Weapon base class.
+    /// </summary>
     public abstract class CustomWeapon : CustomItem
     {
         /// <summary>
@@ -67,6 +69,7 @@ namespace Exiled.CustomItems.API.Features
         public virtual bool FriendlyFire { get; set; }
 
         /// <inheritdoc/>
+        [Obsolete("Use Spawn(Vector3, Player) instead.", true)]
         public override Pickup Spawn(Vector3 position)
         {
             Item item = Item.Create(Type);
@@ -93,7 +96,48 @@ namespace Exiled.CustomItems.API.Features
             return pickup;
         }
 
+        /// <inheritdoc />
+        public override Pickup Spawn(Vector3 position, Player previousOwner = null)
+        {
+            Item item = Item.Create(Type);
+
+            if (item is null)
+            {
+                Log.Debug($"{nameof(Spawn)}: Item is null.", Instance.Config.Debug);
+                return null;
+            }
+
+            if (item is Firearm firearm && Attachments is not null && !Attachments.IsEmpty())
+                firearm.AddAttachment(Attachments);
+
+            Pickup pickup = item.Spawn(position);
+            if (pickup is null)
+            {
+                Log.Debug($"{nameof(Spawn)}: Pickup is null.", Instance.Config.Debug);
+                return null;
+            }
+
+            pickup.Weight = Weight;
+            if (previousOwner is not null)
+                pickup.PreviousOwner = previousOwner;
+
+            TrackedSerials.Add(pickup.Serial);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                if (pickup.Base is FirearmPickup firearmPickup)
+                {
+                    firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                    firearmPickup.NetworkStatus = firearmPickup.Status;
+                    Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                }
+            });
+
+            return pickup;
+        }
+
         /// <inheritdoc/>
+        [Obsolete("Use Spawn(Vector3, Item, Player) instead.", true)]
         public override Pickup Spawn(Vector3 position, Item item)
         {
             if (item is Firearm firearm)
@@ -121,6 +165,40 @@ namespace Exiled.CustomItems.API.Features
             else
             {
                 return base.Spawn(position, item);
+            }
+        }
+
+        /// <inheritdoc />
+        public override Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
+        {
+            if (item is Firearm firearm)
+            {
+                if (!Attachments.IsEmpty())
+                    firearm.AddAttachment(Attachments);
+                byte ammo = firearm.Ammo;
+                Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
+                Pickup pickup = firearm.Spawn(position);
+
+                if (previousOwner is not null)
+                    pickup.PreviousOwner = previousOwner;
+
+                TrackedSerials.Add(pickup.Serial);
+
+                Timing.CallDelayed(1f, () =>
+                {
+                    if (pickup.Base is FirearmPickup firearmPickup)
+                    {
+                        firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                        firearmPickup.NetworkStatus = firearmPickup.Status;
+                        Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                    }
+                });
+
+                return pickup;
+            }
+            else
+            {
+                return base.Spawn(position, item, previousOwner);
             }
         }
 
@@ -267,7 +345,6 @@ namespace Exiled.CustomItems.API.Features
         {
             if (ev.Attacker is null)
             {
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Attacker null", Instance.Config.Debug);
                 return;
             }
 

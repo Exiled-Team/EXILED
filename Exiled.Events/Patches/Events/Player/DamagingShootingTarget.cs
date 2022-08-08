@@ -7,14 +7,13 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using AdminToys;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -38,38 +37,39 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_2) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_2) + offset;
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(DamagingShootingTargetEventArgs));
+            Label allowedLabel = generator.DefineLabel();
 
-            Label jccLabel = generator.DefineLabel();
-
+            // DamagingShootingTargetEventArgs ev = new(Player.Get(hub), damage, distance, hitLocation, this, damageHandler, true);
+            // Player.OnDamagingShootingTarget(ev);
+            // if(!ev.IsAllowed)
+            //     return;
+            // damage = ev.Amount;
+            // distance = ev.Distance;
             newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
-                new(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldloc_1),
+                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldloc_2),
                 new(OpCodes.Ldarg_3),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Ldarg_2),
+                new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDamagingShootingTarget))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDamagingShootingTarget))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, jccLabel),
-                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Brtrue_S, allowedLabel),
+                new(OpCodes.Pop),
+                new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(jccLabel),
-                new(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup).WithLabels(allowedLabel),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
                 new(OpCodes.Starg_S, 1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Distance))),
                 new(OpCodes.Stloc_2),
             });
 

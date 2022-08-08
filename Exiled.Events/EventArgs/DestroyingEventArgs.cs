@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player's object is destroyed.
+    /// Contains all information before a player's object is destroyed.
     /// </summary>
     public class DestroyingEventArgs : EventArgs
     {

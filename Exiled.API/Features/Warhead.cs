@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
@@ -14,9 +16,6 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Warhead
     {
-        private static AlphaWarheadNukesitePanel sitePanel;
-        private static AlphaWarheadOutsitePanel outsitePanel;
-
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
@@ -25,20 +24,20 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadNukesitePanel SitePanel => sitePanel ??= Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
+        public static AlphaWarheadNukesitePanel SitePanel { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel => outsitePanel ??= Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
+        public static AlphaWarheadOutsitePanel OutsitePanel { get; internal set; }
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> of the warhead lever.
         /// </summary>
-        public static GameObject Lever => sitePanel.lever.gameObject;
+        public static GameObject Lever => SitePanel.lever.gameObject;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the warhead lever is enabled or not.
+        /// Gets or sets a value indicating whether or not the warhead lever is enabled.
         /// </summary>
         public static bool LeverStatus
         {
@@ -47,7 +46,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the warhead has already been activated or not.
+        /// Gets or sets a value indicating whether or not the warhead's outside panel has been opened.
         /// </summary>
         public static bool IsKeycardActivated
         {
@@ -56,12 +55,39 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the warhead has already been detonated or not.
+        /// Gets or sets the warhead status.
+        /// </summary>
+        public static WarheadStatus Status
+        {
+            get => IsInProgress ? IsDetonated ? WarheadStatus.Detonated : WarheadStatus.InProgress : LeverStatus ? WarheadStatus.Armed : WarheadStatus.NotArmed;
+            set
+            {
+                switch (value)
+                {
+                    case WarheadStatus.NotArmed:
+                    case WarheadStatus.Armed:
+                        Stop();
+                        LeverStatus = value is WarheadStatus.Armed;
+                        break;
+
+                    case WarheadStatus.InProgress:
+                        Start();
+                        break;
+
+                    case WarheadStatus.Detonated:
+                        Detonate();
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the warhead has already been detonated.
         /// </summary>
         public static bool IsDetonated => Controller.detonated;
 
         /// <summary>
-        /// Gets a value indicating whether the warhead detonation is in progress or not.
+        /// Gets a value indicating whether or not the warhead detonation is in progress.
         /// </summary>
         public static bool IsInProgress => Controller.NetworkinProgress;
 
@@ -80,7 +106,7 @@ namespace Exiled.API.Features
         public static float RealDetonationTimer => Controller.RealDetonationTime();
 
         /// <summary>
-        /// Gets or sets a value indicating whether the warhead can be disabled or not.
+        /// Gets or sets a value indicating whether or not the warhead can be disabled.
         /// </summary>
         public static bool IsLocked
         {
@@ -89,7 +115,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the warhead can be started or not.
+        /// Gets a value indicating whether or not the warhead can be started.
         /// </summary>
         public static bool CanBeStarted => Controller.CanDetonate;
 
@@ -122,7 +148,7 @@ namespace Exiled.API.Features
         public static void Shake()
         {
             foreach (Player player in Player.List)
-                Controller.TargetRpcShake(player.Connection, false, false);
+                Controller.TargetRpcShake(player.Connection, false, player.IsGodModeEnabled);
         }
     }
 }
