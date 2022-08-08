@@ -19,12 +19,10 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Scp914
     {
-        private static Scp914Controller scp914Controller;
-
         /// <summary>
         /// Gets the cached <see cref="global::Scp914.Scp914Controller"/>.
         /// </summary>
-        public static Scp914Controller Scp914Controller => scp914Controller ??= Object.FindObjectOfType<Scp914Controller>();
+        public static Scp914Controller Scp914Controller { get; internal set; }
 
         /// <summary>
         /// Gets or sets SCP-914's <see cref="Scp914KnobSetting"/>.
@@ -86,7 +84,7 @@ namespace Exiled.API.Features
         /// <remarks>There are two sounds only.
         /// The values to identify them are <c>0</c>, which stands for the soundId played when SCP-914 is being activated,
         /// and <c>1</c>, which stands for the soundId played when SCP-914's knob state is being changed.</remarks>
-        public static void PlaySound(byte soundId) => scp914Controller.RpcPlaySound(soundId);
+        public static void PlaySound(byte soundId) => Scp914Controller.RpcPlaySound(soundId);
 
         /// <summary>
         /// Starts SCP-914.

@@ -61,6 +61,9 @@ namespace Exiled.API.Features
         public virtual Version RequiredExiledVersion { get; } = typeof(IPlugin<>).Assembly.GetName().Version;
 
         /// <inheritdoc/>
+        public virtual bool IgnoreRequiredVersionCheck { get; } = false;
+
+        /// <inheritdoc/>
         public Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; } = new()
         {
             { typeof(RemoteAdminCommandHandler), new Dictionary<Type, ICommand>() },

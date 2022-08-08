@@ -106,11 +106,8 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnJoined(JoinedEventArgs)"/>
         public void OnVerified(VerifiedEventArgs ev)
         {
-            if (!Instance.Config.JoinedBroadcast.Show)
-                return;
-
             Log.Info($"{ev.Player.Nickname} has authenticated! Their Player ID is {ev.Player.Id} and UserId is {ev.Player.UserId}");
-            ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type, false);
+            ev.Player.Broadcast(Instance.Config.JoinedBroadcast, false);
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnUnlockingGenerator(UnlockingGeneratorEventArgs)"/>
@@ -128,7 +125,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDying(DyingEventArgs)"/>
         public void OnDying(DyingEventArgs ev)
         {
-            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {ev.Killer.Nickname} ({ev.Killer.Role})!");
+            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {(ev.Killer is null ? ev.Handler.Type.ToString() : $"{ev.Killer.Nickname} ({ev.Killer.Role})")}!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnPreAuthenticating(PreAuthenticatingEventArgs)"/>
