@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.Roles
 {
-    using UnityEngine;
-
     /// <summary>
     /// Defines a role that represents SCP-049-2.
     /// </summary>
@@ -32,7 +30,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp049_2PlayerScript"/> for this role.
         /// </summary>
-        public Scp049_2PlayerScript Script => script ? script : script = Owner.ReferenceHub.characterClassManager.Scp0492;
+        public Scp049_2PlayerScript Script => script ??= Owner.ReferenceHub.characterClassManager.Scp0492;
 
         /// <summary>
         /// Gets or sets the SCP-049-2 attack distance.

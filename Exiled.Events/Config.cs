@@ -31,6 +31,12 @@ namespace Exiled.Events
         public bool CanTutorialTriggerScp096 { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether flashbangs flash original thrower.
+        /// </summary>
+        [Description("Indicates whether flashbangs flash original thrower.")]
+        public bool CanFlashbangsAffectThrower { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether the name tracking is enabled or not.
         /// </summary>
         [Description("Indicates whether the name tracking is enabled or not")]
@@ -57,6 +63,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets or sets a value indicating whether translations has to be reloaded every time a round restarts.
         /// </summary>
+        [Description("Indicates whether translations has to be reloaded every round restart")]
         public bool ShouldReloadTranslationsAtRoundRestart { get; set; }
 
         /// <summary>

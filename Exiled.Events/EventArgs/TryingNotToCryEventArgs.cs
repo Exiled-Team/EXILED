@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
-    /// Contains all informations before SCP-096 tries not to cry.
+    /// Contains all information before SCP-096 tries not to cry.
     /// </summary>
     public class TryingNotToCryEventArgs : EventArgs
     {

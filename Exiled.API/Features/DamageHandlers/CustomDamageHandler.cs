@@ -130,7 +130,7 @@ namespace Exiled.API.Features.DamageHandlers
 
         private static Action KillPlayer(Player player, DamageHandlerBase damageHandlerBase)
         {
-            Ragdoll.Spawn(player, damageHandlerBase.Base);
+            Ragdoll.Spawn(player, damageHandlerBase);
 
             if (damageHandlerBase.Is(out BaseAttackerHandler handler) && damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker is not null)
                 player.ReferenceHub.playerStats.TargetReceiveAttackerDeathReason(damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker.Nickname, damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker.Role);

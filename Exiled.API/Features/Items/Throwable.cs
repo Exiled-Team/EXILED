@@ -66,9 +66,17 @@ namespace Exiled.API.Features.Items
         /// Returns the Throwable in a human readable format.
         /// </summary>
         /// <returns>A string containing Throwable-related data.</returns>
-        public override string ToString()
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
+
+        /// <summary>
+        /// Clones current <see cref="Throwable"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Throwable"/> object. </returns>
+        public override Item Clone()
         {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
+            Throwable cloneableItem = new(Type);
+            cloneableItem.PinPullTime = PinPullTime;
+            return cloneableItem;
         }
     }
 }

@@ -8,10 +8,14 @@
 namespace Exiled.Events.Commands.Config
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+
     using CommandSystem;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Interfaces;
     using Exiled.Loader;
 
     /// <summary>
@@ -42,9 +46,9 @@ namespace Exiled.Events.Commands.Config
                 return false;
             }
 
-            var configs = ConfigManager.LoadSorted(ConfigManager.Read());
+            SortedDictionary<string, IConfig> configs = ConfigManager.LoadSorted(ConfigManager.Read());
             Loader.Config.ConfigType = ConfigType.Separated;
-            var haveBeenSaved = ConfigManager.Save(configs);
+            bool haveBeenSaved = ConfigManager.Save(configs);
             File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(Loader.Config));
 
             response = $"Configs have been merged successfully! Feel free to remove the file in the following path:\n\"{Paths.Config}\"";

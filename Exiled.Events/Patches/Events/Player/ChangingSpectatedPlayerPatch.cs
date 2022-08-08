@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
@@ -15,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using Player = Exiled.Events.Handlers.Player;
@@ -32,6 +31,8 @@ namespace Exiled.Events.Patches.Events.Player
             Label continueLabel = generator.DefineLabel();
             Label endLabel = generator.DefineLabel();
             Label elseLabel = generator.DefineLabel();
+            Label nullLabel = generator.DefineLabel();
+            Label skipNull = generator.DefineLabel();
 
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingSpectatedPlayerEventArgs));
@@ -64,24 +65,30 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
 
                 // if (player is not null)
-                new(OpCodes.Stloc, player),
+                new(OpCodes.Stloc_S, player),
                 new(OpCodes.Brfalse_S, endLabel),
-                new(OpCodes.Ldloc, player),
+                new(OpCodes.Ldloc_S, player),
 
                 // Player.Get(__instance.CurrentSpectatedPlayer)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
+                new(OpCodes.Brfalse_S, nullLabel),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
                 new(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Br_S, skipNull),
+                new CodeInstruction(OpCodes.Ldnull).WithLabels(nullLabel),
 
                 // Player.Get(value)
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(skipNull),
                 new(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // var ev = new ChangingSpectatedPlayerEventArgs(player, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value))
-                new(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(ChangingSpectatedPlayerEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup), new(OpCodes.Stloc, ev),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev),
 
                 // Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer(ev);
                 new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.OnChangingSpectatedPlayer))),
@@ -101,7 +108,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // value = ev.Player.ReferenceHub;
                 new(OpCodes.Pop),
-                new(OpCodes.Ldloc, ev),
+                new(OpCodes.Ldloc_S, ev),
                 new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.Player))),
 
                 // value = ev.NewTarget.ReferenceHub;

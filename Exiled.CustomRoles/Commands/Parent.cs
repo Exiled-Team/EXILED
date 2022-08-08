@@ -8,6 +8,7 @@
 namespace Exiled.CustomRoles.Commands
 {
     using System;
+
     using CommandSystem;
 
     /// <summary>

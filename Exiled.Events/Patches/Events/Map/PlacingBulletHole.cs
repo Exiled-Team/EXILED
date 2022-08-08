@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -19,8 +17,6 @@ namespace Exiled.Events.Patches.Events.Map
     using InventorySystem.Items.Firearms.Modules;
 
     using NorthwoodLib.Pools;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -63,7 +59,5 @@ namespace Exiled.Events.Patches.Events.Map
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static Transform GetTransform(RaycastHit hit) => hit.collider.transform;
     }
 }

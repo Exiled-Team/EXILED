@@ -96,19 +96,44 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a keycard or not.</returns>
-        public static bool IsKeycard(this ItemType type) => type switch
-        {
-            ItemType.KeycardJanitor or ItemType.KeycardScientist or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or
-            ItemType.KeycardGuard or ItemType.KeycardNTFOfficer or ItemType.KeycardContainmentEngineer or ItemType.KeycardNTFLieutenant or
-            ItemType.KeycardNTFCommander or ItemType.KeycardFacilityManager or ItemType.KeycardChaosInsurgency or ItemType.KeycardO5 => true,
-            _ => false,
-        };
+        public static bool IsKeycard(this ItemType type) => type is ItemType.KeycardJanitor or ItemType.KeycardScientist or
+            ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardGuard or ItemType.KeycardNTFOfficer or
+            ItemType.KeycardContainmentEngineer or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFCommander or
+            ItemType.KeycardFacilityManager or ItemType.KeycardChaosInsurgency or ItemType.KeycardO5;
 
         /// <summary>
-        /// Gets the default ammo of a weapon.
+        /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemBase"/>.
         /// </summary>
-        /// <param name="item">The <see cref="ItemType">item</see> that you want to get durability of.</param>
-        /// <returns>Returns the item durability.</returns>
+        /// <param name="type">The <see cref="ItemType"/>.</param>
+        /// <returns>The <see cref="ItemBase"/>, or <see langword="null"/> if not found.</returns>
+        public static ItemBase GetItemBase(this ItemType type)
+        {
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
+                return null;
+
+            return itemBase;
+        }
+
+        /// <summary>
+        /// Given an <see cref="ItemType"/>, returns the matching <see cref="ItemBase"/>, casted to <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/>.</param>
+        /// <typeparam name="T">The type to cast the <see cref="ItemBase"/> to.</typeparam>
+        /// <returns>The <see cref="ItemBase"/> casted to <typeparamref name="T"/>, or <see langword="null"/> if not found or couldn't be casted.</returns>
+        public static T GetItemBase<T>(this ItemType type)
+            where T : ItemBase
+        {
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
+                return null;
+
+            return itemBase as T;
+        }
+
+        /// <summary>
+        /// Gets the maximum ammo of a weapon.
+        /// </summary>
+        /// <param name="item">The <see cref="ItemType">weapon</see> that you want to get maximum of.</param>
+        /// <returns>Returns the maximum.</returns>
         public static byte GetMaxAmmo(this ItemType item)
         {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || itemBase is not InventorySystem.Items.Firearms.Firearm firearm)
@@ -219,6 +244,7 @@ namespace Exiled.API.Extensions
             GrenadeType.Flashbang => ItemType.GrenadeFlash,
             GrenadeType.Scp018 => ItemType.SCP018,
             GrenadeType.FragGrenade => ItemType.GrenadeHE,
+            GrenadeType.Scp2176 => ItemType.SCP2176,
             _ => ItemType.None,
         };
 

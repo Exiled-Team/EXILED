@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before reporting a cheater.
+    /// Contains all information before reporting a cheater.
     /// </summary>
     public class ReportingCheaterEventArgs : EventArgs
     {

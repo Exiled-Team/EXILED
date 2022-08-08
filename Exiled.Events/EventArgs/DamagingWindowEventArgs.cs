@@ -8,13 +8,15 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
+
     using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    /// Contains all informations before damage is dealt to a <see cref="BreakableWindow"/>.
+    /// Contains all information before damage is dealt to a <see cref="BreakableWindow"/>.
     /// </summary>
     public class DamagingWindowEventArgs : EventArgs
     {

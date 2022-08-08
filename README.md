@@ -1,6 +1,6 @@
 # EXILED - EXtended In-runtime Library for External Development
 
-![EXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
+[![Exiled CI](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg)](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml)
 <a href="https://github.com/Exiled-Team/EXILED/releases">
   <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
 </a>
@@ -17,12 +17,15 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
  - Firstly, the entirety of the frameworks code can be freely published and shared, allowing developers to better understand *how* it works, as well as offer suggestions for adding to or changing it's features.
  - Secondly, since all of the code related to the framework are done outside of the server assembly, things like small game updates will have little, if any, effect on the framework. Making it most likely to be compatible with future game updates, as well as making it easier to update when it *is* necessary to do so.
 
+# Localized READMEs
+- [Русский](https://github.com/Exiled-Team/EXILED/blob/dev/Localization/README-Русский.md)
+- [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 
 # Installation
 Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
 As mentioned above, the vast majority of EXILED is not contained within the server's Assembly-CSharp.dll file, however, there is a single modification needed to the Assembly-CSharp.dll file that is required to actually *load* EXILED into the server during startup, a clean game Assembly with this change already made will be provided with releases.
 
-If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer.
+If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installed.
 
 # Windows
 ### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))

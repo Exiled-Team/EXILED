@@ -23,7 +23,6 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
 #pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable SA1118 // Parameter should not span multiple lines
 #pragma warning disable SA1402 // File may only contain a single type
 
     /// <summary>
