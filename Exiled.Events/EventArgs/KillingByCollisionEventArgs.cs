@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="FallingIntoAbyssEventArgs.cs" company="Exiled Team">
+// <copyright file="KillingByCollisionEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,32 +7,31 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player falls into abyss in <see cref="RoomType.HczArmory"/>.
+    /// Contains all information before a player is killed by collision.
     /// </summary>
-    public class FallingIntoAbyssEventArgs : System.EventArgs
+    public class KillingByCollisionEventArgs : System.EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FallingIntoAbyssEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="KillingByCollisionEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public FallingIntoAbyssEventArgs(Player player, bool isAllowed = true)
+        public KillingByCollisionEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets the player who's currently falling into abyss.
+        /// Gets the player who's currently being killing by collision.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player dies by falling into abyss.
+        /// Gets or sets a value indicating whether or not the player is killed by collision.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -206,9 +206,9 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension;
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> falls into abyss in <see cref="RoomType.HczArmory"/>.
+        /// Invoked before a <see cref="API.Features.Player"/> is killed by collision.
         /// </summary>
-        public static event CustomEventHandler<FallingIntoAbyssEventArgs> FallingIntoAbyss;
+        public static event CustomEventHandler<KillingByCollisionEventArgs> KillingByCollision;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> reloads a weapon.
@@ -687,10 +687,10 @@ namespace Exiled.Events.Handlers
         public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev) => FailingEscapePocketDimension.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> falls into abyss in <see cref="RoomType.HczArmory"/>.
+        /// Called before a <see cref="API.Features.Player"/> is killed by collision.
         /// </summary>
-        /// <param name="ev">The <see cref="FallingIntoAbyssEventArgs"/> instance.</param>
-        public static void OnFallingIntoAbyss(FallingIntoAbyssEventArgs ev) => FallingIntoAbyss.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="KillingByCollisionEventArgs"/> instance.</param>
+        public static void OnKillingByCollision(KillingByCollisionEventArgs ev) => KillingByCollision.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> reloads a weapon.
