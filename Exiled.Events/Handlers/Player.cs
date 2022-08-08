@@ -150,16 +150,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DroppingNullEventArgs> DroppingNull;
 
         /// <summary>
-        /// Invoked before picking up ammo.
-        /// </summary>
-        public static event CustomEventHandler<PickingUpAmmoEventArgs> PickingUpAmmo;
-
-        /// <summary>
-        /// Invoked before picking up armor.
-        /// </summary>
-        public static event CustomEventHandler<PickingUpArmorEventArgs> PickingUpArmor;
-
-        /// <summary>
         /// Invoked before picking up an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         public static event CustomEventHandler<PickingUpItemEventArgs> PickingUpItem;
@@ -422,12 +412,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
-        /// </summary>
-        [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
-        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
-
-        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
         [Obsolete("Use Handlers.Scp330.InteractingScp330", true)]
@@ -618,18 +602,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DroppingNullEventArgs"/> instance.</param>
         public static void OnDroppingNull(DroppingNullEventArgs ev) => DroppingNull.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> picks up ammo.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpAmmoEventArgs"/> instance.</param>
-        public static void OnPickingUpAmmo(PickingUpAmmoEventArgs ev) => PickingUpAmmo.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> picks up armor.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpArmorEventArgs"/> instance.</param>
-        public static void OnPickingUpArmor(PickingUpArmorEventArgs ev) => PickingUpArmor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up an item.
@@ -944,13 +916,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
-        [Obsolete("Use Handlers.Scp330.OnPickingUp330", true)]
-        public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with SCP-330.

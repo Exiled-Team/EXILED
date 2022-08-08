@@ -251,58 +251,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Clones the current item
-        /// with a different serial.
-        /// Spawns the item on the map.
-        /// </summary>
-        /// <param name="position">The location to spawn the item.</param>
-        /// <param name="rotation">The rotation of the item.</param>
-        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
-        {
-            Base.PickupDropModel.Info.ItemId = Type;
-            Base.PickupDropModel.Info.Position = position;
-            Base.PickupDropModel.Info.Weight = Weight;
-            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
-            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
-
-            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
-            if (ipb is FirearmPickup firearmPickup)
-            {
-                if (this is Firearm firearm)
-                {
-                    firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
-                }
-                else
-                {
-                    byte ammo = Base switch
-                    {
-                        AutomaticFirearm auto => auto._baseMaxAmmo,
-                        Shotgun shotgun => shotgun._ammoCapacity,
-                        Revolver => 6,
-                        _ => 0,
-                    };
-                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
-                }
-
-                firearmPickup.NetworkStatus = firearmPickup.Status;
-            }
-
-            NetworkServer.Spawn(ipb.gameObject);
-            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
-            Pickup pickup = Pickup.Get(ipb);
-            pickup.Scale = Scale;
-            return pickup;
-        }
-
-        /// <summary>
-        /// Spawns the item on the map.
-        /// </summary>
-        /// <param name="position">The location to spawn the item.</param>
-        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position) => Spawn(position, default);
-
-        /// <summary>
         /// Clones the current item with a different serial.
         /// </summary>
         /// <returns> Cloned item object. </returns>

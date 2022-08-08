@@ -8,6 +8,7 @@
 namespace Exiled.API.Structs
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -20,29 +21,6 @@ namespace Exiled.API.Structs
     /// </summary>
     public struct AttachmentIdentifier
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
-        /// </summary>
-        /// <param name="name">The name of the attachment.</param>
-        public AttachmentIdentifier(AttachmentName name)
-        {
-            Code = 0;
-            Name = name;
-            Slot = default;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
-        /// </summary>
-        /// <param name="name">The name of the attachment.</param>
-        /// <param name="slot">The slot of the attachment.</param>
-        public AttachmentIdentifier(AttachmentName name, AttachmentSlot slot)
-        {
-            Code = 0;
-            Name = name;
-            Slot = slot;
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
         /// </summary>
@@ -202,6 +180,22 @@ namespace Exiled.API.Structs
 
             return false;
         }
+
+        /// <summary>
+        /// Gets a <see cref="AttachmentIdentifier"/> by name.
+        /// </summary>
+        /// <param name="type">Weapons <see cref="ItemType"/>.</param>
+        /// <param name="name">Attachment name.</param>
+        /// <returns><see cref="AttachmentIdentifier"/> instance.</returns>
+        public static AttachmentIdentifier Get(ItemType type, AttachmentName name) => Features.Items.Firearm.AvailableAttachments[type].FirstOrDefault(identifier => identifier.Name == name);
+
+        /// <summary>
+        /// Gets the all <see cref="AttachmentIdentifier"/>'s for type, by slot.
+        /// </summary>
+        /// <param name="type">Weapons <see cref="ItemType"/>.</param>
+        /// <param name="slot">Attachment slot.</param>
+        /// <returns><see cref="AttachmentIdentifier"/> instance.</returns>
+        public static IEnumerable<AttachmentIdentifier> Get(ItemType type, AttachmentSlot slot) => Features.Items.Firearm.AvailableAttachments[type].Where(identifier => identifier.Slot == slot);
 
         /// <summary>
         /// Converts the string representation of a <see cref="AttachmentName"/> to its <see cref="AttachmentName"/> equivalent.

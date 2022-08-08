@@ -18,11 +18,6 @@ namespace Exiled.Events.Handlers
     public static class Scp330
     {
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
-        /// </summary>
-        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
-
-        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
         public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
@@ -53,12 +48,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="EatenScp330EventArgs"/> instance.</param>
         public static void OnEatenScp330(EatenScp330EventArgs ev) => EatenScp330.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
-        public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with SCP-330.

@@ -477,14 +477,6 @@ namespace Exiled.CustomItems.API.Features
         public virtual Pickup Spawn(float x, float y, float z, Item item) => Spawn(new Vector3(x, y, z), item, null);
 
         /// <summary>
-        /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
-        [Obsolete("Use Spawn(Player, Player) instead.", true)]
-        public virtual Pickup Spawn(Player player) => Spawn(player.Position);
-
-        /// <summary>
         /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is, and optionally sets the previous owner.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
@@ -502,40 +494,12 @@ namespace Exiled.CustomItems.API.Features
         public virtual Pickup Spawn(Player player, Item item, Player previousOwner = null) => Spawn(player.Position, item, previousOwner);
 
         /// <summary>
-        /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
-        [Obsolete("Use Spawn(Player, Item, Player) instead.", true)]
-        public virtual Pickup Spawn(Player player, Item item)
-        {
-            Pickup pickup = Spawn(player.Position, item);
-            return pickup;
-        }
-
-        /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific position.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="previousOwner">The <see cref="Pickup.PreviousOwner"/> of the item. Can be null.</param>
         /// <returns>The <see cref="Pickup"/> of the spawned <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(Vector3 position, Player previousOwner = null) => Spawn(position, CreateCorrectItem(), previousOwner);
-
-        /// <summary>
-        /// Spawns the <see cref="CustomItem"/> in a specific position.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
-        [Obsolete("Use Spawn(Vector3, Player) instead.", true)]
-        public virtual Pickup Spawn(Vector3 position)
-        {
-            Pickup pickup = CreateCorrectItem().CreatePickup(position);
-            pickup.Weight = Weight;
-            TrackedSerials.Add(pickup.Serial);
-
-            return pickup;
-        }
+        public virtual Pickup Spawn(Vector3 position, Player previousOwner = null) => Spawn(position, Item.Create(Type), previousOwner);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific position.
@@ -548,23 +512,10 @@ namespace Exiled.CustomItems.API.Features
         {
             Pickup pickup = item.CreatePickup(position);
             pickup.Weight = Weight;
+
             if (previousOwner is not null)
                 pickup.PreviousOwner = previousOwner;
-            TrackedSerials.Add(pickup.Serial);
 
-            return pickup;
-        }
-
-        /// <summary>
-        /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> in a specific position.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
-        [Obsolete("Use Spawn(Vector3, Item, Player) instead.", true)]
-        public virtual Pickup Spawn(Vector3 position, Item item)
-        {
-            Pickup pickup = item.CreatePickup(position);
             TrackedSerials.Add(pickup.Serial);
 
             return pickup;
@@ -720,7 +671,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public virtual void Give(Player player, bool displayMessage = true) => Give(player, CreateCorrectItem(player.Inventory.CreateItemInstance(Type, true)), displayMessage);
+        public virtual void Give(Player player, bool displayMessage = true) => Give(player, Item.Create(Type), displayMessage);
 
         /// <summary>
         /// Called when the item is registered.
@@ -942,17 +893,6 @@ namespace Exiled.CustomItems.API.Features
             player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
         }
 
-        /// <summary>
-        /// This method will take the item's <see cref="Type"/> and create a new <see cref="Item"/> of the correct subtype for the <see cref="ItemType"/>.
-        /// </summary>
-        /// <param name="itemBase">The <see cref="ItemBase"/> to be used for creation, if any.</param>
-        /// <returns>The <see cref="Item"/> created.</returns>
-        protected Item CreateCorrectItem(ItemBase itemBase = null)
-        {
-            itemBase ??= Server.Host.Inventory.CreateItemInstance(Type, false);
-            return Item.Get(itemBase);
-        }
-
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Reason == SpawnReason.Escaped)
@@ -970,9 +910,9 @@ namespace Exiled.CustomItems.API.Features
                 ev.Player.RemoveItem(item);
 
                 Spawn(ev.Player, item, ev.Player);
-
-                MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
+
+            MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
         }
 
         private void OnInternalOwnerDying(DyingEventArgs ev)
@@ -992,9 +932,9 @@ namespace Exiled.CustomItems.API.Features
                 TrackedSerials.Remove(item.Serial);
 
                 Spawn(ev.Target, item, ev.Target);
-
-                MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
+
+            MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
         }
 
         private void OnInternalOwnerEscaping(EscapingEventArgs ev)
@@ -1014,9 +954,9 @@ namespace Exiled.CustomItems.API.Features
                 TrackedSerials.Remove(item.Serial);
 
                 Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item, null));
-
-                MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
+
+            MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
         }
 
         private void OnInternalOwnerHandcuffing(HandcuffingEventArgs ev)
@@ -1056,9 +996,6 @@ namespace Exiled.CustomItems.API.Features
 
             if (!ev.IsAllowed)
                 return;
-
-            if (!TrackedSerials.Contains(ev.Pickup.Serial))
-                TrackedSerials.Add(ev.Pickup.Serial);
 
             Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player));
         }
