@@ -170,6 +170,13 @@ namespace Exiled.API.Features
         public FlickerableLightController FlickerableLightController { get; private set; }
 
         /// <summary>
+        /// Gets the <see cref="Room"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
+        /// </summary>
+        /// <param name="roomIdentifier">The room's <see cref="RoomIdentifier"/>.</param>
+        /// <returns>A <see cref="Room"/> or <see langword="null"/> if not found.</returns>
+        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentifiersToRooms.ContainsKey(roomIdentifier) ? RoomIdentifiersToRooms[roomIdentifier] : null;
+
+        /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.
         /// </summary>
         /// <param name="roomType">The <see cref="RoomType"/> to search for.</param>
