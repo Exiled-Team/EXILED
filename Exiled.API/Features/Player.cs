@@ -2842,6 +2842,12 @@ namespace Exiled.API.Features
                 case EActor ea:
                     Teleport(ea.Position + Vector3.up);
                     break;
+                case Item item:
+                    Teleport(item.Base.transform.position);
+                    break;
+                case Spawn.SpawnPoint spawnpoint:
+                    Teleport(spawnpoint.Position);
+                    break;
 
                 // Unity
                 case Vector3 v3: // I wouldn't be surprised if someone calls this method with a Vector3.
