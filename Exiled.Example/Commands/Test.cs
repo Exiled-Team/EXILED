@@ -32,12 +32,16 @@ namespace Exiled.Example.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Player player = Player.Get(((CommandSender)sender).SenderId);
+            Player player = Player.Get(sender);
+            
             Log.Warn($"{player.Items.Count} -- {player.Inventory.UserInventory.Items.Count}");
+            
             foreach (Pickup pickup in Map.Pickups)
                 Log.Warn($"{pickup.Type} ({pickup.Serial}) -- {pickup.Position}");
+                
             foreach (PocketDimensionTeleport teleport in Map.PocketDimensionTeleports)
                 Log.Warn($"{teleport._type}");
+                
             player.ClearInventory();
             response = player is not null ? $"{player.Nickname} sent the command!" : "The command has been sent from the server console!";
 
