@@ -1741,8 +1741,28 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
+        /// <remarks>For counting ammo, see <see cref="GetAmmo(AmmoType)"/>.</remarks>
         public int CountItem(ItemType item) =>
             Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
+
+        /// <summary>
+        /// Counts how many items of a certain <see cref="GrenadeType"/> a player has.
+        /// </summary>
+        /// <param name="grenadeType">The GrenadeType to search for.</param>
+        /// <returns>How many items of that <see cref="GrenadeType"/> the player has.</returns>
+        public int CountItem(GrenadeType grenadeType) =>
+            Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == grenadeType.GetItemType());
+
+        /// <summary>
+        /// Counts how many items of a certain <see cref="ItemCategory"/> a player has.
+        /// </summary>
+        /// <param name="category">The category to search for.</param>
+        /// <returns>How many items of that <see cref="ItemCategory"/> the player has.</returns>
+        public int CountItem(ItemCategory category) => category switch
+        {
+            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Where(ammo => ammo.Value > 0).Count(),
+            _ => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category),
+        };
 
         /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
@@ -1913,13 +1933,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Uses an item for giving its effect.
+        /// Uses an item by applying its effects to the player.
         /// </summary>
         /// <param name="usableItem">The item to be used.</param>
+        /// <exception cref="ArgumentException">The provided item is not a <see cref="Usable"/> item.</exception>
         public void UseItem(ItemType usableItem)
         {
             if (Item.Create(usableItem, this) is not Usable item)
-                throw new Exception($"The provided item [{usableItem}] is not a usable item.");
+                throw new ArgumentException($"The provided item [{usableItem}] is not a usable item.", nameof(usableItem));
 
             item.Base.Owner = referenceHub;
             item.Base.ServerOnUsingCompleted();
