@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="KillingByCollisionEventArgs.cs" company="Exiled Team">
+// <copyright file="EnteringKillerCollisionEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -10,28 +10,28 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before a player is killed by collision.
+    /// Contains all information before a player enters killer collision.
     /// </summary>
-    public class KillingByCollisionEventArgs : System.EventArgs
+    public class EnteringKillerCollisionEventArgs : System.EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="KillingByCollisionEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="EnteringKillerCollisionEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public KillingByCollisionEventArgs(Player player, bool isAllowed = true)
+        public EnteringKillerCollisionEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets the player who's currently being killing by collision.
+        /// Gets the player who's currently entering killer collision.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is killed by collision.
+        /// Gets or sets a value indicating whether or not the player is killed by killer collision.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

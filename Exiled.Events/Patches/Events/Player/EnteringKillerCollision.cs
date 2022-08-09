@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="KillingByCollision.cs" company="Exiled Team">
+// <copyright file="EnteringKillerCollision.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,10 +19,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="CheckpointKiller.OnTriggerEnter"/>.
-    /// Adds the <see cref="Handlers.Player.KillingByCollision"/> event.
+    /// Adds the <see cref="Handlers.Player.EnteringKillerCollision"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CheckpointKiller), nameof(CheckpointKiller.OnTriggerEnter))]
-    internal static class KillingByCollision
+    internal static class EnteringKillerCollision
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -38,11 +38,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(KillingByCollisionEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringKillerCollisionEventArgs))[0]),
                 new(OpCodes.Dup),
 
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnKillingByCollision))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(KillingByCollisionEventArgs), nameof(KillingByCollisionEventArgs.IsAllowed))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringKillerCollision))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringKillerCollisionEventArgs), nameof(EnteringKillerCollisionEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
 
