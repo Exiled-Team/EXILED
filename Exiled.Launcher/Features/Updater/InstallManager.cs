@@ -76,13 +76,13 @@ public class InstallManager : IDisposable
         {
             Console.WriteLine("Downloading the release.");
             string tmpDownload = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ExiledAssetName);
-            Console.WriteLine("Dest url: " + asset.BrowserDownloadUrl);
+            Console.WriteLine("Download url: " + asset.BrowserDownloadUrl);
             using HttpResponseMessage res = httpClient.GetAsync(asset.BrowserDownloadUrl).GetAwaiter().GetResult();
 
             if (res.StatusCode == HttpStatusCode.TooManyRequests)
             {
                 Console.WriteLine("You have been rate limited by github, therefore Exiled couldn't be installed.");
-                Console.WriteLine("Skyping installation.");
+                Console.WriteLine("Skipping installation.");
                 return false;
             }
 
