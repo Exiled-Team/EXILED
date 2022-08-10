@@ -26,6 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            Label bef = generator.DefineLabel();
             Label ret = generator.DefineLabel();
 
             newInstructions.InsertRange(0, new[]
@@ -39,8 +40,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTogglingOverwatch))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, ret),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.NewValue))),
+                new CodeInstruction(OpCodes.Brtrue_S, bef),
+                new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Br_S, ret),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.NewValue))).WithLabels(bef),
                 new CodeInstruction(OpCodes.Starg_S, 1),
             });
 
