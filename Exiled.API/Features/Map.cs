@@ -137,7 +137,7 @@ namespace Exiled.API.Features
                 // Raycasting doesn't make sense,
                 // SCP-079 position is constant,
                 // let it be 'Outside' instead
-                if (ply.Role is Scp079Role role)
+                if (ply.Role.Is(out Scp079Role role))
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
@@ -230,6 +230,9 @@ namespace Exiled.API.Features
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
+                if (room is null)
+                    continue;
+
                 if (zoneTypes == ZoneType.Unspecified || (room is not null && zoneTypes == room.Zone))
                     controller.ServerFlickerLights(duration);
             }
@@ -351,6 +354,7 @@ namespace Exiled.API.Features
             Item.BaseToItem.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
+            RagdollsValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Scp079Interactable.InteractablesByRoomId.Clear();
             ExplosiveGrenade.GrenadeToItem.Clear();

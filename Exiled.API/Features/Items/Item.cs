@@ -224,6 +224,11 @@ namespace Exiled.API.Features.Items
         public void Give(Player player) => player.AddItem(Base, this);
 
         /// <summary>
+        /// Destroy this item.
+        /// </summary>
+        public void Destroy() => Owner.RemoveItem(this);
+
+        /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
