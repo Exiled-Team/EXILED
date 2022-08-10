@@ -74,14 +74,11 @@ namespace Exiled.API.Features.Items
         internal Firearm(ItemType type)
             : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(type, false))
         {
-            if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(Owner.ReferenceHub, out Dictionary<ItemType, uint> dictionary) && dictionary.TryGetValue(type, out uint code))
-                Base.ApplyAttachmentsCode(code, true);
-
             FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
                 firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
 
-            Base.Status = new FirearmStatus(MaxAmmo, firearmStatusFlags, Base.GetCurrentAttachmentsCode());
+            Base.Status = new FirearmStatus(MaxAmmo, firearmStatusFlags, Base.Status.Attachments);
         }
 
         /// <inheritdoc cref="AvailableAttachmentsValue"/>.
