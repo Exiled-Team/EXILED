@@ -22,7 +22,7 @@ public class LauncherArguments
     [ArgumentOption("-sf", "--server-folder", "The data folder of the server. (SCPSL_Data)")]
     public string ServerFolder { get; set; } = "SCPSL_Data";
 
-    [ArgumentOption("-v", "--exiled-version", "The desired exiled version, accepts latest, a version number and none.")]
+    [ArgumentOption("-v", "--exiled-version", "The desired exiled version, (latest/none/ReleaseTag/ReleaseId).")]
     public string ExiledVersion { get; set; } = "latest";
 
     [ArgumentOption("-pr", "--pre-releases", "Download pre releases, Yes/No (y/n).")]
