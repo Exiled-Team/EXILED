@@ -199,6 +199,16 @@ namespace Exiled.API.Features
         public bool HasHint { get; internal set; }
 
         /// <summary>
+        /// Gets the current <see cref="Exiled.API.Features.Broadcast"/>.
+        /// </summary>
+        public Broadcast CurrentBroadcast { get; internal set; }
+
+        /// <summary>
+        /// Gets the current <see cref="Exiled.API.Features.Hint"/>.
+        /// </summary>
+        public Hint CurrentHint { get; internal set; }
+
+        /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio"/>.
         /// </summary>
         public global::Radio Radio => ReferenceHub.radio;
@@ -2007,6 +2017,15 @@ namespace Exiled.API.Features
                 ClearBroadcasts();
 
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
+
+            CurrentBroadcast = new Broadcast(message, duration, type: type);
+            _ = Timing.CallDelayed(duration, () =>
+            {
+                if (!IsConnected)
+                    return;
+
+                CurrentBroadcast = null;
+            });
         }
 
         /// <summary>
@@ -2461,14 +2480,29 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message to be shown.</param>
         /// <param name="duration">The duration the text will be on screen.</param>
-        public void ShowHint(string message, float duration = 3f)
+        public void ShowHint(string message, float duration = 3f) => ShowHint(new Hint() { Content = message, Duration = duration });
+
+        /// <summary>
+        /// Show a hint to the player.
+        /// </summary>
+        /// <param name="hint">The hint to be shown.</param>
+        public void ShowHint(Hint hint)
         {
             HintParameter[] parameters = new HintParameter[]
             {
-                new StringHintParameter(message),
+                new StringHintParameter(hint.Content),
             };
 
-            HintDisplay.Show(new TextHint(message, parameters, null, duration));
+            HintDisplay.Show(new TextHint(hint.Content, parameters, null, hint.Duration));
+
+            CurrentHint = new Hint() { Content = hint.Content, Duration = hint.Duration };
+            _ = Timing.CallDelayed(hint.Duration, () =>
+            {
+                if (!IsConnected)
+                    return;
+
+                CurrentHint = null;
+            });
         }
 
         /// <summary>

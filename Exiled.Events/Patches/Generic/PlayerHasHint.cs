@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Generic
     using MEC;
 
     /// <summary>
-    /// Patches <see cref="HintDisplay.Show(Hint)"/>.
+    /// Patches <see cref="HintDisplay.Show(Hints.Hint)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HintDisplay), nameof(HintDisplay.Show))]
     internal static class PlayerHasHint
@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Generic
         // Creating a list for coroutine check
         private static Dictionary<Player, CoroutineHandle> playerHasHintCoroutines = new();
 
-        private static void Postfix(HintDisplay __instance, Hint hint)
+        private static void Postfix(HintDisplay __instance, Hints.Hint hint)
         {
             // Try to get the player, if it doesn't exist, just return
             if (__instance == null || __instance.gameObject == null || Player.Get(__instance.gameObject) is not Player player)
