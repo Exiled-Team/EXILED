@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
 
     using HarmonyLib;
@@ -35,6 +36,7 @@ namespace Exiled.Events.Patches.Fixes
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder throwable = generator.DeclareLocal(typeof(ThrowableItem));
+            LocalBuilder pickup = generator.DeclareLocal(typeof(Pickup));
             LocalBuilder playerCamera = generator.DeclareLocal(typeof(Transform));
 
             Label cnt = generator.DefineLabel();
@@ -59,6 +61,8 @@ namespace Exiled.Events.Patches.Fixes
 
                 new CodeInstruction(OpCodes.Ldloc_S, throwable.LocalIndex).WithLabels(cnt),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Throwable), nameof(Throwable.Projectile))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, pickup.LocalIndex),
                 new(OpCodes.Callvirt, FirstProperty(typeof(Projectile), prop => prop.Name == nameof(Projectile.Base) && prop.PropertyType == typeof(ThrownProjectile)).GetMethod),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
@@ -76,6 +80,10 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Ldloc_S, playerCamera.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.rotation))),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Transform), nameof(Transform.rotation))),
+
+                new(OpCodes.Ldloc_S, pickup.LocalIndex),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Projectile), nameof(Projectile.Spawned))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
