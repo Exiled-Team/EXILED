@@ -53,11 +53,10 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Stloc_S, throwable.LocalIndex),
                 new(OpCodes.Brtrue_S, cnt),
 
-                new(OpCodes.Ldstr, "wtfhell"),
+                new(OpCodes.Ldstr, "Item is not Throwable, should never happen"),
                 new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Error), new[] { typeof(string) })),
                 new(OpCodes.Ret),
 
-                // ...
                 new CodeInstruction(OpCodes.Ldloc_S, throwable.LocalIndex).WithLabels(cnt),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Throwable), nameof(Throwable.Projectile))),
                 new(OpCodes.Callvirt, FirstProperty(typeof(Projectile), prop => prop.Name == nameof(Projectile.Base) && prop.PropertyType == typeof(ThrownProjectile)).GetMethod),
