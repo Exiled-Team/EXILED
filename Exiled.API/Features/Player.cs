@@ -78,6 +78,16 @@ namespace Exiled.API.Features
         internal readonly List<Item> ItemsValue = new(8);
 #pragma warning restore SA1401
 
+        /// <summary>
+        /// A hint coroutine for <see cref="CurrentHint"/>.
+        /// </summary>
+        internal KeyValuePair<Hint, CoroutineHandle> HintCoroutine;
+
+        /// <summary>
+        /// A broadcast coroutine for <see cref="CurrentBroadcast"/>.
+        /// </summary>
+        internal KeyValuePair<Broadcast, CoroutineHandle> BroadcastCoroutine;
+
         private readonly IReadOnlyCollection<Item> readOnlyItems;
 
         /// <summary>
@@ -196,17 +206,22 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is viewing a hint.
         /// </summary>
-        public bool HasHint { get; internal set; }
+        public bool HasHint => HintCoroutine.Key is not null;
 
         /// <summary>
-        /// Gets the current <see cref="Exiled.API.Features.Broadcast"/>.
+        /// Gets a value indicating whether or not the player is viewing a hint.
         /// </summary>
-        public Broadcast CurrentBroadcast { get; internal set; }
+        public bool HasBroadcast => BroadcastCoroutine.Key is not null;
 
         /// <summary>
-        /// Gets the current <see cref="Exiled.API.Features.Hint"/>.
+        /// Gets the current displayed <see cref="Exiled.API.Features.Broadcast"/>.
         /// </summary>
-        public Hint CurrentHint { get; internal set; }
+        public Broadcast CurrentBroadcast => BroadcastCoroutine.Key;
+
+        /// <summary>
+        /// Gets the current displayed <see cref="Exiled.API.Features.Hint"/>.
+        /// </summary>
+        public Hint CurrentHint => HintCoroutine.Key;
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio"/>.
@@ -1676,7 +1691,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
         /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcast.</param>
         /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
         public void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
@@ -2017,21 +2032,16 @@ namespace Exiled.API.Features
                 ClearBroadcasts();
 
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
-
-            CurrentBroadcast = new Broadcast(message, duration, type: type);
-            _ = Timing.CallDelayed(duration, () =>
-            {
-                if (!IsConnected)
-                    return;
-
-                CurrentBroadcast = null;
-            });
         }
 
         /// <summary>
-        /// Clears the player's brodcast. Doesn't get logged to the console.
+        /// Clears the player's broadcast. Doesn't get logged to the console.
         /// </summary>
-        public void ClearBroadcasts() => Server.Broadcast.TargetClearElements(Connection);
+        public void ClearBroadcasts()
+        {
+            BroadcastCoroutine = new();
+            Server.Broadcast.TargetClearElements(Connection);
+        }
 
         /// <summary>
         /// Adds the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
@@ -2494,15 +2504,6 @@ namespace Exiled.API.Features
             };
 
             HintDisplay.Show(new TextHint(hint.Content, parameters, null, hint.Duration));
-
-            CurrentHint = new Hint() { Content = hint.Content, Duration = hint.Duration };
-            _ = Timing.CallDelayed(hint.Duration, () =>
-            {
-                if (!IsConnected)
-                    return;
-
-                CurrentHint = null;
-            });
         }
 
         /// <summary>
