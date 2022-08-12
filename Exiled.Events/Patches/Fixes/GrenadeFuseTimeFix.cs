@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups.Projectiles;
 
     using HarmonyLib;
 
@@ -34,11 +35,12 @@ namespace Exiled.Events.Patches.Fixes
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder throwable = generator.DeclareLocal(typeof(ThrowableItem));
+            LocalBuilder playerCamera = generator.DeclareLocal(typeof(Transform));
 
             Label cnt = generator.DefineLabel();
 
             const int offset = -11;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
 
             newInstructions.RemoveRange(index, 11);
 
@@ -51,9 +53,30 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Stloc_S, throwable.LocalIndex),
                 new(OpCodes.Brtrue_S, cnt),
 
+                new(OpCodes.Ldstr, "wtfhell"),
+                new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Error), new[] { typeof(string) })),
+                new(OpCodes.Ret),
+
                 // ...
                 new CodeInstruction(OpCodes.Ldloc_S, throwable.LocalIndex).WithLabels(cnt),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Throwable), nameof(Throwable.Projectile))),
+                new(OpCodes.Callvirt, FirstProperty(typeof(Projectile), prop => prop.Name == nameof(Projectile.Base) && prop.PropertyType == typeof(ThrownProjectile)).GetMethod),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrownProjectile), nameof(ThrownProjectile.transform))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowableItem), nameof(ThrowableItem.Owner))),
+                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.PlayerCameraReference))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, playerCamera.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.position))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Transform), nameof(Transform.position))),
+
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrownProjectile), nameof(ThrownProjectile.transform))),
+                new(OpCodes.Ldloc_S, playerCamera.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.rotation))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Transform), nameof(Transform.rotation))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
