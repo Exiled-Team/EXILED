@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Item
 
     /// <summary>
     /// Patches <see cref="Firearm.Status"/>.
-    /// Adds the <see cref="Handlers.Item.ChangingDurability"/> event.
+    /// Adds the <see cref="Handlers.Item.ChangingAmmo"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Firearm), nameof(Firearm.Status), MethodType.Setter)]
     internal static class ChangingDurability
@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Item
             const int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse_S) + offset;
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingDurabilityEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingAmmoEventArgs));
             LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(byte));
 
             Label cdc = generator.DefineLabel();
@@ -64,18 +64,18 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingDurabilityEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingAmmoEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingDurability))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.Firearm))),
+                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingAmmo))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.Firearm))),
                 new(OpCodes.Brfalse_S, cdc),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, jmp),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.NewDurability))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.NewDurability))),
                 new(OpCodes.Br_S, jcc),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jmp),
                 new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),

@@ -107,7 +107,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Map.ExplodingGrenade += mapHandler.OnExplodingGrenade;
             Exiled.Events.Handlers.Map.GeneratorActivated += mapHandler.OnGeneratorActivated;
 
-            Exiled.Events.Handlers.Item.ChangingDurability += itemHandler.OnChangingDurability;
+            Exiled.Events.Handlers.Item.ChangingAmmo += itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments += itemHandler.OnChangingAttachments;
             Exiled.Events.Handlers.Item.ReceivingPreference += itemHandler.OnReceivingPreference;
 
@@ -149,7 +149,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Map.ExplodingGrenade -= mapHandler.OnExplodingGrenade;
             Exiled.Events.Handlers.Map.GeneratorActivated -= mapHandler.OnGeneratorActivated;
 
-            Exiled.Events.Handlers.Item.ChangingDurability -= itemHandler.OnChangingDurability;
+            Exiled.Events.Handlers.Item.ChangingAmmo -= itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments -= itemHandler.OnChangingAttachments;
             Exiled.Events.Handlers.Item.ReceivingPreference -= itemHandler.OnReceivingPreference;
 

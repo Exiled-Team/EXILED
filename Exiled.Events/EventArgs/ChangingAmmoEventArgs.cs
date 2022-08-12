@@ -11,19 +11,19 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Items;
 
     /// <summary>
-    /// Contains all information before changing item durability.
+    /// Contains all information before changing firearm ammo.
     /// </summary>
-    public class ChangingDurabilityEventArgs : System.EventArgs
+    public class ChangingAmmoEventArgs : System.EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingDurabilityEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ChangingAmmoEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="firearm"><inheritdoc cref="Firearm"/></param>
         /// <param name="oldDurability"><inheritdoc cref="OldDurability"/></param>
         /// <param name="newDurability"><inheritdoc cref="NewDurability"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingDurabilityEventArgs(Player player, InventorySystem.Items.ItemBase firearm, byte oldDurability, byte newDurability, bool isAllowed = true)
+        public ChangingAmmoEventArgs(Player player, InventorySystem.Items.ItemBase firearm, byte oldDurability, byte newDurability, bool isAllowed = true)
         {
             if (firearm is not InventorySystem.Items.Firearms.Firearm firearmBase)
                 return;
