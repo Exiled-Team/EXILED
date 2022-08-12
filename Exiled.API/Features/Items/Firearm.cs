@@ -18,6 +18,7 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Features.Pickups;
     using Exiled.API.Structs;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
@@ -558,7 +559,7 @@ namespace Exiled.API.Features.Items
                 ItemId = Type,
                 Position = position,
                 Weight = pickup.Weight,
-                Serial = Serial,
+                Serial = ItemSerialGenerator.GenerateNext(),
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 

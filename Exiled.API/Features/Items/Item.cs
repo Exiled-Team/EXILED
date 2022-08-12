@@ -94,7 +94,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether if the item are in an inventory.
         /// </summary>
-        public bool IsInInventory => Owner.Items.Contains(this);
+        public bool IsInInventory => Owner != Server.Host && Owner.HasItem(this);
 
         /// <summary>
         /// Gets or sets the scale for the item.
@@ -117,7 +117,7 @@ namespace Exiled.API.Features.Items
         public ItemCategory Category => Base.Category;
 
         /// <summary>
-        /// Gets the Weight of the item.
+        /// Gets the weight of the item.
         /// </summary>
         public float Weight => Base.Weight;
 
@@ -158,6 +158,7 @@ namespace Exiled.API.Features.Items
                 {
                     FlashbangGrenade => new FlashGrenade(throwable),
                     ExplosionGrenade => new ExplosiveGrenade(throwable),
+                    Scp2176Projectile => new Scp2176(throwable),
                     _ => new Throwable(throwable),
                 },
                 _ => new Item(itemBase)
@@ -244,7 +245,7 @@ namespace Exiled.API.Features.Items
                 ItemId = Type,
                 Position = position,
                 Weight = Weight,
-                Serial = Serial,
+                Serial = ItemSerialGenerator.GenerateNext(),
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 

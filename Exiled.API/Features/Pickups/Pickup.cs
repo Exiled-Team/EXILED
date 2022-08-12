@@ -18,8 +18,6 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
 
-    using MEC;
-
     using Mirror;
 
     using UnityEngine;
@@ -42,7 +40,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
         /// </summary>
-        public static readonly Dictionary<ItemPickupBase, Pickup> BaseToPickup = new();
+        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToPickup = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
@@ -300,20 +298,15 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Clones current <see cref="Pickup"/> object.
         /// </summary>
-        /// <returns> New <see cref="Pickup"/> object. </returns>
+        /// <returns> New <see cref="Pickup"/> object.</returns>
         public Pickup Clone()
         {
             Pickup cloneableItem = new(Type);
 
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.Locked = Locked;
-                cloneableItem.Spawned = Spawned;
-                cloneableItem.Weight = Weight;
-                cloneableItem.Scale = Scale;
-                cloneableItem.Position = Position;
-                cloneableItem.PreviousOwner = PreviousOwner;
-            });
+            cloneableItem.Scale = Scale;
+            cloneableItem.PreviousOwner = PreviousOwner;
+            cloneableItem.Info = Info;
+
             return cloneableItem;
         }
 

@@ -86,9 +86,10 @@ namespace Exiled.API.Features.Items
         /// <returns> New <see cref="Scp244"/> object. </returns>
         public override Item Clone()
         {
-            Scp244 cloneableItem = new(Type);
-
-            cloneableItem.Primed = Primed;
+            Scp244 cloneableItem = new(Type)
+            {
+                Primed = Primed,
+            };
 
             return cloneableItem;
         }
