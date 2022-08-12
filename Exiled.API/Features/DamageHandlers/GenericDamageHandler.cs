@@ -7,16 +7,12 @@
 
 namespace Exiled.API.Features
 {
-    using System;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
 
     using Footprinting;
 
     using PlayerStatsSystem;
-
-    using Subtitles;
 
     /// <summary>
     /// Allows generic damage to player.
@@ -215,7 +211,7 @@ namespace Exiled.API.Features
         public override HandlerOutput ApplyDamage(ReferenceHub ply)
         {
             HandlerOutput output = base.ApplyDamage(ply);
-            if(output is HandlerOutput.Death)
+            if (output is HandlerOutput.Death)
             {
                 if (this.customCassieAnnouncement?.Announcement != null)
                 {

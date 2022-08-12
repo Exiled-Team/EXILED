@@ -9,7 +9,6 @@ namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
 
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
 
     using UnityEngine;

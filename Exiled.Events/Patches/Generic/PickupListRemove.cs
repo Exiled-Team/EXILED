@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
 
     using HarmonyLib;
@@ -43,7 +42,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Pop),
             });
 
-            for(int z = 0; z < newInstructions.Count; z++)
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

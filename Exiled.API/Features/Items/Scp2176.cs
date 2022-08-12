@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
+
     using UnityEngine;
 
     using Scp2176Projectile = Exiled.API.Features.Pickups.Projectiles.Scp2176Projectile;

@@ -17,20 +17,15 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs;
 
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
-
-    using MEC;
 
     using UnityEngine;
 
     using static CustomItems;
 
-    using BaseFirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Firearm = Exiled.API.Features.Items.Firearm;
-    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
     using Player = Exiled.API.Features.Player;
 
     /// <summary>

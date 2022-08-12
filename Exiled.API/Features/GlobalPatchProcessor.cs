@@ -130,24 +130,24 @@ namespace Exiled.API.Features
                 bool hasMethodBody = methodBase.HasMethodBody();
                 if (hasMethodBody)
                 {
-                    patchInfo.Postfixes.Do(delegate(Patch patchInfo)
+                    patchInfo.Postfixes.Do(delegate (Patch patchInfo)
                     {
                         harmony.Unpatch(methodBase, patchInfo.PatchMethod);
                     });
-                    patchInfo.Prefixes.Do(delegate(Patch patchInfo)
+                    patchInfo.Prefixes.Do(delegate (Patch patchInfo)
                     {
                         harmony.Unpatch(methodBase, patchInfo.PatchMethod);
                     });
                 }
 
-                patchInfo.Transpilers.Do(delegate(Patch patchInfo)
+                patchInfo.Transpilers.Do(delegate (Patch patchInfo)
                 {
                     harmony.Unpatch(methodBase, patchInfo.PatchMethod);
                 });
 
                 if (hasMethodBody)
                 {
-                    patchInfo.Finalizers.Do(delegate(Patch patchInfo)
+                    patchInfo.Finalizers.Do(delegate (Patch patchInfo)
                     {
                         harmony.Unpatch(methodBase, patchInfo.PatchMethod);
                     });

@@ -16,8 +16,6 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.Events.EventArgs;
 
-    using InventorySystem.Items.ThrowableProjectiles;
-
     using Server = Exiled.API.Features.Server;
 
     /// <summary>

@@ -18,7 +18,6 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Core;
-    using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Roles;
@@ -1537,7 +1536,7 @@ namespace Exiled.API.Features
         /// <param name="customRoleFriendlyFireMultiplier"> Custom role with FF role rules. </param>
         public void TryAddCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleType, float>> customRoleFriendlyFireMultiplier)
         {
-            foreach(KeyValuePair<string, Dictionary<RoleType, float>> newRolesWithFF in customRoleFriendlyFireMultiplier)
+            foreach (KeyValuePair<string, Dictionary<RoleType, float>> newRolesWithFF in customRoleFriendlyFireMultiplier)
             {
                 this.TryAddCustomRoleFriendlyFire(newRolesWithFF.Key, newRolesWithFF.Value);
             }

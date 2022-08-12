@@ -12,8 +12,6 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Radio;
 
-    using MEC;
-
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>

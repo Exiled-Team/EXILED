@@ -7,18 +7,12 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System.Collections.Generic;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
 
-    using Footprinting;
-
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using Mirror;
 
     using UnityEngine;
 

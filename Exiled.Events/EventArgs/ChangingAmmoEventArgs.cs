@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs
                 return;
 
             Item item = Item.Get(firearmBase);
-            if(item is not Firearm firearmItem)
+            if (item is not Firearm firearmItem)
                 return;
 
             Player = player;

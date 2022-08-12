@@ -7,32 +7,25 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Ammo;
     using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
 
-    using Mirror;
-
     using UnityEngine;
 
-    using FirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Object = UnityEngine.Object;
 
     /// <summary>

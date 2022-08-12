@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Items
         public int AddCandy(IEnumerable<CandyKindID> candies)
         {
             int validCandy = 0;
-            foreach(CandyKindID candy in candies)
+            foreach (CandyKindID candy in candies)
             {
                 if (!Base.TryAddSpecific(candy))
                 {

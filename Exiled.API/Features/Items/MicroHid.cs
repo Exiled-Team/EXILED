@@ -9,8 +9,6 @@ namespace Exiled.API.Features.Items
 {
     using InventorySystem.Items.MicroHID;
 
-    using MEC;
-
     /// <summary>
     /// A wrapper class for <see cref="MicroHIDItem"/>.
     /// </summary>
