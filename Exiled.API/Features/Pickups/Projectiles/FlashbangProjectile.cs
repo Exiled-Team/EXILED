@@ -52,7 +52,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the how mush the FlashBang going to be intensified when explode at <see cref="RoomType.Surface"/>.
         /// </summary>
-        public float SurfaceIntensifier
+        public float SurfaceDistanceIntensifier
         {
             get => Base._surfaceZoneDistanceIntensifier;
             set => Base._surfaceZoneDistanceIntensifier = value;

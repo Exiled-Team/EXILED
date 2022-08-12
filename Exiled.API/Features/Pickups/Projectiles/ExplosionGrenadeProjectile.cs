@@ -36,7 +36,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the maximum raduis of the ExplosionGrenade can affected.
         /// </summary>
-        public float MaxRaduis
+        public float MaxRadius
         {
             get => Base._maxRadius;
             set => Base._maxRadius = value;
@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the maximum duration of the <see cref="EffectType.Burned"/> effect.
         /// </summary>
-        public float BurnedDuration
+        public float BurnDuration
         {
             get => Base._burnedDuration;
             set => Base._burnedDuration = value;
@@ -63,7 +63,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the maximum duration of the <see cref="EffectType.Deafened"/> effect.
         /// </summary>
-        public float DeafenedDuration
+        public float DeafenDuration
         {
             get => Base._deafenedDuration;
             set => Base._deafenedDuration = value;
@@ -72,7 +72,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets the maximum duration of the <see cref="EffectType.Concussed"/> effect.
         /// </summary>
-        public float ConcussedDuration
+        public float ConcussDuration
         {
             get => Base._concussedDuration;
             set => Base._concussedDuration = value;
