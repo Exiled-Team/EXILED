@@ -265,8 +265,14 @@ namespace Exiled.API.Extensions
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> which contains all the firearm's attachments.</returns>
         public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this Firearm firearm)
         {
-            foreach (Attachment attachment in firearm.Attachments.Where(att => att.IsEnabled))
-                yield return Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment);
+
+            foreach (Attachment attachment in firearm.Attachments)
+            {
+                if (attachment.IsEnabled)
+                {
+                    yield return Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment);
+                }
+            }
         }
 
         /// <summary>

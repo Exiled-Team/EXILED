@@ -372,7 +372,7 @@ namespace Exiled.API.Features.Items
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~toRemove | newCode, true);
 
-            Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
+            Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -410,17 +410,14 @@ namespace Exiled.API.Features.Items
             if (!Attachments.Any(attachment => attachment.Name == identifier.Name && attachment.IsEnabled))
                 return;
 
-            uint code = identifier.Code == 0 ?
-                AvailableAttachments[Type].FirstOrDefault(attId =>
-                attId.Name == identifier.Name).Code :
-                identifier.Code;
+            uint code = identifier.Code;
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
 
             if (identifier.Name == AttachmentName.Flashlight)
-                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
+                Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
             else
-                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
+                Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -434,14 +431,14 @@ namespace Exiled.API.Features.Items
             if (firearmAttachment is null)
                 return;
 
-            uint code = AvailableAttachments[Type].FirstOrDefault(attId => attId == firearmAttachment).Code;
+            uint code = AttachmentIdentifier.Get(Type, attachmentName).Code;
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
 
             if (attachmentName == AttachmentName.Flashlight)
-                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
+                Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
             else
-                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
+                Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -460,9 +457,9 @@ namespace Exiled.API.Features.Items
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
 
             if (firearmAttachment.Name == AttachmentName.Flashlight)
-                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
+                Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags & ~FirearmStatusFlags.FlashlightEnabled, Base.GetCurrentAttachmentsCode());
             else
-                Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
+                Base.Status = new FirearmStatus(Math.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
@@ -582,7 +579,7 @@ namespace Exiled.API.Features.Items
 
             cloneableItem.Ammo = Ammo;
 
-            if(cloneableItem.Base is AutomaticFirearm)
+            if (cloneableItem.Base is AutomaticFirearm)
             {
                 cloneableItem.FireRate = FireRate;
                 cloneableItem.Recoil = Recoil;
