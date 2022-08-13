@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Spawn
     using System;
 
     using Exiled.API.Extensions;
-    using Exiled.CustomItems.API;
+    using Exiled.API.Enums;
 
     using UnityEngine;
 
