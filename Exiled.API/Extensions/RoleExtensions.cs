@@ -19,21 +19,21 @@ namespace Exiled.API.Extensions
     public static class RoleExtensions
     {
         /// <summary>
-        /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>.
+        /// Gets a <see cref="RoleType">role's</see> <see cref="Color"/>.
         /// </summary>
         /// <param name="role">The <see cref="RoleType"/> to get the color of.</param>
         /// <returns>The <see cref="Color"/> of the role.</returns>
         public static Color GetColor(this RoleType role) => role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
 
         /// <summary>
-        /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>.
+        /// Gets a <see cref="RoleType">role's</see> <see cref="Side"/>.
         /// </summary>
         /// <param name="role">The <see cref="RoleType"/> to check the side of.</param>
         /// <returns><see cref="Side"/>.</returns>
         public static Side GetSide(this RoleType role) => role.GetTeam().GetSide();
 
         /// <summary>
-        /// Get a <see cref="Team">team's</see> <see cref="Side"/>.
+        /// Gets a <see cref="Team">team's</see> <see cref="Side"/>.
         /// </summary>
         /// <param name="team">The <see cref="Team"/> to get the <see cref="Side"/> of.</param>
         /// <returns><see cref="Side"/>.</returns>.
@@ -47,7 +47,7 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
-        /// Get the <see cref="Team"/> of the given <see cref="RoleType"/>.
+        /// Gets the <see cref="Team"/> of the given <see cref="RoleType"/>.
         /// </summary>
         /// <param name="roleType">Role.</param>
         /// <returns><see cref="Team"/>.</returns>
@@ -71,7 +71,7 @@ namespace Exiled.API.Extensions
         public static string GetFullName(this RoleType roleType) => CharacterClassManager._staticClasses.SafeGet(roleType).fullName;
 
         /// <summary>
-        /// Get the <see cref="LeadingTeam"/>.
+        /// Gets the <see cref="LeadingTeam"/>.
         /// </summary>
         /// <param name="team">Team.</param>
         /// <returns><see cref="LeadingTeam"/>.</returns>
