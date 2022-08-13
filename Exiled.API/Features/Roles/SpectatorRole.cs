@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Roles
         public TimeSpan DeadTime => DateTime.UtcNow - DeathTime;
 
         /// <summary>
-        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
+        /// Gets or sets the currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
         /// </summary>
         public Player SpectatedPlayer
         {

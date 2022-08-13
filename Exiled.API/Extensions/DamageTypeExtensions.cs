@@ -103,8 +103,8 @@ namespace Exiled.API.Extensions
         /// Check if a <see cref="DamageType">damage type</see> is caused by weapon.
         /// </summary>
         /// <param name="type">The damage type to be checked.</param>
-        /// <param name="checkMicro">Indicates whether the MicroHid damage type should be taken into account or not.</param>
-        /// <returns>Returns whether the <see cref="DamageType"/> is caused by weapon or not.</returns>
+        /// <param name="checkMicro">Indicates whether or not the MicroHid damage type should be taken into account.</param>
+        /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by weapon.</returns>
         public static bool IsWeapon(this DamageType type, bool checkMicro = true) => type switch
         {
             DamageType.Crossvec or DamageType.Logicer or DamageType.Revolver or DamageType.Shotgun or DamageType.AK or DamageType.Com15 or DamageType.Com18 or DamageType.E11Sr or DamageType.Fsp9 or DamageType.ParticleDisruptor => true,
@@ -116,8 +116,8 @@ namespace Exiled.API.Extensions
         /// Check if a <see cref="DamageType">damage type</see> is caused by SCP.
         /// </summary>
         /// <param name="type">The damage type to be checked.</param>
-        /// <param name="checkItems">Indicates whether the SCP-items damage types should be taken into account or not.</param>
-        /// <returns>Returns whether the <see cref="DamageType"/> is caused by SCP or not.</returns>
+        /// <param name="checkItems">Indicates whether or not the SCP-items damage types should be taken into account.</param>
+        /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by SCP.</returns>
         public static bool IsScp(this DamageType type, bool checkItems = true) => type switch
         {
             DamageType.Scp or DamageType.Scp049 or DamageType.Scp096 or DamageType.Scp106 or DamageType.Scp173 or DamageType.Scp939 or DamageType.Scp0492 => true,
@@ -129,7 +129,7 @@ namespace Exiled.API.Extensions
         /// Check if a <see cref="DamageType">damage type</see> is caused by status effect.
         /// </summary>
         /// <param name="type">The damage type to be checked.</param>
-        /// <returns>Returns whether the <see cref="DamageType"/> is caused by status effect or not.</returns>
+        /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by status effect.</returns>
         public static bool IsStatusEffect(this DamageType type) => type switch
         {
             DamageType.Asphyxiation or DamageType.Poison or DamageType.Bleeding or DamageType.Scp207 or DamageType.Hypothermia => true,
@@ -139,8 +139,8 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets the <see cref="DamageType"/> of an <see cref="DamageHandlerBase"/>s.
         /// </summary>
-        /// <param name="damageHandlerBase">The DamageHandler you want to get the DamageType.</param>
-        /// <returns>Return the <see cref="DamageType"/> of the <see cref="DamageHandlerBase"/>.</returns>
+        /// <param name="damageHandlerBase">The DamageHandler to convert.</param>
+        /// <returns>The <see cref="DamageType"/> of the <see cref="DamageHandlerBase"/>.</returns>
         public static DamageType GetDamageType(DamageHandlerBase damageHandlerBase)
         {
             switch (damageHandlerBase)

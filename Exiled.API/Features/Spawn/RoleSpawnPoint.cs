@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Spawn
         public override string Name
         {
             get => Role.ToString();
-            set => throw new InvalidOperationException("You cannot change the name of this type of SpawnPoint.");
+            set => throw new InvalidOperationException("The name of this type of SpawnPoint cannot be changed.");
         }
 
         /// <inheritdoc/>
@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Spawn
         public override Vector3 Position
         {
             get => Role.GetRandomSpawnProperties().Item1;
-            set => throw new InvalidOperationException("You cannot change the position of this type of SpawnPoint.");
+            set => throw new InvalidOperationException("The position of this type of SpawnPoint cannot be changed.");
         }
     }
 }

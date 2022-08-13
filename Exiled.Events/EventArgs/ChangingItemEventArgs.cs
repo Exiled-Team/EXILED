@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs
             set
             {
                 if (!Player.Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
-                    throw new InvalidOperationException("You cannot change ev.NewItem to an item they do not have.");
+                    throw new InvalidOperationException("ev.NewItem cannot be set to an item they do not have.");
 
                 newItem = value;
             }

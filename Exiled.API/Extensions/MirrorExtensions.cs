@@ -107,19 +107,19 @@ namespace Exiled.API.Extensions
             sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
-        /// Shaking target <see cref="Player"/> window.
+        /// Shakes the target <see cref="Player"/>'s screen.
         /// </summary>
         /// <param name="player">Target to shake.</param>
         public static void Shake(this Player player) => AlphaWarheadController.Host.TargetRpcShake(player.Connection, false, true);
 
         /// <summary>
-        /// Play beep sound to <see cref="Player"/>.
+        /// Plays a beep sound that only the target <paramref name="player"/> can hear.
         /// </summary>
-        /// <param name="player">Target to play.</param>
+        /// <param name="player">Target to play sound to.</param>
         public static void PlayBeepSound(this Player player) => SendFakeTargetRpc(player, ReferenceHub.HostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);
 
         /// <summary>
-        /// Set <see cref="NicknameSync.Network_customPlayerInfoString"/> that only <see cref="Player"/> can see.
+        /// Set <see cref="Player.CustomInfo"/> on the <paramref name="target"/> player that only the <paramref name="player"/> can see.
         /// </summary>
         /// <param name="player">Only this player can see info.</param>
         /// <param name="target">Target to set info.</param>
@@ -127,7 +127,7 @@ namespace Exiled.API.Extensions
         public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => player.SendFakeSyncVar(target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
 
         /// <summary>
-        /// Plays gun sound.
+        /// Plays a gun sound that only the <paramref name="player"/> can hear.
         /// </summary>
         /// <param name="player">Target to play.</param>
         /// <param name="position">Position to play on.</param>
@@ -155,7 +155,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Set <see cref="FlickerableLightController.Network_warheadLightColor"/> that only <see cref="Player"/> can see.
+        /// Set's <see cref="Room.Color"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
@@ -167,7 +167,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Set <see cref="FlickerableLightController.Network_lightIntensityMultiplier"/> that only <see cref="Player"/> can see.
+        /// Set's <see cref="Room.Color"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
@@ -191,7 +191,6 @@ namespace Exiled.API.Extensions
 
         /// <summary>
         /// Send CASSIE announcement that only <see cref="Player"/> can hear.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleType"/> changes.
         /// </summary>
         /// <param name="player">Target to send.</param>
         /// <param name="words">Announcement words.</param>

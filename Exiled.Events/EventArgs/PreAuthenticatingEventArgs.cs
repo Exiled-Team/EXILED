@@ -74,7 +74,7 @@ namespace Exiled.Events.EventArgs
             set
             {
                 if (!value)
-                    throw new InvalidOperationException("You cannot set IsAllowed to false. Use ev.Reject instead.");
+                    throw new InvalidOperationException("PreAuthenticatingEventArgs.IsAllowed cannot be set to false. Use ev.Reject instead.");
                 isAllowed = true;
             }
         }

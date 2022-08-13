@@ -14,7 +14,7 @@ namespace Exiled.CreditTags.Commands
     using Exiled.API.Features;
 
     /// <summary>
-    /// A client command to show your credit tag.
+    /// A client command to show an EXILED credit tag.
     /// </summary>
     [CommandHandler(typeof(ClientCommandHandler))]
     public class ShowCreditTag : ICommand

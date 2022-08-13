@@ -104,7 +104,7 @@ namespace Exiled.API.Features
             Timing.CallDelayed(delay, () => Announcer.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance));
 
         /// <summary>
-        /// Calculates duration of a C.A.S.S.I.E message.
+        /// Calculates the duration of a C.A.S.S.I.E message.
         /// </summary>
         /// <param name="message">The message, which duration will be calculated.</param>
         /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
@@ -113,7 +113,7 @@ namespace Exiled.API.Features
             => Announcer.CalculateDuration(message, rawNumber);
 
         /// <summary>
-        /// Converts a Team into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
+        /// Converts a <see cref="Team"/> into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
         /// </summary>
         /// <param name="team"><see cref="Team"/>.</param>
         /// <param name="unitName">Unit Name.</param>
@@ -122,7 +122,7 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.ConvertTeam(team, unitName);
 
         /// <summary>
-        /// Converts Number into Cassie-Readable String.
+        /// Converts a number into a Cassie-Readable String.
         /// </summary>
         /// <param name="num">Number to convert.</param>
         /// <returns>A CASSIE-readable <see cref="string"/> representing the number.</returns>

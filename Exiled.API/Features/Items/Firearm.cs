@@ -165,7 +165,7 @@ namespace Exiled.API.Features.Items
                 if (Base is AutomaticFirearm auto)
                     auto._fireRate = value;
                 else
-                    throw new InvalidOperationException("You cannot change the firerate of non-automatic weapons.");
+                    throw new InvalidOperationException("The firerate of non-automatic weapons cannot be changed.");
             }
         }
 
@@ -181,7 +181,7 @@ namespace Exiled.API.Features.Items
                 if (Base is AutomaticFirearm auto)
                     auto.ActionModule = new AutomaticAction(Base, auto._semiAutomatic, auto._boltTravelTime, 1f / auto._fireRate, auto._dryfireClipId, auto._triggerClipId, auto._gunshotPitchRandomization, value, auto._recoilPattern, false);
                 else
-                    throw new InvalidOperationException("You cannot change the recoil pattern of non-automatic weapons.");
+                    throw new InvalidOperationException("The recoil pattern of non-automatic weapons cannot be changed.");
             }
         }
 

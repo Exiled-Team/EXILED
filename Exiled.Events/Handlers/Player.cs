@@ -126,7 +126,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before changing a <see cref="API.Features.Player"/> role.
         /// </summary>
-        /// <remarks>If you set IsAllowed to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
+        /// <remarks>If <see cref="ChangingRoleEventArgs.IsAllowed"/> is set to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
@@ -587,7 +587,7 @@ namespace Exiled.Events.Handlers
         /// Called before changing a <see cref="API.Features.Player"/> role.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
-        /// <remarks>If you set IsAllowed to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
+        /// <remarks>If <see cref="ChangingRoleEventArgs.IsAllowed"/> is set to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
 
         /// <summary>

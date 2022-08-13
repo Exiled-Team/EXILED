@@ -49,13 +49,13 @@ namespace Exiled.Installer
                     string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                     if (string.IsNullOrEmpty(appdataPath))
                     {
-                        Console.Error.WriteLine("Your appdata path is null, make sure it exists");
+                        Console.Error.WriteLine("AppData path is missing, make sure it exists");
                     }
 
                     string path = parsed.Tokens.SingleOrDefault()?.Value ?? appdataPath;
                     if (string.IsNullOrEmpty(path))
                     {
-                        parsed.ErrorMessage = "--appdata is null or empty, make sure your appdata folder exists";
+                        parsed.ErrorMessage = "--AppData is null or empty, make sure the AppData folder exists";
                         return null;
                     }
 
