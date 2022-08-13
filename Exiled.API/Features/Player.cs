@@ -2837,7 +2837,10 @@ namespace Exiled.API.Features
                     Teleport(ea.Position + Vector3.up);
                     break;
                 case Item item:
-                    Teleport(item.Base.transform.position);
+                    if (item.Owner is not null)
+                        Teleport(item.Owner.Position);
+                    else
+                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
                     break;
                 case Spawn.SpawnPoint spawnpoint:
                     Teleport(spawnpoint.Position);
