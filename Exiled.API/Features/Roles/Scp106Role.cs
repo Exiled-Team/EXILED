@@ -78,6 +78,6 @@ namespace Exiled.API.Features.Roles
         /// Contains SCP-106.
         /// </summary>
         /// <param name="container">The player who recontained SCP-106.</param>
-        public void Contain(Player container) => Script.Contain(container.Footprint);
+        public void Contain(Player container) => Script.Contain(container?.Footprint ?? Server.Host.Footprint);
     }
 }
