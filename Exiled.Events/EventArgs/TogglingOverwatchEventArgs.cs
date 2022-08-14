@@ -18,11 +18,11 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="TogglingOverwatchEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="newValue"><inheritdoc cref="NewValue"/></param>
+        /// <param name="newValue"><inheritdoc cref="IsEnabled"/></param>
         public TogglingOverwatchEventArgs(Player player, bool newValue)
         {
             Player = player;
-            NewValue = newValue;
+            IsEnabled = newValue;
             IsAllowed = true;
         }
 
@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether overwatch will be enabled or not.
         /// </summary>
-        public bool NewValue { get; set; }
+        public bool IsEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event is allowed or not.
