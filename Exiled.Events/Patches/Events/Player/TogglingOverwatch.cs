@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brtrue_S, bef),
                 new CodeInstruction(OpCodes.Pop),
                 new CodeInstruction(OpCodes.Br_S, ret),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.NewValue))).WithLabels(bef),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.IsEnabled))).WithLabels(bef),
                 new CodeInstruction(OpCodes.Starg_S, 1),
             });
 
