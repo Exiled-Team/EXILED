@@ -9,6 +9,7 @@ namespace Exiled.Events.Handlers
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -203,6 +204,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> fails to escape the pocket dimension.
         /// </summary>
         public static event CustomEventHandler<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> enters killer collision.
+        /// </summary>
+        public static event CustomEventHandler<EnteringKillerCollisionEventArgs> EnteringKillerCollision;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> reloads a weapon.
@@ -679,6 +685,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="FailingEscapePocketDimensionEventArgs"/> instance.</param>
         public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev) => FailingEscapePocketDimension.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> enters killer collision.
+        /// </summary>
+        /// <param name="ev">The <see cref="EnteringKillerCollisionEventArgs"/> instance.</param>
+        public static void OnEnteringKillerCollision(EnteringKillerCollisionEventArgs ev) => EnteringKillerCollision.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> reloads a weapon.
