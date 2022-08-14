@@ -1916,20 +1916,12 @@ namespace Exiled.API.Features
         public void UseItem(Item item)
         {
             if (item is not Usable usableItem)
-                throw new Exception($"The provided item [{item}] is not a usable item.");
-        /// Uses an item by applying its effects to the player.
-        /// </summary>
-        /// <param name="usableItem">The item to be used.</param>
-        /// <exception cref="ArgumentException">The provided item is not a <see cref="Usable"/> item.</exception>
-        public void UseItem(ItemType usableItem)
-        {
-            if (Item.Create(usableItem, this) is not Usable item)
-                throw new ArgumentException($"The provided item [{usableItem}] is not a usable item.", nameof(usableItem));
+                throw new Exception($"The provided item [{item.Type}] is not a usable item.");
 
             usableItem.Base.Owner = referenceHub;
             usableItem.Base.ServerOnUsingCompleted();
             if (usableItem.Base is not null)
-                item.Destroy();
+                usableItem.Destroy();
         }
 
         /// <summary>
