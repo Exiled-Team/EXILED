@@ -20,7 +20,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingAmmo(ChangingAmmoEventArgs)"/>
         public void OnChangingDurability(ChangingAmmoEventArgs ev)
         {
-            Log.Info($"Durability of {ev.Firearm.Type} ({ev.OldDurability}) is changing. New durability: {ev.NewDurability}");
+            Log.Info($"Durability of {ev.Firearm.Type} ({ev.OldAmmo}) is changing. New durability: {ev.NewAmmo}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingAttachments(ChangingAttachmentsEventArgs)"/>

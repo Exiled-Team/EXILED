@@ -75,7 +75,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, jmp),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.NewDurability))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAmmoEventArgs), nameof(ChangingAmmoEventArgs.NewAmmo))),
                 new(OpCodes.Br_S, jcc),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jmp),
                 new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
