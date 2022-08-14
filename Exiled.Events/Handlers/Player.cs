@@ -423,6 +423,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> toggles overwatch.
+        /// </summary>
+        public static event CustomEventHandler<TogglingOverwatchEventArgs> TogglingOverwatch;
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
         [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
@@ -945,6 +950,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> toggles overwatch.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingOverwatchEventArgs"/> instance.</param>
+        public static void OnTogglingOverwatch(TogglingOverwatchEventArgs ev) => TogglingOverwatch.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
