@@ -55,15 +55,6 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>True if it is a custom grenade.</returns>
         public virtual bool Check(Projectile grenade) => TrackedSerials.Contains(grenade.Serial);
 
-        // TODO: reimplement
-        /*
-        /// <summary>
-        /// Gets a value indicating what thrown grenades are currently being tracked.
-        /// </summary>
-        [YamlIgnore]
-        protected HashSet<ThrownProjectile> Tracked { get; } = new();
-        */
-
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
