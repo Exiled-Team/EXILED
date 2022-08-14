@@ -155,7 +155,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Set's <see cref="Room.Color"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
+        /// Sets <see cref="Room.Color"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
@@ -167,7 +167,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Set's <see cref="Room.Color"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
+        /// Sets <see cref="Room.Color"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
