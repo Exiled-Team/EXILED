@@ -127,7 +127,7 @@ namespace Exiled.Events.Patches.Generic
                                 {
                                     if (sqrMagnitude >= 1764f)
                                     {
-                                        if (!(sqrMagnitude < 4225f))
+                                        if (sqrMagnitude >= 4225f)
                                         {
                                             MakeGhost(index, __instance._transmitBuffer);
                                             continue;
