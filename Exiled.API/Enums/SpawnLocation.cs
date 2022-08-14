@@ -98,7 +98,7 @@ namespace Exiled.CustomItems.API
         Inside079First,
 
         /// <summary>
-        /// Inside SCP-079's gate.
+        /// Inside SCP-173's gate.
         /// </summary>
         Inside173Gate,
 
