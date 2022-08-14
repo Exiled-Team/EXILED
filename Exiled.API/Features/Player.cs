@@ -2225,7 +2225,6 @@ namespace Exiled.API.Features
             try
             {
                 if (item.Base is null)
-                    item = new Item(item.Type);
                     item = Item.Create(item.Type);
 
                 AddItem(item.Base, item);
