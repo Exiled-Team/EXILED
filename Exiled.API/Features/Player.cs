@@ -1083,6 +1083,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the <see cref="Collider"/>, if any.
+        /// </summary>
+        /// <param name="collider"><see cref="Collider"/>.</param>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
+        public static Player Get(Collider collider) => Get(collider.transform.root.gameObject);
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
         /// </summary>
         /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
@@ -1897,19 +1904,24 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Uses an item by applying its effects to the player.
+        /// Forces the player to use an item.
         /// </summary>
-        /// <param name="usableItem">The item to be used.</param>
-        /// <exception cref="ArgumentException">The provided item is not a <see cref="Usable"/> item.</exception>
-        public void UseItem(ItemType usableItem)
-        {
-            if (Item.Create(usableItem, this) is not Usable item)
-                throw new ArgumentException($"The provided item [{usableItem}] is not a usable item.", nameof(usableItem));
+        /// <param name="usableItem">The ItemType to be used.</param>
+        public void UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem));
 
-            item.Base.Owner = referenceHub;
-            item.Base.ServerOnUsingCompleted();
-            if (item.Base is not null)
-                item.Destroy();
+        /// <summary>
+        /// Forces the player to use an item.
+        /// </summary>
+        /// <param name="item">The item to be used.</param>
+        public void UseItem(Item item)
+        {
+            if (item is not Usable usableItem)
+                throw new Exception($"The provided item [{item.Type}] is not a usable item.");
+
+            usableItem.Base.Owner = referenceHub;
+            usableItem.Base.ServerOnUsingCompleted();
+            if (usableItem.Base is not null)
+                usableItem.Destroy();
         }
 
         /// <summary>
