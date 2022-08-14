@@ -30,12 +30,12 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="projectile"><inheritdoc cref="Grenade"/></param>
+        /// <param name="projectile"><inheritdoc cref="Projectile"/></param>
         public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrownProjectile projectile)
         {
             Player = player;
             Item = (Throwable)API.Features.Items.Item.Get(item);
-            Grenade = (Projectile)Pickup.Get(projectile);
+            Projectile = (Projectile)Pickup.Get(projectile);
         }
 
         /// <summary>
@@ -51,6 +51,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the grenade thats will thrown.
         /// </summary>
-        public Projectile Grenade { get; }
+        public Projectile Projectile { get; }
     }
 }

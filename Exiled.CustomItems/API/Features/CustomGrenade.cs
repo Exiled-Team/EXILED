@@ -115,29 +115,23 @@ namespace Exiled.CustomItems.API.Features
                 return;
 
             Log.Debug($"{ev.Player.Nickname} send throw request, item: {Name}!", CustomItems.Instance.Config.Debug);
-            if (ev.RequestType == ThrowRequest.BeginThrow)
-            {
-                OnThrowingRequest(ev);
-                return;
-            }
 
             OnThrowingRequest(ev);
-
-            switch (ev.Item)
-            {
-                case ExplosiveGrenade explosiveGrenade:
-                    explosiveGrenade.FuseTime = FuseTime;
-                    break;
-                case FlashGrenade flashGrenade:
-                    flashGrenade.FuseTime = FuseTime;
-                    break;
-            }
+            return;
         }
 
         private void OnInternalThrowingItem(ThrowingItemEventArgs ev)
         {
-            if (Check(ev.Item))
-                OnThrowingItem(ev);
+            if (!Check(ev.Item))
+                return;
+
+            OnThrowingItem(ev);
+
+            if (ev.Projectile is TimeGrenadeProjectile timeGrenade)
+                timeGrenade.FuseTime = FuseTime;
+
+            if (ExplodeOnCollision)
+                ev.Projectile.GameObject.AddComponent<Exiled.API.Features.Components.CollisionHandler>().Init((ev.Player ?? Server.Host).GameObject, ev.Projectile.Base);
         }
 
         private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
