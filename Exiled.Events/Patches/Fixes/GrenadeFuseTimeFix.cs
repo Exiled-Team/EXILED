@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ThrowableItem"/> to fix fuse times being unchangeable.
+    /// Patches <see cref="ThrowableItem.ServerThrow(float, float, Vector3, Vector3)"/> to fix fuse times being unchangeable.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3), typeof(Vector3))]
     internal static class GrenadeFuseTimeFix
