@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using NorthwoodLib.Pools;
 
-    using Respawning;
-
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

@@ -21,7 +21,6 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     /// <remarks>
     /// This event does not include IsAllowed property.
-    /// 
     /// <br>use <see cref="ThrowingRequestEventArgs.IsAllowed"/>.</br>
     /// </remarks>
     public class ThrowingItemEventArgs : EventArgs
