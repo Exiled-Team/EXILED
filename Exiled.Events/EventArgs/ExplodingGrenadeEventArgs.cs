@@ -88,8 +88,7 @@ namespace Exiled.Events.EventArgs
             Thrower = thrower ?? Server.Host;
             Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = Grenade.Position;
-            TargetsToAffect = ListPool<Player>.Shared.Rent();
-            TargetsToAffect.AddRange(players);
+            TargetsToAffect = ListPool<Player>.Shared.Rent(players);
         }
 
         /// <summary>
