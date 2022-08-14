@@ -241,6 +241,6 @@ namespace Exiled.API.Features
         /// Returns the Generator in a human-readable format.
         /// </summary>
         /// <returns>A string containing Generator-related data.</returns>
-        public override string ToString() => $"{State} {KeycardPermissions}";
+        public override string ToString() => $"{State} ({KeycardPermissions})";
     }
 }

@@ -594,25 +594,25 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is dead.
         /// </summary>
-        public bool IsDead => Role?.Team == Team.RIP;
+        public bool IsDead => Role?.Team is Team.RIP;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsNTF => Role?.Team == Team.MTF;
+        public bool IsNTF => Role?.Team is Team.MTF;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any Chaos rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsCHI => Role?.Team == Team.CHI;
+        public bool IsCHI => Role?.Team is Team.CHI;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any SCP.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsScp => Role?.Team == Team.SCP;
+        public bool IsScp => Role?.Team is Team.SCP;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any human rank.
@@ -622,7 +622,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
         /// </summary>
-        public bool IsTutorial => Role?.Type == RoleType.Tutorial;
+        public bool IsTutorial => Role?.Type is RoleType.Tutorial;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player's friendly fire is enabled.
@@ -1074,7 +1074,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                return referenceHub?.gameObject == null ? null : Get(referenceHub.gameObject);
+                return referenceHub == null || referenceHub.gameObject == null ? null : Get(referenceHub.gameObject);
             }
             catch (Exception)
             {
@@ -1214,11 +1214,7 @@ namespace Exiled.API.Features
         /// <param name="sender">The <see cref="CommandSystem.ICommandSender"/>.</param>
         /// <param name="player">The player that matches the given <see cref="CommandSystem.ICommandSender"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(CommandSystem.ICommandSender sender, out Player player)
-        {
-            player = Get(sender);
-            return player is not null;
-        }
+        public static bool TryGet(CommandSystem.ICommandSender sender, out Player player) => (player = Get(sender)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="CommandSender"/>.
@@ -1226,11 +1222,7 @@ namespace Exiled.API.Features
         /// <param name="sender">The <see cref="CommandSender"/>.</param>
         /// <param name="player">The player that matches the given <see cref="CommandSender"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(CommandSender sender, out Player player)
-        {
-            player = Get(sender);
-            return player is not null;
-        }
+        public static bool TryGet(CommandSender sender, out Player player) => (player = Get(sender)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="global::ReferenceHub"/>.
@@ -1238,11 +1230,7 @@ namespace Exiled.API.Features
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/>.</param>
         /// <param name="player">The player that matches the given <see cref="global::ReferenceHub"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(ReferenceHub referenceHub, out Player player)
-        {
-            player = Get(referenceHub);
-            return player is not null;
-        }
+        public static bool TryGet(ReferenceHub referenceHub, out Player player) => (player = Get(referenceHub)) is not null;
 
         /// <summary>
         /// Try-get a player given a network ID.
@@ -1250,11 +1238,7 @@ namespace Exiled.API.Features
         /// <param name="netId">The network ID.</param>
         /// <param name="player">The player that matches the given net ID, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(uint netId, out Player player)
-        {
-            player = Get(netId);
-            return player is not null;
-        }
+        public static bool TryGet(uint netId, out Player player) => (player = Get(netId)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="Mirror.NetworkIdentity"/>.
@@ -1262,11 +1246,7 @@ namespace Exiled.API.Features
         /// <param name="netIdentity">The <see cref="Mirror.NetworkIdentity"/>.</param>
         /// <param name="player">The player that matches the given <see cref="Mirror.NetworkIdentity"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(NetworkIdentity netIdentity, out Player player)
-        {
-            player = Get(netIdentity);
-            return player is not null;
-        }
+        public static bool TryGet(NetworkIdentity netIdentity, out Player player) => (player = Get(netIdentity)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="Mirror.NetworkConnection"/>.
@@ -1274,11 +1254,7 @@ namespace Exiled.API.Features
         /// <param name="conn">The <see cref="Mirror.NetworkConnection"/>.</param>
         /// <param name="player">The player that matches the given <see cref="Mirror.NetworkConnection"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(NetworkConnection conn, out Player player)
-        {
-            player = Get(conn);
-            return player is not null;
-        }
+        public static bool TryGet(NetworkConnection conn, out Player player) => (player = Get(conn)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="UnityEngine.GameObject"/>.
@@ -1286,11 +1262,7 @@ namespace Exiled.API.Features
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/>.</param>
         /// <param name="player">The player that matches the given <see cref="UnityEngine.GameObject"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(GameObject gameObject, out Player player)
-        {
-            player = Get(gameObject);
-            return player is not null;
-        }
+        public static bool TryGet(GameObject gameObject, out Player player) => (player = Get(gameObject)) is not null;
 
         /// <summary>
         /// Try-get a player given an ID.
@@ -1298,11 +1270,7 @@ namespace Exiled.API.Features
         /// <param name="id">The user ID.</param>
         /// <param name="player">The player that matches the given ID, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(int id, out Player player)
-        {
-            player = Get(id);
-            return player is not null;
-        }
+        public static bool TryGet(int id, out Player player) => (player = Get(id)) is not null;
 
         /// <summary>
         /// Try-get a player by identifier.
@@ -1310,11 +1278,7 @@ namespace Exiled.API.Features
         /// <param name="args">The player's nickname, ID, steamID64 or Discord ID.</param>
         /// <param name="player">The player found or <see langword="null"/> if not found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(string args, out Player player)
-        {
-            player = Get(args);
-            return player is not null;
-        }
+        public static bool TryGet(string args, out Player player) => (player = Get(args)) is not null;
 
         /// <summary>
         /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
@@ -1741,8 +1705,28 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
+        /// <remarks>For counting ammo, see <see cref="GetAmmo(AmmoType)"/>.</remarks>
         public int CountItem(ItemType item) =>
             Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
+
+        /// <summary>
+        /// Counts how many items of a certain <see cref="GrenadeType"/> a player has.
+        /// </summary>
+        /// <param name="grenadeType">The GrenadeType to search for.</param>
+        /// <returns>How many items of that <see cref="GrenadeType"/> the player has.</returns>
+        public int CountItem(GrenadeType grenadeType) =>
+            Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == grenadeType.GetItemType());
+
+        /// <summary>
+        /// Counts how many items of a certain <see cref="ItemCategory"/> a player has.
+        /// </summary>
+        /// <param name="category">The category to search for.</param>
+        /// <returns>How many items of that <see cref="ItemCategory"/> the player has.</returns>
+        public int CountItem(ItemCategory category) => category switch
+        {
+            ItemCategory.Ammo => Inventory.UserInventory.ReserveAmmo.Where(ammo => ammo.Value > 0).Count(),
+            _ => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.Category == category),
+        };
 
         /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
@@ -1910,6 +1894,22 @@ namespace Exiled.API.Features
                 ((HealthStat)ReferenceHub.playerStats.StatModules[0]).ServerHeal(amount);
             else
                 Health += amount;
+        }
+
+        /// <summary>
+        /// Uses an item by applying its effects to the player.
+        /// </summary>
+        /// <param name="usableItem">The item to be used.</param>
+        /// <exception cref="ArgumentException">The provided item is not a <see cref="Usable"/> item.</exception>
+        public void UseItem(ItemType usableItem)
+        {
+            if (Item.Create(usableItem, this) is not Usable item)
+                throw new ArgumentException($"The provided item [{usableItem}] is not a usable item.", nameof(usableItem));
+
+            item.Base.Owner = referenceHub;
+            item.Base.ServerOnUsingCompleted();
+            if (item.Base is not null)
+                item.Destroy();
         }
 
         /// <summary>
@@ -3041,10 +3041,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Resets the player speed.
+        /// </summary>
+        public void ResetSpeed()
+        {
+            WalkingSpeed = ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier;
+            RunningSpeed = ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier;
+        }
+
+        /// <summary>
         /// Converts the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
-        public override string ToString() =>
-            $"{Id} {Nickname} {UserId} {(Role is null ? "No role" : Role)}";
+        public override string ToString() => $"{Id} ({Nickname}) [{UserId}] *{(Role is null ? "No role" : Role)}*";
     }
 }

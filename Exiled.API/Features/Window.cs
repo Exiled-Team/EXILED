@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
-            Room = Map.FindParentRoom(window.gameObject);
+            Room = window.GetComponentInParent<Room>();
             Type = GetGlassType();
         }
 
@@ -180,7 +180,7 @@ namespace Exiled.API.Features
         /// Returns the Window in a human-readable format.
         /// </summary>
         /// <returns>A string containing Window-related data.</returns>
-        public override string ToString() => $"{Type} {Health} {IsBroken} {DisableScpDamage}";
+        public override string ToString() => $"{Type} ({Health}) [{IsBroken}] *{DisableScpDamage}*";
 
         private GlassType GetGlassType()
         {

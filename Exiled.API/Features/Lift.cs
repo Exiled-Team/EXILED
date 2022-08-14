@@ -238,5 +238,11 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns><see langword="true"/> if the lift was started successfully; otherwise, <see langword="false"/>.</returns>
         public bool TryStart() => Base.UseLift();
+
+        /// <summary>
+        /// Returns the Lift in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Lift-related data.</returns>
+        public override string ToString() => $"{Type} {Status} [{MovingSpeed}] *{IsLocked}* |{IsLockable}|";
     }
 }
