@@ -44,8 +44,8 @@ namespace Exiled.Events.Patches.Events.Map
             foreach (Collider collider in colliderArray)
             {
                 if (!collider.TryGetComponent(out IDestructible dest) ||
-                    !ReferenceHub.TryGetHubNetID(dest.NetworkId, out ReferenceHub hub) ||
-                    Player.Get(hub) is not Player player || ev.TargetsToAffect.Contains(player))
+                    Player.Get(dest.NetworkId) is not Player player ||
+                    ev.TargetsToAffect.Contains(player))
                 {
                     colliders.Add(collider);
                 }
