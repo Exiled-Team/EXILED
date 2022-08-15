@@ -9,8 +9,8 @@ namespace Exiled.API.Features.Spawn
 {
     using System;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
 
     using UnityEngine;
 
