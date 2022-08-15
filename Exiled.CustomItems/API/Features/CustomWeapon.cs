@@ -118,6 +118,7 @@ namespace Exiled.CustomItems.API.Features
             }
 
             pickup.Weight = Weight;
+            pickup.Scale = Scale;
             if (previousOwner is not null)
                 pickup.PreviousOwner = previousOwner;
 
@@ -178,6 +179,7 @@ namespace Exiled.CustomItems.API.Features
                 byte ammo = firearm.Ammo;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
                 Pickup pickup = firearm.Spawn(position);
+                pickup.Scale = Scale;
 
                 if (previousOwner is not null)
                     pickup.PreviousOwner = previousOwner;
@@ -196,10 +198,8 @@ namespace Exiled.CustomItems.API.Features
 
                 return pickup;
             }
-            else
-            {
-                return base.Spawn(position, item, previousOwner);
-            }
+
+            return base.Spawn(position, item, previousOwner);
         }
 
         /// <inheritdoc/>

@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Core
         protected EObject(GameObject gameObject = null)
             : this()
         {
-            if (gameObject is not null)
+            if (gameObject)
                 Base = gameObject;
         }
 
@@ -119,8 +119,7 @@ namespace Exiled.API.Features.Core
                 }
                 else
                 {
-                    List<string> values = new();
-                    values.Add(name);
+                    List<string> values = new() { name, };
                     RegisteredTypesValue.Add(t, values);
                 }
 
@@ -154,8 +153,7 @@ namespace Exiled.API.Features.Core
                 }
                 else
                 {
-                    List<string> values = new();
-                    values.Add(name);
+                    List<string> values = new() { name, };
                     RegisteredTypesValue.Add(t, values);
                 }
 
@@ -785,11 +783,7 @@ namespace Exiled.API.Features.Core
                 return source.Length;
 
             if (source.Length > target.Length)
-            {
-                string temp = target;
-                target = source;
-                source = temp;
-            }
+                (source, target) = (target, source);
 
             int m = target.Length;
             int n = source.Length;
