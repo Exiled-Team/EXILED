@@ -155,3 +155,5 @@ Esto no es bueno...
 Es por eso que los plugins que deseen hacer uso de las Actualizaciones Dinámicas ***DEBEN*** seguir estas guías o no se podrán subir al servidor de Discord (para evitar riesgos innecesarios para los administradores de servidores).
 
 Pero no es obligatorio que todos los plugins soporten las Actualizaciones Dinámicas. Si no quieres, está bien, simplemente no cambies el nombre de asamblea de tu plugin cuando hagas una versión nueva y no tendrás que preocuparte por nada de esto, simplemente asegúrate de que el administrador del servidor sepa que tiene que reiniciar completamente el servidor para actualizar el plugin.
+
+Transcripción por MarcosVLl2 con la ayuda de xRoier y GabiRP
