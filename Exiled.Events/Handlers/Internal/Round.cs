@@ -9,16 +9,12 @@ namespace Exiled.Events.Handlers.Internal
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using Exiled.Loader;
     using Exiled.Loader.Features;
 
     using InventorySystem;
-
-    using Item = Exiled.API.Features.Items.Item;
 
     /// <summary>
     /// Handles some round clean-up events and some others related to players.

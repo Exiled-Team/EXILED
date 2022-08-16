@@ -9,8 +9,6 @@ namespace Exiled.API.Features.Items
 {
     using InventorySystem.Items.MicroHID;
 
-    using MEC;
-
     /// <summary>
     /// A wrapper class for <see cref="MicroHIDItem"/>.
     /// </summary>
@@ -72,13 +70,11 @@ namespace Exiled.API.Features.Items
         /// <returns> New <see cref="MicroHid"/> object. </returns>
         public override Item Clone()
         {
-            MicroHid cloneableItem = new();
-
-            Timing.CallDelayed(1f, () =>
+            MicroHid cloneableItem = new()
             {
-                cloneableItem.State = State;
-                cloneableItem.Energy = Energy;
-            });
+                State = State,
+                Energy = Energy,
+            };
 
             return cloneableItem;
         }

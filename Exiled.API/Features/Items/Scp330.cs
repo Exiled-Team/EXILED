@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Items
 
     using Exiled.API.Features.Pickups;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Usables.Scp330;
 
     using UnityEngine;
@@ -81,7 +82,7 @@ namespace Exiled.API.Features.Items
         public int AddCandy(IEnumerable<CandyKindID> candies)
         {
             int validCandy = 0;
-            foreach(CandyKindID candy in candies)
+            foreach (CandyKindID candy in candies)
             {
                 if (!Base.TryAddSpecific(candy))
                 {
@@ -162,7 +163,12 @@ namespace Exiled.API.Features.Items
                     pickup.ExposedCandy = exposedType;
                 for (int i = 0; i < count; i++)
                     pickup.Candies.Add(type);
-                pickup.Base.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+                pickup.Info = new InventorySystem.Items.Pickups.PickupSyncInfo
+                {
+                    Position = Owner.Position,
+                    Serial = ItemSerialGenerator.GenerateNext(),
+                };
+                pickup.Base.InfoReceived(default, pickup.Info);
                 pickup.Scale = Scale;
                 pickup.Spawn();
                 pickups.Add(pickup);
@@ -172,9 +178,15 @@ namespace Exiled.API.Features.Items
             for (int i = 0; i < count; i++)
             {
                 Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, Owner.Position, default));
-                pickup.ExposedCandy = exposedType;
+                if (exposedType is not CandyKindID.None)
+                    pickup.ExposedCandy = exposedType;
                 pickup.Candies.Add(type);
-                pickup.Base.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+                pickup.Info = new InventorySystem.Items.Pickups.PickupSyncInfo
+                {
+                    Position = Owner.Position,
+                    Serial = ItemSerialGenerator.GenerateNext(),
+                };
+                pickup.Base.InfoReceived(default, pickup.Info);
                 pickup.Scale = Scale;
                 pickup.Spawn();
                 pickups.Add(pickup);
@@ -198,6 +210,7 @@ namespace Exiled.API.Features.Items
             {
                 ItemId = Type,
                 Position = position,
+                Serial = ItemSerialGenerator.GenerateNext(),
                 Weight = Weight,
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
@@ -222,7 +235,9 @@ namespace Exiled.API.Features.Items
             {
                 ExposedType = ExposedType,
             };
+
             cloneableItem.AddCandy(Candies);
+
             return cloneableItem;
         }
 

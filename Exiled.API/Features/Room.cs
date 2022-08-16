@@ -14,12 +14,9 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
 
     using Interactables.Interobjects.DoorUtils;
-
-    using InventorySystem.Items.Pickups;
 
     using MapGeneration;
 
@@ -102,7 +99,7 @@ namespace Exiled.API.Features
                 List<Pickup> pickups = new();
                 foreach (Pickup pickup in Pickup.List)
                 {
-                    if(Map.FindParentRoom(pickup.GameObject) == this)
+                    if (Map.FindParentRoom(pickup.GameObject) == this)
                     {
                         pickups.Add(pickup);
                     }
@@ -188,7 +185,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="Vector3"/> or <see langword="null"/> if not found.</returns>
-        public static Room Get(Vector3 position) => RoomIdUtils.RoomAtPosition(position) is RoomIdentifier identifier ? RoomIdentifiersToRooms[identifier] : null;
+        public static Room Get(Vector3 position) => RoomIdUtils.RoomAtPosition(position) is RoomIdentifier identifier ? Room.Get(identifier) : null;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.

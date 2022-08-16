@@ -8,23 +8,14 @@
 namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
 
     using HarmonyLib;
 
     using Mirror;
 
     using PlayerStatsSystem;
-
-    using static Exiled.Events.Events;
 
     /// <summary>
     /// Prefix of KillPlayer action.
@@ -34,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Server
     {
         private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler)
         {
-            if(!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
+            if (!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {
                 if (handler is GenericDamageHandler exiledHandler)
                 {

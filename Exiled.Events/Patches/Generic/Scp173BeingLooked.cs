@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Generic
 
     using PlayableScps;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

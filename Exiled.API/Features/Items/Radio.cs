@@ -12,8 +12,6 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Radio;
 
-    using MEC;
-
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
@@ -92,14 +90,13 @@ namespace Exiled.API.Features.Items
         /// <returns> New <see cref="Radio"/> object. </returns>
         public override Item Clone()
         {
-            Radio radio = new();
-
-            Timing.CallDelayed(1f, () =>
+            Radio radio = new()
             {
-                radio.BatteryLevel = BatteryLevel;
-                radio.Range = Range;
-                radio.RangeSettings = RangeSettings;
-            });
+                BatteryLevel = BatteryLevel,
+                Range = Range,
+                RangeSettings = RangeSettings,
+            };
+
             return radio;
         }
 

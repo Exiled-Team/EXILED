@@ -73,7 +73,7 @@ namespace Exiled.Events.Patches.Generic
         private static void AddItem(Player player, ItemBase itemBase, ItemPickupBase itemPickupBase)
         {
             Item item = Item.Get(itemBase);
-            if(itemPickupBase != null)
+            if (itemPickupBase != null)
             {
                 item.Scale = itemPickupBase.transform.localScale;
             }

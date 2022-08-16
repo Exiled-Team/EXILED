@@ -7,6 +7,9 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pickups.Projectiles;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     using UnityEngine;
@@ -24,6 +27,8 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
+            Projectile = Pickup.Get(Object.Instantiate(Base.Projectile)) as Projectile;
+            Projectile.Serial = Serial;
         }
 
         /// <summary>
@@ -40,7 +45,12 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ThrowableItem"/> base for this item.
         /// </summary>
-        public new ThrowableItem Base { get; internal set; }
+        public new ThrowableItem Base { get; }
+
+        /// <summary>
+        /// Gets a <see cref="Pickups.Projectiles.Projectile"/> to change grenade properties.
+        /// </summary>
+        public Projectile Projectile { get; }
 
         /// <summary>
         /// Gets or sets the amount of time it takes to pull the pin.
@@ -52,9 +62,18 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether players can pickup grenade after throw.
+        /// </summary>
+        public bool Repickable
+        {
+            get => Base._repickupable;
+            set => Base._repickupable = value;
+        }
+
+        /// <summary>
         /// Throws the item.
         /// </summary>
-        /// <param name="fullForce">Whether to use full or half force.</param>
+        /// <param name="fullForce">Whether to use full or weak force.</param>
         /// this.ServerThrow(projectileSettings.StartVelocity, projectileSettings.UpwardsFactor, projectileSettings.StartTorque, startVel);
         public void Throw(bool fullForce = true)
         {
@@ -71,6 +90,7 @@ namespace Exiled.API.Features.Items
             Throwable cloneableItem = new(Type)
             {
                 PinPullTime = PinPullTime,
+                Repickable = Repickable,
             };
             return cloneableItem;
         }

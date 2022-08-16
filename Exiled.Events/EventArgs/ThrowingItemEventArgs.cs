@@ -12,12 +12,17 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pickups.Projectiles;
 
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
     /// Contains all information before a player throws a grenade.
     /// </summary>
+    /// <remarks>
+    /// This event does not include IsAllowed property.
+    /// <br>use <see cref="ThrowingRequestEventArgs.IsAllowed"/>.</br>
+    /// </remarks>
     public class ThrowingItemEventArgs : EventArgs
     {
         /// <summary>
@@ -25,14 +30,12 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="projectile"><inheritdoc cref="Grenade"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrownProjectile projectile, bool isAllowed = true)
+        /// <param name="projectile"><inheritdoc cref="Projectile"/></param>
+        public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrownProjectile projectile)
         {
             Player = player;
             Item = (Throwable)API.Features.Items.Item.Get(item);
-            Grenade = Pickup.Get(projectile);
-            IsAllowed = isAllowed;
+            Projectile = (Projectile)Pickup.Get(projectile);
         }
 
         /// <summary>
@@ -46,13 +49,8 @@ namespace Exiled.Events.EventArgs
         public Throwable Item { get; }
 
         /// <summary>
-        /// Gets the pickup thats will thrown.
+        /// Gets the grenade thats will thrown.
         /// </summary>
-        public Pickup Grenade { get; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the grenade can be thrown.
-        /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        public Projectile Projectile { get; }
     }
 }

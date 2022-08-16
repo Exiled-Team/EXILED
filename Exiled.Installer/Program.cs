@@ -272,7 +272,7 @@ namespace Exiled.Installer
                 Enum.TryParse<PathResolution>(s, true, out PathResolution result);
                 return result;
             }
-            
+
             string fileName = entry.Name;
             bool fileInFolder = !string.IsNullOrEmpty(Path.GetDirectoryName(fileName));
             foreach (KeyValuePair<string, string> pair in Markup)
@@ -297,7 +297,7 @@ namespace Exiled.Installer
         {
             Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
             Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : VersionLimit;
-            
+
             foreach (Release r in releases)
             {
                 release = r;

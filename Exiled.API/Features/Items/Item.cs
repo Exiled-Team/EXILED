@@ -7,32 +7,25 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Ammo;
     using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
 
-    using Mirror;
-
     using UnityEngine;
 
-    using FirearmPickup = InventorySystem.Items.Firearms.FirearmPickup;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -94,7 +87,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether if the item are in an inventory.
         /// </summary>
-        public bool IsInInventory => Owner.Items.Contains(this);
+        public bool IsInInventory => Owner != Server.Host && Owner.HasItem(this);
 
         /// <summary>
         /// Gets or sets the scale for the item.
@@ -117,7 +110,7 @@ namespace Exiled.API.Features.Items
         public ItemCategory Category => Base.Category;
 
         /// <summary>
-        /// Gets the Weight of the item.
+        /// Gets the weight of the item.
         /// </summary>
         public float Weight => Base.Weight;
 
@@ -158,6 +151,7 @@ namespace Exiled.API.Features.Items
                 {
                     FlashbangGrenade => new FlashGrenade(throwable),
                     ExplosionGrenade => new ExplosiveGrenade(throwable),
+                    Scp2176Projectile => new Scp2176(throwable),
                     _ => new Throwable(throwable),
                 },
                 _ => new Item(itemBase)
@@ -244,7 +238,7 @@ namespace Exiled.API.Features.Items
                 ItemId = Type,
                 Position = position,
                 Weight = Weight,
-                Serial = Serial,
+                Serial = ItemSerialGenerator.GenerateNext(),
                 Rotation = new LowPrecisionQuaternion(rotation),
             };
 
