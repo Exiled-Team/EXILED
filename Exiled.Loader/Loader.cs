@@ -96,6 +96,11 @@ namespace Exiled.Loader
         public static Version Version { get; } = Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <summary>
+        /// Gets the NameVersion of the assembly.
+        /// </summary>
+        public static string VersionName { get; } = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+
+        /// <summary>
         /// Gets the configs of the plugin manager.
         /// </summary>
         public static Config Config { get; } = new();
