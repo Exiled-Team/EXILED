@@ -20,8 +20,6 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Roles;
     using Exiled.API.Features.Toys;
 
-    using InventorySystem.Items.Pickups;
-
     using LightContainmentZoneDecontamination;
 
     using MapGeneration.Distributors;
@@ -357,8 +355,6 @@ namespace Exiled.API.Features
             RagdollsValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Scp079Interactable.InteractablesByRoomId.Clear();
-            ExplosiveGrenade.GrenadeToItem.Clear();
-            FlashGrenade.GrenadeToItem.Clear();
         }
     }
 }

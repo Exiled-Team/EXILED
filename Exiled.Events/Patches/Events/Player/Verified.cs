@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions))) + offset;
 
             // Player player;
-            // if(!Player.UnverifiedPlayers.TryGetValue(_hub, out player)) {
+            // if (!Player.UnverifiedPlayers.TryGetValue(_hub, out player)) {
             //     Means the player connected before WaitingForPlayers event is fired
             //     Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
             //     Blame NorthWood
@@ -52,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Player
             //     Joined.CallEvent(_hub, out player);
             // }
             // #if DEBUG
-            // Log.Debug("{player.Nickname} has verified!");
+            //     Log.Debug("{player.Nickname} has verified!");
             // #endif
             // Player.Dictionary.Add(_hub.gameObject, player);
             // player.IsVerified = true;
@@ -124,7 +124,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stelem_Ref),
 
                 new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object[]) })),
-                new(OpCodes.Ldc_I4_S, 10),
+                new(OpCodes.Ldc_I4_S, (int)ConsoleColor.Green),
                 new(OpCodes.Call, Method(typeof(Log), nameof(Log.SendRaw), new[] { typeof(string), typeof(ConsoleColor) })),
 
                 new(OpCodes.Ldloc_S, player.LocalIndex),

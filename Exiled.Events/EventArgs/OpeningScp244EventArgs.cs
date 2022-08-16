@@ -9,7 +9,6 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
 
     using InventorySystem.Items.Usables.Scp244;

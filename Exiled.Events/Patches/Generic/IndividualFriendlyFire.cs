@@ -111,7 +111,7 @@ namespace Exiled.Events.Patches.Generic
                         }
                     }
                 }
-                else if(!string.IsNullOrEmpty(attacker.UniqueRole))
+                else if (!string.IsNullOrEmpty(attacker.UniqueRole))
                 {
                     // If 035 is attacking, whether to allow or disallow based on victim role.
                     if (attacker.CustomRoleFriendlyFireMultiplier.Count > 0)
@@ -157,7 +157,7 @@ namespace Exiled.Events.Patches.Generic
             try
             {
                 bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
-                if(!currentResult)
+                if (!currentResult)
                 {
                     return true;
                 }

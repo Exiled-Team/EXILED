@@ -52,10 +52,6 @@ namespace Exiled.API.Features.Items
         /// Clones current <see cref="Ammo"/> object.
         /// </summary>
         /// <returns> New <see cref="Ammo"/> object. </returns>
-        public override Item Clone()
-        {
-            Ammo cloneableItem = new(Type);
-            return cloneableItem;
-        }
+        public override Item Clone() => new(Type);
     }
 }

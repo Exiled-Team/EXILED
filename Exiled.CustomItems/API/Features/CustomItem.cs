@@ -17,7 +17,6 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
-    using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
@@ -25,7 +24,6 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.Events.EventArgs;
     using Exiled.Loader;
 
-    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Pickups;
 

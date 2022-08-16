@@ -17,10 +17,10 @@ namespace Exiled.Example.Events
     /// </summary>
     internal sealed class ItemHandler
     {
-        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingDurability(ChangingDurabilityEventArgs)"/>
-        public void OnChangingDurability(ChangingDurabilityEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingAmmo(ChangingAmmoEventArgs)"/>
+        public void OnChangingDurability(ChangingAmmoEventArgs ev)
         {
-            Log.Info($"Durability of {ev.Firearm.Type} ({ev.OldDurability}) is changing. New durability: {ev.NewDurability}");
+            Log.Info($"Durability of {ev.Firearm.Type} ({ev.OldAmmo}) is changing. New durability: {ev.NewAmmo}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingAttachments(ChangingAttachmentsEventArgs)"/>

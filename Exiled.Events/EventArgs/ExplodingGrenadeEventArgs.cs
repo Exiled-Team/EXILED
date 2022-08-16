@@ -9,8 +9,6 @@ namespace Exiled.Events.EventArgs
     using System;
     using System.Collections.Generic;
 
-    using Exiled.API.Enums;
-
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
@@ -90,8 +88,7 @@ namespace Exiled.Events.EventArgs
             Thrower = thrower ?? Server.Host;
             Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = Grenade.Position;
-            TargetsToAffect = ListPool<Player>.Shared.Rent();
-            TargetsToAffect.AddRange(players);
+            TargetsToAffect = ListPool<Player>.Shared.Rent(players);
         }
 
         /// <summary>

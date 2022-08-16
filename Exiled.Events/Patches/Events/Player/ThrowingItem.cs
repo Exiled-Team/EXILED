@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using NorthwoodLib.Pools;
 
-    using Respawning;
-
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -39,13 +37,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            int offset = -2;
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(GameplayTickets), nameof(GameplayTickets.HandleItemTickets)))) + offset;
-
-            newInstructions.RemoveRange(index, 3);
-
-            offset = -3;
-            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;
+            int offset = -3;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -54,17 +47,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldloc_0),
-                new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowingItemEventArgs))[0]),
-                new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingItem))),
-
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowingItemEventArgs), nameof(ThrowingItemEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-
-                new(OpCodes.Ldsfld, Field(typeof(GameplayTickets), nameof(GameplayTickets.Singleton))),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(GameplayTickets), nameof(GameplayTickets.HandleItemTickets))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

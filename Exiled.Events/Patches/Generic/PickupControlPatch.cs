@@ -10,10 +10,8 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1402
 #pragma warning disable SA1649
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
 
@@ -22,9 +20,6 @@ namespace Exiled.Events.Patches.Generic
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
-    using MapGeneration.Distributors;
-
-    using MEC;
 
     using NorthwoodLib.Pools;
 

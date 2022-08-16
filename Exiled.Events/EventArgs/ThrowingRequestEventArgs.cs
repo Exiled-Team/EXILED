@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    /// Contains all information before a player throws a grenade.
+    /// Contains all information before receving a throwing request.
     /// </summary>
     public class ThrowingRequestEventArgs : EventArgs
     {
