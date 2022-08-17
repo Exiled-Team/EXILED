@@ -1077,6 +1077,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the <see cref="Collider"/>, if any.
+        /// </summary>
+        /// <param name="collider"><see cref="Collider"/>.</param>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
+        public static Player Get(Collider collider) => Get(collider.transform.root.gameObject);
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
         /// </summary>
         /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
@@ -1208,11 +1215,7 @@ namespace Exiled.API.Features
         /// <param name="sender">The <see cref="CommandSystem.ICommandSender"/>.</param>
         /// <param name="player">The player that matches the given <see cref="CommandSystem.ICommandSender"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(CommandSystem.ICommandSender sender, out Player player)
-        {
-            player = Get(sender);
-            return player is not null;
-        }
+        public static bool TryGet(CommandSystem.ICommandSender sender, out Player player) => (player = Get(sender)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="CommandSender"/>.
@@ -1220,11 +1223,7 @@ namespace Exiled.API.Features
         /// <param name="sender">The <see cref="CommandSender"/>.</param>
         /// <param name="player">The player that matches the given <see cref="CommandSender"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(CommandSender sender, out Player player)
-        {
-            player = Get(sender);
-            return player is not null;
-        }
+        public static bool TryGet(CommandSender sender, out Player player) => (player = Get(sender)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="global::ReferenceHub"/>.
@@ -1232,11 +1231,7 @@ namespace Exiled.API.Features
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/>.</param>
         /// <param name="player">The player that matches the given <see cref="global::ReferenceHub"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(ReferenceHub referenceHub, out Player player)
-        {
-            player = Get(referenceHub);
-            return player is not null;
-        }
+        public static bool TryGet(ReferenceHub referenceHub, out Player player) => (player = Get(referenceHub)) is not null;
 
         /// <summary>
         /// Try-get a player given a network ID.
@@ -1244,11 +1239,7 @@ namespace Exiled.API.Features
         /// <param name="netId">The network ID.</param>
         /// <param name="player">The player that matches the given net ID, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(uint netId, out Player player)
-        {
-            player = Get(netId);
-            return player is not null;
-        }
+        public static bool TryGet(uint netId, out Player player) => (player = Get(netId)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="Mirror.NetworkIdentity"/>.
@@ -1256,11 +1247,7 @@ namespace Exiled.API.Features
         /// <param name="netIdentity">The <see cref="Mirror.NetworkIdentity"/>.</param>
         /// <param name="player">The player that matches the given <see cref="Mirror.NetworkIdentity"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(NetworkIdentity netIdentity, out Player player)
-        {
-            player = Get(netIdentity);
-            return player is not null;
-        }
+        public static bool TryGet(NetworkIdentity netIdentity, out Player player) => (player = Get(netIdentity)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="Mirror.NetworkConnection"/>.
@@ -1268,11 +1255,7 @@ namespace Exiled.API.Features
         /// <param name="conn">The <see cref="Mirror.NetworkConnection"/>.</param>
         /// <param name="player">The player that matches the given <see cref="Mirror.NetworkConnection"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(NetworkConnection conn, out Player player)
-        {
-            player = Get(conn);
-            return player is not null;
-        }
+        public static bool TryGet(NetworkConnection conn, out Player player) => (player = Get(conn)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="UnityEngine.GameObject"/>.
@@ -1280,11 +1263,7 @@ namespace Exiled.API.Features
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/>.</param>
         /// <param name="player">The player that matches the given <see cref="UnityEngine.GameObject"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(GameObject gameObject, out Player player)
-        {
-            player = Get(gameObject);
-            return player is not null;
-        }
+        public static bool TryGet(GameObject gameObject, out Player player) => (player = Get(gameObject)) is not null;
 
         /// <summary>
         /// Try-get a player given an ID.
@@ -1292,11 +1271,7 @@ namespace Exiled.API.Features
         /// <param name="id">The user ID.</param>
         /// <param name="player">The player that matches the given ID, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(int id, out Player player)
-        {
-            player = Get(id);
-            return player is not null;
-        }
+        public static bool TryGet(int id, out Player player) => (player = Get(id)) is not null;
 
         /// <summary>
         /// Try-get a player by identifier.
@@ -1304,11 +1279,7 @@ namespace Exiled.API.Features
         /// <param name="args">The player's nickname, ID, steamID64 or Discord ID.</param>
         /// <param name="player">The player found or <see langword="null"/> if not found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
-        public static bool TryGet(string args, out Player player)
-        {
-            player = Get(args);
-            return player is not null;
-        }
+        public static bool TryGet(string args, out Player player) => (player = Get(args)) is not null;
 
         /// <summary>
         /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
@@ -1939,19 +1910,24 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Uses an item by applying its effects to the player.
+        /// Forces the player to use an item.
         /// </summary>
-        /// <param name="usableItem">The item to be used.</param>
-        /// <exception cref="ArgumentException">The provided item is not a <see cref="Usable"/> item.</exception>
-        public void UseItem(ItemType usableItem)
-        {
-            if (Item.Create(usableItem, this) is not Usable item)
-                throw new ArgumentException($"The provided item [{usableItem}] is not a usable item.", nameof(usableItem));
+        /// <param name="usableItem">The ItemType to be used.</param>
+        public void UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem));
 
-            item.Base.Owner = referenceHub;
-            item.Base.ServerOnUsingCompleted();
-            if (item.Base is not null)
-                item.Destroy();
+        /// <summary>
+        /// Forces the player to use an item.
+        /// </summary>
+        /// <param name="item">The item to be used.</param>
+        public void UseItem(Item item)
+        {
+            if (item is not Usable usableItem)
+                throw new Exception($"The provided item [{item.Type}] is not a usable item.");
+
+            usableItem.Base.Owner = referenceHub;
+            usableItem.Base.ServerOnUsingCompleted();
+            if (usableItem.Base is not null)
+                usableItem.Destroy();
         }
 
         /// <summary>
@@ -2805,6 +2781,15 @@ namespace Exiled.API.Features
                 case DoorType doorType:
                     Teleport(Door.Get(doorType).Position + Vector3.up);
                     break;
+                case RoomType roomType:
+                    Teleport(Room.Get(roomType).Position + Vector3.up);
+                    break;
+                case Enums.CameraType cameraType:
+                    Teleport(Camera.Get(cameraType).Position);
+                    break;
+                case ElevatorType elevatorType:
+                    Teleport(Lift.Get(elevatorType).Position + Vector3.up);
+                    break;
                 case Room room:
                     Teleport(room.Position + Vector3.up);
                     break;
@@ -2846,6 +2831,15 @@ namespace Exiled.API.Features
                     break;
                 case EActor ea:
                     Teleport(ea.Position + Vector3.up);
+                    break;
+                case Item item:
+                    if (item.Owner is not null)
+                        Teleport(item.Owner.Position);
+                    else
+                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
+                    break;
+                case Spawn.SpawnPoint spawnpoint:
+                    Teleport(spawnpoint.Position);
                     break;
 
                 // Unity

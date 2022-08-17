@@ -83,6 +83,11 @@ namespace Exiled.CustomItems.API.Features
         public abstract SpawnProperties SpawnProperties { get; set; }
 
         /// <summary>
+        /// Gets or sets the scale of the item.
+        /// </summary>
+        public virtual Vector3 Scale { get; set; } = Vector3.one;
+
+        /// <summary>
         /// Gets or sets the ItemType to use for this item.
         /// </summary>
         public virtual ItemType Type
@@ -509,6 +514,7 @@ namespace Exiled.CustomItems.API.Features
         public virtual Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
         {
             Pickup pickup = item.CreatePickup(position);
+            pickup.Scale = Scale;
             pickup.Weight = Weight;
 
             if (previousOwner is not null)

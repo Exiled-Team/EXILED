@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the <see cref="API.Features.Door"/> instance.
         /// </summary>
-        public Door Door { get; set; }
+        public Door Door { get; set; } // TODO: remove setter
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with the door.

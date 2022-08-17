@@ -34,6 +34,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReceivingPreferenceEventArgs> ReceivingPreference;
 
         /// <summary>
+        /// Invoked before a keycard interacts with a door.
+        /// </summary>
+        public static event CustomEventHandler<KeycardInteractingEventArgs> KeycardInteracting;
+
+        /// <summary>
         /// Called before the ammo of an firearm is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAmmoEventArgs"/> instance.</param>
@@ -50,5 +55,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs"/> instance.</param>
         public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before keycard interacts with a door.
+        /// </summary>
+        /// <param name="ev">The <see cref="KeycardInteractingEventArgs"/> instance.</param>
+        public static void OnKeycardInteracting(KeycardInteractingEventArgs ev) => KeycardInteracting.InvokeSafely(ev);
     }
 }
