@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Scp244
         /// </param>
         public UsingScp244EventArgs(Scp244Item scp244, Player player, bool isAllowed = true)
         {
-            Scp244 = (Scp244) Item.Get(scp244);
+            Scp244 = (Scp244)Item.Get(scp244);
             Player = player;
             IsAllowed = isAllowed;
         }

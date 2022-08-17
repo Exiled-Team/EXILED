@@ -81,7 +81,7 @@ namespace Exiled.Events.Patches.Events.Server
                 yield return Timing.WaitForOneFrame;
                 newList.warhead_kills = AlphaWarheadController.Host.detonated ? AlphaWarheadController.Host.warheadKills : -1;
                 yield return Timing.WaitForOneFrame;
-                newList.time = (int) Time.realtimeSinceStartup;
+                newList.time = (int)Time.realtimeSinceStartup;
                 yield return Timing.WaitForOneFrame;
                 RoundSummary.roundTime = newList.time - roundSummary.classlistStart.time;
                 int num1 = newList.mtf_and_guards + newList.scientists;
@@ -140,7 +140,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
-                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam) roundEndedEventArgs.LeadingTeam,
+                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam)roundEndedEventArgs.LeadingTeam,
                             RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, roundEndedEventArgs.TimeToRestart);
                     }
 

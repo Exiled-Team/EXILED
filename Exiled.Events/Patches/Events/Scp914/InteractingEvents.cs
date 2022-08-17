@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Scp914
         {
             if (__instance._remainingCooldown > 0.0)
                 return false;
-            switch ((Scp914InteractCode) colliderId)
+            switch ((Scp914InteractCode)colliderId)
             {
                 case Scp914InteractCode.ChangeMode:
                     Scp914KnobSetting scp914KnobSetting;

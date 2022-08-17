@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             int offset = -3;
 
             int index = newInstructions.FindIndex(
-                instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo) instruction.operand == Method(typeof(ICandy), nameof(ICandy.ServerApplyEffects))) + offset;
+                instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(ICandy), nameof(ICandy.ServerApplyEffects))) + offset;
 
             Label returnLabel = generator.DefineLabel();
 
@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             offset = -1;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo) instruction.operand == Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerRefreshBag))) +
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerRefreshBag))) +
                     offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]

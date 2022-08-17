@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Fixes
     {
         private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler)
         {
-            if(!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
+            if (!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {
                 if (handler is GenericDamageHandler exiledHandler)
                 {

@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Scp173
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int offset = -13;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo) i.operand ==
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand ==
                 Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ForcePosition), new[] { typeof(Vector3) })) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(BlinkingEventArgs));
             Label returnLabel = generator.DefineLabel();
@@ -64,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Scp173
             });
 
             offset = 1;
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stfld && (FieldInfo) i.operand ==
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stfld && (FieldInfo)i.operand ==
                 Field(typeof(Scp173), nameof(Scp173._blinkCooldownRemaining))) + offset;
 
             newInstructions.InsertRange(index, new[]

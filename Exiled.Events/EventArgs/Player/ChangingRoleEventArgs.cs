@@ -48,7 +48,7 @@ namespace Exiled.Events.EventArgs.Player
             }
 
             Lite = shouldPreservePosition;
-            Reason = (SpawnReason) reason;
+            Reason = (SpawnReason)reason;
         }
 
         /// <summary>

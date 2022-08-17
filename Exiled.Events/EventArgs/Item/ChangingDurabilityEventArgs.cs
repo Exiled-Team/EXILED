@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs.Item
                 return;
 
             Player = player;
-            Firearm = (Firearm) Item.Get(firearmBase);
+            Firearm = (Firearm)Item.Get(firearmBase);
             OldDurability = oldDurability;
             NewDurability = newDurability;
             IsAllowed = isAllowed;

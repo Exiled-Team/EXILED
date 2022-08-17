@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Scp173
             int offset = -1;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                                                                 (FieldInfo) instruction.operand == Field(typeof(Scp173), nameof(Scp173._breakneckSpeedsCooldownRemaining))) + offset;
+                                                                 (FieldInfo)instruction.operand == Field(typeof(Scp173), nameof(Scp173._breakneckSpeedsCooldownRemaining))) + offset;
 
             newInstructions.RemoveRange(index, 5);
 

@@ -93,7 +93,7 @@ namespace Exiled.Events.Patches.Events.Scp096
 
             // Search for the sixth "ldarg.0".
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
-                                                                 (MethodInfo) instruction.operand == Method(typeof(Scp096), nameof(Scp096.AddReset))) + offset;
+                                                                 (MethodInfo)instruction.operand == Method(typeof(Scp096), nameof(Scp096.AddReset))) + offset;
 
             // Extract all labels from it.
             List<Label> addResetLabels = newInstructions[index].ExtractLabels();

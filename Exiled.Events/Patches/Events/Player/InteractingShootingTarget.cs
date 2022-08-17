@@ -93,15 +93,15 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             offset = 1;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Destroy))) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Destroy))) + offset;
             newInstructions[index] = new CodeInstruction(OpCodes.Br, setMaxHpLabel);
 
             offset = 1;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(BaseTarget), "set_Network_syncMode")) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(BaseTarget), "set_Network_syncMode")) + offset;
             newInstructions[index] = new CodeInstruction(OpCodes.Br, setMaxHpLabel);
 
             offset = -5;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(BaseTarget), nameof(BaseTarget.RpcSendInfo))) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(BaseTarget), nameof(BaseTarget.RpcSendInfo))) + offset;
 
             newInstructions[index].labels.Add(rpcLabel);
 
@@ -131,7 +131,7 @@ namespace Exiled.Events.Patches.Events.Player
             if (targetButton != buttonPressed && targetButton - 1 != buttonPressed)
                 return curValue;
 
-            return (BaseTarget.TargetButton) buttonPressed switch
+            return (BaseTarget.TargetButton)buttonPressed switch
             {
                 BaseTarget.TargetButton.IncreaseHP => Mathf.Clamp(curValue * 2, 1, 256),
                 BaseTarget.TargetButton.DecreaseHP => curValue / 2,

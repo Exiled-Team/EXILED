@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Player
             try
             {
                 Player = player;
-                Item = item is null ? null : (Usable) API.Features.Items.Item.Get(item);
+                Item = item is null ? null : (Usable)API.Features.Items.Item.Get(item);
             }
             catch (Exception e)
             {

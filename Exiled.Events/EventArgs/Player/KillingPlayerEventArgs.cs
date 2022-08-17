@@ -4,6 +4,7 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
+
 namespace Exiled.Events.EventArgs.Player
 {
     using Exiled.Events.EventArgs.Interfaces;

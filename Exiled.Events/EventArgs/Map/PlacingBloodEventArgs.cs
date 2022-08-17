@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Map
         {
             Player = player;
             Position = position;
-            Type = (BloodType) type;
+            Type = (BloodType)type;
             Multiplier = multiplier;
             IsAllowed = isAllowed;
         }

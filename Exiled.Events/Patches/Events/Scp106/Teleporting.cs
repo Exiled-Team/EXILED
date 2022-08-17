@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
             // Search for "ldfld bool Scp106PlayerScript::iAm106" and subtract 1 to get the index of the third "ldarg.0".
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                                                                 (FieldInfo) instruction.operand == Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) + offset;
+                                                                 (FieldInfo)instruction.operand == Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) + offset;
 
             // Declare TeleportingEventArgs, to be able to store its instance with "stloc.0".
             LocalBuilder ev = generator.DeclareLocal(typeof(TeleportingEventArgs));

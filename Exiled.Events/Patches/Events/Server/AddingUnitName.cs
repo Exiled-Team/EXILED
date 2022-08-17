@@ -14,7 +14,9 @@ namespace Exiled.Events.Patches.Events.Server
     using Exiled.Events.EventArgs.Server;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using Respawning;
     using Respawning.NamingRules;
 

@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Map
     using Exiled.Events.EventArgs.Map;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;

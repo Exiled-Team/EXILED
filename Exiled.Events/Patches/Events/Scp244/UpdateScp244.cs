@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Brfalse_S, retLabel),
             });
 
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo) i.operand == Method(typeof(Stopwatch), nameof(Stopwatch.Restart)));
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(Stopwatch), nameof(Stopwatch.Restart)));
 
             newInstructions[index].WithLabels(retLabel);
 

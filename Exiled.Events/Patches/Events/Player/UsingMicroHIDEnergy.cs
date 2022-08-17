@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -7;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-                                                                 (MethodInfo) instruction.operand == Method(typeof(Mathf), nameof(Mathf.Clamp01))) + offset;
+                                                                 (MethodInfo)instruction.operand == Method(typeof(Mathf), nameof(Mathf.Clamp01))) + offset;
 
             Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 

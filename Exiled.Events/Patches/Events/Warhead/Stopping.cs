@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for "call" with method "ServerLogs::AddLog" and then add 1 to insert method after "ServerLogs::AddLog".
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo) instruction.operand == Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))) + 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))) + 1;
 
             // Get the count to find the previous index
             int oldCount = newInstructions.Count;

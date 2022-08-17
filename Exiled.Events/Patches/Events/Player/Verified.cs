@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
             const int offset = -1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo) i.operand == Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions))) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions))) + offset;
 
             // Player player;
             // if(!Player.UnverifiedPlayers.TryGetValue(_hub, out player)) {

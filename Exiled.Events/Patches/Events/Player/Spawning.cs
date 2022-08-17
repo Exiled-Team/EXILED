@@ -36,8 +36,8 @@ namespace Exiled.Events.Patches.Events.Player
             // Find the index of the ldarg.0 before the only ldfld CharacterClassManager::SpawnProtected
             const int offset = -1;
             int index = newInstructions.FindIndex(i =>
-            i.opcode == OpCodes.Call && (MethodInfo)i.operand ==
-            AccessTools.PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.SpawnProtected))) + offset;
+                i.opcode == OpCodes.Call && (MethodInfo)i.operand ==
+                AccessTools.PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.SpawnProtected))) + offset;
 
             // Remove all existing this._pms.OnPlayerClassChange calls (we will want to call this ourselves after our even fires, to allow their spawn position to change.)
             foreach (CodeInstruction instruction in newInstructions.FindAll(i =>

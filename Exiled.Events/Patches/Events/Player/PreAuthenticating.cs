@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -1;
 
             // Search for the last "request.Accept()" and then removes the offset, to get "ldarg.1" index.
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo) i.operand == PropertyGetter(typeof(NetManager), nameof(NetManager.ConnectedPeersCount))) +
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == PropertyGetter(typeof(NetManager), nameof(NetManager.ConnectedPeersCount))) +
                         offset;
 
             // Declare a string local variable.
