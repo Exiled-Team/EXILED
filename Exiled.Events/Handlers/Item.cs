@@ -33,7 +33,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<ReceivingPreferenceEventArgs> ReceivingPreference;
 
-        // <summary>
+        /// <summary>
         /// Invoked before a keycard interacts with a door.
         /// </summary>
         public static event CustomEventHandler<KeycardInteractingEventArgs> KeycardInteracting;

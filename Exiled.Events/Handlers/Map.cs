@@ -156,7 +156,7 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
         public static void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev) => ChangedIntoGrenade.InvokeSafely(ev);
 
-        // <summary>
+        /// <summary>
         /// Called before turning off lights.
         /// </summary>
         /// <param name="ev">The <see cref="TurningOffLightsEventArgs"/> instance.</param>
