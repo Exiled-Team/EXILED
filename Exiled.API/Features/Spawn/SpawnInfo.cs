@@ -7,9 +7,6 @@
 
 namespace Exiled.API.Features.Spawn
 {
-
-    using Exiled.API.Extensions;
-
     using UnityEngine;
 
     /// <summary>
