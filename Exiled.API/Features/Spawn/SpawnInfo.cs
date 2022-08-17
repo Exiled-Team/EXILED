@@ -49,6 +49,11 @@ namespace Exiled.API.Features.Spawn
         public Quaternion Rotation => GameObject.transform.rotation;
 
         /// <summary>
+        /// Gets the spawn's Y-facing rotation. This value indicates the direction that the spawn is facing.
+        /// </summary>
+        public float YRotation => Rotation.eulerAngles.y;
+
+        /// <summary>
         /// Gets the spawn's <see cref="UnityEngine.Transform"/>.
         /// </summary>
         public Transform Transform => GameObject.transform;
