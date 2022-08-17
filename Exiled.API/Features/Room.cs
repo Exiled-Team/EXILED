@@ -15,6 +15,7 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Spawn;
 
     using Interactables.Interobjects.DoorUtils;
 
@@ -70,6 +71,37 @@ namespace Exiled.API.Features
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
         public RoomType Type { get; private set; }
+
+        /// <summary>
+        /// Gets an <see cref="IEnumerable{T}"/> of spawns in this room.
+        /// </summary>
+        public IEnumerable<SpawnInfo> Spawns
+        {
+            get
+            {
+                List<SpawnInfo> spawns = new();
+                foreach (KeyValuePair<RoleType, GameObject[]> spawn in SpawnpointManager.Positions)
+                {
+                    foreach (GameObject go in spawn.Value)
+                    {
+                        // Check for parent first
+                        var roomComponent = go.GetComponentInParent<Room>();
+                        if (roomComponent is not null && roomComponent == this)
+                        {
+                            spawns.Add(new SpawnInfo(go, spawn.Key));
+                        }
+                        else
+                        {
+                            if (Map.FindParentRoom(go) == this)
+                            {
+                                spawns.Add(new SpawnInfo(go, spawn.Key));
+                            }
+                        }
+                    }
+                }
+                return spawns;
+            }
+        }
 
         /// <summary>
         /// Gets a reference to the room's <see cref="MapGeneration.RoomIdentifier"/>.

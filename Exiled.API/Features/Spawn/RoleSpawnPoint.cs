@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Spawn
         [YamlIgnore]
         public override Vector3 Position
         {
-            get => Role.GetRandomSpawnProperties().Item1;
+            get => Role.GetRandomSpawnInfo()?.Position ?? Vector3.zero;
             set => throw new InvalidOperationException("You cannot change the position of this type of SpawnPoint.");
         }
     }

@@ -7,8 +7,12 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Spawn;
 
     using UnityEngine;
 
@@ -46,6 +50,21 @@ namespace Exiled.API.Features.Roles
         /// Gets the <see cref="UnityEngine.Color"/> of this role.
         /// </summary>
         public Color Color => Type.GetColor();
+
+        /// <summary>
+        /// Gets all the spawns belonging to this role.
+        /// </summary>
+        public IEnumerable<SpawnInfo> Spawns
+        {
+            get
+            {
+                GameObject[] spawns = SpawnpointManager.GetArrayOfPositions(Type);
+                if (spawns is null)
+                    return System.Array.Empty<SpawnInfo>();
+
+                return spawns.Select(gameObject => new SpawnInfo(gameObject, Type));
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
