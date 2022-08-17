@@ -24,15 +24,9 @@ namespace Exiled.API.Features.Spawn
         /// <param name="role">The <see cref="global::RoleType"/> of the spawn.</param>
         internal SpawnInfo(GameObject go, RoleType role)
         {
-            IsValid = go != null;
             RoleType = role;
             GameObject = go;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether or not this spawn point points to a valid spawn (typically <see langword="true"/>).
-        /// </summary>
-        public bool IsValid { get; }
 
         /// <summary>
         /// Gets the <see cref="global::RoleType"/> related to this spawn.
