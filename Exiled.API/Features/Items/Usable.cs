@@ -88,5 +88,18 @@ namespace Exiled.API.Features.Items
             get => Base.RemainingCooldown;
             set => Base.RemainingCooldown = value;
         }
+
+        /// <summary>
+        /// Uses the item.
+        /// </summary>
+        /// <param name="owner">The player to use the item.</param>
+        /// <exception cref="System.ArgumentNullException">Owner cannot be a null value.</exception>
+        public virtual void Use(Player owner)
+        {
+            if (owner is null)
+                throw new System.ArgumentNullException("Owner cannot be a null value.", nameof(owner));
+
+            owner.UseItem(this);
+        }
     }
 }
