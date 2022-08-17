@@ -75,33 +75,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an <see cref="IEnumerable{T}"/> of spawns in this room.
         /// </summary>
-        public IEnumerable<SpawnInfo> Spawns
-        {
-            get
-            {
-                List<SpawnInfo> spawns = new();
-                foreach (KeyValuePair<RoleType, GameObject[]> spawn in SpawnpointManager.Positions)
-                {
-                    foreach (GameObject go in spawn.Value)
-                    {
-                        // Check for parent first
-                        var roomComponent = go.GetComponentInParent<Room>();
-                        if (roomComponent is not null && roomComponent == this)
-                        {
-                            spawns.Add(new SpawnInfo(go, spawn.Key));
-                        }
-                        else
-                        {
-                            if (Map.FindParentRoom(go) == this)
-                            {
-                                spawns.Add(new SpawnInfo(go, spawn.Key));
-                            }
-                        }
-                    }
-                }
-                return spawns;
-            }
-        }
+        public IEnumerable<SpawnInfo> Spawns { get; private set; }
 
         /// <summary>
         /// Gets a reference to the room's <see cref="MapGeneration.RoomIdentifier"/>.
@@ -386,12 +360,13 @@ namespace Exiled.API.Features
             };
         }
 
-        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController)
+        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController, out List<SpawnInfo> spawns)
         {
-            cameraList = new List<Camera079>();
-            doors = new List<Door>();
+            cameraList = new();
+            doors = new();
             teslaGate = null;
             flickerableLightController = null;
+            spawns = new();
 
             if (Scp079Interactable.InteractablesByRoomId.ContainsKey(RoomIdentifier.UniqueId))
             {
@@ -433,6 +408,26 @@ namespace Exiled.API.Features
             {
                 flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
             }
+
+            foreach (KeyValuePair<RoleType, GameObject[]> spawn in SpawnpointManager.Positions)
+            {
+                foreach (GameObject go in spawn.Value)
+                {
+                    // Check for parent first
+                    var roomComponent = go.GetComponentInParent<Room>();
+                    if (roomComponent is not null && roomComponent == this)
+                    {
+                        spawns.Add(new SpawnInfo(go, spawn.Key));
+                    }
+                    else
+                    {
+                        if (Map.FindParentRoom(go) == this)
+                        {
+                            spawns.Add(new SpawnInfo(go, spawn.Key));
+                        }
+                    }
+                }
+            }
         }
 
         private void Awake()
@@ -441,10 +436,11 @@ namespace Exiled.API.Features
             Type = FindType(gameObject.name);
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
 
-            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
+            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController, out List<SpawnInfo> spawns);
             Doors = doors;
             Cameras = Camera.Get(cameras);
             TeslaGate = teslagate;
+            Spawns = spawns;
             if (flickerableLightController is null)
             {
                 if (!gameObject.TryGetComponent(out flickerableLightController))
