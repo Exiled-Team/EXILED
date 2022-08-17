@@ -33,16 +33,13 @@ public class EventHandlers
     public void OnRoundStarted()
     {
         coroutine = Timing.RunCoroutine(CalculateMetrics());
-        tps = Server.Tps;
     }
 
     private IEnumerator<float> CalculateMetrics()
     {
         for (; ;)
         {
-            tps = (Server.Tps + tps) / 2;
-
-            plugin.Methods.SendMetrics(EventType.None, tps);
+            plugin.Methods.SendMetrics(EventType.None);
 
             yield return Timing.WaitForSeconds(2f);
         }
@@ -51,6 +48,6 @@ public class EventHandlers
     public void OnRoundEnded(RoundEndedEventArgs ev)
     {
         Timing.KillCoroutines(coroutine);
-        plugin.Methods.SendMetrics(EventType.RoundEnd, ev.LeadingTeam, tps);
+        plugin.Methods.SendMetrics(EventType.RoundEnd, ev.LeadingTeam);
     }
 }

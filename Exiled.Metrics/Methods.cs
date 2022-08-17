@@ -39,17 +39,16 @@ public class Methods
         int playerCount = Server.PlayerCount;
         int maxPlayers = Server.MaxPlayerCount;
         LeadingTeam? team = null;
-        float? tps = (float)args[0];
 
         if (type == EventType.RoundEnd)
-            team = (LeadingTeam)args[1];
+            team = (LeadingTeam)args[0];
 
         IEnumerable<IPlugin<IConfig>> plugins = Loader.Plugins;
         string pluginInfo = string.Empty;
         foreach (IPlugin<IConfig> plg in plugins)
             pluginInfo += $"{plg.Name}|{plg.Version}|{plg.Author}|{plg.Config.IsEnabled}||";
 
-        string message = $"srvId={serverIdentifier}&exiled={exiledVersion}&players={playerCount}&playerMax={maxPlayers}&team={(team is null ? "None" : team)}&tps={tps}&plugins={pluginInfo}";
+        string message = $"srvId={serverIdentifier}&exiled={exiledVersion}&players={playerCount}&playerMax={maxPlayers}&team={(team is null ? "None" : team)}&tps={Server.Tps}&plugins={pluginInfo}";
 
         HttpQuery.Post(Url, message, out bool success, out HttpStatusCode code);
         switch (success)
