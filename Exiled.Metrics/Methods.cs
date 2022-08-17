@@ -23,7 +23,7 @@ using Exiled.Metrics.API.Enums;
 /// </summary>
 public class Methods
 {
-    private const string Url = "https://exiled.host/utilities/metrics.php";
+    private const string Url = "https://exiled.host/metrics/";
     private readonly Plugin plugin;
 
     /// <summary>
