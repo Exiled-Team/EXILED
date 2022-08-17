@@ -171,5 +171,12 @@ namespace Exiled.API.Features
         /// <param name="word">The word to check.</param>
         /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
         public static bool IsValid(string word) => Announcer.voiceLines.Any(line => line.apiName.ToUpper() == word.ToUpper());
+
+        /// <summary>
+        /// Gets a value indicating whether or not the given sentence is all valid C.A.S.S.I.E word.
+        /// </summary>
+        /// <param name="sentence">The sentence to check.</param>
+        /// <returns><see langword="true"/> if the sentence is valid; otherwise, <see langword="false"/>.</returns>
+        public static bool IsValidSentence(string sentence) => sentence.Split(' ').All(word => string.IsNullOrWhiteSpace(word) || IsValid(word));
     }
 }
