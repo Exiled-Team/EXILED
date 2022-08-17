@@ -185,7 +185,6 @@ namespace Exiled.CustomItems.API.Features
             if (ev.RequestType == ThrowRequest.BeginThrow)
             {
                 OnThrowing(ev);
-                ev.IsAllowed = false;
                 return;
             }
 
