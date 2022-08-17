@@ -5,13 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
+namespace Exiled.Events.Patches.Events.Scp173
 {
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;

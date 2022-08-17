@@ -5,17 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
+namespace Exiled.Events.EventArgs.Player
 {
     using System;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information when a player stays on an environmental hazard.
     /// </summary>
-    public class StayingOnEnvironmentalHazardEventArgs : IPlayerEvent
+    public class StayingOnEnvironmentalHazardEventArgs : IPlayerEvent, IHazardEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StayingOnEnvironmentalHazardEventArgs"/> class.

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems
+namespace Exiled.CustomItems.Events
 {
     using Exiled.CustomItems.API.Features;
 

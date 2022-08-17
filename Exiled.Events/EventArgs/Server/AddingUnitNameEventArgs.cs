@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
+namespace Exiled.Events.EventArgs.Server
 {
     using Exiled.Events.EventArgs.Interfaces;
 

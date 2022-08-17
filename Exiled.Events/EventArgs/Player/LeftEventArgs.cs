@@ -5,10 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
+namespace Exiled.Events.EventArgs.Player
 {
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs.Player;
 
     /// <summary>
     /// Contains all information after a <see cref="Player"/> disconnects from the server.

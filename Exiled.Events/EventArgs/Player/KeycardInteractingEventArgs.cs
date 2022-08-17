@@ -5,10 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs
+namespace Exiled.Events.EventArgs.Player
 {
-    using System;
-
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
@@ -18,9 +16,9 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Keycards;
 
     /// <summary>
-    /// Contains all informations before a keycard interacts with a door.
+    /// Contains all information before a keycard interacts with a door.
     /// </summary>
-    public class KeycardInteractingEventArgs : IPlayerEvent, IDeniableEvent, IDoorEvent
+    public class KeycardInteractingEventArgs : IPlayerEvent, IDeniableEvent, IDoorEvent, IPickupEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="KeycardInteractingEventArgs"/> class.
