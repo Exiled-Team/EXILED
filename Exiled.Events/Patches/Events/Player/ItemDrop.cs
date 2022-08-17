@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem" />.
-    ///     Adds the <see cref="Player.DroppingItem" /> and <see cref="Player.DroppingNull" /> events.
+    ///     Adds the <see cref="Player.DroppingItem" /> and <see cref="Player.DroppingNothing" /> events.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropItem))]
     internal static class ItemDrop

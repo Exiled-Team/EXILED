@@ -31,9 +31,11 @@ namespace Exiled.Events.Handlers.Internal
             ExplosiveGrenade.GrenadeToItem.Clear();
             FlashGrenade.GrenadeToItem.Clear();
 
-            if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart) ConfigManager.Reload();
+            if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
+                ConfigManager.Reload();
 
-            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart) TranslationManager.Reload();
+            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart)
+                TranslationManager.Reload();
 
             RoundSummary.RoundLock = false;
         }

@@ -33,7 +33,8 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (isGlobalBan && ConfigFile.ServerConfig.GetBool("gban_ban_ip")) duration = int.MaxValue;
+                if (isGlobalBan && ConfigFile.ServerConfig.GetBool("gban_ban_ip"))
+                    duration = int.MaxValue;
 
                 string userId = null;
                 string address = user.GetComponent<NetworkIdentity>().connectionToClient.address;
@@ -57,7 +58,8 @@ namespace Exiled.Events.Patches.Events.Player
                 }
 
                 string message = $"You have been {(duration > 0 ? "banned" : "kicked")}. ";
-                if (!string.IsNullOrEmpty(reason)) message = message + "Reason: " + reason;
+                if (!string.IsNullOrEmpty(reason))
+                    message = message + "Reason: " + reason;
 
                 if (!ServerStatic.PermissionsHandler.IsVerified || !targetPlayer.IsStaffBypassEnabled)
                 {
@@ -94,6 +96,7 @@ namespace Exiled.Events.Patches.Events.Player
                                     }, BanHandler.BanType.UserId);
 
                                 if (!string.IsNullOrEmpty(targetPlayer.CustomUserId))
+                                {
                                     BanHandler.IssueBan(
                                         new BanDetails
                                         {
@@ -104,6 +107,7 @@ namespace Exiled.Events.Patches.Events.Player
                                             Reason = reason,
                                             Issuer = issuer,
                                         }, BanHandler.BanType.UserId);
+                                }
                             }
                         }
                         catch
@@ -115,6 +119,7 @@ namespace Exiled.Events.Patches.Events.Player
                         try
                         {
                             if (ConfigFile.ServerConfig.GetBool("ip_banning") || isGlobalBan)
+                            {
                                 BanHandler.IssueBan(
                                     new BanDetails
                                     {
@@ -125,6 +130,7 @@ namespace Exiled.Events.Patches.Events.Player
                                         Reason = reason,
                                         Issuer = issuer,
                                     }, BanHandler.BanType.IP);
+                            }
                         }
                         catch
                         {

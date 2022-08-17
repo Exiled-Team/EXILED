@@ -167,13 +167,13 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void UpdatePlayerRole(RoleType newRole, API.Features.Player player)
         {
-            if (newRole is RoleType.Scp173) Scp173.TurnedPlayers.Remove(player);
+            if (newRole is RoleType.Scp173)
+                Scp173.TurnedPlayers.Remove(player);
 
             player.Role = API.Features.Roles.Role.Create(newRole, player);
         }
 
-        private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole,
-            CharacterClassManager.SpawnReason reason)
+        private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason)
         {
             try
             {
@@ -207,7 +207,8 @@ namespace Exiled.Events.Patches.Events.Player
                         inventory.ServerRemoveItem(key, null);
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
-                        if (startCount == inventory.UserInventory.Items.Count) inventory.UserInventory.Items.Remove(key);
+                        if (startCount == inventory.UserInventory.Items.Count)
+                            inventory.UserInventory.Items.Remove(key);
                     }
 
                     inventory.UserInventory.ReserveAmmo.Clear();

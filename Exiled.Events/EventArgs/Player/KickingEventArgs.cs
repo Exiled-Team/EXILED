@@ -120,10 +120,12 @@ namespace Exiled.Events.EventArgs.Player
         protected void LogBanChange(string assemblyName, string message)
         {
             if (assemblyName != "Exiled.Events")
+            {
                 lock (ServerLogs.LockObject)
                 {
                     Log.Warn($"[ANTI-BACKDOOR]: {assemblyName} {message} - {TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz")}");
                 }
+            }
 
             ServerLogs._state = ServerLogs.LoggingState.Write;
         }

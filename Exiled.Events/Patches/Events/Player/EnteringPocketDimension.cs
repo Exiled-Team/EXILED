@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 3;
 
             // Search for the last "newobj".
-            int index = newInstructions.FindLastIndex(instruction => instruction.operand == "gray") + offset;
+            int index = newInstructions.FindLastIndex(instruction => (string)instruction.operand == "gray") + offset;
 
             // Declare a local variable of the type "EnteringPocketDimensionEventArgs"
             LocalBuilder ev = generator.DeclareLocal(typeof(EnteringPocketDimensionEventArgs));

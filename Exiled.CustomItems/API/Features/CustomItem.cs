@@ -195,7 +195,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Checks to see if this item is a custom item.
         /// </summary>
-        /// <param name="item">The <see cref="Events.Handlers.Item"/> to check.</param>
+        /// <param name="item">The <see cref="Item"/> to check.</param>
         /// <param name="customItem">The <see cref="CustomItem"/> this item is.</param>
         /// <returns>True if the item is a custom item.</returns>
         public static bool TryGet(Item item, out CustomItem customItem)

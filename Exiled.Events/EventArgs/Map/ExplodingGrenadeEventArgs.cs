@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs.Map
     /// </summary>
     public class ExplodingGrenadeEventArgs : IPlayerEvent, IDeniableEvent
     {
-        private static readonly Dictionary<Type, GrenadeType> grenadeDictionary = new()
+        private static readonly Dictionary<Type, GrenadeType> GrenadeDictionary = new()
         {
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
             { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
@@ -49,7 +49,7 @@ namespace Exiled.Events.EventArgs.Map
         {
             Player = thrower ?? Server.Host;
             Position = grenade.Rb.position;
-            GrenadeType = grenadeDictionary[grenade.GetType()];
+            GrenadeType = GrenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
@@ -69,7 +69,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
         /// </summary>
-        /// <param name="thrower"><inheritdoc cref="Thrower"/></param>
+        /// <param name="thrower"><inheritdoc cref="Player"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
@@ -77,7 +77,7 @@ namespace Exiled.Events.EventArgs.Map
         {
             Player = thrower ?? Server.Host;
             Position = position;
-            GrenadeType = grenadeDictionary[grenade.GetType()];
+            GrenadeType = GrenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
@@ -110,7 +110,7 @@ namespace Exiled.Events.EventArgs.Map
         {
             Position = grenade.Rb.position;
             Player = thrower ?? Server.Host;
-            GrenadeType = grenadeDictionary[grenade.GetType()];
+            GrenadeType = GrenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             TargetsToAffect.AddRange(players);

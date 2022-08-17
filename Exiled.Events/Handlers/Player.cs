@@ -606,7 +606,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before dropping a null item.
         /// </summary>
-        /// <param name="ev">The <see cref="DroppingNullEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="DroppingNothingEventArgs"/> instance.</param>
         public static void OnDroppingNothing(DroppingNothingEventArgs ev) => DroppingNothing.InvokeSafely(ev);
 
         /// <summary>

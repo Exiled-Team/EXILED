@@ -25,6 +25,7 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = player;
             if (player.IsCuffed)
+            {
                 switch (player.Role.Team)
                 {
                     case Team.CDP:
@@ -34,7 +35,9 @@ namespace Exiled.Events.EventArgs.Player
                         NewRole = RoleType.ChaosConscript;
                         break;
                 }
+            }
             else
+            {
                 switch (player.Role.Team)
                 {
                     case Team.CDP:
@@ -44,6 +47,7 @@ namespace Exiled.Events.EventArgs.Player
                         NewRole = RoleType.NtfSpecialist;
                         break;
                 }
+            }
         }
 
         /// <summary>
