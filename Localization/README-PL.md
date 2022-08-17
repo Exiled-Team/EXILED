@@ -79,7 +79,7 @@ To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego
   - Przenieść go do folderu: ``~/.config/EXILED/Plugins`` (jeżeli używacie SSH jako root, musicie znaleźć poprawny folder `.config`, który będzie znajdować się pod ścieżką `/home/(użytkownik_uruchamiający_serwer)`)
 
 # Config
-Sam EXILED oferuje kilka opcji configów.
+Sam EXILED oferuje kilka opcji configu.
 Wszystkie configi są automatycznie generowane podczas uruchamiania serwera, znajdują się w pliku ``~/.config/EXILED/Configs/(port_serwera_tutaj)-config.yml`` (``%AppData%\EXILED\Configs\(port_serwera_tutaj)-config.yml`` na Windowsie).
 
 Configi pluginów ***NIE*** będą znajdować się w pliku ``config_gameplay.txt``, zamiast tego configi pluginów można znaleźć w pliku ``~/.config/EXILED/Configs/(port_serwera_tutaj)-config.yml`` (``%AppData%\EXILED\(port_serwera_tutaj)-config.yml`` na Windowsie).
