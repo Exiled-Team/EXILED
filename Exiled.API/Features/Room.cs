@@ -413,18 +413,9 @@ namespace Exiled.API.Features
             {
                 foreach (GameObject go in spawn.Value)
                 {
-                    // Check for parent first
-                    var roomComponent = go.GetComponentInParent<Room>();
-                    if (roomComponent is not null && roomComponent == this)
+                    if (Map.FindParentRoom(go) == this)
                     {
                         spawns.Add(new SpawnInfo(go, spawn.Key));
-                    }
-                    else
-                    {
-                        if (Map.FindParentRoom(go) == this)
-                        {
-                            spawns.Add(new SpawnInfo(go, spawn.Key));
-                        }
                     }
                 }
             }
