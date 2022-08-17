@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingNothingEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNull))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNothing))),
                 new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(notNullLabel),
                 new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),

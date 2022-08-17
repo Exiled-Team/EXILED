@@ -10,18 +10,19 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information when a player stays on an environmental hazard.
     /// </summary>
-    public class StayingOnEnvironmentalHazardEventArgs : EventArgs
+    public class StayingOnEnvironmentalHazardEventArgs : IPlayerEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StayingOnEnvironmentalHazardEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="environmentalHazard"><inheritdoc cref="EnvironmentalHazard"/></param>
-        public StayingOnEnvironmentalHazardEventArgs(Player player, EnvironmentalHazard environmentalHazard)
+        public StayingOnEnvironmentalHazardEventArgs(API.Features.Player player, EnvironmentalHazard environmentalHazard)
         {
             Player = player;
             EnvironmentalHazard = environmentalHazard;
@@ -30,7 +31,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's staying on the environmental hazard.
         /// </summary>
-        public Player Player { get; }
+        public API.Features.Player Player { get; }
 
         /// <summary>
         /// Gets the environmental hazard that the player is staying on.

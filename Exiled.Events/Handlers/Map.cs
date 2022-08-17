@@ -9,6 +9,7 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Extensions;
 
     using MapGeneration.Distributors;

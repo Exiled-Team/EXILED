@@ -7,10 +7,12 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using Exiled.Events.EventArgs.Interfaces;
+
     /// <summary>
     /// Contains all information before turning off lights.
     /// </summary>
-    public class TurningOffLightsEventArgs : System.EventArgs
+    public class TurningOffLightsEventArgs : IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TurningOffLightsEventArgs"/> class.

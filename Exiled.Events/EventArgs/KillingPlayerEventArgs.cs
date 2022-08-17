@@ -8,21 +8,21 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     using PlayerStatsSystem;
 
     /// <summary>
     /// Contains all information before player data to kill player is sent.
     /// </summary>
-    public class KillingPlayerEventArgs : EventArgs
+    public class KillingPlayerEventArgs : IPlayerEvent
     {
         /// <summary>
         ///  Initializes a new instance of the <see cref="KillingPlayerEventArgs"/> class.
         /// </summary>
         /// <param name="player"> Current player. </param>
         /// <param name="handler"> DamageHandler instance. </param>
-        public KillingPlayerEventArgs(Player player, ref PlayerStatsSystem.DamageHandlerBase handler)
+        public KillingPlayerEventArgs(API.Features.Player player, ref DamageHandlerBase handler)
         {
             this.Player = player;
             this.Handler = handler;
@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets current player.
         /// </summary>
-        public Player Player { get; set; }
+        public API.Features.Player Player { get; set; }
 
         /// <summary>
         /// Gets or sets current Damage Handler.

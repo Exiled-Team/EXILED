@@ -8,18 +8,19 @@
 namespace Exiled.Events.EventArgs
 {
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information before a player enters killer collision.
     /// </summary>
-    public class EnteringKillerCollisionEventArgs : System.EventArgs
+    public class EnteringKillerCollisionEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EnteringKillerCollisionEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public EnteringKillerCollisionEventArgs(Player player, bool isAllowed = true)
+        public EnteringKillerCollisionEventArgs(API.Features.Player player, bool isAllowed = true)
         {
             Player = player;
             IsAllowed = isAllowed;
@@ -28,7 +29,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's currently entering killer collision.
         /// </summary>
-        public Player Player { get; }
+        public API.Features.Player Player { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is killed by killer collision.

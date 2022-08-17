@@ -14,6 +14,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using MEC;
 
@@ -79,14 +80,14 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.PickingUpArmor += OnInternalPickingUpArmor;
+            Exiled.Events.Handlers.Player.PickingUpArmor += OnInternalPickingUpArmor;
             base.SubscribeEvents();
         }
 
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.PickingUpArmor -= OnInternalPickingUpArmor;
+            Exiled.Events.Handlers.Player.PickingUpArmor -= OnInternalPickingUpArmor;
             base.UnsubscribeEvents();
         }
 

@@ -11,6 +11,8 @@ namespace Exiled.Events.Handlers
 
     using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp330;
     using Exiled.Events.Extensions;
 
     using static Exiled.Events.Events;
@@ -143,7 +145,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before dropping a null <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static event CustomEventHandler<DroppingNullEventArgs> DroppingNull;
+        public static event CustomEventHandler<DroppingNothingEventArgs> DroppingNothing;
 
         /// <summary>
         /// Invoked before picking up ammo.
@@ -331,12 +333,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
-        /// </summary>
-        [Obsolete("Use StayingOnEnvironmentalHazard event instead.", true)]
-        public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
-
-        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with a shooting target.
         /// </summary>
         public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
@@ -375,12 +371,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> dryfires a weapon.
         /// </summary>
         public static event CustomEventHandler<DryfiringWeaponEventArgs> DryfiringWeapon;
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
-        /// </summary>
-        [Obsolete("Use StayingOnEnvironmentalHazard event instead.", true)]
-        public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
@@ -617,7 +607,7 @@ namespace Exiled.Events.Handlers
         /// Called before dropping a null item.
         /// </summary>
         /// <param name="ev">The <see cref="DroppingNullEventArgs"/> instance.</param>
-        public static void OnDroppingNull(DroppingNullEventArgs ev) => DroppingNull.InvokeSafely(ev);
+        public static void OnDroppingNothing(DroppingNothingEventArgs ev) => DroppingNothing.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up ammo.
@@ -842,13 +832,6 @@ namespace Exiled.Events.Handlers
         public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
-        /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
-        [Obsolete("Use OnStayingOnEnvironmentalHazard instead.", true)]
-        public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a shooting target.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
@@ -895,13 +878,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DryfiringWeaponEventArgs"/> instance.</param>
         public static void OnDryfiringWeapon(DryfiringWeaponEventArgs ev) => DryfiringWeapon.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
-        /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
-        [Obsolete("Use OnStayingOnEnvironmentalHazard instead.", true)]
-        public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
 
         /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> presses the voicechat key.

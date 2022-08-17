@@ -10,11 +10,12 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information before a player enters in an environmental hazard.
     /// </summary>
-    public class EnteringEnvironmentalHazardEventArgs : EventArgs
+    public class EnteringEnvironmentalHazardEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EnteringEnvironmentalHazardEventArgs"/> class.
@@ -22,7 +23,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="environmentalHazard"><inheritdoc cref="EnvironmentalHazard"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public EnteringEnvironmentalHazardEventArgs(Player player, EnvironmentalHazard environmentalHazard, bool isAllowed = true)
+        public EnteringEnvironmentalHazardEventArgs(API.Features.Player player, EnvironmentalHazard environmentalHazard, bool isAllowed = true)
         {
             Player = player;
             EnvironmentalHazard = environmentalHazard;
@@ -32,7 +33,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's entering in the environmental hazard.
         /// </summary>
-        public Player Player { get; }
+        public API.Features.Player Player { get; }
 
         /// <summary>
         /// Gets the environmental hazard that the player is entering in.

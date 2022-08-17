@@ -35,11 +35,6 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        /// Gets the player whose group is changing.
-        /// </summary>
-        public Player Player { get; }
-
-        /// <summary>
         ///     Gets or sets the player's new group.
         /// </summary>
         public UserGroup NewGroup { get; set; }

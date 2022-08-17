@@ -11,6 +11,7 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.Events.EventArgs.Interfaces;
 
     using InventorySystem;
     using InventorySystem.Items;
@@ -19,7 +20,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information after adding an item to a player's inventory.
     /// </summary>
-    public class ItemAddedEventArgs : EventArgs
+    public class ItemAddedEventArgs : IPlayerEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemAddedEventArgs"/> class.
@@ -29,20 +30,20 @@ namespace Exiled.Events.EventArgs
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> the <see cref="ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
         public ItemAddedEventArgs(Inventory inventory, ItemBase itemBase, ItemPickupBase pickupBase)
         {
-            Player = Player.Get(inventory._hub);
-            Item = Item.Get(itemBase);
+            Player = API.Features.Player.Get(inventory._hub);
+            Item = API.Features.Items.Item.Get(itemBase);
             Pickup = Pickup.Get(pickupBase);
         }
 
         /// <summary>
         /// Gets the player that had the item added.
         /// </summary>
-        public Player Player { get; }
+        public API.Features.Player Player { get; }
 
         /// <summary>
         /// Gets the item that was added.
         /// </summary>
-        public Item Item { get; }
+        public API.Features.Items.Item Item { get; }
 
         /// <summary>
         /// Gets the pickup that the item originated from or <see langword="null"/> if the item was not picked up.

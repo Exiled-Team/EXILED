@@ -7,19 +7,19 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information before a player toggles the overwatch.
     /// </summary>
-    public class TogglingOverwatchEventArgs : System.EventArgs
+    public class TogglingOverwatchEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TogglingOverwatchEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="newValue"><inheritdoc cref="IsEnabled"/></param>
-        public TogglingOverwatchEventArgs(Player player, bool newValue)
+        public TogglingOverwatchEventArgs(API.Features.Player player, bool newValue)
         {
             Player = player;
             IsEnabled = newValue;
@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player that is toggling overwatch.
         /// </summary>
-        public Player Player { get; }
+        public API.Features.Player Player { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether overwatch will be enabled or not.

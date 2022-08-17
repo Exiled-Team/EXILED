@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs
 {
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     /// <summary>
     /// Contains all information after a <see cref="Player"/> disconnects from the server.
@@ -18,7 +19,7 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="LeftEventArgs"/> class.
         /// </summary>
         /// <param name="player">The player who left the server.</param>
-        public LeftEventArgs(Player player)
+        public LeftEventArgs(API.Features.Player player)
             : base(player)
         {
         }

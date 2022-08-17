@@ -7,10 +7,12 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using Exiled.Events.EventArgs.Interfaces;
+
     /// <summary>
     /// Contains all information before adding a new unit name.
     /// </summary>
-    public class AddingUnitNameEventArgs : System.EventArgs
+    public class AddingUnitNameEventArgs : IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AddingUnitNameEventArgs"/> class.
