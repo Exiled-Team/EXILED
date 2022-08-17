@@ -97,7 +97,7 @@ namespace Exiled.API.Features.Items
         public virtual void Use(Player owner)
         {
             if (owner is null)
-                throw new System.ArgumentNullException("Owner cannot be a null value.", nameof(owner));
+                throw new System.ArgumentNullException(nameof(owner));
 
             owner.UseItem(this);
         }
