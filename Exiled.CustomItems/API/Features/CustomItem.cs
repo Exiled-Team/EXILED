@@ -34,6 +34,8 @@ namespace Exiled.CustomItems.API.Features
 
     using MEC;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using YamlDotNet.Serialization;
@@ -82,6 +84,11 @@ namespace Exiled.CustomItems.API.Features
         /// Gets or sets the list of spawn locations and chances for each one.
         /// </summary>
         public abstract SpawnProperties SpawnProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the scale of the item.
+        /// </summary>
+        public virtual Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
         /// Gets or sets the ItemType to use for this item.
@@ -312,7 +319,7 @@ namespace Exiled.CustomItems.API.Features
                             {
                                 if (property.GetValue(overrideClass ?? plugin.Config) is IEnumerable enumerable)
                                 {
-                                    List<CustomItem> list = new();
+                                    List<CustomItem> list = ListPool<CustomItem>.Shared.Rent();
                                     foreach (object item in enumerable)
                                     {
                                         if (item is CustomItem ci)
@@ -333,6 +340,8 @@ namespace Exiled.CustomItems.API.Features
                                         flag = true;
                                         items.Add(item);
                                     }
+
+                                    ListPool<CustomItem>.Shared.Return(list);
                                 }
 
                                 continue;
@@ -544,9 +553,12 @@ namespace Exiled.CustomItems.API.Features
         public virtual Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
         {
             Pickup pickup = item.Spawn(position);
+            pickup.Scale = Scale;
             pickup.Weight = Weight;
+
             if (previousOwner is not null)
                 pickup.PreviousOwner = previousOwner;
+
             TrackedSerials.Add(pickup.Serial);
 
             return pickup;
@@ -911,9 +923,7 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player)
-        {
-        }
+        protected virtual void OnAcquired(Player player) => ShowPickedUpMessage(player);
 
         /// <summary>
         /// Clears the lists of item uniqIDs and Pickups since any still in the list will be invalid.
@@ -924,7 +934,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Shows a message to the player when he pickups a custom item.
+        /// Shows a message to the player upon picking up a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowPickedUpMessage(Player player)
@@ -933,7 +943,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Shows a message to the player when he selects a custom item.
+        /// Shows a message to the player upon selecting a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)

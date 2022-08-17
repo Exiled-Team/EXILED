@@ -39,9 +39,8 @@ namespace Exiled.Events.Patches.Generic
         /// </summary>
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
-        /// <param name="attackerRole">The attackers current role.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayerFriendly(ReferenceHub attackerHub, ReferenceHub victimHub, RoleType attackerRole)
+        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub)
         {
             return CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
         }
@@ -52,9 +51,9 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub)
+        public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub)
         {
-            return CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
+            return Server.FriendlyFire || CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
         }
 
         /// <summary>
@@ -69,7 +68,7 @@ namespace Exiled.Events.Patches.Generic
         {
             ffMultiplier = 1f;
 
-            // Return false, no custom friendly fire allowed, default to NW logic for FF.
+            // Return false, no custom friendly fire allowed, default to NW logic for FF. No point in processing if FF is enabled across the board.
             if (Server.FriendlyFire)
                 return false;
 
@@ -97,7 +96,7 @@ namespace Exiled.Events.Patches.Generic
 
                 Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role} and Victim {victim.Role}", Loader.Loader.ShouldDebugBeShown);
 
-                if (!victim.UniqueRole.Equals(string.Empty))
+                if (!string.IsNullOrEmpty(victim.UniqueRole))
                 {
                     // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us
                     if (victim.CustomRoleFriendlyFireMultiplier.Count > 0)
@@ -112,7 +111,7 @@ namespace Exiled.Events.Patches.Generic
                         }
                     }
                 }
-                else if(!attacker.UniqueRole.Equals(string.Empty))
+                else if(!string.IsNullOrEmpty(attacker.UniqueRole))
                 {
                     // If 035 is attacking, whether to allow or disallow based on victim role.
                     if (attacker.CustomRoleFriendlyFireMultiplier.Count > 0)
@@ -157,8 +156,13 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                __result = IndividualFriendlyFire.CheckFriendlyFirePlayer(attacker, victim);
+                bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
+                if(!currentResult)
+                {
+                    return true;
+                }
 
+                __result = currentResult;
                 return false;
             }
             catch (Exception e)
@@ -245,50 +249,6 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="ExplosionGrenade.ExplodeDestructible(IDestructible, Footprint, Vector3, ExplosionGrenade)"/>.
-    /// </summary>
-    // TODO: Re-do this
-    // [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.ExplodeDestructible))]
-    internal static class ExplosionGrenadeExplodeDestructiblePatch
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            const int targetIsOwnerIndex = 5;
-            const int offset = 6;
-            const int instructionsToRemove = 8;
-
-            int index = newInstructions.FindIndex(code => code.opcode == OpCodes.Stloc_S &&
-                ((LocalBuilder)code.operand).LocalIndex == targetIsOwnerIndex) + offset;
-
-            newInstructions.RemoveRange(index, instructionsToRemove);
-
-            // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // this.PreviousOwner.Hub
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldflda, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
-
-                // targetReferenceHub
-                new(OpCodes.Ldloc_3),
-
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldflda, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
-            });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-    }
-
-    /// <summary>
     /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
     /// </summary>
     [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
@@ -316,7 +276,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Ldloca_S, 2),
                 new(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
 
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer), new[] { typeof(ReferenceHub), typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

@@ -141,6 +141,11 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
+        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
         /// Gets the camera's name.
         /// </summary>
         public string Name => Base.cameraName;
@@ -223,11 +228,6 @@ namespace Exiled.API.Features
                 };
             }
         }
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the position of the camera's head.
@@ -413,6 +413,6 @@ namespace Exiled.API.Features
         /// Returns the Camera in a human-readable format.
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>
-        public override string ToString() => $"{Zone} {Type} {Name} {Id} {IsBeingUsed}";
+        public override string ToString() => $"{Zone} ({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
     }
 }

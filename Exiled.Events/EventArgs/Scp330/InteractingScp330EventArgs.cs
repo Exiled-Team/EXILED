@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Scp330
         public int UsageCount { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the player's has takes.
+        /// Gets or sets a value indicating the type of candy that will be received from this interaction.
         /// </summary>
         public CandyKindID Candy { get; set; }
 

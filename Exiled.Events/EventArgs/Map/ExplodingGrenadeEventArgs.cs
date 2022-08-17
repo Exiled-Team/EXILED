@@ -48,6 +48,35 @@ namespace Exiled.Events.EventArgs.Map
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
         {
             Player = thrower ?? Server.Host;
+            Position = grenade.Rb.position;
+            GrenadeType = grenadeDictionary[grenade.GetType()];
+            Grenade = grenade;
+            TargetsToAffect = ListPool<Player>.Shared.Rent();
+            foreach (Collider collider in targets)
+            {
+                if (Grenade is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
+                    continue;
+
+                Player player = Player.Get(hub);
+                if (player is null)
+                    continue;
+
+                if (!TargetsToAffect.Contains(player))
+                    TargetsToAffect.Add(player);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
+        /// </summary>
+        /// <param name="thrower"><inheritdoc cref="Thrower"/></param>
+        /// <param name="position"><inheritdoc cref="Position"/></param>
+        /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
+        /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
+        public ExplodingGrenadeEventArgs(Player thrower, Vector3 position, EffectGrenade grenade, Collider[] targets)
+        {
+            Player = thrower ?? Server.Host;
+            Position = position;
             GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
@@ -79,12 +108,23 @@ namespace Exiled.Events.EventArgs.Map
         /// </param>
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
         {
+            Position = grenade.Rb.position;
             Player = thrower ?? Server.Host;
             GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             TargetsToAffect.AddRange(players);
         }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
+        /// </summary>
+        ~ExplodingGrenadeEventArgs() => ListPool<Player>.Shared.Return(TargetsToAffect);
+
+        /// <summary>
+        /// Gets the position where is exploding.
+        /// </summary>
+        public Vector3 Position { get; }
 
         /// <summary>
         ///     Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.

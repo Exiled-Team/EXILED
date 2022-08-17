@@ -8,7 +8,6 @@
 namespace Exiled.API.Extensions
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -23,13 +22,38 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation.Id"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = // TODO: To readonly
-            TranslationConversion.ToDictionary(key => key.Key.Id, value => value.Value);
+        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = new() // TODO: ReadOnlyDictionary
+        {
+            { DeathTranslations.Asphyxiated.Id, DamageType.Asphyxiation },
+            { DeathTranslations.Bleeding.Id, DamageType.Bleeding },
+            { DeathTranslations.Crushed.Id, DamageType.Crushed },
+            { DeathTranslations.Decontamination.Id, DamageType.Decontamination },
+            { DeathTranslations.Explosion.Id, DamageType.Explosion },
+            { DeathTranslations.Falldown.Id, DamageType.Falldown },
+            { DeathTranslations.Poisoned.Id, DamageType.Poison },
+            { DeathTranslations.Recontained.Id, DamageType.Recontainment },
+            { DeathTranslations.Scp049.Id, DamageType.Scp049 },
+            { DeathTranslations.Scp096.Id, DamageType.Scp096 },
+            { DeathTranslations.Scp173.Id, DamageType.Scp173 },
+            { DeathTranslations.Scp207.Id, DamageType.Scp207 },
+            { DeathTranslations.Scp939.Id, DamageType.Scp939 },
+            { DeathTranslations.Tesla.Id, DamageType.Tesla },
+            { DeathTranslations.Unknown.Id, DamageType.Unknown },
+            { DeathTranslations.Warhead.Id, DamageType.Warhead },
+            { DeathTranslations.Zombie.Id, DamageType.Scp0492 },
+            { DeathTranslations.BulletWounds.Id, DamageType.Firearm },
+            { DeathTranslations.PocketDecay.Id, DamageType.PocketDimension },
+            { DeathTranslations.SeveredHands.Id, DamageType.SeveredHands },
+            { DeathTranslations.FriendlyFireDetector.Id, DamageType.FriendlyFireDetector },
+            { DeathTranslations.UsedAs106Bait.Id, DamageType.FemurBreaker },
+            { DeathTranslations.MicroHID.Id, DamageType.MicroHid },
+            { DeathTranslations.Hypothermia.Id, DamageType.Hypothermia },
+        };
 
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new() // TODO: To readonly
+        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new() // TODO: ReadOnlyDictionary
         {
             { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
             { DeathTranslations.Bleeding, DamageType.Bleeding },
@@ -60,7 +84,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new() // TODO: To readonly
+        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new() // TODO: ReadOnlyDictionary
         {
             { ItemType.GunCrossvec, DamageType.Crossvec },
             { ItemType.GunLogicer, DamageType.Logicer },
@@ -121,20 +145,22 @@ namespace Exiled.API.Extensions
         {
             switch (damageHandlerBase)
             {
-                case CustomReasonDamageHandler _:
+                case CustomReasonDamageHandler:
                     return DamageType.Custom;
-                case WarheadDamageHandler _:
+                case WarheadDamageHandler:
                     return DamageType.Warhead;
-                case ExplosionDamageHandler _:
+                case ExplosionDamageHandler:
                     return DamageType.Explosion;
-                case Scp018DamageHandler _:
+                case Scp018DamageHandler:
                     return DamageType.Scp018;
-                case RecontainmentDamageHandler _:
+                case RecontainmentDamageHandler:
                     return DamageType.Recontainment;
-                case Scp096DamageHandler _:
+                case Scp096DamageHandler:
                     return DamageType.Scp096;
-                case MicroHidDamageHandler _:
+                case MicroHidDamageHandler:
                     return DamageType.MicroHid;
+                case DisruptorDamageHandler:
+                    return DamageType.ParticleDisruptor;
 
                 case FirearmDamageHandler firearmDamageHandler:
                 {

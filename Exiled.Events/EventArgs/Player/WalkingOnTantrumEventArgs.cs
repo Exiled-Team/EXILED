@@ -13,6 +13,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player walks over a tantrum.
     /// </summary>
+    [Obsolete("Use StayingOnEnvironmentalHazardEventArgs event instead.", true)]
     public class WalkingOnTantrumEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>

@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Player
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
-    ///     Contains all information before a player changes his group.
+    /// Contains all information before a player's user group changes.
     /// </summary>
     public class ChangingGroupEventArgs : IPlayerEvent, IDeniableEvent
     {
@@ -33,6 +33,11 @@ namespace Exiled.Events.EventArgs.Player
             NewGroup = newGroup;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the player whose group is changing.
+        /// </summary>
+        public Player Player { get; }
 
         /// <summary>
         ///     Gets or sets the player's new group.

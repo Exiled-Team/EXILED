@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Items
 {
     using InventorySystem.Items.Flashlight;
 
+    using Utils.Networking;
+
     /// <summary>
     /// A wrapped class for <see cref="FlashlightItem"/>.
     /// </summary>
@@ -43,7 +45,11 @@ namespace Exiled.API.Features.Items
         public bool Active
         {
             get => Base.IsEmittingLight;
-            set => Base.IsEmittingLight = value;
+            set
+            {
+                Base.IsEmittingLight = value;
+                new FlashlightNetworkHandler.FlashlightMessage(Serial, value).SendToAuthenticated(0);
+            }
         }
 
         /// <summary>
@@ -51,5 +57,16 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Flashlight-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
+
+        /// <summary>
+        /// Clones current <see cref="Flashlight"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Flashlight"/> object. </returns>
+        public override Item Clone()
+        {
+            Flashlight cloneableItem = new();
+            cloneableItem.Active = Active;
+            return cloneableItem;
+        }
     }
 }

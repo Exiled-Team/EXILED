@@ -14,9 +14,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs.Map;
-    using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.Handlers;
+    using Exiled.Events.EventArgs;
 
     using Footprinting;
 
@@ -32,11 +30,9 @@ namespace Exiled.CustomItems.API.Features
 
     using YamlDotNet.Serialization;
 
-    using Item = Exiled.API.Features.Items.Item;
-    using Player = Exiled.API.Features.Player;
-    using Server = Exiled.API.Features.Server;
-
-    /// <inheritdoc />
+    /// <summary>
+    /// The Custom Grenade base class.
+    /// </summary>
     public abstract class CustomGrenade : CustomItem
     {
         /// <summary>
@@ -124,9 +120,9 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Exiled.Events.Handlers.Player.ThrowingItem += OnInternalThrowing;
-            Exiled.Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
-            Exiled.Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
+            Events.Handlers.Player.ThrowingItem += OnInternalThrowing;
+            Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
+            Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
 
             base.SubscribeEvents();
         }
@@ -134,9 +130,9 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Exiled.Events.Handlers.Player.ThrowingItem -= OnInternalThrowing;
-            Exiled.Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
-            Exiled.Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
+            Events.Handlers.Player.ThrowingItem -= OnInternalThrowing;
+            Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
+            Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
 
             base.UnsubscribeEvents();
         }
@@ -189,8 +185,7 @@ namespace Exiled.CustomItems.API.Features
             if (ev.RequestType == ThrowRequest.BeginThrow)
             {
                 OnThrowing(ev);
-                if (!ev.IsAllowed)
-                    ev.IsAllowed = false;
+                ev.IsAllowed = false;
                 return;
             }
 
@@ -228,7 +223,7 @@ namespace Exiled.CustomItems.API.Features
 
             if (ev.IsAllowed)
             {
-                Timing.CallDelayed(0.25f, () => Throw(ev.Pickup.Position, 0f, ev.FuseTime, ev.Type));
+                Timing.CallDelayed(0.25f, () => Throw(ev.Pickup.Position, 0f, ev.FuseTime, ev.Type, ev.Pickup.PreviousOwner));
                 ev.Pickup.Destroy();
                 ev.IsAllowed = false;
             }

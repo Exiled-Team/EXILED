@@ -16,6 +16,8 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.API.Features.Items;
     using Exiled.API.Structs;
 
+    using global::Scp914;
+
     using InventorySystem.Items.Firearms.Attachments.Components;
 
     using MapGeneration;
@@ -29,42 +31,40 @@ namespace Exiled.Events.Handlers.Internal
 
     using Broadcast = Broadcast;
     using Camera = Exiled.API.Features.Camera;
-    using Lift = Lift;
-    using Map = Exiled.Events.Handlers.Map;
     using Object = UnityEngine.Object;
-    using Server = Exiled.Events.Handlers.Server;
-    using TeslaGate = TeslaGate;
 
     /// <summary>
-    ///     Handles <see cref="Handlers.Map.Generated" /> event.
+    /// Handles <see cref="Handlers.Map.Generated"/> event.
     /// </summary>
     internal static class MapGenerated
     {
         /// <summary>
-        ///     Called once the map is generated.
+        /// Called once the map is generated.
         /// </summary>
         /// <remarks>
-        ///     This fixes an issue where
-        ///     all those extensions that
-        ///     require calling the central
-        ///     property of the Map class in
-        ///     the API were corrupted due to
-        ///     a missed call, such as before
-        ///     getting the elevator type.
+        /// This fixes an issue where
+        /// all those extensions that
+        /// require calling the central
+        /// property of the Map class in
+        /// the API were corrupted due to
+        /// a missed call, such as before
+        /// getting the elevator type.
         /// </remarks>
         public static void OnMapGenerated()
         {
-            API.Features.Map.ClearCache();
+            Map.ClearCache();
             Timing.CallDelayed(0.25f, GenerateCache);
         }
 
         private static void GenerateCache()
         {
             Warhead.Controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
-            Warhead.Controller.detonated = false;
-            API.Features.Server.Host = new Player(PlayerManager.localPlayer);
-            API.Features.Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
-            API.Features.Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
+            Warhead.SitePanel = Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
+            Warhead.OutsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
+            Server.Host = new Player(PlayerManager.localPlayer);
+            Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
+            Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
+            Scp914.Scp914Controller = Object.FindObjectOfType<Scp914Controller>();
             GenerateTeslaGates();
             GenerateCameras();
             GenerateRooms();
@@ -73,9 +73,9 @@ namespace Exiled.Events.Handlers.Internal
             GeneratePocketTeleports();
             GenerateAttachments();
             GenerateLockers();
-            API.Features.Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
-            Map.OnGenerated();
-            Timing.CallDelayed(0.1f, Server.OnWaitingForPlayers);
+            Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
+            Handlers.Map.OnGenerated();
+            Timing.CallDelayed(0.1f, Handlers.Server.OnWaitingForPlayers);
         }
 
         private static void GenerateRooms()
@@ -107,25 +107,19 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateLifts()
         {
-            foreach (Lift lift in Object.FindObjectsOfType<Lift>())
-                API.Features.Lift.LiftsValue.Add(new API.Features.Lift(lift));
+            foreach (global::Lift lift in Object.FindObjectsOfType<global::Lift>())
+                Lift.LiftsValue.Add(new Lift(lift));
         }
 
         private static void GenerateTeslaGates()
         {
-            foreach (TeslaGate teslaGate in Object.FindObjectsOfType<TeslaGate>())
-                API.Features.TeslaGate.TeslasValue.Add(new API.Features.TeslaGate(teslaGate));
+            foreach (global::TeslaGate teslaGate in Object.FindObjectsOfType<global::TeslaGate>())
+                TeslaGate.TeslasValue.Add(new TeslaGate(teslaGate));
         }
 
-        private static void GeneratePocketTeleports()
-        {
-            API.Features.Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
-        }
+        private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
 
-        private static void GenerateLockers()
-        {
-            API.Features.Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>());
-        }
+        private static void GenerateLockers() => Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>());
 
         private static void GenerateAttachments()
         {
@@ -143,7 +137,7 @@ namespace Exiled.Events.Handlers.Internal
                 List<AttachmentIdentifier> attachmentIdentifiers = new();
                 foreach (Attachment att in firearm.Attachments)
                 {
-                    attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));
+                    attachmentIdentifiers.Add(new(code, att.Name, att.Slot));
                     code *= 2U;
                 }
 
