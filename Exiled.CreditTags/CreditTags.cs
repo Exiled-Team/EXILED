@@ -79,7 +79,7 @@ namespace Exiled.CreditTags
 
         internal void MakeRequest(string userId, Action<ThreadSafeRequest> errorHandler, Action<string> successHandler, GameObject issuer)
         {
-            ThreadSafeRequest.Go($"{Url}?userid={userId.GetHashedUserId()}", errorHandler, successHandler, issuer);
+            ThreadSafeRequest.Go($"{Url}?userid={userId.GetHash()}", errorHandler, successHandler, issuer);
         }
 
         // returns true if the player was in the cache
@@ -95,7 +95,7 @@ namespace Exiled.CreditTags
             }
             else
             {
-                MakeRequest(player.UserId, ErrorHandler, SuccessHandler, player.GameObject);
+                MakeRequest(player.RawUserId, ErrorHandler, SuccessHandler, player.GameObject);
                 return false;
             }
 

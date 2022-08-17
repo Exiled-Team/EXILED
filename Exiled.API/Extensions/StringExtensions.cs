@@ -166,13 +166,13 @@ namespace Exiled.API.Extensions
         public static string GetRawUserId(this string userId) => userId.Substring(0, userId.LastIndexOf('@'));
 
         /// <summary>
-        /// Gets a SHA256 hash of a player's user id without the authentication.
+        /// Gets a SHA256 hash of a <see cref="string"/>.
         /// </summary>
-        /// <param name="userId">The user id.</param>
-        /// <returns>The hashed userid.</returns>
-        public static string GetHashedUserId(this string userId)
+        /// <param name="str">The <see cref="string"/>.</param>
+        /// <returns>The hashed <see cref="string"/>.</returns>
+        public static string GetHash(this string str)
         {
-            byte[] textData = Encoding.UTF8.GetBytes(userId.Substring(0, userId.LastIndexOf('@')));
+            byte[] textData = Encoding.UTF8.GetBytes(str);
             byte[] hash = Sha256.ComputeHash(textData);
             return BitConverter.ToString(hash).Replace("-", string.Empty);
         }
