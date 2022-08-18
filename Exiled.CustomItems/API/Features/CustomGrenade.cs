@@ -58,8 +58,8 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingRequest += OnInternalThrowingRequest;
-            Events.Handlers.Player.ThrowingItem += OnInternalThrowingItem;
+            Events.Handlers.Player.ThrowingItem += OnInternalThrowingRequest;
+            Events.Handlers.Player.ThrowedItem += OnInternalThrowingItem;
             Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangedIntoGrenade += OnInternalChangedIntoGrenade;
 
@@ -69,8 +69,8 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingRequest -= OnInternalThrowingRequest;
-            Events.Handlers.Player.ThrowingItem -= OnInternalThrowingItem;
+            Events.Handlers.Player.ThrowingItem -= OnInternalThrowingRequest;
+            Events.Handlers.Player.ThrowedItem -= OnInternalThrowingItem;
             Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangedIntoGrenade -= OnInternalChangedIntoGrenade;
 
@@ -80,16 +80,16 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Handles tracking thrown requests by custom grenades.
         /// </summary>
-        /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
-        protected virtual void OnThrowingRequest(ThrowingRequestEventArgs ev)
+        /// <param name="ev"><see cref="ThrowingItemEventArgs"/>.</param>
+        protected virtual void OnThrowingRequest(ThrowingItemEventArgs ev)
         {
         }
 
         /// <summary>
         /// Handles tracking thrown custom grenades.
         /// </summary>
-        /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
-        protected virtual void OnThrowingItem(ThrowingItemEventArgs ev)
+        /// <param name="ev"><see cref="ThrowingItemEventArgs"/>.</param>
+        protected virtual void OnThrowingItem(ThrowedItemEventArgs ev)
         {
         }
 
@@ -109,7 +109,7 @@ namespace Exiled.CustomItems.API.Features
         {
         }
 
-        private void OnInternalThrowingRequest(ThrowingRequestEventArgs ev)
+        private void OnInternalThrowingRequest(ThrowingItemEventArgs ev)
         {
             if (!Check(ev.Player.CurrentItem))
                 return;
@@ -120,7 +120,7 @@ namespace Exiled.CustomItems.API.Features
             return;
         }
 
-        private void OnInternalThrowingItem(ThrowingItemEventArgs ev)
+        private void OnInternalThrowingItem(ThrowedItemEventArgs ev)
         {
             if (!Check(ev.Item))
                 return;

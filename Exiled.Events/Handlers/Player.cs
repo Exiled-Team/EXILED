@@ -131,14 +131,14 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
-        /// Invoked before throwing an <see cref="API.Features.Items.Item"/>.
+        /// Invoked afer receving a throwing request <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static event CustomEventHandler<ThrowingItemEventArgs> ThrowingItem;
+        public static event CustomEventHandler<ThrowedItemEventArgs> ThrowedItem;
 
         /// <summary>
         /// Invoked before receving a throwing request an <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static event CustomEventHandler<ThrowingRequestEventArgs> ThrowingRequest;
+        public static event CustomEventHandler<ThrowingItemEventArgs> ThrowingItem;
 
         /// <summary>
         /// Invoked before dropping an <see cref="API.Features.Items.Item"/>.
@@ -593,14 +593,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrowingItemEventArgs"/> instance.</param>
-        public static void OnThrowingItem(ThrowingItemEventArgs ev) => ThrowingItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ThrowedItemEventArgs"/> instance.</param>
+        public static void OnThrowingItem(ThrowedItemEventArgs ev) => ThrowedItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrowingRequestEventArgs"/> instance.</param>
-        public static void OnThrowingRequest(ThrowingRequestEventArgs ev) => ThrowingRequest.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ThrowingItemEventArgs"/> instance.</param>
+        public static void OnThrowingRequest(ThrowingItemEventArgs ev) => ThrowingItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before dropping an item.
