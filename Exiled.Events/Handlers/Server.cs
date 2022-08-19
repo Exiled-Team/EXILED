@@ -51,7 +51,12 @@ namespace Exiled.Events.Handlers
         public static Event<RespawningTeamEventArgs> RespawningTeam { get; set; } = new();
 
         /// <summary>
-        /// Gets or sets the event invoked when sending a complaint about a player to the local server administrators.
+        /// Invoked before adding an unit name.
+        /// </summary>
+        public static Event<AddingUnitNameEventArgs> AddingUnitName { get; set; } = new();
+
+        /// <summary>
+        /// Invoked when sending a complaint about a player to the local server administrators.
         /// </summary>
         public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
 
@@ -113,6 +118,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
         public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before adding an unit name.
+        /// </summary>
+        /// <param name="ev">The <see cref="AddingUnitNameEventArgs"/> instance.</param>
+        public static void OnAddingUnitName(AddingUnitNameEventArgs ev) => AddingUnitName.InvokeSafely(ev);
 
         /// <summary>
         /// Called when sending a complaint about a player to the local server administrators.

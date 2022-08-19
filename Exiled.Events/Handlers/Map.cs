@@ -74,6 +74,11 @@ namespace Exiled.Events.Handlers
         public static Event<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade { get; set; } = new();
 
         /// <summary>
+        /// Invoked before turning off lights.
+        /// </summary>
+        public static event CustomEventHandler<TurningOffLightsEventArgs> TurningOffLights;
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
@@ -137,5 +142,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
         public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before turning off lights.
+        /// </summary>
+        /// <param name="ev">The <see cref="TurningOffLightsEventArgs"/> instance.</param>
+        public static void OnTurningOffLights(TurningOffLightsEventArgs ev) => TurningOffLights.InvokeSafely(ev);
     }
 }
