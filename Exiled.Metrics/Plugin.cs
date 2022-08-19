@@ -5,6 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
+using Exiled.Metrics.Verification;
+
+using MEC;
+
 namespace Exiled.Metrics;
 
 using Exiled.API.Features;
@@ -32,6 +38,8 @@ public class Plugin : Plugin<Config>
     /// </summary>
     public EventHandlers EventHandlers { get; private set; }
 
+    private CoroutineHandle _verificationCoroutine;
+
     /// <inheritdoc/>
     public override void OnEnabled()
     {
@@ -40,6 +48,8 @@ public class Plugin : Plugin<Config>
 
         ServerEvents.RoundStarted += EventHandlers.OnRoundStarted;
         ServerEvents.RoundEnded += EventHandlers.OnRoundEnded;
+
+        _verificationCoroutine = Timing.RunCoroutine(RefreshVerification());
 
         base.OnEnabled();
     }
@@ -50,9 +60,22 @@ public class Plugin : Plugin<Config>
         ServerEvents.RoundStarted -= EventHandlers.OnRoundStarted;
         ServerEvents.RoundEnded -= EventHandlers.OnRoundEnded;
 
+        Timing.KillCoroutines(_verificationCoroutine);
+
         EventHandlers = null;
         Methods = null;
 
         base.OnDisabled();
+    }
+
+    private IEnumerator<float> RefreshVerification()
+    {
+        while (true)
+        {
+            Verifier.RefreshVerificationData();
+
+            // Wait 30 minutes.
+            yield return Timing.WaitForSeconds(30 * 60);
+        }
     }
 }

@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.Metrics.Verification;
+
 namespace Exiled.Metrics;
 
 using System.Collections.Generic;
@@ -34,7 +36,11 @@ public class Methods
 
     internal void SendMetrics(EventType type, params object[] args)
     {
-        string serverIdentifier = $"{Server.IpAddress.GetHash()}-{Server.Port.ToString().GetHash()}";
+        // Only send metrics if a server has verification data.
+        VerificationData? verificationData = Verifier.GetVerificationData();
+        if (verificationData == null)
+            return;
+
         string exiledVersion = Events.Events.Instance.Version.ToString();
         int playerCount = Server.PlayerCount;
         int maxPlayers = Server.MaxPlayerCount;
@@ -48,7 +54,7 @@ public class Methods
         foreach (IPlugin<IConfig> plg in plugins)
             pluginInfo += $"{plg.Name}|{plg.Version}|{plg.Author}|{plg.Config.IsEnabled}||";
 
-        string message = $"srvId={serverIdentifier}&exiled={exiledVersion}&players={playerCount}&playerMax={maxPlayers}&team={(team is null ? "None" : team)}&tps={Server.Tps}&plugins={pluginInfo}";
+        string message = $"srvId={verificationData.Value.ID}&timestamp={verificationData.Value.Timestamp}&hmac={verificationData.Value.Hmac}&exiled={exiledVersion}&players={playerCount}&playerMax={maxPlayers}&team={(team is null ? "None" : team)}&tps={Server.Tps}&plugins={pluginInfo}";
 
         HttpQuery.Post(Url, message, out bool success, out HttpStatusCode code);
         switch (success)
