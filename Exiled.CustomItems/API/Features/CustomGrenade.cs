@@ -58,7 +58,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingItem += OnInternalThrowingRequest;
+            Events.Handlers.Player.ThrowingRequest += OnInternalThrowingRequest;
             Events.Handlers.Player.ThrowedItem += OnInternalThrowingItem;
             Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangedIntoGrenade += OnInternalChangedIntoGrenade;
@@ -69,7 +69,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingItem -= OnInternalThrowingRequest;
+            Events.Handlers.Player.ThrowingRequest -= OnInternalThrowingRequest;
             Events.Handlers.Player.ThrowedItem -= OnInternalThrowingItem;
             Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangedIntoGrenade -= OnInternalChangedIntoGrenade;
@@ -80,15 +80,15 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Handles tracking thrown requests by custom grenades.
         /// </summary>
-        /// <param name="ev"><see cref="ThrowingItemEventArgs"/>.</param>
-        protected virtual void OnThrowingRequest(ThrowingItemEventArgs ev)
+        /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
+        protected virtual void OnThrowingRequest(ThrowingRequestEventArgs ev)
         {
         }
 
         /// <summary>
         /// Handles tracking thrown custom grenades.
         /// </summary>
-        /// <param name="ev"><see cref="ThrowingItemEventArgs"/>.</param>
+        /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
         protected virtual void OnThrowingItem(ThrowedItemEventArgs ev)
         {
         }
@@ -109,7 +109,7 @@ namespace Exiled.CustomItems.API.Features
         {
         }
 
-        private void OnInternalThrowingRequest(ThrowingItemEventArgs ev)
+        private void OnInternalThrowingRequest(ThrowingRequestEventArgs ev)
         {
             if (!Check(ev.Player.CurrentItem))
                 return;

@@ -1,5 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ThrowingItemEventArgs.cs" company="Exiled Team">
+// -----------------------------------------------------------------------
+// <copyright file="ThrowingRequestEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -18,16 +18,16 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before receving a throwing request.
     /// </summary>
-    public class ThrowingItemEventArgs : EventArgs
+    public class ThrowingRequestEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThrowingItemEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ThrowingRequestEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="request"><inheritdoc cref="RequestType"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true)
+        public ThrowingRequestEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true)
         {
             Player = player;
             Item = (Throwable)API.Features.Items.Item.Get(item);
