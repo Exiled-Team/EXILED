@@ -51,12 +51,12 @@ namespace Exiled.Events.Handlers
         public static Event<RespawningTeamEventArgs> RespawningTeam { get; set; } = new();
 
         /// <summary>
-        /// Invoked before adding an unit name.
+        /// Gets or sets the event invoked before adding an unit name.
         /// </summary>
         public static Event<AddingUnitNameEventArgs> AddingUnitName { get; set; } = new();
 
         /// <summary>
-        /// Invoked when sending a complaint about a player to the local server administrators.
+        /// Gets or sets the event invoked when sending a complaint about a player to the local server administrators.
         /// </summary>
         public static Event<LocalReportingEventArgs> LocalReporting { get; set; } = new();
 

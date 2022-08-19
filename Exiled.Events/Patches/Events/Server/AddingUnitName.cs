@@ -10,10 +10,10 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using HarmonyLib;
     using NorthwoodLib.Pools;
-    using Respawning;
     using Respawning.NamingRules;
 
     using static HarmonyLib.AccessTools;

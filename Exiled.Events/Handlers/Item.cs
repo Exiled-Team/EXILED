@@ -31,9 +31,9 @@ namespace Exiled.Events.Handlers
         public static Event<ReceivingPreferenceEventArgs> ReceivingPreference { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a keycard interacts with a door.
+        /// Gets or sets the event invoked before a keycard interacts with a door.
         /// </summary>
-        public static event CustomEventHandler<KeycardInteractingEventArgs> KeycardInteracting;
+        public static Event<KeycardInteractingEventArgs> KeycardInteracting { get; set; } = new();
 
         /// <summary>
         /// Called before the durability of an item is changed.

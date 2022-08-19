@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using HarmonyLib;
     using NorthwoodLib.Pools;
@@ -19,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// patches <see cref="ServerRoles.SetOverwatchStatus(bool)"/> to add the <see cref="Handlers.Player.TogglingOverwatch"/> event.
     /// </summary>
-    [EventPatch(tyepof(Handlers.Player), nameof(Handlers.Player.TogglingOverwatch))]
+    [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.TogglingOverwatch))]
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetOverwatchStatus), typeof(bool))]
     internal static class TogglingOverwatch
     {

@@ -74,9 +74,9 @@ namespace Exiled.Events.Handlers
         public static Event<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade { get; set; } = new();
 
         /// <summary>
-        /// Invoked before turning off lights.
+        /// Gets or sets the event invoked before turning off lights.
         /// </summary>
-        public static event CustomEventHandler<TurningOffLightsEventArgs> TurningOffLights;
+        public static Event<TurningOffLightsEventArgs> TurningOffLights { get; set; } = new();
 
         /// <summary>
         /// Called before placing a decal.

@@ -9,7 +9,6 @@ namespace Exiled.Events.Handlers
 {
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Features;
 
@@ -204,11 +203,12 @@ namespace Exiled.Events.Handlers
         public static Event<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> enters killer collision.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> enters killer collision.
         /// </summary>
         public static Event<EnteringKillerCollisionEventArgs> EnteringKillerCollision { get; set; } = new();
+
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> reloads a weapon.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> reloads a weapon.
         /// </summary>
         public static Event<ReloadingWeaponEventArgs> ReloadingWeapon { get; set; } = new();
 
@@ -420,12 +420,12 @@ namespace Exiled.Events.Handlers
         public static Event<TogglingNoClipEventArgs> TogglingNoClip { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> toggles overwatch.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> toggles overwatch.
         /// </summary>
         public static Event<TogglingOverwatchEventArgs> TogglingOverwatch { get; set; } = new();
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
+        /// Gets or sets the event invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
         [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
         public static Event<PickingUpScp330EventArgs> PickingUpScp330 { get; set; } = new();
