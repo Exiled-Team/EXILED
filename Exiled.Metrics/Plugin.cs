@@ -47,6 +47,9 @@ public class Plugin : Plugin<Config>
     /// <inheritdoc/>
     public override void OnDisabled()
     {
+        ServerEvents.RoundStarted -= EventHandlers.OnRoundStarted;
+        ServerEvents.RoundEnded -= EventHandlers.OnRoundEnded;
+
         EventHandlers = null;
         Methods = null;
 
