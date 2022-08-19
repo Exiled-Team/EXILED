@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ThrowingRequest.cs" company="Exiled Team">
+// <copyright file="ThrowedItem.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.ThrowedItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow))]
-    internal static class ThrowingItem
+    internal static class ThrowedItem
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
