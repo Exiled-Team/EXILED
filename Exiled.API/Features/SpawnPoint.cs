@@ -25,6 +25,8 @@ namespace Exiled.API.Features
         /// </summary>
         private static readonly List<SpawnPoint> SpawnsValue = new(250);
 
+        private RoleType roleType = RoleType.None;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawnPoint"/> class.
         /// </summary>
@@ -32,7 +34,7 @@ namespace Exiled.API.Features
         /// <param name="role">The <see cref="global::RoleType"/> of the spawn.</param>
         internal SpawnPoint(GameObject go, RoleType role)
         {
-            RoleType = role;
+            roleType = role;
             GameObject = go;
             Room = Map.FindParentRoom(GameObject);
         }
@@ -43,14 +45,39 @@ namespace Exiled.API.Features
         public static IReadOnlyList<SpawnPoint> List => SpawnsValue.AsReadOnly();
 
         /// <summary>
-        /// Gets the <see cref="global::RoleType"/> related to this spawn.
+        /// Gets or sets the <see cref="global::RoleType"/> related to this spawn.
         /// </summary>
-        public RoleType RoleType { get; }
+        /// <exception cref="System.InvalidOperationException">SpawnPoints cannot be for the Spectator, None, or Scp0492 roles.</exception>
+        public RoleType RoleType
+        {
+            get => roleType;
+            set
+            {
+                if (value is RoleType.Spectator or RoleType.None or RoleType.Scp0492)
+                    throw new System.InvalidOperationException("SpawnPoints cannot be for the Spectator, None, or Scp0492 roles.");
+
+                foreach (KeyValuePair<RoleType, GameObject[]> spawns in SpawnpointManager.Positions)
+                {
+                    if (spawns.Value.Contains(GameObject))
+                    {
+                        List<GameObject> newList = spawns.Value.ToList();
+                        newList.Remove(GameObject);
+                        SpawnpointManager.Positions[spawns.Key] = newList.ToArray();
+                    }
+                }
+
+                var existingSpawns = SpawnpointManager.Positions[value].ToList();
+                existingSpawns.Add(GameObject);
+                SpawnpointManager.Positions[value] = existingSpawns.ToArray();
+
+                roleType = value;
+            }
+        }
 
         /// <summary>
         /// Gets the spawn's <see cref="Features.Room"/>.
         /// </summary>
-        public Room Room { get; }
+        public Room Room { get; private set; }
 
         /// <summary>
         /// Gets the spawn's <see cref="ZoneType">zone</see>.
@@ -63,14 +90,26 @@ namespace Exiled.API.Features
         public GameObject GameObject { get; }
 
         /// <summary>
-        /// Gets the spawn's <see cref="Vector3">position</see>.
+        /// Gets or sets the spawn's <see cref="Vector3">position</see>.
         /// </summary>
-        public Vector3 Position => GameObject.transform.position;
+        public Vector3 Position
+        {
+            get => Transform.position;
+            set
+            {
+                Transform.position = value;
+                Room = Map.FindParentRoom(GameObject);
+            }
+        }
 
         /// <summary>
-        /// Gets the spawn's <see cref="Quaternion">rotation</see>.
+        /// Gets or sets the spawn's <see cref="Quaternion">rotation</see>.
         /// </summary>
-        public Quaternion Rotation => GameObject.transform.rotation;
+        public Quaternion Rotation
+        {
+            get => Transform.rotation;
+            set => Transform.rotation = value;
+        }
 
         /// <summary>
         /// Gets the spawn's Y-facing rotation. This value indicates the direction that the spawn is facing.
