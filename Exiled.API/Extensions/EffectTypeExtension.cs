@@ -68,7 +68,7 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect drains health over time.</returns>
         /// <seealso cref="IsNegative(EffectType)"/>
-        public static bool IsDamaging(this EffectType effect) => effect is EffectType.Asphyxiated or EffectType.Bleeding
+        public static bool IsHarmful(this EffectType effect) => effect is EffectType.Asphyxiated or EffectType.Bleeding
             or EffectType.Corroding or EffectType.Decontaminating or EffectType.Hemorrhage or EffectType.Hypothermia
             or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands;
 
@@ -77,8 +77,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a negative effect.</returns>
-        /// <seealso cref="IsDamaging(EffectType)"/>
-        public static bool IsNegative(this EffectType effect) => IsDamaging(effect) || effect is EffectType.Amnesia
+        /// <seealso cref="IsHarmful(EffectType)"/>
+        public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || effect is EffectType.Amnesia
             or EffectType.Blinded or EffectType.Burned or EffectType.Concussed or EffectType.Deafened
             or EffectType.Disabled or EffectType.Ensnared or EffectType.Exhausted or EffectType.Flashed or EffectType.SinkHole
             or EffectType.Stained or EffectType.Visual173Blink;
