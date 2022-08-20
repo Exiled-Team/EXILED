@@ -44,6 +44,7 @@ namespace Exiled.CustomItems.API.Features
     using Item = Exiled.API.Features.Items.Item;
     using Map = Exiled.API.Features.Map;
     using Player = Exiled.API.Features.Player;
+    using SpawnPoint = Exiled.API.Features.Spawn.SpawnPoint;
 
     /// <summary>
     /// The Custom Item base class.

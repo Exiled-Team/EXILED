@@ -73,6 +73,7 @@ namespace Exiled.Events.Handlers.Internal
             GeneratePocketTeleports();
             GenerateAttachments();
             GenerateLockers();
+            SpawnPoint.Refresh();
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
             Handlers.Map.OnGenerated();
             Timing.CallDelayed(0.1f, Handlers.Server.OnWaitingForPlayers);

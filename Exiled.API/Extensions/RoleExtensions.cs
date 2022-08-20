@@ -12,7 +12,7 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features.Spawn;
+    using Exiled.API.Features;
 
     using UnityEngine;
 
@@ -91,7 +91,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
         /// <returns>Returns the spawn point <see cref="Vector3"/> and rotation <see cref="float"/>.</returns>
-        [Obsolete("Use RoleExtensions.GetRandomSpawnInfo(RoleType).")]
+        [Obsolete("Use RoleExtensions.GetRandomSpawn(RoleType).")]
         public static Tuple<Vector3, float> GetRandomSpawnProperties(this RoleType roleType)
         {
             GameObject randomPosition = SpawnpointManager.GetRandomPosition(roleType);
@@ -103,30 +103,16 @@ namespace Exiled.API.Extensions
         /// Gets a random spawn point of a <see cref="RoleType"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point of.</param>
-        /// <returns>A <see cref="SpawnInfo"/>, or <see langword="null"/> if no spawns were found.</returns>
-        public static SpawnInfo? GetRandomSpawnInfo(this RoleType roleType)
-        {
-            GameObject randomPosition = SpawnpointManager.GetRandomPosition(roleType);
-
-            if (randomPosition is null)
-                return null;
-
-            return new SpawnInfo(randomPosition, roleType);
-        }
+        /// <returns>A <see cref="SpawnPoint"/>, or <see langword="null"/> if no spawns were found.</returns>
+        public static SpawnPoint GetRandomSpawn(this RoleType roleType)
+            => SpawnPoint.Random(roleType);
 
         /// <summary>
         /// Gets an <see cref="IEnumerable{T}"/> of all spawn points for the given <see cref="RoleType"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleType"/> to get the spawn points of.</param>
-        /// <returns>An array of <see cref="SpawnInfo"/>.</returns>
-        public static IEnumerable<SpawnInfo> GetAllSpawns(this RoleType roleType)
-        {
-            GameObject[] randomPosition = SpawnpointManager.GetArrayOfPositions(roleType);
-
-            if (randomPosition is null)
-                return Array.Empty<SpawnInfo>();
-
-            return randomPosition.Select(gameObject => new SpawnInfo(gameObject, roleType));
-        }
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="SpawnPoint"/>.</returns>
+        public static IEnumerable<SpawnPoint> GetSpawns(this RoleType roleType)
+            => SpawnPoint.Get(roleType);
     }
 }

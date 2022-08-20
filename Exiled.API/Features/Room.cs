@@ -75,7 +75,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an <see cref="IEnumerable{T}"/> of spawns in this room.
         /// </summary>
-        public IEnumerable<SpawnInfo> Spawns { get; private set; }
+        public IEnumerable<SpawnPoint> Spawns { get; private set; }
 
         /// <summary>
         /// Gets a reference to the room's <see cref="MapGeneration.RoomIdentifier"/>.
@@ -360,7 +360,7 @@ namespace Exiled.API.Features
             };
         }
 
-        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController, out List<SpawnInfo> spawns)
+        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController, out List<SpawnPoint> spawns)
         {
             cameraList = new();
             doors = new();
@@ -409,16 +409,7 @@ namespace Exiled.API.Features
                 flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
             }
 
-            foreach (KeyValuePair<RoleType, GameObject[]> spawn in SpawnpointManager.Positions)
-            {
-                foreach (GameObject go in spawn.Value)
-                {
-                    if (Map.FindParentRoom(go) == this)
-                    {
-                        spawns.Add(new SpawnInfo(go, spawn.Key));
-                    }
-                }
-            }
+            spawns.AddRange(SpawnPoint.List.Where(sp => sp.Room == this));
         }
 
         private void Awake()
@@ -427,7 +418,7 @@ namespace Exiled.API.Features
             Type = FindType(gameObject.name);
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
 
-            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController, out List<SpawnInfo> spawns);
+            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController, out List<SpawnPoint> spawns);
             Doors = doors;
             Cameras = Camera.Get(cameras);
             TeslaGate = teslagate;

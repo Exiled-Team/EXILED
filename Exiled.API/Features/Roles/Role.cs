@@ -54,17 +54,8 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets all the spawns belonging to this role.
         /// </summary>
-        public IEnumerable<SpawnInfo> Spawns
-        {
-            get
-            {
-                GameObject[] spawns = SpawnpointManager.GetArrayOfPositions(Type);
-                if (spawns is null)
-                    return System.Array.Empty<SpawnInfo>();
-
-                return spawns.Select(gameObject => new SpawnInfo(gameObject, Type));
-            }
-        }
+        public IEnumerable<Features.SpawnPoint> Spawns
+            => Features.SpawnPoint.Get(Type);
 
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
