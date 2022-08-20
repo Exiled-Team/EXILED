@@ -645,7 +645,7 @@ namespace Exiled.CustomItems.API.Features
                 }
                 else if (spawnPoint is RoleSpawnPoint roleSpawnPoint)
                 {
-                    Vector3 position = roleSpawnPoint.Role.GetRandomSpawnProperties().Item1;
+                    Vector3 position = roleSpawnPoint.Role.GetRandomSpawn()?.Position ?? Vector3.zero;
                     Spawn(position, (Player)null);
                 }
                 else
@@ -1021,7 +1021,7 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Remove(item.Serial);
 
-                Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item, null));
+                Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawn()?.Position ?? Vector3.zero, item, null));
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
