@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Spawn
 {
+    using Exiled.API.Enums;
     using UnityEngine;
 
     /// <summary>
@@ -23,12 +24,23 @@ namespace Exiled.API.Features.Spawn
         {
             RoleType = role;
             GameObject = go;
+            Room = Map.FindParentRoom(GameObject);
         }
 
         /// <summary>
         /// Gets the <see cref="global::RoleType"/> related to this spawn.
         /// </summary>
         public RoleType RoleType { get; }
+
+        /// <summary>
+        /// Gets the spawn's <see cref="Features.Room"/>.
+        /// </summary>
+        public Room Room { get; }
+
+        /// <summary>
+        /// Gets the spawn's <see cref="ZoneType">zone</see>.
+        /// </summary>
+        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the spawn's <see cref="UnityEngine.GameObject"/>.
