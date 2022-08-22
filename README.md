@@ -18,7 +18,7 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
  - Secondly, since all of the code related to the framework are done outside of the server assembly, things like small game updates will have little, if any, effect on the framework. Making it most likely to be compatible with future game updates, as well as making it easier to update when it *is* necessary to do so.
 
 # Localized READMEs
-- [Русский](https://github.com/Exiled-Team/EXILED/blob/dev/Localization/README-Русский.md)
+- [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
