@@ -38,7 +38,7 @@ namespace Exiled.CustomItems.API
         Inside079Secondary,
 
         /// <summary>
-        /// The inside of SCP-096's locked room behind his spawn.
+        /// The inside of SCP-096's locked room behind its spawn.
         /// </summary>
         Inside096,
 
@@ -98,7 +98,7 @@ namespace Exiled.CustomItems.API
         Inside079First,
 
         /// <summary>
-        /// Inside SCP-079's gate.
+        /// Inside SCP-173's gate.
         /// </summary>
         Inside173Gate,
 

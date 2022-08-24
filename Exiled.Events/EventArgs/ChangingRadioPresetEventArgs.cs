@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before radio preset is changed.
+    /// Contains all information before radio preset is changed.
     /// </summary>
     public class ChangingRadioPresetEventArgs : EventArgs
     {

@@ -141,6 +141,11 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
+        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
         /// Gets the camera's name.
         /// </summary>
         public string Name => Base.cameraName;
@@ -168,96 +173,61 @@ namespace Exiled.API.Features
             get
             {
                 string cameraName = Name.ToLower();
+                if (NameToCameraType.ContainsKey(cameraName))
+                    return NameToCameraType[cameraName];
 
                 if (Room is null)
-                    return NameToCameraType.ContainsKey(cameraName) ? NameToCameraType[cameraName] : CameraType.Unknown;
+                    return CameraType.Unknown;
 
-                switch (cameraName)
+                return cameraName switch
                 {
-                    case "corner":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczCorner;
-                            case ZoneType.HeavyContainment:
-                                return CameraType.HczCorner;
-                            case ZoneType.Entrance:
-                                return CameraType.EzCorner;
-                        }
-
-                        break;
-                    case "x-type inters":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczXIntersection;
-                            case ZoneType.HeavyContainment:
-                                return CameraType.HczXIntersection;
-                        }
-
-                        break;
-                    case "t-type inters":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczTIntersection;
-                            case ZoneType.HeavyContainment:
-                                return CameraType.HczTIntersection;
-                        }
-
-                        break;
-                    case "straight":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczHall;
-                            case ZoneType.HeavyContainment:
-                                return CameraType.HczHall;
-                        }
-
-                        break;
-                    case "offices":
-                        switch (Zone)
-                        {
-                            case ZoneType.LightContainment:
-                                return CameraType.LczCafe;
-                            case ZoneType.Entrance:
-                                return CameraType.EzOffice;
-                        }
-
-                        break;
-                    case "gate a":
-                        switch (Zone)
-                        {
-                            case ZoneType.Entrance:
-                                return CameraType.EzGateA;
-                            case ZoneType.Surface:
-                                return CameraType.SurfaceGateA;
-                        }
-
-                        break;
-                    case "gate b":
-                        switch (Zone)
-                        {
-                            case ZoneType.Entrance:
-                                return CameraType.EzGateB;
-                            case ZoneType.Surface:
-                                return CameraType.SurfaceGate;
-                        }
-
-                        break;
-                }
-
-                // If it's not a room name shared by multiple zones, or the given room is null, look in the dictionary.
-                // Entrance Zone T-halls, X-halls, and straight halls are named differently than LCZ and HCZ.
-                return NameToCameraType.ContainsKey(cameraName) ? NameToCameraType[cameraName] : CameraType.Unknown;
+                    "corner" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczCorner,
+                        ZoneType.HeavyContainment => CameraType.HczCorner,
+                        ZoneType.Entrance => CameraType.EzCorner,
+                        _ => CameraType.Unknown,
+                    },
+                    "x-type inters" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczXIntersection,
+                        ZoneType.HeavyContainment => CameraType.HczXIntersection,
+                        _ => CameraType.Unknown,
+                    },
+                    "t-type inters" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczTIntersection,
+                        ZoneType.HeavyContainment => CameraType.HczTIntersection,
+                        _ => CameraType.Unknown,
+                    },
+                    "straight" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczHall,
+                        ZoneType.HeavyContainment => CameraType.HczHall,
+                        _ => CameraType.Unknown,
+                    },
+                    "offices" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.LczCafe,
+                        ZoneType.HeavyContainment => CameraType.EzOffice,
+                        _ => CameraType.Unknown,
+                    },
+                    "gate a" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.EzGateA,
+                        ZoneType.HeavyContainment => CameraType.SurfaceGateA,
+                        _ => CameraType.Unknown,
+                    },
+                    "gate b" => Zone switch
+                    {
+                        ZoneType.LightContainment => CameraType.EzGateB,
+                        ZoneType.HeavyContainment => CameraType.SurfaceGate,
+                        _ => CameraType.Unknown,
+                    },
+                    _ => CameraType.Unknown,
+                };
             }
         }
-
-        /// <summary>
-        /// Gets the camera's <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the position of the camera's head.
@@ -438,5 +408,11 @@ namespace Exiled.API.Features
         /// <param name="predicate">The condition to satify.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</returns>
         public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Returns the Camera in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Camera-related data.</returns>
+        public override string ToString() => $"{Zone} ({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
     }
 }

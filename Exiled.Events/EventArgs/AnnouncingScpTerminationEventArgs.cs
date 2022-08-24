@@ -12,12 +12,11 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
 
-    using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
     using CustomAttackerHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    /// Contains all informations before C.A.S.S.I.E announces an SCP termination.
+    /// Contains all information before C.A.S.S.I.E announces an SCP termination.
     /// </summary>
     public class AnnouncingScpTerminationEventArgs : EventArgs
     {
@@ -48,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public Player Killer { get; }
 
         /// <summary>
-        /// Gets the killed <see cref="Role"/>.
+        /// Gets the killed <see cref="global::Role"/>.
         /// </summary>
         public Role Role { get; }
 

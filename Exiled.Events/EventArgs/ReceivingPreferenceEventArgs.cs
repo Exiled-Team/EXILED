@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Structs;
 
     /// <summary>
-    /// Contains all informations before receiving a preference.
+    /// Contains all information before receiving a preference.
     /// </summary>
     public class ReceivingPreferenceEventArgs : System.EventArgs
     {

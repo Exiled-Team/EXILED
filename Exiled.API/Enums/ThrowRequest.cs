@@ -26,5 +26,10 @@ namespace Exiled.API.Enums
         /// Requesting to confirm a strong throw.
         /// </summary>
         FullForceThrow,
+
+        /// <summary>
+        /// Requesting to cancel a throw.
+        /// </summary>
+        CancelThrow,
     }
 }

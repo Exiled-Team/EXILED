@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Generic
         private static void Postfix(HintDisplay __instance, Hint hint)
         {
             // Try to get the player, if it doesn't exist, just return
-            if (__instance?.gameObject is null || !(Player.Get(__instance.gameObject) is Player player))
+            if (__instance == null || __instance.gameObject == null || Player.Get(__instance.gameObject) is not Player player)
                 return;
 
             // If Player value has couroutine, kill it
@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Generic
             yield return Timing.WaitForSeconds(duration);
 
             // If player gameobject doesn't exists, break the coroutine
-            if (player.GameObject is null)
+            if (!player.IsConnected)
                 yield break;
 
             player.HasHint = false;

@@ -9,6 +9,7 @@ namespace Exiled.Events.Handlers
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -205,6 +206,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> enters killer collision.
+        /// </summary>
+        public static event CustomEventHandler<EnteringKillerCollisionEventArgs> EnteringKillerCollision;
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> reloads a weapon.
         /// </summary>
         public static event CustomEventHandler<ReloadingWeaponEventArgs> ReloadingWeapon;
@@ -327,6 +333,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
         /// </summary>
+        [Obsolete("Use StayingOnEnvironmentalHazard event instead.", true)]
         public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
 
         /// <summary>
@@ -372,6 +379,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
         /// </summary>
+        [Obsolete("Use StayingOnEnvironmentalHazard event instead.", true)]
         public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
 
         /// <summary>
@@ -415,13 +423,20 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> toggles overwatch.
+        /// </summary>
+        public static event CustomEventHandler<TogglingOverwatchEventArgs> TogglingOverwatch;
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
+        [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
         public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
+        [Obsolete("Use Handlers.Scp330.InteractingScp330", true)]
         public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
 
         /// <summary>
@@ -433,6 +448,31 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> damage a Window.
         /// </summary>
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
+
+        /// <summary>
+        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        public static event CustomEventHandler<ItemAddedEventArgs> ItemAdded;
+
+        /// <summary>
+        /// Invoked before KillPlayer is called.
+        /// </summary>
+        public static event CustomEventHandler<KillingPlayerEventArgs> KillingPlayer;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> enters in an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<EnteringEnvironmentalHazardEventArgs> EnteringEnvironmentalHazard;
+
+        /// <summary>
+        /// Invoked when a <see cref="API.Features.Player"/> stays on an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<StayingOnEnvironmentalHazardEventArgs> StayingOnEnvironmentalHazard;
+
+        /// <summary>
+        /// Invoked when a <see cref="API.Features.Player"/> exists from an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<ExitingEnvironmentalHazardEventArgs> ExitingEnvironmentalHazard;
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
@@ -652,6 +692,12 @@ namespace Exiled.Events.Handlers
         public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev) => FailingEscapePocketDimension.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> enters killer collision.
+        /// </summary>
+        /// <param name="ev">The <see cref="EnteringKillerCollisionEventArgs"/> instance.</param>
+        public static void OnEnteringKillerCollision(EnteringKillerCollisionEventArgs ev) => EnteringKillerCollision.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> reloads a weapon.
         /// </summary>
         /// <param name="ev">The <see cref="ReloadingWeaponEventArgs"/> instance.</param>
@@ -799,6 +845,7 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
         /// </summary>
         /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
+        [Obsolete("Use OnStayingOnEnvironmentalHazard instead.", true)]
         public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
 
         /// <summary>
@@ -853,6 +900,7 @@ namespace Exiled.Events.Handlers
         /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
         /// </summary>
         /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
+        [Obsolete("Use OnStayingOnEnvironmentalHazard instead.", true)]
         public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
 
         /// <summary>
@@ -904,15 +952,23 @@ namespace Exiled.Events.Handlers
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> toggles overwatch.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingOverwatchEventArgs"/> instance.</param>
+        public static void OnTogglingOverwatch(TogglingOverwatchEventArgs ev) => TogglingOverwatch.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
+        [Obsolete("Use Handlers.Scp330.OnPickingUp330", true)]
         public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with SCP-330.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
+        [Obsolete("Use Handlers.Scp330.OnInteractingScp330", true)]
         public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
 
         /// <summary>
@@ -926,5 +982,37 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+
+        /// <summary>
+        ///  Called before KillPlayer is called.
+        /// </summary>
+        /// <param name="ev">The <see cref="KillingPlayerEventArgs"/> event handler. </param>
+        public static void OnKillPlayer(KillingPlayerEventArgs ev) => KillingPlayer.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        /// <param name="inventory">The <see cref="InventorySystem.Inventory"/> the item was added to.</param>
+        /// <param name="itemBase">The added <see cref="InventorySystem.Items.ItemBase"/>.</param>
+        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
+        public static void OnItemAdded(InventorySystem.Inventory inventory, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase) => ItemAdded.InvokeSafely(new ItemAddedEventArgs(inventory, itemBase, pickupBase));
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> enters in an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="EnteringEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnEnteringEnvironmentalHazard(EnteringEnvironmentalHazardEventArgs ev) => EnteringEnvironmentalHazard.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called when a <see cref="API.Features.Player"/> stays on an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="StayingOnEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnStayingOnEnvironmentalHazard(StayingOnEnvironmentalHazardEventArgs ev) => StayingOnEnvironmentalHazard.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> exits from an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="ExitingEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnExitingEnvironmentalHazard(ExitingEnvironmentalHazardEventArgs ev) => ExitingEnvironmentalHazard.InvokeSafely(ev);
     }
 }

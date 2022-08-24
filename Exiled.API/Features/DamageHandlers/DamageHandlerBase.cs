@@ -92,18 +92,20 @@ namespace Exiled.API.Features.DamageHandlers
 
                 switch (Base)
                 {
-                    case CustomReasonDamageHandler _:
+                    case CustomReasonDamageHandler:
                         return DamageType.Custom;
-                    case WarheadDamageHandler _:
+                    case WarheadDamageHandler:
                         return DamageType.Warhead;
-                    case ExplosionDamageHandler _:
+                    case ExplosionDamageHandler:
                         return DamageType.Explosion;
-                    case Scp018DamageHandler _:
+                    case Scp018DamageHandler:
                         return DamageType.Scp018;
-                    case RecontainmentDamageHandler _:
+                    case RecontainmentDamageHandler:
                         return DamageType.Recontainment;
-                    case MicroHidDamageHandler _:
+                    case MicroHidDamageHandler:
                         return DamageType.MicroHid;
+                    case DisruptorDamageHandler:
+                        return DamageType.ParticleDisruptor;
                     case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];

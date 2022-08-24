@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations after a player has interacted with an interactable.
+    /// Contains all information after a player has interacted with an interactable.
     /// </summary>
     public class InteractedEventArgs : EventArgs
     {

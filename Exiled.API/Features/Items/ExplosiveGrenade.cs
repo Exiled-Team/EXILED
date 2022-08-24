@@ -114,9 +114,24 @@ namespace Exiled.API.Features.Items
         /// Returns the ExplosiveGrenade in a human readable format.
         /// </summary>
         /// <returns>A string containing ExplosiveGrenade-related data.</returns>
-        public override string ToString()
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
+
+        /// <summary>
+        /// Clones current <see cref="ExplosiveGrenade"/> object.
+        /// </summary>
+        /// <returns> New <see cref="ExplosiveGrenade"/> object. </returns>
+        public override Item Clone()
         {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
+            ExplosiveGrenade cloneableItem = new(Type);
+
+            cloneableItem.MaxRadius = MaxRadius;
+            cloneableItem.ScpMultiplier = ScpMultiplier;
+            cloneableItem.BurnDuration = BurnDuration;
+            cloneableItem.DeafenDuration = DeafenDuration;
+            cloneableItem.ConcussDuration = ConcussDuration;
+            cloneableItem.FuseTime = FuseTime;
+
+            return cloneableItem;
         }
     }
 }

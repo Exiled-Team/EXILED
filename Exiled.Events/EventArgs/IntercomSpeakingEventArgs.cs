@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player speaks to the intercom.
+    /// Contains all information before a player speaks to the intercom.
     /// </summary>
     public class IntercomSpeakingEventArgs : EventArgs
     {

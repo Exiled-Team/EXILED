@@ -15,6 +15,9 @@
                 "licenseFile": "LICENSE",
                 "licenseName": "CC BY-SA 3.0"
             }
+        },
+        "orderingRules": {
+            "blankLinesBetweenUsingGroups": "require"
         }
     }
 }

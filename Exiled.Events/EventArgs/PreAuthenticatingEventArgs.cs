@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using Mirror.LiteNetLib4Mirror;
 
     /// <summary>
-    /// Contains all informations before pre-autenticating a player.
+    /// Contains all information before pre-autenticating a player.
     /// </summary>
     public class PreAuthenticatingEventArgs : EventArgs
     {

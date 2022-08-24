@@ -44,9 +44,6 @@ namespace Exiled.API.Features
         public static IEnumerable<Window> List => WindowValue.AsReadOnly();
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
-        /// </summary>
-        /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
         /// </summary>
         public BreakableWindow Base { get; }
@@ -57,14 +54,24 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the <see cref="Room"/>.
+        /// Gets the window's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base._transform;
+
+        /// <summary>
+        /// Gets the <see cref="Exiled.API.Features.Room"/> the window is in.
         /// </summary>
         public Room Room { get; }
 
         /// <summary>
-        /// Gets the window <see cref="GlassType"/>.
+        /// Gets the window's <see cref="GlassType"/>.
         /// </summary>
         public GlassType Type { get; }
+
+        /// <summary>
+        /// Gets the window's <see cref="ZoneType"/>.
+        /// </summary>
+        public ZoneType Zone => Room.Zone;
 
         /// <summary>
         /// Gets or sets the window's position.
@@ -76,7 +83,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not this window is breakable.
+        /// Gets a value indicating whether or not this window represents the window in front of SCP-079's recontainment button.
         /// </summary>
         public bool Is079Trigger => Recontainer.ActivatorWindow == this;
 
@@ -173,7 +180,7 @@ namespace Exiled.API.Features
         /// Returns the Window in a human-readable format.
         /// </summary>
         /// <returns>A string containing Window-related data.</returns>
-        public override string ToString() => $"{Type} {Health} {IsBroken} {DisableScpDamage}";
+        public override string ToString() => $"{Type} ({Health}) [{IsBroken}] *{DisableScpDamage}*";
 
         private GlassType GetGlassType()
         {

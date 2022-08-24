@@ -30,7 +30,9 @@ namespace Exiled.CustomItems.API.Features
 
     using YamlDotNet.Serialization;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// The Custom Grenade base class.
+    /// </summary>
     public abstract class CustomGrenade : CustomItem
     {
         /// <summary>
@@ -183,8 +185,7 @@ namespace Exiled.CustomItems.API.Features
             if (ev.RequestType == ThrowRequest.BeginThrow)
             {
                 OnThrowing(ev);
-                if (!ev.IsAllowed)
-                    ev.IsAllowed = false;
+                ev.IsAllowed = false;
                 return;
             }
 
@@ -222,7 +223,7 @@ namespace Exiled.CustomItems.API.Features
 
             if (ev.IsAllowed)
             {
-                Timing.CallDelayed(0.25f, () => Throw(ev.Pickup.Position, 0f, ev.FuseTime, ev.Type));
+                Timing.CallDelayed(0.25f, () => Throw(ev.Pickup.Position, 0f, ev.FuseTime, ev.Type, ev.Pickup.PreviousOwner));
                 ev.Pickup.Destroy();
                 ev.IsAllowed = false;
             }

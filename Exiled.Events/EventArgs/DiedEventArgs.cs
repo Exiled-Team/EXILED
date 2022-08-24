@@ -12,12 +12,11 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
 
-    using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
     using CustomAttackerHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
-    /// Contains all informations after a player dies.
+    /// Contains all information after a player dies.
     /// </summary>
     public class DiedEventArgs : EventArgs
     {
