@@ -13,7 +13,9 @@ namespace Exiled.Example.Events
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp106;
+    using Exiled.Events.EventArgs.Scp914;
 
     using MEC;
 
@@ -29,15 +31,15 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDied(DiedEventArgs)"/>
         public void OnDied(DiedEventArgs ev)
         {
-            if (ev.Killer is null)
+            if (ev.Player is null)
                 return;
-            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) died from {ev.Killer.CurrentItem}! {ev.Killer.Nickname} ({ev.Killer.Role}) killed him!");
+            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) died from {ev.Player.CurrentItem}! {ev.Player.Nickname} ({ev.Player.Role}) killed him!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) is changing roles! The new role will be {ev.NewRole}!");
+            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) is changing his role! The new role will be {ev.NewRole}!");
             if (ev.NewRole == RoleType.Tutorial)
             {
                 ev.Items.Clear();
@@ -58,7 +60,7 @@ namespace Exiled.Example.Events
                     firearm.Recoil = new RecoilSettings(0, 0, 0, 0, 0, 0);
                 }
             });
-            Log.Info($"{ev.Player.Nickname} is changing their {(ev.Player?.CurrentItem is null ? "NONE" : ev.Player?.CurrentItem?.Type.ToString())} item to {(ev.NewItem is null ? "NONE" : ev.NewItem.Type.ToString())}!");
+            Log.Info($"{ev.Player.Nickname} is changing his {(ev.Player?.CurrentItem is null ? "NONE" : ev.Player?.CurrentItem?.Type.ToString())} item to {(ev.NewItem is null ? "NONE" : ev.NewItem.Type.ToString())}!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnTeleporting(TeleportingEventArgs)"/>
@@ -128,7 +130,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDying(DyingEventArgs)"/>
         public void OnDying(DyingEventArgs ev)
         {
-            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {ev.Killer.Nickname} ({ev.Killer.Role})!");
+            Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {ev.Player.Nickname} ({ev.Player.Role})!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnPreAuthenticating(PreAuthenticatingEventArgs)"/>
@@ -158,7 +160,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnShooting(ShootingEventArgs)"/>
         public void OnShooting(ShootingEventArgs ev)
         {
-            Log.Info($"{ev.Shooter.Nickname} is shooting a {ev.Shooter.CurrentItem.Type}! Target Pos: {ev.ShotPosition} Target object ID: {ev.TargetNetId} Allowed: {ev.IsAllowed}");
+            Log.Info($"{ev.Player.Nickname} is shooting a {ev.Player.CurrentItem.Type}! Target Pos: {ev.ShotPosition} Target object ID: {ev.TargetNetId} Allowed: {ev.IsAllowed}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnReloadingWeapon(ReloadingWeaponEventArgs)"/>
@@ -214,7 +216,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHurting(HurtingEventArgs)"/>
         public void OnHurting(HurtingEventArgs ev)
         {
-            Log.Info($"{ev.Target} is being hurt by {ev.Handler.Type}");
+            Log.Info($"{ev.Target} is being hurt by {ev.DamageHandler.Type}");
             if (ev.Target.Role == RoleType.Scientist)
             {
                 Log.Info("Target is a nerd, setting damage to 1 because it's mean to bully nerds.");

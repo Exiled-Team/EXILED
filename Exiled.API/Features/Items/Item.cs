@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -251,6 +252,11 @@ namespace Exiled.API.Features.Items
         public void Give(Player player) => player.AddItem(Base);
 
         /// <summary>
+        /// Destroy this item.
+        /// </summary>
+        public void Destroy() => Owner.RemoveItem(this);
+
+        /// <summary>
         /// Spawns the item on the map.
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
@@ -353,5 +359,15 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Item-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+
+        /// <summary>
+        /// Clones the current item with a different serial.
+        /// </summary>
+        /// <returns> Cloned item object. </returns>
+        public virtual Item Clone()
+        {
+            Item generatedItem = Item.Create(Type);
+            return generatedItem;
+        }
     }
 }

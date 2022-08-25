@@ -8,30 +8,33 @@
 namespace Exiled.Events.Patches.Events.Scp096
 {
 #pragma warning disable SA1402
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
+    using PlayableScps;
 
     using static HarmonyLib.AccessTools;
 
     using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
-    /// Patches <see cref="Scp096.ChargePlayer"/>.
-    /// Adds the <see cref="Handlers.Scp096.ChargingPlayer"/> event.
+    ///     Patches <see cref="PlayableScps.Scp096.ChargePlayer" />.
+    ///     Adds the <see cref="Handlers.Scp096.ChargingPlayer" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.ChargePlayer))]
     internal static class ChargingPlayer
     {
         /// <summary>
-        /// The hashset of already charged players.
-        /// Prevents double calling on the same player.
+        ///     The hashset of already charged players.
+        ///     Prevents double calling on the same player.
         /// </summary>
         public static readonly HashSet<ReferenceHub> ChargedPlayers = new();
 
@@ -65,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                 // var ev = new ChargingPlayerEventArgs(this, Player.Get(this.Hub), target, this._targets.Contains(target), damage)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))),
+                new(OpCodes.Ldfld, Field(typeof(PlayableScp), nameof(PlayableScp.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
@@ -102,10 +105,10 @@ namespace Exiled.Events.Patches.Events.Scp096
     }
 
     /// <summary>
-    /// Patches <see cref="Scp096.EndCharge"/>.
-    /// Serves to clear the ChargedPlayers.
+    ///     Patches <see cref="Scp096.EndCharge" />.
+    ///     Serves to clear the ChargedPlayers.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096), nameof(PlayableScps.Scp096.EndCharge))]
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.EndCharge))]
     internal static class ChargeEnded
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

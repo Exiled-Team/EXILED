@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -19,8 +18,8 @@ namespace Exiled.Events.Patches.Events.Server
     using NorthwoodLib.Pools;
 
     /// <summary>
-    /// Patches <see cref="RoundSummary.SetStartClassList"/>.
-    /// Adds the RoundStarted event.
+    ///     Patches <see cref="RoundSummary.SetStartClassList" />.
+    ///     Adds the RoundStarted event.
     /// </summary>
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.SetStartClassList))]
     internal static class RoundStarted
