@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
@@ -18,21 +19,21 @@ namespace Exiled.Events.EventArgs.Map
         ///     Initializes a new instance of the <see cref="AnnouncingDecontaminationEventArgs" /> class.
         /// </summary>
         /// <param name="announcementId">
-        ///     <inheritdoc cref="Id" />
+        ///     <inheritdoc cref="DecontaminationPhase" />
         /// </param>
         /// <param name="isGlobal">
         ///     <inheritdoc cref="IsGlobal" />
         /// </param>
         public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal)
         {
-            Id = announcementId;
+            DecontaminationPhase = (DecontaminationPhase)announcementId;
             IsGlobal = isGlobal;
         }
 
         /// <summary>
         ///     Gets the announcement id, from 0 to 6.
         /// </summary>
-        public int Id { get; }
+        public DecontaminationPhase DecontaminationPhase { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the announcement is going to be global or not.
