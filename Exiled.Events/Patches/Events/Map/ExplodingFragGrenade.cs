@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using Footprinting;
 
@@ -43,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Map
             List<Collider> colliders = new();
             foreach (Collider collider in colliderArray)
             {
-                if(!collider.TryGetComponent(out IDestructible dest) ||
+                if (!collider.TryGetComponent(out IDestructible dest) ||
                     !ReferenceHub.TryGetHubNetID(dest.NetworkId, out ReferenceHub hub) ||
                     Player.Get(hub) is not Player player || ev.TargetsToAffect.Contains(player))
                 {
@@ -69,17 +70,20 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // position
+                new(OpCodes.Ldarg_1),
+
                 // grenade
                 new(OpCodes.Ldarg_2),
 
                 // Collider[]
                 new(OpCodes.Ldloc_3),
 
-                // ExplodingGrenadeEventArgs ev = new(player, grenade, colliders);
+                // ExplodingGrenadeEventArgs ev = new(player, position, grenade, colliders);
                 // Map.OnExplodingGrenade(ev);
                 // if(!ev.IsAllowed)
                 //     return;
-                new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(Collider[]) })),
+                new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(Vector3), typeof(EffectGrenade), typeof(Collider[]) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),

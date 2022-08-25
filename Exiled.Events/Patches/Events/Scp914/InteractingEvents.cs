@@ -7,13 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp914;
 
     using global::Scp914;
 
@@ -26,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Scp914Controller.ServerInteract"/>.
-    /// Adds the <see cref="Handlers.Scp914.Activating"/> and <see cref="Handlers.Scp914.ChangingKnobSetting"/> events.
+    ///     Patches <see cref="Scp914Controller.ServerInteract"/>.
+    ///     Adds the <see cref="Handlers.Scp914.Activating"/> and <see cref="Handlers.Scp914.ChangingKnobSetting"/> events.
     /// </summary>
     [HarmonyPatch(typeof(Scp914Controller), nameof(Scp914Controller.ServerInteract))]
     internal static class InteractingEvents

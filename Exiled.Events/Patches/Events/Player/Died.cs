@@ -11,7 +11,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features.Roles;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.KillPlayer(DamageHandlerBase)"/>.
-    /// Adds the <see cref="Handlers.Player.Died"/> event.
+    ///     Patches <see cref="PlayerStats.KillPlayer(DamageHandlerBase)" />.
+    ///     Adds the <see cref="Handlers.Player.Died" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal static class Died
@@ -50,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Brfalse, ret),
                 new(OpCodes.Ldloc, player.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
                 new(OpCodes.Stloc, oldRole.LocalIndex),
             });
 

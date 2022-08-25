@@ -55,6 +55,12 @@ namespace Exiled.Events
         public bool CanSpawnBlood { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether keycard throw can affect basic doors.
+        /// </summary>
+        [Description("Indicates whether thrown keycards can affect doors that don't require any permissions")]
+        public bool CanKeycardThrowAffectDoors { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.
         /// </summary>
         [Description("Indicates whether configs have to be reloaded every round restart")]
@@ -63,6 +69,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets or sets a value indicating whether translations has to be reloaded every time a round restarts.
         /// </summary>
+        [Description("Indicates whether translations has to be reloaded every round restart")]
         public bool ShouldReloadTranslationsAtRoundRestart { get; set; }
 
         /// <summary>

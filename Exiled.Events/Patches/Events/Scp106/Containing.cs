@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp106;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -21,9 +21,11 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="PlayerInteract.UserCode_CmdContain106"/>.
-    /// Adds the <see cref="Handlers.Scp106.Containing"/> event.
+    ///     Patches <see cref="PlayerInteract.UserCode_CmdContain106" />.
+    ///     Adds the <see cref="Handlers.Scp106.Containing" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdContain106))]
     internal static class Containing
@@ -58,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ContainingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp106), nameof(Handlers.Scp106.OnContaining))),
+                new(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnContaining))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ContainingEventArgs), nameof(ContainingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });
