@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs.Scp914
     /// <summary>
     ///     Contains all information before a player activates SCP-914.
     /// </summary>
-    public class ActivatingScp914EventArgs : EventArgs
+    public class ActivatingScp914EventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ActivatingScp914EventArgs"/> class.
