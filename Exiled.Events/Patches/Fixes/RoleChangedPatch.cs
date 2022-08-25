@@ -10,6 +10,10 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Items;
+    using Exiled.Events.EventArgs.Player;
+    using HarmonyLib;
+
     using InventorySystem;
 
     /// <summary>
