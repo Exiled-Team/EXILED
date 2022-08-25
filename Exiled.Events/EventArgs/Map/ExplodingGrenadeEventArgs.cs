@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information before a grenade explodes.
     /// </summary>
-    public class ExplodingGrenadeEventArgs : IPlayerEvent, IDeniableEvent
+    public class ExplodingGrenadeEventArgs : IPlayerEvent, IDeniableEvent, IProjectileEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs" /> class.
@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Map
         ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="grenade">
-        ///     <inheritdoc cref="Grenade" />
+        ///     <inheritdoc cref="Projectile" />
         /// </param>
         /// <param name="targets">
         ///     <inheritdoc cref="TargetsToAffect" />
@@ -40,12 +40,12 @@ namespace Exiled.Events.EventArgs.Map
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
         {
             Player = thrower ?? Server.Host;
-            Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
-            Position = Grenade.Position;
+            Projectile = (Projectile)Pickup.Get(grenade);
+            Position = Projectile.Position;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
             {
-                if (Grenade.Base is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
+                if (Projectile.Base is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
                     continue;
 
                 Player player = Player.Get(hub);
@@ -62,17 +62,17 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         /// <param name="thrower"><inheritdoc cref="Player"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
-        /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
+        /// <param name="grenade"><inheritdoc cref="Projectile"/></param>
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
         public ExplodingGrenadeEventArgs(Player thrower, Vector3 position, EffectGrenade grenade, Collider[] targets)
         {
             Player = thrower ?? Server.Host;
-            Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
-            Position = Grenade.Position;
+            Projectile = (Projectile)Pickup.Get(grenade);
+            Position = Projectile.Position;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
             {
-                if (Grenade.Base is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
+                if (Projectile.Base is not ExplosionGrenade || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
                     continue;
 
                 Player player = Player.Get(hub);
@@ -91,7 +91,7 @@ namespace Exiled.Events.EventArgs.Map
         ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="grenade">
-        ///     <inheritdoc cref="Grenade" />
+        ///     <inheritdoc cref="Projectile" />
         /// </param>
         /// <param name="players">
         ///     <inheritdoc cref="TargetsToAffect" />
@@ -99,8 +99,8 @@ namespace Exiled.Events.EventArgs.Map
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
         {
             Player = thrower ?? Server.Host;
-            Grenade = (EffectGrenadeProjectile)Pickup.Get(grenade);
-            Position = Grenade.Position;
+            Projectile = (Projectile)Pickup.Get(grenade);
+            Position = Projectile.Position;
             TargetsToAffect = ListPool<Player>.Shared.Rent(players);
         }
 
@@ -122,7 +122,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         /// Gets the grenade that is exploding.
         /// </summary>
-        public EffectGrenadeProjectile Grenade { get; }
+        public Projectile Projectile { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the grenade can be thrown.

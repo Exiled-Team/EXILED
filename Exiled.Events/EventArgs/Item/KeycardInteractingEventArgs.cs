@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Player
+namespace Exiled.Events.EventArgs.Item
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets the player who's threw the keycard.
         /// </summary>
-        public API.Features.Player Player { get; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the <see cref="API.Features.Door"/> instance.

@@ -137,7 +137,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
-            if (Check(ev.Grenade))
+            if (Check(ev.Projectile))
             {
                 Log.Debug($"A {Name} is exploding!!", CustomItems.Instance.Config.Debug);
                 OnExploding(ev);
