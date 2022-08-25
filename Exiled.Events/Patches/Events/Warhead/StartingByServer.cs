@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
 
@@ -20,9 +20,11 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using static HarmonyLib.AccessTools;
 
+    using Warhead = Exiled.Events.Handlers.Warhead;
+
     /// <summary>
-    /// Patch the <see cref="AlphaWarheadController.Update"/>.
-    /// Adds the <see cref="Handlers.Warhead.Starting"/> event.
+    ///     Patch the <see cref="AlphaWarheadController.Update" />.
+    ///     Adds the <see cref="Handlers.Warhead.Starting" /> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Update))]
     internal static class StartingByServer
@@ -35,7 +37,8 @@ namespace Exiled.Events.Patches.Events.Warhead
 
             // Search for the only call AlphaWarheadController.StartDetonation
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))) + offset;
+                                                                     (MethodInfo)instruction.operand == Method(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))) +
+                        offset;
 
             // Get the count to find the previous index
             int oldCount = newInstructions.Count;
@@ -55,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
+                new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStarting))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });

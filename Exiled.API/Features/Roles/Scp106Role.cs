@@ -78,6 +78,13 @@ namespace Exiled.API.Features.Roles
         /// Contains SCP-106.
         /// </summary>
         /// <param name="container">The player who recontained SCP-106.</param>
-        public void Contain(Player container) => Script.Contain(container.Footprint);
+        /// <exception cref="System.ArgumentException">Container cannot be <see langword="null"/>.</exception>
+        public void Contain(Player container)
+        {
+            if (container is null)
+                throw new System.ArgumentException("Container cannot be null.", nameof(container));
+
+            Script.Contain(container.Footprint);
+        }
     }
 }

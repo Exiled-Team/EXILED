@@ -9,22 +9,20 @@ namespace Exiled.Events.Handlers.Internal
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
     using Exiled.Loader.Features;
 
     using InventorySystem;
 
-    using Item = Exiled.API.Features.Items.Item;
-
     /// <summary>
-    /// Handles some round clean-up events and some others related to players.
+    ///     Handles some round clean-up events and some others related to players.
     /// </summary>
     internal static class Round
     {
-        /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
+        /// <inheritdoc cref="Handlers.Server.OnWaitingForPlayers" />
         public static void OnWaitingForPlayers()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
@@ -34,40 +32,36 @@ namespace Exiled.Events.Handlers.Internal
             FlashGrenade.GrenadeToItem.Clear();
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
-            {
                 ConfigManager.Reload();
-            }
 
             if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart)
-            {
                 TranslationManager.Reload();
-            }
 
             RoundSummary.RoundLock = false;
         }
 
-        /// <inheritdoc cref="Server.OnRestartingRound"/>
+        /// <inheritdoc cref="Handlers.Server.OnRestartingRound" />
         public static void OnRestartingRound()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_END);
 
-            API.Features.Scp173.TurnedPlayers.Clear();
-            API.Features.Scp096.TurnedPlayers.Clear();
-            API.Features.TeslaGate.IgnoredPlayers.Clear();
-            API.Features.TeslaGate.IgnoredRoles.Clear();
-            API.Features.TeslaGate.IgnoredTeams.Clear();
-            API.Features.Scp106Container.IgnoredPlayers.Clear();
-            API.Features.Scp106Container.IgnoredRoles = new List<RoleType> { RoleType.Spectator };
-            API.Features.Scp106Container.IgnoredTeams = new List<Team> { Team.SCP };
+            Scp173.TurnedPlayers.Clear();
+            Scp096.TurnedPlayers.Clear();
+            TeslaGate.IgnoredPlayers.Clear();
+            TeslaGate.IgnoredRoles.Clear();
+            TeslaGate.IgnoredTeams.Clear();
+            Scp106Container.IgnoredPlayers.Clear();
+            Scp106Container.IgnoredRoles = new List<RoleType> { RoleType.Spectator };
+            Scp106Container.IgnoredTeams = new List<Team> { Team.SCP };
         }
 
-        /// <inheritdoc cref="Server.OnRoundStarted"/>
+        /// <inheritdoc cref="Handlers.Server.OnRoundStarted" />
         public static void OnRoundStarted()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_START);
         }
 
-        /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
+        /// <inheritdoc cref="Handlers.Player.OnChangingRole(ChangingRoleEventArgs)" />
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))

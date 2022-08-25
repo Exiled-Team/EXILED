@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
 
@@ -20,8 +20,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="PlayerInteract.UserCode_CmdDetonateWarhead"/>.
-    /// Adds the <see cref="Handlers.Warhead.Starting"/> event.
+    ///     Patch the <see cref="PlayerInteract.UserCode_CmdDetonateWarhead" />.
+    ///     Adds the <see cref="Handlers.Warhead.Starting" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdDetonateWarhead))]
     internal static class Starting

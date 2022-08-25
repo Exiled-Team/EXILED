@@ -10,7 +10,9 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -21,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ThrowableNetworkHandler.ServerProcessRequest"/>.
-    /// Adds the <see cref="Handlers.Player.ThrowingItem"/> event.
+    ///     Patches <see cref="ThrowableNetworkHandler.ServerProcessRequest" />.
+    ///     Adds the <see cref="Handlers.Player.ThrowingItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableNetworkHandler), nameof(ThrowableNetworkHandler.ServerProcessRequest))]
     internal static class ThrowingItem
@@ -46,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[moveIndex]),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_1),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(ThrowableNetworkHandler.ThrowableItemRequestMessage), nameof(ThrowableNetworkHandler.ThrowableItemRequestMessage.Request))),
@@ -60,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowingItemEventArgs), nameof(ThrowingItemEventArgs.Item))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Base))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Base))),
                 new(OpCodes.Stloc_1),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(ThrowableNetworkHandler.ThrowableItemRequestMessage), nameof(ThrowableNetworkHandler.ThrowableItemRequestMessage.Serial))),
