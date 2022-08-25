@@ -1716,11 +1716,11 @@ namespace Exiled.API.Features
             Items.Count(tempItem => tempItem.Type == item);
 
         /// <summary>
-        /// Counts how many items of a certain <see cref="GrenadeType"/> a player has.
+        /// Counts how many items of a certain <see cref="ProjectileType"/> a player has.
         /// </summary>
-        /// <param name="grenadeType">The GrenadeType to search for.</param>
-        /// <returns>How many items of that <see cref="GrenadeType"/> the player has.</returns>
-        public int CountItem(GrenadeType grenadeType) =>
+        /// <param name="grenadeType">The ProjectileType to search for.</param>
+        /// <returns>How many items of that <see cref="ProjectileType"/> the player has.</returns>
+        public int CountItem(ProjectileType grenadeType) =>
             Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == grenadeType.GetItemType());
 
         /// <summary>
@@ -2427,15 +2427,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Causes the player to throw a grenade.
         /// </summary>
-        /// <param name="type">The <see cref="GrenadeType"/> to be thrown.</param>
+        /// <param name="type">The <see cref="ProjectileType"/> to be thrown.</param>
         /// <param name="fullForce">Whether to throw with full or half force.</param>
         /// <returns>The <see cref="Throwable"/> item that was spawned.</returns>
-        public Throwable ThrowGrenade(GrenadeType type, bool fullForce = true)
+        public Throwable ThrowGrenade(ProjectileType type, bool fullForce = true)
         {
             Throwable throwable = type switch
             {
-                GrenadeType.Flashbang => new FlashGrenade(),
-                GrenadeType.Scp2176 => new Scp2176(),
+                ProjectileType.Flashbang => new FlashGrenade(),
+                ProjectileType.Scp2176 => new Scp2176(),
                 _ => new ExplosiveGrenade(type.GetItemType()),
             };
             ThrowItem(throwable, fullForce);

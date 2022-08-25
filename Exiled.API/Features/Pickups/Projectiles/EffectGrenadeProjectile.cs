@@ -33,11 +33,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public new EffectGrenade Base { get; }
 
         /// <summary>
-        /// Gets the <see cref="Enums.GrenadeType"/> of the item.
-        /// </summary>
-        public GrenadeType GrenadeType => Type.GetGrenadeType();
-
-        /// <summary>
         /// Returns the EffectGrenadePickup in a human readable format.
         /// </summary>
         /// <returns>A string containing EffectGrenadePickup-related data.</returns>

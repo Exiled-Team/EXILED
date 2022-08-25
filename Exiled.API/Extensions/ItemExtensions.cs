@@ -179,30 +179,30 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
-        /// Converts a valid grenade <see cref="ItemType"/> into an <see cref="GrenadeType"/>.
+        /// Converts a valid grenade <see cref="ItemType"/> into an <see cref="ProjectileType"/>.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to convert.</param>
         /// <returns>The grenade type of the given item type.</returns>
-        public static GrenadeType GetGrenadeType(this ItemType type) => type switch
+        public static ProjectileType GetGrenadeType(this ItemType type) => type switch
         {
-            ItemType.GrenadeFlash => GrenadeType.Flashbang,
-            ItemType.GrenadeHE => GrenadeType.FragGrenade,
-            ItemType.SCP018 => GrenadeType.Scp018,
-            ItemType.SCP2176 => GrenadeType.Scp2176,
-            _ => GrenadeType.None,
+            ItemType.GrenadeFlash => ProjectileType.Flashbang,
+            ItemType.GrenadeHE => ProjectileType.FragGrenade,
+            ItemType.SCP018 => ProjectileType.Scp018,
+            ItemType.SCP2176 => ProjectileType.Scp2176,
+            _ => ProjectileType.None,
         };
 
         /// <summary>
-        /// Converts a <see cref="GrenadeType"/> into the corresponding <see cref="ItemType"/>.
+        /// Converts a <see cref="ProjectileType"/> into the corresponding <see cref="ItemType"/>.
         /// </summary>
-        /// <param name="type">The <see cref="GrenadeType"/> to convert.</param>
+        /// <param name="type">The <see cref="ProjectileType"/> to convert.</param>
         /// <returns>The Item type of the specified grenade.</returns>
-        public static ItemType GetItemType(this GrenadeType type) => type switch
+        public static ItemType GetItemType(this ProjectileType type) => type switch
         {
-            GrenadeType.Flashbang => ItemType.GrenadeFlash,
-            GrenadeType.Scp018 => ItemType.SCP018,
-            GrenadeType.FragGrenade => ItemType.GrenadeHE,
-            GrenadeType.Scp2176 => ItemType.SCP2176,
+            ProjectileType.Flashbang => ItemType.GrenadeFlash,
+            ProjectileType.Scp018 => ItemType.SCP018,
+            ProjectileType.FragGrenade => ItemType.GrenadeHE,
+            ProjectileType.Scp2176 => ItemType.SCP2176,
             _ => ItemType.None,
         };
 
