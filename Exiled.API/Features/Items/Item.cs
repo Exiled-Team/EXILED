@@ -110,6 +110,11 @@ namespace Exiled.API.Features.Items
         public ItemCategory Category => Base.Category;
 
         /// <summary>
+        /// Gets the <see cref="ItemTierFlags"/> of the item.
+        /// </summary>
+        public ItemTierFlags TierFlags => Base.TierFlags;
+
+        /// <summary>
         /// Gets the weight of the item.
         /// </summary>
         public float Weight => Base.Weight;
