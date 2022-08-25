@@ -83,6 +83,7 @@ namespace Exiled.API.Features.Roles
         {
             if (container is null)
                 throw new System.ArgumentException("Container cannot be null.", nameof(container));
+
             Script.Contain(container.Footprint);
         }
     }
