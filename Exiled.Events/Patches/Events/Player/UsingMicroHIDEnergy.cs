@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="MicroHIDItem.ExecuteServerside"/>.
-    /// Adds the <see cref="Handlers.Player.OnUsingMicroHIDEnergy"/> event.
+    ///     Patches <see cref="MicroHIDItem.ExecuteServerside" />.
+    ///     Adds the <see cref="Handlers.Player.OnUsingMicroHIDEnergy" /> event.
     /// </summary>
     [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]
     internal static class UsingMicroHIDEnergy

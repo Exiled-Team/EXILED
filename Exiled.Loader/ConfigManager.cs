@@ -111,7 +111,7 @@ namespace Exiled.Loader
                 rawConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
             }
 
-            if (!rawConfigs.TryGetValue(plugin.Prefix, out var rawDeserializedConfig))
+            if (!rawConfigs.TryGetValue(plugin.Prefix, out object rawDeserializedConfig))
             {
                 Log.Warn($"{plugin.Name} doesn't have default configs, generating...");
 

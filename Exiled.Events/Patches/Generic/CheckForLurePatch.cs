@@ -11,6 +11,8 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -24,16 +26,21 @@ namespace Exiled.Events.Patches.Generic
 
     /// <summary>
     /// Patch the <see cref="CharacterClassManager.AllowContain"/> to implement <see cref="Scp106Container"/> properties.
+    /// Adds the <see cref="Handlers.Player.EnteringFemurBreaker"/> event.
     /// </summary>
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.AllowContain))]
     internal static class CheckForLurePatch
     {
-        [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.AllowContain))]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             newInstructions.Clear();
-            newInstructions.Insert(0, new(OpCodes.Call, Method(typeof(CheckForLurePatch), nameof(CheckPlayers))));
+            newInstructions.InsertRange(0, new[]
+            {
+                new CodeInstruction(OpCodes.Call, Method(typeof(CheckForLurePatch), nameof(CheckPlayers))),
+                new(OpCodes.Ret),
+            });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -47,7 +54,12 @@ namespace Exiled.Events.Patches.Generic
             {
                 if (Scp106Container.CanBeKilled(player))
                 {
-                    player.Hurt(new UniversalDamageHandler(-1f, DeathTranslations.UsedAs106Bait, null));
+                    EnteringFemurBreakerEventArgs ev = new(player);
+                    Handlers.Player.OnEnteringFemurBreaker(ev);
+
+                    if (!ev.IsAllowed)
+                        return;
+                    player.Hurt(new UniversalDamageHandler(-1f, DeathTranslations.UsedAs106Bait));
                     Scp106Container.Base.SetState(false, true);
                     return;
                 }

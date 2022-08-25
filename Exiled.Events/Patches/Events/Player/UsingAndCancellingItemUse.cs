@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="UsableItemsController.ServerReceivedStatus"/>.
-    /// Adds the <see cref="Handlers.Player.UsingItem"/> event.
+    ///     Patches <see cref="UsableItemsController.ServerReceivedStatus" />.
+    ///     Adds the <see cref="Handlers.Player.UsingItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.ServerReceivedStatus))]
     internal static class UsingAndCancellingItemUse
@@ -46,11 +46,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingItemEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingItem))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UsingItemEventArgs), nameof(UsingItemEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UsingItemEventArgs), nameof(UsingItemEventArgs.Cooldown))),
                 new(OpCodes.Stloc_S, 4),
             });
@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnCancellingItemUse))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(CancellingItemUseEventArgs), nameof(CancellingItemUseEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                new(OpCodes.Brfalse_S, returnLabel),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

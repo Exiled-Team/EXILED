@@ -8,7 +8,7 @@
 namespace Exiled.Example.Events
 {
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Warhead;
 
     /// <summary>
     /// Handles warhead events.

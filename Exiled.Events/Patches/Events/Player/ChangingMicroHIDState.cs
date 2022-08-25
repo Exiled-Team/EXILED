@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -59,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingMicroHIDStateEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnChangingMicroHIDState(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingMicroHIDState))),
@@ -67,11 +68,11 @@ namespace Exiled.Events.Patches.Events.Player
                 // if (!ev.IsAllowed)
                 // goto RETURN_LABEL
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMicroHIDStateEventArgs), nameof(ChangingMicroHIDStateEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, skipLabel),
+                new(OpCodes.Brfalse_S, skipLabel),
 
                 // this.State = ev.NewState
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMicroHIDStateEventArgs), nameof(ChangingMicroHIDStateEventArgs.NewState))),
                 new(OpCodes.Stfld, Field(typeof(MicroHIDItem), nameof(MicroHIDItem.State))),
                 new(OpCodes.Br, continueLabel),
