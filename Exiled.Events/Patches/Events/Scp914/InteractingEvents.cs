@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Scp914;
 
     using global::Scp914;
