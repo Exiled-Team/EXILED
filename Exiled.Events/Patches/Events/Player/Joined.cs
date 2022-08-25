@@ -7,13 +7,14 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
 #pragma warning disable SA1600
+
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Loader.Features;
 
     using HarmonyLib;
@@ -27,26 +28,26 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ReferenceHub.Awake"/>.
-    /// Adds the <see cref="Handlers.Player.Joined"/> event.
+    ///     Patches <see cref="ReferenceHub.Awake" />.
+    ///     Adds the <see cref="Handlers.Player.Joined" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Awake))]
     internal static class Joined
     {
-        internal static void CallEvent(ReferenceHub hub, out API.Features.Player player)
+        internal static void CallEvent(ReferenceHub hub, out Player player)
         {
             try
             {
 #if DEBUG
-                API.Features.Log.Debug("Creating new player object");
+                Log.Debug("Creating new player object");
 #endif
-                player = new API.Features.Player(hub);
+                player = new Player(hub);
 #if DEBUG
-                API.Features.Log.Debug($"Object exists {player is not null}");
-                API.Features.Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
+                Log.Debug($"Object exists {player is not null}");
+                Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}");
 #endif
-                API.Features.Player.UnverifiedPlayers.Add(hub, player);
-                API.Features.Player p = player;
+                Player.UnverifiedPlayers.Add(hub, player);
+                Player p = player;
                 Timing.CallDelayed(0.25f, () =>
                 {
                     if (p.IsMuted)
@@ -57,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                API.Features.Log.Error($"{nameof(CallEvent)}: {e}\n{e.StackTrace}");
+                Log.Error($"{nameof(CallEvent)}: {e}\n{e.StackTrace}");
                 player = null;
             }
         }
@@ -66,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            LocalBuilder out_rh = generator.DeclareLocal(typeof(ReferenceHub));
+            LocalBuilder out_ply = generator.DeclareLocal(typeof(Player));
 
             Label cdc = generator.DefineLabel();
             Label je = generator.DefineLabel();
@@ -93,8 +94,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_4),
                 new(OpCodes.Call, Method(typeof(MultiAdminFeatures), nameof(MultiAdminFeatures.CallEvent))),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(je),
-                new(OpCodes.Ldloca_S, out_rh),
-                new(OpCodes.Call, Method(typeof(Joined), nameof(Joined.CallEvent))),
+                new(OpCodes.Ldloca_S, out_ply),
+                new(OpCodes.Call, Method(typeof(Joined), nameof(CallEvent))),
                 new(OpCodes.Pop),
             });
 

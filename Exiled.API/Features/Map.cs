@@ -66,8 +66,6 @@ namespace Exiled.API.Features
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
-        private static System.Random random = new();
-
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
@@ -156,16 +154,21 @@ namespace Exiled.API.Features
                 // Raycasting doesn't make sense,
                 // SCP-079 position is constant,
                 // let it be 'Outside' instead
-                if (ply.Role is Scp079Role role)
+                if (ply.Role.Is(out Scp079Role role))
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
             if (room is null)
             {
                 // Then try for objects that aren't children, like players and pickups.
-                Ray ray = new(objectInRoom.transform.position, Vector3.down);
+                Ray downRay = new(objectInRoom.transform.position, Vector3.down);
 
-                if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
+                if (Physics.RaycastNonAlloc(downRay, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
+                    return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
+
+                Ray upRay = new(objectInRoom.transform.position, Vector3.up);
+
+                if (Physics.RaycastNonAlloc(upRay, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                     return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
 
                 // Always default to surface transform, since it's static.
@@ -238,6 +241,9 @@ namespace Exiled.API.Features
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
+                if (room is null)
+                    continue;
+
                 if (zoneTypes == ZoneType.Unspecified || (room is not null && zoneTypes == room.Zone))
                     controller.ServerFlickerLights(duration);
             }
@@ -270,7 +276,7 @@ namespace Exiled.API.Features
             List<Pickup> pickups = (type != ItemType.None
                 ? Pickups.Where(p => p.Type == type)
                 : Pickups).ToList();
-            return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
+            return pickups[Random.Range(0, pickups.Count)];
         }
 
         /// <summary>
@@ -357,6 +363,7 @@ namespace Exiled.API.Features
             Generator.GeneratorValues.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
+            RagdollsValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Scp079Interactable.InteractablesByRoomId.Clear();
         }

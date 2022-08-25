@@ -7,11 +7,10 @@
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp914;
     using Exiled.Events.Handlers;
 
     using global::Scp914;
@@ -23,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp914Upgrader.ProcessPickup"/>.
-    /// Adds the <see cref="Scp914.UpgradingItem"/> event.
+    ///     Patches <see cref="Scp914Upgrader.ProcessPickup" />.
+    ///     Adds the <see cref="Scp914.UpgradingItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPickup))]
     internal static class UpgradingItem
@@ -56,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingItemEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Scp914.OnUpgradingItem(ev);
                 new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingItem))),
@@ -64,8 +63,8 @@ namespace Exiled.Events.Patches.Events.Scp914
                 // if (!ev.IsAllowed)
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingItemEventArgs), nameof(UpgradingItemEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Dup),
 
                 // outputPos = ev.OutputPosition
@@ -74,7 +73,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
                 // setting = ev.KnobSetting
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingItemEventArgs), nameof(UpgradingItemEventArgs.KnobSetting))),
-                new(OpCodes.Starg, 3),
+                new(OpCodes.Starg_S, 3),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

@@ -11,12 +11,9 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Structs;
 
     using InventorySystem.Items.Armor;
-
-    using NorthwoodLib.Pools;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -89,7 +86,7 @@ namespace Exiled.API.Features.Items
             get => Base.HelmetEfficacy;
             set
             {
-                if (value <= 101 && value >= 0)
+                if (value is <= 101 and >= 0)
                     Base.HelmetEfficacy = value;
                 else
                     throw new ArgumentOutOfRangeException(nameof(HelmetEfficacy), "You can only set the efficacy value of armor to a value between 0 and 100.");
@@ -105,7 +102,7 @@ namespace Exiled.API.Features.Items
             get => Base.VestEfficacy;
             set
             {
-                if (value <= 101 && value >= 0)
+                if (value is <= 101 and >= 0)
                     Base.VestEfficacy = value;
                 else
                     throw new ArgumentOutOfRangeException(nameof(VestEfficacy), "You can only set the efficacy value of armor to a value between 0 and 100.");
@@ -121,7 +118,7 @@ namespace Exiled.API.Features.Items
             get => Base.StaminaUseMultiplier;
             set
             {
-                if (value > 2f || value < 1f)
+                if (value is > 2f or < 1f)
                     throw new ArgumentOutOfRangeException(nameof(StaminaUseMultiplier), "You can only set the stamina use multiplier to a value between 1f and 2f.");
                 Base.StaminaUseMultiplier = value;
             }
@@ -134,9 +131,10 @@ namespace Exiled.API.Features.Items
         public float MovementSpeedMultiplier
         {
             get => Base.MovementSpeedMultiplier;
+            [Obsolete("The client would be desynchronized", true)]
             set
             {
-                if (value < 0.0f || value > 1f)
+                if (value is < 0.0f or > 1f)
                     throw new ArgumentOutOfRangeException(nameof(MovementSpeedMultiplier), "You can only set the movement speed multiplier to a value between 0 and 1.");
                 Base.MovementSpeedMultiplier = value;
             }
@@ -148,6 +146,7 @@ namespace Exiled.API.Features.Items
         public float CivilianDownsideMultiplier
         {
             get => Base.CivilianClassDownsidesMultiplier;
+            [Obsolete("The client would be desynchronized", true)]
             set => Base.CivilianClassDownsidesMultiplier = value;
         }
 
@@ -156,33 +155,38 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public IEnumerable<ArmorAmmoLimit> AmmoLimits
         {
-            get
-            {
-                List<ArmorAmmoLimit> limits = new();
-                for (int i = 0; i < Base.AmmoLimits.Length; i++)
-                {
-                    limits.Add(new ArmorAmmoLimit(Base.AmmoLimits[i].AmmoType.GetAmmoType(), Base.AmmoLimits[i].Limit));
-                }
+            get => Base.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
 
-                return limits;
-            }
+            set => Base.AmmoLimits = value.Select(limit => (BodyArmor.ArmorAmmoLimit)limit).ToArray();
+        }
 
-            set
-            {
-                List<BodyArmor.ArmorAmmoLimit> limits = ListPool<BodyArmor.ArmorAmmoLimit>.Shared.Rent();
-                for (int i = 0; i < value.Count(); i++)
-                {
-                    ArmorAmmoLimit limit = value.ElementAt(i);
-                    limits.Add(new BodyArmor.ArmorAmmoLimit
-                    {
-                        AmmoType = limit.AmmoType.GetItemType(),
-                        Limit = limit.Limit,
-                    });
-                }
+        /// <summary>
+        /// Gets or sets the item caterory limit of the wearer when using this armor.
+        /// </summary>
+        public IEnumerable<BodyArmor.ArmorCategoryLimitModifier> CategoryLimits
+        {
+            get => Base.CategoryLimits;
 
-                Base.AmmoLimits = limits.ToArray();
-                ListPool<BodyArmor.ArmorAmmoLimit>.Shared.Return(limits);
-            }
+            set => Base.CategoryLimits = value.ToArray();
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Armor"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Armor"/> object. </returns>
+        public override Item Clone()
+        {
+            Armor cloneableItem = new(Type);
+
+            cloneableItem.Weight = Weight;
+            cloneableItem.StaminaUseMultiplier = StaminaUseMultiplier;
+            cloneableItem.RemoveExcessOnDrop = RemoveExcessOnDrop;
+            cloneableItem.CategoryLimits = CategoryLimits;
+            cloneableItem.AmmoLimits = AmmoLimits;
+            cloneableItem.VestEfficacy = VestEfficacy;
+            cloneableItem.HelmetEfficacy = HelmetEfficacy;
+
+            return cloneableItem;
         }
     }
 }

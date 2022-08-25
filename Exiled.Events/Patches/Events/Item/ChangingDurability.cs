@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Item
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Item;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -21,11 +21,11 @@ namespace Exiled.Events.Patches.Events.Item
 
     using static HarmonyLib.AccessTools;
 
-    using Firearm = InventorySystem.Items.Firearms.Firearm;
+    using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Firearm.Status"/>.
-    /// Adds the <see cref="Handlers.Item.ChangingDurability"/> event.
+    ///     Patches <see cref="Firearm.Status" />.
+    ///     Adds the <see cref="Handlers.Item.ChangingDurability" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Firearm), nameof(Firearm.Status), MethodType.Setter)]
     internal static class ChangingDurability
@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Brtrue_S, cdc),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Owner))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Dup),
                 new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingDurability))),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.OnChangingDurability))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.Firearm))),
                 new(OpCodes.Brfalse_S, cdc),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

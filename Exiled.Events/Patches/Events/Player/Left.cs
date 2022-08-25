@@ -7,13 +7,13 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CustomNetworkManager.OnServerDisconnect(NetworkConnection)"/>.
-    /// Adds the <see cref="Handlers.Player.Left"/> event.
+    ///     Patches <see cref="CustomNetworkManager.OnServerDisconnect(NetworkConnection)" />.
+    ///     Adds the <see cref="Handlers.Player.Left" /> event.
     /// </summary>
     [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), typeof(NetworkConnection))]
     internal static class Left

@@ -7,12 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -24,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp079Generator.Engaged"/>.
-    /// Adds the <see cref="Map.GeneratorActivated"/> event.
+    ///     Patches <see cref="Scp079Generator.Engaged" />.
+    ///     Adds the <see cref="Map.GeneratorActivated" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.Engaged), MethodType.Setter)]
     internal static class GeneratorActivated

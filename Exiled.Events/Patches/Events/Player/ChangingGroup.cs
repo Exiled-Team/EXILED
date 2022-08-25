@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ServerRoles.SetGroup(UserGroup, bool, bool, bool)"/>.
-    /// Adds the <see cref="ChangingGroup"/> event.
+    ///     Patches <see cref="ServerRoles.SetGroup(UserGroup, bool, bool, bool)" />.
+    ///     Adds the <see cref="ChangingGroup" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetGroup))]
     internal static class ChangingGroup
@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, PropertyGetter(typeof(ServerRoles), nameof(ServerRoles.gameObject))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingGroupEventArgs))[0]),

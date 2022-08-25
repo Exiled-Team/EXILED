@@ -201,7 +201,7 @@ namespace Exiled.Permissions.Extensions
             if (Server.Host == player)
                 return true;
 
-            if (player is null || player.GameObject is null || Groups is null || Groups.Count == 0)
+            if (player is null || player.GameObject == null || Groups is null || Groups.Count == 0)
             {
                 return false;
             }
@@ -279,5 +279,14 @@ namespace Exiled.Permissions.Extensions
             Log.Debug($"Result outside the block: {result2}", Instance.Config.ShouldDebugBeShown);
             return result2;
         }
+
+        /// <summary>
+        /// Checks a player's permission.
+        /// </summary>
+        /// <param name="player">The player to be checked.</param>
+        /// <param name="permissions">The permission for checking.</param>
+        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        public static bool CheckPermission(this Player player, params PlayerPermissions[] permissions)
+            => permissions.All(permission => CommandProcessor.CheckPermissions(player.Sender, permission));
     }
 }

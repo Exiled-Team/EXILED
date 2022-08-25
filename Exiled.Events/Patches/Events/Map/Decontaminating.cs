@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="DecontaminationController.FinishDecontamination"/>.
-    /// Adds the <see cref="Decontaminating"/> event.
+    ///     Patches <see cref="DecontaminationController.FinishDecontamination" />.
+    ///     Adds the <see cref="Decontaminating" /> event.
     /// </summary>
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.FinishDecontamination))]
     internal static class Decontaminating
@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DecontaminatingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnDecontaminating))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnDecontaminating))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DecontaminatingEventArgs), nameof(DecontaminatingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
             });

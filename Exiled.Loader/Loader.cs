@@ -187,8 +187,6 @@ namespace Exiled.Loader
                     continue;
 
                 Locations[assembly] = assemblyPath;
-
-                Log.Info($"Loaded plugin {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
             }
 
             foreach (Assembly assembly in Locations.Keys)
@@ -200,6 +198,10 @@ namespace Exiled.Loader
 
                 if (plugin is null)
                     continue;
+
+                AssemblyInformationalVersionAttribute attribute = plugin.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+
+                Log.Info($"Loaded plugin {plugin.Name}@{(plugin.Version is not null ? $"{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
 
                 PluginAssemblies.Add(assembly, plugin);
                 Plugins.Add(plugin);
@@ -288,7 +290,7 @@ namespace Exiled.Loader
             {
                 Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {reflectionTypeLoadException}");
 
-                foreach (var loaderException in reflectionTypeLoadException.LoaderExceptions)
+                foreach (Exception loaderException in reflectionTypeLoadException.LoaderExceptions)
                 {
                     Log.Error(loaderException);
                 }
@@ -415,7 +417,7 @@ namespace Exiled.Loader
 
                 if (type is { IsGenericType: true })
                 {
-                    var genericTypeDef = type.GetGenericTypeDefinition();
+                    Type genericTypeDef = type.GetGenericTypeDefinition();
 
                     if (genericTypeDef == typeof(Plugin<>) || genericTypeDef == typeof(Plugin<,>))
                     {
@@ -429,6 +431,9 @@ namespace Exiled.Loader
 
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
+            if(plugin.IgnoreRequiredVersionCheck)
+                return false;
+
             Version requiredVersion = plugin.RequiredExiledVersion;
             Version actualVersion = Version;
 

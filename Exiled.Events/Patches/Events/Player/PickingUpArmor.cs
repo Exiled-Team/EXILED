@@ -7,12 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,7 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="ArmorSearchCompletor.Complete"/> method to add the <see cref="Handlers.Player.PickingUpArmor"/> event.
+    ///     Patches the <see cref="ArmorSearchCompletor.Complete" /> method to add the
+    ///     <see cref="Handlers.Player.PickingUpArmor" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ArmorSearchCompletor), nameof(ArmorSearchCompletor.Complete))]
     internal static class PickingUpArmor

@@ -8,36 +8,27 @@
 namespace Exiled.Events.Patches.Events.Scp330
 {
 #pragma warning disable SA1313
-#pragma warning disable SA1118
-    using System;
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
-
-    using Footprinting;
-
-    using global::Utils.Networking;
+    using Exiled.Events.EventArgs.Scp330;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using InventorySystem;
-    using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
-    using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
-
-    using Mirror;
 
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived"/> method to add the <see cref="Handlers.Scp330.DroppingScp330"/> event.
+    ///     Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived" /> method to add the
+    ///     <see cref="Handlers.Scp330.DroppingScp330" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]
     internal static class DroppingCandy
@@ -65,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingScp330EventArgs))[0]),
                 new(OpCodes.Stloc, eventHandler.LocalIndex),
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingScp330))),
+                new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnDroppingScp330))),
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),

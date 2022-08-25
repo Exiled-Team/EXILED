@@ -13,6 +13,8 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
 
+    using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -203,6 +205,25 @@ namespace Exiled.API.Features.Items
             new Pickup(pickupBase);
 
         /// <summary>
+        /// Gets all <see cref="Pickup"/> with the given <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to look for.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
+        public static IEnumerable<Pickup> Get(ItemType type)
+        {
+            List<Pickup> pickups = new();
+            foreach (Pickup p in Map.Pickups)
+            {
+                if (p.Type == type)
+                {
+                    pickups.Add(p);
+                }
+            }
+
+            return pickups;
+        }
+
+        /// <summary>
         /// Destroys the pickup.
         /// </summary>
         public void Destroy() => Base.DestroySelf();
@@ -211,9 +232,26 @@ namespace Exiled.API.Features.Items
         /// Returns the Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
-        public override string ToString()
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+
+        /// <summary>
+        /// Clones current <see cref="Pickup"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Pickup"/> object. </returns>
+        public Pickup Clone()
         {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+            Pickup cloneableItem = new(Type);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                cloneableItem.Locked = Locked;
+                cloneableItem.Spawned = Spawned;
+                cloneableItem.Weight = Weight;
+                cloneableItem.Scale = Scale;
+                cloneableItem.Position = Position;
+                cloneableItem.PreviousOwner = PreviousOwner;
+            });
+            return cloneableItem;
         }
     }
 }

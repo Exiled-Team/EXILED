@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -15,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using Footprinting;
 
@@ -50,8 +50,8 @@ namespace Exiled.Events.Patches.Events.Map
             LocalBuilder ev = generator.DeclareLocal(typeof(ExplodingGrenadeEventArgs));
             LocalBuilder list = generator.DeclareLocal(typeof(List<ReferenceHub>));
             int instructionsToRemove = 4;
-            for (int i = 0; i < instructionsToRemove; i++)
-                newInstructions.RemoveAt(index);
+
+            newInstructions.RemoveRange(index, instructionsToRemove);
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
@@ -86,7 +86,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ConvertHubs))),
 
                 // var ev = new ExplodingGrenadeEventArgs(player, this, players);
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ExplodingGrenadeEventArgs))[1]),
+                new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(List<Player>) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
@@ -126,7 +126,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                if(Player.Get(grenade.PreviousOwner.Hub) == player)
+                if (Exiled.Events.Events.Instance.Config.CanFlashbangsAffectThrower && Player.Get(grenade.PreviousOwner.Hub) == player)
                 {
                     grenade.ProcessPlayer(player.ReferenceHub);
                 }

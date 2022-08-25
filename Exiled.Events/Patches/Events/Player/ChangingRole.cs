@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -15,7 +14,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features.Roles;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,17 +23,18 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Pickups;
 
-    using MEC;
-
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     using Player = Exiled.Events.Handlers.Player;
+    using Role = Role;
+    using Scp173 = Exiled.API.Features.Scp173;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.SetClassIDAdv(RoleType, bool, CharacterClassManager.SpawnReason, bool)"/>.
-    /// Adds the <see cref="Player.ChangingRole"/> and <see cref="Player.Escaping"/> events.
+    ///     Patches <see cref="CharacterClassManager.SetClassIDAdv(RoleType, bool, CharacterClassManager.SpawnReason, bool)" />
+    ///     .
+    ///     Adds the <see cref="Handlers.Player.ChangingRole" /> and <see cref="Handlers.Player.Escaping" /> events.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassIDAdv))]
     internal static class ChangingRole
@@ -56,15 +57,15 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, player.LocalIndex),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc, player.LocalIndex),
+                new(OpCodes.Stloc_S, player.LocalIndex),
+                new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Player.Role.Type))),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ceq),
-                new(OpCodes.Brtrue, returnLabel),
-                new(OpCodes.Ldloc, player.LocalIndex),
+                new(OpCodes.Brtrue_S, returnLabel),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
 
                 // id
                 new(OpCodes.Ldarg_1),
@@ -79,7 +80,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRoleEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnChangingRole(ev)
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingRole))),
@@ -87,25 +88,25 @@ namespace Exiled.Events.Patches.Events.Player
                 // if (!ev.IsAllowed)
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                new(OpCodes.Brfalse_S, returnLabel),
 
                 // id = ev.NewRole;
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
-                new(OpCodes.Starg, 1),
+                new(OpCodes.Starg_S, 1),
 
                 // lite = ev.Lite
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Lite))),
-                new(OpCodes.Starg, 2),
+                new(OpCodes.Starg_S, 2),
 
                 // escape = ev.IsEscaped
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
-                new(OpCodes.Starg, 3),
+                new(OpCodes.Starg_S, 3),
 
                 // ev.Player.MaxHealth = this.Classes.SafeGet(ev.NewRole)
-                new(OpCodes.Ldloc, player.LocalIndex),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.Classes))),
                 new(OpCodes.Ldarg_1),
@@ -113,34 +114,35 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(Role), nameof(Role.maxHP))),
                 new(OpCodes.Call, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.MaxHealth))),
 
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
                 new(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
             });
 
             offset = 0;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo method && method.DeclaringType == typeof(CharacterClassManager.ClassChangedAdvanced)) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo method && method.DeclaringType == typeof(CharacterClassManager.ClassChangedAdvanced)) +
+                    offset;
             newInstructions[index + 1].labels.Add(liteLabel);
             newInstructions.InsertRange(index + 1, new CodeInstruction[]
             {
                 // if (ev.Lite)
                 //    break;
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Lite))),
                 new(OpCodes.Brtrue, liteLabel),
 
                 // player
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
 
                 // items
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
 
                 // ammo
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Ammo))),
 
                 // prevRole
@@ -166,9 +168,7 @@ namespace Exiled.Events.Patches.Events.Player
         private static void UpdatePlayerRole(RoleType newRole, API.Features.Player player)
         {
             if (newRole is RoleType.Scp173)
-            {
                 Scp173.TurnedPlayers.Remove(player);
-            }
 
             player.Role = API.Features.Roles.Role.Create(newRole, player);
         }
@@ -191,13 +191,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
                         if (startCount == inventory.UserInventory.Items.Count)
-                        {
                             inventory.UserInventory.Items.Remove(key);
-                        }
                         else
-                        {
                             list.Add(item);
-                        }
                     }
 
                     InventoryItemProvider.PreviousInventoryPickups[player.ReferenceHub] = list;
@@ -212,9 +208,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
                         if (startCount == inventory.UserInventory.Items.Count)
-                        {
                             inventory.UserInventory.Items.Remove(key);
-                        }
                     }
 
                     inventory.UserInventory.ReserveAmmo.Clear();

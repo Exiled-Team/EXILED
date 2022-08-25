@@ -7,11 +7,10 @@
 
 namespace Exiled.Events.Patches.Events.Scp079
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -22,9 +21,11 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.Lvl"/>.
-    /// Adds the <see cref="Scp079.GainingLevel"/> event.
+    ///     Patches <see cref="Scp079PlayerScript.Lvl" />.
+    ///     Adds the <see cref="Scp079.GainingLevel" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.Lvl), MethodType.Setter)]
     internal static class GainingLevel
@@ -49,13 +50,13 @@ namespace Exiled.Events.Patches.Events.Scp079
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, PropertyGetter(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.gameObject))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingLevelEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Scp079), nameof(Handlers.Scp079.OnGainingLevel))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnGainingLevel))),
                 new(OpCodes.Call, PropertyGetter(typeof(GainingLevelEventArgs), nameof(GainingLevelEventArgs.NewLevel))),
                 new(OpCodes.Starg_S, 1),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(GainingLevelEventArgs), nameof(GainingLevelEventArgs.IsAllowed))),

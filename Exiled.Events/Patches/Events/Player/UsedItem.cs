@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,12 +23,11 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
 #pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable SA1118 // Parameter should not span multiple lines
 #pragma warning disable SA1402 // File may only contain a single type
 
     /// <summary>
-    /// Patches <see cref="Consumable.ServerOnUsingCompleted"/>
-    /// Adds the <see cref="Handlers.Player.UsedItem"/> event.
+    ///     Patches <see cref="Consumable.ServerOnUsingCompleted" />
+    ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Consumable), nameof(Consumable.ServerOnUsingCompleted))]
     internal static class UsedItem
@@ -61,8 +60,8 @@ namespace Exiled.Events.Patches.Events.Player
     }
 
     /// <summary>
-    /// Patches <see cref="Scp268.ServerOnUsingCompleted"/>
-    /// Adds the <see cref="Handlers.Player.UsedItem"/> event.
+    ///     Patches <see cref="Scp268.ServerOnUsingCompleted" />
+    ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp268), nameof(Scp268.ServerOnUsingCompleted))]
     internal static class UsedItem268

@@ -7,13 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -24,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived"/>.
-    /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
+    ///     Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived" />.
+    ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerShotReceived))]
     internal static class Shooting
@@ -61,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc_S, cmp.LocalIndex),
 
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.Shooter))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.Player))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.CurrentItem))),
                 new(OpCodes.Stloc_S, firearm.LocalIndex),
 

@@ -8,13 +8,13 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
-#pragma warning disable SA1118
+
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -26,13 +26,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
-#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
-#pragma warning disable SA1005 // Single line comments should begin with single space
-#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
-
     /// <summary>
-    /// Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived"/>.
-    /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
+    ///     Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived" />.
+    ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
     [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerPerformShot))]
     internal static class Shot
@@ -93,8 +89,8 @@ namespace Exiled.Events.Patches.Events.Player
         }
 
         /// <summary>
-        /// Patches <see cref="BuckshotHitreg.ShootPellet"/>.
-        /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
+        ///     Patches <see cref="BuckshotHitreg.ShootPellet" />.
+        ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
         /// </summary>
         [HarmonyPatch(typeof(BuckshotHitreg), nameof(BuckshotHitreg.ShootPellet))]
         internal static class ShotPellets

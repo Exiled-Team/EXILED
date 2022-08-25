@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -20,7 +20,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// patches <see cref="CharacterClassManager.UserCode_CmdToggleNoclip"/> to add the <see cref="Handlers.Player.TogglingNoClip"/> event.
+    ///     patches <see cref="CharacterClassManager.UserCode_CmdToggleNoclip" /> to add the
+    ///     <see cref="Handlers.Player.TogglingNoClip" /> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.UserCode_CmdToggleNoclip))]
     internal static class TogglingNoClip
@@ -35,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingNoClipEventArgs))[0]),
                 new(OpCodes.Dup),

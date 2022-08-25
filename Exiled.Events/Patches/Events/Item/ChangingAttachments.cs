@@ -7,13 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Item
 {
-#pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features.Items;
+    using Exiled.Events.EventArgs.Item;
 
     using HarmonyLib;
 
@@ -26,8 +25,9 @@ namespace Exiled.Events.Patches.Events.Item
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="AttachmentsServerHandler.ServerReceiveChangeRequest(NetworkConnection, AttachmentsChangeRequest)"/>.
-    /// Adds the <see cref="Handlers.Item.ChangingAttachments"/> event.
+    ///     Patches
+    ///     <see cref="AttachmentsServerHandler.ServerReceiveChangeRequest(NetworkConnection, AttachmentsChangeRequest)" />.
+    ///     Adds the <see cref="Handlers.Item.ChangingAttachments" /> event.
     /// </summary>
     [HarmonyPatch(typeof(AttachmentsServerHandler), nameof(AttachmentsServerHandler.ServerReceiveChangeRequest))]
     internal static class ChangingAttachments
@@ -62,12 +62,12 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
 
                 // Item::Get(firearm)
                 new(OpCodes.Ldloc_1),
-                new(OpCodes.Call, Method(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Get))),
-                new(OpCodes.Castclass, typeof(API.Features.Items.Firearm)),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get))),
+                new(OpCodes.Castclass, typeof(Firearm)),
 
                 // AttachmentsChangeRequest::AttachmentsCode
                 new(OpCodes.Ldarg_1),

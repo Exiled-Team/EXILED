@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.OnInteract"/>.
-    /// Adds the <see cref="Interacted"/> event.
+    ///     Patches <see cref="PlayerInteract.OnInteract" />.
+    ///     Adds the <see cref="Interacted" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract))]
     internal static class Interacted
@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // Handlers.Player.OnInteracted(new InteractedEventArgs(API.Features.Player.Get(this.gameObject)));
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, PropertyGetter(typeof(PlayerInteract), nameof(PlayerInteract.gameObject))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractedEventArgs))[0]),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteracted))),
             });

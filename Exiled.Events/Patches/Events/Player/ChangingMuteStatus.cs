@@ -7,13 +7,13 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Assets._Scripts.Dissonance;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="DissonanceUserSetup.AdministrativelyMuted"/>.
-    /// Adds the <see cref="ChangingMuteStatus"/> event.
+    ///     Patch the <see cref="DissonanceUserSetup.AdministrativelyMuted" />.
+    ///     Adds the <see cref="ChangingMuteStatus" /> event.
     /// </summary>
     [HarmonyPatch(typeof(DissonanceUserSetup), nameof(DissonanceUserSetup.AdministrativelyMuted), MethodType.Setter)]
     internal static class ChangingMuteStatus
@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
             Label retLabel = generator.DefineLabel();
             Label jccLabel = generator.DefineLabel();
@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DissonanceUserSetup), nameof(DissonanceUserSetup.netId))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, player.LocalIndex),
                 new(OpCodes.Ldarg_1),
@@ -57,10 +57,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Brtrue_S, jccLabel),
                 new(OpCodes.Ldloc_S, player.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.UserId))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.UserId))),
                 new(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.IssuePersistentMute))),
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(jccLabel),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.UserId))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.UserId))),
                 new(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.RevokePersistentMute))),
                 new(OpCodes.Br_S, retLabel),
             });

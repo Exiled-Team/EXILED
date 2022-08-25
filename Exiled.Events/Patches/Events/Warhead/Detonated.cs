@@ -7,9 +7,9 @@
 
 namespace Exiled.Events.Patches.Events.Warhead
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -19,8 +19,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="AlphaWarheadController.Detonate"/>.
-    /// Adds the WarheadDetonated event.
+    ///     Patches <see cref="AlphaWarheadController.Detonate" />.
+    ///     Adds the WarheadDetonated event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     internal static class Detonated

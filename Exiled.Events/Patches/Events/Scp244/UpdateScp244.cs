@@ -8,32 +8,26 @@
 namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
-#pragma warning disable SA1118 // Parameter should not span multiple lines
-    using System;
+
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp244;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using InventorySystem;
     using InventorySystem.Items.Usables.Scp244;
-    using InventorySystem.Searching;
-
-    using Mirror;
 
     using NorthwoodLib.Pools;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
+    ///     Patches <see cref="Scp244DeployablePickup" /> to add missing event handler to the
+    ///     <see cref="Scp244DeployablePickup" />.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]
     internal static class UpdateScp244
@@ -52,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnOpeningScp244))),
+                new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnOpeningScp244))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
             });

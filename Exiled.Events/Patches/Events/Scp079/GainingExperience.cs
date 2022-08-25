@@ -7,14 +7,14 @@
 
 namespace Exiled.Events.Patches.Events.Scp079
 {
-#pragma warning disable SA1118
 #pragma warning disable SA1123
+
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp079;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -26,9 +26,11 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.UserCode_RpcGainExp(ExpGainType, RoleType)"/>.
-    /// Adds the <see cref="Handlers.Scp079.GainingExperience"/> event.
+    ///     Patches <see cref="Scp079PlayerScript.UserCode_RpcGainExp(ExpGainType, RoleType)" />.
+    ///     Adds the <see cref="Handlers.Scp079.GainingExperience" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_RpcGainExp))]
     internal static class GainingExperience
@@ -117,10 +119,10 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Search for the last "call NetworkServer.active".
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
+                                                                 (MethodInfo)instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
 
             // goto continueLabel
-            newInstructions.Insert(index, new(OpCodes.Br_S, continueLabel));
+            newInstructions.Insert(index, new CodeInstruction(OpCodes.Br_S, continueLabel));
 
             #endregion
 
@@ -135,7 +137,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // Handlers.Scp079.OnGainingExperience(ev);
                 new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex).WithLabels(continueLabel).MoveLabelsFrom(newInstructions[newInstructions.Count - 1]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnGainingExperience))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnGainingExperience))),
 
                 // if (!ev.IsAllowed)
                 //   return;

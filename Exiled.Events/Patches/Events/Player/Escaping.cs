@@ -7,13 +7,13 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -51,11 +51,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc, role.LocalIndex),
             });
 
-            foreach (CodeInstruction ins in newInstructions.FindAll(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))))
+            for (int i = 0; i < newInstructions.Count; i++)
             {
-                int index = newInstructions.IndexOf(ins) - 5;
-                newInstructions.RemoveAt(index);
-                newInstructions.Insert(index, new(OpCodes.Ldloc, role.LocalIndex));
+                if (newInstructions[i].opcode == OpCodes.Call && (MethodInfo)newInstructions[i].operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass)))
+                {
+                    int index = i - 5;
+                    newInstructions[index] = new(OpCodes.Ldloc_S, role.LocalIndex);
+                }
             }
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

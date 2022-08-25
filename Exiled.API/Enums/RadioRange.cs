@@ -10,6 +10,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// All possible <see cref="Radio"/> ranges.
     /// </summary>
+    /// <seealso cref="Features.Items.Radio.Range"/>
     public enum RadioRange
     {
         /// <summary>

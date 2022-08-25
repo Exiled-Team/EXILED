@@ -7,16 +7,14 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
-
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using CustomPlayerEffects;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -48,9 +46,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(PlayerEffect), nameof(PlayerEffect.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, player.LocalIndex),
-                new(OpCodes.Brfalse, continueLabel),
-                new(OpCodes.Ldloc, player.LocalIndex),
+                new(OpCodes.Stloc_S, player.LocalIndex),
+                new(OpCodes.Brfalse_S, continueLabel),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
 
                 // this
                 new(OpCodes.Ldarg_0),
@@ -66,19 +64,19 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReceivingEffectEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnReceivingEffect))),
 
                 // if (!ev.IsAllowed)
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingEffectEventArgs), nameof(ReceivingEffectEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Dup),
 
                 // value = ev.State
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingEffectEventArgs), nameof(ReceivingEffectEventArgs.State))),
-                new(OpCodes.Starg, 1),
+                new(OpCodes.Starg_S, 1),
 
                 // this.Duration = ev.Duration
                 new(OpCodes.Ldarg_0),
@@ -94,7 +92,5 @@ namespace Exiled.Events.Patches.Events.Player
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static void LogThing(byte old, byte @new) => Log.Warn($"Old: {old} New: {@new}");
     }
 }

@@ -7,12 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Scp096
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
 
@@ -20,11 +19,13 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using static HarmonyLib.AccessTools;
 
+    using Scp096 = PlayableScps.Scp096;
+
     /// <summary>
-    /// Patches the <see cref="PlayableScps.Scp096.PryGate"/> method.
-    /// Adds the <see cref="Handlers.Scp096.StartPryingGate"/> event.
+    ///     Patches the <see cref="PlayableScps.Scp096.PryGate" /> method.
+    ///     Adds the <see cref="Handlers.Scp096.StartPryingGate" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.PryGate))]
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.PryGate))]
     internal static class StartPryingGate
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -43,8 +44,8 @@ namespace Exiled.Events.Patches.Events.Scp096
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.Hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096.Hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartPryingGateEventArgs))[0]),

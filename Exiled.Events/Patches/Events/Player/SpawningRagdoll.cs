@@ -7,13 +7,15 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using Mirror;
 
     using NorthwoodLib.Pools;
 
@@ -23,9 +25,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    using Map = Exiled.API.Features.Map;
+
     /// <summary>
-    /// Patches <see cref="Ragdoll.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)"/>.
-    /// Adds the <see cref="Handlers.Player.SpawningRagdoll"/> event.
+    ///     Patches <see cref="Ragdoll.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.
+    ///     Adds the <see cref="Handlers.Player.SpawningRagdoll" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Ragdoll), nameof(Ragdoll.ServerSpawnRagdoll))]
     internal static class SpawningRagdoll
@@ -63,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, mem_0x01.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawningRagdoll))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawningRagdoll))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
@@ -89,8 +93,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldloc_1, mem_0x01.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Ragdoll), nameof(Ragdoll.gameObject))),
                 new(OpCodes.Ldnull),
-                new(OpCodes.Call, Method(typeof(Mirror.NetworkServer), nameof(Mirror.NetworkServer.Spawn), new[] { typeof(GameObject), typeof(Mirror.NetworkConnection) })),
-                new(OpCodes.Ldsfld, Field(typeof(API.Features.Map), nameof(API.Features.Map.RagdollsValue))),
+                new(OpCodes.Call, Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })),
+                new(OpCodes.Ldsfld, Field(typeof(Map), nameof(Map.RagdollsValue))),
                 new(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
                 new(OpCodes.Callvirt, Method(typeof(List<API.Features.Ragdoll>), nameof(List<API.Features.Ragdoll>.Add))),
             });

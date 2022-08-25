@@ -4,26 +4,18 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-#pragma warning disable
-using Scp914KnobSetting = Scp914.Scp914KnobSetting;
-using Scp914Upgrader = Scp914.Scp914Upgrader;
-#pragma warning restore
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp914;
 
-    using global::Scp914.Processors;
+    using global::Scp914;
 
     using HarmonyLib;
-
-    using InventorySystem.Items;
 
     using NorthwoodLib.Pools;
 
@@ -31,8 +23,11 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using static HarmonyLib.AccessTools;
 
+    using Scp914 = Exiled.Events.Handlers.Scp914;
+
     /// <summary>
-    /// Patches <see cref="Scp914Upgrader.ProcessPlayer"/> to add the <see cref="Handlers.Scp914.UpgradingPlayer"/> event.
+    ///     Patches <see cref="Scp914Upgrader.ProcessPlayer" /> to add the <see cref="Handlers.Scp914.UpgradingPlayer" />
+    ///     event.
     /// </summary>
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
     internal static class UpgradingPlayer
@@ -41,12 +36,13 @@ namespace Exiled.Events.Patches.Events.Scp914
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             int index = 0;
+
             Label returnLabel = generator.DefineLabel();
+
             LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
-            for (int i = 0; i < 12; i++)
-                newInstructions.RemoveAt(index);
+            newInstructions.RemoveRange(index, 12);
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -61,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Ldarg_2),
 
                 // setting
-                new(OpCodes.Ldarg, 4),
+                new(OpCodes.Ldarg_S, 4),
 
                 // moveVector
                 new(OpCodes.Ldarg_3),
@@ -70,83 +66,86 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPlayerEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Scp914.OnUpgradingPlayer(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp914), nameof(Handlers.Scp914.OnUpgradingPlayer))),
+                new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingPlayer))),
 
                 // if (!ev.IsAllowed)
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
 
                 // upgradeInventory = ev.UpgradeItems
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.UpgradeItems))),
-                new(OpCodes.Starg, 1),
+                new(OpCodes.Starg_S, 1),
 
                 // heldOnly = ev.HeldOnly
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.HeldOnly))),
-                new(OpCodes.Starg, 2),
+                new(OpCodes.Starg_S, 2),
 
                 // setting = ev.KnobSetting
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.KnobSetting))),
-                new(OpCodes.Starg, 4),
+                new(OpCodes.Starg_S, 4),
 
                 // curSetting = setting;
                 new(OpCodes.Ldarg, 4),
-                new(OpCodes.Stloc, curSetting.LocalIndex),
+                new(OpCodes.Stloc_S, curSetting.LocalIndex),
 
-                // ply.playerMovementSync.OverridePosition(ev.OutputPosition);
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                // ev.Player.Teleport(ev.OutputPosition);
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.Player))),
-                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.OutputPosition))),
                 new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
             });
 
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld);
+
             Label continueLabel = generator.DefineLabel();
+
             newInstructions[index + 13].labels.Add(continueLabel);
+
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // setting = curSetting
-                new(OpCodes.Ldloc, curSetting.LocalIndex),
-                new(OpCodes.Starg, 4),
+                new(OpCodes.Ldloc_S, curSetting.LocalIndex),
+                new(OpCodes.Starg_S, 4),
 
                 // Player.Get(ply)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // ItemBase item = GetItem
-                new(OpCodes.Ldloc, 7),
+                new(OpCodes.Ldloc_S, 7),
 
                 // setting
-                new(OpCodes.Ldarg, 4),
+                new(OpCodes.Ldarg_S, 4),
                 new(OpCodes.Ldc_I4_1),
 
                 // var ev = new UpgradingInventoryItemEventArgs(player, item, setting)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingInventoryItemEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev2.LocalIndex),
+                new(OpCodes.Stloc_S, ev2.LocalIndex),
 
                 // Handlers.Scp914.OnUpgradingInventoryItem(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp914), nameof(Handlers.Scp914.OnUpgradingInventoryItem))),
+                new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingInventoryItem))),
 
                 // if (!ev.IsAllowed)
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingInventoryItemEventArgs), nameof(UpgradingInventoryItemEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, continueLabel),
-                new(OpCodes.Ldloc, ev2.LocalIndex),
+                new(OpCodes.Brfalse_S, continueLabel),
+                new(OpCodes.Ldloc_S, ev2.LocalIndex),
 
                 // setting = ev.KnobSetting
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingInventoryItemEventArgs), nameof(UpgradingInventoryItemEventArgs.KnobSetting))),
-                new(OpCodes.Starg, 4),
+                new(OpCodes.Starg_S, 4),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
@@ -155,12 +154,6 @@ namespace Exiled.Events.Patches.Events.Scp914
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-
-        private static ItemBase GetItem(KeyValuePair<uint, ItemBase> kvp)
-        {
-            Log.Error($"{kvp.Key} - {kvp.Value.ItemTypeId} - {kvp.Value.ItemSerial}");
-            return kvp.Value;
         }
     }
 }

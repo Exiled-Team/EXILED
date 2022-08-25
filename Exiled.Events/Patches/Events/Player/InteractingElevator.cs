@@ -7,20 +7,23 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
+    using Lift = Lift;
+
     /// <summary>
-    /// Patches <see cref="PlayerInteract.UserCode_CmdUseElevator(UnityEngine.GameObject)"/>.
-    /// Adds the <see cref="Handlers.Player.InteractingElevator"/> event.
+    ///     Patches <see cref="PlayerInteract.UserCode_CmdUseElevator(UnityEngine.GameObject)" />.
+    ///     Adds the <see cref="Handlers.Player.InteractingElevator" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUseElevator))]
     internal class InteractingElevator
@@ -30,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = -2;
-            int index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(global::Lift), nameof(global::Lift.UseLift)))) + offset;
+            int index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(Lift), nameof(Lift.UseLift)))) + offset;
 
             Label continueLabel = newInstructions[index + 6].labels[0];
 
@@ -42,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_3),
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Ldc_I4_1),

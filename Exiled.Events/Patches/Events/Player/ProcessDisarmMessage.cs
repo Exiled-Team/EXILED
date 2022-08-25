@@ -7,12 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage"/>.
-    /// Adds the <see cref="Handlers.Player.Handcuffing"/> and <see cref="Handlers.Player.RemovingHandcuffs"/> events.
+    ///     Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage" />.
+    ///     Adds the <see cref="Handlers.Player.Handcuffing" /> and <see cref="Handlers.Player.RemovingHandcuffs" /> events.
     /// </summary>
     [HarmonyPatch(typeof(DisarmingHandlers), nameof(DisarmingHandlers.ServerProcessDisarmMessage))]
     internal static class ProcessDisarmMessage

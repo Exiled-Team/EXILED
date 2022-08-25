@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -20,15 +18,13 @@ namespace Exiled.Events.Patches.Events.Map
 
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="StandardHitregBase.PlaceBulletholeDecal"/>.
-    /// Adds the <see cref="Map.PlacingBulletHole"/> event.
+    ///     Patches <see cref="StandardHitregBase.PlaceBulletholeDecal" />.
+    ///     Adds the <see cref="Map.PlacingBulletHole" /> event.
     /// </summary>
     [HarmonyPatch(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal))]
     internal static class PlacingBulletHole
@@ -39,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Map
             const int offset = 0;
             int index = 0 + offset;
             Label returnLabel = generator.DefineLabel();
-            LocalBuilder ev = generator.DeclareLocal(typeof(EventArgs.PlacingBulletHole));
+            LocalBuilder ev = generator.DeclareLocal(typeof(EventArgs.Map.PlacingBulletHole));
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
@@ -47,12 +43,12 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_2),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EventArgs.PlacingBulletHole))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EventArgs.Map.PlacingBulletHole))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
                 new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnPlacingBulletHole))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.PlacingBulletHole), nameof(EventArgs.PlacingBulletHole.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.Map.PlacingBulletHole), nameof(EventArgs.Map.PlacingBulletHole.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
             });
 
@@ -63,7 +59,5 @@ namespace Exiled.Events.Patches.Events.Map
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static Transform GetTransform(RaycastHit hit) => hit.collider.transform;
     }
 }

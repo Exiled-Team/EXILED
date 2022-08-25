@@ -7,13 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -24,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.UserCode_CmdMovePlayer(GameObject, int)"/>.
-    /// Adds the <see cref="Handlers.Player.EnteringPocketDimension"/> event.
+    ///     Patches <see cref="Scp106PlayerScript.UserCode_CmdMovePlayer(GameObject, int)" />.
+    ///     Adds the <see cref="Handlers.Player.EnteringPocketDimension" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdMovePlayer))]
     internal static class EnteringPocketDimension
@@ -38,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 3;
 
             // Search for the last "newobj".
-            int index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)"gray") + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.operand is "gray") + offset;
 
             // Declare a local variable of the type "EnteringPocketDimensionEventArgs"
             LocalBuilder ev = generator.DeclareLocal(typeof(EnteringPocketDimensionEventArgs));

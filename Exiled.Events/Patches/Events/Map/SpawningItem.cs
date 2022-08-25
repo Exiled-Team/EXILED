@@ -7,23 +7,25 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using MapGeneration.Distributors;
 
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="MapGeneration.Distributors.ItemDistributor.SpawnPickup"/>.
-    /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawningItem"/> events.
+    ///     Patches <see cref="MapGeneration.Distributors.ItemDistributor.SpawnPickup" />.
+    ///     Adds the <see cref="Handlers.Map.SpawningItem" /> and <see cref="Handlers.Map.SpawningItem" /> events.
     /// </summary>
-    [HarmonyPatch(typeof(MapGeneration.Distributors.ItemDistributor), nameof(MapGeneration.Distributors.ItemDistributor.SpawnPickup))]
+    [HarmonyPatch(typeof(ItemDistributor), nameof(ItemDistributor.SpawnPickup))]
     internal static class SpawningItem
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -46,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningItemEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnSpawningItem))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnSpawningItem))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });
