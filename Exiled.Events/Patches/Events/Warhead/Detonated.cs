@@ -19,8 +19,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="AlphaWarheadController.Detonate"/>.
-    /// Adds the WarheadDetonated event.
+    ///     Patches <see cref="AlphaWarheadController.Detonate" />.
+    ///     Adds the WarheadDetonated event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     internal static class Detonated

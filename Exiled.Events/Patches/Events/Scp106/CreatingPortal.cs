@@ -8,11 +8,10 @@
 namespace Exiled.Events.Patches.Events.Scp106
 {
     using System.Collections.Generic;
-
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp106;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -22,9 +21,11 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.UserCode_CmdMakePortal"/>.
-    /// Adds the <see cref="Handlers.Scp106.CreatingPortal"/> event.
+    ///     Patches <see cref="Scp106PlayerScript.UserCode_CmdMakePortal" />.
+    ///     Adds the <see cref="Handlers.Scp106.CreatingPortal" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdMakePortal))]
     internal static class CreatingPortal
@@ -69,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp106), nameof(Handlers.Scp106.OnCreatingPortal))),
+                new(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnCreatingPortal))),
                 new(OpCodes.Call, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldarg_0),
