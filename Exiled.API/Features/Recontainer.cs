@@ -27,12 +27,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances used for the containment zone.
         /// </summary>
-        public static IEnumerable<Door> ContainmentGates => Door.Get(door => Base._containmentGates.Contains(door.Base));
+        public static IEnumerable<Door> ContainmentGates
+        {
+            get => Door.Get(door => Base._containmentGates.Contains(door.Base));
+        }
 
         /// <summary>
         /// Gets a value indicating whether the C.A.S.S.I.E is currently busy.
         /// </summary>
-        public static bool IsCassieBusy => Base.CassieBusy;
+        public static bool IsCassieBusy
+        {
+            get => Base.CassieBusy;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the containment zone is open.
@@ -73,7 +79,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the activator button's <see cref="GameObject"/>.
         /// </summary>
-        public static GameObject ActivatorButton => Base._activatorButton.gameObject;
+        public static GameObject ActivatorButton
+        {
+            get => Base._activatorButton.gameObject;
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="ActivatorButton"/>'s position.
@@ -87,12 +96,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the activator's window.
         /// </summary>
-        public static Window ActivatorWindow => Window.Get(Base._activatorGlass);
+        public static Window ActivatorWindow
+        {
+            get => Window.Get(Base._activatorGlass);
+        }
 
         /// <summary>
         /// Gets the activator's position.
         /// </summary>
-        public static Vector3 ActivatorPosition => Base._activatorPos;
+        public static Vector3 ActivatorPosition
+        {
+            get => Base._activatorPos;
+        }
 
         /// <summary>
         /// Gets or sets the activator's lerp speed.
@@ -169,7 +184,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances locked during the overcharge procedure.
         /// </summary>
-        public static IEnumerable<Door> LockedDoors => Door.Get(door => Base._lockedDoors.Contains(door.Base));
+        public static IEnumerable<Door> LockedDoors
+        {
+            get => Door.Get(door => Base._lockedDoors.Contains(door.Base));
+        }
 
         /// <summary>
         /// Tries to kill SCP-079.

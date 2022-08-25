@@ -16,7 +16,10 @@ namespace Exiled.API.Features.Roles
         /// Initializes a new instance of the <see cref="NoneRole"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal NoneRole(Player player) => Owner = player;
+        internal NoneRole(Player player)
+        {
+            Owner = player;
+        }
 
         /// <inheritdoc/>
         public override Player Owner { get; }

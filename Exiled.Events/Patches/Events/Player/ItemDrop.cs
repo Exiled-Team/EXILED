@@ -39,49 +39,51 @@ namespace Exiled.Events.Patches.Events.Player
             Label returnLabel = generator.DefineLabel();
             Label notNullLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new[]
-            {
-                // if (!player.TryGetItem(itemSerial, out Item item)) {
-                //    Handlers.Player.OnDroppingNull(new DroppingNullEventArgs(Player));
-                //    return;
-                // }
-                //
-                // var ev = new DroppingItemEventArgs(player, item, isThrow, true);
-                // Handlers.Player.OnDroppingItem(ev);
-                // if (!ev.IsAllowed)
-                //     return;
-                // isThrow = ev.IsThrown;
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldloca_S, item.LocalIndex),
-                new(OpCodes.Callvirt, Method(typeof(API.Features.Player), nameof(API.Features.Player.TryGetItem), new[] { typeof(ushort), typeof(Item).MakeByRefType() })),
-                new(OpCodes.Brtrue_S, notNullLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingNothingEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNothing))),
-                new(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(notNullLabel),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_S, item.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Base))),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingItemEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingItem))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingItemEventArgs), nameof(DroppingItemEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingItemEventArgs), nameof(DroppingItemEventArgs.IsThrown))),
-                new(OpCodes.Starg_S, 2),
-            });
+            newInstructions.InsertRange(
+                0,
+                new[]
+                {
+                    // if (!player.TryGetItem(itemSerial, out Item item)) {
+                    //    Handlers.Player.OnDroppingNull(new DroppingNullEventArgs(Player));
+                    //    return;
+                    // }
+                    //
+                    // var ev = new DroppingItemEventArgs(player, item, isThrow, true);
+                    // Handlers.Player.OnDroppingItem(ev);
+                    // if (!ev.IsAllowed)
+                    //     return;
+                    // isThrow = ev.IsThrown;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldloca_S, item.LocalIndex),
+                    new(OpCodes.Callvirt, Method(typeof(API.Features.Player), nameof(API.Features.Player.TryGetItem), new[] { typeof(ushort), typeof(Item).MakeByRefType() })),
+                    new(OpCodes.Brtrue_S, notNullLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingNothingEventArgs))[0]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNothing))),
+                    new(OpCodes.Ret),
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(notNullLabel),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldloc_S, item.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Base))),
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingItemEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingItem))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingItemEventArgs), nameof(DroppingItemEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingItemEventArgs), nameof(DroppingItemEventArgs.IsThrown))),
+                    new(OpCodes.Starg_S, 2),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

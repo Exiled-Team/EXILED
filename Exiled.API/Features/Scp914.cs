@@ -45,37 +45,58 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets SCP-914's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public static GameObject GameObject => Scp914Controller.gameObject;
+        public static GameObject GameObject
+        {
+            get => Scp914Controller.gameObject;
+        }
 
         /// <summary>
         /// Gets SCP-914's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform Transform => Scp914Controller.transform;
+        public static Transform Transform
+        {
+            get => Scp914Controller.transform;
+        }
 
         /// <summary>
         /// Gets the position of SCP-914's intake chamber.
         /// </summary>
-        public static Vector3 IntakePosition => Scp914Controller._intakeChamber.localPosition;
+        public static Vector3 IntakePosition
+        {
+            get => Scp914Controller._intakeChamber.localPosition;
+        }
 
         /// <summary>
         /// Gets the position of SCP-914's output chamber.
         /// </summary>
-        public static Vector3 OutputPosition => Scp914Controller._outputChamber.localPosition;
+        public static Vector3 OutputPosition
+        {
+            get => Scp914Controller._outputChamber.localPosition;
+        }
 
         /// <summary>
         /// Gets a value indicating whether SCP-914 is active and currently processing items.
         /// </summary>
-        public static bool IsWorking => Scp914Controller._isUpgrading;
+        public static bool IsWorking
+        {
+            get => Scp914Controller._isUpgrading;
+        }
 
         /// <summary>
         /// Gets the intake booth <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform IntakeBooth => Scp914Controller._intakeChamber;
+        public static Transform IntakeBooth
+        {
+            get => Scp914Controller._intakeChamber;
+        }
 
         /// <summary>
         ///  Gets the output booth <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform OutputBooth => Scp914Controller._outputChamber;
+        public static Transform OutputBooth
+        {
+            get => Scp914Controller._outputChamber;
+        }
 
         /// <summary>
         /// Plays the SCP-914's sound.

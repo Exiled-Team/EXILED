@@ -32,6 +32,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets the <see cref="API.Enums.AmmoType" /> of the item.
         /// </summary>
-        public AmmoType AmmoType => Pickup.Type.GetAmmoType();
+        public AmmoType AmmoType
+        {
+            get => Pickup.Type.GetAmmoType();
+        }
     }
 }

@@ -35,7 +35,7 @@ namespace Exiled.API.Features.Core
         {
             CanEverTick = true;
             executeAllHandle = Timing.RunCoroutine(ExecuteAll());
-            boundHandles = new();
+            boundHandles = new HashSet<CoroutineHandle>();
         }
 
         /// <summary>
@@ -77,7 +77,10 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets all the currently bound handles.
         /// </summary>
-        public IReadOnlyCollection<CoroutineHandle> BoundHandles => boundHandles;
+        public IReadOnlyCollection<CoroutineHandle> BoundHandles
+        {
+            get => boundHandles;
+        }
 
         /// <summary>
         /// Binds a <see cref="CoroutineHandle"/>.
@@ -132,7 +135,7 @@ namespace Exiled.API.Features.Core
                     {
                         action();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Log.Error(ex);
                     }

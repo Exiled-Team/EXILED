@@ -21,7 +21,10 @@ namespace Exiled.Events.Commands.Reload
         /// <summary>
         /// Initializes a new instance of the <see cref="Reload"/> class.
         /// </summary>
-        public Reload() => LoadGeneratedCommands();
+        public Reload()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "reload";

@@ -16,7 +16,10 @@ namespace Exiled.CustomItems.Commands.List
     /// </summary>
     internal sealed class List : ParentCommand
     {
-        private List() => LoadGeneratedCommands();
+        private List()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <summary>
         /// Gets the <see cref="Info"/> instance.

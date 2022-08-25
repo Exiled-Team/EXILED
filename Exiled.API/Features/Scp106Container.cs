@@ -39,22 +39,34 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the Scp106Container's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public static GameObject GameObject => Base.gameObject;
+        public static GameObject GameObject
+        {
+            get => Base.gameObject;
+        }
 
         /// <summary>
         /// Gets the Scp106Container's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform Transform => Base.transform;
+        public static Transform Transform
+        {
+            get => Base.transform;
+        }
 
         /// <summary>
         /// Gets the LureSubjectContainer position.
         /// </summary>
-        public static Vector3 Position => Base.transform.position;
+        public static Vector3 Position
+        {
+            get => Base.transform.position;
+        }
 
         /// <summary>
         /// Gets the LureSubjectContainer rotation.
         /// </summary>
-        public static Quaternion Rotation => Quaternion.Euler(Base._rotation);
+        public static Quaternion Rotation
+        {
+            get => Quaternion.Euler(Base._rotation);
+        }
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.BoxCollider"/> of the LureSubjectContainer.

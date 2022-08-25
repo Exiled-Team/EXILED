@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Server
             {
                 yield return Timing.WaitForSeconds(2.5f);
 
-                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || Time.unscaledTime - time < 15f || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
+                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || Time.unscaledTime - time < 15f || (roundSummary._keepRoundOnOne && (PlayerManager.players.Count < 2)))
                     yield return Timing.WaitForOneFrame;
 
                 RoundSummary.SumInfo_ClassList newList = default;
@@ -96,7 +96,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                 RoundSummary.SurvivingSCPs = newList.scps_except_zombies;
 
-                if (newList.class_ds <= 0 && num1 <= 0)
+                if ((newList.class_ds <= 0) && (num1 <= 0))
                 {
                     roundSummary.RoundEnded = true;
                 }
@@ -160,7 +160,7 @@ namespace Exiled.Events.Patches.Events.Server
                 if (instruction.opcode == OpCodes.Call)
                 {
                     if (instruction.operand is MethodBase methodBase
-                        && methodBase.Name != nameof(RoundSummary._ProcessServerSideCode))
+                        && (methodBase.Name != nameof(RoundSummary._ProcessServerSideCode)))
                     {
                         yield return instruction;
                     }
@@ -168,16 +168,20 @@ namespace Exiled.Events.Patches.Events.Server
                     {
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
                         yield return new CodeInstruction(OpCodes.Ldarg_0);
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), m =>
-                        {
-                            Type[] generics = m.GetGenericArguments();
-                            ParameterInfo[] paramseters = m.GetParameters();
-                            return m.Name == "CancelWith"
-                                   && generics.Length == 1
-                                   && paramseters.Length == 2
-                                   && paramseters[0].ParameterType == typeof(IEnumerator<float>)
-                                   && paramseters[1].ParameterType == generics[0];
-                        }).MakeGenericMethod(typeof(RoundSummary)));
+                        yield return new CodeInstruction(
+                            OpCodes.Call,
+                            AccessTools.FirstMethod(
+                                typeof(MECExtensionMethods2),
+                                m =>
+                                {
+                                    Type[] generics = m.GetGenericArguments();
+                                    ParameterInfo[] paramseters = m.GetParameters();
+                                    return (m.Name == "CancelWith")
+                                           && (generics.Length == 1)
+                                           && (paramseters.Length == 2)
+                                           && (paramseters[0].ParameterType == typeof(IEnumerator<float>))
+                                           && (paramseters[1].ParameterType == generics[0]);
+                                }).MakeGenericMethod(typeof(RoundSummary)));
                     }
                 }
                 else
