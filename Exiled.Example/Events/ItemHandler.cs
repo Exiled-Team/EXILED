@@ -10,7 +10,7 @@ namespace Exiled.Example.Events
     using System.Linq;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Item;
 
     /// <summary>
     /// Handles Map events.

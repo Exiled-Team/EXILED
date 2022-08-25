@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="WorkstationController.ServerInteract"/>.
-    /// Adds the <see cref="Handlers.Player.ActivatingWorkstation"/> event.
+    ///     Patch the <see cref="WorkstationController.ServerInteract" />.
+    ///     Adds the <see cref="Handlers.Player.ActivatingWorkstation" /> event.
     /// </summary>
     [HarmonyPatch(typeof(WorkstationController), nameof(WorkstationController.ServerInteract))]
     internal static class ActivatingWorkstation
