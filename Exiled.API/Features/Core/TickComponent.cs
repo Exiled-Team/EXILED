@@ -132,7 +132,7 @@ namespace Exiled.API.Features.Core
                     {
                         action();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Log.Error(ex);
                     }

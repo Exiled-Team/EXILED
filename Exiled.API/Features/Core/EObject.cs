@@ -12,8 +12,6 @@ namespace Exiled.API.Features.Core
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.API.Features.Core;
-
     using NorthwoodLib.Pools;
 
     using UnityEngine;

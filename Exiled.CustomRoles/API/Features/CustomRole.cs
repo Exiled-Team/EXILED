@@ -19,7 +19,6 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
 
@@ -351,7 +350,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="overwrite"> <see cref="bool"/> whether to force sync (Overwriting previous information). </param>
         public static void SyncPlayerFriendlyFire(CustomRole roleToSync, Player player, bool overwrite = false)
         {
-            if(overwrite)
+            if (overwrite)
             {
                 player.TryAddCustomRoleFriendlyFire(roleToSync.Name, roleToSync.CustomRoleFFMultiplier, overwrite);
                 player.UniqueRole = roleToSync.Name;

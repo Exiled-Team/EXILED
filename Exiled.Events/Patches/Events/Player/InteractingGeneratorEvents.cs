@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Diagnostics;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 

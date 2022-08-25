@@ -13,7 +13,6 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
 
     using MEC;
@@ -73,7 +72,7 @@ namespace Exiled.CustomItems.API.Features
 
             Timing.CallDelayed(0.05f, () => OnAcquired(player));
 
-            if(displayMessage)
+            if (displayMessage)
                 ShowPickedUpMessage(player);
         }
 

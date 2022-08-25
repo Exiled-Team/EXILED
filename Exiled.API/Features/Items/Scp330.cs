@@ -11,8 +11,6 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Usables.Scp330;
 
-    using MEC;
-
     using Mirror;
 
     using UnityEngine;
@@ -102,7 +100,7 @@ namespace Exiled.API.Features.Items
         public CandyAddStatus AddCandy(IEnumerable<CandyKindID> candies)
         {
             bool addedCandy = false;
-            foreach(CandyKindID candy in candies)
+            foreach (CandyKindID candy in candies)
             {
                 if (!Base.TryAddSpecific(candy))
                 {
