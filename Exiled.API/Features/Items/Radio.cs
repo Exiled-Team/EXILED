@@ -100,12 +100,14 @@ namespace Exiled.API.Features.Items
         {
             Radio radio = new();
 
-            Timing.CallDelayed(1f, () =>
-            {
-                radio.BatteryLevel = BatteryLevel;
-                radio.Range = Range;
-                radio.RangeSettings = RangeSettings;
-            });
+            Timing.CallDelayed(
+                1f,
+                () =>
+                {
+                    radio.BatteryLevel = BatteryLevel;
+                    radio.Range = Range;
+                    radio.RangeSettings = RangeSettings;
+                });
             return radio;
         }
     }

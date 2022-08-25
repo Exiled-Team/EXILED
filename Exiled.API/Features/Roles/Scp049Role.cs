@@ -22,7 +22,10 @@ namespace Exiled.API.Features.Roles
         /// Initializes a new instance of the <see cref="Scp049Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp049Role(Player player) => Owner = player;
+        internal Scp049Role(Player player)
+        {
+            Owner = player;
+        }
 
         /// <inheritdoc/>
         public override Player Owner { get; }
@@ -30,12 +33,18 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp049"/> player script for this role.
         /// </summary>
-        public Scp049 Script => script ??= Owner.CurrentScp as Scp049;
+        public Scp049 Script
+        {
+            get => script ??= Owner.CurrentScp as Scp049;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-049 is currently recalling a player.
         /// </summary>
-        public bool IsRecalling => Script._recallInProgressServer;
+        public bool IsRecalling
+        {
+            get => Script._recallInProgressServer;
+        }
 
         /// <summary>
         /// Gets the player that is currently being revived by SCP-049. Will be <see langword="null"/> if <see cref="IsRecalling"/> is false.
@@ -52,7 +61,10 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Scp049;
+        internal override RoleType RoleType
+        {
+            get => RoleType.Scp049;
+        }
 
         /// <summary>
         /// Gets a boolean indicating whether or not SCP-049 is close enough to a ragdoll to revive it.
@@ -62,6 +74,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
-        public bool InRecallRange(Ragdoll ragdoll) => Vector3.Distance(Owner.ReferenceHub.transform.position, ragdoll.Position) <= PlayableScps.Scp049.ReviveDistance * 1.3f;
+        public bool InRecallRange(Ragdoll ragdoll) => Vector3.Distance(Owner.ReferenceHub.transform.position, ragdoll.Position) <= Scp049.ReviveDistance * 1.3f;
     }
 }

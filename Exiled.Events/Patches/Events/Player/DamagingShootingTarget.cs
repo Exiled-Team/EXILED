@@ -47,31 +47,33 @@ namespace Exiled.Events.Patches.Events.Player
             //     return;
             // damage = ev.Amount;
             // distance = ev.Distance;
-            newInstructions.InsertRange(index, new[]
-            {
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Ldarg_3),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDamagingShootingTarget))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, allowedLabel),
-                new(OpCodes.Pop),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Dup).WithLabels(allowedLabel),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
-                new(OpCodes.Starg_S, 1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Distance))),
-                new(OpCodes.Stloc_2),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldarg_3),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDamagingShootingTarget))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, allowedLabel),
+                    new(OpCodes.Pop),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ret),
+                    new CodeInstruction(OpCodes.Dup).WithLabels(allowedLabel),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
+                    new(OpCodes.Starg_S, 1),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Distance))),
+                    new(OpCodes.Stloc_2),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
