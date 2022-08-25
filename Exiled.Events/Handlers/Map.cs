@@ -8,7 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.API.Features.Pickups;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Extensions;
 
     using MapGeneration.Distributors;
@@ -88,13 +88,13 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before placing a decal.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.Map.PlacingBulletHole"/> instance.</param>
         public static void OnPlacingBulletHole(PlacingBulletHole ev) => PlacingBulletHole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before placing bloods.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.Map.PlacingBulletHole"/> instance.</param>
         public static void OnPlacingBlood(PlacingBloodEventArgs ev) => PlacingBlood.InvokeSafely(ev);
 
         /// <summary>

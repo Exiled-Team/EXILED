@@ -11,19 +11,21 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Pickups;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using HarmonyLib;
+
+    using MapGeneration.Distributors;
 
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="MapGeneration.Distributors.ItemDistributor.SpawnPickup"/>.
-    /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawningItem"/> events.
+    ///     Patches <see cref="MapGeneration.Distributors.ItemDistributor.SpawnPickup" />.
+    ///     Adds the <see cref="Handlers.Map.SpawningItem" /> and <see cref="Handlers.Map.SpawningItem" /> events.
     /// </summary>
-    [HarmonyPatch(typeof(MapGeneration.Distributors.ItemDistributor), nameof(MapGeneration.Distributors.ItemDistributor.SpawnPickup))]
+    [HarmonyPatch(typeof(ItemDistributor), nameof(ItemDistributor.SpawnPickup))]
     internal static class SpawningItem
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

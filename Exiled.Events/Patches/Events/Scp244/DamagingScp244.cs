@@ -13,7 +13,8 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Reflection.Emit;
 
     using Exiled.API.Features.DamageHandlers;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp244;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -24,7 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp244
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp244DeployablePickup.Damage"/> to add missing logic to the <see cref="Scp244DeployablePickup"/>.
+    ///     Patches <see cref="Scp244DeployablePickup.Damage" /> to add missing logic to the
+    ///     <see cref="Scp244DeployablePickup" />.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.Damage))]
     internal static class DamagingScp244
@@ -51,27 +53,27 @@ namespace Exiled.Events.Patches.Events.Scp244
             // Insert event handler at start of function to determine whether to allow function to run or not.
             newInstructions.InsertRange(index, new[]
             {
-                new (OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
-                new (OpCodes.Ldc_I4_2),
-                new (OpCodes.Beq_S, returnFalse),
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Ldarg_1),
-                new (OpCodes.Ldarg_2),
-                new (OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingScp244EventArgs))[0]),
-                new (OpCodes.Stloc, eventHandler.LocalIndex),
-                new (OpCodes.Ldloc, eventHandler.LocalIndex),
-                new (OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnDamagingScp244))),
-                new (OpCodes.Ldloc, eventHandler.LocalIndex),
-                new (OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
-                new (OpCodes.Brtrue_S, continueProcessing),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.State))),
+                new(OpCodes.Ldc_I4_2),
+                new(OpCodes.Beq_S, returnFalse),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_1),
+                new(OpCodes.Ldarg_2),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingScp244EventArgs))[0]),
+                new(OpCodes.Stloc, eventHandler.LocalIndex),
+                new(OpCodes.Ldloc, eventHandler.LocalIndex),
+                new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnDamagingScp244))),
+                new(OpCodes.Ldloc, eventHandler.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.IsAllowed))),
+                new(OpCodes.Brtrue_S, continueProcessing),
                 new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(returnFalse),
-                new (OpCodes.Ret),
+                new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(continueProcessing),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new (OpCodes.Ldfld, Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._health))),
-                new (OpCodes.Ldloc, eventHandler.LocalIndex),
-                new (OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.Handler))),
-                new (OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Damage))),
+                new(OpCodes.Ldfld, Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._health))),
+                new(OpCodes.Ldloc, eventHandler.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.Handler))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Damage))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

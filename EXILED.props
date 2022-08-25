@@ -20,7 +20,7 @@
     <PublicBeta>false</PublicBeta>
 
     <HarmonyVersion>2.2.1</HarmonyVersion>
-    <YamlDotNetVersion>9.1.4</YamlDotNetVersion>
+    <YamlDotNetVersion>11.2.1</YamlDotNetVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
     <SemanticVersioningVersion>1.3.0</SemanticVersioningVersion>
 

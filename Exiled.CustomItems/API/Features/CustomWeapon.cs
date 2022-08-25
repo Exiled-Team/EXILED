@@ -16,6 +16,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
@@ -145,10 +146,10 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ReloadingWeapon += OnInternalReloading;
-            Events.Handlers.Player.Shooting += OnInternalShooting;
-            Events.Handlers.Player.Shot += OnInternalShot;
-            Events.Handlers.Player.Hurting += OnInternalHurting;
+            Exiled.Events.Handlers.Player.ReloadingWeapon += OnInternalReloading;
+            Exiled.Events.Handlers.Player.Shooting += OnInternalShooting;
+            Exiled.Events.Handlers.Player.Shot += OnInternalShot;
+            Exiled.Events.Handlers.Player.Hurting += OnInternalHurting;
 
             base.SubscribeEvents();
         }
@@ -156,10 +157,10 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ReloadingWeapon -= OnInternalReloading;
-            Events.Handlers.Player.Shooting -= OnInternalShooting;
-            Events.Handlers.Player.Shot -= OnInternalShot;
-            Events.Handlers.Player.Hurting -= OnInternalHurting;
+            Exiled.Events.Handlers.Player.ReloadingWeapon -= OnInternalReloading;
+            Exiled.Events.Handlers.Player.Shooting -= OnInternalShooting;
+            Exiled.Events.Handlers.Player.Shot -= OnInternalShot;
+            Exiled.Events.Handlers.Player.Hurting -= OnInternalHurting;
 
             base.UnsubscribeEvents();
         }
@@ -249,7 +250,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalShooting(ShootingEventArgs ev)
         {
-            if (!Check(ev.Shooter.CurrentItem))
+            if (!Check(ev.Player.CurrentItem))
                 return;
 
             OnShooting(ev);
@@ -257,7 +258,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalShot(ShotEventArgs ev)
         {
-            if (!Check(ev.Shooter.CurrentItem))
+            if (!Check(ev.Player.CurrentItem))
                 return;
 
             OnShot(ev);
@@ -265,7 +266,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker is null)
+            if (ev.Player is null)
             {
                 return;
             }
@@ -276,25 +277,25 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (!Check(ev.Attacker.CurrentItem))
+            if (!Check(ev.Player.CurrentItem))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: !Check()", Instance.Config.Debug);
                 return;
             }
 
-            if (ev.Attacker == ev.Target)
+            if (ev.Player == ev.Target)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: attacker == target", Instance.Config.Debug);
                 return;
             }
 
-            if (ev.Handler is null)
+            if (ev.DamageHandler is null)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler null", Instance.Config.Debug);
                 return;
             }
 
-            if (!ev.Handler.CustomBase.BaseIs(out FirearmDamageHandler firearmDamageHandler))
+            if (!ev.DamageHandler.CustomBase.BaseIs(out FirearmDamageHandler firearmDamageHandler))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler not firearm", Instance.Config.Debug);
                 return;
@@ -306,7 +307,7 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (!FriendlyFire && ev.Attacker.Role.Team == ev.Target.Role.Team)
+            if (!FriendlyFire && ev.Player.Role.Team == ev.Target.Role.Team)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: FF is disabled for this weapon!", Instance.Config.Debug);
                 return;

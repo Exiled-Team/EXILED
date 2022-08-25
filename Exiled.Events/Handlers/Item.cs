@@ -7,29 +7,29 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs;
-
+    using Exiled.Events.EventArgs.Item;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Extensions;
 
-    using static Exiled.Events.Events;
+    using static Events;
 
     /// <summary>
-    /// Item related events.
+    ///     Item related events.
     /// </summary>
     public static class Item
     {
         /// <summary>
-        /// Invoked before the ammo of an firearm is changed.
+        ///     Invoked before the durability of an item is changed.
         /// </summary>
         public static event CustomEventHandler<ChangingAmmoEventArgs> ChangingAmmo;
 
         /// <summary>
-        /// Invoked before item attachments are changed.
+        ///     Invoked before item attachments are changed.
         /// </summary>
         public static event CustomEventHandler<ChangingAttachmentsEventArgs> ChangingAttachments;
 
         /// <summary>
-        /// Invoked before receiving a preference.
+        ///     Invoked before receiving a preference.
         /// </summary>
         public static event CustomEventHandler<ReceivingPreferenceEventArgs> ReceivingPreference;
 
@@ -45,16 +45,22 @@ namespace Exiled.Events.Handlers
         public static void OnChangingAmmo(ChangingAmmoEventArgs ev) => ChangingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before item attachments are changed.
+        ///     Called before item attachments are changed.
         /// </summary>
-        /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> instance.</param>
-        public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs" /> instance.</param>
+        public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
+        {
+            ChangingAttachments.InvokeSafely(ev);
+        }
 
         /// <summary>
-        /// Called before receiving a preference.
+        ///     Called before receiving a preference.
         /// </summary>
-        /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs"/> instance.</param>
-        public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs" /> instance.</param>
+        public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev)
+        {
+            ReceivingPreference.InvokeSafely(ev);
+        }
 
         /// <summary>
         /// Called before keycard interacts with a door.

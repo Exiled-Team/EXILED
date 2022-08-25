@@ -10,27 +10,31 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using InventorySystem;
 
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
+    using Item = Exiled.API.Features.Items.Item;
+
     /// <summary>
-    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem"/>.
-    /// Adds the <see cref="Player.DroppingItem"/> and <see cref="Player.DroppingNull"/> events.
+    ///     Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem" />.
+    ///     Adds the <see cref="Player.DroppingItem" /> and <see cref="Player.DroppingNothing" /> events.
     /// </summary>
-    [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdDropItem))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropItem))]
     internal static class ItemDrop
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            LocalBuilder item = generator.DeclareLocal(typeof(API.Features.Items.Item));
+            LocalBuilder item = generator.DeclareLocal(typeof(Item));
             LocalBuilder ev = generator.DeclareLocal(typeof(DroppingItemEventArgs));
             Label returnLabel = generator.DefineLabel();
             Label notNullLabel = generator.DefineLabel();
@@ -48,23 +52,23 @@ namespace Exiled.Events.Patches.Events.Player
                 //     return;
                 // isThrow = ev.IsThrown;
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
+                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldloca_S, item.LocalIndex),
-                new(OpCodes.Callvirt, Method(typeof(API.Features.Player), nameof(API.Features.Player.TryGetItem), new[] { typeof(ushort), typeof(API.Features.Items.Item).MakeByRefType() })),
+                new(OpCodes.Callvirt, Method(typeof(API.Features.Player), nameof(API.Features.Player.TryGetItem), new[] { typeof(ushort), typeof(Item).MakeByRefType() })),
                 new(OpCodes.Brtrue_S, notNullLabel),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
+                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingNullEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNull))),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingNothingEventArgs))[0]),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNothing))),
                 new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(notNullLabel),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
+                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_S, item.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Base))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Base))),
                 new(OpCodes.Ldarg_2),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingItemEventArgs))[0]),

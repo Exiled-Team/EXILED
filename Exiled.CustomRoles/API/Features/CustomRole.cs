@@ -19,7 +19,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
 
     using MEC;
@@ -748,7 +748,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Check(ev.Target))
             {
                 CustomRoles.Instance.StopRagdollPlayers.Add(ev.Target);
-                _ = new Ragdoll(new RagdollInfo(ev.Target.ReferenceHub, ev.Handler, Role, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), ev.Target.DisplayNickname, NetworkTime.time), true);
+                _ = new Ragdoll(new RagdollInfo(ev.Target.ReferenceHub, ev.DamageHandler, Role, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), ev.Target.DisplayNickname, NetworkTime.time), true);
             }
         }
     }

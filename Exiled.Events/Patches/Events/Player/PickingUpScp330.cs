@@ -10,8 +10,9 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp330;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -20,6 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
+
+    using Player = Exiled.API.Features.Player;
 
     /// <summary>
     /// Patches the <see cref="Scp330Bag.ServerProcessPickup"/> method to add the <see cref="Handlers.Player.PickingUpItem"/> event.

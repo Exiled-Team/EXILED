@@ -212,7 +212,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerRules), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
 
                 // If we have rules, we branch to custom logic, otherwise, default to NW logic.
-                new (OpCodes.Brtrue_S, uniqueFFMulti),
+                new(OpCodes.Brtrue_S, uniqueFFMulti),
             });
 
             int ffMultiplierIndexOffset = 0;
@@ -226,17 +226,17 @@ namespace Exiled.Events.Patches.Generic
             newInstructions.InsertRange(ffMultiplierIndex, new CodeInstruction[]
             {
                 // Do not run our custom logic, skip over.
-                new (OpCodes.Br, normalProcessing),
+                new(OpCodes.Br, normalProcessing),
 
                 // AttackerDamageHandler.Damage = AttackerDamageHandler.Damage * ffMulti
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti),
-                new (OpCodes.Ldloc, ffMulti.LocalIndex),
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
-                new (OpCodes.Mul),
-                new (OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Ldarg_1),
+                new(OpCodes.Ldloc, ffMulti.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
+                new(OpCodes.Mul),
+                new(OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldarg_1),
 
                 // Next line is ProcessDamage, which uses AttackerDamageHandler information.
             });

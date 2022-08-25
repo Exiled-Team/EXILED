@@ -133,7 +133,7 @@ namespace Exiled.Events.Patches.Generic
             }
 #if DEBUG
             Log.Debug(
-                    $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
             foreach (Item item in player.Items)
                     Log.Debug($"{item})");
 #endif

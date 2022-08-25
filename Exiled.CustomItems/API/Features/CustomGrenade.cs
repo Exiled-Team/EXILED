@@ -14,7 +14,8 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.EventArgs.Player;
 
     using Server = Exiled.API.Features.Server;
 
@@ -58,10 +59,10 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingRequest += OnInternalThrowingRequest;
-            Events.Handlers.Player.ThrowedItem += OnInternalThrowingItem;
-            Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
-            Events.Handlers.Map.ChangedIntoGrenade += OnInternalChangedIntoGrenade;
+            Exiled.Events.Handlers.Player.ThrowingRequest += OnInternalThrowingRequest;
+            Exiled.Events.Handlers.Player.ThrowedItem += OnInternalThrowingItem;
+            Exiled.Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
+            Exiled.Events.Handlers.Map.ChangedIntoGrenade += OnInternalChangedIntoGrenade;
 
             base.SubscribeEvents();
         }
@@ -69,10 +70,10 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingRequest -= OnInternalThrowingRequest;
-            Events.Handlers.Player.ThrowedItem -= OnInternalThrowingItem;
-            Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
-            Events.Handlers.Map.ChangedIntoGrenade -= OnInternalChangedIntoGrenade;
+            Exiled.Events.Handlers.Player.ThrowingRequest -= OnInternalThrowingRequest;
+            Exiled.Events.Handlers.Player.ThrowedItem -= OnInternalThrowingItem;
+            Exiled.Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
+            Exiled.Events.Handlers.Map.ChangedIntoGrenade -= OnInternalChangedIntoGrenade;
 
             base.UnsubscribeEvents();
         }

@@ -10,7 +10,8 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Item;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -20,11 +21,11 @@ namespace Exiled.Events.Patches.Events.Item
 
     using static HarmonyLib.AccessTools;
 
-    using Firearm = InventorySystem.Items.Firearms.Firearm;
+    using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Firearm.Status"/>.
-    /// Adds the <see cref="Handlers.Item.ChangingAmmo"/> event.
+    ///     Patches <see cref="Firearm.Status" />.
+    ///     Adds the <see cref="Handlers.Item.ChangingAmmo" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Firearm), nameof(Firearm.Status), MethodType.Setter)]
     internal static class ChangingDurability
@@ -56,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Brtrue_S, cdc),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Owner))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Dup),
                 new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),

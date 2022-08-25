@@ -1,10 +1,10 @@
 # EXILED - EXtended In-runtime Library for External Development
 
-[![Exiled CI](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml/badge.svg)](https://github.com/Exiled-Team/EXILED/actions/workflows/main.yml)
+![EXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
 <a href="https://github.com/Exiled-Team/EXILED/releases">
   <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
 </a>
-![Github All Downloads](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat)
+![Github All Downloads](https://img.shields.io/github/downloads/Exiled-Team/EXILED/total.svg?style=flat)
 ![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
 <a href="https://discord.gg/PyUkWTg">
   <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
@@ -18,8 +18,10 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
  - Secondly, since all of the code related to the framework are done outside of the server assembly, things like small game updates will have little, if any, effect on the framework. Making it most likely to be compatible with future game updates, as well as making it easier to update when it *is* necessary to do so.
 
 # Localized READMEs
-- [Русский](https://github.com/Exiled-Team/EXILED/blob/dev/Localization/README-Русский.md)
+- [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
+- [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
+- [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 
 # Installation
 Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
@@ -28,17 +30,17 @@ As mentioned above, the vast majority of EXILED is not contained within the serv
 If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installed.
 
 # Windows
-### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+### Automatic installation ([more information](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
 **Note**: Make sure you're on the user that runs the server or you have Admin privileges before running the Installer.
 
-  - Download the **`Exiled.Installer-Win.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> click the Installer)
+  - Download the **`Exiled.Installer-Win.exe` [from here](https://github.com/Exiled-Team/EXILED/releases)** (click on Assets -> click the Installer)
   - Place it on your server folder (download the dedicated server if you haven't)
   - Double click the **`Exiled.Installer.exe`** or **[download this .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** and place it in the server folder to install the latest pre-release
   - To install and get plugins, check the [Installing plugins](#installing-plugins) section down below.
 **Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or one with Admin privileges)
 
 ### Manual installation
-  - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)**
+  - Download the **`Exiled.tar.gz` [from here](https://github.com/Exiled-Team/EXILED/releases)**
   - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
   - Move **``Assembly-CSharp.dll``** to: **`(Your Server Folder)\SCPSL_Data\Managed`** and replace the file.
   - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
@@ -54,11 +56,11 @@ That's it, EXILED should now be installed and active the next time you boot up y
   - Move it to: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
 
 # Linux
-### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+### Automatic installation ([more information](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
 
 **Note:** If you are installing EXILED on a remote server, make sure you run the Installer as the same user that runs your SCP:SL servers (or root)
 
-  - Download the **`Exiled.Installer-Linux` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> download the Installer)
+  - Download the **`Exiled.Installer-Linux` [from here](https://github.com/Exiled-Team/EXILED/releases)** (click on Assets -> download the Installer)
   - Install it by either typing **`./Exiled.Installer-Linux --path /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux`**.
   - If you want the latest pre-release, simply add **`--pre-releases`**. Example: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
   - Another example, if you placed `Exiled.Installer-Linux` in your server folder: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
@@ -66,7 +68,7 @@ That's it, EXILED should now be installed and active the next time you boot up y
 
 ### Manual installation
   - **Ensure** you are logged in on the user that runs the SCP servers.
-  - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)** (SSH: right click and to get the `Exiled.tar.gz` link, then type: **`wget (link_to_download)`**)
+  - Download the **`Exiled.tar.gz` [from here](https://github.com/Exiled-Team/EXILED/releases)** (SSH: right click and to get the `Exiled.tar.gz` link, then type: **`wget (link_to_download)`**)
   - To extract it to your current folder, type **``tar -xzvf EXILED.tar.gz``**
   - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
   - Move the **`EXILED`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)

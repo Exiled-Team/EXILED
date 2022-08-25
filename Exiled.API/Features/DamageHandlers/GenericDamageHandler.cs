@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.API.Features.DamageHandlers
 {
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
@@ -24,7 +24,7 @@ namespace Exiled.API.Features
         private string genericEnvironmentDamageText;
         private Player player;
         private DamageType damageType;
-        private DamageHandlers.DamageHandlerBase.CassieAnnouncement customCassieAnnouncement;
+        private Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement customCassieAnnouncement;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericDamageHandler"/> class.
@@ -36,7 +36,7 @@ namespace Exiled.API.Features
         /// <param name="damageType"> Damage type. </param>
         /// <param name="cassieAnnouncement"> Custom cassie announcment. </param>
         /// <param name="damageText"> Text to provide to player death screen. </param>
-        public GenericDamageHandler(Player player, Player attacker, float damage, DamageType damageType, DamageHandlers.DamageHandlerBase.CassieAnnouncement cassieAnnouncement, string damageText = null)
+        public GenericDamageHandler(Player player, Player attacker, float damage, DamageType damageType, Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement cassieAnnouncement, string damageText = null)
             : base(DamageTextDefault)
         {
             this.player = player;
@@ -151,28 +151,28 @@ namespace Exiled.API.Features
                     Base = new Scp096DamageHandler(curr096, damage, Scp096DamageHandler.AttackType.Slap);
                     break;
                 case DamageType.Scp:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
                     break;
                 case DamageType.Scp018:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
                     break;
                 case DamageType.Scp207:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp207);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp207);
                     break;
                 case DamageType.Scp049:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp049);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp049);
                     break;
                 case DamageType.Scp173:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp173);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp173);
                     break;
                 case DamageType.Scp939:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp939);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp939);
                     break;
                 case DamageType.Scp0492:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Zombie);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Zombie);
                     break;
                 case DamageType.Scp106:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.PocketDecay);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.PocketDecay);
                     break;
                 case DamageType.Custom:
                 case DamageType.Unknown:
@@ -185,7 +185,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets custom base.
         /// </summary>
-        public DamageHandlerBase Base { get; set; }
+        public PlayerStatsSystem.DamageHandlerBase Base { get; set; }
 
         /// <summary>
         /// Gets or sets current attacker.
@@ -239,7 +239,7 @@ namespace Exiled.API.Features
                     Owner = attacker.ReferenceHub,
                 },
             };
-            Base = new FirearmDamageHandler(firearm.Base, amount);
+            Base = new PlayerStatsSystem.FirearmDamageHandler(firearm.Base, amount);
         }
     }
 }

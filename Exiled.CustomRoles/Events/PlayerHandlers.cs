@@ -7,7 +7,7 @@
 
 namespace Exiled.CustomRoles.Events
 {
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     /// <summary>
     /// Handles general events for players.
@@ -25,10 +25,10 @@ namespace Exiled.CustomRoles.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.SpawningRagdoll"/>
         internal void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
         {
-            if (plugin.StopRagdollPlayers.Contains(ev.Owner))
+            if (plugin.StopRagdollPlayers.Contains(ev.Player))
             {
                 ev.IsAllowed = false;
-                plugin.StopRagdollPlayers.Remove(ev.Owner);
+                plugin.StopRagdollPlayers.Remove(ev.Player);
             }
         }
     }

@@ -7,11 +7,14 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1313
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp244;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -21,8 +24,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp244SearchCompletor"/> to add missing <see cref="Handlers.Player.PickingUpItem"/> event to the <see cref="Scp244SearchCompletor"/>.
+    ///     Patches <see cref="Scp244SearchCompletor"/>
+    ///     to add missing <see cref="Handlers.Player.PickingUpItem"/> event to the <see cref="Scp244SearchCompletor"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Complete))]
     internal static class PickingUpScp244

@@ -11,7 +11,8 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features.Items;
+    using Exiled.Events.EventArgs.Item;
 
     using HarmonyLib;
 
@@ -24,8 +25,9 @@ namespace Exiled.Events.Patches.Events.Item
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="AttachmentsServerHandler.ServerReceiveChangeRequest(NetworkConnection, AttachmentsChangeRequest)"/>.
-    /// Adds the <see cref="Handlers.Item.ChangingAttachments"/> event.
+    ///     Patches
+    ///     <see cref="AttachmentsServerHandler.ServerReceiveChangeRequest(NetworkConnection, AttachmentsChangeRequest)" />.
+    ///     Adds the <see cref="Handlers.Item.ChangingAttachments" /> event.
     /// </summary>
     [HarmonyPatch(typeof(AttachmentsServerHandler), nameof(AttachmentsServerHandler.ServerReceiveChangeRequest))]
     internal static class ChangingAttachments
@@ -60,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
 
                 // Item::Get(firearm)
                 new(OpCodes.Ldloc_1),
