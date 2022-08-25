@@ -48,6 +48,7 @@ namespace Exiled.Events.Patches.Generic
 
                     if (!ev.IsAllowed)
                         return;
+
                     player.Hurt(new UniversalDamageHandler(-1f, DeathTranslations.UsedAs106Bait));
                     Scp106Container.Base.SetState(false, true);
                     return;
