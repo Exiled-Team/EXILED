@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Player
+namespace Exiled.Events.EventArgs.Item
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="door"><inheritdoc cref="Door"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public KeycardInteractingEventArgs(KeycardPickup pickup, API.Features.Player player, DoorVariant door, bool isAllowed = true)
+        public KeycardInteractingEventArgs(KeycardPickup pickup, Player player, DoorVariant door, bool isAllowed = true)
         {
             Pickup = Pickup.Get(pickup);
             Player = player;
@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets the player who's threw the keycard.
         /// </summary>
-        public API.Features.Player Player { get; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the <see cref="API.Features.Door"/> instance.
