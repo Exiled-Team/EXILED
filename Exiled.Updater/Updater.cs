@@ -28,7 +28,6 @@ namespace Exiled.Updater
     using UnityEngine;
 
 #pragma warning disable SA1124 // Do not use regions
-#pragma warning disable SA1300 // Element should begin with upper-case letter
 
     public sealed class Updater : Plugin<Config>
     {
@@ -77,7 +76,7 @@ namespace Exiled.Updater
             // FixInvalidProxyHandling();
             if (_stage == Stage.Free)
             {
-                Timing.RunCoroutine(_CheckUpdate(forced), Segment.EndOfFrame);
+                Timing.RunCoroutine(CheckUpdateInternal(forced), Segment.EndOfFrame);
                 return true;
             }
 
@@ -118,7 +117,7 @@ namespace Exiled.Updater
             return client;
         }
 
-        private IEnumerator<float> _CheckUpdate(bool forced)
+        private IEnumerator<float> CheckUpdateInternal(bool forced)
         {
             _stage = Stage.Start;
 

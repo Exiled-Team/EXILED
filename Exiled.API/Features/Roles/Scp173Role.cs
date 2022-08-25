@@ -17,7 +17,7 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp173Role : Role
     {
-        private PlayableScps.Scp173 script;
+        private Scp173 script;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp173Role"/> class.
