@@ -19,11 +19,11 @@ namespace Exiled.Events.EventArgs.Scp914
         ///     Initializes a new instance of the <see cref="ActivatingScp914EventArgs"/> class.
         /// </summary>
         /// <param name="player">
-        ///    <inheritdoc cref="Player"/>
+        ///     <inheritdoc cref="Player"/>
         /// </param>
         /// <param name="isAllowed">
-        ///    <inheritdoc cref="IsAllowed"/>
-        ///  </param>
+        ///     <inheritdoc cref="IsAllowed"/>
+        /// </param>
         public ActivatingScp914EventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
