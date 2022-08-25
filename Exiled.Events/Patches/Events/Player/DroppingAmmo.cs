@@ -10,20 +10,22 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
+    using InventorySystem;
 
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropAmmo"/>.
-    /// Adds the <see cref="DroppingAmmo"/> event.
+    ///     Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropAmmo" />.
+    ///     Adds the <see cref="DroppingAmmo" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdDropAmmo))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropAmmo))]
     internal static class DroppingAmmo
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -39,8 +41,8 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(ReferenceHub);
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // ammoType
                 new(OpCodes.Ldarg_1),
@@ -54,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
 
                 // Player.OnDroppingAmmo(ev);
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingAmmo))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDroppingAmmo))),
 
                 // if (!ev.IsAllowed) return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingAmmoEventArgs), nameof(DroppingAmmoEventArgs.IsAllowed))),

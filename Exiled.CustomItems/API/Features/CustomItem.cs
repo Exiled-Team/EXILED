@@ -22,6 +22,8 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp914;
     using Exiled.Loader;
 
     using InventorySystem.Items;
@@ -45,6 +47,7 @@ namespace Exiled.CustomItems.API.Features
     using Map = Exiled.API.Features.Map;
     using Player = Exiled.API.Features.Player;
     using SpawnPoint = Exiled.API.Features.Spawn.SpawnPoint;
+    using UpgradingItemEventArgs = Exiled.Events.EventArgs.Scp914.UpgradingItemEventArgs;
 
     /// <summary>
     /// The Custom Item base class.
@@ -193,7 +196,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Checks to see if this item is a custom item.
         /// </summary>
-        /// <param name="item">The <see cref="Events.Handlers.Item"/> to check.</param>
+        /// <param name="item">The <see cref="Item"/> to check.</param>
         /// <param name="customItem">The <see cref="CustomItem"/> this item is.</param>
         /// <returns>True if the item is a custom item.</returns>
         public static bool TryGet(Item item, out CustomItem customItem)
@@ -821,16 +824,16 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         protected virtual void SubscribeEvents()
         {
-            Events.Handlers.Player.Dying += OnInternalOwnerDying;
-            Events.Handlers.Player.DroppingItem += OnInternalDropping;
-            Events.Handlers.Player.ChangingItem += OnInternalChanging;
-            Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
-            Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
-            Events.Handlers.Scp914.UpgradingItem += OnInternalUpgradingItem;
-            Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
-            Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
-            Events.Handlers.Player.ChangingRole += OnInternalOwnerChangingRole;
-            Events.Handlers.Scp914.UpgradingInventoryItem += OnInternalUpgradingInventoryItem;
+            Exiled.Events.Handlers.Player.Dying += OnInternalOwnerDying;
+            Exiled.Events.Handlers.Player.DroppingItem += OnInternalDropping;
+            Exiled.Events.Handlers.Player.ChangingItem += OnInternalChanging;
+            Exiled.Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
+            Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
+            Exiled.Events.Handlers.Scp914.UpgradingItem += OnInternalUpgradingItem;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
+            Exiled.Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
+            Exiled.Events.Handlers.Player.ChangingRole += OnInternalOwnerChangingRole;
+            Exiled.Events.Handlers.Scp914.UpgradingInventoryItem += OnInternalUpgradingInventoryItem;
         }
 
         /// <summary>
@@ -838,16 +841,16 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         protected virtual void UnsubscribeEvents()
         {
-            Events.Handlers.Player.Dying -= OnInternalOwnerDying;
-            Events.Handlers.Player.DroppingItem -= OnInternalDropping;
-            Events.Handlers.Player.ChangingItem -= OnInternalChanging;
-            Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
-            Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
-            Events.Handlers.Scp914.UpgradingItem -= OnInternalUpgradingItem;
-            Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
-            Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;
-            Events.Handlers.Player.ChangingRole -= OnInternalOwnerChangingRole;
-            Events.Handlers.Scp914.UpgradingInventoryItem -= OnInternalUpgradingInventoryItem;
+            Exiled.Events.Handlers.Player.Dying -= OnInternalOwnerDying;
+            Exiled.Events.Handlers.Player.DroppingItem -= OnInternalDropping;
+            Exiled.Events.Handlers.Player.ChangingItem -= OnInternalChanging;
+            Exiled.Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
+            Exiled.Events.Handlers.Scp914.UpgradingItem -= OnInternalUpgradingItem;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+            Exiled.Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;
+            Exiled.Events.Handlers.Player.ChangingRole -= OnInternalOwnerChangingRole;
+            Exiled.Events.Handlers.Scp914.UpgradingInventoryItem -= OnInternalUpgradingInventoryItem;
         }
 
         /// <summary>
@@ -1133,17 +1136,17 @@ namespace Exiled.CustomItems.API.Features
             OnUpgrading(new API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
         }
 
-        private void OnInternalUpgradingItem(Events.EventArgs.UpgradingItemEventArgs ev)
+        private void OnInternalUpgradingItem(UpgradingItemEventArgs ev)
         {
-            if (!Check(ev.Item))
+            if (!Check(ev.Pickup))
                 return;
 
             ev.IsAllowed = false;
 
             Timing.CallDelayed(3.5f, () =>
             {
-                ev.Item.Position = ev.OutputPosition;
-                OnUpgrading(new UpgradingEventArgs(ev.Item.Base, ev.OutputPosition, ev.KnobSetting));
+                ev.Pickup.Position = ev.OutputPosition;
+                OnUpgrading(new UpgradingEventArgs(ev.Pickup.Base, ev.OutputPosition, ev.KnobSetting));
             });
         }
     }

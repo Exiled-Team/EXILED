@@ -11,10 +11,12 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
+    using InventorySystem;
+    using InventorySystem.Items;
     using InventorySystem.Items.Coin;
 
     using Mirror;
@@ -26,8 +28,9 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CoinNetworkHandler.ServerProcessMessage(NetworkConnection, CoinNetworkHandler.CoinFlipMessage)"/>.
-    /// Adds the <see cref="Handlers.Player.FlippingCoin"/> event.
+    ///     Patches
+    ///     <see cref="CoinNetworkHandler.ServerProcessMessage(NetworkConnection, CoinNetworkHandler.CoinFlipMessage)" />.
+    ///     Adds the <see cref="Handlers.Player.FlippingCoin" /> event.
     /// </summary>
     [HarmonyPatch(typeof(CoinNetworkHandler), nameof(CoinNetworkHandler.ServerProcessMessage))]
     internal static class FlippingCoin
@@ -77,8 +80,8 @@ namespace Exiled.Events.Patches.Events.Player
                 // Item.SerialNumber
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory))),
-                new(OpCodes.Ldflda, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.CurItem))),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Items.ItemIdentifier), nameof(InventorySystem.Items.ItemIdentifier.SerialNumber))),
+                new(OpCodes.Ldflda, Field(typeof(Inventory), nameof(Inventory.CurItem))),
+                new(OpCodes.Ldfld, Field(typeof(ItemIdentifier), nameof(ItemIdentifier.SerialNumber))),
 
                 // ev.IsTails
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -50,9 +51,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc, role.LocalIndex),
             });
 
-            for(int i = 0; i < newInstructions.Count; i++)
+            for (int i = 0; i < newInstructions.Count; i++)
             {
-                if(newInstructions[i].opcode == OpCodes.Call && (MethodInfo)newInstructions[i].operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass)))
+                if (newInstructions[i].opcode == OpCodes.Call && (MethodInfo)newInstructions[i].operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass)))
                 {
                     int index = i - 5;
                     newInstructions[index] = new(OpCodes.Ldloc_S, role.LocalIndex);
