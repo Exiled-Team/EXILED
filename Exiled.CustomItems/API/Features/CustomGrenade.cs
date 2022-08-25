@@ -15,6 +15,8 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.EventArgs.Player;
 
     using Footprinting;
 
@@ -120,9 +122,9 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingItem += OnInternalThrowing;
-            Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
-            Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
+            Exiled.Events.Handlers.Player.ThrowingItem += OnInternalThrowing;
+            Exiled.Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
+            Exiled.Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
 
             base.SubscribeEvents();
         }
@@ -130,9 +132,9 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingItem -= OnInternalThrowing;
-            Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
-            Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
+            Exiled.Events.Handlers.Player.ThrowingItem -= OnInternalThrowing;
+            Exiled.Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
+            Exiled.Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
 
             base.UnsubscribeEvents();
         }
@@ -182,14 +184,11 @@ namespace Exiled.CustomItems.API.Features
                 return;
 
             Log.Debug($"{ev.Player.Nickname} has thrown a {Name}!", CustomItems.Instance.Config.Debug);
-            if (ev.RequestType == ThrowRequest.BeginThrow)
-            {
-                OnThrowing(ev);
-                ev.IsAllowed = false;
-                return;
-            }
 
             OnThrowing(ev);
+
+            if (ev.RequestType == ThrowRequest.BeginThrow)
+                return;
 
             switch (ev.Item)
             {
