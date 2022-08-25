@@ -217,6 +217,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to melt.</param>
         /// <returns><see langword="true"/> if the player was melted successfully; otherwise, <see langword="false"/>.</returns>
+        /// <seealso cref="Player.EnableEffect(EffectType, float, bool)"/>
         public static bool TryMeltPlayer(Player player)
         {
             if (player.Position.y is >= 200 or <= -200)
@@ -237,5 +238,11 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns><see langword="true"/> if the lift was started successfully; otherwise, <see langword="false"/>.</returns>
         public bool TryStart() => Base.UseLift();
+
+        /// <summary>
+        /// Returns the Lift in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Lift-related data.</returns>
+        public override string ToString() => $"{Type} {Status} [{MovingSpeed}] *{IsLocked}* |{IsLockable}|";
     }
 }

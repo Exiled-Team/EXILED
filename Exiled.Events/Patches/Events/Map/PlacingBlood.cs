@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using HarmonyLib;
 
@@ -32,8 +33,6 @@ namespace Exiled.Events.Patches.Events.Map
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label returnLabel = generator.DefineLabel();
-            Label cmp = generator.DefineLabel();
-            Label jmp = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(PlacingBloodEventArgs));
 
@@ -52,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Map
             // f = ev.Multiplier;
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanSpawnBlood))),
                 new(OpCodes.Brfalse_S, returnLabel),

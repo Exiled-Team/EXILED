@@ -225,7 +225,7 @@ namespace Exiled.API.Extensions
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Length; i++)
-                annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
+                annoucement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
 
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {
@@ -276,7 +276,7 @@ namespace Exiled.API.Extensions
         {
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
-                targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
+                targetWriter.WriteUInt64(SyncVarDirtyBits[propertyName]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
             }
 

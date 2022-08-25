@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Extensions
 {
-    using Exiled.CustomItems.API;
+    using Exiled.API.Enums;
 
     using Interactables.Interobjects.DoorUtils;
 

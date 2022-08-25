@@ -14,11 +14,13 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Runtime.CompilerServices;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -48,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.Dictionary))),
                 new(OpCodes.Ldloc_S, player.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.GameObject))),
-                new(OpCodes.Callvirt, Method(typeof(Dictionary<UnityEngine.GameObject, Player>), nameof(Dictionary<UnityEngine.GameObject, Player>.Remove), new[] { typeof(UnityEngine.GameObject) })),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<GameObject, Player>), nameof(Dictionary<GameObject, Player>.Remove), new[] { typeof(GameObject) })),
                 new(OpCodes.Pop),
                 new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.UnverifiedPlayers))),
                 new(OpCodes.Ldarg_0),

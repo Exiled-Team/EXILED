@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -32,12 +33,8 @@ namespace Exiled.Events.Patches.Events.Player
             new(OpCodes.Ldarg_1),
             new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
             new(OpCodes.Ldarg_0),
-            new(OpCodes.Ldc_I4_1),
             new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StayingOnEnvironmentalHazardEventArgs))[0]),
-            new(OpCodes.Dup),
             new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnStayingOnEnvironmentalHazard))),
-            new(OpCodes.Callvirt, PropertyGetter(typeof(StayingOnEnvironmentalHazardEventArgs), nameof(StayingOnEnvironmentalHazardEventArgs.IsAllowed))),
-            new(OpCodes.Brfalse_S, ret),
         };
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

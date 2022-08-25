@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp330;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -21,8 +21,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches the <see cref="Scp330Bag.ServerProcessPickup"/> method to add the <see cref="Handlers.Scp330.PickingUpScp330"/> event.
+    ///     Patches the <see cref="Scp330Bag.ServerProcessPickup" /> method to add the
+    ///     <see cref="Handlers.Scp330.PickingUpScp330" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup))]
     internal static class PickingUp330
@@ -48,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Scp330.OnPickingUpScp330(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnPickingUp330))),
+                new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnPickingUp330))),
 
                 // if (!ev.IsAllowed)
                 //    return false;
@@ -62,9 +65,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

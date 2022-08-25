@@ -10,7 +10,10 @@ namespace Exiled.Events.Handlers
     using System;
     using System.Collections.Generic;
 
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp330;
     using Exiled.Events.Extensions;
 
     using static Exiled.Events.Events;
@@ -143,7 +146,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before dropping a null <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static event CustomEventHandler<DroppingNullEventArgs> DroppingNull;
+        public static event CustomEventHandler<DroppingNothingEventArgs> DroppingNothing;
 
         /// <summary>
         /// Invoked before picking up ammo.
@@ -204,6 +207,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> fails to escape the pocket dimension.
         /// </summary>
         public static event CustomEventHandler<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> enters killer collision.
+        /// </summary>
+        public static event CustomEventHandler<EnteringKillerCollisionEventArgs> EnteringKillerCollision;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> reloads a weapon.
@@ -326,12 +334,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
-        /// </summary>
-        [Obsolete("Use StayingOnEnvironmentalHazard event instead.")]
-        public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
-
-        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with a shooting target.
         /// </summary>
         public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
@@ -372,12 +374,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DryfiringWeaponEventArgs> DryfiringWeapon;
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
-        /// </summary>
-        [Obsolete("Use StayingOnEnvironmentalHazard event instead.")]
-        public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
-
-        /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
         /// </summary>
         public static event CustomEventHandler<VoiceChattingEventArgs> VoiceChatting;
@@ -416,6 +412,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a <see cref="API.Features.Player"/> toggles the NoClip mode.
         /// </summary>
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> toggles overwatch.
+        /// </summary>
+        public static event CustomEventHandler<TogglingOverwatchEventArgs> TogglingOverwatch;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
@@ -606,8 +607,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before dropping a null item.
         /// </summary>
-        /// <param name="ev">The <see cref="DroppingNullEventArgs"/> instance.</param>
-        public static void OnDroppingNull(DroppingNullEventArgs ev) => DroppingNull.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="DroppingNothingEventArgs"/> instance.</param>
+        public static void OnDroppingNothing(DroppingNothingEventArgs ev) => DroppingNothing.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up ammo.
@@ -680,6 +681,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="FailingEscapePocketDimensionEventArgs"/> instance.</param>
         public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev) => FailingEscapePocketDimension.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> enters killer collision.
+        /// </summary>
+        /// <param name="ev">The <see cref="EnteringKillerCollisionEventArgs"/> instance.</param>
+        public static void OnEnteringKillerCollision(EnteringKillerCollisionEventArgs ev) => EnteringKillerCollision.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> reloads a weapon.
@@ -826,12 +833,6 @@ namespace Exiled.Events.Handlers
         public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
-        /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
-        public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a shooting target.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
@@ -880,12 +881,6 @@ namespace Exiled.Events.Handlers
         public static void OnDryfiringWeapon(DryfiringWeaponEventArgs ev) => DryfiringWeapon.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
-        /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
-        public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
-
-        /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
         /// </summary>
         /// <param name="ev">The <see cref="VoiceChattingEventArgs"/> instance.</param>
@@ -932,6 +927,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> toggles overwatch.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingOverwatchEventArgs"/> instance.</param>
+        public static void OnTogglingOverwatch(TogglingOverwatchEventArgs ev) => TogglingOverwatch.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
