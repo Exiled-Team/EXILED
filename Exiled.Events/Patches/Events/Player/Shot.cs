@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -27,8 +27,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived"/>.
-    /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
+    ///     Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived" />.
+    ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
     [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerPerformShot))]
     internal static class Shot
@@ -89,8 +89,8 @@ namespace Exiled.Events.Patches.Events.Player
         }
 
         /// <summary>
-        /// Patches <see cref="BuckshotHitreg.ShootPellet"/>.
-        /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
+        ///     Patches <see cref="BuckshotHitreg.ShootPellet" />.
+        ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
         /// </summary>
         [HarmonyPatch(typeof(BuckshotHitreg), nameof(BuckshotHitreg.ShootPellet))]
         internal static class ShotPellets

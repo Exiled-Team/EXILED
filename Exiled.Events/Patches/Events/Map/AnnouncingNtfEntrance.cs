@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="NineTailedFoxNamingRule.PlayEntranceAnnouncement(string)"/>.
-    /// Adds the <see cref="Map.AnnouncingNtfEntrance"/> event.
+    ///     Patch the <see cref="NineTailedFoxNamingRule.PlayEntranceAnnouncement(string)" />.
+    ///     Adds the <see cref="Map.AnnouncingNtfEntrance" /> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.PlayEntranceAnnouncement))]
     internal static class AnnouncingNtfEntrance

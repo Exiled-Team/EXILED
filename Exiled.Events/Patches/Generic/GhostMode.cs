@@ -132,6 +132,7 @@ namespace Exiled.Events.Patches.Generic
                                             MakeGhost(index, __instance._transmitBuffer);
                                             continue;
                                         }
+
                                         if (currentTarget.ReferenceHub.scpsController.CurrentScp is not Scp096 scp || !scp.EnragedOrEnraging)
                                         {
                                             MakeGhost(index, __instance._transmitBuffer);
@@ -165,8 +166,8 @@ namespace Exiled.Events.Patches.Generic
                                         flag2 = scp096.HasTarget(currentTarget.ReferenceHub);
 
                                     if (currentTarget != player && player.Role.Type != RoleType.Scp079
-                                        && player.Role.Type != RoleType.Spectator
-                                        && !flag2)
+                                                                && player.Role.Type != RoleType.Spectator
+                                                                && !flag2)
                                     {
                                         MakeGhost(index, __instance._transmitBuffer);
                                     }

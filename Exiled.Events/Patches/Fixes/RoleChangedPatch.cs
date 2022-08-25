@@ -12,10 +12,9 @@ namespace Exiled.Events.Patches.Fixes
 
     using HarmonyLib;
     using InventorySystem;
-    using NorthwoodLib.Pools;
 
     /// <summary>
-    /// Patches <see cref="InventoryItemProvider.RoleChanged"/> to help override in <see cref="EventArgs.ChangingRoleEventArgs.Items"/> and <see cref="EventArgs.ChangingRoleEventArgs.Ammo"/>.
+    /// Patches <see cref="InventoryItemProvider.RoleChanged"/> to help override in <see cref="ChangingRoleEventArgs.Items"/> and <see cref="Ammo"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryItemProvider), nameof(InventoryItemProvider.RoleChanged))]
     internal static class RoleChangedPatch

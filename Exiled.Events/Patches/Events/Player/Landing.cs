@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -20,8 +20,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FootstepSync.RpcPlayLandingFootstep(bool)"/>
-    /// Adds the <see cref="Player.Landing"/> event.
+    ///     Patches <see cref="FootstepSync.RpcPlayLandingFootstep(bool)" />
+    ///     Adds the <see cref="Player.Landing" /> event.
     /// </summary>
     [HarmonyPatch(typeof(FootstepSync), nameof(FootstepSync.RpcPlayLandingFootstep))]
     internal static class Landing
