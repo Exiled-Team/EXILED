@@ -20,7 +20,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-914 upgrades a item.
         /// </summary>
-        public static event CustomEventHandler<UpgradingItemEventArgs> UpgradingItem;
+        public static event CustomEventHandler<UpgradingPickupEventArgs> UpgradingItem;
 
         /// <summary>
         ///     Invoked before SCP-914 upgrades an item in a player's inventory.
@@ -45,8 +45,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Called before SCP-914 upgrades a item.
         /// </summary>
-        /// <param name="ev">The <see cref="UpgradingItemEventArgs" /> instance.</param>
-        public static void OnUpgradingItem(UpgradingItemEventArgs ev)
+        /// <param name="ev">The <see cref="UpgradingPickupEventArgs" /> instance.</param>
+        public static void OnUpgradingItem(UpgradingPickupEventArgs ev)
         {
             UpgradingItem.InvokeSafely(ev);
         }

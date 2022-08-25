@@ -46,7 +46,7 @@ namespace Exiled.CustomItems.API.Features
     using Item = Exiled.API.Features.Items.Item;
     using Map = Exiled.API.Features.Map;
     using Player = Exiled.API.Features.Player;
-    using UpgradingItemEventArgs = Exiled.Events.EventArgs.Scp914.UpgradingItemEventArgs;
+    using UpgradingPickupEventArgs = Exiled.Events.EventArgs.Scp914.UpgradingPickupEventArgs;
 
     /// <summary>
     /// The Custom Item base class.
@@ -1035,7 +1035,7 @@ namespace Exiled.CustomItems.API.Features
             OnUpgrading(new API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
         }
 
-        private void OnInternalUpgradingItem(UpgradingItemEventArgs ev)
+        private void OnInternalUpgradingItem(UpgradingPickupEventArgs ev)
         {
             if (!Check(ev.Pickup))
                 return;

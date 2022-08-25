@@ -1,5 +1,5 @@
-// -----------------------------------------------------------------------
-// <copyright file="UpgradingItemEventArgs.cs" company="Exiled Team">
+﻿// -----------------------------------------------------------------------
+// <copyright file="UpgradingPickupEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,10 +19,10 @@ namespace Exiled.Events.EventArgs.Scp914
     /// <summary>
     ///     Contains all information before SCP-914 upgrades an item.
     /// </summary>
-    public class UpgradingItemEventArgs : IPickupEvent, IDeniableEvent
+    public class UpgradingPickupEventArgs : IPickupEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UpgradingItemEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="UpgradingPickupEventArgs" /> class.
         /// </summary>
         /// <param name="item">
         ///     <inheritdoc cref="Pickup" />
@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Scp914
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public UpgradingItemEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting, bool isAllowed = true)
+        public UpgradingPickupEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting, bool isAllowed = true)
         {
             Scp914 = API.Features.Scp914.Scp914Controller;
             Pickup = Pickup.Get(item);

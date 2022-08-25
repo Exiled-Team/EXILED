@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             const int offset = 0;
 
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
-            LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingItemEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPickupEventArgs));
             Label returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new CodeInstruction[]
@@ -51,8 +51,8 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Ldarg_3),
                 new(OpCodes.Ldc_I4_1),
 
-                // var ev = new UpgradingItemEventArgs(pickup, outputPos, knobSetting)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingItemEventArgs))[0]),
+                // var ev = new UpgradingPickupEventArgs(pickup, outputPos, knobSetting)
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPickupEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
@@ -62,17 +62,17 @@ namespace Exiled.Events.Patches.Events.Scp914
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingItemEventArgs), nameof(UpgradingItemEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPickupEventArgs), nameof(UpgradingPickupEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Dup),
 
                 // outputPos = ev.OutputPosition
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingItemEventArgs), nameof(UpgradingItemEventArgs.OutputPosition))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPickupEventArgs), nameof(UpgradingPickupEventArgs.OutputPosition))),
                 new(OpCodes.Stloc_0),
 
                 // setting = ev.KnobSetting
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingItemEventArgs), nameof(UpgradingItemEventArgs.KnobSetting))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPickupEventArgs), nameof(UpgradingPickupEventArgs.KnobSetting))),
                 new(OpCodes.Starg_S, 3),
             });
 
