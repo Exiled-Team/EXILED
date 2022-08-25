@@ -77,7 +77,10 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         ///     Gets the current spawnable team.
         /// </summary>
-        public SpawnableTeamHandlerBase SpawnableTeam => RespawnWaveGenerator.SpawnableTeams.TryGetValue(NextKnownTeam, out SpawnableTeamHandlerBase @base) ? @base : null;
+        public SpawnableTeamHandlerBase SpawnableTeam
+        {
+            get => RespawnWaveGenerator.SpawnableTeams.TryGetValue(NextKnownTeam, out SpawnableTeamHandlerBase @base) ? @base : null;
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the spawn can occur.

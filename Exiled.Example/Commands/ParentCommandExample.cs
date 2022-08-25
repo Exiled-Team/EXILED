@@ -22,7 +22,12 @@ namespace Exiled.Example.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="ParentCommandExample"/> class.
         /// </summary>
-        public ParentCommandExample() => LoadGeneratedCommands(); // Use this to load commands for the parent command
+        public ParentCommandExample()
+        {
+            LoadGeneratedCommands();
+
+            // Use this to load commands for the parent command
+        }
 
         /// <inheritdoc />
         public override string Command { get; } = "yourcommand";   // COMMAND

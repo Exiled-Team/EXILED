@@ -27,12 +27,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all the patched methods.
         /// </summary>
-        public static IEnumerable<MethodBase> PatchedMethods => Harmony.GetAllPatchedMethods();
+        public static IEnumerable<MethodBase> PatchedMethods
+        {
+            get => Harmony.GetAllPatchedMethods();
+        }
 
         /// <summary>
         /// Gets all the patched methods and their relative patch group.
         /// </summary>
-        public static IReadOnlyDictionary<MethodBase, HashSet<string>> PatchedGroupMethods => PatchedGroupMethodsValue;
+        public static IReadOnlyDictionary<MethodBase, HashSet<string>> PatchedGroupMethods
+        {
+            get => PatchedGroupMethodsValue;
+        }
 
         /// <summary>
         /// Searches the current assembly for Harmony annotations and uses them to create patches.
@@ -77,7 +83,7 @@ namespace Exiled.API.Features
                     if (PatchedGroupMethods.TryGetValue(methodBase, out HashSet<string> ids))
                         ids.Add(groupId);
                     else
-                        PatchedGroupMethodsValue.Add(methodBase, new() { groupId });
+                        PatchedGroupMethodsValue.Add(methodBase, new HashSet<string> { groupId });
 
 #if DEBUG
                     Log.Debug($"Target method ({methodBase.Name}) has been successfully patched.");
@@ -130,27 +136,31 @@ namespace Exiled.API.Features
                 bool hasMethodBody = methodBase.HasMethodBody();
                 if (hasMethodBody)
                 {
-                    patchInfo.Postfixes.Do(delegate(Patch patchInfo)
-                    {
-                        harmony.Unpatch(methodBase, patchInfo.PatchMethod);
-                    });
-                    patchInfo.Prefixes.Do(delegate(Patch patchInfo)
-                    {
-                        harmony.Unpatch(methodBase, patchInfo.PatchMethod);
-                    });
+                    patchInfo.Postfixes.Do(
+                        delegate(Patch patchInfo)
+                        {
+                            harmony.Unpatch(methodBase, patchInfo.PatchMethod);
+                        });
+                    patchInfo.Prefixes.Do(
+                        delegate(Patch patchInfo)
+                        {
+                            harmony.Unpatch(methodBase, patchInfo.PatchMethod);
+                        });
                 }
 
-                patchInfo.Transpilers.Do(delegate(Patch patchInfo)
-                {
-                    harmony.Unpatch(methodBase, patchInfo.PatchMethod);
-                });
+                patchInfo.Transpilers.Do(
+                    delegate(Patch patchInfo)
+                    {
+                        harmony.Unpatch(methodBase, patchInfo.PatchMethod);
+                    });
 
                 if (hasMethodBody)
                 {
-                    patchInfo.Finalizers.Do(delegate(Patch patchInfo)
-                    {
-                        harmony.Unpatch(methodBase, patchInfo.PatchMethod);
-                    });
+                    patchInfo.Finalizers.Do(
+                        delegate(Patch patchInfo)
+                        {
+                            harmony.Unpatch(methodBase, patchInfo.PatchMethod);
+                        });
                 }
 
                 PatchedGroupMethodsValue.Remove(methodBase);

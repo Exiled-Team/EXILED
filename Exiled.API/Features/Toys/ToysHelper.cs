@@ -81,7 +81,7 @@ namespace Exiled.API.Features.Toys
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
-                        if (gameObject.name == "sportTargetPrefab" && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
+                        if ((gameObject.name == "sportTargetPrefab") && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
                         {
                             sportShootingTargetObject = shootingTarget;
                             break;
@@ -104,7 +104,7 @@ namespace Exiled.API.Features.Toys
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
-                        if (gameObject.name == "dboyTargetPrefab" && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
+                        if ((gameObject.name == "dboyTargetPrefab") && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
                         {
                             dboyShootingTargetObject = shootingTarget;
                             break;
@@ -127,7 +127,7 @@ namespace Exiled.API.Features.Toys
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
-                        if (gameObject.name == "binaryTargetPrefab" && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
+                        if ((gameObject.name == "binaryTargetPrefab") && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
                         {
                             binaryShootingTargetObject = shootingTarget;
                             break;

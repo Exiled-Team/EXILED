@@ -20,7 +20,6 @@ namespace Exiled.API.Features
     using Respawning;
 
     using CustomFirearmHandler = Exiled.API.Features.DamageHandlers.FirearmDamageHandler;
-
     using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
 
     /// <summary>
@@ -31,17 +30,26 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="NineTailedFoxAnnouncer"/> singleton.
         /// </summary>
-        public static NineTailedFoxAnnouncer Announcer => NineTailedFoxAnnouncer.singleton;
+        public static NineTailedFoxAnnouncer Announcer
+        {
+            get => NineTailedFoxAnnouncer.singleton;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not C.A.S.S.I.E is currently announcing. Does not include decontamination messages.
         /// </summary>
-        public static bool IsSpeaking => Announcer.queue.Count != 0;
+        public static bool IsSpeaking
+        {
+            get => Announcer.queue.Count != 0;
+        }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
         /// </summary>
-        public static IReadOnlyCollection<NineTailedFoxAnnouncer.VoiceLine> VoiceLines => Announcer.voiceLines.ToList().AsReadOnly();
+        public static IReadOnlyCollection<NineTailedFoxAnnouncer.VoiceLine> VoiceLines
+        {
+            get => Announcer.voiceLines.ToList().AsReadOnly();
+        }
 
         /// <summary>
         /// Reproduce a non-glitched C.A.S.S.I.E message.
@@ -156,7 +164,7 @@ namespace Exiled.API.Features
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
 
-            float num = (AlphaWarheadController.Host.timeToDetonation <= 0f) ? 3.5f : 1f;
+            float num = AlphaWarheadController.Host.timeToDetonation <= 0f ? 3.5f : 1f;
             GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
         }
 

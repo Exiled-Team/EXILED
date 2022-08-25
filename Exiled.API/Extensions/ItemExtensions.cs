@@ -44,7 +44,7 @@ namespace Exiled.API.Extensions
                 or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9
                 or ItemType.ParticleDisruptor => true,
             ItemType.MicroHID when checkMicro => true,
-            _ => false
+            _ => false,
         };
 
         /// <summary>

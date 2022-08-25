@@ -20,7 +20,7 @@ namespace Exiled.Installer
         {
             new Option<DirectoryInfo?>(
                 new[] { "-p", "--path" },
-                parseArgument: (parsed) =>
+                (parsed) =>
                 {
                     string path = parsed.Tokens.SingleOrDefault()?.Value ?? Directory.GetCurrentDirectory();
                     if (string.IsNullOrEmpty(path))
@@ -36,15 +36,15 @@ namespace Exiled.Installer
                     else if (!Program.ValidateServerPath(path, out string? targetFilePath))
                         parsed.ErrorMessage = $"Couldn't find '{Program.TargetFileName}' in '{targetFilePath}'";
 
-                    return new(path); // return for default value
+                    return new DirectoryInfo(path); // return for default value
                 },
-                isDefault: true,
-                description: "Path to the folder with the SL server")
-            { IsRequired = true },
+                true,
+                "Path to the folder with the SL server")
+                { IsRequired = true },
 
             new Option<DirectoryInfo?>(
                 "--appdata",
-                parseArgument: (parsed) =>
+                (parsed) =>
                 {
                     string appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                     if (string.IsNullOrEmpty(appdataPath))
@@ -59,37 +59,37 @@ namespace Exiled.Installer
                         return null;
                     }
 
-                    return new(path);
+                    return new DirectoryInfo(path);
                 },
-                isDefault: true,
-                description: "Forces the folder to be the AppData folder (useful for containers when pterodactyl runs as root)")
-            { IsRequired = true },
+                true,
+                "Forces the folder to be the AppData folder (useful for containers when pterodactyl runs as root)")
+                { IsRequired = true },
 
             new Option<bool>(
                 "--pre-releases",
-                getDefaultValue: () => false,
-                description: "Includes pre-releases")
-            { IsRequired = false, },
+                () => false,
+                "Includes pre-releases")
+                { IsRequired = false },
 
             new Option<string?>(
                 "--target-version",
-                description: "Target version for installation")
-            { IsRequired = false },
+                "Target version for installation")
+                { IsRequired = false },
 
             new Option<string?>(
                 "--github-token",
-                description: "Uses a token for auth in case the rate limit is exceeded (no permissions required)")
-            { IsRequired = false },
+                "Uses a token for auth in case the rate limit is exceeded (no permissions required)")
+                { IsRequired = false },
 
             new Option<bool>(
                 "--exit",
-                description: "Automatically exits the application anyway")
-            { IsRequired = false },
+                "Automatically exits the application anyway")
+                { IsRequired = false },
 
             new Option<bool>(
                 "--get-versions",
-                description: "Gets all possible versions for installation")
-            { IsRequired = false }
+                "Gets all possible versions for installation")
+                { IsRequired = false },
         };
 
 #nullable disable
@@ -108,7 +108,7 @@ namespace Exiled.Installer
 
         public bool Exit { get; set; }
 
-        public static async Task Parse(string[] args)
+        public async static Task Parse(string[] args)
         {
             RootCommand.Handler = CommandHandler.Create<CommandSettings>(async args => await Program.MainSafe(args).ConfigureAwait(false));
             RootCommand.TreatUnmatchedTokensAsErrors = false;

@@ -80,11 +80,13 @@ namespace Exiled.API.Features.Items
         {
             MicroHid cloneableItem = new();
 
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.State = State;
-                cloneableItem.Energy = Energy;
-            });
+            Timing.CallDelayed(
+                1f,
+                () =>
+                {
+                    cloneableItem.State = State;
+                    cloneableItem.Energy = Energy;
+                });
 
             return cloneableItem;
         }
