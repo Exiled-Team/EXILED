@@ -182,11 +182,18 @@ namespace Exiled.API.Features
             : null;
 
         /// <summary>
+        /// Gets a <see cref="Room"/> from a given <see cref="RoomIdentifier"/>.
+        /// </summary>
+        /// <param name="flickerableLightController">The <see cref="FlickerableLightController"/> to search with.</param>
+        /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
+        public static Room Get(FlickerableLightController flickerableLightController) => flickerableLightController.GetComponentInParent<Room>();
+
+        /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="Vector3"/>.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="Vector3"/> or <see langword="null"/> if not found.</returns>
-        public static Room Get(Vector3 position) => RoomIdUtils.RoomAtPosition(position) is RoomIdentifier identifier ? Room.Get(identifier) : null;
+        public static Room Get(Vector3 position) => RoomIdUtils.RoomAtPosition(position) is RoomIdentifier identifier ? Get(identifier) : null;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.

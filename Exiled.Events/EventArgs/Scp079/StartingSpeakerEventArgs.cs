@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 uses a speaker.
     /// </summary>
-    public class StartingSpeakerEventArgs : IPlayerEvent, IDeniableEvent
+    public class StartingSpeakerEventArgs : IRoomEvent, IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StartingSpeakerEventArgs" /> class.

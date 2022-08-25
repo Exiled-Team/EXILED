@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player activates a workstation.
     /// </summary>
-    public class ActivatingWorkstationEventArgs : IPlayerEvent, IDeniableEvent
+    public class ActivatingWorkstationEventArgs : IRoomEvent, IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ActivatingWorkstationEventArgs" /> class.
@@ -33,10 +33,16 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public ActivatingWorkstationEventArgs(Player player, WorkstationController controller, bool isAllowed = true)
         {
+            Room = Room.Get(controller.gameObject.transform.position);
             Player = player;
             WorkstationController = controller;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        ///     Gets the <see cref="Exiled.API.Features.Room" /> triggering the event.
+        /// </summary>
+        public Room Room { get; }
 
         /// <summary>
         ///     Gets the workstation.
