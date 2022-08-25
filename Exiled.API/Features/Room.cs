@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features
 {
-#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -15,6 +14,8 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
+
+    using HarmonyLib;
 
     using HarmonyLib;
 
@@ -169,11 +170,6 @@ namespace Exiled.API.Features
         public FlickerableLightController FlickerableLightController { get; private set; }
 
         /// <summary>
-        /// Gets a dictionary that allows you to get a room from a given room identifier.
-        /// </summary>
-        internal static Dictionary<RoomIdentifier, Room> RoomIdentToRoomDict { get; } = new();
-
-        /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.
         /// </summary>
         /// <param name="roomType">The <see cref="RoomType"/> to search for.</param>
@@ -185,8 +181,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roomIdentifier">The <see cref="RoomIdentifier"/> to search with.</param>
         /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
-        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentToRoomDict.ContainsKey(roomIdentifier)
-            ? RoomIdentToRoomDict[roomIdentifier]
+        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentifiersToRooms.ContainsKey(roomIdentifier)
+            ? RoomIdentifiersToRooms[roomIdentifier]
             : null;
 
         /// <summary>
