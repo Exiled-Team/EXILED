@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Fixes
     /// Patches <see cref="ThrowableItem.ServerThrow(float, float, Vector3, Vector3)"/> to fix fuse times being unchangeable.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3), typeof(Vector3))]
-    internal static class GrenadeFuseTimeFix
+    internal static class GrenadePropertiesFix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -66,6 +66,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Callvirt, FirstProperty(typeof(Projectile), prop => prop.Name == nameof(Projectile.Base) && prop.PropertyType == typeof(ThrownProjectile)).GetMethod),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
+                new(OpCodes.Dup),
 
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ThrownProjectile), nameof(ThrownProjectile.transform))),
                 new(OpCodes.Ldarg_0),
@@ -80,6 +81,10 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Ldloc_S, playerCamera.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.rotation))),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Transform), nameof(Transform.rotation))),
+
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrownProjectile), nameof(ThrownProjectile.gameObject))),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Callvirt, Method(typeof(GameObject), nameof(GameObject.SetActive))),
 
                 new(OpCodes.Ldloc_S, pickup.LocalIndex),
                 new(OpCodes.Ldc_I4_1),
