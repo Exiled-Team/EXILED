@@ -20,6 +20,6 @@ namespace Exiled.Updater.GHApi.Settings
             Page = page;
         }
 
-        public string Build() => (PerPage == 0 && Page == 0) ? string.Empty : $"?per_page={PerPage}&page={Page}";
+        public string Build() => (PerPage == 0) && (Page == 0) ? string.Empty : $"?per_page={PerPage}&page={Page}";
     }
 }
