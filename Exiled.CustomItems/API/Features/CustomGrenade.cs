@@ -184,14 +184,11 @@ namespace Exiled.CustomItems.API.Features
                 return;
 
             Log.Debug($"{ev.Player.Nickname} has thrown a {Name}!", CustomItems.Instance.Config.Debug);
-            if (ev.RequestType == ThrowRequest.BeginThrow)
-            {
-                OnThrowing(ev);
-                ev.IsAllowed = false;
-                return;
-            }
 
             OnThrowing(ev);
+
+            if (ev.RequestType == ThrowRequest.BeginThrow)
+                return;
 
             switch (ev.Item)
             {
