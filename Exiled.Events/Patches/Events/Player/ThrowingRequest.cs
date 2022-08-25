@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ThrowableNetworkHandler.ServerProcessRequest" />.
-    ///     Adds the <see cref="Handlers.Player." /> event.
+    /// Patches <see cref="ThrowableNetworkHandler.ServerProcessRequest"/>.
+    /// Adds the <see cref="Handlers.Player.ThrowingRequest"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableNetworkHandler), nameof(ThrowableNetworkHandler.ServerProcessRequest))]
     internal static class ThrowingRequest
