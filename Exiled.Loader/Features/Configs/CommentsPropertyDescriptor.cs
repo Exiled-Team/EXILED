@@ -34,7 +34,10 @@ namespace Exiled.Loader.Features.Configs
         public string Name { get; set; }
 
         /// <inheritdoc/>
-        public Type Type => baseDescriptor.Type;
+        public Type Type
+        {
+            get => baseDescriptor.Type;
+        }
 
         /// <inheritdoc/>
         public Type TypeOverride
@@ -54,7 +57,10 @@ namespace Exiled.Loader.Features.Configs
         }
 
         /// <inheritdoc/>
-        public bool CanWrite => baseDescriptor.CanWrite;
+        public bool CanWrite
+        {
+            get => baseDescriptor.CanWrite;
+        }
 
         /// <inheritdoc/>
         public void Write(object target, object value)
@@ -64,10 +70,7 @@ namespace Exiled.Loader.Features.Configs
 
         /// <inheritdoc/>
         public T GetCustomAttribute<T>()
-            where T : Attribute
-        {
-            return baseDescriptor.GetCustomAttribute<T>();
-        }
+            where T : Attribute => baseDescriptor.GetCustomAttribute<T>();
 
         /// <inheritdoc/>
         public IObjectDescriptor Read(object target)

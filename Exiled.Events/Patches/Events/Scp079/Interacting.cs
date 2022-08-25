@@ -48,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             int offset = -1;
 
             // Find "TeslaGate::RpcInstantBurst", then add the offset to get "ldloc.s".
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(TeslaGate), nameof(TeslaGate.RpcInstantBurst))) + offset;
+            int index = newInstructions.FindIndex(i => (i.opcode == OpCodes.Callvirt) && ((MethodInfo)i.operand == Method(typeof(TeslaGate), nameof(TeslaGate.RpcInstantBurst)))) + offset;
 
             // Get the return label.
             Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
@@ -100,8 +100,9 @@ namespace Exiled.Events.Patches.Events.Scp079
             offset = 10;
 
             // Find the first ',', then add the offset to get "ldloc.3".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S &&
-                                                             (sbyte)instruction.operand == ',') + offset;
+            index = newInstructions.FindIndex(
+                instruction => (instruction.opcode == OpCodes.Ldc_I4_S) &&
+                               ((sbyte)instruction.operand == ',')) + offset;
 
             // var ev = new TriggeringDoorEventArgs(Player.Get(this.gameObject), doorVariant, manaFromLabel, manaFromLabel <= this.curMana);
             //
@@ -109,46 +110,48 @@ namespace Exiled.Events.Patches.Events.Scp079
             //
             // if (!ev.IsAllowed)
             //   return;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(this.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(this.gameObject)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // doorVariant
-                new(OpCodes.Ldloc_0),
+                    // doorVariant
+                    new(OpCodes.Ldloc_0),
 
-                // manaFromLabel
-                new(OpCodes.Ldloc_2),
+                    // manaFromLabel
+                    new(OpCodes.Ldloc_2),
 
-                // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
-                new(OpCodes.Cgt),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ceq),
+                    // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
+                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
+                    new(OpCodes.Cgt),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ceq),
 
-                // var ev = new TriggeringDoorEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringDoorEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, interactingDoorEv.LocalIndex),
+                    // var ev = new TriggeringDoorEventArgs(...)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringDoorEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, interactingDoorEv.LocalIndex),
 
-                // Handlers.Scp079.OnTriggeringDoor(ev);
-                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnTriggeringDoor))),
+                    // Handlers.Scp079.OnTriggeringDoor(ev);
+                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnTriggeringDoor))),
 
-                // if (!ev.IsAllowed)
-                //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                    // if (!ev.IsAllowed)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
 
-                // manaFromLabel = ev.AuxiliaryPowerCost
-                new(OpCodes.Ldloc_S, interactingDoorEv.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.AuxiliaryPowerCost))),
-                new(OpCodes.Stloc_2),
-            });
+                    // manaFromLabel = ev.AuxiliaryPowerCost
+                    new(OpCodes.Ldloc_S, interactingDoorEv.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.AuxiliaryPowerCost))),
+                    new(OpCodes.Stloc_2),
+                });
 
             #endregion
 
@@ -160,8 +163,9 @@ namespace Exiled.Events.Patches.Events.Scp079
             offset = 5;
 
             // Find the operand "Room Lockdown", then add the offset to get "ldloc.3"
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
-                                                             (string)instruction.operand == "Room Lockdown") + offset;
+            index = newInstructions.FindIndex(
+                instruction => (instruction.opcode == OpCodes.Ldstr) &&
+                               ((string)instruction.operand == "Room Lockdown")) + offset;
 
             // var roomGameObject = GameObject.Find(this.currentZone + "/" + this.currentRoom);
             // var ev = new LockingDownEventArgs(player, roomGameObject, manaFromLabel, manaFromLabel <= this.curMana);
@@ -170,39 +174,41 @@ namespace Exiled.Events.Patches.Events.Scp079
             //
             // if (!ev.IsAllowed)
             //   return;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(this.gameObject) => player
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(this.gameObject) => player
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // this.CurrentRoom
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CurrentRoom))),
+                    // this.CurrentRoom
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CurrentRoom))),
 
-                // manaFromLabel
-                new(OpCodes.Ldloc_2),
+                    // manaFromLabel
+                    new(OpCodes.Ldloc_2),
 
-                // var ev = new LockingDownEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LockingDownEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, lockingDown.LocalIndex),
+                    // var ev = new LockingDownEventArgs(...)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LockingDownEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, lockingDown.LocalIndex),
 
-                // Handlers.Scp079.OnLockingDown(ev);
-                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnLockingDown))),
+                    // Handlers.Scp079.OnLockingDown(ev);
+                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnLockingDown))),
 
-                // if (!ev.IsAllowed)
-                //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                    // if (!ev.IsAllowed)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
 
-                // manaFromLabel = ev.AuxiliaryPowerCost
-                new(OpCodes.Ldloc_S, lockingDown.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.AuxiliaryPowerCost))),
-                new(OpCodes.Stloc_2),
-            });
+                    // manaFromLabel = ev.AuxiliaryPowerCost
+                    new(OpCodes.Ldloc_S, lockingDown.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.AuxiliaryPowerCost))),
+                    new(OpCodes.Stloc_2),
+                });
 
             #endregion
 
@@ -214,7 +220,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             offset = -1;
 
             // Find the first 1.5f, then add the offset to get "ldloc.3".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_R4 && (float)instruction.operand == 1.5f) + offset;
+            index = newInstructions.FindIndex(instruction => (instruction.opcode == OpCodes.Ldc_R4) && ((float)instruction.operand == 1.5f)) + offset;
 
             // var ev = new StartingSpeakerEventArgs(Player.Get(this.gameObject), Map.FindParentRoom(this.currentCamera.gameObject), manaFromLabel, manaFromLabel * 1.5f <= this.curMana);
             //
@@ -222,51 +228,53 @@ namespace Exiled.Events.Patches.Events.Scp079
             //
             // if (!ev.IsAllowed)
             //   return;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(this.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(this.gameObject)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // Map.FindParentRoom(this.currentCamera.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentCamera))),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.FindParentRoom))),
+                    // Map.FindParentRoom(this.currentCamera.gameObject)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentCamera))),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.FindParentRoom))),
 
-                // manaFromLabel
-                new(OpCodes.Ldloc_2),
+                    // manaFromLabel
+                    new(OpCodes.Ldloc_2),
 
-                // !(manaFromLabel * 1.5f > this.curMana) --> manaFromLabel * 1.5f <= this.curMana
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Ldc_R4, 1.5f),
-                new(OpCodes.Mul),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
-                new(OpCodes.Cgt),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ceq),
+                    // !(manaFromLabel * 1.5f > this.curMana) --> manaFromLabel * 1.5f <= this.curMana
+                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldc_R4, 1.5f),
+                    new(OpCodes.Mul),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
+                    new(OpCodes.Cgt),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ceq),
 
-                // var ev = new StartingSpeakerEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingSpeakerEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, startingSpeakerEv.LocalIndex),
+                    // var ev = new StartingSpeakerEventArgs(...)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingSpeakerEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, startingSpeakerEv.LocalIndex),
 
-                // Handlers.Scp079.OnStartingSpeaker(ev);
-                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnStartingSpeaker))),
+                    // Handlers.Scp079.OnStartingSpeaker(ev);
+                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnStartingSpeaker))),
 
-                // if (!ev.IsAllowed)
-                //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(StartingSpeakerEventArgs), nameof(StartingSpeakerEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                    // if (!ev.IsAllowed)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StartingSpeakerEventArgs), nameof(StartingSpeakerEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
 
-                // manaFromLabel = ev.AuxiliaryPowerCost
-                new(OpCodes.Ldloc_S, startingSpeakerEv.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(StartingSpeakerEventArgs), nameof(StartingSpeakerEventArgs.AuxiliaryPowerCost))),
-                new(OpCodes.Stloc_2),
-            });
+                    // manaFromLabel = ev.AuxiliaryPowerCost
+                    new(OpCodes.Ldloc_S, startingSpeakerEv.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StartingSpeakerEventArgs), nameof(StartingSpeakerEventArgs.AuxiliaryPowerCost))),
+                    new(OpCodes.Stloc_2),
+                });
 
             #endregion
 
@@ -275,8 +283,9 @@ namespace Exiled.Events.Patches.Events.Scp079
             offset = -1;
 
             // Find the first string.Empty, then add the offset to get "ldarg.0".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldsfld &&
-                                                             (FieldInfo)instruction.operand == Field(typeof(string), nameof(string.Empty))) + offset;
+            index = newInstructions.FindIndex(
+                instruction => (instruction.opcode == OpCodes.Ldsfld) &&
+                               ((FieldInfo)instruction.operand == Field(typeof(string), nameof(string.Empty)))) + offset;
 
             // if (string.IsNullOrEmpty(this.Speaker)
             //   return;
@@ -287,41 +296,43 @@ namespace Exiled.Events.Patches.Events.Scp079
             //
             // if (!ev.IsAllowed)
             //   return;
-            newInstructions.InsertRange(index, new[]
-            {
-                // if (string.IsNullOrEmpty(this.Speaker)
-                //   return;
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, PropertyGetter(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.Speaker))),
-                new(OpCodes.Call, Method(typeof(string), nameof(string.IsNullOrEmpty))),
-                new(OpCodes.Brtrue, returnLabel),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // if (string.IsNullOrEmpty(this.Speaker)
+                    //   return;
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, PropertyGetter(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.Speaker))),
+                    new(OpCodes.Call, Method(typeof(string), nameof(string.IsNullOrEmpty))),
+                    new(OpCodes.Brtrue, returnLabel),
 
-                // Player.Get(this.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                    // Player.Get(this.gameObject)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // Map.FindParentRoom(this.currentCamera.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentCamera))),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.FindParentRoom))),
+                    // Map.FindParentRoom(this.currentCamera.gameObject)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentCamera))),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.FindParentRoom))),
 
-                // true
-                new(OpCodes.Ldc_I4_1),
+                    // true
+                    new(OpCodes.Ldc_I4_1),
 
-                // var ev = new StartingSpeakerEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingSpeakerEventArgs))[0]),
-                new(OpCodes.Dup),
+                    // var ev = new StartingSpeakerEventArgs(...)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingSpeakerEventArgs))[0]),
+                    new(OpCodes.Dup),
 
-                // Handlers.Scp079.OnStartingSpeaker(ev);
-                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnStoppingSpeaker))),
+                    // Handlers.Scp079.OnStartingSpeaker(ev);
+                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnStoppingSpeaker))),
 
-                // if (!ev.IsAllowed)
-                //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(StoppingSpeakerEventArgs), nameof(StoppingSpeakerEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-            });
+                    // if (!ev.IsAllowed)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StoppingSpeakerEventArgs), nameof(StoppingSpeakerEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                });
 
             #endregion
 
@@ -331,8 +342,9 @@ namespace Exiled.Events.Patches.Events.Scp079
             offset = 5;
 
             // Find first "ldstr Elevator Teleport", then add the offset to get "ldloc.3".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
-                                                             (string)instruction.operand == "Elevator Teleport") + offset;
+            index = newInstructions.FindIndex(
+                instruction => (instruction.opcode == OpCodes.Ldstr) &&
+                               ((string)instruction.operand == "Elevator Teleport")) + offset;
 
             // Declare a local variable of the type "ElevatorTeleportingEventArgs";
             LocalBuilder elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportingEventArgs));

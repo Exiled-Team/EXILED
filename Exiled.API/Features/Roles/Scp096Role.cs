@@ -23,7 +23,10 @@ namespace Exiled.API.Features.Roles
         /// Initializes a new instance of the <see cref="Scp096Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp096Role(Player player) => Owner = player;
+        internal Scp096Role(Player player)
+        {
+            Owner = player;
+        }
 
         /// <inheritdoc/>
         public override Player Owner { get; }
@@ -31,42 +34,66 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp096"/> script for the role.
         /// </summary>
-        public Scp096 Script => script ??= Owner.CurrentScp as Scp096;
+        public Scp096 Script
+        {
+            get => script ??= Owner.CurrentScp as Scp096;
+        }
 
         /// <summary>
         /// Gets a value indicating SCP-096's state.
         /// </summary>
-        public Scp096PlayerState State => Script.PlayerState;
+        public Scp096PlayerState State
+        {
+            get => Script.PlayerState;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 can receive targets.
         /// </summary>
-        public bool CanReceiveTargets => Script.CanReceiveTargets;
+        public bool CanReceiveTargets
+        {
+            get => Script.CanReceiveTargets;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 is currently enraged.
         /// </summary>
-        public bool IsEnraged => Script.Enraged;
+        public bool IsEnraged
+        {
+            get => Script.Enraged;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 is currently docile.
         /// </summary>
-        public bool IsDocile => !IsEnraged;
+        public bool IsDocile
+        {
+            get => !IsEnraged;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 is currently trying not to cry behind a door.
         /// </summary>
-        public bool TryingNotToCry => State == Scp096PlayerState.TryNotToCry;
+        public bool TryingNotToCry
+        {
+            get => State == Scp096PlayerState.TryNotToCry;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 is currently prying a gate.
         /// </summary>
-        public bool IsPryingGate => State == Scp096PlayerState.PryGate;
+        public bool IsPryingGate
+        {
+            get => State == Scp096PlayerState.PryGate;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 is currently charging.
         /// </summary>
-        public bool IsCharging => Script.Charging;
+        public bool IsCharging
+        {
+            get => Script.Charging;
+        }
 
         /// <summary>
         /// Gets or sets the amount of time in between SCP-096 charges.
@@ -89,9 +116,15 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of Players that are currently targeted by SCP-096.
         /// </summary>
-        public IReadOnlyCollection<Player> Targets => Script._targets.Select(Player.Get).ToList().AsReadOnly();
+        public IReadOnlyCollection<Player> Targets
+        {
+            get => Script._targets.Select(Player.Get).ToList().AsReadOnly();
+        }
 
         /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Scp096;
+        internal override RoleType RoleType
+        {
+            get => RoleType.Scp096;
+        }
     }
 }
