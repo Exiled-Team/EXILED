@@ -39,17 +39,26 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="global::Team"/> of this role.
         /// </summary>
-        public Team Team => Type.GetTeam();
+        public Team Team
+        {
+            get => Type.GetTeam();
+        }
 
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this role.
         /// </summary>
-        public Side Side => Type.GetSide();
+        public Side Side
+        {
+            get => Type.GetSide();
+        }
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this role.
         /// </summary>
-        public Color Color => Type.GetColor();
+        public Color Color
+        {
+            get => Type.GetColor();
+        }
 
         /// <summary>
         /// Gets all the spawns belonging to this role.
@@ -60,7 +69,10 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
         /// </summary>
-        public bool IsValid => Type == Owner.ReferenceHub.characterClassManager.NetworkCurClass;
+        public bool IsValid
+        {
+            get => Type == Owner.ReferenceHub.characterClassManager.NetworkCurClass;
+        }
 
         /// <summary>
         /// Gets the RoleType belonging to this role.

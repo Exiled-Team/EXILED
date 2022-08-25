@@ -24,6 +24,7 @@ namespace Exiled.API.Features
         /// A <see cref="List{T}"/> of <see cref="Window"/> on the map.
         /// </summary>
         internal static readonly List<Window> WindowValue = new(30);
+
         private static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
 
         /// <summary>
@@ -41,7 +42,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IEnumerable<Window> List => WindowValue.AsReadOnly();
+        public static IEnumerable<Window> List
+        {
+            get => WindowValue.AsReadOnly();
+        }
 
         /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
@@ -51,12 +55,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the window.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public GameObject GameObject
+        {
+            get => Base.gameObject;
+        }
 
         /// <summary>
         /// Gets the window's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => Base._transform;
+        public Transform Transform
+        {
+            get => Base._transform;
+        }
 
         /// <summary>
         /// Gets the <see cref="Exiled.API.Features.Room"/> the window is in.
@@ -71,7 +81,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the window's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room.Zone;
+        public ZoneType Zone
+        {
+            get => Room.Zone;
+        }
 
         /// <summary>
         /// Gets or sets the window's position.
@@ -85,12 +98,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not this window represents the window in front of SCP-079's recontainment button.
         /// </summary>
-        public bool Is079Trigger => Recontainer.ActivatorWindow == this;
+        public bool Is079Trigger
+        {
+            get => Recontainer.ActivatorWindow == this;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this window is breakable.
         /// </summary>
-        public bool IsBreakable => !Base.isBroken;
+        public bool IsBreakable
+        {
+            get => !Base.isBroken;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not this window is broken.
