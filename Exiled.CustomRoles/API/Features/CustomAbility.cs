@@ -28,7 +28,10 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomAbility"/> class.
         /// </summary>
-        public CustomAbility() => AbilityType = GetType().Name;
+        public CustomAbility()
+        {
+            AbilityType = GetType().Name;
+        }
 
         /// <summary>
         /// Gets a list of all registered custom abilities.
@@ -137,7 +140,7 @@ namespace Exiled.CustomRoles.API.Features
             Assembly assembly = Assembly.GetCallingAssembly();
             foreach (Type type in assembly.GetTypes())
             {
-                if ((type.BaseType != typeof(CustomAbility) && !type.IsSubclassOf(typeof(CustomAbility))) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
+                if (((type.BaseType != typeof(CustomAbility)) && !type.IsSubclassOf(typeof(CustomAbility))) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
                     (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
                     continue;
 

@@ -30,7 +30,10 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp049_2PlayerScript"/> for this role.
         /// </summary>
-        public Scp049_2PlayerScript Script => script ??= Owner.ReferenceHub.characterClassManager.Scp0492;
+        public Scp049_2PlayerScript Script
+        {
+            get => script ??= Owner.ReferenceHub.characterClassManager.Scp0492;
+        }
 
         /// <summary>
         /// Gets or sets the SCP-049-2 attack distance.
@@ -60,6 +63,9 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Scp0492;
+        internal override RoleType RoleType
+        {
+            get => RoleType.Scp0492;
+        }
     }
 }

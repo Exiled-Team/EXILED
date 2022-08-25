@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs.Scp096
             EnrageTimeToAdd = scp096.CurrentScp is Scp096 scp
                 ? scp.AddedTimeThisRage + enrageTimeToAdd <= Scp096.MaximumAddedEnrageTime
                     ? enrageTimeToAdd
-                    : Mathf.Abs(scp.AddedTimeThisRage + enrageTimeToAdd - Scp096.MaximumAddedEnrageTime)
+                    : Mathf.Abs((scp.AddedTimeThisRage + enrageTimeToAdd) - Scp096.MaximumAddedEnrageTime)
                 : 0f;
             IsAllowed = isAllowed;
         }

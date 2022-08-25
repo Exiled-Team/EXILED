@@ -21,7 +21,10 @@ namespace Exiled.Events.Commands.Show
         /// <summary>
         /// Initializes a new instance of the <see cref="Show"/> class.
         /// </summary>
-        public Show() => LoadGeneratedCommands();
+        public Show()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "show";

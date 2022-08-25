@@ -24,7 +24,10 @@ namespace Exiled.Loader.Features.Configs
         /// Initializes a new instance of the <see cref="ValidatingNodeDeserializer"/> class.
         /// </summary>
         /// <param name="nodeDeserializer">The node deserializer instance.</param>
-        public ValidatingNodeDeserializer(INodeDeserializer nodeDeserializer) => this.nodeDeserializer = nodeDeserializer;
+        public ValidatingNodeDeserializer(INodeDeserializer nodeDeserializer)
+        {
+            this.nodeDeserializer = nodeDeserializer;
+        }
 
         /// <inheritdoc/>
         public bool Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)

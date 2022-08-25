@@ -170,31 +170,31 @@ namespace Exiled.API.Extensions
                     return DamageType.ParticleDisruptor;
 
                 case FirearmDamageHandler firearmDamageHandler:
-                {
-                    return ItemConversion.ContainsKey(firearmDamageHandler.WeaponType) ? ItemConversion[firearmDamageHandler.WeaponType] : DamageType.Firearm;
-                }
+                    {
+                        return ItemConversion.ContainsKey(firearmDamageHandler.WeaponType) ? ItemConversion[firearmDamageHandler.WeaponType] : DamageType.Firearm;
+                    }
 
                 case ScpDamageHandler scpDamageHandler:
-                {
-                    DeathTranslation translation = DeathTranslations.TranslationsById[scpDamageHandler._translationId];
-                    if (translation.Id == DeathTranslations.PocketDecay.Id)
-                        return DamageType.Scp106;
+                    {
+                        DeathTranslation translation = DeathTranslations.TranslationsById[scpDamageHandler._translationId];
+                        if (translation.Id == DeathTranslations.PocketDecay.Id)
+                            return DamageType.Scp106;
 
-                    return TranslationIdConversion.ContainsKey(translation.Id)
-                        ? TranslationIdConversion[translation.Id]
-                        : DamageType.Scp;
-                }
+                        return TranslationIdConversion.ContainsKey(translation.Id)
+                            ? TranslationIdConversion[translation.Id]
+                            : DamageType.Scp;
+                    }
 
                 case UniversalDamageHandler universal:
-                {
-                    DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+                    {
+                        DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
 
-                    if (TranslationIdConversion.ContainsKey(translation.Id))
-                        return TranslationIdConversion[translation.Id];
+                        if (TranslationIdConversion.ContainsKey(translation.Id))
+                            return TranslationIdConversion[translation.Id];
 
-                    Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
-                    return DamageType.Unknown;
-                }
+                        Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
+                        return DamageType.Unknown;
+                    }
             }
 
             return DamageType.Unknown;
