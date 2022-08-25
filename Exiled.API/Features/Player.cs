@@ -300,7 +300,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's nickname.
+        /// Gets or sets the player's nickname if null it's send the original nickname.
         /// </summary>
         public string CustomName
         {
@@ -314,7 +314,7 @@ namespace Exiled.API.Features
         public bool HasCustomName => ReferenceHub.nicknameSync.NickSet;
 
         /// <summary>
-        /// Gets the player's nickname.
+        /// Gets the original player's nickname.
         /// </summary>
         public string Nickname => ReferenceHub.nicknameSync.Network_myNickSync;
 
