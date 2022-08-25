@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="ThrowableNetworkHandler.ServerProcessRequest" />.
-    ///     Adds the <see cref="Handlers.Player." /> event.
+    ///     Adds the <see cref="Handlers.Player.ThrowingRequest" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableNetworkHandler), nameof(ThrowableNetworkHandler.ServerProcessRequest))]
     internal static class ThrowingRequest

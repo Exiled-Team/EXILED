@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Player
+namespace Exiled.Events.EventArgs.Item
 {
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information before a keycard interacts with a door.
     /// </summary>
-    public class KeycardInteractingEventArgs : IPlayerEvent, IDeniableEvent, IDoorEvent
+    public class KeycardInteractingEventArgs : IPlayerEvent, IDeniableEvent, IDoorEvent, IPickupEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="KeycardInteractingEventArgs"/> class.
@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public KeycardInteractingEventArgs(BaseKeycardPickup pickup, Player player, DoorVariant door, bool isAllowed = true)
         {
-            Pickup = (KeycardPickup)API.Features.Pickups.Pickup.Get(pickup);
+            Pickup = Pickup.Get(pickup);
             Player = player;
             Door = Door.Get(door);
             IsAllowed = isAllowed;
@@ -38,12 +38,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets the pickup that's interacting with the door.
         /// </summary>
-        public KeycardPickup Pickup { get; }
+        public Pickup Pickup { get; }
 
         /// <summary>
         /// Gets the player who's threw the keycard.
         /// </summary>
-        public API.Features.Player Player { get; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the <see cref="API.Features.Door"/> instance.
