@@ -25,8 +25,8 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="knobSetting"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingItemEventArgs.KnobSetting"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingItemEventArgs.IsAllowed"/></param>
+        /// <param name="knobSetting"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingInventoryItemEventArgs.KnobSetting"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingInventoryItemEventArgs.IsAllowed"/></param>
         public UpgradingItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, bool isAllowed = true)
             : base(player, item, knobSetting, isAllowed)
         {
