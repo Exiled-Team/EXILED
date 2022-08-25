@@ -2806,6 +2806,12 @@ namespace Exiled.API.Features
                 case DoorType doorType:
                     Teleport(Door.Get(doorType).Position + Vector3.up);
                     break;
+                case SpawnLocation sp:
+                    Teleport(sp.GetPosition());
+                    break;
+                case Spawn.SpawnPoint sp:
+                    Teleport(sp.Position);
+                    break;
                 case RoomType roomType:
                     Teleport(Room.Get(roomType).Position + Vector3.up);
                     break;
@@ -2862,9 +2868,6 @@ namespace Exiled.API.Features
                         Teleport(item.Owner.Position);
                     else
                         Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid item teleport (item is missing Owner).");
-                    break;
-                case Spawn.SpawnPoint spawnpoint:
-                    Teleport(spawnpoint.Position);
                     break;
 
                 // Unity
