@@ -119,9 +119,9 @@ namespace Exiled.Events.Patches.Generic
             }
 #if DEBUG
             Log.Debug(
-                    $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
             foreach (Item item in player.Items)
-                    Log.Debug($"{item.Type} ({item.Serial})");
+                Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
@@ -138,9 +138,9 @@ namespace Exiled.Events.Patches.Generic
 #if DEBUG
                 Log.Debug($"Item ({serial}) removed from {player.Nickname}");
                 Log.Debug(
-                        $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                    $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
                 foreach (Item item in player.Items)
-                        Log.Debug($"{item.Type} ({item.Serial})");
+                    Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             });
         }

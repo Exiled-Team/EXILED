@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API
+namespace Exiled.API.Enums
 {
     /// <summary>
     /// All of the valid spawn locations.

@@ -10,6 +10,7 @@ namespace Exiled.CustomItems
     using System;
 
     using Exiled.API.Features;
+    using Exiled.CustomItems.Events;
 
     using HarmonyLib;
 
@@ -34,9 +35,9 @@ namespace Exiled.CustomItems
             roundHandler = new RoundHandler();
             playerHandler = new PlayerHandler();
 
-            Events.Handlers.Server.RoundStarted += roundHandler.OnRoundStarted;
+            Exiled.Events.Handlers.Server.RoundStarted += roundHandler.OnRoundStarted;
 
-            Events.Handlers.Player.ChangingRole += playerHandler.OnChangingRole;
+            Exiled.Events.Handlers.Player.ChangingRole += playerHandler.OnChangingRole;
 
             harmony = new Harmony($"com.{nameof(CustomItems)}.galaxy119-{DateTime.Now.Ticks}");
             harmony.PatchAll();
@@ -47,9 +48,9 @@ namespace Exiled.CustomItems
         /// <inheritdoc />
         public override void OnDisabled()
         {
-            Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
+            Exiled.Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
 
-            Events.Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;
+            Exiled.Events.Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;
 
             harmony.UnpatchAll();
 

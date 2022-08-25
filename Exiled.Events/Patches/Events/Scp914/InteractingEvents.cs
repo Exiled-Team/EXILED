@@ -8,17 +8,18 @@
 namespace Exiled.Events.Patches.Events.Scp914
 {
 #pragma warning disable SA1313
-
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp914;
 
     using global::Scp914;
 
     using HarmonyLib;
 
+    using Scp914 = Exiled.Events.Handlers.Scp914;
+
     /// <summary>
-    /// Patches <see cref="Scp914Controller.ServerInteract"/>.
-    /// Adds the <see cref="Handlers.Scp914.Activating"/> event.
+    ///     Patches <see cref="Scp914Controller.ServerInteract" />.
+    ///     Adds the <see cref="Handlers.Scp914.Activating" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp914Controller), nameof(Scp914Controller.ServerInteract))]
     internal static class InteractingEvents
@@ -37,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                         scp914KnobSetting = __instance._knobSetting + 1;
                     ChangingKnobSettingEventArgs ev = new(Player.Get(ply), scp914KnobSetting);
 
-                    Handlers.Scp914.OnChangingKnobSetting(ev);
+                    Scp914.OnChangingKnobSetting(ev);
                     if (!ev.IsAllowed)
                         return false;
 
@@ -49,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 case Scp914InteractCode.Activate:
                     ActivatingEventArgs ev2 = new(Player.Get(ply));
 
-                    Handlers.Scp914.OnActivating(ev2);
+                    Scp914.OnActivating(ev2);
 
                     if (!ev2.IsAllowed)
                         return false;

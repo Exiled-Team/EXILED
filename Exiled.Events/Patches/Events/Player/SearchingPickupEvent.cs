@@ -10,7 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="SearchCoordinator.ReceiveRequestUnsafe"/>.
-    /// Adds the <see cref="Handlers.Player.SearchingPickup"/> event.
+    ///     Patches <see cref="SearchCoordinator.ReceiveRequestUnsafe" />.
+    ///     Adds the <see cref="Handlers.Player.SearchingPickup" /> event.
     /// </summary>
     [HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]
     internal static class SearchingPickupEvent
@@ -55,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SearchCoordinator), nameof(SearchCoordinator.Hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 new(OpCodes.Ldloca_S, 0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SearchRequest), nameof(SearchRequest.Target))),
