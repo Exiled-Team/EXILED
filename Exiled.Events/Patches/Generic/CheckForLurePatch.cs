@@ -33,19 +33,8 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            newInstructions.Clear();
-            newInstructions.InsertRange(0, new[]
-            {
-                new CodeInstruction(OpCodes.Call, Method(typeof(CheckForLurePatch), nameof(CheckPlayers))),
-                new(OpCodes.Ret),
-            });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            yield return new CodeInstruction(OpCodes.Call, Method(typeof(CheckForLurePatch), nameof(CheckPlayers)));
+            yield return new(OpCodes.Ret);
         }
 
         private static void CheckPlayers()
