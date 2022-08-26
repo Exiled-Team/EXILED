@@ -108,34 +108,34 @@ namespace Exiled.API.Features.DamageHandlers
                     Base = new ExplosionDamageHandler(attacker.Footprint, UnityEngine.Vector3.zero, damage, 0);
                     break;
                 case DamageType.Firearm:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunAK);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.AK);
                     break;
                 case DamageType.Crossvec:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunCrossvec);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.Crossvec);
                     break;
                 case DamageType.Logicer:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunLogicer);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.Logicer);
                     break;
                 case DamageType.Revolver:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunRevolver);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.Revolver);
                     break;
                 case DamageType.Shotgun:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunShotgun);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.Shotgun);
                     break;
                 case DamageType.AK:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunAK);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.AK);
                     break;
                 case DamageType.Com15:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunCOM15);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.COM15);
                     break;
                 case DamageType.Com18:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunCOM18);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.COM18);
                     break;
                 case DamageType.Fsp9:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunFSP9);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.FSP9);
                     break;
                 case DamageType.E11Sr:
-                    GenericFirearm(player, attacker, damage, damageType, ItemType.GunE11SR);
+                    GenericFirearm(player, attacker, damage, damageType, FirearmType.E11SR);
                     break;
                 case DamageType.ParticleDisruptor:
                     Base = new DisruptorDamageHandler(Attacker, damage);
@@ -229,8 +229,8 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="attacker"> Current attacker. </param>
         /// <param name="amount"> Damage amount. </param>
         /// <param name="damageType"> Damage type. </param>
-        /// <param name="itemType"> ItemType. </param>
-        private void GenericFirearm(Player player, Player attacker, float amount, DamageType damageType, ItemType itemType)
+        /// <param name="itemType"> FirearmType. </param>
+        private void GenericFirearm(Player player, Player attacker, float amount, DamageType damageType, FirearmType itemType)
         {
             Firearm firearm = new(itemType)
             {

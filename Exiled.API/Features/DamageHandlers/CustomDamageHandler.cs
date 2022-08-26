@@ -63,7 +63,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             Damage = damage;
             Type = damageType;
-            Firearm firearm = new(ItemType.GunAK)
+            Firearm firearm = new(FirearmType.AK)
             {
                 Base =
                 {

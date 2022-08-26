@@ -324,7 +324,7 @@ namespace Exiled.API.Features.Items
                         Revolver revolver => revolver.AmmoManagerModule.MaxAmmo,
                         _ => 0,
                     };
-                    uint code = identifiers is not null ? (uint)firearmPickup.Info.ItemId.GetBaseCode() + identifiers.GetAttachmentsCode() : firearmPickup.Status.Attachments;
+                    uint code = identifiers is not null ? (uint)firearmPickup.Info.ItemId.GetFirearmType().GetBaseCode() + identifiers.GetAttachmentsCode() : firearmPickup.Status.Attachments;
                     firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, code);
                 }
 

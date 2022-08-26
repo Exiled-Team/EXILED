@@ -109,7 +109,7 @@ namespace Exiled.API.Features.Items
                                 Player.Get(keyValuePair.Key),
                                 keyValuePair.Value.ToDictionary(
                                     kvp => kvp.Key,
-                                    kvp => kvp.Key.GetAttachmentIdentifiers(kvp.Value).ToArray()));
+                                    kvp => kvp.Key.GetFirearmType().GetAttachmentIdentifiers(kvp.Value).ToArray()));
                         });
 
                 return playerPreferences.Where(kvp => kvp.Key is not null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
@@ -497,7 +497,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="player">The <see cref="Player"/> of which must be removed.</param>
         /// <param name="itemType">The <see cref="ItemType"/> to remove.</param>
-        public void RemovePreference(Player player, ItemType itemType)
+        public void RemovePreference(Player player, FirearmType itemType)
         {
             foreach (KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>> kvp in PlayerPreferences)
             {
@@ -505,7 +505,7 @@ namespace Exiled.API.Features.Items
                     continue;
 
                 if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary))
-                    dictionary[itemType] = (uint)itemType.GetBaseCode();
+                    dictionary[itemType.GetItemType()] = (uint)itemType.GetBaseCode();
             }
         }
 
@@ -551,7 +551,7 @@ namespace Exiled.API.Features.Items
             if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(player.ReferenceHub, out Dictionary<ItemType, uint> dictionary))
             {
                 foreach (KeyValuePair<ItemType, uint> kvp in dictionary)
-                    dictionary[kvp.Key] = (uint)kvp.Key.GetBaseCode();
+                    dictionary[kvp.Key] = (uint)kvp.Key.GetFirearmType().GetBaseCode();
             }
         }
 
