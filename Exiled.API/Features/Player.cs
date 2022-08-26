@@ -3194,13 +3194,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Converts the player in a human-readable format.
-        /// </summary>
-        /// <returns>A string containing Player-related data.</returns>
-        public override string ToString() =>
-            $"{Id} {Nickname} {UserId} {(Role is null ? "No role" : Role)}";
-
-        /// <summary>
         /// Clears all Instantiated containers for Role, Side, and Team.
         /// </summary>
         internal static void ResetAllInstantiatedContainers()
@@ -3209,6 +3202,11 @@ namespace Exiled.API.Features
             InstantiatedSideToPlayers.Clear();
             InstantiatedTeamToPlayers.Clear();
         }
+
+        /// <summary>
+        /// Converts the player in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Player-related data.</returns>
         public override string ToString() => $"{Id} ({Nickname}) [{UserId}] *{(Role is null ? "No role" : Role)}*";
     }
 }
