@@ -107,5 +107,25 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is displayed to spectators as text.</returns>
         public static bool IsDisplayed(this EffectType effect) => typeof(IDisplayablePlayerEffect).IsAssignableFrom(effect.Type());
+
+        /// <summary>
+        /// Returns the <see cref="EffectCategory"/> of the given <paramref name="effect"/>.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/>.</param>
+        /// <returns>The <see cref="EffectCategory"/> representing the effect.</returns>
+        public static EffectCategory GetCategories(this EffectType effect)
+        {
+            EffectCategory category = EffectCategory.None;
+            if (effect.IsPositive())
+                category |= EffectCategory.Positive;
+            if (effect.IsNegative())
+                category |= EffectCategory.Negative;
+            if (effect.IsMovement())
+                category |= EffectCategory.Movement;
+            if (effect.IsHarmful())
+                category |= EffectCategory.Harmful;
+
+            return category;
+        }
     }
 }
