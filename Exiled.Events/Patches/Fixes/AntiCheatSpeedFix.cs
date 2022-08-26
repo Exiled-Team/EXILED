@@ -38,33 +38,35 @@ namespace Exiled.Events.Patches.Fixes
             // Remove base-game stamina speed setter
             newInstructions.RemoveRange(index, 14);
 
-            newInstructions.InsertRange(index, new[]
-            {
-                // &speed
-                new(OpCodes.Ldarg_1),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // &speed
+                    new(OpCodes.Ldarg_1),
 
-                // speed
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldind_R4),
+                    // speed
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldind_R4),
 
-                // Player player = Player.Get(_hub)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(FirstPersonController), nameof(FirstPersonController._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    // Player player = Player.Get(_hub)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(FirstPersonController), nameof(FirstPersonController._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // staminaController.AllowMaxSpeed ? player.RunningSpeed : player.WalkSpeed
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(FirstPersonController), nameof(FirstPersonController.staminaController))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Stamina), nameof(Stamina.AllowMaxSpeed))),
-                new(OpCodes.Brtrue_S, maxSpeed),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.WalkingSpeed))),
-                new(OpCodes.Br_S, setSpeed),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.RunningSpeed))).WithLabels(maxSpeed),
+                    // staminaController.AllowMaxSpeed ? player.RunningSpeed : player.WalkSpeed
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(FirstPersonController), nameof(FirstPersonController.staminaController))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Stamina), nameof(Stamina.AllowMaxSpeed))),
+                    new(OpCodes.Brtrue_S, maxSpeed),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.WalkingSpeed))),
+                    new(OpCodes.Br_S, setSpeed),
+                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.RunningSpeed))).WithLabels(maxSpeed),
 
-                // speed *= (speed value above)
-                new CodeInstruction(OpCodes.Mul).WithLabels(setSpeed),
-                new(OpCodes.Stind_R4),
-            });
+                    // speed *= (speed value above)
+                    new CodeInstruction(OpCodes.Mul).WithLabels(setSpeed),
+                    new(OpCodes.Stind_R4),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

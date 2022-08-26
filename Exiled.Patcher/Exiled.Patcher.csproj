@@ -1,45 +1,45 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <LangVersion>9.0</LangVersion>
-    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
-    <BuildProperties>false</BuildProperties>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>9.0</LangVersion>
+        <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+        <BuildProperties>false</BuildProperties>
 
-    <AssemblyName>Exiled.Patcher</AssemblyName>
-    <AssemblyName Condition="'$(RuntimeIdentifier)' == 'linux-x64'">$(AssemblyName)-Linux</AssemblyName>
-    <AssemblyName Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(AssemblyName)-Win</AssemblyName>
+        <AssemblyName>Exiled.Patcher</AssemblyName>
+        <AssemblyName Condition="'$(RuntimeIdentifier)' == 'linux-x64'">$(AssemblyName)-Linux</AssemblyName>
+        <AssemblyName Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(AssemblyName)-Win</AssemblyName>
 
-    <!-- Since this is a program and no documentation is required in the .xml files -->
-    <GenerateDocumentationFile>False</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);SA0001</NoWarn>
+        <!-- Since this is a program and no documentation is required in the .xml files -->
+        <GenerateDocumentationFile>False</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);SA0001</NoWarn>
 
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>bin\$(Configuration)\</OutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <OutputPath>bin\$(Configuration)\</OutputPath>
 
-    <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
+        <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
 
-    <Configurations>Debug;Release;Programs</Configurations>
+        <Configurations>Debug;Release;Programs</Configurations>
 
-    <Platforms>AnyCPU</Platforms>
-  </PropertyGroup>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
 
-  <Import Project="../EXILED.props" />
+    <Import Project="../EXILED.props"/>
 
-  <PropertyGroup Condition="$(Configuration) == 'Release'">
-    <PublishSingleFile>true</PublishSingleFile>
-    <PublishTrimmed>true</PublishTrimmed>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies>
-  </PropertyGroup>
+    <PropertyGroup Condition="$(Configuration) == 'Release'">
+        <PublishSingleFile>true</PublishSingleFile>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimUnusedDependencies>true</TrimUnusedDependencies>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <None Update="..\assets\Exiled_Icon.ico" Pack="true" />
-  </ItemGroup>
+    <ItemGroup>
+        <None Update="..\assets\Exiled_Icon.ico" Pack="true"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="All" PrivateAssets="All" />
-    <PackageReference Include="dnlib" Version="3.3.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="All" PrivateAssets="All"/>
+        <PackageReference Include="dnlib" Version="3.3.2"/>
+    </ItemGroup>
 
 </Project>

@@ -37,23 +37,35 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the intercom's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public static GameObject GameObject => BaseIntercom.host.gameObject;
+        public static GameObject GameObject
+        {
+            get => BaseIntercom.host.gameObject;
+        }
 
         /// <summary>
         /// Gets the intercom's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform Transform => BaseIntercom.host.transform;
+        public static Transform Transform
+        {
+            get => BaseIntercom.host.transform;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
         /// </summary>
-        public static bool InUse => State is BaseIntercom.State.Transmitting or BaseIntercom.State.TransmittingBypass or BaseIntercom.State.AdminSpeaking;
+        public static bool InUse
+        {
+            get => State is BaseIntercom.State.Transmitting or BaseIntercom.State.TransmittingBypass or BaseIntercom.State.AdminSpeaking;
+        }
 
         /// <summary>
         /// Gets the <see cref="Player"/> that is using the intercom.
         /// </summary>
         /// <remarks>Will be <see langword="null"/> if <see cref="InUse"/> is <see langword="false"/>.</remarks>
-        public static Player Speaker => !InUse ? null : Player.Get(BaseIntercom.host.speaker);
+        public static Player Speaker
+        {
+            get => !InUse ? null : Player.Get(BaseIntercom.host.speaker);
+        }
 
         /// <summary>
         /// Gets or sets the remaining cooldown of the intercom.

@@ -57,7 +57,7 @@ namespace Exiled.Loader
 
             ConfigManager.LoadLoaderConfigs();
 
-            if (Config.Environment != EnvironmentType.Production && Config.Environment != EnvironmentType.ProductionDebug)
+            if ((Config.Environment != EnvironmentType.Production) && (Config.Environment != EnvironmentType.ProductionDebug))
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                 Paths.Reload($"EXILED-Testing");
@@ -103,7 +103,10 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
         /// </summary>
-        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development || Config.Environment == EnvironmentType.ProductionDebug;
+        public static bool ShouldDebugBeShown
+        {
+            get => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development || Config.Environment == EnvironmentType.ProductionDebug;
+        }
 
         /// <summary>
         /// Gets plugin dependencies.
@@ -431,7 +434,7 @@ namespace Exiled.Loader
 
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
-            if(plugin.IgnoreRequiredVersionCheck)
+            if (plugin.IgnoreRequiredVersionCheck)
                 return false;
 
             Version requiredVersion = plugin.RequiredExiledVersion;
@@ -445,15 +448,17 @@ namespace Exiled.Loader
                 // Exiled is outdated
                 if (requiredVersion.Major > actualVersion.Major)
                 {
-                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                              $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+                    Log.Error(
+                        $"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
+                        $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
 
                     return true;
                 }
-                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
+                else if ((requiredVersion.Major < actualVersion.Major) && !Config.ShouldLoadOutdatedPlugins)
                 {
-                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
-                              $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
+                    Log.Error(
+                        $"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
+                        $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
 
                     return true;
                 }

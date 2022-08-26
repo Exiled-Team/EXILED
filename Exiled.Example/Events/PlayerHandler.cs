@@ -52,14 +52,16 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingItem(ChangingItemEventArgs)"/>
         public void OnChangingItem(ChangingItemEventArgs ev)
         {
-            Timing.CallDelayed(2f, () =>
-            {
-                if (ev.Player?.CurrentItem is Firearm firearm)
+            Timing.CallDelayed(
+                2f,
+                () =>
                 {
-                    Log.Info($"{ev.Player.Nickname} has a firearm!");
-                    firearm.Recoil = new RecoilSettings(0, 0, 0, 0, 0, 0);
-                }
-            });
+                    if (ev.Player?.CurrentItem is Firearm firearm)
+                    {
+                        Log.Info($"{ev.Player.Nickname} has a firearm!");
+                        firearm.Recoil = new RecoilSettings(0, 0, 0, 0, 0, 0);
+                    }
+                });
             Log.Info($"{ev.Player.Nickname} is changing his {(ev.Player?.CurrentItem is null ? "NONE" : ev.Player?.CurrentItem?.Type.ToString())} item to {(ev.NewItem is null ? "NONE" : ev.NewItem.Type.ToString())}!");
         }
 

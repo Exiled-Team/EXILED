@@ -36,7 +36,10 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp939"/> script for this role.
         /// </summary>
-        public Scp939 Script => script ??= Owner.CurrentScp as Scp939;
+        public Scp939 Script
+        {
+            get => script ??= Owner.CurrentScp as Scp939;
+        }
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-939 can attack again.
@@ -50,7 +53,10 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets SCP-939's move speed.
         /// </summary>
-        public float MoveSpeed => Script.GetMovementSpeed();
+        public float MoveSpeed
+        {
+            get => Script.GetMovementSpeed();
+        }
 
         /// <summary>
         /// Gets a list of players this SCP-939 instance can see regardless of their movement.

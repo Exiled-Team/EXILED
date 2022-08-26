@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
                             if (ev.IsInIdleRange && !inIdleRange)
                                 inIdleRange = ev.IsInIdleRange;
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
 #if DEBUG
                             Log.Error($"{nameof(TriggeringTesla)}.Prefix: {e}");

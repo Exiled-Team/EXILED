@@ -20,7 +20,10 @@ namespace Exiled.CustomRoles.Events
         /// Initializes a new instance of the <see cref="PlayerHandlers"/> class.
         /// </summary>
         /// <param name="plugin">The <see cref="CustomRoles"/> plugin instance.</param>
-        public PlayerHandlers(CustomRoles plugin) => this.plugin = plugin;
+        public PlayerHandlers(CustomRoles plugin)
+        {
+            this.plugin = plugin;
+        }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.SpawningRagdoll"/>
         internal void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
