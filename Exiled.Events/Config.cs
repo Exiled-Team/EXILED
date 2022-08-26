@@ -16,7 +16,7 @@ namespace Exiled.Events
     {
         /// <inheritdoc/>
         [Description("Indicates whether the plugin is enabled or not")]
-        public bool IsEnabled { get; set; } = false;
+        public bool IsEnabled { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether events are only patched if they have delegates subscribed to them.
