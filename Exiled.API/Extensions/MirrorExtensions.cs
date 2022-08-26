@@ -14,7 +14,7 @@ namespace Exiled.API.Extensions
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Text;
-
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     using InventorySystem.Items.Firearms;
@@ -138,11 +138,11 @@ namespace Exiled.API.Extensions
         /// <param name="itemType">Weapon' sound to play.</param>
         /// <param name="volume">Sound's volume to set.</param>
         /// <param name="audioClipId">GunAudioMessage's audioClipId to set (default = 0).</param>
-        public static void PlayGunSound(this Player player, Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0)
+        public static void PlayGunSound(this Player player, Vector3 position, FirearmType itemType, byte volume, byte audioClipId = 0)
         {
             GunAudioMessage message = new()
             {
-                Weapon = itemType,
+                Weapon = itemType.GetItemType(),
                 AudioClipId = audioClipId,
                 MaxDistance = volume,
                 ShooterNetId = 0U,
