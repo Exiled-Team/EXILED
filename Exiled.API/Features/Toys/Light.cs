@@ -25,7 +25,10 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         /// <param name="lightSourceToy">The <see cref="LightSourceToy"/> of the toy.</param>
         internal Light(LightSourceToy lightSourceToy)
-            : base(lightSourceToy, AdminToyType.LightSource) => Base = lightSourceToy;
+            : base(lightSourceToy, AdminToyType.LightSource)
+        {
+            Base = lightSourceToy;
+        }
 
         /// <summary>
         /// Gets the base <see cref="LightSourceToy"/>.

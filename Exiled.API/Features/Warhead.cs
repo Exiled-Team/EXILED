@@ -34,7 +34,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="GameObject"/> of the warhead lever.
         /// </summary>
-        public static GameObject Lever => SitePanel.lever.gameObject;
+        public static GameObject Lever
+        {
+            get => SitePanel.lever.gameObject;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the warhead lever is enabled.
@@ -84,12 +87,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the warhead has already been detonated.
         /// </summary>
-        public static bool IsDetonated => Controller.detonated;
+        public static bool IsDetonated
+        {
+            get => Controller.detonated;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the warhead detonation is in progress.
         /// </summary>
-        public static bool IsInProgress => Controller.NetworkinProgress;
+        public static bool IsInProgress
+        {
+            get => Controller.NetworkinProgress;
+        }
 
         /// <summary>
         /// Gets or sets the warhead detonation timer.
@@ -103,7 +112,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the warhead real detonation timer.
         /// </summary>
-        public static float RealDetonationTimer => Controller.RealDetonationTime();
+        public static float RealDetonationTimer
+        {
+            get => Controller.RealDetonationTime();
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the warhead can be disabled.
@@ -117,7 +129,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the warhead can be started.
         /// </summary>
-        public static bool CanBeStarted => Controller.CanDetonate;
+        public static bool CanBeStarted
+        {
+            get => Controller.CanDetonate;
+        }
 
         /// <summary>
         /// Starts the warhead countdown.

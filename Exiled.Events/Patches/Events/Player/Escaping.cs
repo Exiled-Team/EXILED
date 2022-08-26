@@ -33,29 +33,31 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingEventArgs));
             LocalBuilder role = generator.DeclareLocal(typeof(RoleType));
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscaping))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.NewRole))),
-                new(OpCodes.Stloc, role.LocalIndex),
-            });
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscaping))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.NewRole))),
+                    new(OpCodes.Stloc, role.LocalIndex),
+                });
 
             for (int i = 0; i < newInstructions.Count; i++)
             {
-                if (newInstructions[i].opcode == OpCodes.Call && (MethodInfo)newInstructions[i].operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass)))
+                if ((newInstructions[i].opcode == OpCodes.Call) && ((MethodInfo)newInstructions[i].operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))))
                 {
                     int index = i - 5;
-                    newInstructions[index] = new(OpCodes.Ldloc_S, role.LocalIndex);
+                    newInstructions[index] = new CodeInstruction(OpCodes.Ldloc_S, role.LocalIndex);
                 }
             }
 

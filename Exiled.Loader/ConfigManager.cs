@@ -293,8 +293,8 @@ namespace Exiled.Loader
         public static void ReloadRemoteAdmin()
         {
             ServerStatic.RolesConfig = new YamlConfig(ServerStatic.RolesConfigPath);
-            ServerStatic.SharedGroupsConfig = (GameCore.ConfigSharing.Paths[4] is null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[4] + "shared_groups.txt");
-            ServerStatic.SharedGroupsMembersConfig = (GameCore.ConfigSharing.Paths[5] is null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[5] + "shared_groups_members.txt");
+            ServerStatic.SharedGroupsConfig = GameCore.ConfigSharing.Paths[4] is null ? null : new YamlConfig(GameCore.ConfigSharing.Paths[4] + "shared_groups.txt");
+            ServerStatic.SharedGroupsMembersConfig = GameCore.ConfigSharing.Paths[5] is null ? null : new YamlConfig(GameCore.ConfigSharing.Paths[5] + "shared_groups_members.txt");
             ServerStatic.PermissionsHandler = new PermissionsHandler(ref ServerStatic.RolesConfig, ref ServerStatic.SharedGroupsConfig, ref ServerStatic.SharedGroupsMembersConfig);
             ServerStatic.GetPermissionsHandler().RefreshPermissions();
 

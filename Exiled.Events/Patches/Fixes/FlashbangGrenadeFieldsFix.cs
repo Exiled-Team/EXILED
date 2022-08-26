@@ -33,37 +33,39 @@ namespace Exiled.Events.Patches.Fixes
             Label skipLabel = generator.DefineLabel();
             LocalBuilder flash = generator.DeclareLocal(typeof(FlashGrenade));
 
-            newInstructions.InsertRange(index, new[]
-            {
-                // if (!FlashGrenade.GrenadeToItem.TryGetValue(this, out FlashGrenade flash)
-                //     goto SKIP_LABEL
-                new(OpCodes.Call, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.GrenadeToItem))),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloca_S, flash.LocalIndex),
-                new(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.TryGetValue))),
-                new(OpCodes.Brfalse, skipLabel),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // if (!FlashGrenade.GrenadeToItem.TryGetValue(this, out FlashGrenade flash)
+                    //     goto SKIP_LABEL
+                    new(OpCodes.Call, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.GrenadeToItem))),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloca_S, flash.LocalIndex),
+                    new(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.TryGetValue))),
+                    new(OpCodes.Brfalse, skipLabel),
 
-                // this._blindingOverDistance = flash.BlindCurve;
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc, flash.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.BlindCurve))),
-                new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._blindingOverDistance))),
+                    // this._blindingOverDistance = flash.BlindCurve;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc, flash.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.BlindCurve))),
+                    new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._blindingOverDistance))),
 
-                // this._deafenDurationOverDistance = flash.DeafenCurve;
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc, flash.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.DeafenCurve))),
-                new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._deafenDurationOverDistance))),
+                    // this._deafenDurationOverDistance = flash.DeafenCurve;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc, flash.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.DeafenCurve))),
+                    new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._deafenDurationOverDistance))),
 
-                // this._surfaceZoneDistanceIntensifier = flash.SurfaceDistanceIntensifier;
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc, flash.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.SurfaceDistanceIntensifier))),
-                new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._surfaceZoneDistanceIntensifier))),
+                    // this._surfaceZoneDistanceIntensifier = flash.SurfaceDistanceIntensifier;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc, flash.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.SurfaceDistanceIntensifier))),
+                    new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._surfaceZoneDistanceIntensifier))),
 
-                // SKIP_LABEL
-                new CodeInstruction(OpCodes.Nop).WithLabels(skipLabel),
-            });
+                    // SKIP_LABEL
+                    new CodeInstruction(OpCodes.Nop).WithLabels(skipLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

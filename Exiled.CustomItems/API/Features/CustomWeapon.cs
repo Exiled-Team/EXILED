@@ -46,7 +46,7 @@ namespace Exiled.CustomItems.API.Features
             get => base.Type;
             set
             {
-                if (!value.IsWeapon() && value != ItemType.None)
+                if (!value.IsWeapon() && (value != ItemType.None))
                     throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid weapon type.");
 
                 base.Type = value;
@@ -124,15 +124,17 @@ namespace Exiled.CustomItems.API.Features
 
             TrackedSerials.Add(pickup.Serial);
 
-            Timing.CallDelayed(1f, () =>
-            {
-                if (pickup.Base is FirearmPickup firearmPickup)
+            Timing.CallDelayed(
+                1f,
+                () =>
                 {
-                    firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
-                    firearmPickup.NetworkStatus = firearmPickup.Status;
-                    Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
-                }
-            });
+                    if (pickup.Base is FirearmPickup firearmPickup)
+                    {
+                        firearmPickup.Status = new FirearmStatus(ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                        firearmPickup.NetworkStatus = firearmPickup.Status;
+                        Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                    }
+                });
 
             return pickup;
         }
@@ -151,15 +153,17 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Add(pickup.Serial);
 
-                Timing.CallDelayed(1f, () =>
-                {
-                    if (pickup.Base is FirearmPickup firearmPickup)
+                Timing.CallDelayed(
+                    1f,
+                    () =>
                     {
-                        firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
-                        firearmPickup.NetworkStatus = firearmPickup.Status;
-                        Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
-                    }
-                });
+                        if (pickup.Base is FirearmPickup firearmPickup)
+                        {
+                            firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                            firearmPickup.NetworkStatus = firearmPickup.Status;
+                            Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                        }
+                    });
 
                 return pickup;
             }
@@ -186,15 +190,17 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Add(pickup.Serial);
 
-                Timing.CallDelayed(1f, () =>
-                {
-                    if (pickup.Base is FirearmPickup firearmPickup)
+                Timing.CallDelayed(
+                    1f,
+                    () =>
                     {
-                        firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
-                        firearmPickup.NetworkStatus = firearmPickup.Status;
-                        Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
-                    }
-                });
+                        if (pickup.Base is FirearmPickup firearmPickup)
+                        {
+                            firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                            firearmPickup.NetworkStatus = firearmPickup.Status;
+                            Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                        }
+                    });
 
                 return pickup;
             }
@@ -384,7 +390,7 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (!FriendlyFire && ev.Player.Role.Team == ev.Target.Role.Team)
+            if (!FriendlyFire && (ev.Player.Role.Team == ev.Target.Role.Team))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: FF is disabled for this weapon!", Instance.Config.Debug);
                 return;

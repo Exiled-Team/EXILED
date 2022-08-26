@@ -18,7 +18,10 @@ namespace Exiled.API.Structs
         /// Initializes a new instance of the <see cref="Elevator"/> struct.
         /// </summary>
         /// <param name="elevator">The base <see cref="Lift.Elevator"/> class.</param>
-        public Elevator(Lift.Elevator elevator) => Base = elevator;
+        public Elevator(Lift.Elevator elevator)
+        {
+            Base = elevator;
+        }
 
         /// <summary>
         /// Gets the base <see cref="Lift.Elevator"/>.
@@ -28,7 +31,10 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Gets the elevator's target.
         /// </summary>
-        public Transform Target => Base.target;
+        public Transform Target
+        {
+            get => Base.target;
+        }
 
         /// <summary>
         /// Gets or sets the elevator's position.

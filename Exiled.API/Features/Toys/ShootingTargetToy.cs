@@ -53,17 +53,26 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the target.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public GameObject GameObject
+        {
+            get => Base.gameObject;
+        }
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the bullseye.
         /// </summary>
-        public GameObject Bullseye => Base._bullsEye.gameObject;
+        public GameObject Bullseye
+        {
+            get => Base._bullsEye.gameObject;
+        }
 
         /// <summary>
         /// Gets the <see cref="Interactables.Verification.IVerificationRule"/> for this target.
         /// </summary>
-        public Interactables.Verification.IVerificationRule VerificationRule => Base.VerificationRule;
+        public Interactables.Verification.IVerificationRule VerificationRule
+        {
+            get => Base.VerificationRule;
+        }
 
         /// <summary>
         /// Gets the bullseye location of the target.

@@ -17,7 +17,7 @@ namespace Exiled.API.Features.DamageHandlers
     /// <summary>
     /// Allows generic damage to player.
     /// </summary>
-    public class GenericDamageHandler : PlayerStatsSystem.CustomReasonDamageHandler
+    public class GenericDamageHandler : CustomReasonDamageHandler
     {
         private const string DamageTextDefault = "You were damaged by Unknown Cause";
         private string genericDamageText;
@@ -41,18 +41,18 @@ namespace Exiled.API.Features.DamageHandlers
         {
             this.player = player;
             this.damageType = damageType;
-            this.customCassieAnnouncement = cassieAnnouncement;
-            if (this.customCassieAnnouncement is not null)
+            customCassieAnnouncement = cassieAnnouncement;
+            if (customCassieAnnouncement is not null)
             {
-                this.customCassieAnnouncement.Announcement = customCassieAnnouncement.Announcement ?? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}";
+                customCassieAnnouncement.Announcement = customCassieAnnouncement.Announcement ?? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}";
             }
 
-            this.Attacker = attacker.Footprint;
-            this.AllowSelfDamage = true;
-            this.Damage = damage;
-            this.ServerLogsText = $"GenericDamageHandler damage processing";
-            this.genericDamageText = $"You were damaged by {damageType}";
-            this.genericEnvironmentDamageText = $"Environemntal damage of type {damageType}";
+            Attacker = attacker.Footprint;
+            AllowSelfDamage = true;
+            Damage = damage;
+            ServerLogsText = $"GenericDamageHandler damage processing";
+            genericDamageText = $"You were damaged by {damageType}";
+            genericEnvironmentDamageText = $"Environemntal damage of type {damageType}";
 
             switch (damageType)
             {
@@ -213,9 +213,9 @@ namespace Exiled.API.Features.DamageHandlers
             HandlerOutput output = base.ApplyDamage(ply);
             if (output is HandlerOutput.Death)
             {
-                if (this.customCassieAnnouncement?.Announcement != null)
+                if (customCassieAnnouncement?.Announcement != null)
                 {
-                    Cassie.Message(this.customCassieAnnouncement.Announcement);
+                    Cassie.Message(customCassieAnnouncement.Announcement);
                 }
             }
 

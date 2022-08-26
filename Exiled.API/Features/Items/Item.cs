@@ -108,57 +108,90 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ItemCategory"/> of the item.
         /// </summary>
-        public ItemCategory Category => Base.Category;
+        public ItemCategory Category
+        {
+            get => Base.Category;
+        }
 
         /// <summary>
         /// Gets the Weight of the item.
         /// </summary>
-        public float Weight => Base.Weight;
+        public float Weight
+        {
+            get => Base.Weight;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is ammunition.
         /// </summary>
-        public bool IsAmmo => Type.IsAmmo();
+        public bool IsAmmo
+        {
+            get => Type.IsAmmo();
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is armor.
         /// </summary>
-        public bool IsArmor => Type.IsArmor();
+        public bool IsArmor
+        {
+            get => Type.IsArmor();
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is a keycard.
         /// </summary>
-        public bool IsKeycard => Type.IsKeycard();
+        public bool IsKeycard
+        {
+            get => Type.IsKeycard();
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is a medical item.
         /// </summary>
-        public bool IsMedical => Type.IsMedical();
+        public bool IsMedical
+        {
+            get => Type.IsMedical();
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is an SCP item.
         /// </summary>
-        public bool IsScp => Type.IsScp();
+        public bool IsScp
+        {
+            get => Type.IsScp();
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is a throwable item.
         /// </summary>
-        public bool IsThrowable => Type.IsThrowable();
+        public bool IsThrowable
+        {
+            get => Type.IsThrowable();
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is a utility item.
         /// </summary>
-        public bool IsUtility => Type.IsUtility();
+        public bool IsUtility
+        {
+            get => Type.IsUtility();
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this item is a weapon.
         /// </summary>
-        public bool IsWeapon => Type.IsWeapon();
+        public bool IsWeapon
+        {
+            get => Type.IsWeapon();
+        }
 
         /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.
         /// </summary>
-        public Player Owner => Player.Get(Base.Owner);
+        public Player Owner
+        {
+            get => Player.Get(Base.Owner);
+        }
 
         /// <summary>
         /// Gets an existing <see cref="Item"/> or creates a new instance of one.
@@ -181,7 +214,7 @@ namespace Exiled.API.Features.Items
                 {
                     Scp330Bag scp330Bag => new Scp330(scp330Bag),
                     Scp244Item scp244Item => new Scp244(scp244Item),
-                    _ => new Usable(usable)
+                    _ => new Usable(usable),
                 },
                 RadioItem radio => new Radio(radio),
                 MicroHIDItem micro => new MicroHid(micro),
@@ -194,7 +227,7 @@ namespace Exiled.API.Features.Items
                     ExplosionGrenade => new ExplosiveGrenade(throwable),
                     _ => new Throwable(throwable),
                 },
-                _ => new Item(itemBase)
+                _ => new Item(itemBase),
             };
         }
 
@@ -237,7 +270,8 @@ namespace Exiled.API.Features.Items
             ItemType.GrenadeFlash => new FlashGrenade(owner),
             ItemType.GrenadeHE or ItemType.SCP018 => new ExplosiveGrenade(type, owner),
             ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new Firearm(type),
-            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new Keycard(type),
+            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or
+                ItemType.KeycardNTFOfficer => new Keycard(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new Armor(type),
             ItemType.SCP330 => new Scp330(),
             ItemType.SCP2176 => new Scp2176(owner),
@@ -365,7 +399,7 @@ namespace Exiled.API.Features.Items
         /// <returns> Cloned item object. </returns>
         public virtual Item Clone()
         {
-            Item generatedItem = Item.Create(Type);
+            Item generatedItem = Create(Type);
             return generatedItem;
         }
     }

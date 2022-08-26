@@ -17,13 +17,16 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp173Role : Role
     {
-        private PlayableScps.Scp173 script;
+        private Scp173 script;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp173Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp173Role(Player player) => Owner = player;
+        internal Scp173Role(Player player)
+        {
+            Owner = player;
+        }
 
         /// <inheritdoc/>
         public override Player Owner { get; }
@@ -31,22 +34,34 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp173"/> script for the role.
         /// </summary>
-        public Scp173 Script => script ??= Owner.CurrentScp as Scp173;
+        public Scp173 Script
+        {
+            get => script ??= Owner.CurrentScp as Scp173;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-173 is currently being viewed by one or more players.
         /// </summary>
-        public bool IsObserved => Script._isObserved;
+        public bool IsObserved
+        {
+            get => Script._isObserved;
+        }
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of players that are currently viewing SCP-173. Can be empty.
         /// </summary>
-        public IReadOnlyCollection<Player> ObservingPlayers => Script._observingPlayers.Select(Player.Get).ToList().AsReadOnly();
+        public IReadOnlyCollection<Player> ObservingPlayers
+        {
+            get => Script._observingPlayers.Select(Player.Get).ToList().AsReadOnly();
+        }
 
         /// <summary>
         /// Gets SCP-173's move speed.
         /// </summary>
-        public float MoveSpeed => Script.GetMoveSpeed();
+        public float MoveSpeed
+        {
+            get => Script.GetMoveSpeed();
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-173 is able to blink.
@@ -69,7 +84,10 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating the max distance that SCP-173 can move in a blink. Factors in <see cref="BreakneckActive"/>.
         /// </summary>
-        public float BlinkDistance => Script.EffectiveBlinkDistance();
+        public float BlinkDistance
+        {
+            get => Script.EffectiveBlinkDistance();
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-173's breakneck speed is active.
@@ -99,7 +117,10 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Scp173;
+        internal override RoleType RoleType
+        {
+            get => RoleType.Scp173;
+        }
 
         /// <summary>
         /// Places a Tantrum (SCP-173's ability) under the player.

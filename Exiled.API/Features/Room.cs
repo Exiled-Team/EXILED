@@ -37,27 +37,42 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
         /// </summary>
-        public static IEnumerable<Room> List => RoomsValue;
+        public static IEnumerable<Room> List
+        {
+            get => RoomsValue;
+        }
 
         /// <summary>
         /// Gets the <see cref="Room"/> name.
         /// </summary>
-        public string Name => name;
+        public string Name
+        {
+            get => name;
+        }
 
         /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => gameObject;
+        public GameObject GameObject
+        {
+            get => gameObject;
+        }
 
         /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => transform;
+        public Transform Transform
+        {
+            get => transform;
+        }
 
         /// <summary>
         /// Gets the <see cref="Room"/> position.
         /// </summary>
-        public Vector3 Position => transform.position;
+        public Vector3 Position
+        {
+            get => transform.position;
+        }
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
@@ -82,7 +97,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && !(player.CurrentRoom is null) && player.CurrentRoom.Transform == Transform);
+        public IEnumerable<Player> Players
+        {
+            get => Player.List.Where(player => player.IsAlive && !(player.CurrentRoom is null) && (player.CurrentRoom.Transform == Transform));
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
@@ -157,7 +175,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the FlickerableLightController's NetworkIdentity.
         /// </summary>
-        public NetworkIdentity FlickerableLightControllerNetIdentity => FlickerableLightController.netIdentity;
+        public NetworkIdentity FlickerableLightControllerNetIdentity
+        {
+            get => FlickerableLightController.netIdentity;
+        }
 
         /// <summary>
         /// Gets the room's FlickerableLightController.
@@ -191,7 +212,7 @@ namespace Exiled.API.Features
         /// <param name="position">The <see cref="Vector3"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="Vector3"/> or <see langword="null"/> if not found.</returns>
         public static Room Get(Vector3 position) => List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPosition(position).UniqueId)
-            ?? List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPositionRaycasts(position).UniqueId);
+                                                    ?? List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPositionRaycasts(position).UniqueId);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.
@@ -393,7 +414,7 @@ namespace Exiled.API.Features
                                 break;
                             case Scp079Interactable.InteractableType.LightController:
                                 if (scp079Interactable.TryGetComponent(
-                                        out FlickerableLightController lightController))
+                                    out FlickerableLightController lightController))
                                     flickerableLightController = lightController;
                                 break;
                             case Scp079Interactable.InteractableType.Tesla:
@@ -409,7 +430,7 @@ namespace Exiled.API.Features
                 }
             }
 
-            if (flickerableLightController is null && gameObject.transform.position.y > 900)
+            if (flickerableLightController is null && (gameObject.transform.position.y > 900))
             {
                 flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
             }
