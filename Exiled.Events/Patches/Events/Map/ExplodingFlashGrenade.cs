@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Map
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using Footprinting;
 
@@ -127,7 +128,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                if(Exiled.Events.Events.Instance.Config.CanFlashbangsAffectThrower && Player.Get(grenade.PreviousOwner.Hub) == player)
+                if (Exiled.Events.Events.Instance.Config.CanFlashbangsAffectThrower && Player.Get(grenade.PreviousOwner.Hub) == player)
                 {
                     grenade.ProcessPlayer(player.ReferenceHub);
                 }

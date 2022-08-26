@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Item
     using Exiled.Events;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using Footprinting;
 

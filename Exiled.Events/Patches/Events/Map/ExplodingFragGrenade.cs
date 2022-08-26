@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Map
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using Footprinting;
 
@@ -45,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Map
             List<Collider> colliders = new();
             foreach (Collider collider in colliderArray)
             {
-                if(!collider.TryGetComponent(out IDestructible dest) ||
+                if (!collider.TryGetComponent(out IDestructible dest) ||
                     !ReferenceHub.TryGetHubNetID(dest.NetworkId, out ReferenceHub hub) ||
                     Player.Get(hub) is not Player player || ev.TargetsToAffect.Contains(player))
                 {

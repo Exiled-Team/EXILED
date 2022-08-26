@@ -16,6 +16,8 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
+    using HarmonyLib;
+
     using Interactables.Interobjects.DoorUtils;
 
     using InventorySystem.Items.Pickups;
@@ -167,11 +169,25 @@ namespace Exiled.API.Features
         public FlickerableLightController FlickerableLightController { get; private set; }
 
         /// <summary>
+        /// Gets a dictionary that allows you to get a room from a given room identifier.
+        /// </summary>
+        internal static Dictionary<RoomIdentifier, Room> RoomIdentToRoomDict { get; } = new();
+
+        /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.
         /// </summary>
         /// <param name="roomType">The <see cref="RoomType"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="RoomType"/> or <see langword="null"/> if not found.</returns>
         public static Room Get(RoomType roomType) => Get(room => room.Type == roomType).FirstOrDefault();
+
+        /// <summary>
+        /// Gets a <see cref="Room"/> from a given <see cref="RoomIdentifier"/>.
+        /// </summary>
+        /// <param name="roomIdentifier">The <see cref="RoomIdentifier"/> to search with.</param>
+        /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
+        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentToRoomDict.ContainsKey(roomIdentifier)
+            ? RoomIdentToRoomDict[roomIdentifier]
+            : null;
 
         /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="Vector3"/>.
@@ -408,6 +424,7 @@ namespace Exiled.API.Features
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
+            RoomIdentToRoomDict.Add(RoomIdentifier, this);
 
             FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
             Doors = doors;
