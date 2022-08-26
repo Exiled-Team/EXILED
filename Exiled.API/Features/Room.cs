@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -15,11 +16,7 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
-    using HarmonyLib;
-
     using Interactables.Interobjects.DoorUtils;
-
-    using InventorySystem.Items.Pickups;
 
     using MapGeneration;
 
