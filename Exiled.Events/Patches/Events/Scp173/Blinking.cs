@@ -31,7 +31,6 @@ namespace Exiled.Events.Patches.Events.Scp173
     ///     Adds the <see cref="Handlers.Scp173.Blinking" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.Blinking))]
-    [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.ServerHandleBlinkMessage))]
     [HarmonyPatch(typeof(Scp173), nameof(Scp173.ServerHandleBlinkMessage))]
     internal static class Blinking
     {

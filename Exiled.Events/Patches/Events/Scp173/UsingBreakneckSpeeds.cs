@@ -28,7 +28,6 @@ namespace Exiled.Events.Patches.Events.Scp173
     ///     Adds the <see cref="Handlers.Scp173.UsingBreakneckSpeeds" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.UsingBreakneckSpeeds))]
-    [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.ServerDoBreakneckSpeeds))]
     [HarmonyPatch(typeof(Scp173), nameof(Scp173.ServerDoBreakneckSpeeds))]
     internal static class UsingBreakneckSpeeds
     {
