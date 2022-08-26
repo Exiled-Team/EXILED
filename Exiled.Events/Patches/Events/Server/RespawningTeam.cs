@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Linq;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Server;

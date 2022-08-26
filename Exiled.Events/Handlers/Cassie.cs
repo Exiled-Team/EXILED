@@ -10,7 +10,6 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.EventArgs;
     using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Cassie;
-    using Exiled.Events.Extensions;
 
     using static Events;
 

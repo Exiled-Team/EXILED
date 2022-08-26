@@ -10,6 +10,7 @@ namespace Exiled.Events.Features
     using System;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Events.Interfaces;
 
     /// <summary>
@@ -24,7 +25,7 @@ namespace Exiled.Events.Features
     /// </summary>
     /// <typeparam name="T">The specified <see cref="EventArgs"/> that the event will use.</typeparam>
     public class Event<T> : IEvent
-        where T : EventArgs
+        where T : IExiledEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Event{T}"/> class.

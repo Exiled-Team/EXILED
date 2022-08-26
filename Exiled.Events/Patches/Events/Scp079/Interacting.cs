@@ -31,13 +31,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Scp079 = Exiled.Events.Handlers.Scp079;
 
     using TeslaGate = TeslaGate;
-
-    /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)"/>.
-    /// Adds the <see cref="Scp079.InteractingTesla"/>, <see cref="Scp079.TriggeringDoor"/>, <see cref="Scp079.StartingSpeaker"/> and <see cref="Scp079.StoppingSpeaker"/> event for SCP-079.
     using Map = Exiled.API.Features.Map;
     using Player = Exiled.API.Features.Player;
-    using TeslaGate = TeslaGate;
 
     /// <summary>
     ///     Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)" />.

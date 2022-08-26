@@ -11,7 +11,6 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.EventArgs;
     using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Map;
-    using Exiled.Events.Extensions;
 
     using MapGeneration.Distributors;
 

@@ -13,7 +13,6 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp330;
-    using Exiled.Events.Extensions;
 
     using static Exiled.Events.Events;
 
@@ -145,8 +144,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Gets or sets the event invoked before dropping a null <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static Event<DroppingNullEventArgs> DroppingNull { get; set; } = new();
-        public static event CustomEventHandler<DroppingNothingEventArgs> DroppingNothing;
+        public static Event<DroppingNothingEventArgs> DroppingNothing { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the event invoked before picking up ammo.

@@ -10,7 +10,6 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.EventArgs;
     using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Scp173;
-    using Exiled.Events.Extensions;
 
     using static Events;
 

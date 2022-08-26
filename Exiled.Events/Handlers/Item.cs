@@ -11,7 +11,6 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Item;
     using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.Extensions;
 
     using static Events;
 
