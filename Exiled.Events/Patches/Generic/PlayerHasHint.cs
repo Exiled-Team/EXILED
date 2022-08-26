@@ -18,37 +18,28 @@ namespace Exiled.Events.Patches.Generic
 
     using MEC;
 
+    using BaseHint = Hints.Hint;
+
     /// <summary>
-    /// Patches <see cref="HintDisplay.Show(Hint)"/>.
+    /// Patches <see cref="HintDisplay.Show(BaseHint)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HintDisplay), nameof(HintDisplay.Show))]
     internal static class PlayerHasHint
     {
-        // Creating a list for coroutine check
-        private static Dictionary<Player, CoroutineHandle> playerHasHintCoroutines = new();
-
-        private static void Postfix(HintDisplay __instance, Hint hint)
+        private static void Postfix(HintDisplay __instance, BaseHint hint)
         {
             // Try to get the player, if it doesn't exist, just return
             if (__instance == null || __instance.gameObject == null || Player.Get(__instance.gameObject) is not Player player)
                 return;
 
-            // If Player value has couroutine, kill it
-            if (playerHasHintCoroutines.TryGetValue(player, out CoroutineHandle oldcoroutine))
-            {
-                // Kill the coroutine
-                Timing.KillCoroutines(oldcoroutine);
-            }
+            // Kill the coroutine
+            Timing.KillCoroutines(player.CurrentHintProccess.Key);
 
             // Create a new couroutine and assing the value to the player
-            playerHasHintCoroutines[player] = Timing.RunCoroutine(HasHintToFalse(player, hint.DurationScalar));
-
-            // If it is false, then to true
-            if (!player.HasHint)
-                player.HasHint = true;
+            player.CurrentHintProccess = new(Timing.RunCoroutine(CurrentHint(player, hint.DurationScalar)), new API.Features.Hint(hint));
         }
 
-        private static IEnumerator<float> HasHintToFalse(Player player, float duration)
+        private static IEnumerator<float> CurrentHint(Player player, float duration)
         {
             // Waiting for the hint to end
             yield return Timing.WaitForSeconds(duration);
@@ -57,8 +48,7 @@ namespace Exiled.Events.Patches.Generic
             if (!player.IsConnected)
                 yield break;
 
-            player.HasHint = false;
-            playerHasHintCoroutines.Remove(player);
+            player.CurrentHintProccess = new();
         }
     }
 }

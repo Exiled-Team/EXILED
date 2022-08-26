@@ -76,9 +76,16 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
+
+        /// <summary>
+        /// Current hint proccess.
+        /// </summary>
+        internal KeyValuePair<CoroutineHandle, Hint> CurrentHintProccess = new();
+
 #pragma warning restore SA1401
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
+        private readonly HashSet<EActor> components = new();
 
         /// <summary>
         /// The running speed of the player.
@@ -93,7 +100,6 @@ namespace Exiled.API.Features
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
-        private HashSet<EActor> components = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -208,7 +214,22 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is viewing a hint.
         /// </summary>
-        public bool HasHint { get; internal set; }
+        public bool HasHint => CurrentHintProccess.Key.IsRunning;
+
+        /// <summary>
+        /// Gets a value for what the player is actually viewing on hint.
+        /// </summary>
+        public Hint CurrentHint => CurrentHintProccess.Value;
+
+        /// <summary>
+        /// Gets a value for what the player is actually viewing on Broadcast.
+        /// </summary>
+        public List<Broadcast> WaitingBroadcast { get; internal set; }
+
+        /// <summary>
+        /// Gets a value for what the player is actually viewing on Broadcast.
+        /// </summary>
+        public Broadcast CurrentBroadcast { get; internal set; }
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio"/>.
