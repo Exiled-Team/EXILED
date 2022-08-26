@@ -134,30 +134,14 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets or sets how much the users movement speed should be affected when wearing this armor. (higher values = slower movement).
+        /// Gets how much the users movement speed should be affected when wearing this armor.
         /// </summary>
-        /// <exception cref="ArgumentOutOfRangeException">When attempting to set the value below 0 or above 1.</exception>
-        public float MovementSpeedMultiplier
-        {
-            get => Base.MovementSpeedMultiplier;
-            [Obsolete("The client would be desynchronized", true)]
-            set
-            {
-                if (value is < 0.0f or > 1f)
-                    throw new ArgumentOutOfRangeException(nameof(MovementSpeedMultiplier), "You can only set the movement speed multiplier to a value between 0 and 1.");
-                Base.MovementSpeedMultiplier = value;
-            }
-        }
+        public float MovementSpeedMultiplier => Base.MovementSpeedMultiplier;
 
         /// <summary>
-        /// Gets or sets how much worse <see cref="RoleType.ClassD"/> and <see cref="RoleType.Scientist"/>s are affected by wearing this armor.
+        /// Gets how much worse <see cref="RoleType.ClassD"/> and <see cref="RoleType.Scientist"/>s are affected by wearing this armor.
         /// </summary>
-        public float CivilianDownsideMultiplier
-        {
-            get => Base.CivilianClassDownsidesMultiplier;
-            [Obsolete("The client would be desynchronized", true)]
-            set => Base.CivilianClassDownsidesMultiplier = value;
-        }
+        public float CivilianDownsideMultiplier => Base.CivilianClassDownsidesMultiplier;
 
         /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.

@@ -30,15 +30,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the amount of seconds before the next respawn will occur.
-        /// </summary>
-        [Obsolete("Use TimeUntilSpawnWave.TotalSeconds.")]
-        public static int TimeUntilRespawn
-        {
-            get => (int)TimeUntilSpawnWave.TotalSeconds;
-        }
-
-        /// <summary>
         /// Gets a <see cref="TimeSpan"/> indicating the amount of time before the next respawn wave will occur.
         /// </summary>
         public static TimeSpan TimeUntilSpawnWave
@@ -80,15 +71,6 @@ namespace Exiled.API.Features
         {
             get => (uint)RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);
             set => RespawnTickets.Singleton._tickets[SpawnableTeamType.ChaosInsurgency] = Mathf.Max(0, (int)value);
-        }
-
-        /// <summary>
-        /// Gets the actual <see cref="RespawnEffectsController"/>.
-        /// </summary>
-        [Obsolete("Using this will lead to indefinable errors", true)]
-        public static RespawnEffectsController Controller
-        {
-            get => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller != null);
         }
 
         /// <summary>

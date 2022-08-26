@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
+        /// Gets the currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
         /// </summary>
         public Player SpectatedPlayer
         {
@@ -51,16 +51,6 @@ namespace Exiled.API.Features.Roles
             {
                 Player spectatedPlayer = Player.Get(Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
                 return spectatedPlayer != Owner ? spectatedPlayer : null;
-            }
-
-            [Obsolete("Client side feature.", true)]
-            set
-            {
-                if (Owner.IsAlive)
-                    throw new InvalidOperationException("The spectated player cannot be set on an alive player.");
-
-                Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
-                Owner.ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
             }
         }
 

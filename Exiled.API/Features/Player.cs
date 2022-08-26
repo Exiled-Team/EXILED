@@ -724,18 +724,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player's friendly fire is enabled.
+        /// Gets a value indicating whether or not the player's friendly fire is enabled.
         /// <br>This property only determines if this player can deal damage to players on the same team;</br>
         /// <br>This player can be damaged by other players on their own team even if this property is <see langword="false"/>.</br>
         /// </summary>
-        public bool IsFriendlyFireEnabled
-        {
-            get => FriendlyFireMultiplier.Count > 0 || CustomRoleFriendlyFireMultiplier.Count > 0;
-            [Obsolete("Use SetFriendlyFire instead.", true)]
-            set
-            {
-            }
-        }
+        /// <seealso cref="SetFriendlyFire(RoleType, float)"/>
+        /// <seealso cref="SetFriendlyFire(KeyValuePair{RoleType, float})"/>
+        public bool IsFriendlyFireEnabled => FriendlyFireMultiplier.Count > 0 || CustomRoleFriendlyFireMultiplier.Count > 0;
 
         /// <summary>
         /// Gets or sets the player's scale.
@@ -1713,16 +1708,6 @@ namespace Exiled.API.Features
         /// Tries to get an item from a player's inventory.
         /// </summary>
         /// <param name="serial">The unique identifier of the item.</param>
-        /// <param name="item">The <see cref="ItemBase"/> found. <see langword="null"/> if it doesn't exist.</param>
-        /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
-        [Obsolete("Use TryGetItem(ushort, Item) instead.", true)]
-        public bool TryGetItem(ushort serial, out ItemBase item) =>
-            Inventory.UserInventory.Items.TryGetValue(serial, out item);
-
-        /// <summary>
-        /// Tries to get an item from a player's inventory.
-        /// </summary>
-        /// <param name="serial">The unique identifier of the item.</param>
         /// <param name="item">The <see cref="Item"/> found. <see langword="null"/> if it doesn't exist.</param>
         /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
         public bool TryGetItem(ushort serial, out Item item)
@@ -1928,13 +1913,6 @@ namespace Exiled.API.Features
             ListPool<Item>.Shared.Return(enumeratedItems);
             return count;
         }
-
-        /// <summary>
-        /// Removes the held <see cref="ItemBase"/> from the player's inventory.
-        /// </summary>
-        /// <returns>Returns a value indicating whether or not the <see cref="ItemBase"/> was removed.</returns>
-        [Obsolete("Use RemoveHeldItem(bool) instead.", true)]
-        public bool RemoveHeldItem() => RemoveItem(CurrentItem);
 
         /// <summary>
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.

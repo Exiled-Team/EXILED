@@ -37,19 +37,6 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
-        [Obsolete("Use new Door(DoorVariant, Room) instead.", true)]
-        public Door(DoorVariant door)
-        {
-            DoorVariantToDoor.Add(door, this);
-            Base = door;
-            Room = door.GetComponentInParent<Room>();
-            Type = GetDoorType();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Door"/> class.
-        /// </summary>
-        /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this door.</param>
         public Door(DoorVariant door, Room room)
         {
@@ -443,13 +430,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
         /// </summary>
-        /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
-        [Obsolete("BreakDoor() will be obsolete in future versions, please use BreakDoor(DoorDamageType)", false)]
-        public bool BreakDoor() => BreakDoor(DoorDamageType.ServerCommand);
-
-        /// <summary>
-        /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
-        /// </summary>
         /// <param name="type">The <see cref="DoorDamageType"/> to apply to the door.</param>
         /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
         public bool BreakDoor(DoorDamageType type = DoorDamageType.ServerCommand)
@@ -517,13 +497,6 @@ namespace Exiled.API.Features
 
             DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
         }
-
-        /// <summary>
-        /// Locks all active locks on the door.
-        /// </summary>
-        /// <param name="flagsToLock">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
-        [Obsolete("has been deprecated, use ChangeLock(DoorLockType) instead", true)]
-        public void Lock(DoorLockType flagsToLock) => ChangeLock(flagsToLock);
 
         /// <summary>
         /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.

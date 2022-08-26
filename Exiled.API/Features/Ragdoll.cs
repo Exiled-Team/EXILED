@@ -333,21 +333,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Spawns a <see cref="Ragdoll"/> on the map.
         /// </summary>
-        /// <param name="player">The ragdoll's <see cref="Player">owner</see>.</param>
-        /// <param name="handler">The player's <see cref="DamageHandlerBase"/>.</param>
-        [Obsolete("Use Spawn(Player, Exiled.API.Features.DamageHandlers.DamageHandlerBase) instead.", true)]
-        public static void Spawn(Player player, DamageHandlerBase handler) => _ = new Ragdoll(player, handler, true);
-
-        /// <summary>
-        /// Spawns a <see cref="Ragdoll"/> on the map.
-        /// </summary>
-        /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
-        [Obsolete("Use Spawn(Player, Exiled.API.Features.DamageHandlers.DamageHandlerBase) instead.", true)]
-        public static void Spawn(RagdollInfo ragdollInfo) => _ = new Ragdoll(ragdollInfo, true);
-
-        /// <summary>
-        /// Spawns a <see cref="Ragdoll"/> on the map.
-        /// </summary>
         /// <param name="player">The ragdoll's <see cref="Player"/> owner.</param>
         /// <param name="handler">The ragdoll's <see cref="DamageHandlerBase"/>.</param>
         /// <returns>The created <see cref="Ragdoll"/>.</returns>
