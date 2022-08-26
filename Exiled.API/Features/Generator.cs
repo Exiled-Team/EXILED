@@ -30,12 +30,18 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Generator"/> class.
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/>.</param>
-        internal Generator(Scp079Generator scp079Generator) => Base = scp079Generator;
+        internal Generator(Scp079Generator scp079Generator)
+        {
+            Base = scp079Generator;
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
-        public static IEnumerable<Generator> List => GeneratorValues;
+        public static IEnumerable<Generator> List
+        {
+            get => GeneratorValues;
+        }
 
         /// <summary>
         /// Gets the base <see cref="Scp079Generator"/>.
@@ -45,17 +51,26 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public GameObject GameObject
+        {
+            get => Base.gameObject;
+        }
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/> of the generator.
         /// </summary>
-        public Transform Transform => Base.transform;
+        public Transform Transform
+        {
+            get => Base.transform;
+        }
 
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
         /// </summary>
-        public Room Room => Map.FindParentRoom(GameObject);
+        public Room Room
+        {
+            get => Map.FindParentRoom(GameObject);
+        }
 
         /// <summary>
         /// Gets or sets the generator' state.
@@ -78,12 +93,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the generator's dropdown speed.
         /// </summary>
-        public float DropdownSpeed => Base.DropdownSpeed;
+        public float DropdownSpeed
+        {
+            get => Base.DropdownSpeed;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the generator is ready to be activated.
         /// </summary>
-        public bool IsReady => Base.ActivationReady;
+        public bool IsReady
+        {
+            get => Base.ActivationReady;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the generator is engaged.
@@ -187,12 +208,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the generator position.
         /// </summary>
-        public Vector3 Position => Base.transform.position;
+        public Vector3 Position
+        {
+            get => Base.transform.position;
+        }
 
         /// <summary>
         /// Gets the generator rotation.
         /// </summary>
-        public Quaternion Rotation => Base.transform.rotation;
+        public Quaternion Rotation
+        {
+            get => Base.transform.rotation;
+        }
 
         /// <summary>
         /// Gets or sets the required permissions to interact with the generator.
@@ -241,6 +268,6 @@ namespace Exiled.API.Features
         /// Returns the Generator in a human-readable format.
         /// </summary>
         /// <returns>A string containing Generator-related data.</returns>
-        public override string ToString() => $"{State} {KeycardPermissions}";
+        public override string ToString() => $"{State} ({KeycardPermissions})";
     }
 }

@@ -21,7 +21,10 @@ namespace Exiled.CustomItems.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="Main"/> class.
         /// </summary>
-        public Main() => LoadGeneratedCommands();
+        public Main()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "customitems";

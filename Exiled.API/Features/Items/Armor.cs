@@ -11,12 +11,9 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Structs;
 
     using InventorySystem.Items.Armor;
-
-    using NorthwoodLib.Pools;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
@@ -50,17 +47,26 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
-        public bool Equippable => Base.AllowEquip;
+        public bool Equippable
+        {
+            get => Base.AllowEquip;
+        }
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
-        public bool Holsterable => Base.AllowHolster;
+        public bool Holsterable
+        {
+            get => Base.AllowHolster;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this is a worn item.
         /// </summary>
-        public bool IsWorn => Base.IsWorn;
+        public bool IsWorn
+        {
+            get => Base.IsWorn;
+        }
 
         /// <summary>
         /// Gets or sets the Weight of the armor.
@@ -158,7 +164,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public IEnumerable<ArmorAmmoLimit> AmmoLimits
         {
-            get => Base.AmmoLimits.Cast<ArmorAmmoLimit>();
+            get => Base.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
 
             set => Base.AmmoLimits = value.Select(limit => (BodyArmor.ArmorAmmoLimit)limit).ToArray();
         }
@@ -171,6 +177,25 @@ namespace Exiled.API.Features.Items
             get => Base.CategoryLimits;
 
             set => Base.CategoryLimits = value.ToArray();
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Armor"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Armor"/> object. </returns>
+        public override Item Clone()
+        {
+            Armor cloneableItem = new(Type);
+
+            cloneableItem.Weight = Weight;
+            cloneableItem.StaminaUseMultiplier = StaminaUseMultiplier;
+            cloneableItem.RemoveExcessOnDrop = RemoveExcessOnDrop;
+            cloneableItem.CategoryLimits = CategoryLimits;
+            cloneableItem.AmmoLimits = AmmoLimits;
+            cloneableItem.VestEfficacy = VestEfficacy;
+            cloneableItem.HelmetEfficacy = HelmetEfficacy;
+
+            return cloneableItem;
         }
     }
 }

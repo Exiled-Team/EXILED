@@ -8,6 +8,7 @@
 namespace Exiled.CustomItems.API.EventArgs
 {
     using Exiled.CustomItems.API.Features;
+    using Exiled.Events.EventArgs.Scp914;
 
     using InventorySystem.Items.Pickups;
 
@@ -18,15 +19,15 @@ namespace Exiled.CustomItems.API.EventArgs
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Item"/> gets upgraded.
     /// </summary>
-    public class UpgradingEventArgs : Events.EventArgs.UpgradingItemEventArgs
+    public class UpgradingEventArgs : Exiled.Events.EventArgs.Scp914.UpgradingItemEventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UpgradingEventArgs"/> class.
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="newPos"><inheritdoc cref="Events.EventArgs.UpgradingItemEventArgs.OutputPosition"/></param>
-        /// <param name="knobSetting"><inheritdoc cref="Events.EventArgs.UpgradingItemEventArgs.KnobSetting"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="Events.EventArgs.UpgradingItemEventArgs.IsAllowed"/></param>
+        /// <param name="newPos"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingItemEventArgs.OutputPosition"/></param>
+        /// <param name="knobSetting"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingItemEventArgs.KnobSetting"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingItemEventArgs.IsAllowed"/></param>
         public UpgradingEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting, bool isAllowed = true)
             : base(item, newPos, knobSetting, isAllowed)
         {
@@ -36,6 +37,6 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <summary>
         /// Gets the upgrading <see cref="Item"/> as a<see cref="CustomItem"/>.
         /// </summary>
-        public new ItemPickupBase Item { get; }
+        public ItemPickupBase Item { get; }
     }
 }

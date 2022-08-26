@@ -8,6 +8,8 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Extensions;
 
     using static Exiled.Events.Events;
@@ -51,6 +53,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
+
+        /// <summary>
+        /// Invoked before adding an unit name.
+        /// </summary>
+        public static event CustomEventHandler<AddingUnitNameEventArgs> AddingUnitName;
 
         /// <summary>
         /// Invoked when sending a complaint about a player to the local server administrators.
@@ -115,6 +122,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
         public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before adding an unit name.
+        /// </summary>
+        /// <param name="ev">The <see cref="AddingUnitNameEventArgs"/> instance.</param>
+        public static void OnAddingUnitName(AddingUnitNameEventArgs ev) => AddingUnitName.InvokeSafely(ev);
 
         /// <summary>
         /// Called when sending a complaint about a player to the local server administrators.

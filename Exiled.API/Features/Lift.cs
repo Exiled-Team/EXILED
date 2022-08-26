@@ -45,13 +45,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances.
         /// </summary>
-        public static IEnumerable<Lift> List => LiftsValue;
+        public static IEnumerable<Lift> List
+        {
+            get => LiftsValue;
+        }
 
         /// <summary>
         /// Gets a random <see cref="Lift"/>.
         /// </summary>
         /// <returns><see cref="Lift"/> object.</returns>
-        public static Lift Random => LiftsValue[UnityEngine.Random.Range(0, LiftsValue.Count)];
+        public static Lift Random
+        {
+            get => LiftsValue[UnityEngine.Random.Range(0, LiftsValue.Count)];
+        }
 
         /// <summary>
         /// Gets the base <see cref="BaseLift"/>.
@@ -61,27 +67,42 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's name.
         /// </summary>
-        public string Name => Base.elevatorName;
+        public string Name
+        {
+            get => Base.elevatorName;
+        }
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the lift.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public GameObject GameObject
+        {
+            get => Base.gameObject;
+        }
 
         /// <summary>
         /// Gets the lift's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => GameObject.transform;
+        public Transform Transform
+        {
+            get => GameObject.transform;
+        }
 
         /// <summary>
         /// Gets the lift's position.
         /// </summary>
-        public Vector3 Position => Base.transform.position;
+        public Vector3 Position
+        {
+            get => Base.transform.position;
+        }
 
         /// <summary>
         /// Gets the lift's rotation.
         /// </summary>
-        public Quaternion Rotation => Base.transform.rotation;
+        public Quaternion Rotation
+        {
+            get => Base.transform.rotation;
+        }
 
         /// <summary>
         /// Gets or sets the lift's <see cref="BaseLift.Status"/>.
@@ -111,12 +132,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the lift is operative.
         /// </summary>
-        public bool IsOperative => Base.operative;
+        public bool IsOperative
+        {
+            get => Base.operative;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the lift is currently moving.
         /// </summary>
-        public bool IsMoving => Base.status == BaseLift.Status.Moving;
+        public bool IsMoving
+        {
+            get => Base.status == BaseLift.Status.Moving;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the lift is locked.
@@ -130,7 +157,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the lift is lockable.
         /// </summary>
-        public bool IsLockable => Base.lockable;
+        public bool IsLockable
+        {
+            get => Base.lockable;
+        }
 
         /// <summary>
         /// Gets or sets the lift's moving speed.
@@ -153,22 +183,34 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Vector3"/> which contains all the lift's cached items' position.
         /// </summary>
-        public IEnumerable<Vector3> CachedItemPositions => Base._cachedItemTransforms.Select(item => item.position);
+        public IEnumerable<Vector3> CachedItemPositions
+        {
+            get => Base._cachedItemTransforms.Select(item => item.position);
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Vector3"/> which contains all the lift's cached items' rotation.
         /// </summary>
-        public IEnumerable<Quaternion> CachedItemRotations => Base._cachedItemTransforms.Select(item => item.rotation);
+        public IEnumerable<Quaternion> CachedItemRotations
+        {
+            get => Base._cachedItemTransforms.Select(item => item.rotation);
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Vector3"/> which contains all the lift's cached items' <see cref="Transform"/>.
         /// </summary>
-        public IEnumerable<Transform> CachedItemTransformss => Base._cachedItemTransforms;
+        public IEnumerable<Transform> CachedItemTransformss
+        {
+            get => Base._cachedItemTransforms;
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Elevator"/> which contains all the lift's elevators.
         /// </summary>
-        public IEnumerable<Elevator> Elevators => elevators;
+        public IEnumerable<Elevator> Elevators
+        {
+            get => elevators;
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="BaseLift.Status"/>.
@@ -238,5 +280,11 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns><see langword="true"/> if the lift was started successfully; otherwise, <see langword="false"/>.</returns>
         public bool TryStart() => Base.UseLift();
+
+        /// <summary>
+        /// Returns the Lift in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Lift-related data.</returns>
+        public override string ToString() => $"{Type} {Status} [{MovingSpeed}] *{IsLocked}* |{IsLockable}|";
     }
 }

@@ -61,6 +61,9 @@ namespace Exiled.API.Features
         public virtual Version RequiredExiledVersion { get; } = typeof(IPlugin<>).Assembly.GetName().Version;
 
         /// <inheritdoc/>
+        public virtual bool IgnoreRequiredVersionCheck { get; } = false;
+
+        /// <inheritdoc/>
         public Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; } = new()
         {
             { typeof(RemoteAdminCommandHandler), new Dictionary<Type, ICommand>() },
@@ -75,10 +78,16 @@ namespace Exiled.API.Features
         public ITranslation InternalTranslation { get; protected set; }
 
         /// <inheritdoc/>
-        public string ConfigPath => Paths.GetConfigPath(Prefix);
+        public string ConfigPath
+        {
+            get => Paths.GetConfigPath(Prefix);
+        }
 
         /// <inheritdoc/>
-        public string TranslationPath => Paths.GetTranslationPath(Prefix);
+        public string TranslationPath
+        {
+            get => Paths.GetTranslationPath(Prefix);
+        }
 
         /// <inheritdoc/>
         public virtual void OnEnabled()
@@ -178,6 +187,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the plugin translations.
         /// </summary>
-        public TTranslation Translation => (TTranslation)InternalTranslation;
+        public TTranslation Translation
+        {
+            get => (TTranslation)InternalTranslation;
+        }
     }
 }

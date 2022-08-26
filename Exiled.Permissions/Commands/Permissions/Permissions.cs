@@ -23,7 +23,10 @@ namespace Exiled.Permissions.Commands.Permissions
         /// <summary>
         /// Initializes a new instance of the <see cref="Permissions"/> class.
         /// </summary>
-        public Permissions() => LoadGeneratedCommands();
+        public Permissions()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "permissions";
@@ -55,8 +58,7 @@ namespace Exiled.Permissions.Commands.Permissions
             stringBuilder.AppendLine("- EP REMOVE <PERMISSION> <GROUP> - Adds a permission to a group.");
             stringBuilder.AppendLine("- EP ADD <PERMISSION> <GROUP> - Removes a permission from a group.");
 
-            response = stringBuilder.ToString();
-            StringBuilderPool.Shared.Return(stringBuilder);
+            response = StringBuilderPool.Shared.ToStringReturn(stringBuilder);
             return false;
         }
     }

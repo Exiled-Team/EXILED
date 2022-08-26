@@ -14,6 +14,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using MEC;
 
@@ -30,7 +31,7 @@ namespace Exiled.CustomItems.API.Features
             get => base.Type;
             set
             {
-                if (!value.IsArmor() && value != ItemType.None)
+                if (!value.IsArmor() && (value != ItemType.None))
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid armor type.");
 
                 base.Type = value;
@@ -72,21 +73,21 @@ namespace Exiled.CustomItems.API.Features
 
             Timing.CallDelayed(0.05f, () => OnAcquired(player));
 
-            if(displayMessage)
+            if (displayMessage)
                 ShowPickedUpMessage(player);
         }
 
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.PickingUpArmor += OnInternalPickingUpArmor;
+            Exiled.Events.Handlers.Player.PickingUpArmor += OnInternalPickingUpArmor;
             base.SubscribeEvents();
         }
 
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.PickingUpArmor -= OnInternalPickingUpArmor;
+            Exiled.Events.Handlers.Player.PickingUpArmor -= OnInternalPickingUpArmor;
             base.UnsubscribeEvents();
         }
 

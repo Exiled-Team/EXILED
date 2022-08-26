@@ -314,6 +314,7 @@ namespace Exiled.API.Enums
         /// Represents the camera facing the LCZ/HCZ B checkpoint, on the Heavy Containment side.
         /// </summary>
         LczBEntrance,
+
         #endregion
 
         #region Ez

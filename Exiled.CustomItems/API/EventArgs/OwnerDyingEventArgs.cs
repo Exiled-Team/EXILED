@@ -10,6 +10,8 @@ namespace Exiled.CustomItems.API.EventArgs
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Interfaces;
+    using Exiled.Events.EventArgs.Player;
 
     using Item = Exiled.API.Features.Items.Item;
     using Player = Exiled.API.Features.Player;
@@ -17,7 +19,7 @@ namespace Exiled.CustomItems.API.EventArgs
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> dies.
     /// </summary>
-    public class OwnerDyingEventArgs : DyingEventArgs
+    public class OwnerDyingEventArgs : DyingEventArgs, IItemEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="OwnerDyingEventArgs"/> class.
@@ -25,13 +27,13 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
         public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
-            : base(ev.Target, ev.Handler.Base)
+            : base(ev.Target, ev.DamageHandler.Base)
         {
             if (item is null)
                 Log.Warn("Item is null");
             if (ev.Target is null)
                 Log.Warn("Target is null");
-            if (ev.Handler.Base is null)
+            if (ev.DamageHandler.Base is null)
                 Log.Warn("handler base is null");
             Item = item;
         }

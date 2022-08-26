@@ -50,30 +50,32 @@ namespace Exiled.Events.Patches.Fixes
             //      playersRoleList.Add(referenceHub.gameObject, RoleType.Spectator);
             //      continue;
             // }
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // if (referenceHub.serverRoles.OverwatchEnabled)
-                new(OpCodes.Ldloc_S, 9),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.serverRoles))),
-                new(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles.OverwatchEnabled))),
-                new(OpCodes.Brfalse_S, originalLabel),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // if (referenceHub.serverRoles.OverwatchEnabled)
+                    new(OpCodes.Ldloc_S, 9),
+                    new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.serverRoles))),
+                    new(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles.OverwatchEnabled))),
+                    new(OpCodes.Brfalse_S, originalLabel),
 
-                // list.Add(RoleType.Spectator);
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Ldc_I4_2),
-                new(OpCodes.Call, Method(typeof(List<int>), nameof(List<int>.Add))),
+                    // list.Add(RoleType.Spectator);
+                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Ldc_I4_2),
+                    new(OpCodes.Call, Method(typeof(List<int>), nameof(List<int>.Add))),
 
-                // playersRoleList.Add(referenceHub.gameObject, RoleType.Spectator);
-                new(OpCodes.Ldarg_3),
-                new(OpCodes.Ldind_Ref),
-                new(OpCodes.Ldloc_S, 9),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Ldc_I4_2),
-                new(OpCodes.Call, Method(typeof(Dictionary<GameObject, RoleType>), nameof(Dictionary<GameObject, RoleType>.Add))),
+                    // playersRoleList.Add(referenceHub.gameObject, RoleType.Spectator);
+                    new(OpCodes.Ldarg_3),
+                    new(OpCodes.Ldind_Ref),
+                    new(OpCodes.Ldloc_S, 9),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Ldc_I4_2),
+                    new(OpCodes.Call, Method(typeof(Dictionary<GameObject, RoleType>), nameof(Dictionary<GameObject, RoleType>.Add))),
 
-                // continue;
-                new(OpCodes.Br, continueLabel),
-            });
+                    // continue;
+                    new(OpCodes.Br, continueLabel),
+                });
 
             // Set original label.
             newInstructions[index].labels.Add(fixLabel);

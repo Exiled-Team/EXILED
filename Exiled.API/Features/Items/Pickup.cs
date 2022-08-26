@@ -13,6 +13,8 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
 
+    using MEC;
+
     using Mirror;
 
     using UnityEngine;
@@ -57,7 +59,10 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public GameObject GameObject
+        {
+            get => Base.gameObject;
+        }
 
         /// <summary>
         /// Gets the unique serial number for the item.
@@ -114,7 +119,10 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
         /// </summary>
-        public ItemType Type => Base.NetworkInfo.ItemId;
+        public ItemType Type
+        {
+            get => Base.NetworkInfo.ItemId;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is locked (can't be picked up).
@@ -231,5 +239,27 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+
+        /// <summary>
+        /// Clones current <see cref="Pickup"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Pickup"/> object. </returns>
+        public Pickup Clone()
+        {
+            Pickup cloneableItem = new(Type);
+
+            Timing.CallDelayed(
+                1f,
+                () =>
+                {
+                    cloneableItem.Locked = Locked;
+                    cloneableItem.Spawned = Spawned;
+                    cloneableItem.Weight = Weight;
+                    cloneableItem.Scale = Scale;
+                    cloneableItem.Position = Position;
+                    cloneableItem.PreviousOwner = PreviousOwner;
+                });
+            return cloneableItem;
+        }
     }
 }

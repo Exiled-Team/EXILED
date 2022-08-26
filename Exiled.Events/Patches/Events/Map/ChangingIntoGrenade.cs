@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -24,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="TimedGrenadePickup.Update"/>.
-    /// Adds the <see cref="Map.ChangingIntoGrenade"/> event.
+    ///     Patches <see cref="TimedGrenadePickup.Update" />.
+    ///     Adds the <see cref="Map.ChangingIntoGrenade" /> event.
     /// </summary>
     [HarmonyPatch(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup.Update))]
     internal static class ChangingIntoGrenade
@@ -66,68 +66,72 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.RemoveRange(index, instructionsToRemove);
 
             // Setup EventArgs, call event, check ev.IsAllowed and implement ev.Type changing
-            newInstructions.InsertRange(index, new[]
-            {
-                // itemPickupBase
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(enterLabel),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // itemPickupBase
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(enterLabel),
 
-                // var ev = new ChangingIntoGrenadeEventArgs(ItemPickupBase);
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntoGrenadeEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+                    // var ev = new ChangingIntoGrenadeEventArgs(ItemPickupBase);
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntoGrenadeEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Map.OnChangingIntoGrenade(ev);
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnChangingIntoGrenade))),
+                    // Map.OnChangingIntoGrenade(ev);
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnChangingIntoGrenade))),
 
-                // if (!ev.IsAllowed)
-                // {
-                //     this._replaceNextFrame = false;
-                //     return;
-                // }
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, dontResetLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Stfld, Field(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup._replaceNextFrame))),
-                new(OpCodes.Ret),
+                    // if (!ev.IsAllowed)
+                    // {
+                    //     this._replaceNextFrame = false;
+                    //     return;
+                    // }
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, dontResetLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Stfld, Field(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup._replaceNextFrame))),
+                    new(OpCodes.Ret),
 
-                // if (!InventoryItemLoader.AvailableItems.TryGetValue(ev.Type, out itemBase) || !(itemBase is ThrowableItem throwableItem))
-                //    return;
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
-                new(OpCodes.Ldloca_S, 0),
-                new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Isinst, typeof(ThrowableItem)),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_1),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+                    // if (!InventoryItemLoader.AvailableItems.TryGetValue(ev.Type, out itemBase) || !(itemBase is ThrowableItem throwableItem))
+                    //    return;
+                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
+                    new(OpCodes.Ldloca_S, 0),
+                    new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Isinst, typeof(ThrowableItem)),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_1),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             offset = 4;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldloc_1) + offset;
 
-            newInstructions.InsertRange(index, new[]
-            {
-                // if (thrownProjectile is TimeGrenade timeGrenade)
-                //    timeGrenade._fuseTime = ev.FuseTime;
-                new(OpCodes.Stloc_S, thrownProjectile.LocalIndex),
-                new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
-                new(OpCodes.Isinst, typeof(TimeGrenade)),
-                new(OpCodes.Stloc_S, timeGrenade.LocalIndex),
-                new(OpCodes.Brfalse_S, skipFuse),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // if (thrownProjectile is TimeGrenade timeGrenade)
+                    //    timeGrenade._fuseTime = ev.FuseTime;
+                    new(OpCodes.Stloc_S, thrownProjectile.LocalIndex),
+                    new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
+                    new(OpCodes.Isinst, typeof(TimeGrenade)),
+                    new(OpCodes.Stloc_S, timeGrenade.LocalIndex),
+                    new(OpCodes.Brfalse_S, skipFuse),
 
-                new(OpCodes.Ldloc_S, timeGrenade.LocalIndex),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.FuseTime))),
-                new(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
-                new CodeInstruction(OpCodes.Nop).WithLabels(skipFuse),
-                new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
-                new(OpCodes.Dup),
-            });
+                    new(OpCodes.Ldloc_S, timeGrenade.LocalIndex),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.FuseTime))),
+                    new(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
+                    new CodeInstruction(OpCodes.Nop).WithLabels(skipFuse),
+                    new(OpCodes.Ldloc_S, thrownProjectile.LocalIndex),
+                    new(OpCodes.Dup),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

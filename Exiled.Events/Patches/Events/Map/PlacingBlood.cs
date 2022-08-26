@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using HarmonyLib;
 
@@ -32,11 +33,8 @@ namespace Exiled.Events.Patches.Events.Map
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label returnLabel = generator.DefineLabel();
-            Label cmp = generator.DefineLabel();
-            Label jmp = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(PlacingBloodEventArgs));
-            LocalBuilder rh = generator.DeclareLocal(typeof(ReferenceHub));
 
             // if (!Exiled.Events.Instance.Config.CanSpawnBlood)
             //     return;
@@ -51,42 +49,38 @@ namespace Exiled.Events.Patches.Events.Map
             // pos = ev.Position;
             // type = ev.Type;
             // f = ev.Multiplier;
-            newInstructions.InsertRange(0, new[]
-            {
-                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanSpawnBlood))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, rh.LocalIndex),
-                new(OpCodes.Brfalse_S, cmp),
-                new(OpCodes.Ldloc_S, rh.LocalIndex),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Br_S, jmp),
-                new CodeInstruction(OpCodes.Ldnull).WithLabels(cmp),
-                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(jmp),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldarg_3),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlacingBloodEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnPlacingBlood))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Position))),
-                new(OpCodes.Starg_S, 1),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Type))),
-                new(OpCodes.Starg_S, 2),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Multiplier))),
-                new(OpCodes.Starg_S, 3),
-            });
+            newInstructions.InsertRange(
+                0,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanSpawnBlood))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Ldarg_3),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlacingBloodEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnPlacingBlood))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Position))),
+                    new(OpCodes.Starg_S, 1),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Type))),
+                    new(OpCodes.Starg_S, 2),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Multiplier))),
+                    new(OpCodes.Starg_S, 3),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

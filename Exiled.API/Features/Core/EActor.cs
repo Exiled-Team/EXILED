@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// The default fixed tick rate.
         /// </summary>
-        public const float DefaultFixedTickRate = 0.016f;
+        public const float DefaultFixedTickRate = TickComponent.DefaultFixedTickRate;
 
         private CoroutineHandle serverTick;
         private bool canEverTick;
@@ -32,21 +32,35 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="EActor"/> class.
         /// </summary>
-        /// <param name="gameObject">The base <see cref="GameObject"/>.</param>
-        protected EActor(GameObject gameObject = null)
-            : base(gameObject)
+        protected EActor()
+            : base()
         {
             IsEditable = true;
             CanEverTick = true;
             fixedTickRate = DefaultFixedTickRate;
+            PostInitialize();
             Timing.CallDelayed(fixedTickRate, () => OnBeginPlay());
             Timing.CallDelayed(fixedTickRate * 2, () => serverTick = Timing.RunCoroutine(ServerTick()));
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="EActor"/> class.
+        /// </summary>
+        /// <param name="gameObject">The base <see cref="GameObject"/>.</param>
+        protected EActor(GameObject gameObject = null)
+            : this()
+        {
+            if (gameObject)
+                Base = gameObject;
+        }
+
+        /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => Base.transform;
+        public Transform Transform
+        {
+            get => Base.transform;
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="Vector3">position</see>.
@@ -87,6 +101,14 @@ namespace Exiled.API.Features.Core
                     return;
 
                 canEverTick = value;
+
+                if (canEverTick)
+                {
+                    Timing.ResumeCoroutines(serverTick);
+                    return;
+                }
+
+                Timing.PauseCoroutines(serverTick);
             }
         }
 
@@ -108,7 +130,10 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets a <see cref="EActor"/>[] containing all the components in parent.
         /// </summary>
-        protected EActor[] ComponentsInParent => FindActiveObjectsOfType<EActor>().Where(actor => actor.ComponentsInChildren.Any(comp => comp == this)).ToArray();
+        protected EActor[] ComponentsInParent
+        {
+            get => FindActiveObjectsOfType<EActor>().Where(actor => actor.ComponentsInChildren.Any(comp => comp == this)).ToArray();
+        }
 
         /// <summary>
         /// Gets a <see cref="HashSet{T}"/> of <see cref="EActor"/> containing all the components in children.
@@ -228,6 +253,13 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Fired after the <see cref="EActor"/> instance is created.
         /// </summary>
+        protected virtual void PostInitialize()
+        {
+        }
+
+        /// <summary>
+        /// Fired after the first fixed tick.
+        /// </summary>
         protected virtual void OnBeginPlay()
         {
             SubscribeEvents();
@@ -276,8 +308,6 @@ namespace Exiled.API.Features.Core
             while (true)
             {
                 yield return Timing.WaitForSeconds(FixedTickRate);
-                if (!CanEverTick)
-                    continue;
 
                 Tick();
             }

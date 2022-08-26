@@ -20,7 +20,10 @@ namespace Exiled.Events.Commands.Config
         /// <summary>
         /// Initializes a new instance of the <see cref="EConfig"/> class.
         /// </summary>
-        public EConfig() => LoadGeneratedCommands();
+        public EConfig()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "econfig";

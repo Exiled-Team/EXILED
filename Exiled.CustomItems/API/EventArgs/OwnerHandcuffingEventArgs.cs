@@ -11,6 +11,7 @@ namespace Exiled.CustomItems.API.EventArgs
     using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before handcuffing a <see cref="Player"/>.
@@ -23,7 +24,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
         public OwnerHandcuffingEventArgs(Item item, HandcuffingEventArgs ev)
-            : this(item, ev.Cuffer, ev.Target, ev.IsAllowed)
+            : this(item, ev.Player, ev.Target, ev.IsAllowed)
         {
         }
 
@@ -31,7 +32,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// Initializes a new instance of the <see cref="OwnerHandcuffingEventArgs"/> class.
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="cuffer"><inheritdoc cref="HandcuffingEventArgs.Cuffer"/></param>
+        /// <param name="cuffer"><inheritdoc cref="HandcuffingEventArgs.Player"/></param>
         /// <param name="target"><inheritdoc cref="HandcuffingEventArgs.Target"/></param>
         /// <param name="isAllowed"><inheritdoc cref="HandcuffingEventArgs.IsAllowed"/></param>
         public OwnerHandcuffingEventArgs(Item item, Player cuffer, Player target, bool isAllowed = true)

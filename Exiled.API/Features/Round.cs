@@ -25,29 +25,52 @@ namespace Exiled.API.Features
         /// Gets the time elapsed from the start of the round.
         /// </summary>
         /// <seealso cref="StartedTime"/>
-        public static TimeSpan ElapsedTime => RoundStart.RoundLength;
+        public static TimeSpan ElapsedTime
+        {
+            get => RoundStart.RoundLength;
+        }
 
         /// <summary>
         /// Gets the start time of the round.
         /// </summary>
         /// <seealso cref="ElapsedTime"/>
         /// <seealso cref="IsStarted"/>
-        public static DateTime StartedTime => DateTime.Now - ElapsedTime;
+        public static DateTime StartedTime
+        {
+            get => DateTime.Now - ElapsedTime;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => ReferenceHub.LocalHub is not null && RoundSummary.RoundInProgress();
+        public static bool IsStarted
+        {
+            get => ReferenceHub.LocalHub?.characterClassManager.RoundStarted ?? false;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the round in progress or not.
+        /// </summary>
+        public static bool InProgress
+        {
+            get => ReferenceHub.LocalHub is not null && RoundSummary.RoundInProgress();
+        }
 
         /// <summary>
         /// Gets a value indicating whether the round is ended or not.
         /// </summary>
-        public static bool IsEnded => RoundSummary.singleton.RoundEnded;
+        public static bool IsEnded
+        {
+            get => RoundSummary.singleton.RoundEnded;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the round is lobby or not.
         /// </summary>
-        public static bool IsLobby => !(IsEnded || IsStarted);
+        public static bool IsLobby
+        {
+            get => !(IsEnded || IsStarted);
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
@@ -124,7 +147,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the number of rounds since the server started.
         /// </summary>
-        public static int UptimeRounds => RoundRestart.UptimeRounds;
+        public static int UptimeRounds
+        {
+            get => RoundRestart.UptimeRounds;
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> indicating the sides that are currently alive.
@@ -193,7 +219,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
         public static bool EndRound(bool forceEnd = false)
         {
-            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2 && !forceEnd)
+            if (RoundSummary.singleton._keepRoundOnOne && (Player.Dictionary.Count < 2) && !forceEnd)
             {
                 return false;
             }

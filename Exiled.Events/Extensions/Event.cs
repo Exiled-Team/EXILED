@@ -10,6 +10,7 @@ namespace Exiled.Events.Extensions
     using System;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// A set of tools to execute events safely and without breaking other plugins.
@@ -24,21 +25,22 @@ namespace Exiled.Events.Extensions
         /// <param name="arg">Event arg.</param>
         /// <exception cref="ArgumentNullException">Event or its arg is <see langword="null"/>.</exception>
         public static void InvokeSafely<T>(this Events.CustomEventHandler<T> ev, T arg)
-            where T : EventArgs
+            where T : IExiledEvent
         {
             if (ev is null)
                 return;
 
             string eventName = ev.GetType().FullName;
-            foreach (Events.CustomEventHandler<T> handler in ev.GetInvocationList())
+            foreach (Delegate @delegate in ev.GetInvocationList())
             {
                 try
                 {
+                    Events.CustomEventHandler<T> handler = (Events.CustomEventHandler<T>)@delegate;
                     handler(arg);
                 }
                 catch (Exception ex)
                 {
-                    LogException(ex, handler.Method.Name, handler.Method.ReflectedType.FullName, eventName);
+                    LogException(ex, @delegate.Method.Name, @delegate.Method.ReflectedType?.FullName, eventName);
                 }
             }
         }
@@ -54,15 +56,16 @@ namespace Exiled.Events.Extensions
                 return;
 
             string eventName = ev.GetType().FullName;
-            foreach (Events.CustomEventHandler handler in ev.GetInvocationList())
+            foreach (Delegate @delegate in ev.GetInvocationList())
             {
                 try
                 {
+                    Events.CustomEventHandler handler = (Events.CustomEventHandler)@delegate;
                     handler();
                 }
                 catch (Exception ex)
                 {
-                    LogException(ex, handler.Method.Name, handler.Method.ReflectedType?.FullName, eventName);
+                    LogException(ex, @delegate.Method.Name, @delegate.Method.ReflectedType?.FullName, eventName);
                 }
             }
         }

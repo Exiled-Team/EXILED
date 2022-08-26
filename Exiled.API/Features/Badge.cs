@@ -46,5 +46,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the badge is global or not.
         /// </summary>
         public bool IsGlobal { get; }
+
+        /// <summary>
+        /// Returns the Badge in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Badge-related data.</returns>
+        public override string ToString() => $"{Text} ({Color}) [{Type}] *{IsGlobal}*";
     }
 }

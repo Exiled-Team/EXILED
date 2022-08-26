@@ -69,17 +69,26 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
+        public static bool IsLczDecontaminated
+        {
+            get => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
+        }
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports => ReadOnlyTeleportsValue;
+        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports
+        {
+            get => ReadOnlyTeleportsValue;
+        }
 
         /// <summary>
         /// Gets all <see cref="Locker"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
+        public static ReadOnlyCollection<Locker> Lockers
+        {
+            get => ReadOnlyLockersValue;
+        }
 
         /// <summary>
         /// gets all <see cref="Pickup"/>s on the map.
@@ -102,12 +111,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="Ragdoll"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Ragdoll> Ragdolls => ReadOnlyRagdollsValue;
+        public static ReadOnlyCollection<Ragdoll> Ragdolls
+        {
+            get => ReadOnlyRagdollsValue;
+        }
 
         /// <summary>
         /// Gets all <see cref="AdminToy"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<AdminToy> Toys => ReadOnlyToysValue;
+        public static ReadOnlyCollection<AdminToy> Toys
+        {
+            get => ReadOnlyToysValue;
+        }
 
         /// <summary>
         /// Gets or sets the current seed of the map.
@@ -154,16 +169,21 @@ namespace Exiled.API.Features
                 // Raycasting doesn't make sense,
                 // SCP-079 position is constant,
                 // let it be 'Outside' instead
-                if (ply.Role is Scp079Role role)
+                if (ply.Role.Is(out Scp079Role role))
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
             if (room is null)
             {
                 // Then try for objects that aren't children, like players and pickups.
-                Ray ray = new(objectInRoom.transform.position, Vector3.down);
+                Ray downRay = new(objectInRoom.transform.position, Vector3.down);
 
-                if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
+                if (Physics.RaycastNonAlloc(downRay, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
+                    return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
+
+                Ray upRay = new(objectInRoom.transform.position, Vector3.up);
+
+                if (Physics.RaycastNonAlloc(upRay, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                     return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
 
                 // Always default to surface transform, since it's static.
@@ -236,7 +256,10 @@ namespace Exiled.API.Features
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
-                if (zoneTypes == ZoneType.Unspecified || (room is not null && zoneTypes == room.Zone))
+                if (room is null)
+                    continue;
+
+                if (zoneTypes == ZoneType.Unspecified || (room is not null && (zoneTypes == room.Zone)))
                     controller.ServerFlickerLights(duration);
             }
         }
@@ -355,6 +378,7 @@ namespace Exiled.API.Features
             Generator.GeneratorValues.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
+            RagdollsValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Scp079Interactable.InteractablesByRoomId.Clear();
         }
