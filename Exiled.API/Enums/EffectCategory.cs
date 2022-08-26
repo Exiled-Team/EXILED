@@ -12,22 +12,22 @@ namespace Exiled.API.Enums
         None = 0,
 
         /// <summary>
-        /// Represents an effect with a positive impact.
+        /// Represents an effect with a positive player impact.
         /// </summary>
         Positive = 1,
 
         /// <summary>
-        /// Represents an effect with a negative impact.
+        /// Represents an effect with a negative player impact.
         /// </summary>
         Negative = 2,
 
         /// <summary>
-        /// Represents an effect which modifies the player's movement speed.
+        /// Represents an effect which modifies a player's movement speed.
         /// </summary>
         Movement = 4,
 
         /// <summary>
-        /// Represents an effect which deals damage to a user over time.
+        /// Represents an effect which deals damage to a player over time.
         /// </summary>
         Harmful = 8,
     }
