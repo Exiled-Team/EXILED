@@ -107,8 +107,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // escape = ev.IsEscaped
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
                     new(OpCodes.Starg_S, 3),
-
-                
+                });
 
             offset = 0;
             index = newInstructions.FindIndex(i => (i.opcode == OpCodes.Callvirt) && i.operand is MethodInfo method && (method.DeclaringType == typeof(CharacterClassManager.ClassChangedAdvanced))) +
