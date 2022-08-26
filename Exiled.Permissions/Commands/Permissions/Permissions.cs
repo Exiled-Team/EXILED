@@ -23,7 +23,10 @@ namespace Exiled.Permissions.Commands.Permissions
         /// <summary>
         /// Initializes a new instance of the <see cref="Permissions"/> class.
         /// </summary>
-        public Permissions() => LoadGeneratedCommands();
+        public Permissions()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "permissions";

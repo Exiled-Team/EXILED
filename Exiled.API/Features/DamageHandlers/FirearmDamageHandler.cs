@@ -28,15 +28,21 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="item">The <see cref="Items.Item"/> to be set.</param>
         /// <param name="target">The target to be set.</param>
         public FirearmDamageHandler(Item item, Player target, BaseHandler baseHandler)
-            : base(target, baseHandler) => Item = item;
+            : base(target, baseHandler)
+        {
+            Item = item;
+        }
 
         /// <inheritdoc/>
-        public override DamageType Type => Item switch
+        public override DamageType Type
         {
-            Firearm _ when DamageTypeExtensions.ItemConversion.ContainsKey(Item.Type) => DamageTypeExtensions.ItemConversion[Item.Type],
-            MicroHid _ => DamageType.MicroHid,
-            _ => DamageType.Firearm,
-        };
+            get => Item switch
+            {
+                Firearm _ when DamageTypeExtensions.ItemConversion.ContainsKey(Item.Type) => DamageTypeExtensions.ItemConversion[Item.Type],
+                MicroHid _ => DamageType.MicroHid,
+                _ => DamageType.Firearm,
+            };
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="Items.Item"/> used by the damage handler.
@@ -55,12 +61,18 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets the penetration.
         /// </summary>
-        public float Penetration => As<BaseFirearmHandler>()._penetration;
+        public float Penetration
+        {
+            get => As<BaseFirearmHandler>()._penetration;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the human hitboxes should be used.
         /// </summary>
-        public bool UseHumanHitboxes => As<BaseFirearmHandler>()._useHumanHitboxes;
+        public bool UseHumanHitboxes
+        {
+            get => As<BaseFirearmHandler>()._useHumanHitboxes;
+        }
 
         /// <inheritdoc/>
         public override void ProcessDamage(Player player)

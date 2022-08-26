@@ -45,7 +45,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SendSpawnMessage => sendSpawnMessage ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
+        public static MethodInfo SendSpawnMessage
+        {
+            get => sendSpawnMessage ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
+        }
 
         /// <summary>
         /// Gets or sets the name of the server.
@@ -63,47 +66,74 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the server's version.
         /// </summary>
-        public static string Version => GameCore.Version.VersionString;
+        public static string Version
+        {
+            get => GameCore.Version.VersionString;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not streaming of this version is allowed.
         /// </summary>
-        public static bool StreamingAllowed => GameCore.Version.StreamingAllowed;
+        public static bool StreamingAllowed
+        {
+            get => GameCore.Version.StreamingAllowed;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this server is on a beta version of SCP:SL.
         /// </summary>
-        public static bool IsBeta => GameCore.Version.PublicBeta || GameCore.Version.PrivateBeta;
+        public static bool IsBeta
+        {
+            get => GameCore.Version.PublicBeta || GameCore.Version.PrivateBeta;
+        }
 
         /// <summary>
         /// Gets a value indicating the type of build this server is hosted on.
         /// </summary>
-        public static GameCore.Version.VersionType BuildType => GameCore.Version.BuildType;
+        public static GameCore.Version.VersionType BuildType
+        {
+            get => GameCore.Version.BuildType;
+        }
 
         /// <summary>
         /// Gets the RemoteAdmin permissions handler.
         /// </summary>
-        public static PermissionsHandler PermissionsHandler => ServerStatic.PermissionsHandler;
+        public static PermissionsHandler PermissionsHandler
+        {
+            get => ServerStatic.PermissionsHandler;
+        }
 
         /// <summary>
         /// Gets the Ip address of the server.
         /// </summary>
-        public static string IpAddress => ServerConsole.Ip;
+        public static string IpAddress
+        {
+            get => ServerConsole.Ip;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this server is a dedicated server.
         /// </summary>
-        public static bool IsDedicated => ServerStatic.IsDedicated;
+        public static bool IsDedicated
+        {
+            get => ServerStatic.IsDedicated;
+        }
 
         /// <summary>
         /// Gets the port of the server.
         /// </summary>
-        public static ushort Port => ServerStatic.ServerPort;
+        public static ushort Port
+        {
+            get => ServerStatic.ServerPort;
+        }
 
         /// <summary>
         /// Gets the actual ticks per second of the server.
         /// </summary>
-        public static double Tps => Math.Round(1f / Time.smoothDeltaTime);
+        public static double Tps
+        {
+            get => Math.Round(1f / Time.smoothDeltaTime);
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not friendly fire is enabled.
@@ -124,7 +154,10 @@ namespace Exiled.API.Features
         /// Gets the number of players currently on the server.
         /// </summary>
         /// <seealso cref="Player.List"/>
-        public static int PlayerCount => Player.Dictionary.Count;
+        public static int PlayerCount
+        {
+            get => Player.Dictionary.Count;
+        }
 
         /// <summary>
         /// Gets or sets the maximum number of players able to be on the server.

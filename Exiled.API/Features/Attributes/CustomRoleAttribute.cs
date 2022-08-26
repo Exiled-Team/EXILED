@@ -20,7 +20,10 @@ namespace Exiled.API.Features.Attributes
         /// Initializes a new instance of the <see cref="CustomRoleAttribute"/> class.
         /// </summary>
         /// <param name="type">The <see cref="global::RoleType"/> to serialize.</param>
-        public CustomRoleAttribute(RoleType type) => RoleType = type;
+        public CustomRoleAttribute(RoleType type)
+        {
+            RoleType = type;
+        }
 
         /// <summary>
         /// Gets the attribute's <see cref="global::RoleType"/>.

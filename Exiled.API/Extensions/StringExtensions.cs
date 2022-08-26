@@ -53,7 +53,7 @@ namespace Exiled.API.Extensions
             {
                 for (int j = 1; j <= m; j++)
                 {
-                    int cost = (secondString[j - 1] == firstString[i - 1]) ? 0 : 1;
+                    int cost = secondString[j - 1] == firstString[i - 1] ? 0 : 1;
 
                     d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
                 }
@@ -82,7 +82,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the new snake_case string.</returns>
         public static string ToSnakeCase(this string str, bool shouldReplaceSpecialChars = true)
         {
-            string snakeCaseString = string.Concat(str.Select((ch, i) => i > 0 && char.IsUpper(ch) ? "_" + ch.ToString() : ch.ToString())).ToLower();
+            string snakeCaseString = string.Concat(str.Select((ch, i) => (i > 0) && char.IsUpper(ch) ? "_" + ch.ToString() : ch.ToString())).ToLower();
 
             return shouldReplaceSpecialChars ? Regex.Replace(snakeCaseString, @"[^0-9a-zA-Z_]+", string.Empty) : snakeCaseString;
         }
