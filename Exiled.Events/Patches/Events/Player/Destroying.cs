@@ -16,10 +16,13 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -49,6 +52,30 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldloc_S, player.LocalIndex),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DestroyingEventArgs))[0]),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDestroying))),
+                new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.Dictionary))),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.GameObject))),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<GameObject, Player>), nameof(Dictionary<GameObject, Player>.Remove), new[] { typeof(GameObject) })),
+                new(OpCodes.Pop),
+                new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.UnverifiedPlayers))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, Method(typeof(ConditionalWeakTable<ReferenceHub, Player>), nameof(ConditionalWeakTable<ReferenceHub, Player>.Remove), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Pop),
+                new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.IdsCache))),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Id))),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<int, Player>), nameof(Dictionary<int, Player>.Remove), new[] { typeof(int) })),
+                new(OpCodes.Pop),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.UserId))),
+                new(OpCodes.Ldnull),
+                new(OpCodes.Cgt_Un),
+                new(OpCodes.Brfalse_S, cdcLabel),
+                new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.UserIdsCache))),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.UserId))),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<string, Player>), nameof(Dictionary<string, Player>.Remove), new[] { typeof(string) })),
+                new(OpCodes.Pop),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

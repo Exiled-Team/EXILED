@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -20,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Radio.UserCode_CmdSyncVoiceChatStatus(bool)"/>.
-    /// Adds the <see cref="Handlers.Player.VoiceChatting"/> event.
+    ///     Patches <see cref="Radio.UserCode_CmdSyncVoiceChatStatus(bool)" />.
+    ///     Adds the <see cref="Handlers.Player.VoiceChatting" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.VoiceChatting))]
     [HarmonyPatch(typeof(Radio), nameof(Radio.UserCode_CmdSyncVoiceChatStatus))]
@@ -37,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(Radio), nameof(Radio._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Dup),
                 new(OpCodes.Ldfld, Field(typeof(Radio), nameof(Radio._dissonanceSetup))),

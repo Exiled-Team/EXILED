@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Scp244
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp244;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -22,8 +24,12 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
     /// Patches <see cref="Scp244Item"/> to add missing event handler to the <see cref="Handlers.Scp244.UsingScp244"/>.
+    ///     Patches <see cref="Scp244Item" /> to add missing event handler to the
+    ///     <see cref="Scp244Item.ServerOnUsingCompleted" />.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp244.UsingScp244))]
     [HarmonyPatch(typeof(Scp244Item), nameof(Scp244Item.ServerOnUsingCompleted))]
@@ -46,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingScp244EventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnUsingScp244))),
+                new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnUsingScp244))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(UsingScp244EventArgs), nameof(UsingScp244EventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });

@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Scp173
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
 
@@ -20,12 +22,15 @@ namespace Exiled.Events.Patches.Events.Scp173
 
     using static HarmonyLib.AccessTools;
 
+    using Scp173 = PlayableScps.Scp173;
+
     /// <summary>
-    /// Patches <see cref="PlayableScps.Scp173.ServerDoBreakneckSpeeds"/>.
-    /// Adds the <see cref="Handlers.Scp173.UsingBreakneckSpeeds"/> event.
+    ///     Patches <see cref="PlayableScps.Scp173.ServerDoBreakneckSpeeds" />.
+    ///     Adds the <see cref="Handlers.Scp173.UsingBreakneckSpeeds" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp173.UsingBreakneckSpeeds))]
     [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.ServerDoBreakneckSpeeds))]
+    [HarmonyPatch(typeof(Scp173), nameof(Scp173.ServerDoBreakneckSpeeds))]
     internal static class UsingBreakneckSpeeds
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -37,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Scp173
             int offset = -1;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            (FieldInfo)instruction.operand == Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173._breakneckSpeedsCooldownRemaining))) + offset;
+                                                                 (FieldInfo)instruction.operand == Field(typeof(Scp173), nameof(Scp173._breakneckSpeedsCooldownRemaining))) + offset;
 
             newInstructions.RemoveRange(index, 5);
 
@@ -49,12 +54,12 @@ namespace Exiled.Events.Patches.Events.Scp173
             {
                 // Player.Get(this.Hub)
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.Hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173.Hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // Scp173._breakneckSpeedsCooldownRemaining == 0
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173._breakneckSpeedsCooldownRemaining))),
+                new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173._breakneckSpeedsCooldownRemaining))),
                 new(OpCodes.Ldc_R4, 0f),
                 new(OpCodes.Ceq),
 

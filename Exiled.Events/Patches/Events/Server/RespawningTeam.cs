@@ -14,6 +14,8 @@ namespace Exiled.Events.Patches.Events.Server
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Server;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -23,11 +25,11 @@ namespace Exiled.Events.Patches.Events.Server
 
     using static HarmonyLib.AccessTools;
 
-    using Server = Exiled.Events.Handlers.Server;
+    using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patch the <see cref="RespawnManager.Spawn"/>.
-    /// Adds the <see cref="Server.RespawningTeam"/> event.
+    ///     Patch the <see cref="RespawnManager.Spawn" />.
+    ///     Adds the <see cref="Server.RespawningTeam" /> event.
     /// </summary>
     [EventPatch(typeof(Server), nameof(Server.RespawningTeam))]
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
@@ -101,8 +103,14 @@ namespace Exiled.Events.Patches.Events.Server
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static List<Player> GetPlayers(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
+        private static List<Player> GetPlayers(List<ReferenceHub> hubs)
+        {
+            return hubs.Select(Player.Get).ToList();
+        }
 
-        private static List<ReferenceHub> GetHubs(List<Player> players) => players.Select(p => p.ReferenceHub).ToList();
+        private static List<ReferenceHub> GetHubs(List<Player> players)
+        {
+            return players.Select(p => p.ReferenceHub).ToList();
+        }
     }
 }

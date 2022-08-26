@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Item
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -22,11 +23,11 @@ namespace Exiled.Events.Patches.Events.Item
 
     using static HarmonyLib.AccessTools;
 
-    using Firearm = InventorySystem.Items.Firearms.Firearm;
+    using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Firearm.Status"/>.
-    /// Adds the <see cref="Handlers.Item.ChangingDurability"/> event.
+    ///     Patches <see cref="Firearm.Status" />.
+    ///     Adds the <see cref="Handlers.Item.ChangingDurability" /> event.
     /// </summary>
     [EventPatch(typeof(Item), nameof(Item.ChangingDurability))]
     [HarmonyPatch(typeof(Firearm), nameof(Firearm.Status), MethodType.Setter)]
@@ -59,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Brtrue_S, cdc),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Owner))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Dup),
                 new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
@@ -71,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingDurability))),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.OnChangingDurability))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingDurabilityEventArgs), nameof(ChangingDurabilityEventArgs.Firearm))),
                 new(OpCodes.Brfalse_S, cdc),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

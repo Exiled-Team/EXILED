@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp079
 {
 #pragma warning disable SA1123
+
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -15,6 +16,9 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp079;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -31,6 +35,15 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)"/>.
     /// Adds the <see cref="Scp079.InteractingTesla"/>, <see cref="Scp079.TriggeringDoor"/>, <see cref="Scp079.StartingSpeaker"/> and <see cref="Scp079.StoppingSpeaker"/> event for SCP-079.
+    using Map = Exiled.API.Features.Map;
+    using Player = Exiled.API.Features.Player;
+    using TeslaGate = TeslaGate;
+
+    /// <summary>
+    ///     Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)" />.
+    ///     Adds the <see cref="InteractingTeslaEventArgs" />, <see cref="InteractingDoorEventArgs" />,
+    ///     <see cref="Handlers.Scp079.StartingSpeaker" /> and <see cref="Handlers.Scp079.StoppingSpeaker" /> event for
+    ///     SCP-079.
     /// </summary>
     [EventPatch(typeof(Scp079), nameof(Scp079.InteractingTesla))]
     [EventPatch(typeof(Scp079), nameof(Scp079.TriggeringDoor))]
@@ -81,7 +94,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, interactingTeslaEv.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnInteractingTesla))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnInteractingTesla))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingTeslaEventArgs), nameof(InteractingTeslaEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
                 new(OpCodes.Ldloc, interactingTeslaEv.LocalIndex),
@@ -102,7 +115,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Find the first ',', then add the offset to get "ldloc.3".
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S &&
-            (sbyte)instruction.operand == ',') + offset;
+                                                             (sbyte)instruction.operand == ',') + offset;
 
             // var ev = new TriggeringDoorEventArgs(Player.Get(this.gameObject), doorVariant, manaFromLabel, manaFromLabel <= this.curMana);
             //
@@ -138,7 +151,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new(OpCodes.Stloc_S, interactingDoorEv.LocalIndex),
 
                 // Handlers.Scp079.OnTriggeringDoor(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnTriggeringDoor))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnTriggeringDoor))),
 
                 // if (!ev.IsAllowed)
                 //   return;
@@ -162,7 +175,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Find the operand "Room Lockdown", then add the offset to get "ldloc.3"
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
-            (string)instruction.operand == "Room Lockdown") + offset;
+                                                             (string)instruction.operand == "Room Lockdown") + offset;
 
             // var roomGameObject = GameObject.Find(this.currentZone + "/" + this.currentRoom);
             // var ev = new LockingDownEventArgs(player, roomGameObject, manaFromLabel, manaFromLabel <= this.curMana);
@@ -192,7 +205,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new(OpCodes.Stloc_S, lockingDown.LocalIndex),
 
                 // Handlers.Scp079.OnLockingDown(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnLockingDown))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnLockingDown))),
 
                 // if (!ev.IsAllowed)
                 //   return;
@@ -256,7 +269,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new(OpCodes.Stloc_S, startingSpeakerEv.LocalIndex),
 
                 // Handlers.Scp079.OnStartingSpeaker(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnStartingSpeaker))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnStartingSpeaker))),
 
                 // if (!ev.IsAllowed)
                 //   return;
@@ -277,7 +290,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Find the first string.Empty, then add the offset to get "ldarg.0".
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldsfld &&
-            (FieldInfo)instruction.operand == Field(typeof(string), nameof(string.Empty))) + offset;
+                                                             (FieldInfo)instruction.operand == Field(typeof(string), nameof(string.Empty))) + offset;
 
             // if (string.IsNullOrEmpty(this.Speaker)
             //   return;
@@ -316,7 +329,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new(OpCodes.Dup),
 
                 // Handlers.Scp079.OnStartingSpeaker(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnStoppingSpeaker))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnStoppingSpeaker))),
 
                 // if (!ev.IsAllowed)
                 //   return;
@@ -333,7 +346,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             // Find first "ldstr Elevator Teleport", then add the offset to get "ldloc.3".
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
-            (string)instruction.operand == "Elevator Teleport") + offset;
+                                                             (string)instruction.operand == "Elevator Teleport") + offset;
 
             // Declare a local variable of the type "ElevatorTeleportingEventArgs";
             LocalBuilder elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportingEventArgs));
@@ -372,7 +385,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new(OpCodes.Stloc_S, elevatorTeleportEv.LocalIndex),
 
                 // Handlers.Map.OnElevatorTeleporting(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnElevatorTeleporting))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnElevatorTeleporting))),
 
                 // if (!ev.IsAllowed)
                 //   return;

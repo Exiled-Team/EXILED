@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -22,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="AnimationController.UserCode_CmdChangeSpeedState"/>.
-    /// Adds the <see cref="Player.ChangingMoveState"/> event.
+    ///     Patches <see cref="AnimationController.UserCode_CmdChangeSpeedState" />.
+    ///     Adds the <see cref="Player.ChangingMoveState" /> event.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ChangingMoveState))]
     [HarmonyPatch(typeof(AnimationController), nameof(AnimationController.UserCode_CmdChangeSpeedState))]
@@ -63,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -3;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            (FieldInfo)instruction.operand == Field(typeof(Role), nameof(Role.team))) + offset;
+                                                             (FieldInfo)instruction.operand == Field(typeof(Role), nameof(Role.team))) + offset;
 
             newInstructions.RemoveRange(index, 10);
 

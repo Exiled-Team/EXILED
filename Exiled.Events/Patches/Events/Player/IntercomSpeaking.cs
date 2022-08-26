@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -21,9 +22,13 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
     /// Patches <see cref="Intercom.UserCode_CmdSetTransmit(bool)"/>.
     /// Adds the <see cref="Handlers.Player.IntercomSpeaking"/> event.
+    ///     Patches <see cref="Intercom.UserCode_CmdSetTransmit(bool)" />.
+    ///     Adds the <see cref="IntercomSpeaking" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.IntercomSpeaking))]
     [HarmonyPatch(typeof(Intercom), nameof(Intercom.RequestTransmission))]
@@ -39,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(GameObject)
                 new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // true
                 new(OpCodes.Ldc_I4_1),

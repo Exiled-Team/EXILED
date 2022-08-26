@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Item
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -24,9 +25,12 @@ namespace Exiled.Events.Patches.Events.Item
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="AttachmentsServerHandler.ServerReceivePreference(NetworkConnection, AttachmentsSetupPreference)"/>.
-    /// Adds the <see cref="Handlers.Item.ReceivingPreference"/> event.
+    ///     Patches
+    ///     <see cref="AttachmentsServerHandler.ServerReceivePreference(NetworkConnection, AttachmentsSetupPreference)" />.
+    ///     Adds the <see cref="Handlers.Item.ReceivingPreference" /> event.
     /// </summary>
     [EventPatch(typeof(Item), nameof(Item.ReceivingPreference))]
     [HarmonyPatch(typeof(AttachmentsServerHandler), nameof(AttachmentsServerHandler.ServerReceivePreference))]
@@ -61,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Item
 
                 // API::Features::Player::Get(referenceHub)
                 new(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // AttachmentsSetupPreference::Weapon
                 new(OpCodes.Ldarg_1),
@@ -84,7 +88,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers::Item::OnReceivingPreference(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnReceivingPreference))),
+                new(OpCodes.Call, Method(typeof(Item), nameof(Item.OnReceivingPreference))),
 
                 // ev.IsAllowed
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingPreferenceEventArgs), nameof(ReceivingPreferenceEventArgs.IsAllowed))),

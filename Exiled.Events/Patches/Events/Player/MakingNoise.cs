@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -20,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FootstepSync.UserCode_CmdScp939Noise"/>.
-    /// Adds the <see cref="Handlers.Player.MakingNoise"/> event.
+    ///     Patches <see cref="FootstepSync.UserCode_CmdScp939Noise" />.
+    ///     Adds the <see cref="Handlers.Player.MakingNoise" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.MakingNoise))]
     [HarmonyPatch(typeof(FootstepSync), nameof(FootstepSync.UserCode_CmdScp939Noise))]
@@ -42,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(FootstepSync), nameof(FootstepSync._ccm))),
                 new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Callvirt, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(MakingNoiseEventArgs))[0]),

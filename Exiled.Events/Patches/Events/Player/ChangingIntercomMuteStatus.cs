@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,6 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patch the <see cref="CharacterClassManager.NetworkIntercomMuted"/>.
     /// Adds the <see cref="Handlers.Player.ChangingIntercomMuteStatus"/> event.
+    ///     Patch the <see cref="CharacterClassManager.NetworkIntercomMuted" />.
+    ///     Adds the <see cref="ChangingIntercomMuteStatus" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingIntercomMuteStatus))]
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkIntercomMuted), MethodType.Setter)]
@@ -41,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Callvirt, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntercomMuteStatusEventArgs))[0]),

@@ -22,6 +22,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// <summary>
     /// Patches <see cref="AlphaWarheadController.Detonate"/>.
     /// Adds the <see cref="Warhead.Detonated"/> event.
+    ///     Patches <see cref="AlphaWarheadController.Detonate" />.
+    ///     Adds the WarheadDetonated event.
     /// </summary>
     [EventPatch(typeof(Warhead), nameof(Warhead.Detonated))]
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]

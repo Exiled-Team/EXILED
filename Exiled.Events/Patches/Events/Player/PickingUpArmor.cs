@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,7 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="ArmorSearchCompletor.Complete"/> method to add the <see cref="Handlers.Player.PickingUpArmor"/> event.
+    ///     Patches the <see cref="ArmorSearchCompletor.Complete" /> method to add the
+    ///     <see cref="Handlers.Player.PickingUpArmor" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PickingUpArmor))]
     [HarmonyPatch(typeof(ArmorSearchCompletor), nameof(ArmorSearchCompletor.Complete))]

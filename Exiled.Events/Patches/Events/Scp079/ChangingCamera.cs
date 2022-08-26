@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp079;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -22,9 +24,13 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)"/>.
     /// Adds the <see cref="Handlers.Scp079.ChangingCamera"/> event.
+    ///     Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)" />.
+    ///     Adds the <see cref="ChangingCamera" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp079), nameof(Handlers.Scp079.ChangingCamera))]
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_CmdSwitchCamera))]
@@ -82,7 +88,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new(OpCodes.Stloc_S, changingCameraEv.LocalIndex),
 
                 // Handlers.Scp079.OnChangingCamera(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnChangingCamera))),
+                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnChangingCamera))),
 
                 // if (!ev.IsAllowed)
                 //   return;

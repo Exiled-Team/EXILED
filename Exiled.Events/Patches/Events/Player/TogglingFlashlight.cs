@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -24,6 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="FlashlightNetworkHandler.ServerProcessMessage"/>.
     /// Adds the <see cref="Handlers.Player.TogglingFlashlight"/> event.
+    ///     Patches <see cref="FlashlightNetworkHandler.ServerProcessMessage" />.
+    ///     Adds the <see cref="TogglingFlashlight" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.TogglingFlashlight))]
     [HarmonyPatch(typeof(FlashlightNetworkHandler), nameof(FlashlightNetworkHandler.ServerProcessMessage))]
@@ -43,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_1),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(FlashlightNetworkHandler.FlashlightMessage), nameof(FlashlightNetworkHandler.FlashlightMessage.NewState))),

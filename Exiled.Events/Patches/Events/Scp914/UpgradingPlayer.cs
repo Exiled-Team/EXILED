@@ -13,6 +13,9 @@ namespace Exiled.Events.Patches.Events.Scp914
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp914;
+
+    using global::Scp914;
 
     using HarmonyLib;
 
@@ -22,11 +25,11 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using static HarmonyLib.AccessTools;
 
-    using Scp914KnobSetting = global::Scp914.Scp914KnobSetting;
-    using Scp914Upgrader = global::Scp914.Scp914Upgrader;
+    using Scp914 = Exiled.Events.Handlers.Scp914;
 
     /// <summary>
-    /// Patches <see cref="Scp914Upgrader.ProcessPlayer"/> to add the <see cref="Handlers.Scp914.UpgradingPlayer"/> event.
+    ///     Patches <see cref="Scp914Upgrader.ProcessPlayer" /> to add the <see cref="Handlers.Scp914.UpgradingPlayer" />
+    ///     event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp914), nameof(Handlers.Scp914.UpgradingPlayer))]
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
@@ -69,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Scp914.OnUpgradingPlayer(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp914), nameof(Handlers.Scp914.OnUpgradingPlayer))),
+                new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingPlayer))),
 
                 // if (!ev.IsAllowed)
                 //    return;
@@ -135,7 +138,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new(OpCodes.Stloc_S, ev2.LocalIndex),
 
                 // Handlers.Scp914.OnUpgradingInventoryItem(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Scp914), nameof(Handlers.Scp914.OnUpgradingInventoryItem))),
+                new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingInventoryItem))),
 
                 // if (!ev.IsAllowed)
                 //    return;

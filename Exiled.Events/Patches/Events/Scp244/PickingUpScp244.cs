@@ -8,12 +8,15 @@
 namespace Exiled.Events.Patches.Events.Scp244
 {
 #pragma warning disable SA1313
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp244;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -23,8 +26,12 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
     /// Patches <see cref="Scp244SearchCompletor"/> to add missing event handler to the <see cref="Handlers.Scp244.PickingUpScp244"/>.
+    ///     Patches <see cref="Scp244SearchCompletor" /> to add missing event handler to the
+    ///     <see cref="Scp244SearchCompletor" />.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp173), nameof(Handlers.Scp244.PickingUpScp244))]
     [HarmonyPatch(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Complete))]
@@ -46,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                 new(OpCodes.Ldloc_0),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpScp244EventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnPickingUpScp244))),
+                new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnPickingUpScp244))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpScp244EventArgs), nameof(PickingUpScp244EventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });

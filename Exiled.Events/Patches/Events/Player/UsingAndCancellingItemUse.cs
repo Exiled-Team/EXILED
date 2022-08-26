@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -26,6 +27,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// <summary>
     /// Patches <see cref="UsableItemsController.ServerReceivedStatus"/>.
     /// Adds the <see cref="Handlers.Player.UsingItem"/> and <see cref="Handlers.Player.CancellingItemUse"/> event.
+    ///     Patches <see cref="UsableItemsController.ServerReceivedStatus" />.
+    ///     Adds the <see cref="Handlers.Player.UsingItem" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.CancellingItemUse))]
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.UsingItem))]

@@ -8,14 +8,18 @@
 namespace Exiled.Events.Patches.Events.Warhead
 {
 #pragma warning disable SA1402
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using CommandSystem;
+    using CommandSystem.Commands.RemoteAdmin.ServerEvent;
+    using CommandSystem.Commands.RemoteAdmin.Warhead;
 
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
 
@@ -23,17 +27,19 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using static HarmonyLib.AccessTools;
 
+    using Warhead = Exiled.Events.Handlers.Warhead;
+
     /// <summary>
-    /// Contains the instructions we will insert into multiple methods.
+    ///     Contains the instructions we will insert into multiple methods.
     /// </summary>
     internal static class StartingByCommand
     {
         /// <summary>
-        /// Inserts the needed instructions to a <see cref="List{CodeInstruction}"/>.
+        ///     Inserts the needed instructions to a <see cref="List{CodeInstruction}" />.
         /// </summary>
         /// <param name="index">The starting index to add instructions at.</param>
-        /// <param name="generator">The <see cref="ILGenerator"/> for the method being patched.</param>
-        /// <param name="instructions">The <see cref="List{T}"/> of instructions to add to.</param>
+        /// <param name="generator">The <see cref="ILGenerator" /> for the method being patched.</param>
+        /// <param name="instructions">The <see cref="List{T}" /> of instructions to add to.</param>
         internal static void InsertInstructions(int index, ILGenerator generator, ref List<CodeInstruction> instructions)
         {
             Label cdcLabel = generator.DefineLabel();
@@ -44,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
+                new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStarting))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue, cdcLabel),
                 new(OpCodes.Ldarg_3),
@@ -60,10 +66,12 @@ namespace Exiled.Events.Patches.Events.Warhead
     }
 
     /// <summary>
-    /// Patches <see cref="CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand.Execute"/> to add the <see cref="Handlers.Warhead.Starting"/> event when triggered by a command.
+    ///     Patches <see cref="CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand.Execute" /> to add the
+    ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand), nameof(CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand.Execute))]
+    [HarmonyPatch(typeof(DetonateCommand), nameof(DetonateCommand.Execute))]
     internal static class StartingByDetonateCommand
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -82,10 +90,12 @@ namespace Exiled.Events.Patches.Events.Warhead
     }
 
     /// <summary>
-    /// Patches <see cref="CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand.Execute"/> to add the <see cref="Handlers.Warhead.Starting"/> event when triggered by a command.
+    ///     Patches <see cref="CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand.Execute" /> to add the
+    ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand), nameof(CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand.Execute))]
+    [HarmonyPatch(typeof(InstantCommand), nameof(InstantCommand.Execute))]
     internal static class StartingByInstantCommand
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -104,10 +114,12 @@ namespace Exiled.Events.Patches.Events.Warhead
     }
 
     /// <summary>
-    /// Patches <see cref="CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand.Execute"/> to add the <see cref="Handlers.Warhead.Starting"/> event when triggered by a command.
+    ///     Patches <see cref="CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand.Execute" /> to add the
+    ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand), nameof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand.Execute))]
+    [HarmonyPatch(typeof(DetonationStartCommand), nameof(DetonationStartCommand.Execute))]
     internal static class StartingByEventDetonateCommand
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -126,10 +138,12 @@ namespace Exiled.Events.Patches.Events.Warhead
     }
 
     /// <summary>
-    /// Patches <see cref="CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand.Execute"/> to add the <see cref="Handlers.Warhead.Starting"/> event when triggered by a command.
+    ///     Patches <see cref="CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand.Execute" /> to add the
+    ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
     [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand), nameof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand.Execute))]
+    [HarmonyPatch(typeof(DetonationInstantCommand), nameof(DetonationInstantCommand.Execute))]
     internal static class StartingByEventInstantDetonateCommand
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

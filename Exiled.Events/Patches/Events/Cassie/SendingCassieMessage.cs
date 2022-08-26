@@ -12,20 +12,24 @@ namespace Exiled.Events.Patches.Events.Cassie
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Cassie;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
 
+    using Respawning;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Respawning.RespawnEffectsController.PlayCassieAnnouncement(string, bool, bool, bool)"/>.
-    /// Adds the <see cref="Handlers.Cassie.SendingCassieMessage"/> event.
+    ///     Patches <see cref="Respawning.RespawnEffectsController.PlayCassieAnnouncement(string, bool, bool, bool)" />.
+    ///     Adds the <see cref="Handlers.Cassie.SendingCassieMessage" /> event.
     /// </summary>
     [EventPatch(typeof(Cassie), nameof(Cassie.SendingCassieMessage))]
     [HarmonyPatch(typeof(Respawning.RespawnEffectsController), nameof(Respawning.RespawnEffectsController.PlayCassieAnnouncement))]
+    [HarmonyPatch(typeof(RespawnEffectsController), nameof(RespawnEffectsController.PlayCassieAnnouncement))]
     internal static class SendingCassieMessage
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -54,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Cassie
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Cassie), nameof(Handlers.Cassie.OnSendingCassieMessage))),
+                new(OpCodes.Call, Method(typeof(Cassie), nameof(Cassie.OnSendingCassieMessage))),
                 new(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.Words))),
                 new(OpCodes.Starg_S, 0),
                 new(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.MakeHold))),

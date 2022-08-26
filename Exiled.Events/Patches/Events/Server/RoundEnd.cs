@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Server
     using Exiled.API.Enums;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Handlers;
 
     using GameCore;
@@ -30,8 +31,8 @@ namespace Exiled.Events.Patches.Events.Server
     using Console = GameCore.Console;
 
     /// <summary>
-    /// Patches <see cref="RoundSummary.Start"/>.
-    /// Adds the <see cref="Server.EndingRound"/> and <see cref="Server.RoundEnded"/> event.
+    ///     Patches <see cref="RoundSummary.Start" />.
+    ///     Adds the <see cref="Server.EndingRound" /> and <see cref="Server.RoundEnded" /> event.
     /// </summary>
     [EventPatch(typeof(Server), nameof(Server.EndingRound))]
     [EventPatch(typeof(Server), nameof(Server.RoundEnded))]
@@ -94,8 +95,8 @@ namespace Exiled.Events.Patches.Events.Server
                 int num3 = newList.scps_except_zombies + newList.zombies;
                 int num4 = newList.class_ds + RoundSummary.EscapedClassD;
                 int num5 = newList.scientists + RoundSummary.EscapedScientists;
-                float num6 = (roundSummary.classlistStart.class_ds == 0) ? 0f : (num4 / roundSummary.classlistStart.class_ds);
-                float num7 = (roundSummary.classlistStart.scientists == 0) ? 1f : (num5 / roundSummary.classlistStart.scientists);
+                float num6 = roundSummary.classlistStart.class_ds == 0 ? 0f : num4 / roundSummary.classlistStart.class_ds;
+                float num7 = roundSummary.classlistStart.scientists == 0 ? 1f : num5 / roundSummary.classlistStart.scientists;
 
                 RoundSummary.SurvivingSCPs = newList.scps_except_zombies;
 
@@ -121,7 +122,7 @@ namespace Exiled.Events.Patches.Events.Server
                 if (num1 > 0)
                     endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedScientists >= RoundSummary.EscapedClassD ? LeadingTeam.FacilityForces : LeadingTeam.Draw;
                 else if (num3 > 0)
-                    endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD > RoundSummary.SurvivingSCPs ? LeadingTeam.ChaosInsurgency : (RoundSummary.SurvivingSCPs > RoundSummary.EscapedScientists ? LeadingTeam.Anomalies : LeadingTeam.Draw);
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD > RoundSummary.SurvivingSCPs ? LeadingTeam.ChaosInsurgency : RoundSummary.SurvivingSCPs > RoundSummary.EscapedScientists ? LeadingTeam.Anomalies : LeadingTeam.Draw;
                 else if (num2 > 0)
                     endingRoundEventArgs.LeadingTeam = RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists ? LeadingTeam.ChaosInsurgency : LeadingTeam.Draw;
 
@@ -133,7 +134,7 @@ namespace Exiled.Events.Patches.Events.Server
                 {
                     FriendlyFireConfig.PauseDetector = true;
                     string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num6 + " | S escaped percentage: : " + num7;
-                    Console.AddLog(str, Color.gray, false);
+                    Console.AddLog(str, Color.gray);
                     ServerLogs.AddLog(ServerLogs.Modules.Logger, str, ServerLogs.ServerLogType.GameEvent);
                     yield return Timing.WaitForSeconds(1.5f);
                     int timeToRoundRestart = Mathf.Clamp(ConfigFile.ServerConfig.GetInt("auto_round_restart_time", 10), 5, 1000);
@@ -169,17 +170,17 @@ namespace Exiled.Events.Patches.Events.Server
                     }
                     else
                     {
-                        yield return new(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
-                        yield return new(OpCodes.Ldarg_0);
-                        yield return new(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
+                        yield return new CodeInstruction(OpCodes.Ldarg_0);
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), m =>
                         {
                             Type[] generics = m.GetGenericArguments();
                             ParameterInfo[] paramseters = m.GetParameters();
                             return m.Name == "CancelWith"
-                            && generics.Length == 1
-                            && paramseters.Length == 2
-                            && paramseters[0].ParameterType == typeof(IEnumerator<float>)
-                            && paramseters[1].ParameterType == generics[0];
+                                   && generics.Length == 1
+                                   && paramseters.Length == 2
+                                   && paramseters[0].ParameterType == typeof(IEnumerator<float>)
+                                   && paramseters[1].ParameterType == generics[0];
                         }).MakeGenericMethod(typeof(RoundSummary)));
                     }
                 }

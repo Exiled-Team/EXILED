@@ -16,6 +16,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features.Roles;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -28,10 +30,13 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     using Player = Exiled.Events.Handlers.Player;
+    using Role = Role;
+    using Scp173 = Exiled.API.Features.Scp173;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.SetClassIDAdv(RoleType, bool, CharacterClassManager.SpawnReason, bool)"/>.
-    /// Adds the <see cref="Player.ChangingRole"/> and <see cref="Player.Escaping"/> events.
+    ///     Patches <see cref="CharacterClassManager.SetClassIDAdv(RoleType, bool, CharacterClassManager.SpawnReason, bool)" />
+    ///     .
+    ///     Adds the <see cref="Handlers.Player.ChangingRole" /> and <see cref="Handlers.Player.Escaping" /> events.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ChangingRole))]
     [EventPatch(typeof(Player), nameof(Player.Escaping))]
@@ -106,7 +111,8 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             offset = 0;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo method && method.DeclaringType == typeof(CharacterClassManager.ClassChangedAdvanced)) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo method && method.DeclaringType == typeof(CharacterClassManager.ClassChangedAdvanced)) +
+                    offset;
             newInstructions[index + 1].labels.Add(liteLabel);
             newInstructions.InsertRange(index + 1, new CodeInstruction[]
             {
@@ -148,6 +154,14 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
+        private static void UpdatePlayerRole(RoleType newRole, API.Features.Player player)
+        {
+            if (newRole is RoleType.Scp173)
+                Scp173.TurnedPlayers.Remove(player);
+
+            player.Role = API.Features.Roles.Role.Create(newRole, player);
+        }
+
         private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason)
         {
             try
@@ -166,13 +180,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
                         if (startCount == inventory.UserInventory.Items.Count)
-                        {
                             inventory.UserInventory.Items.Remove(key);
-                        }
                         else
-                        {
                             list.Add(item);
-                        }
                     }
 
                     InventoryItemProvider.PreviousInventoryPickups[player.ReferenceHub] = list;
@@ -187,9 +197,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
                         if (startCount == inventory.UserInventory.Items.Count)
-                        {
                             inventory.UserInventory.Items.Remove(key);
-                        }
                     }
 
                     inventory.UserInventory.ReserveAmmo.Clear();

@@ -17,6 +17,7 @@ namespace Exiled.Events
     using Exiled.Events.Attributes;
     using Exiled.Events.Features;
     using Exiled.Events.Patches.Events.Player;
+    using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -29,6 +30,24 @@ namespace Exiled.Events
     public sealed class Events : Plugin<Config>
     {
         private static Events instance;
+
+        /// <summary>
+        /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
+        /// </summary>
+        private int patchesCounter;
+
+        /// <summary>
+        /// The custom <see cref="EventHandler"/> delegate.
+        /// </summary>
+        /// <typeparam name="TInterface">The <see cref="EventHandler{TInterface}"/> type.</typeparam>
+        /// <param name="ev">The <see cref="EventHandler{TInterface}"/> instance.</param>
+        public delegate void CustomEventHandler<TInterface>(TInterface ev)
+            where TInterface : IExiledEvent;
+
+        /// <summary>
+        /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
+        /// </summary>
+        public delegate void CustomEventHandler();
 
         /// <summary>
         /// Gets the plugin instance.

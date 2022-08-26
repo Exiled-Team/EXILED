@@ -12,6 +12,10 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Map;
+
+    using Footprinting;
 
     using HarmonyLib;
 
@@ -19,11 +23,15 @@ namespace Exiled.Events.Patches.Events.Map
 
     using NorthwoodLib.Pools;
 
+    using UnityEngine;
+
     using static HarmonyLib.AccessTools;
 
+    using Map = Exiled.Events.Handlers.Map;
+
     /// <summary>
-    /// Patches <see cref="Scp2176Projectile.ServerShatter"/>.
-    /// Supplements the <see cref="Handlers.Map.ExplodingGrenade"/> event.
+    ///     Patches <see cref="Scp2176Projectile.ServerShatter" />.
+    ///     Supplements the <see cref="Handlers.Map.ExplodingGrenade" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.ExplodingGrenade))]
     [HarmonyPatch(typeof(Scp2176Projectile), nameof(Scp2176Projectile.ServerShatter))]
@@ -41,8 +49,8 @@ namespace Exiled.Events.Patches.Events.Map
                 // new ExplodingGrenadeEventArgs(Player.Get(PreviousOwner.Hub), this, Array.Empty<Collider>());
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldflda, Field(typeof(Scp2176Projectile), nameof(Scp2176Projectile.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldc_I4_0),
                 new(OpCodes.Newarr, typeof(UnityEngine.Collider)),
@@ -50,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Dup),
 
                 // Handlers.Map.OnExplodingGrenade(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnExplodingGrenade))),
 
                 // if(!ev.IsAllowed) return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
+namespace Exiled.Events.Patches.Events.Scp173
 {
     using System.Collections.Generic;
     using System.Reflection;
@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
 
@@ -43,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -2;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
+                                                                 (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
 
             // var ev = new PlacingTantrumEventArgs(this, Player, gameObject, cooldown, true);
             //
@@ -90,7 +91,7 @@ namespace Exiled.Events.Patches.Events.Player
             offset = 1;
 
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
+                                                             (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {

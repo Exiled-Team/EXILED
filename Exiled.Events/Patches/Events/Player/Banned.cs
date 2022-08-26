@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -21,11 +22,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
-    using Server = Exiled.API.Features.Server;
-
     /// <summary>
-    /// Patches <see cref="BanHandler.IssueBan(BanDetails, BanHandler.BanType)"/>.
-    /// Adds the <see cref="Handlers.Player.Banned"/> event.
+    ///     Patches <see cref="BanHandler.IssueBan(BanDetails, BanHandler.BanType)" />.
+    ///     Adds the <see cref="Handlers.Player.Banned" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Banned))]
     [HarmonyPatch(typeof(BanHandler), nameof(BanHandler.IssueBan))]
@@ -41,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Issuer))),
-                new(OpCodes.Call, Method(typeof(Banned), nameof(Banned.GetBanningPlayer))),
+                new(OpCodes.Call, Method(typeof(Banned), nameof(GetBanningPlayer))),
                 new(OpCodes.Stloc, issuingPlayer.LocalIndex),
             });
 
@@ -68,6 +67,9 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static Player GetBanningPlayer(string identifier) => identifier.Contains("(") ? Player.Get(identifier.Substring(identifier.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host : Server.Host;
+        private static Player GetBanningPlayer(string identifier)
+        {
+            return identifier.Contains("(") ? Player.Get(identifier.Substring(identifier.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host : Server.Host;
+        }
     }
 }

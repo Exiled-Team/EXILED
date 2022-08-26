@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -24,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest(ConnectionRequest)"/>.
-    /// Adds the <see cref="Handlers.Player.PreAuthenticating"/> event.
+    ///     Patches <see cref="CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest(ConnectionRequest)" />.
+    ///     Adds the <see cref="Handlers.Player.PreAuthenticating" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PreAuthenticating))]
     [HarmonyPatch(typeof(CustomLiteNetLib4MirrorTransport), nameof(CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest), typeof(ConnectionRequest))]
@@ -39,7 +41,8 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -1;
 
             // Search for the last "request.Accept()" and then removes the offset, to get "ldarg.1" index.
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == PropertyGetter(typeof(NetManager), nameof(NetManager.ConnectedPeersCount))) + offset;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == PropertyGetter(typeof(NetManager), nameof(NetManager.ConnectedPeersCount))) +
+                        offset;
 
             // Declare a string local variable.
             LocalBuilder failedMessage = generator.DeclareLocal(typeof(string));
@@ -100,7 +103,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnPreAuthenticating(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPreAuthenticating))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnPreAuthenticating))),
 
                 // if (!ev.IsAllowed)
                 // {

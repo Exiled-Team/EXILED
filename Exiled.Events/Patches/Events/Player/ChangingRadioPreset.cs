@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Radio.NetworkcurRangeId"/>.
-    /// Adds the <see cref="Handlers.Player.ChangingRadioPreset"/> event.
+    ///     Patches <see cref="Radio.NetworkcurRangeId" />.
+    ///     Adds the <see cref="Handlers.Player.ChangingRadioPreset" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ChangingRadioPreset))]
     [HarmonyPatch(typeof(Radio), nameof(Radio.NetworkcurRangeId), MethodType.Setter)]
@@ -42,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // Player.Get(this.gameObject)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Call, PropertyGetter(typeof(Radio), nameof(Radio.gameObject))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // this.NetworkcurRangeId
                 new(OpCodes.Ldarg_0),

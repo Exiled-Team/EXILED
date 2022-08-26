@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -25,9 +26,9 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerMovementSync.ReceivePosition2DJump(NetworkConnection, PositionMessage2DJump)"/> and
-    /// <see cref="PlayerMovementSync.ReceivePositionJump(NetworkConnection, PositionMessageJump)"/>.
-    /// Adds the <see cref="Player.Jumping"/> event.
+    ///     Patches <see cref="PlayerMovementSync.ReceivePosition2DJump(NetworkConnection, PositionMessage2DJump)" /> and
+    ///     <see cref="PlayerMovementSync.ReceivePositionJump(NetworkConnection, PositionMessageJump)" />.
+    ///     Adds the <see cref="Player.Jumping" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Jumping))]
     [HarmonyPatch(typeof(PlayerMovementSync))]
@@ -61,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnJumping))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnJumping))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.Player))),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.IsJumping))),
@@ -112,7 +113,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnJumping))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnJumping))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

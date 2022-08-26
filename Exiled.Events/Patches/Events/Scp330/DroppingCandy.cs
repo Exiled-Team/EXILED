@@ -15,6 +15,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp330;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -25,8 +27,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived"/> method to add the <see cref="Handlers.Scp330.DroppingScp330"/> event.
+    ///     Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived" /> method to add the
+    ///     <see cref="Handlers.Scp330.DroppingScp330" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp330), nameof(Handlers.Scp330.DroppingScp330))]
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]
@@ -55,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingScp330EventArgs))[0]),
                 new(OpCodes.Stloc, eventHandler.LocalIndex),
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingScp330))),
+                new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnDroppingScp330))),
                 new(OpCodes.Ldloc, eventHandler.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),

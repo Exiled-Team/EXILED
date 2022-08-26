@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -28,8 +29,8 @@ namespace Exiled.Events.Patches.Events.Player
     using BaseTarget = AdminToys.ShootingTarget;
 
     /// <summary>
-    /// Patches <see cref="BaseTarget.ServerInteract(ReferenceHub, byte)"/>.
-    /// Adds the <see cref="Handlers.Player.InteractingShootingTarget"/> event.
+    ///     Patches <see cref="BaseTarget.ServerInteract(ReferenceHub, byte)" />.
+    ///     Adds the <see cref="Handlers.Player.InteractingShootingTarget" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.InteractingShootingTarget))]
     [HarmonyPatch(typeof(BaseTarget), nameof(BaseTarget.ServerInteract))]
@@ -67,14 +68,14 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(BaseTarget), nameof(BaseTarget._maxHp))),
-                new(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(InteractingShootingTarget.GetNextValue))),
+                new(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(GetNextValue))),
 
                 // GetNextValue(buttonPressed, ShootingTargetButton.DecreaseResetTime, BaseTarget._autoDestroyTime)
                 new(OpCodes.Ldarg_2),
                 new(OpCodes.Ldc_I4_3),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(BaseTarget), nameof(BaseTarget._autoDestroyTime))),
-                new(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(InteractingShootingTarget.GetNextValue))),
+                new(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(GetNextValue))),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
@@ -96,11 +97,11 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = 1;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Destroy))) + offset;
-            newInstructions[index] = new(OpCodes.Br, setMaxHpLabel);
+            newInstructions[index] = new CodeInstruction(OpCodes.Br, setMaxHpLabel);
 
             offset = 1;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(BaseTarget), "set_Network_syncMode")) + offset;
-            newInstructions[index] = new(OpCodes.Br, setMaxHpLabel);
+            newInstructions[index] = new CodeInstruction(OpCodes.Br, setMaxHpLabel);
 
             offset = -5;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(BaseTarget), nameof(BaseTarget.RpcSendInfo))) + offset;
@@ -130,7 +131,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static int GetNextValue(byte buttonPressed, int targetButton, int curValue)
         {
-            if (targetButton != buttonPressed && (targetButton - 1) != buttonPressed)
+            if (targetButton != buttonPressed && targetButton - 1 != buttonPressed)
                 return curValue;
 
             return (BaseTarget.TargetButton)buttonPressed switch

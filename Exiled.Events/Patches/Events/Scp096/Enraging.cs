@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
 
@@ -19,12 +21,15 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using static HarmonyLib.AccessTools;
 
+    using Scp096 = PlayableScps.Scp096;
+
     /// <summary>
-    /// Patches <see cref="PlayableScps.Scp096.Enrage"/>.
-    /// Adds the <see cref="Handlers.Scp096.Enraging"/> event.
+    ///     Patches <see cref="PlayableScps.Scp096.Enrage" />.
+    ///     Adds the <see cref="Handlers.Scp096.Enraging" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.Enraging))]
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.Enrage))]
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.Enrage))]
     internal static class Enraging
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -43,8 +48,8 @@ namespace Exiled.Events.Patches.Events.Scp096
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.Hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096.Hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnragingEventArgs))[0]),
                 new(OpCodes.Dup),

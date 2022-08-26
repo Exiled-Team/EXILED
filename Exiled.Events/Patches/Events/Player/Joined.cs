@@ -8,12 +8,15 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1600
+
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Loader.Features;
 
     using HarmonyLib;
@@ -27,18 +30,47 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ReferenceHub.Awake"/>.
-    /// Adds the <see cref="Handlers.Player.Joined"/> event.
+    ///     Patches <see cref="ReferenceHub.Awake" />.
+    ///     Adds the <see cref="Handlers.Player.Joined" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Joined))]
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Awake))]
     internal static class Joined
     {
+        internal static void CallEvent(ReferenceHub hub, out Player player)
+        {
+            try
+            {
+#if DEBUG
+                Log.Debug("Creating new player object");
+#endif
+                player = new Player(hub);
+#if DEBUG
+                Log.Debug($"Object exists {player is not null}");
+                Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}");
+#endif
+                Player.UnverifiedPlayers.Add(hub, player);
+                Player p = player;
+                Timing.CallDelayed(0.25f, () =>
+                {
+                    if (p.IsMuted)
+                        p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
+                });
+
+                Handlers.Player.OnJoined(new JoinedEventArgs(player));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(CallEvent)}: {e}\n{e.StackTrace}");
+                player = null;
+            }
+        }
+
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            LocalBuilder out_ply = generator.DeclareLocal(typeof(API.Features.Player));
+            LocalBuilder out_ply = generator.DeclareLocal(typeof(Player));
 
             Label cdc = generator.DefineLabel();
             Label je = generator.DefineLabel();
@@ -64,6 +96,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Bge_S, je),
                 new(OpCodes.Ldc_I4_4),
                 new(OpCodes.Call, Method(typeof(MultiAdminFeatures), nameof(MultiAdminFeatures.CallEvent))),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(je),
+                new(OpCodes.Ldloca_S, out_ply),
+                new(OpCodes.Call, Method(typeof(Joined), nameof(CallEvent))),
                 new(OpCodes.Pop),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(je),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Player))[0]),

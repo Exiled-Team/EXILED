@@ -14,6 +14,8 @@ namespace Exiled.Events.Patches.Events.Scp106
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp106;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -23,9 +25,13 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
     /// Patches <see cref="Scp106PlayerScript.UserCode_CmdUsePortal"/>.
     /// Adds the <see cref="Handlers.Scp106.Teleporting"/> event.
+    ///     Patches <see cref="Scp106PlayerScript.UserCode_CmdUsePortal" />.
+    ///     Adds the <see cref="Teleporting" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp106), nameof(Handlers.Scp106.Teleporting))]
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdUsePortal))]
@@ -40,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
             // Search for "ldfld bool Scp106PlayerScript::iAm106" and subtract 1 to get the index of the third "ldarg.0".
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                (FieldInfo)instruction.operand == Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) + offset;
+                                                                 (FieldInfo)instruction.operand == Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) + offset;
 
             // Declare TeleportingEventArgs, to be able to store its instance with "stloc.0".
             LocalBuilder ev = generator.DeclareLocal(typeof(TeleportingEventArgs));
@@ -70,7 +76,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TeleportingEventArgs))[0]),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp106), nameof(Handlers.Scp106.OnTeleporting))),
+                new(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnTeleporting))),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.PortalPosition))),

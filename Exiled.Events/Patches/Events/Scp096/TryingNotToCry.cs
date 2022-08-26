@@ -13,19 +13,25 @@ namespace Exiled.Events.Patches.Events.Scp096
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
 
+    using PlayableScps;
+
     using static HarmonyLib.AccessTools;
 
+    using Scp096 = PlayableScps.Scp096;
+
     /// <summary>
-    /// Patches the <see cref="PlayableScps.Scp096.TryNotToCry"/> method.
-    /// Adds the <see cref="Handlers.Scp096.TryingNotToCry"/> event.
+    ///     Patches the <see cref="PlayableScps.Scp096.TryNotToCry" /> method.
+    ///     Adds the <see cref="Handlers.Scp096.TryingNotToCry" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.TryingNotToCry))]
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.TryNotToCry))]
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.TryNotToCry))]
     internal static class TryingNotToCry
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -51,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Scp096
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))),
+                new(OpCodes.Ldfld, Field(typeof(PlayableScp), nameof(PlayableScp.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_1),
                 new(OpCodes.Ldc_I4_1),

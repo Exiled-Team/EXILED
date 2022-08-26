@@ -11,13 +11,16 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features.DamageHandlers;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using Mirror;
 
     using PlayerStatsSystem;
+
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
     /// Prefix of KillPlayer action.
@@ -28,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler)
         {
-            if(!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
+            if (!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {
                 if (handler is GenericDamageHandler exiledHandler)
                 {

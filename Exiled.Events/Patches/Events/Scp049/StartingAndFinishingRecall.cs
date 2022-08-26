@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp049;
 
     using HarmonyLib;
 
@@ -25,9 +26,11 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     using static HarmonyLib.AccessTools;
 
+    using Ragdoll = Ragdoll;
+
     /// <summary>
-    /// Patches <see cref="Scp049.BodyCmd_ByteAndGameObject(byte, GameObject)"/>.
-    /// Adds the <see cref="Handlers.Scp049.StartingRecall"/> and <see cref="Handlers.Scp049.FinishingRecall"/> event.
+    ///     Patches <see cref="Scp049.BodyCmd_ByteAndGameObject(byte, GameObject)" />.
+    ///     Adds the <see cref="Handlers.Scp049.StartingRecall" /> and <see cref="Handlers.Scp049.FinishingRecall" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.StartingRecall))]
     [EventPatch(typeof(Handlers.Scp049), nameof(Handlers.Scp049.FinishingRecall))]
@@ -41,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             const int offset = -4;
 
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stfld &&
-            (FieldInfo)instruction.operand == Field(typeof(Scp049), nameof(Scp049._recallHubServer))) + offset;
+                                                                 (FieldInfo)instruction.operand == Field(typeof(Scp049), nameof(Scp049._recallHubServer))) + offset;
 
             LocalBuilder finishRecallAllowed = generator.DeclareLocal(typeof(bool));
 
@@ -50,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldloc_1),
-                new(OpCodes.Ldflda, Field(typeof(global::Ragdoll), nameof(global::Ragdoll.Info))),
+                new(OpCodes.Ldflda, Field(typeof(Ragdoll), nameof(Ragdoll.Info))),
                 new(OpCodes.Ldfld, Field(typeof(RagdollInfo), nameof(RagdollInfo.OwnerHub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),

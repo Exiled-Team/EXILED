@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -26,10 +27,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived"/>.
-    /// Adds <see cref="Player.ReloadingWeapon"/>, <see cref="Player.UnloadingWeapon"/>,
-    /// <see cref="Player.DryfiringWeapon"/>, <see cref="Player.AimingDownSight"/> and
-    /// <see cref="Player.TogglingWeaponFlashlight"/> events.
+    ///     Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived" />.
+    ///     Adds <see cref="Player.ReloadingWeapon" />, <see cref="Player.UnloadingWeapon" />,
+    ///     <see cref="Player.DryfiringWeapon" />, <see cref="Player.AimingDownSight" /> and
+    ///     <see cref="Player.TogglingWeaponFlashlight" /> events.
     /// </summary>
     [EventPatch(typeof(Player), nameof(Player.ReloadingWeapon))]
     [EventPatch(typeof(Player), nameof(Player.UnloadingWeapon))]
@@ -48,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int offset = -2;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryReload))) + offset;
+                                                                 (MethodInfo)instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryReload))) + offset;
 
             Label returnLabel = generator.DefineLabel();
             Label skipAdsLabel = generator.DefineLabel();
@@ -67,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -2;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryUnload))) + offset;
+                                                             (MethodInfo)instruction.operand == Method(typeof(IAmmoManagerModule), nameof(IAmmoManagerModule.ServerTryUnload))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -83,7 +84,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -2;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(IActionModule), nameof(IActionModule.ServerAuthorizeDryFire))) + offset;
+                                                             (MethodInfo)instruction.operand == Method(typeof(IActionModule), nameof(IActionModule.ServerAuthorizeDryFire))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -117,7 +118,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -3;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            (FieldInfo)instruction.operand == Field(typeof(FirearmStatus), nameof(FirearmStatus.Flags))) + offset;
+                                                             (FieldInfo)instruction.operand == Field(typeof(FirearmStatus), nameof(FirearmStatus.Flags))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {

@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -25,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="TimedGrenadePickup.Update"/>.
-    /// Adds the <see cref="Map.ChangingIntoGrenade"/> event.
+    ///     Patches <see cref="TimedGrenadePickup.Update" />.
+    ///     Adds the <see cref="Map.ChangingIntoGrenade" /> event.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.ChangingIntoGrenade))]
     [HarmonyPatch(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup.Update))]

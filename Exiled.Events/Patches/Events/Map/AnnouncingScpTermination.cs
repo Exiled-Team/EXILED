@@ -10,10 +10,11 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -21,12 +22,12 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
-    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
-    using Map = Exiled.Events.Handlers.Map;
+    using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="NineTailedFoxAnnouncer.AnnounceScpTermination(ReferenceHub, DamageHandlerBase)"/>.
-    /// Adds the <see cref="Map.AnnouncingScpTermination"/> event.
+    ///     Patches
+    ///     <see cref="NineTailedFoxAnnouncer.AnnounceScpTermination(ReferenceHub, PlayerStatsSystem.DamageHandlerBase)" />.
+    ///     Adds the <see cref="Map.AnnouncingScpTermination" /> event.
     /// </summary>
     [EventPatch(typeof(Map), nameof(Map.AnnouncingScpTermination))]
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceScpTermination))]
@@ -47,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.InsertRange(0, new[]
             {
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingScpTerminationEventArgs))[0]),
@@ -58,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.Handler))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.DamageHandler))),
                 new(OpCodes.Isinst, typeof(DamageHandler)),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Base))),
                 new(OpCodes.Starg, 1),

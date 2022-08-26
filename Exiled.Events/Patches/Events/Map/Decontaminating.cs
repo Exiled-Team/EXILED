@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -24,6 +26,8 @@ namespace Exiled.Events.Patches.Events.Map
     /// <summary>
     /// Patches <see cref="DecontaminationController.FinishDecontamination"/>.
     /// Adds the <see cref="Handlers.Map.Decontaminating"/> event.
+    ///     Patches <see cref="DecontaminationController.FinishDecontamination" />.
+    ///     Adds the <see cref="Decontaminating" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.Decontaminating))]
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.FinishDecontamination))]
@@ -40,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DecontaminatingEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnDecontaminating))),
+                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnDecontaminating))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DecontaminatingEventArgs), nameof(DecontaminatingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse, returnLabel),
             });

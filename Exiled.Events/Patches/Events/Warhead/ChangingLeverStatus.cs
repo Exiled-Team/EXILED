@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
 
@@ -19,9 +21,11 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using static HarmonyLib.AccessTools;
 
+    using Warhead = Exiled.Events.Handlers.Warhead;
+
     /// <summary>
-    /// Patches <see cref="PlayerInteract.UserCode_CmdUsePanel"/>.
-    /// Adds the <see cref="Handlers.Warhead.ChangingLeverStatus"/> event.
+    ///     Patches <see cref="PlayerInteract.UserCode_CmdUsePanel" />.
+    ///     Adds the <see cref="Handlers.Warhead.ChangingLeverStatus" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.ChangingLeverStatus))]
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUsePanel))]
@@ -40,13 +44,13 @@ namespace Exiled.Events.Patches.Events.Warhead
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_1),
                 new(OpCodes.Call, PropertyGetter(typeof(AlphaWarheadNukesitePanel), nameof(AlphaWarheadNukesitePanel.Networkenabled))),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingLeverStatusEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnChangingLeverStatus))),
+                new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnChangingLeverStatus))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingLeverStatusEventArgs), nameof(ChangingLeverStatusEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
             });

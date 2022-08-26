@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -25,8 +27,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Locker.ServerInteract(ReferenceHub, byte)"/>.
-    /// Adds the <see cref="Handlers.Player.InteractingLocker"/> event.
+    ///     Patches <see cref="Locker.ServerInteract(ReferenceHub, byte)" />.
+    ///     Adds the <see cref="Handlers.Player.InteractingLocker" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.InteractingLocker))]
     [HarmonyPatch(typeof(Locker), nameof(Locker.ServerInteract))]
@@ -38,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.operand is MethodInfo methodInfo
-            && methodInfo == Method(typeof(Locker), nameof(Locker.RpcPlayDenied))) + offset;
+                                                                 && methodInfo == Method(typeof(Locker), nameof(Locker.RpcPlayDenied))) + offset;
 
             Label openLockerLabel = newInstructions[index].labels[0];
 
@@ -57,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(ply);
                 new CodeInstruction(OpCodes.Ldarg_1).WithLabels(runChecksLabel),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // this
                 new(OpCodes.Ldarg_0),

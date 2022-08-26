@@ -12,6 +12,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features.Roles;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -25,8 +28,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)"/>.
-    /// Adds the <see cref="Handlers.Player.Hurting"/> event.
+    ///     Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)" />.
+    ///     Adds the <see cref="Handlers.Player.Hurting" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.Hurting))]
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.DealDamage))]
@@ -66,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Brfalse, notRecontainment),
                 new(OpCodes.Ldloc, player.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
                 new(OpCodes.Ldc_I4_7),
                 new(OpCodes.Ceq),
                 new(OpCodes.Brfalse, notRecontainment),

@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -22,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="WorkstationController.NetworkStatus"/>.
-    /// Adds the <see cref="Handlers.Player.DeactivatingWorkstation"/> event.
+    ///     Patch the <see cref="WorkstationController.NetworkStatus" />.
+    ///     Adds the <see cref="Handlers.Player.DeactivatingWorkstation" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.DeactivatingWorkstation))]
     [HarmonyPatch(typeof(WorkstationController), nameof(WorkstationController.NetworkStatus), MethodType.Setter)]
@@ -50,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDeactivatingWorkstation))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDeactivatingWorkstation))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(DeactivatingWorkstationEventArgs), nameof(DeactivatingWorkstationEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),

@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp914;
     using Exiled.Events.Handlers;
 
     using global::Scp914;
@@ -23,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp914Upgrader.ProcessPickup"/>.
-    /// Adds the <see cref="Scp914.UpgradingItem"/> event.
+    ///     Patches <see cref="Scp914Upgrader.ProcessPickup" />.
+    ///     Adds the <see cref="Scp914.UpgradingItem" /> event.
     /// </summary>
     [EventPatch(typeof(Scp914), nameof(Scp914.UpgradingItem))]
     [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPickup))]

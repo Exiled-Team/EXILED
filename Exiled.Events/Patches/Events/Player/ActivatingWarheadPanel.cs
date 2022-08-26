@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -21,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="PlayerInteract.UserCode_CmdSwitchAWButton"/>.
-    /// Adds the <see cref="Handlers.Player.ActivatingWarheadPanel"/> event.
+    ///     Patch the <see cref="PlayerInteract.UserCode_CmdSwitchAWButton" />.
+    ///     Adds the <see cref="Handlers.Player.ActivatingWarheadPanel" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ActivatingWarheadPanel))]
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdSwitchAWButton))]
@@ -66,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = 1;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Brfalse_S, ceq),
                 new(OpCodes.Ldc_I4_1),
@@ -84,7 +85,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = 0;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 new(OpCodes.Ldloc_S, cmp_0x01.LocalIndex),
                 new(OpCodes.Ceq),

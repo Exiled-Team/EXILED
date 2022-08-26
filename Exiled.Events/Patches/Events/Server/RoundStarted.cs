@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -22,6 +21,8 @@ namespace Exiled.Events.Patches.Events.Server
     /// <summary>
     /// Patches <see cref="RoundSummary.SetStartClassList"/>.
     /// Adds the <see cref="Server.RoundStarted"/> event.
+    ///     Patches <see cref="RoundSummary.SetStartClassList" />.
+    ///     Adds the RoundStarted event.
     /// </summary>
     [EventPatch(typeof(Server), nameof(Server.RoundStarted))]
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.SetStartClassList))]

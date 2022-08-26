@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -23,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="BreakableWindow.Damage(float, PlayerStatsSystem.DamageHandlerBase, Vector3)"/>.
-    /// Adds the <see cref="Handlers.Player.PlayerDamageWindow"/> event.
+    ///     Patch the <see cref="BreakableWindow.Damage(float, PlayerStatsSystem.DamageHandlerBase, Vector3)" />.
+    ///     Adds the <see cref="Handlers.Player.PlayerDamageWindow" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.PlayerDamageWindow))]
     [HarmonyPatch(typeof(BreakableWindow), nameof(BreakableWindow.Damage))]
@@ -56,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnPlayerDamageWindow(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPlayerDamageWindow))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnPlayerDamageWindow))),
 
                 // if (!ev.IsAllowed)
                 //    return;

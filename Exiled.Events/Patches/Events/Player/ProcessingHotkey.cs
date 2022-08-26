@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -22,8 +24,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="Inventory.UserCode_CmdProcessHotkey"/>.
-    /// Adds the <see cref="Handlers.Player.ProcessingHotkey"/> event.
+    ///     Patch the <see cref="Inventory.UserCode_CmdProcessHotkey" />.
+    ///     Adds the <see cref="Handlers.Player.ProcessingHotkey" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Player), nameof(Handlers.Player.ProcessingHotkey))]
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdProcessHotkey))]
@@ -37,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label defaultLabel = generator.DefineLabel();
             Label breakLabel = generator.DefineLabel();
 
-            Label[] switchLabels = new[]
+            Label[] switchLabels =
             {
                 generator.DefineLabel(),
                 generator.DefineLabel(),
@@ -89,7 +91,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Br_S, breakLabel),
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(breakLabel),
                 new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldloc_S, hotkeyButton.LocalIndex),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ProcessingHotkeyEventArgs))[0]),
