@@ -53,7 +53,7 @@ namespace Exiled.API.Extensions
             EffectType.RainbowTaste => typeof(RainbowTaste),
             EffectType.SeveredHands => typeof(SeveredHands),
             EffectType.Stained => typeof(Stained),
-            EffectType.Visual173Blink => typeof(Visuals173Blink),
+            EffectType.Visuals173Blink => typeof(Visuals173Blink),
             EffectType.Vitality => typeof(Vitality),
             EffectType.Hypothermia => typeof(Hypothermia),
             EffectType.Scp1853 => typeof(Scp1853),
@@ -81,7 +81,7 @@ namespace Exiled.API.Extensions
         public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || effect is EffectType.Amnesia
             or EffectType.Blinded or EffectType.Burned or EffectType.Concussed or EffectType.Deafened
             or EffectType.Disabled or EffectType.Ensnared or EffectType.Exhausted or EffectType.Flashed or EffectType.SinkHole
-            or EffectType.Stained or EffectType.Visual173Blink;
+            or EffectType.Stained or EffectType.Visuals173Blink;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.
