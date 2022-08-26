@@ -13,9 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 

@@ -13,7 +13,6 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;

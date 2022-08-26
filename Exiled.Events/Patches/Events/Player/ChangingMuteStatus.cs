@@ -12,9 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Assets._Scripts.Dissonance;
 
-    using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;

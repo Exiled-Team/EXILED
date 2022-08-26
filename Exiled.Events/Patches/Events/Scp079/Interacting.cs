@@ -13,12 +13,9 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp079;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -28,11 +25,10 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using static HarmonyLib.AccessTools;
 
-    using Scp079 = Exiled.Events.Handlers.Scp079;
-
-    using TeslaGate = TeslaGate;
     using Map = Exiled.API.Features.Map;
     using Player = Exiled.API.Features.Player;
+    using Scp079 = Exiled.Events.Handlers.Scp079;
+    using TeslaGate = TeslaGate;
 
     /// <summary>
     ///     Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)" />.

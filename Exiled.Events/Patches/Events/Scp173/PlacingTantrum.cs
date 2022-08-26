@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Scp173
     using System.Reflection.Emit;
 
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;

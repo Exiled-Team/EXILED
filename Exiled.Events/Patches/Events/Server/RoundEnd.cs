@@ -14,7 +14,6 @@ namespace Exiled.Events.Patches.Events.Server
 
     using Exiled.API.Enums;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Handlers;
 

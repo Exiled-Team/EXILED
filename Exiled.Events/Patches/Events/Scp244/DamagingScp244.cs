@@ -14,7 +14,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Scp244;
     using Exiled.Events.Handlers;
 

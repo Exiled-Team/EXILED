@@ -15,8 +15,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
-    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -30,7 +28,6 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     using Player = Exiled.Events.Handlers.Player;
-    using Role = Role;
     using Scp173 = Exiled.API.Features.Scp173;
 
     /// <summary>

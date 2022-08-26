@@ -9,7 +9,6 @@ namespace Exiled.Events.Handlers.Internal
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection.Emit;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
@@ -117,7 +116,7 @@ namespace Exiled.Events.Handlers.Internal
             });
         }
 
-         /// <inheritdoc cref="PlayerHandler.Left"/>
+        /// <inheritdoc cref="PlayerHandler.Left"/>
         public static void OnLeft(LeftEventArgs ev)
         {
             Log.SendRaw($"Player {ev.Player.Nickname} has disconnected", ConsoleColor.Green);

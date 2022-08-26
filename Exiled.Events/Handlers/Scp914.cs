@@ -7,11 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Scp914;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     Handles SCP-914 related events.

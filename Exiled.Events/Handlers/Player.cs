@@ -9,12 +9,9 @@ namespace Exiled.Events.Handlers
 {
     using System;
 
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp330;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Player related events.

@@ -7,12 +7,9 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
-
-    using static Exiled.Events.Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     /// Server related events.

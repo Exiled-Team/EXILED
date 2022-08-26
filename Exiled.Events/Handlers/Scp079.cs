@@ -7,12 +7,9 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.EventArgs.Warhead;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     SCP-079 related events.
@@ -27,13 +24,13 @@ namespace Exiled.Events.Handlers
 
         /// <summary>
         /// Gets or sets the event invoked before gaining experience with SCP-079.
-        ///     Invoked before gaining experience with SCP-079
+        ///     Invoked before gaining experience with SCP-079.
         /// </summary>
         public static Event<GainingExperienceEventArgs> GainingExperience { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the event invoked before gaining levels with SCP-079.
-        ///     Invoked before gaining levels with SCP-079
+        ///     Invoked before gaining levels with SCP-079.
         /// </summary>
         public static Event<GainingLevelEventArgs> GainingLevel { get; set; } = new();
 

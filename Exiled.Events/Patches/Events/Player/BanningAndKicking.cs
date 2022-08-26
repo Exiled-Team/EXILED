@@ -9,9 +9,8 @@ namespace Exiled.Events.Patches.Events.Player
 {
     using System;
 
-    using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using GameCore;

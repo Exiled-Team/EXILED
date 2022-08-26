@@ -10,9 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Scp244;
     using Exiled.Events.Handlers;
 

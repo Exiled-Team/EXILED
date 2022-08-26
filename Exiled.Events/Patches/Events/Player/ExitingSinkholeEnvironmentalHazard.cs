@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using CustomPlayerEffects;
 
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Patches.Fixes;
 

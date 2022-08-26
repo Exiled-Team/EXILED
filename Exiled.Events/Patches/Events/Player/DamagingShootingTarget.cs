@@ -12,8 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using AdminToys;
 
-    using Exiled.Events.Attributes;
     using Exiled.API.Features;
+    using Exiled.Events.Attributes;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -24,13 +24,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using UnityEngine;
 
-    using PlayerHandler = Exiled.Events.Handlers.Player;
-
     using static HarmonyLib.AccessTools;
 
+    using PlayerHandler = Exiled.Events.Handlers.Player;
+
     /// <summary>
-    /// Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)"/>.
-    /// Adds the <see cref="PlayerHandler.DamagingShootingTarget"/> event.
     ///     Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)" />.
     ///     Adds the <see cref="Handlers.Player.DamagingShootingTarget" /> event.
     /// </summary>

@@ -7,11 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Features;
     using Exiled.Events.EventArgs.Warhead;
-
-    using static Events;
+    using Exiled.Events.Features;
 
     /// <summary>
     ///     Handles warhead related events.

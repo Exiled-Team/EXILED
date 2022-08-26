@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using Exiled.API.Features;
     using Exiled.Events.Attributes;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Scp914;
 
     using global::Scp914;
