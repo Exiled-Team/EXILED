@@ -51,19 +51,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "FmjNKlMhniqRqBczpXOPp7f38qcA28OQ9MgIX3706/E="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "toc.html",
-          "hash": "CHkGG66518gw0yZhyX7Zfam96Bj2RinSaNBfBDOmslU="
+          "hash": "ps3TxCCyVM5gD7qWCuSxt+1MdlIshG4ZFp4ax3xqSQ0="
         }
       },
       "is_incremental": false,
@@ -88,13 +76,6 @@
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
-          "incrementalPhase": "build",
-          "total_file_count": 0,
-          "skipped_file_count": 0
-        },
-        "TocDocumentProcessor": {
-          "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
