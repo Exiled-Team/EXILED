@@ -24,8 +24,6 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Intercom.UserCode_CmdSetTransmit(bool)"/>.
-    /// Adds the <see cref="Handlers.Player.IntercomSpeaking"/> event.
     ///     Patches <see cref="Intercom.UserCode_CmdSetTransmit(bool)" />.
     ///     Adds the <see cref="IntercomSpeaking" /> event.
     /// </summary>

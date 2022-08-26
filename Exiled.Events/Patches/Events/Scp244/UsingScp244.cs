@@ -25,7 +25,6 @@ namespace Exiled.Events.Patches.Events.Scp244
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Scp244Item"/> to add missing event handler to the <see cref="Handlers.Scp244.UsingScp244"/>.
     ///     Patches <see cref="Scp244Item" /> to add missing event handler to the
     ///     <see cref="Scp244Item.ServerOnUsingCompleted" />.
     /// </summary>

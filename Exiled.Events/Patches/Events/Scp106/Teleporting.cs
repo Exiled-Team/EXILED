@@ -26,8 +26,6 @@ namespace Exiled.Events.Patches.Events.Scp106
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.UserCode_CmdUsePortal"/>.
-    /// Adds the <see cref="Handlers.Scp106.Teleporting"/> event.
     ///     Patches <see cref="Scp106PlayerScript.UserCode_CmdUsePortal" />.
     ///     Adds the <see cref="Teleporting" /> event.
     /// </summary>

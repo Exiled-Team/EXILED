@@ -72,7 +72,6 @@ namespace Exiled.Events.Handlers.Internal
         }
 
         /// <inheritdoc cref="PlayerHandler.OnChangingRole(ChangingRoleEventArgs)"/>
-        /// <inheritdoc cref="Handlers.Player.OnChangingRole(ChangingRoleEventArgs)" />
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))

@@ -23,8 +23,6 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ServerRoles.SetGroup(UserGroup, bool, bool, bool)"/>.
-    /// Adds the <see cref="Handlers.Player.ChangingGroup"/> event.
     ///     Patches <see cref="ServerRoles.SetGroup(UserGroup, bool, bool, bool)" />.
     ///     Adds the <see cref="ChangingGroup" /> event.
     /// </summary>

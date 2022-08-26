@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Events.Server
     using NorthwoodLib.Pools;
 
     /// <summary>
-    /// Patches <see cref="RoundSummary.SetStartClassList"/>.
-    /// Adds the <see cref="Server.RoundStarted"/> event.
     ///     Patches <see cref="RoundSummary.SetStartClassList" />.
     ///     Adds the RoundStarted event.
     /// </summary>

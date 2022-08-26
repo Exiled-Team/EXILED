@@ -27,7 +27,6 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Adds the <see cref="Handlers.Map.SpawningItem" /> and <see cref="Handlers.Map.SpawningItem" /> events.
     /// </summary>
     [EventPatch(typeof(Handlers.Map), nameof(Handlers.Map.SpawningItem))]
-    [HarmonyPatch(typeof(MapGeneration.Distributors.ItemDistributor), nameof(MapGeneration.Distributors.ItemDistributor.SpawnPickup))]
     [HarmonyPatch(typeof(ItemDistributor), nameof(ItemDistributor.SpawnPickup))]
     internal static class SpawningItem
     {

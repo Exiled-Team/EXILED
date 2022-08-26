@@ -23,8 +23,6 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="DissonanceUserSetup.AdministrativelyMuted"/>.
-    /// Adds the <see cref="Handlers.Player.ChangingMuteStatus"/> event.
     ///     Patch the <see cref="DissonanceUserSetup.AdministrativelyMuted" />.
     ///     Adds the <see cref="ChangingMuteStatus" /> event.
     /// </summary>

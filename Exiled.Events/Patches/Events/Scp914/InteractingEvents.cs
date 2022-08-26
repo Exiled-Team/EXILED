@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Events.Scp914
     using Scp914 = Exiled.Events.Handlers.Scp914;
 
     /// <summary>
-    /// Patches <see cref="Scp914Controller.ServerInteract"/>.
-    /// Adds the <see cref="Handlers.Scp914.Activating"/> and <see cref="Handlers.Scp914.ChangingKnobSetting"/> event.
     ///     Patches <see cref="Scp914Controller.ServerInteract" />.
     ///     Adds the <see cref="Handlers.Scp914.Activating" /> event.
     /// </summary>

@@ -23,8 +23,6 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="DecontaminationController.FinishDecontamination"/>.
-    /// Adds the <see cref="Handlers.Map.Decontaminating"/> event.
     ///     Patches <see cref="DecontaminationController.FinishDecontamination" />.
     ///     Adds the <see cref="Decontaminating" /> event.
     /// </summary>

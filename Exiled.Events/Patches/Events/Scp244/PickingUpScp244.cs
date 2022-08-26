@@ -27,7 +27,6 @@ namespace Exiled.Events.Patches.Events.Scp244
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Scp244SearchCompletor"/> to add missing event handler to the <see cref="Handlers.Scp244.PickingUpScp244"/>.
     ///     Patches <see cref="Scp244SearchCompletor" /> to add missing event handler to the
     ///     <see cref="Scp244SearchCompletor" />.
     /// </summary>

@@ -27,7 +27,6 @@ namespace Exiled.Events.Patches.Events.Cassie
     ///     Adds the <see cref="Handlers.Cassie.SendingCassieMessage" /> event.
     /// </summary>
     [EventPatch(typeof(Cassie), nameof(Cassie.SendingCassieMessage))]
-    [HarmonyPatch(typeof(Respawning.RespawnEffectsController), nameof(Respawning.RespawnEffectsController.PlayCassieAnnouncement))]
     [HarmonyPatch(typeof(RespawnEffectsController), nameof(RespawnEffectsController.PlayCassieAnnouncement))]
     internal static class SendingCassieMessage
     {

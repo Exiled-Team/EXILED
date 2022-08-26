@@ -27,7 +27,6 @@ namespace Exiled.Events.Patches.Events.Scp096
     ///     Adds the <see cref="Handlers.Scp096.Enraging" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.Enraging))]
-    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.Enrage))]
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.Enrage))]
     internal static class Enraging
     {

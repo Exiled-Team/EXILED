@@ -25,8 +25,6 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)"/>.
-    /// Adds the <see cref="Handlers.Scp079.ChangingCamera"/> event.
     ///     Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)" />.
     ///     Adds the <see cref="ChangingCamera" /> event.
     /// </summary>

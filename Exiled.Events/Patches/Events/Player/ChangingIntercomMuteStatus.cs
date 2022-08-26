@@ -21,8 +21,6 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="CharacterClassManager.NetworkIntercomMuted"/>.
-    /// Adds the <see cref="Handlers.Player.ChangingIntercomMuteStatus"/> event.
     ///     Patch the <see cref="CharacterClassManager.NetworkIntercomMuted" />.
     ///     Adds the <see cref="ChangingIntercomMuteStatus" /> event.
     /// </summary>

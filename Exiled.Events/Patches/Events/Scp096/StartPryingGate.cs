@@ -27,7 +27,6 @@ namespace Exiled.Events.Patches.Events.Scp096
     ///     Adds the <see cref="Handlers.Scp096.StartPryingGate" /> event.
     /// </summary>
     [EventPatch(typeof(Handlers.Scp096), nameof(Handlers.Scp096.StartPryingGate))]
-    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.PryGate))]
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.PryGate))]
     internal static class StartPryingGate
     {

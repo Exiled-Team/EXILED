@@ -27,8 +27,6 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete"/>.
-    /// Adds the <see cref="Handlers.Player.Verified"/> event.
     ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete" />.
     ///     Adds the <see cref="Handlers.Player.OnVerified" /> event.
     /// </summary>

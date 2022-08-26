@@ -69,7 +69,6 @@ namespace Exiled.Events.Patches.Events.Warhead
     ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
-    [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand), nameof(CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand.Execute))]
     [HarmonyPatch(typeof(DetonateCommand), nameof(DetonateCommand.Execute))]
     internal static class StartingByDetonateCommand
     {
@@ -93,7 +92,6 @@ namespace Exiled.Events.Patches.Events.Warhead
     ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
-    [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand), nameof(CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand.Execute))]
     [HarmonyPatch(typeof(InstantCommand), nameof(InstantCommand.Execute))]
     internal static class StartingByInstantCommand
     {
@@ -117,7 +115,6 @@ namespace Exiled.Events.Patches.Events.Warhead
     ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
-    [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand), nameof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand.Execute))]
     [HarmonyPatch(typeof(DetonationStartCommand), nameof(DetonationStartCommand.Execute))]
     internal static class StartingByEventDetonateCommand
     {
@@ -141,7 +138,6 @@ namespace Exiled.Events.Patches.Events.Warhead
     ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
     /// </summary>
     [EventPatch(typeof(Handlers.Warhead), nameof(Handlers.Warhead.Starting))]
-    [HarmonyPatch(typeof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand), nameof(CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand.Execute))]
     [HarmonyPatch(typeof(DetonationInstantCommand), nameof(DetonationInstantCommand.Execute))]
     internal static class StartingByEventInstantDetonateCommand
     {
