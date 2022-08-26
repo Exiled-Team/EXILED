@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features
 {
-#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -103,7 +102,7 @@ namespace Exiled.API.Features
         /// </summary>
         public IEnumerable<Player> Players
         {
-            get => Player.List.Where(player => player.IsAlive && !(player.CurrentRoom is null) && (player.CurrentRoom.Transform == Transform));
+            get => Player.List.Where(player => player.IsAlive && player.CurrentRoom is not null && (player.CurrentRoom.Transform == Transform));
         }
 
         /// <summary>
