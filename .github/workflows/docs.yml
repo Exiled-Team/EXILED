@@ -1,17 +1,54 @@
-name: Publish Exiled Docs
+name: Build and Publish Docs
+
 on:
   push:
     branches:
       - master
-
+  pull_request:
+    branches:
+      - master
+      
+env:
+  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/References.zip
+  EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
+      
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build_and_publish_docs:
+    runs-on: windows-latest
+    
     steps:
-      - uses: actions/checkout@master
-      - uses: redkubes/docusaurus-deploy-action@master
+      - name: Checkout
+        uses: actions/checkout@v2.3.4
+        
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.7.2
+
+      - name: Setup Nuget
+        uses: iRebbok/setup-nuget@master
+        
+      - name: Get references
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri https://exiled.host/build_deps/References.zip -OutFile ${{ github.workspace }}/References.zip
+          Expand-Archive -Path References.zip -DestinationPath ${{ env.EXILED_REFERENCES_PATH }}
+        
+      - name: Download DocFX
+        uses: crazy-max/ghaction-chocolatey@v1
         with:
-          source-folder: docs
-          git-user: GithubPages
-          git-password: ${{ secrets.GITHUB_TOKEN }}
-          deployment-branch: gh-pages
+          args: install docfx --pre
+          
+      - name: Run DocFX
+        env:
+          EXILED_REFERENCES: ${{ env.EXILED_REFERENCES_PATH }}
+        run: docfx docfx.json; docfx docfx.json
+        
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && success() #Only publishes on push to master to avoid docs mishaps
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: _site
+          keep_history: true
+          jekyll: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
