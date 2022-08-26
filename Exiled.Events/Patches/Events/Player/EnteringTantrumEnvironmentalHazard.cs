@@ -36,18 +36,20 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 1;
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter)))) + offset;
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringEnvironmentalHazardEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringEnvironmentalHazard))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringEnvironmentalHazardEventArgs), nameof(EnteringEnvironmentalHazardEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, ret),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringEnvironmentalHazardEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringEnvironmentalHazard))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EnteringEnvironmentalHazardEventArgs), nameof(EnteringEnvironmentalHazardEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, ret),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
 

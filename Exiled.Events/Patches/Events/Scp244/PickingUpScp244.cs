@@ -43,18 +43,20 @@ namespace Exiled.Events.Patches.Events.Scp244
 
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpScp244EventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnPickingUpScp244))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpScp244EventArgs), nameof(PickingUpScp244EventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldfld, Field(typeof(Scp244SearchCompletor), nameof(Scp244SearchCompletor.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpScp244EventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnPickingUpScp244))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpScp244EventArgs), nameof(PickingUpScp244EventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

@@ -43,20 +43,22 @@ namespace Exiled.Events.Patches.Events.Player
             // Handlers.Player.OnInteractingElevator(ev);
             // if (!ev.IsAllowed)
             //     continue;
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingElevatorEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingElevator))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingElevatorEventArgs), nameof(InteractingElevatorEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, continueLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldloc_3),
+                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingElevatorEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingElevator))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingElevatorEventArgs), nameof(InteractingElevatorEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, continueLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

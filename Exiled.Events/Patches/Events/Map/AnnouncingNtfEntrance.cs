@@ -51,64 +51,66 @@ namespace Exiled.Events.Patches.Events.Map
             // unitName = $"{ev.UnitName}-{ev.UnitNumber};
             // cassieUnitName = this.GetCassieUnitName(unitName);
             // scpsLeft = ev.ScpsLeft;
-            newInstructions.InsertRange(index, new[]
-            {
-                // int scpsLeft = ReferenceHub.GetAllHubs().Values.Count(x => x.characterClassManager.CurRole.team == Team.SCP && x.characterClassManager.CurClass != RoleType.Scp0492);
-                new CodeInstruction(OpCodes.Ldloc_1),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // int scpsLeft = ReferenceHub.GetAllHubs().Values.Count(x => x.characterClassManager.CurRole.team == Team.SCP && x.characterClassManager.CurClass != RoleType.Scp0492);
+                    new CodeInstruction(OpCodes.Ldloc_1),
 
-                // string[] unitInformation = unitName.Split('-');
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newarr, typeof(char)),
-                new(OpCodes.Dup),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldc_I4_S, 45),
-                new(OpCodes.Stelem_I2),
-                new(OpCodes.Call, Method(typeof(string), nameof(string.Split), new[] { typeof(char[]) })),
+                    // string[] unitInformation = unitName.Split('-');
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newarr, typeof(char)),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ldc_I4_S, 45),
+                    new(OpCodes.Stelem_I2),
+                    new(OpCodes.Call, Method(typeof(string), nameof(string.Split), new[] { typeof(char[]) })),
 
-                // var ev = new AnnouncingNtfEntranceEventArgs(scpsLeft, unitInformation[0], int.Parse(unitInformation[1]));
-                // Map.OnAnnouncingNtfEntrance(ev);
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, unitInformation.LocalIndex),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldelem_Ref),
-                new(OpCodes.Ldloc_S, unitInformation.LocalIndex),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ldelem_Ref),
-                new(OpCodes.Call, Method(typeof(int), nameof(int.Parse), new[] { typeof(string) })),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingNtfEntranceEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingNtfEntrance))),
+                    // var ev = new AnnouncingNtfEntranceEventArgs(scpsLeft, unitInformation[0], int.Parse(unitInformation[1]));
+                    // Map.OnAnnouncingNtfEntrance(ev);
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, unitInformation.LocalIndex),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ldelem_Ref),
+                    new(OpCodes.Ldloc_S, unitInformation.LocalIndex),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Ldelem_Ref),
+                    new(OpCodes.Call, Method(typeof(int), nameof(int.Parse), new[] { typeof(string) })),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingNtfEntranceEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingNtfEntrance))),
 
-                // if(!ev.IsAllowed)
-                //     return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, ret),
+                    // if(!ev.IsAllowed)
+                    //     return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, ret),
 
-                // unitName = $"{ev.UnitName}-{ev.UnitNumber};
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldstr, "{0}-{1}"),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.UnitName))),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.UnitNumber))),
-                new(OpCodes.Box, typeof(int)),
-                new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object), typeof(object) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Starg_S, 1),
+                    // unitName = $"{ev.UnitName}-{ev.UnitNumber};
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldstr, "{0}-{1}"),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.UnitName))),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.UnitNumber))),
+                    new(OpCodes.Box, typeof(int)),
+                    new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object), typeof(object) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Starg_S, 1),
 
-                // cassieUnitName = this.GetCassieUnitName(unitName);
-                new(OpCodes.Callvirt, Method(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.GetCassieUnitName))),
-                new(OpCodes.Stloc_0),
+                    // cassieUnitName = this.GetCassieUnitName(unitName);
+                    new(OpCodes.Callvirt, Method(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.GetCassieUnitName))),
+                    new(OpCodes.Stloc_0),
 
-                // scpsLeft = ev.ScpsLeft;
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.ScpsLeft))),
-                new(OpCodes.Stloc_1),
-            });
+                    // scpsLeft = ev.ScpsLeft;
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingNtfEntranceEventArgs), nameof(AnnouncingNtfEntranceEventArgs.ScpsLeft))),
+                    new(OpCodes.Stloc_1),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
 

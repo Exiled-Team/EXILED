@@ -96,7 +96,8 @@ namespace Exiled.Events.Patches.Events.Player
                                         Expires = banExpieryTime,
                                         Reason = reason,
                                         Issuer = issuer,
-                                    }, BanHandler.BanType.UserId);
+                                    },
+                                    BanHandler.BanType.UserId);
 
                                 if (!string.IsNullOrEmpty(targetPlayer.CustomUserId))
                                 {
@@ -109,7 +110,8 @@ namespace Exiled.Events.Patches.Events.Player
                                             Expires = banExpieryTime,
                                             Reason = reason,
                                             Issuer = issuer,
-                                        }, BanHandler.BanType.UserId);
+                                        },
+                                        BanHandler.BanType.UserId);
                                 }
                             }
                         }
@@ -132,7 +134,8 @@ namespace Exiled.Events.Patches.Events.Player
                                         Expires = banExpieryTime,
                                         Reason = reason,
                                         Issuer = issuer,
-                                    }, BanHandler.BanType.IP);
+                                    },
+                                    BanHandler.BanType.IP);
                             }
                         }
                         catch

@@ -39,31 +39,33 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(ReferenceHub);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(ReferenceHub);
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // ammoType
-                new(OpCodes.Ldarg_1),
+                    // ammoType
+                    new(OpCodes.Ldarg_1),
 
-                // amount
-                new(OpCodes.Ldarg_2),
+                    // amount
+                    new(OpCodes.Ldarg_2),
 
-                // var ev = DroppingAmmoEventArgs(...)
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingAmmoEventArgs))[0]),
-                new(OpCodes.Dup),
+                    // var ev = DroppingAmmoEventArgs(...)
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingAmmoEventArgs))[0]),
+                    new(OpCodes.Dup),
 
-                // Player.OnDroppingAmmo(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDroppingAmmo))),
+                    // Player.OnDroppingAmmo(ev);
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDroppingAmmo))),
 
-                // if (!ev.IsAllowed) return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingAmmoEventArgs), nameof(DroppingAmmoEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+                    // if (!ev.IsAllowed) return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingAmmoEventArgs), nameof(DroppingAmmoEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

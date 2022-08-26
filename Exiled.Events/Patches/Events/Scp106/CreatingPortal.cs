@@ -58,29 +58,31 @@ namespace Exiled.Events.Patches.Events.Scp106
             // this.SetPortalPosition(ev.Position);
             //
             // return;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new(OpCodes.Ldloca_S, 1),
-                new(OpCodes.Call, PropertyGetter(typeof(RaycastHit), nameof(RaycastHit.point))),
-                new(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.up))),
-                new(OpCodes.Call, Method(typeof(Vector3), "op_Subtraction")),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CreatingPortalEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnCreatingPortal))),
-                new(OpCodes.Call, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.zero))),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.Position))),
-                new(OpCodes.Call, Method(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.SetPortalPosition))),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                    new(OpCodes.Ldloca_S, 1),
+                    new(OpCodes.Call, PropertyGetter(typeof(RaycastHit), nameof(RaycastHit.point))),
+                    new(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.up))),
+                    new(OpCodes.Call, Method(typeof(Vector3), "op_Subtraction")),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CreatingPortalEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnCreatingPortal))),
+                    new(OpCodes.Call, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.zero))),
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.Position))),
+                    new(OpCodes.Call, Method(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.SetPortalPosition))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

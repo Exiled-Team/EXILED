@@ -50,11 +50,13 @@ namespace Exiled.Events.Patches.Events.Player
 #endif
                 Player.UnverifiedPlayers.Add(hub, player);
                 Player p = player;
-                Timing.CallDelayed(0.25f, () =>
-                {
-                    if (p.IsMuted)
-                        p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
-                });
+                Timing.CallDelayed(
+                    0.25f,
+                    () =>
+                    {
+                        if (p.IsMuted)
+                            p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
+                    });
 
                 Handlers.Player.OnJoined(new JoinedEventArgs(player));
             }

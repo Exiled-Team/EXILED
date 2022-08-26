@@ -47,51 +47,53 @@ namespace Exiled.Events.Patches.Events.Player
             Label notRecontainment = generator.DefineLabel();
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
-            {
-                // Player = Player.Get(this._hub)
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Stloc, player.LocalIndex),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player = Player.Get(this._hub)
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Stloc, player.LocalIndex),
 
-                // if (handler is RecontainmentDamageHandler)
-                // {
-                //    if (player.Role == RoleType.Scp079)
-                //    {
-                //        Handlers.Scp079.OnRecontained(new RecontainedEventArgs(player));
-                //        return;
-                //    }
-                // }
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Isinst, typeof(RecontainmentDamageHandler)),
-                new(OpCodes.Brfalse, notRecontainment),
-                new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
-                new(OpCodes.Ldc_I4_7),
-                new(OpCodes.Ceq),
-                new(OpCodes.Brfalse, notRecontainment),
-                new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RecontainedEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnRecontained))),
+                    // if (handler is RecontainmentDamageHandler)
+                    // {
+                    //    if (player.Role == RoleType.Scp079)
+                    //    {
+                    //        Handlers.Scp079.OnRecontained(new RecontainedEventArgs(player));
+                    //        return;
+                    //    }
+                    // }
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Isinst, typeof(RecontainmentDamageHandler)),
+                    new(OpCodes.Brfalse, notRecontainment),
+                    new(OpCodes.Ldloc, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
+                    new(OpCodes.Ldc_I4_7),
+                    new(OpCodes.Ceq),
+                    new(OpCodes.Brfalse, notRecontainment),
+                    new(OpCodes.Ldloc, player.LocalIndex),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RecontainedEventArgs))[0]),
+                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnRecontained))),
 
-                // var ev = new HurtingEventArgs(player, handler)
-                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex).WithLabels(notRecontainment),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, hurtingEv.LocalIndex),
+                    // var ev = new HurtingEventArgs(player, handler)
+                    new CodeInstruction(OpCodes.Ldloc, player.LocalIndex).WithLabels(notRecontainment),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtingEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, hurtingEv.LocalIndex),
 
-                // Handlers.Player.OnHurting(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurting))),
+                    // Handlers.Player.OnHurting(ev);
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurting))),
 
-                // if (!ev.IsAllowed)
-                //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, ret),
-            });
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, ret),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
 

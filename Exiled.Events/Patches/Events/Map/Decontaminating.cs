@@ -38,15 +38,17 @@ namespace Exiled.Events.Patches.Events.Map
 
             Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DecontaminatingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnDecontaminating))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DecontaminatingEventArgs), nameof(DecontaminatingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-            });
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DecontaminatingEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnDecontaminating))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DecontaminatingEventArgs), nameof(DecontaminatingEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

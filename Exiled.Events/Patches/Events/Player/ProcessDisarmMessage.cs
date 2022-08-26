@@ -46,23 +46,25 @@ namespace Exiled.Events.Patches.Events.Player
             // Player.OnRemovingHandcuffs(ev);
             // if (!ev.IsAllowed)
             //     return;
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldloc_0),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(DisarmMessage), nameof(DisarmMessage.PlayerToDisarm))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(DisarmMessage), nameof(DisarmMessage.PlayerToDisarm))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Ldc_I4_1),
 
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RemovingHandcuffsEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnRemovingHandcuffs))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(RemovingHandcuffsEventArgs), nameof(RemovingHandcuffsEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RemovingHandcuffsEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnRemovingHandcuffs))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(RemovingHandcuffsEventArgs), nameof(RemovingHandcuffsEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             offset = -5;
             index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus)))) + offset;
@@ -73,23 +75,25 @@ namespace Exiled.Events.Patches.Events.Player
             // Player.OnHandcuffing(ev);
             // if (!ev.IsAllowed)
             //     return;
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(DisarmMessage), nameof(DisarmMessage.PlayerToDisarm))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(DisarmMessage), nameof(DisarmMessage.PlayerToDisarm))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Ldc_I4_1),
 
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HandcuffingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHandcuffing))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(HandcuffingEventArgs), nameof(HandcuffingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HandcuffingEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHandcuffing))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(HandcuffingEventArgs), nameof(HandcuffingEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

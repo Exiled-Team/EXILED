@@ -50,26 +50,28 @@ namespace Exiled.Events.Patches.Events.Warhead
             //
             // if (!ev.IsAllowed)
             //   return;
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.CanBeStarted))).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
-                new(OpCodes.Call, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldsfld, Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Host))),
-                new(OpCodes.Dup),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Stfld, Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController.doorsOpen))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Call, PropertySetter(typeof(AlphaWarheadController), nameof(AlphaWarheadController.NetworkinProgress))),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.CanBeStarted))).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
+                    new(OpCodes.Call, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldsfld, Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Host))),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Stfld, Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController.doorsOpen))),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Call, PropertySetter(typeof(AlphaWarheadController), nameof(AlphaWarheadController.NetworkinProgress))),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

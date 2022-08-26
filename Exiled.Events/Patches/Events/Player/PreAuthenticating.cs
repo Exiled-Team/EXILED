@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -1;
 
             // Search for the last "request.Accept()" and then removes the offset, to get "ldarg.1" index.
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == PropertyGetter(typeof(NetManager), nameof(NetManager.ConnectedPeersCount))) +
+            int index = newInstructions.FindLastIndex(i => (i.opcode == OpCodes.Callvirt) && ((MethodInfo)i.operand == PropertyGetter(typeof(NetManager), nameof(NetManager.ConnectedPeersCount)))) +
                         offset;
 
             // Declare a string local variable.
@@ -73,66 +73,68 @@ namespace Exiled.Events.Patches.Events.Player
             // {
             //   CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode();
             //   [...]
-            newInstructions.InsertRange(index, new[]
-            {
-                // text (userId)
-                new CodeInstruction(OpCodes.Ldloc_S, 9).MoveLabelsFrom(newInstructions[index]),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // text (userId)
+                    new CodeInstruction(OpCodes.Ldloc_S, 9).MoveLabelsFrom(newInstructions[index]),
 
-                // request
-                new(OpCodes.Ldarg_1),
+                    // request
+                    new(OpCodes.Ldarg_1),
 
-                // request.Data.Position (readerStartPosition)
-                new(OpCodes.Dup),
-                new(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.Data))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(NetDataReader), nameof(NetDataReader.Position))),
+                    // request.Data.Position (readerStartPosition)
+                    new(OpCodes.Dup),
+                    new(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.Data))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetDataReader), nameof(NetDataReader.Position))),
 
-                // b3 (flags)
-                new(OpCodes.Ldloc_S, 11),
+                    // b3 (flags)
+                    new(OpCodes.Ldloc_S, 11),
 
-                // text2 (country)
-                new(OpCodes.Ldloc_S, 12),
+                    // text2 (country)
+                    new(OpCodes.Ldloc_S, 12),
 
-                // true
-                new(OpCodes.Ldloc_S, 27),
+                    // true
+                    new(OpCodes.Ldloc_S, 27),
 
-                // var ev = new PreAuthenticatingEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                    // var ev = new PreAuthenticatingEventArgs(...)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
 
-                // Handlers.Player.OnPreAuthenticating(ev)
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnPreAuthenticating))),
+                    // Handlers.Player.OnPreAuthenticating(ev)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnPreAuthenticating))),
 
-                // if (!ev.IsAllowed)
-                // {
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, elseLabel),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.ServerFull))),
-                new(OpCodes.Brtrue, fullRejectLabel),
+                    // if (!ev.IsAllowed)
+                    // {
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, elseLabel),
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.ServerFull))),
+                    new(OpCodes.Brtrue, fullRejectLabel),
 
-                // var failedMessage = string.Format($"Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin.", text, request.RemoteEndPoint);
-                new(OpCodes.Ldstr, "Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin."),
-                new(OpCodes.Ldloc_S, 9),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.RemoteEndPoint))),
-                new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object), typeof(object) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, failedMessage.LocalIndex),
+                    // var failedMessage = string.Format($"Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin.", text, request.RemoteEndPoint);
+                    new(OpCodes.Ldstr, "Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin."),
+                    new(OpCodes.Ldloc_S, 9),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.RemoteEndPoint))),
+                    new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object), typeof(object) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, failedMessage.LocalIndex),
 
-                // ServerConsole.AddLog(failedMessage, ConsoleColor.Gray)
-                new(OpCodes.Ldc_I4_7),
-                new(OpCodes.Call, Method(typeof(ServerConsole), nameof(ServerConsole.AddLog))),
+                    // ServerConsole.AddLog(failedMessage, ConsoleColor.Gray)
+                    new(OpCodes.Ldc_I4_7),
+                    new(OpCodes.Call, Method(typeof(ServerConsole), nameof(ServerConsole.AddLog))),
 
-                // ServerLogs.AddLog(ServerLogs.Modules.Networking, failedMessage, ServerLogs.ServerLogType.ConnectionUpdate, false)
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ldloc_S, failedMessage.LocalIndex),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Call, Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))),
-                new(OpCodes.Br_S, returnLabel),
-            });
+                    // ServerLogs.AddLog(ServerLogs.Modules.Networking, failedMessage, ServerLogs.ServerLogType.ConnectionUpdate, false)
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Ldloc_S, failedMessage.LocalIndex),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Call, Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))),
+                    new(OpCodes.Br_S, returnLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

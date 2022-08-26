@@ -39,14 +39,16 @@ namespace Exiled.Events.Patches.Events.Map
             // var ev = new AnnouncingDecontaminationEventArgs(int, bool);
             //
             // Map.OnAnnouncingDecontamination(ev);
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(DecontaminationController), nameof(DecontaminationController._nextPhase))),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingDecontaminationEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingDecontamination))),
-            });
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(DecontaminationController), nameof(DecontaminationController._nextPhase))),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingDecontaminationEventArgs))[0]),
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingDecontamination))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

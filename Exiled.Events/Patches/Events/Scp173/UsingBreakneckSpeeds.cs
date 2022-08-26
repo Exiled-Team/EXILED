@@ -39,8 +39,9 @@ namespace Exiled.Events.Patches.Events.Scp173
 
             int offset = -1;
 
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                                                                 (FieldInfo)instruction.operand == Field(typeof(Scp173), nameof(Scp173._breakneckSpeedsCooldownRemaining))) + offset;
+            int index = newInstructions.FindIndex(
+                instruction => (instruction.opcode == OpCodes.Ldfld) &&
+                               ((FieldInfo)instruction.operand == Field(typeof(Scp173), nameof(Scp173._breakneckSpeedsCooldownRemaining)))) + offset;
 
             newInstructions.RemoveRange(index, 5);
 
@@ -48,31 +49,33 @@ namespace Exiled.Events.Patches.Events.Scp173
             // Handlers.Scp173.OnUsingBreakneckSpeeds(ev);
             // if (!ev.IsAllowed)
             //   return;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(this.Hub)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(this.Hub)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // Scp173._breakneckSpeedsCooldownRemaining == 0
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173._breakneckSpeedsCooldownRemaining))),
-                new(OpCodes.Ldc_R4, 0f),
-                new(OpCodes.Ceq),
+                    // Scp173._breakneckSpeedsCooldownRemaining == 0
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp173), nameof(Scp173._breakneckSpeedsCooldownRemaining))),
+                    new(OpCodes.Ldc_R4, 0f),
+                    new(OpCodes.Ceq),
 
-                // new UsingBreakneckSpeedsEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingBreakneckSpeedsEventArgs))[0]),
-                new(OpCodes.Dup),
+                    // new UsingBreakneckSpeedsEventArgs(...)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingBreakneckSpeedsEventArgs))[0]),
+                    new(OpCodes.Dup),
 
-                // Handlers.Scp173.OnUsingBreakneckSpeeds(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp173), nameof(Handlers.Scp173.OnUsingBreakneckSpeeds))),
+                    // Handlers.Scp173.OnUsingBreakneckSpeeds(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp173), nameof(Handlers.Scp173.OnUsingBreakneckSpeeds))),
 
-                // if (!ev.IsAllowed)
-                //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UsingBreakneckSpeedsEventArgs), nameof(UsingBreakneckSpeedsEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+                    // if (!ev.IsAllowed)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UsingBreakneckSpeedsEventArgs), nameof(UsingBreakneckSpeedsEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

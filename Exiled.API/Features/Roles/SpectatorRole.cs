@@ -29,12 +29,18 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="DateTime"/> at which the player died.
         /// </summary>
-        public DateTime DeathTime => new(Owner.ReferenceHub.characterClassManager.DeathTime);
+        public DateTime DeathTime
+        {
+            get => new(Owner.ReferenceHub.characterClassManager.DeathTime);
+        }
 
         /// <summary>
         /// Gets the total amount of time the player has been dead.
         /// </summary>
-        public TimeSpan DeadTime => DateTime.UtcNow - DeathTime;
+        public TimeSpan DeadTime
+        {
+            get => DateTime.UtcNow - DeathTime;
+        }
 
         /// <summary>
         /// Gets or sets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
@@ -59,6 +65,9 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Spectator;
+        internal override RoleType RoleType
+        {
+            get => RoleType.Spectator;
+        }
     }
 }

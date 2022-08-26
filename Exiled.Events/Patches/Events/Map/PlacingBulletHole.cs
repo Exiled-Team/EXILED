@@ -39,20 +39,22 @@ namespace Exiled.Events.Patches.Events.Map
             Label returnLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(EventArgs.Map.PlacingBulletHole));
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EventArgs.Map.PlacingBulletHole))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnPlacingBulletHole))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.Map.PlacingBulletHole), nameof(EventArgs.Map.PlacingBulletHole.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EventArgs.Map.PlacingBulletHole))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnPlacingBulletHole))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EventArgs.Map.PlacingBulletHole), nameof(EventArgs.Map.PlacingBulletHole.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

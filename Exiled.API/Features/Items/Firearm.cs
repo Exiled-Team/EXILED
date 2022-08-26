@@ -79,7 +79,10 @@ namespace Exiled.API.Features.Items
         }
 
         /// <inheritdoc cref="AvailableAttachmentsValue"/>.
-        public static IReadOnlyDictionary<ItemType, AttachmentIdentifier[]> AvailableAttachments => AvailableAttachmentsValue;
+        public static IReadOnlyDictionary<ItemType, AttachmentIdentifier[]> AvailableAttachments
+        {
+            get => AvailableAttachmentsValue;
+        }
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> which represents all the preferences for each <see cref="Player"/>.
@@ -92,13 +95,13 @@ namespace Exiled.API.Features.Items
                     AttachmentsServerHandler.PlayerPreferences.Where(
                         kvp => kvp.Key is not null).Select(
                         (KeyValuePair<ReferenceHub, Dictionary<ItemType, uint>> keyValuePair) =>
-                {
-                    return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(
-                        Player.Get(keyValuePair.Key),
-                        keyValuePair.Value.ToDictionary(
-                            kvp => kvp.Key,
-                            kvp => kvp.Key.GetAttachmentIdentifiers(kvp.Value).ToArray()));
-                });
+                        {
+                            return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(
+                                Player.Get(keyValuePair.Key),
+                                keyValuePair.Value.ToDictionary(
+                                    kvp => kvp.Key,
+                                    kvp => kvp.Key.GetAttachmentIdentifiers(kvp.Value).ToArray()));
+                        });
 
                 return playerPreferences.Where(kvp => kvp.Key is not null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
@@ -121,37 +124,58 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the max ammo for this firearm.
         /// </summary>
-        public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
+        public byte MaxAmmo
+        {
+            get => Base.AmmoManagerModule.MaxAmmo;
+        }
 
         /// <summary>
         /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
-        public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
+        public AmmoType AmmoType
+        {
+            get => Base.AmmoType.GetAmmoType();
+        }
 
         /// <summary>
         /// Gets a value indicating whether the firearm is being aimed.
         /// </summary>
-        public bool Aiming => Base.AdsModule.ServerAds;
+        public bool Aiming
+        {
+            get => Base.AdsModule.ServerAds;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the firearm's flashlight module is enabled.
         /// </summary>
-        public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
+        public bool FlashlightEnabled
+        {
+            get => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
+        }
 
         /// <summary>
         /// Gets the <see cref="Attachment"/>s of the firearm.
         /// </summary>
-        public Attachment[] Attachments => Base.Attachments;
+        public Attachment[] Attachments
+        {
+            get => Base.Attachments;
+        }
 
         /// <summary>
         /// Gets the <see cref="AttachmentIdentifier"/>s of the firearm.
         /// </summary>
-        public IEnumerable<AttachmentIdentifier> AttachmentIdentifiers => this.GetAttachmentIdentifiers();
+        public IEnumerable<AttachmentIdentifier> AttachmentIdentifiers
+        {
+            get => this.GetAttachmentIdentifiers();
+        }
 
         /// <summary>
         /// Gets the <see cref="Enums.BaseCode"/> of the firearm.
         /// </summary>
-        public BaseCode BaseCode => FirearmPairs[Type];
+        public BaseCode BaseCode
+        {
+            get => FirearmPairs[Type];
+        }
 
         /// <summary>
         /// Gets or sets the fire rate of the firearm, if it is an automatic weapon.
@@ -200,7 +224,7 @@ namespace Exiled.API.Features.Items
             uint code = 1;
             foreach (Attachment attachment in Base.Attachments)
             {
-                if (attachment.Name == identifier.Name && attachment.IsEnabled)
+                if ((attachment.Name == identifier.Name) && attachment.IsEnabled)
                 {
                     toRemove = code;
                     break;
@@ -209,12 +233,13 @@ namespace Exiled.API.Features.Items
                 code *= 2;
             }
 
-            uint newCode = identifier.Code == 0 ?
-                AvailableAttachments[Type].FirstOrDefault(attId =>
-                attId.Name == identifier.Name).Code :
-                identifier.Code;
+            uint newCode = identifier.Code == 0
+                ? AvailableAttachments[Type].FirstOrDefault(
+                    attId =>
+                        attId.Name == identifier.Name).Code
+                : identifier.Code;
 
-            Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~toRemove | newCode, true);
+            Base.ApplyAttachmentsCode((Base.GetCurrentAttachmentsCode() & ~toRemove) | newCode, true);
 
             Base.Status = new FirearmStatus((byte)UnityEngine.Mathf.Min(Ammo, MaxAmmo), Base.Status.Flags, Base.GetCurrentAttachmentsCode());
         }
@@ -251,13 +276,14 @@ namespace Exiled.API.Features.Items
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to remove.</param>
         public void RemoveAttachment(AttachmentIdentifier identifier)
         {
-            if (!Attachments.Any(attachment => attachment.Name == identifier.Name && attachment.IsEnabled))
+            if (!Attachments.Any(attachment => (attachment.Name == identifier.Name) && attachment.IsEnabled))
                 return;
 
-            uint code = identifier.Code == 0 ?
-                AvailableAttachments[Type].FirstOrDefault(attId =>
-                attId.Name == identifier.Name).Code :
-                identifier.Code;
+            uint code = identifier.Code == 0
+                ? AvailableAttachments[Type].FirstOrDefault(
+                    attId =>
+                        attId.Name == identifier.Name).Code
+                : identifier.Code;
 
             Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
 
@@ -273,7 +299,7 @@ namespace Exiled.API.Features.Items
         /// <param name="attachmentName">The <see cref="AttachmentName"/> to remove.</param>
         public void RemoveAttachment(AttachmentName attachmentName)
         {
-            Attachment firearmAttachment = Attachments.FirstOrDefault(att => att.Name == attachmentName && att.IsEnabled);
+            Attachment firearmAttachment = Attachments.FirstOrDefault(att => (att.Name == attachmentName) && att.IsEnabled);
 
             if (firearmAttachment is null)
                 return;
@@ -294,7 +320,7 @@ namespace Exiled.API.Features.Items
         /// <param name="attachmentSlot">The <see cref="AttachmentSlot"/> to remove.</param>
         public void RemoveAttachment(AttachmentSlot attachmentSlot)
         {
-            Attachment firearmAttachment = Attachments.FirstOrDefault(att => att.Slot == attachmentSlot && att.IsEnabled);
+            Attachment firearmAttachment = Attachments.FirstOrDefault(att => (att.Slot == attachmentSlot) && att.IsEnabled);
 
             if (firearmAttachment is null)
                 return;

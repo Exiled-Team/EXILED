@@ -46,64 +46,66 @@ namespace Exiled.Events.Patches.Events.Scp914
 
             newInstructions.RemoveRange(index, 12);
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(ply)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(ply)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // upgradeInventory
-                new(OpCodes.Ldarg_1),
+                    // upgradeInventory
+                    new(OpCodes.Ldarg_1),
 
-                // heldOnly
-                new(OpCodes.Ldarg_2),
+                    // heldOnly
+                    new(OpCodes.Ldarg_2),
 
-                // setting
-                new(OpCodes.Ldarg_S, 4),
+                    // setting
+                    new(OpCodes.Ldarg_S, 4),
 
-                // moveVector
-                new(OpCodes.Ldarg_3),
+                    // moveVector
+                    new(OpCodes.Ldarg_3),
 
-                // var ev = new UpgradingPlayerEventArgs(player, upgradeInventory, heldonly, setting, moveVector);
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPlayerEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+                    // var ev = new UpgradingPlayerEventArgs(player, upgradeInventory, heldonly, setting, moveVector);
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPlayerEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Handlers.Scp914.OnUpgradingPlayer(ev);
-                new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingPlayer))),
+                    // Handlers.Scp914.OnUpgradingPlayer(ev);
+                    new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingPlayer))),
 
-                // if (!ev.IsAllowed)
-                //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
 
-                // upgradeInventory = ev.UpgradeItems
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.UpgradeItems))),
-                new(OpCodes.Starg_S, 1),
+                    // upgradeInventory = ev.UpgradeItems
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.UpgradeItems))),
+                    new(OpCodes.Starg_S, 1),
 
-                // heldOnly = ev.HeldOnly
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.HeldOnly))),
-                new(OpCodes.Starg_S, 2),
+                    // heldOnly = ev.HeldOnly
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.HeldOnly))),
+                    new(OpCodes.Starg_S, 2),
 
-                // setting = ev.KnobSetting
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.KnobSetting))),
-                new(OpCodes.Starg_S, 4),
+                    // setting = ev.KnobSetting
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.KnobSetting))),
+                    new(OpCodes.Starg_S, 4),
 
-                // curSetting = setting;
-                new(OpCodes.Ldarg, 4),
-                new(OpCodes.Stloc_S, curSetting.LocalIndex),
+                    // curSetting = setting;
+                    new(OpCodes.Ldarg, 4),
+                    new(OpCodes.Stloc_S, curSetting.LocalIndex),
 
-                // ev.Player.Teleport(ev.OutputPosition);
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.Player))),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.OutputPosition))),
-                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
-            });
+                    // ev.Player.Teleport(ev.OutputPosition);
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.Player))),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.OutputPosition))),
+                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
+                });
 
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld);
 
@@ -113,42 +115,44 @@ namespace Exiled.Events.Patches.Events.Scp914
 
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // setting = curSetting
-                new(OpCodes.Ldloc_S, curSetting.LocalIndex),
-                new(OpCodes.Starg_S, 4),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // setting = curSetting
+                    new(OpCodes.Ldloc_S, curSetting.LocalIndex),
+                    new(OpCodes.Starg_S, 4),
 
-                // Player.Get(ply)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    // Player.Get(ply)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // ItemBase item = GetItem
-                new(OpCodes.Ldloc_S, 7),
+                    // ItemBase item = GetItem
+                    new(OpCodes.Ldloc_S, 7),
 
-                // setting
-                new(OpCodes.Ldarg_S, 4),
-                new(OpCodes.Ldc_I4_1),
+                    // setting
+                    new(OpCodes.Ldarg_S, 4),
+                    new(OpCodes.Ldc_I4_1),
 
-                // var ev = new UpgradingInventoryItemEventArgs(player, item, setting)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingInventoryItemEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev2.LocalIndex),
+                    // var ev = new UpgradingInventoryItemEventArgs(player, item, setting)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingInventoryItemEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev2.LocalIndex),
 
-                // Handlers.Scp914.OnUpgradingInventoryItem(ev);
-                new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingInventoryItem))),
+                    // Handlers.Scp914.OnUpgradingInventoryItem(ev);
+                    new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingInventoryItem))),
 
-                // if (!ev.IsAllowed)
-                //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingInventoryItemEventArgs), nameof(UpgradingInventoryItemEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, continueLabel),
-                new(OpCodes.Ldloc_S, ev2.LocalIndex),
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingInventoryItemEventArgs), nameof(UpgradingInventoryItemEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, continueLabel),
+                    new(OpCodes.Ldloc_S, ev2.LocalIndex),
 
-                // setting = ev.KnobSetting
-                new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingInventoryItemEventArgs), nameof(UpgradingInventoryItemEventArgs.KnobSetting))),
-                new(OpCodes.Starg_S, 4),
-            });
+                    // setting = ev.KnobSetting
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingInventoryItemEventArgs), nameof(UpgradingInventoryItemEventArgs.KnobSetting))),
+                    new(OpCodes.Starg_S, 4),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

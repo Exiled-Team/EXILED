@@ -119,7 +119,10 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         /// Finalizes an instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
         /// </summary>
-        ~ExplodingGrenadeEventArgs() => ListPool<Player>.Shared.Return(TargetsToAffect);
+        ~ExplodingGrenadeEventArgs()
+        {
+            ListPool<Player>.Shared.Return(TargetsToAffect);
+        }
 
         /// <summary>
         /// Gets the position where is exploding.

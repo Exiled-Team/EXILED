@@ -36,20 +36,22 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse) + offset;
             Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.TargetPickup))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpAmmoEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUpAmmo))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpAmmoEventArgs), nameof(PickingUpAmmoEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.TargetPickup))),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpAmmoEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUpAmmo))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpAmmoEventArgs), nameof(PickingUpAmmoEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

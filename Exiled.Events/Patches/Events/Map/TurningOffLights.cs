@@ -35,25 +35,27 @@ namespace Exiled.Events.Patches.Events.Map
 
             Label retLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TurningOffLightsEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TurningOffLightsEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnTurningOffLights))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnTurningOffLights))),
 
-                new(OpCodes.Callvirt, PropertyGetter(typeof(TurningOffLightsEventArgs), nameof(TurningOffLightsEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(TurningOffLightsEventArgs), nameof(TurningOffLightsEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, retLabel),
 
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(TurningOffLightsEventArgs), nameof(TurningOffLightsEventArgs.Duration))),
-                new(OpCodes.Starg_S, 1),
-            });
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(TurningOffLightsEventArgs), nameof(TurningOffLightsEventArgs.Duration))),
+                    new(OpCodes.Starg_S, 1),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 

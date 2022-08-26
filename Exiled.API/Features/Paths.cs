@@ -15,7 +15,10 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Paths
     {
-        static Paths() => Reload();
+        static Paths()
+        {
+            Reload();
+        }
 
         /// <summary>
         /// Gets AppData path.

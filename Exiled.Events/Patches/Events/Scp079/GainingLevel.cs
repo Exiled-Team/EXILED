@@ -48,22 +48,24 @@ namespace Exiled.Events.Patches.Events.Scp079
             //
             // if (!ev.IsAllowed)
             //     return;
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingLevelEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnGainingLevel))),
-                new(OpCodes.Call, PropertyGetter(typeof(GainingLevelEventArgs), nameof(GainingLevelEventArgs.NewLevel))),
-                new(OpCodes.Starg_S, 1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GainingLevelEventArgs), nameof(GainingLevelEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingLevelEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnGainingLevel))),
+                    new(OpCodes.Call, PropertyGetter(typeof(GainingLevelEventArgs), nameof(GainingLevelEventArgs.NewLevel))),
+                    new(OpCodes.Starg_S, 1),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(GainingLevelEventArgs), nameof(GainingLevelEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

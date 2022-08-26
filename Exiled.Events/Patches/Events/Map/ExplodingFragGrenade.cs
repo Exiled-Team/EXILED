@@ -64,40 +64,42 @@ namespace Exiled.Events.Patches.Events.Map
             Label returnLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(ExplodingGrenadeEventArgs));
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(attacker.Hub);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(attacker.Hub);
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // position
-                new(OpCodes.Ldarg_1),
+                    // position
+                    new(OpCodes.Ldarg_1),
 
-                // grenade
-                new(OpCodes.Ldarg_2),
+                    // grenade
+                    new(OpCodes.Ldarg_2),
 
-                // Collider[]
-                new(OpCodes.Ldloc_3),
+                    // Collider[]
+                    new(OpCodes.Ldloc_3),
 
-                // ExplodingGrenadeEventArgs ev = new(player, position, grenade, colliders);
-                // Map.OnExplodingGrenade(ev);
-                // if(!ev.IsAllowed)
-                //     return;
-                new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(Vector3), typeof(EffectGrenade), typeof(Collider[]) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                    // ExplodingGrenadeEventArgs ev = new(player, position, grenade, colliders);
+                    // Map.OnExplodingGrenade(ev);
+                    // if(!ev.IsAllowed)
+                    //     return;
+                    new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(Vector3), typeof(EffectGrenade), typeof(Collider[]) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
 
-                // colliders = TrimColliders(ev, colliders)
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Call, Method(typeof(ExplodingFragGrenade), nameof(TrimColliders))),
-                new(OpCodes.Stloc_3),
-            });
+                    // colliders = TrimColliders(ev, colliders)
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Ldloc_3),
+                    new(OpCodes.Call, Method(typeof(ExplodingFragGrenade), nameof(TrimColliders))),
+                    new(OpCodes.Stloc_3),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

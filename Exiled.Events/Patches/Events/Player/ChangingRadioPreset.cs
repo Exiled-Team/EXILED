@@ -38,42 +38,44 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRadioPresetEventArgs));
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                // Player.Get(this.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Radio), nameof(Radio.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    // Player.Get(this.gameObject)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Radio), nameof(Radio.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // this.NetworkcurRangeId
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Radio), nameof(Radio.NetworkcurRangeId))),
+                    // this.NetworkcurRangeId
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Radio), nameof(Radio.NetworkcurRangeId))),
 
-                // newValue
-                new(OpCodes.Ldarg_1),
+                    // newValue
+                    new(OpCodes.Ldarg_1),
 
-                // true
-                new(OpCodes.Ldc_I4_1),
+                    // true
+                    new(OpCodes.Ldc_I4_1),
 
-                // var ev = ChangingRadioPresetEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRadioPresetEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+                    // var ev = ChangingRadioPresetEventArgs(...)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRadioPresetEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Handlers.Player.OnChangingRadioPreset(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingRadioPreset))),
+                    // Handlers.Player.OnChangingRadioPreset(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingRadioPreset))),
 
-                // if (!ev.IsAllowed)
-                //     return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRadioPresetEventArgs), nameof(ChangingRadioPresetEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
+                    // if (!ev.IsAllowed)
+                    //     return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRadioPresetEventArgs), nameof(ChangingRadioPresetEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
 
-                // newValue = ev.NewValue
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRadioPresetEventArgs), nameof(ChangingRadioPresetEventArgs.NewValue))),
-                new(OpCodes.Stloc_0),
-            });
+                    // newValue = ev.NewValue
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRadioPresetEventArgs), nameof(ChangingRadioPresetEventArgs.NewValue))),
+                    new(OpCodes.Stloc_0),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

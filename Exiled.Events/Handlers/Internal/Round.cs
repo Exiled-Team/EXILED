@@ -78,7 +78,7 @@ namespace Exiled.Events.Handlers.Internal
             if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))
                 return;
 
-            if (ev.NewRole == RoleType.Spectator && Events.Instance.Config.ShouldDropInventory)
+            if ((ev.NewRole == RoleType.Spectator) && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropEverything();
 
             if (ev.NewRole is RoleType.Scp173)

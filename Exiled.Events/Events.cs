@@ -27,7 +27,10 @@ namespace Exiled.Events
         /// <summary>
         /// Gets the plugin instance.
         /// </summary>
-        public static Events Instance => instance;
+        public static Events Instance
+        {
+            get => instance;
+        }
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.First;

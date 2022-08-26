@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else
                 {
-                    KillingPlayerEventArgs ev = new KillingPlayerEventArgs(Player.Get(__instance._hub), ref handler);
+                    KillingPlayerEventArgs ev = new (Player.Get(__instance._hub), ref handler);
                     Handlers.Player.OnKillPlayer(ev);
                     handler = ev.Handler;
                 }
