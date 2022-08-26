@@ -20,9 +20,6 @@
         "src": "docs",
         "files": ["**/*.md"]
       },
-      {
-        "files": ["toc.yml", "docs/articles/toc.yml"]
-      }
     ],
     "resource": [
       {
@@ -35,7 +32,7 @@
       "_enableSearch": true,
       "_gitContribute": {
         "repo": "https://github.com/Exiled-Team/EXILED",
-        "branch": "dev"
+        "branch": "master"
       },
       "_appLogoPath": "assets/Exiled_Icon_50x50.png",
       "_appFaviconPath": "assets/Exiled_Icon.ico"
