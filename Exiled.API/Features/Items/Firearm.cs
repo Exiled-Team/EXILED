@@ -36,18 +36,18 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{TKey, TValue}"/> which contains all pairs for <see cref="ItemType"/> and <see cref="Enums.BaseCode"/>.
         /// </summary>
-        internal static readonly IReadOnlyDictionary<ItemType, BaseCode> FirearmPairs = new Dictionary<ItemType, BaseCode>()
+        internal static readonly IReadOnlyDictionary<FirearmType, BaseCode> FirearmPairs = new Dictionary<FirearmType, BaseCode>()
         {
-            { ItemType.GunCOM15, BaseCode.GunCOM15 },
-            { ItemType.GunCOM18, BaseCode.GunCOM18 },
-            { ItemType.GunRevolver, BaseCode.GunRevolver },
-            { ItemType.GunE11SR, BaseCode.GunE11SR },
-            { ItemType.GunCrossvec, BaseCode.GunCrossvec },
-            { ItemType.GunFSP9, BaseCode.GunFSP9 },
-            { ItemType.GunLogicer, BaseCode.GunLogicer },
-            { ItemType.GunAK, BaseCode.GunAK },
-            { ItemType.GunShotgun, BaseCode.GunShotgun },
-            { ItemType.ParticleDisruptor, BaseCode.Disruptor },
+            { FirearmType.COM15, BaseCode.GunCOM15 },
+            { FirearmType.COM18, BaseCode.GunCOM18 },
+            { FirearmType.Revolver, BaseCode.GunRevolver },
+            { FirearmType.E11SR, BaseCode.GunE11SR },
+            { FirearmType.Crossvec, BaseCode.GunCrossvec },
+            { FirearmType.FSP9, BaseCode.GunFSP9 },
+            { FirearmType.Logicer, BaseCode.GunLogicer },
+            { FirearmType.AK, BaseCode.GunAK },
+            { FirearmType.Shotgun, BaseCode.GunShotgun },
+            { FirearmType.ParticleDisruptor, BaseCode.Disruptor },
         };
 
         /// <summary>
@@ -75,6 +75,15 @@ namespace Exiled.API.Features.Items
         /// <param name="type">The <see cref="ItemType"/> of the firearm.</param>
         internal Firearm(ItemType type)
             : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Firearm"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="FirearmType"/> of the firearm.</param>
+        internal Firearm(FirearmType type)
+            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type.GetItemType(), false))
         {
         }
 
@@ -174,7 +183,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public BaseCode BaseCode
         {
-            get => FirearmPairs[Type];
+            get => FirearmPairs[Type.GetFirearmType()];
         }
 
         /// <summary>

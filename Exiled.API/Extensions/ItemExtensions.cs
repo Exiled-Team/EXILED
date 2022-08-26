@@ -164,6 +164,26 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
+        /// Converts a valid firearm <see cref="ItemType"/> into a <see cref="FirearmType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to convert.</param>
+        /// <returns>The firearm type of the given item type.</returns>
+        public static FirearmType GetFirearmType(this ItemType type) => type switch
+        {
+            ItemType.GunCOM15 => FirearmType.COM15,
+            ItemType.GunCOM18 => FirearmType.COM18,
+            ItemType.GunE11SR => FirearmType.E11SR,
+            ItemType.GunCrossvec => FirearmType.Crossvec,
+            ItemType.GunFSP9 => FirearmType.FSP9,
+            ItemType.GunLogicer => FirearmType.Logicer,
+            ItemType.GunRevolver => FirearmType.Revolver,
+            ItemType.GunAK => FirearmType.AK,
+            ItemType.GunShotgun => FirearmType.Shotgun,
+            ItemType.ParticleDisruptor => FirearmType.ParticleDisruptor,
+            _ => FirearmType.None,
+        };
+
+        /// <summary>
         /// Converts an <see cref="AmmoType"/> into it's corresponding <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type">The <see cref="AmmoType"/> to convert.</param>
@@ -189,6 +209,26 @@ namespace Exiled.API.Extensions
             GrenadeType.Scp018 => ItemType.SCP018,
             GrenadeType.FragGrenade => ItemType.GrenadeHE,
             GrenadeType.Scp2176 => ItemType.SCP2176,
+            _ => ItemType.None,
+        };
+
+        /// <summary>
+        /// Converts a <see cref="FirearmType"/> into the corresponding <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="FirearmType"/> to convert.</param>
+        /// <returns>The Item type of the specified firearm.</returns>
+        public static ItemType GetItemType(this FirearmType type) => type switch
+        {
+            FirearmType.COM15 => ItemType.GunCOM15,
+            FirearmType.COM18 => ItemType.GunCOM18,
+            FirearmType.E11SR => ItemType.GunE11SR,
+            FirearmType.Crossvec => ItemType.GunCrossvec,
+            FirearmType.FSP9 => ItemType.GunFSP9,
+            FirearmType.Logicer => ItemType.GunLogicer,
+            FirearmType.Revolver => ItemType.GunRevolver,
+            FirearmType.AK => ItemType.GunAK,
+            FirearmType.Shotgun => ItemType.GunShotgun,
+            FirearmType.ParticleDisruptor => ItemType.ParticleDisruptor,
             _ => ItemType.None,
         };
 
@@ -265,6 +305,6 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns>The corresponding <see cref="BaseCode"/>.</returns>
-        public static BaseCode GetBaseCode(this ItemType type) => !type.IsWeapon() ? 0 : Firearm.FirearmPairs[type];
+        public static BaseCode GetBaseCode(this ItemType type) => !type.IsWeapon() ? 0 : Firearm.FirearmPairs[type.GetFirearmType()];
     }
 }
