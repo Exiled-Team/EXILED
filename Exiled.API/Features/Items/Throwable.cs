@@ -27,7 +27,9 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
+            Base.Projectile.gameObject.SetActive(false);
             Projectile = Pickup.Get(Object.Instantiate(Base.Projectile)) as Projectile;
+            Base.Projectile.gameObject.SetActive(true);
             Projectile.Serial = Serial;
         }
 

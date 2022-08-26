@@ -68,7 +68,7 @@ namespace Exiled.Events.EventArgs.Map
         {
             Player = thrower ?? Server.Host;
             Projectile = (Projectile)Pickup.Get(grenade);
-            Position = Projectile.Position;
+            Position = position;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
             {
