@@ -20,22 +20,24 @@
         "src": "docs",
         "files": ["**/*.md"]
       },
-      {
-        "files": ["toc.yml", "docs/articles/toc.yml"]
-      }
     ],
     "resource": [
       {
         "files": ["assets/**"]
       }
     ],
+    "template":["default","templates/singulinkfx"],
     "dest": "_site",
     "globalMetadata": {
+      "_appTitle": "Exiled",
+      "_appName": "Exiled Docs",
+      "_appFooter": "<strong>Exiled-Team</strong>",
+      "_copyrightFooter": "© Exiled-Team. All rights reserved.",
       "_appTitle": "EXILED Docs",
       "_enableSearch": true,
       "_gitContribute": {
         "repo": "https://github.com/Exiled-Team/EXILED",
-        "branch": "dev"
+        "branch": "master"
       },
       "_appLogoPath": "assets/Exiled_Icon_50x50.png",
       "_appFaviconPath": "assets/Exiled_Icon.ico"
