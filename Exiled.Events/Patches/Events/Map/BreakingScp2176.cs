@@ -20,6 +20,7 @@ namespace Exiled.Events.Patches.Events.Map
     using InventorySystem.Items.ThrowableProjectiles;
 
     using NorthwoodLib.Pools;
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
