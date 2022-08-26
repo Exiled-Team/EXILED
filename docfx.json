@@ -26,6 +26,7 @@
         "files": ["assets/**"]
       }
     ],
+    "template":["default","templates/darkfx"],
     "dest": "_site",
     "globalMetadata": {
       "_appTitle": "EXILED Docs",
