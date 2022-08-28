@@ -1144,7 +1144,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> which contains all player's preferences.
         /// </summary>
-        public Dictionary<ItemType, AttachmentIdentifier[]> Preferences
+        public Dictionary<FirearmType, AttachmentIdentifier[]> Preferences
         {
             get => Firearm.PlayerPreferences.FirstOrDefault(kvp => kvp.Key == this).Value;
         }
@@ -2173,9 +2173,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Adds the amount of a weapon's <see cref="AmmoType">ammo type</see> to the player's inventory.
         /// </summary>
-        /// <param name="weaponType">The <see cref="ItemType"/> of the weapon.</param>
+        /// <param name="weaponType">The <see cref="firearmtype"/> of the weapon.</param>
         /// <param name="amount">The amount of ammo to be added.</param>
-        public void AddAmmo(ItemType weaponType, ushort amount) => AddAmmo(weaponType.GetWeaponAmmoType(), amount);
+        public void AddAmmo(FirearmType weaponType, ushort amount) => AddAmmo(weaponType.GetWeaponAmmoType(), amount);
 
         /// <summary>
         /// Sets the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
@@ -2235,7 +2235,7 @@ namespace Exiled.API.Features
                 {
                     firearm.AddAttachment(identifiers);
                 }
-                else if (Preferences.TryGetValue(itemType, out AttachmentIdentifier[] attachments))
+                else if (Preferences.TryGetValue(itemType.GetFirearmType(), out AttachmentIdentifier[] attachments))
                 {
                     firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                 }
@@ -2416,7 +2416,7 @@ namespace Exiled.API.Features
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
-                    if (Preferences.TryGetValue(firearm.ItemTypeId, out AttachmentIdentifier[] attachments))
+                    if (Preferences.TryGetValue(firearm.ItemTypeId.GetFirearmType(), out AttachmentIdentifier[] attachments))
                     {
                         firearm.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                     }
@@ -2904,8 +2904,8 @@ namespace Exiled.API.Features
             Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect, false));
         }
 
-        /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
-        public void PlayGunSound(ItemType type, byte volume, byte audioClipId = 0) =>
+        /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, FirearmType, byte, byte)"/>
+        public void PlayGunSound(FirearmType type, byte volume, byte audioClipId = 0) =>
             MirrorExtensions.PlayGunSound(this, Position, type, volume, audioClipId);
 
         /// <inheritdoc cref="Map.PlaceBlood(Vector3, BloodType, float)"/>

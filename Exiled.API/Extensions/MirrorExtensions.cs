@@ -14,6 +14,7 @@ namespace Exiled.API.Extensions
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Text;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
 

@@ -295,7 +295,7 @@ namespace Exiled.API.Extensions
         public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this Firearm firearm)
         {
             foreach (Attachment attachment in firearm.Attachments.Where(att => att.IsEnabled))
-                yield return Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment);
+                yield return Firearm.AvailableAttachments[firearm.Type.GetFirearmType()].FirstOrDefault(att => att == attachment);
         }
 
         /// <summary>
