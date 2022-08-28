@@ -41,6 +41,26 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not this role is a human role.
+        /// </summary>
+        public bool IsHuman => Is<HumanRole>(out _);
+
+        /// <summary>
+        /// Gets a value indicating whether or not this role is an SCP role.
+        /// </summary>
+        public bool IsSCP => Team is Team.SCP;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this role is an MTF rank.
+        /// </summary>
+        public bool IsMTF => Team is Team.MTF;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this role is a Chaos Insurgency rank.
+        /// </summary>
+        public bool IsCHI => Team is Team.CHI;
+
+        /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this role.
         /// </summary>
         public Side Side
