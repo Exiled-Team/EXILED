@@ -60,7 +60,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void SubscribeEvents()
         {
             Exiled.Events.Handlers.Player.ThrowingRequest += OnInternalThrowingRequest;
-            Exiled.Events.Handlers.Player.ThrowedItem += OnInternalThrowingItem;
+            Exiled.Events.Handlers.Player.ThrowedItem += OnInternalThrowedItem;
             Exiled.Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
             Exiled.Events.Handlers.Map.ChangedIntoGrenade += OnInternalChangedIntoGrenade;
 
@@ -71,7 +71,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void UnsubscribeEvents()
         {
             Exiled.Events.Handlers.Player.ThrowingRequest -= OnInternalThrowingRequest;
-            Exiled.Events.Handlers.Player.ThrowedItem -= OnInternalThrowingItem;
+            Exiled.Events.Handlers.Player.ThrowedItem -= OnInternalThrowedItem;
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
             Exiled.Events.Handlers.Map.ChangedIntoGrenade -= OnInternalChangedIntoGrenade;
 
@@ -89,8 +89,8 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Handles tracking thrown custom grenades.
         /// </summary>
-        /// <param name="ev"><see cref="ThrowingRequestEventArgs"/>.</param>
-        protected virtual void OnThrowingItem(ThrowedItemEventArgs ev)
+        /// <param name="ev"><see cref="ThrowedItemEventArgs"/>.</param>
+        protected virtual void OnThrowedItem(ThrowedItemEventArgs ev)
         {
         }
 
@@ -121,12 +121,12 @@ namespace Exiled.CustomItems.API.Features
             return;
         }
 
-        private void OnInternalThrowingItem(ThrowedItemEventArgs ev)
+        private void OnInternalThrowedItem(ThrowedItemEventArgs ev)
         {
             if (!Check(ev.Item))
                 return;
 
-            OnThrowingItem(ev);
+            OnThrowedItem(ev);
 
             if (ev.Projectile is TimeGrenadeProjectile timeGrenade)
                 timeGrenade.FuseTime = FuseTime;
