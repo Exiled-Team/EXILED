@@ -43,22 +43,27 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not this role is a human role.
         /// </summary>
-        public bool IsHuman => Is<HumanRole>(out _);
+        public bool IsHuman => Is<HumanRole>();
 
         /// <summary>
-        /// Gets a value indicating whether or not this role is an SCP role.
+        /// Gets a value indicating whether or not this role is an SCP role. Equivalent to checking the <see cref="Team"/> of the role.
         /// </summary>
         public bool IsSCP => Team is Team.SCP;
 
         /// <summary>
-        /// Gets a value indicating whether or not this role is an MTF rank.
+        /// Gets a value indicating whether or not this role is an MTF rank. Equivalent to checking the <see cref="Team"/> of the role.
         /// </summary>
         public bool IsMTF => Team is Team.MTF;
 
         /// <summary>
-        /// Gets a value indicating whether or not this role is a Chaos Insurgency rank.
+        /// Gets a value indicating whether or not this role is a Chaos Insurgency rank. Equivalent to checking the <see cref="Team"/> of the role.
         /// </summary>
         public bool IsCHI => Team is Team.CHI;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this role is a tutorial role. Equivalent to checking the <see cref="Type"/> of the role.
+        /// </summary>
+        public bool IsTutorial => Type is RoleType.Tutorial;
 
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this role.
@@ -66,6 +71,14 @@ namespace Exiled.API.Features.Roles
         public Side Side
         {
             get => Type.GetSide();
+        }
+
+        /// <summary>
+        /// Gets the role's <see cref="Enums.LeadingTeam"/>.
+        /// </summary>
+        public LeadingTeam LeadingTeam
+        {
+            get => Team.GetLeadingTeam();
         }
 
         /// <summary>
@@ -177,6 +190,15 @@ namespace Exiled.API.Features.Roles
             role = this is T t ? t : null;
             return role is not null;
         }
+
+        /// <summary>
+        /// Returns a value indicating whether or not this role can be casted to the specified role type.
+        /// </summary>
+        /// <typeparam name="T">The type of the class.</typeparam>
+        /// <returns><see langword="true"/> if the cast was successful; otherwise, <see langword="false"/>.</returns>
+        public bool Is<T>()
+            where T : Role
+            => this is T;
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);

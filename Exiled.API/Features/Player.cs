@@ -498,14 +498,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player's <see cref="Enums.LeadingTeam"/>.
-        /// </summary>
-        public LeadingTeam LeadingTeam
-        {
-            get => Role.Team.GetLeadingTeam();
-        }
-
-        /// <summary>
         /// Gets or sets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleType"/> of the player, and casting should be used to modify the role.
@@ -678,49 +670,6 @@ namespace Exiled.API.Features
         public bool IsDead
         {
             get => Role?.Team is Team.RIP;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
-        /// Equivalent to checking the player's <see cref="Team"/>.
-        /// </summary>
-        public bool IsNTF
-        {
-            get => Role?.Team is Team.MTF;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any Chaos rank.
-        /// Equivalent to checking the player's <see cref="Team"/>.
-        /// </summary>
-        public bool IsCHI
-        {
-            get => Role?.Team is Team.CHI;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any SCP.
-        /// Equivalent to checking the player's <see cref="Team"/>.
-        /// </summary>
-        public bool IsScp
-        {
-            get => Role?.Team is Team.SCP;
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any human rank.
-        /// </summary>
-        public bool IsHuman
-        {
-            get => Role is not null && Role.Is(out HumanRole _);
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
-        /// </summary>
-        public bool IsTutorial
-        {
-            get => Role?.Type is RoleType.Tutorial;
         }
 
         /// <summary>

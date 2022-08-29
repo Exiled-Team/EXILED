@@ -14,7 +14,7 @@ namespace Exiled.API.Enums
     /// The team that is currently leading the round.
     /// </summary>
     /// <seealso cref="RoleExtensions.GetLeadingTeam(Team)"/>
-    /// <seealso cref="Player.LeadingTeam"/>
+    /// <seealso cref="Features.Roles.Role.LeadingTeam"/>
     public enum LeadingTeam : byte
     {
         /// <summary>
