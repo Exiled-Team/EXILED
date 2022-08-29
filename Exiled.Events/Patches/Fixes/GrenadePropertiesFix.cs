@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ThrowableItem.ServerThrow(float, float, Vector3, Vector3)"/> to fix fuse times being unchangeable.
+    /// Patches <see cref="ThrowableItem.ServerThrow(float, float, Vector3, Vector3)"/> to fix all grenade properties.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3), typeof(Vector3))]
     internal static class GrenadePropertiesFix
@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Fixes
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder throwable = generator.DeclareLocal(typeof(ThrowableItem));
-            LocalBuilder pickup = generator.DeclareLocal(typeof(Pickup));
+            LocalBuilder projectile = generator.DeclareLocal(typeof(Projectile));
             LocalBuilder playerCamera = generator.DeclareLocal(typeof(Transform));
 
             Label cnt = generator.DefineLabel();
@@ -46,6 +46,17 @@ namespace Exiled.Events.Patches.Fixes
 
             newInstructions.RemoveRange(index, 11);
 
+            // if (Item.Get(this) is not Throwable throwable)
+            // {
+            //     Log.Error("Item is not Throwable, should never happen");
+            //     return;
+            // }
+            // Projectile projectile = throwable.Projectile;
+            // ThrownProjectile baseProjectile = projectile.Base;
+            // baseProjectile.transform.position = this.Owner.PlayerCameraReference.position;
+            // baseProjectile.transform.rotation = this.Owner.PlayerCameraReference.rotation;
+            // baseProjectile.gameObject.SetActive(true);
+            // projectile.Spawned = true;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
@@ -62,7 +73,7 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Ldloc_S, throwable.LocalIndex).WithLabels(cnt),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Throwable), nameof(Throwable.Projectile))),
                 new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, pickup.LocalIndex),
+                new(OpCodes.Stloc_S, projectile.LocalIndex),
                 new(OpCodes.Callvirt, FirstProperty(typeof(Projectile), prop => prop.Name == nameof(Projectile.Base) && prop.PropertyType == typeof(ThrownProjectile)).GetMethod),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
@@ -86,7 +97,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Callvirt, Method(typeof(GameObject), nameof(GameObject.SetActive))),
 
-                new(OpCodes.Ldloc_S, pickup.LocalIndex),
+                new(OpCodes.Ldloc_S, projectile.LocalIndex),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Projectile), nameof(Projectile.Spawned))),
             });
