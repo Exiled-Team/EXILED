@@ -2281,9 +2281,9 @@ namespace Exiled.API.Features
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
                 }
 
-                Timing.CallDelayed(0.01f, () =>
+                Timing.CallDelayed(0.02f, () =>
                 {
-                    if (item.Type is ItemType.SCP330)
+                    if (item.Type is ItemType.SCP330 && item.Base != null)
                     {
                         ((Scp330)item).Base.ServerRefreshBag();
                     }
