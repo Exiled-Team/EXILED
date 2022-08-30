@@ -11,8 +11,6 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.Usables.Scp330;
 
-    using MEC;
-
     using Mirror;
 
     using UnityEngine;
