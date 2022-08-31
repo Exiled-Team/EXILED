@@ -2173,7 +2173,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Adds the amount of a weapon's <see cref="AmmoType">ammo type</see> to the player's inventory.
         /// </summary>
-        /// <param name="weaponType">The <see cref="firearmtype"/> of the weapon.</param>
+        /// <param name="weaponType">The <see cref="FirearmType"/> of the weapon.</param>
         /// <param name="amount">The amount of ammo to be added.</param>
         public void AddAmmo(FirearmType weaponType, ushort amount) => AddAmmo(weaponType.GetWeaponAmmoType(), amount);
 
