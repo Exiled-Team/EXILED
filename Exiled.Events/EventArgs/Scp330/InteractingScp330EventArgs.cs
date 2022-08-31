@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Scp330
             Candy = Scp330Candies.GetRandom();
             UsageCount = usage;
             ShouldSever = usage >= 2;
-            IsAllowed = Player.IsHuman;
+            IsAllowed = Player.Role.IsHuman;
         }
 
         /// <summary>
