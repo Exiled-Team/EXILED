@@ -10,7 +10,7 @@ namespace Exiled.Events.Handlers.Internal
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
@@ -123,12 +123,9 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateAttachments()
         {
-            foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+            foreach (FirearmType type in Enum.GetValues(typeof(FirearmType)))
             {
-                if (!type.IsWeapon(false))
-                    continue;
-
-                Item item = Item.Create(type);
+                Item item = Item.Create(type.GetItemType());
                 if (item is not Firearm firearm)
                     continue;
 
@@ -141,7 +138,7 @@ namespace Exiled.Events.Handlers.Internal
                     code *= 2U;
                 }
 
-                Firearm.AvailableAttachmentsValue.Add(type.GetFirearmType(), attachmentIdentifiers.ToArray());
+                Firearm.AvailableAttachmentsValue.Add(type, attachmentIdentifiers.ToArray());
             }
         }
     }
