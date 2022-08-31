@@ -9,8 +9,6 @@ namespace Exiled.Events.Handlers
 {
     using System;
 
-    using Exiled.API.Enums;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp330;
     using Exiled.Events.Extensions;
