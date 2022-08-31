@@ -141,7 +141,7 @@ namespace Exiled.Events.Handlers.Internal
                     code *= 2U;
                 }
 
-                Firearm.AvailableAttachmentsValue.Add(type, attachmentIdentifiers.ToArray());
+                Firearm.AvailableAttachmentsValue.Add(type.GetFirearmType(), attachmentIdentifiers.ToArray());
             }
         }
     }

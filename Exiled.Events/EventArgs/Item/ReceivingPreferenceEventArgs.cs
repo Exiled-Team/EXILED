@@ -9,7 +9,7 @@ namespace Exiled.Events.EventArgs.Item
 {
     using System.Collections.Generic;
     using System.Linq;
-
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Structs;
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs.Item
         /// </param>
         public ReceivingPreferenceEventArgs(
             Player player,
-            ItemType itemType,
+            FirearmType itemType,
             uint currentCode,
             uint newCode,
             bool isAllowed = true)
@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs.Item
         /// <summary>
         ///     Gets the <see cref="ItemType" /> which is being modified.
         /// </summary>
-        public ItemType Item { get; }
+        public FirearmType Item { get; }
 
         /// <summary>
         ///     Gets the old <see cref="AttachmentIdentifier" />[].
