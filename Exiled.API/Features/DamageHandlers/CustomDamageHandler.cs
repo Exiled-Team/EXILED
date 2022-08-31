@@ -35,7 +35,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             if (Attacker is not null)
             {
-                if (Attacker.IsScp)
+                if (Attacker.Role.IsSCP)
                     CustomBase = new ScpDamageHandler(target, baseHandler);
                 else if (Attacker.CurrentItem is not null && Attacker.CurrentItem.IsWeapon &&
                          baseHandler is BaseFirearmHandler)
