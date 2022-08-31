@@ -125,10 +125,7 @@ namespace Exiled.Events.Handlers.Internal
         {
             foreach (FirearmType type in Enum.GetValues(typeof(FirearmType)))
             {
-                Item item = Item.Create(type.GetItemType());
-                if (item is not Firearm firearm)
-                    continue;
-
+                Firearm firearm = Item.Create(type);
                 Firearm.FirearmInstances.Add(firearm);
                 uint code = 1;
                 List<AttachmentIdentifier> attachmentIdentifiers = new();

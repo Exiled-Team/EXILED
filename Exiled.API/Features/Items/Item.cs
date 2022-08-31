@@ -9,7 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
     using System.Linq;
-
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Structs;
 
@@ -277,6 +277,22 @@ namespace Exiled.API.Features.Items
             ItemType.SCP2176 => new Scp2176(owner),
             _ => new Item(type),
         };
+
+        /// <summary>
+        /// Creates a new <see cref="Firearm"/> from the given <see cref="FirearmType"/>.
+        /// </summary>
+        /// <param name="type">The type of firearm.</param>
+        /// <param name="owner">The <see cref="Player"/> who owns the item by default.</param>
+        /// <returns>The Firearm.</returns>
+        public static Firearm Create(FirearmType type, Player owner = null) => (Firearm)Create(type.GetItemType(), owner);
+
+        /// <summary>
+        /// Creates a new <see cref="Throwable"/> from the given <see cref="GrenadeType"/>.
+        /// </summary>
+        /// <param name="type">The type of grenade.</param>
+        /// <param name="owner">The <see cref="Player"/> who owns the item by default.</param>
+        /// <returns>The throwable.</returns>
+        public static Throwable Create(GrenadeType type, Player owner = null) => (Throwable)Create(type.GetItemType(), owner);
 
         /// <summary>
         /// Gives this item to a <see cref="Player"/>.
