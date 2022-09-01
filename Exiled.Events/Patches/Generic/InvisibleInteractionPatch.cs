@@ -1,7 +1,13 @@
+// -----------------------------------------------------------------------
+// <copyright file="InvisibleInteractionPatch.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
 namespace Exiled.Events.Patches.Generic
 {
-    using System.Collections.Generic;
-
+#pragma warning disable SA1313
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
@@ -13,7 +19,7 @@ namespace Exiled.Events.Patches.Generic
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="StandardDistanceVerification.ServerCanInteract(ReferenceHub, Interactables.InteractableCollider)"/>.
+    /// Patches <see cref="StandardDistanceVerification.ServerCanInteract(ReferenceHub, InteractableCollider)"/>.
     /// Implements <see cref="Player.IsInvisibleAbsolute"/> property logic.
     /// </summary>
     [HarmonyPatch(typeof(StandardDistanceVerification), nameof(StandardDistanceVerification.ServerCanInteract))]
