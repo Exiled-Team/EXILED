@@ -101,14 +101,13 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Uses the item.
         /// </summary>
-        /// <param name="owner">The player to use the item.</param>
-        /// <exception cref="System.ArgumentNullException">Owner cannot be a null value.</exception>
-        public virtual void Use(Player owner)
+        /// <exception cref="System.InvalidOperationException">The <see cref="Item.Owner"/> of the item cannot be <see langword="null"/>.</exception>
+        public virtual void Use()
         {
-            if (owner is null)
-                throw new System.ArgumentNullException(nameof(owner));
+            if (Owner is null)
+                throw new System.InvalidOperationException("The Owner of the item cannot be null.");
 
-            owner.UseItem(this);
+            Owner.UseItem(this);
         }
     }
 }
