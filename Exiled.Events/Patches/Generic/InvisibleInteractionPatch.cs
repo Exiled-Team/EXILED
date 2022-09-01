@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Generic
 
     /// <summary>
     /// Patches <see cref="StandardDistanceVerification.ServerCanInteract(ReferenceHub, InteractableCollider)"/>.
-    /// Implements <see cref="Player.IsInvisibleAbsolute"/> property logic.
+    /// Implements <see cref="Player.InteractionInvisibilityRemove"/> property logic.
     /// </summary>
     [HarmonyPatch(typeof(StandardDistanceVerification), nameof(StandardDistanceVerification.ServerCanInteract))]
     internal static class InvisibleInteractionPatch
@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Generic
             {
                 __result = true;
 
-                if (!Player.TryGet(hub, out Player player) || player.IsInvisibleAbsolute)
+                if (!Player.TryGet(hub, out Player player) || player.InteractionInvisibilityRemove)
                     return false;
 
                 player.DisableEffect(EffectType.Invisible);
