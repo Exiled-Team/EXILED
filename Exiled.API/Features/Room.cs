@@ -17,11 +17,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Spawn;
 
-    using HarmonyLib;
-
     using Interactables.Interobjects.DoorUtils;
-
-    using InventorySystem.Items.Pickups;
 
     using MapGeneration;
 
