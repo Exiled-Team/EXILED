@@ -64,7 +64,7 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
-        /// Gets the full name of the given <see cref="RoleType"/>.
+        /// Gets the full name of the given <see cref="RoleType"/>. This always refers to the English variant of the role that can be displayed (eg. "Class-D Personnel").
         /// </summary>
         /// <param name="roleType">Role.</param>
         /// <returns>The full name.</returns>

@@ -57,6 +57,22 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the full name of this role. This always refers to the English variant of the role that can be displayed (eg. "Class-D Personnel").
+        /// </summary>
+        public string FullName
+        {
+            get => CharacterClassManager._staticClasses.SafeGet(Type).fullName;
+        }
+
+        /// <summary>
+        /// Gets the nickname of this role. For SCPs, this is a common phrase used to describe them, eg. "The Sculpture" for SCP-173. This will be empty for human classes.
+        /// </summary>
+        public string Nickname
+        {
+            get => CharacterClassManager._staticClasses.SafeGet(Type).nickname;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
         /// </summary>
         public bool IsValid
