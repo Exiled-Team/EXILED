@@ -23,8 +23,6 @@ namespace Exiled.Events.Patches.Generic
 
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
