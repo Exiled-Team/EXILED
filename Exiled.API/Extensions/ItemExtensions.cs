@@ -272,7 +272,7 @@ namespace Exiled.API.Extensions
         {
             identifiers = default;
 
-            if (!type.GetItemType().IsWeapon())
+            if (type is FirearmType.None)
                 return false;
 
             identifiers = GetAttachmentIdentifiers(type, code);
