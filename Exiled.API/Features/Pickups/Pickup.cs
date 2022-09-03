@@ -301,11 +301,12 @@ namespace Exiled.API.Features.Pickups
         /// <returns> New <see cref="Pickup"/> object.</returns>
         public Pickup Clone()
         {
-            Pickup cloneableItem = new(Type);
-
-            cloneableItem.Scale = Scale;
-            cloneableItem.PreviousOwner = PreviousOwner;
-            cloneableItem.Info = Info;
+            Pickup cloneableItem = new(Type)
+            {
+                Scale = Scale,
+                PreviousOwner = PreviousOwner,
+                Info = Info,
+            };
 
             return cloneableItem;
         }
