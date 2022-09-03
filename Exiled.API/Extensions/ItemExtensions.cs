@@ -303,13 +303,13 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="FirearmType"/> to check.</param>
         /// <returns>The corresponding <see cref="BaseCode"/>.</returns>
-        public static BaseCode GetBaseCode(this FirearmType type) => GetBaseCode(type.GetItemType());
+        public static BaseCode GetBaseCode(this FirearmType type) => Firearm.FirearmPairs[type];
 
         /// <summary>
         /// Gets the <see cref="BaseCode"/> of the specified <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns>The corresponding <see cref="BaseCode"/>.</returns>
-        public static BaseCode GetBaseCode(this ItemType type) => !type.IsWeapon() ? 0 : Firearm.FirearmPairs[type.GetFirearmType()];
+        public static BaseCode GetBaseCode(this ItemType type) => !type.IsWeapon() ? 0 : GetBaseCode(type.GetFirearmType());
     }
 }
