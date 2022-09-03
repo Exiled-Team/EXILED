@@ -54,7 +54,7 @@ namespace Exiled.Events.EventArgs.Item
         }
 
         /// <summary>
-        ///     Gets the <see cref="ItemType" /> which is being modified.
+        ///     Gets the <see cref="FirearmType" /> which is being modified.
         /// </summary>
         public FirearmType Item { get; }
 
