@@ -90,9 +90,14 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public float RemainingCooldown
         {
-            get => Base.RemainingCooldown;
-            set => Base.RemainingCooldown = value;
+            get => UsableItemsController.GlobalItemCooldowns[Serial];
+            set => UsableItemsController.GlobalItemCooldowns[Serial] = Time.timeSinceLevelLoad + value;
         }
+
+        /// <summary>
+        /// Gets all the cooldown between uses of this item.
+        /// </summary>
+        public float PlayerGetCooldown => UsableItemsController.GetCooldown(Serial, Base, UsableItemsController.GetHandler(Base.Owner));
 
         /// <summary>
         /// Creates the <see cref="Pickup"/> that based on this <see cref="Item"/>.
