@@ -21,6 +21,27 @@ namespace Exiled.API.Features.Items
     using Scp330Pickup = Exiled.API.Features.Pickups.Scp330Pickup;
 
     /// <summary>
+    /// Candy enumeration status.
+    /// </summary>
+    public enum CandyAddStatus
+    {
+        /// <summary>
+        /// If no candy was able to be added.
+        /// </summary>
+        NoCandyAdded,
+
+        /// <summary>
+        /// If at least one candy was added.
+        /// </summary>
+        SomeCandyAdded,
+
+        /// <summary>
+        /// If all candies provided were added.
+        /// </summary>
+        AllCandyAdded,
+    }
+
+    /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
     public partial class Scp330 : Usable
@@ -78,20 +99,23 @@ namespace Exiled.API.Features.Items
         /// Adds a collection of candy's to a bag.
         /// </summary>
         /// <param name="candies">The <see cref="CandyKindID"/>'s to add.</param>
+        /// <param name="status">The <see cref="CandyAddStatus"/>'s insertion status.</param>
         /// <returns> based on number of candy added. </returns>
-        public int AddCandy(IEnumerable<CandyKindID> candies)
+        public int AddCandy(IEnumerable<CandyKindID> candies, out CandyAddStatus status)
         {
             int validCandy = 0;
             foreach (CandyKindID candy in candies)
             {
                 if (!Base.TryAddSpecific(candy))
                 {
+                    status = validCandy is 0 ? CandyAddStatus.NoCandyAdded : CandyAddStatus.SomeCandyAdded;
                     return validCandy;
                 }
 
                 validCandy++;
             }
 
+            status = CandyAddStatus.AllCandyAdded;
             return validCandy;
         }
 
@@ -236,7 +260,7 @@ namespace Exiled.API.Features.Items
                 ExposedType = ExposedType,
             };
 
-            cloneableItem.AddCandy(Candies);
+            cloneableItem.AddCandy(Candies, out _);
 
             return cloneableItem;
         }
