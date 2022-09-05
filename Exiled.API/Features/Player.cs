@@ -232,9 +232,14 @@ namespace Exiled.API.Features
         public List<Broadcast> BroadcastsInQueue { get; internal set; }
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is viewing a broadcast.
+        /// </summary>
+        public bool HasBroadcast => CurrentHintProccess.Key.IsRunning;
+
+        /// <summary>
         /// Gets a value for what the player is actually viewing on Broadcast.
         /// </summary>
-        public Broadcast CurrentBroadcast => BroadcastsInQueue.First();
+        public Broadcast CurrentBroadcast => CurrentBroadcastProccess.Value;
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio"/>.
