@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Map
             // var ev = new SpawningItemEventArgs(ipb, true);
             // if (!ev.IsAllowed)
             //     return;
-            // ev.Pickup.Spawned = true;
+            // ev.Pickup.IsSpawned = true;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.Pickup))),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Spawned))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.IsSpawned))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

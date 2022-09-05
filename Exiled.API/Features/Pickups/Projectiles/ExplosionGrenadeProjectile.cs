@@ -109,6 +109,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Returns the ExplosionGrenadePickup in a human readable format.
         /// </summary>
         /// <returns>A string containing ExplosionGrenadePickup-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
     }
 }

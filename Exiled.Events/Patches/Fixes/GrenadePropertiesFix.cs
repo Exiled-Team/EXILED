@@ -88,7 +88,7 @@ namespace Exiled.Events.Patches.Fixes
 
                 new(OpCodes.Ldloc_S, pickup.LocalIndex),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Projectile), nameof(Projectile.Spawned))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Projectile), nameof(Projectile.IsSpawned))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
