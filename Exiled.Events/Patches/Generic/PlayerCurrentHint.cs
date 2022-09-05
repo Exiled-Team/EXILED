@@ -1,5 +1,5 @@
-// -----------------------------------------------------------------------
-// <copyright file="PlayerHasHint.cs" company="Exiled Team">
+﻿// -----------------------------------------------------------------------
+// <copyright file="PlayerCurrentHint.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="HintDisplay.Show(BaseHint)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HintDisplay), nameof(HintDisplay.Show))]
-    internal static class PlayerHasHint
+    internal static class PlayerCurrentHint
     {
         private static void Postfix(HintDisplay __instance, BaseHint hint)
         {

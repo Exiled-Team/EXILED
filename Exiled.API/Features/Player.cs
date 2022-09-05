@@ -82,6 +82,11 @@ namespace Exiled.API.Features
         /// </summary>
         internal KeyValuePair<CoroutineHandle, Hint> CurrentHintProccess = new();
 
+        /// <summary>
+        /// Current broadcast proccess.
+        /// </summary>
+        internal KeyValuePair<CoroutineHandle, Broadcast> CurrentBroadcastProccess = new();
+
 #pragma warning restore SA1401
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
@@ -224,12 +229,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value for what the player is actually viewing on Broadcast.
         /// </summary>
-        public List<Broadcast> WaitingBroadcast { get; internal set; }
+        public List<Broadcast> BroadcastsInQueue { get; internal set; }
 
         /// <summary>
         /// Gets a value for what the player is actually viewing on Broadcast.
         /// </summary>
-        public Broadcast CurrentBroadcast { get; internal set; }
+        public Broadcast CurrentBroadcast => BroadcastsInQueue.First();
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio"/>.
