@@ -272,7 +272,7 @@ namespace Exiled.API.Features.Items
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
 
         /// <summary>
-        /// <inheritdoc/>
+        /// Clones current <see cref="Scp330"/> object.
         /// </summary>
         /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
         /// <param name="newOwner">new <see cref="Item"/> owner.</param>

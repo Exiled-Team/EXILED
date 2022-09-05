@@ -417,10 +417,10 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// <inheritdoc/>
+        /// Change the owner of the <see cref="Firearm"/>.
         /// </summary>
-        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
-        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        /// <param name="oldOwner">old <see cref="Firearm"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Firearm"/> owner.</param>
         internal override void ChangeOwner(Player oldOwner, Player newOwner)
         {
             Base.Owner = newOwner.ReferenceHub;

@@ -8,7 +8,7 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// A set of decontamination phase.
+    /// The different types of Decontamination phase.
     /// </summary>
     public enum DecontaminationPhase
     {
@@ -43,8 +43,8 @@ namespace Exiled.API.Enums
         Remaining30Secounds,
 
         /// <summary>
-        /// Decontamination is finish.
+        /// Decontamination is finish and decontaminating all the LCZ zone.
         /// </summary>
-        Finish,
+        Lockdown = 6,
     }
 }
