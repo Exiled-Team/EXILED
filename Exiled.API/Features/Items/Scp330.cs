@@ -69,10 +69,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="CandyKindID"/>s held in this bag.
         /// </summary>
-        public IReadOnlyCollection<CandyKindID> Candies
-        {
-            get => Base.Candies.AsReadOnly();
-        }
+        public IReadOnlyCollection<CandyKindID> Candies => Base.Candies.AsReadOnly();
 
         /// <summary>
         /// Adds a specific candy to the bag.
