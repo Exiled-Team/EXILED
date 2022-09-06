@@ -26,10 +26,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="ThrowableItem.ServerThrow"/>.
-    /// Adds the <see cref="Handlers.Player.ThrowedItem"/> event.
+    /// Adds the <see cref="Handlers.Player.ThrownItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow))]
-    internal static class ThrowedItem
+    internal static class ThrownItem
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldloc_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowedItemEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrownItemEventArgs))[0]),
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingItem))),
             });
 
