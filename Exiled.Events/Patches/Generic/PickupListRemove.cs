@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
 

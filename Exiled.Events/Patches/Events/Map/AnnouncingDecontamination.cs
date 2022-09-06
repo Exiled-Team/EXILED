@@ -22,24 +22,26 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="DecontaminationController.UpdateSpeaker" />.
+    ///     Patches <see cref="DecontaminationController.UpdateTime" />.
     ///     Adds the <see cref="AnnouncingDecontamination" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.UpdateSpeaker))]
+    [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.UpdateTime))]
     internal static class AnnouncingDecontamination
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            const int offset = 0;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + offset;
+
             // var ev = new AnnouncingDecontaminationEventArgs(int, bool);
             //
             // Map.OnAnnouncingDecontamination(ev);
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(DecontaminationController), nameof(DecontaminationController._nextPhase))),
-                new(OpCodes.Ldarg_1),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingDecontaminationEventArgs))[0]),
                 new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingDecontamination))),
             });

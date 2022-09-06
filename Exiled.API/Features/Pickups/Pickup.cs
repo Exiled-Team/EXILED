@@ -110,7 +110,7 @@ namespace Exiled.API.Features.Pickups
             get => GameObject.transform.localScale;
             set
             {
-                if (!Spawned)
+                if (!IsSpawned)
                 {
                     GameObject.transform.localScale = value;
                     return;
@@ -148,7 +148,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is locked (can't be picked up).
         /// </summary>
-        public bool Locked
+        public bool IsLocked
         {
             get => Info.Locked;
             set
@@ -218,7 +218,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this pickup is spawned.
         /// </summary>
-        public bool Spawned { get; internal set; }
+        public bool IsSpawned { get; internal set; }
 
         /// <summary>
         /// Gets an existing <see cref="Pickup"/> or creates a new instance of one.
@@ -281,19 +281,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to look for.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Pickup"/>.</returns>
-        public static IEnumerable<Pickup> Get(ItemType type)
-        {
-            List<Pickup> pickups = new();
-            foreach (Pickup p in List)
-            {
-                if (p.Type == type)
-                {
-                    pickups.Add(p);
-                }
-            }
-
-            return pickups;
-        }
+        public static IEnumerable<Pickup> Get(ItemType type) => List.Where(x => x.Type == type);
 
         /// <summary>
         /// Clones current <see cref="Pickup"/> object.
@@ -301,11 +289,12 @@ namespace Exiled.API.Features.Pickups
         /// <returns> New <see cref="Pickup"/> object.</returns>
         public Pickup Clone()
         {
-            Pickup cloneableItem = new(Type);
-
-            cloneableItem.Scale = Scale;
-            cloneableItem.PreviousOwner = PreviousOwner;
-            cloneableItem.Info = Info;
+            Pickup cloneableItem = new(Type)
+            {
+                Scale = Scale,
+                PreviousOwner = PreviousOwner,
+                Info = Info,
+            };
 
             return cloneableItem;
         }
@@ -315,10 +304,10 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public void Spawn()
         {
-            if (!Spawned)
+            if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
-                Spawned = true;
+                IsSpawned = true;
             }
         }
 
@@ -327,9 +316,9 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public void UnSpawn()
         {
-            if (Spawned)
+            if (IsSpawned)
             {
-                Spawned = false;
+                IsSpawned = false;
                 NetworkServer.UnSpawn(GameObject);
             }
         }
@@ -343,6 +332,6 @@ namespace Exiled.API.Features.Pickups
         /// Returns the Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Pickup-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
     }
 }

@@ -62,6 +62,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Returns the FlashbangPickup in a human readable format.
         /// </summary>
         /// <returns>A string containing FlashbangPickup-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
     }
 }

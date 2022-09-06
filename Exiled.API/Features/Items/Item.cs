@@ -47,7 +47,7 @@ namespace Exiled.API.Features.Items
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
 
-            if (Serial == 0 && itemBase.Owner != null)
+            if (Serial is 0 && itemBase.Owner != null)
             {
                 ushort serial = ItemSerialGenerator.GenerateNext();
                 Serial = serial;
@@ -272,7 +272,7 @@ namespace Exiled.API.Features.Items
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* ={Owner}=";
 
         /// <summary>
-        /// test.
+        /// Change the owner of the <see cref="Item"/>.
         /// </summary>
         /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
         /// <param name="newOwner">new <see cref="Item"/> owner.</param>

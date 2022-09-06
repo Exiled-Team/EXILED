@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Generic
     using Inventory = InventorySystem.Inventory;
 
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerCreatePickup(Inventory, ItemBase, PickupSyncInfo, bool)"/> to save scale for pickups and control <see cref="Pickup.Spawned"/> property.
+    /// Patches <see cref="InventoryExtensions.ServerCreatePickup(Inventory, ItemBase, PickupSyncInfo, bool)"/> to save scale for pickups and control <see cref="Pickup.IsSpawned"/> property.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerCreatePickup))]
     internal static class CreatePickupPatch
@@ -58,9 +58,9 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Scale))),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Scale))),
 
-                // pickup.Spawned = spawn
+                // pickup.IsSpawned = spawn
                 new(OpCodes.Ldarg_3),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Spawned))),
+                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.IsSpawned))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

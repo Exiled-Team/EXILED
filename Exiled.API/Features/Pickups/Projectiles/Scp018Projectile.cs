@@ -37,6 +37,15 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public bool IgnoreFriendlyFire => Base.IgnoreFriendlyFire;
 
         /// <summary>
+        /// Gets or sets the time for SCP-018 not to ignore the friendly fire.
+        /// </summary>
+        public float FriendlyFireTime
+        {
+            get => Base._friendlyFireTime;
+            set => Base._friendlyFireTime = value;
+        }
+
+        /// <summary>
         /// Gets the damage when the ball hit something.
         /// </summary>
         public float Damage => Base.CurrentDamage;
