@@ -19,7 +19,6 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
 

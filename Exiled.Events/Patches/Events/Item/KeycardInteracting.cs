@@ -12,8 +12,7 @@ namespace Exiled.Events.Patches.Events.Item
 
     using Exiled.API.Features;
     using Exiled.Events;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Item;
 
     using Footprinting;
 
