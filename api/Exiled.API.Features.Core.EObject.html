@@ -1,0 +1,2719 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class EObject
+   | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class EObject
+   | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../assets/Exiled_Icon_50x50.png" alt="Exiled Docs">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Exiled.API.Features.Core.EObject">
+  
+  
+  <h1 id="Exiled_API_Features_Core_EObject" data-uid="Exiled.API.Features.Core.EObject" class="text-break">Class EObject
+  </h1>
+  <div class="markdown level0 summary"><p>The base class of all Exiled objects.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>&gt;</div>
+    <div class="level2"><span class="xref">EObject</span></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Core.TickComponent.html">TickComponent</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;EObject&gt;.Cast&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;EObject&gt;.Cast&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Features.Core.html">Exiled.API.Features.Core</a></h6>
+  <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
+  <h5 id="Exiled_API_Features_Core_EObject_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class EObject : TypeCastObject&lt;EObject&gt;</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject__ctor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L32">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject__ctor_" data-uid="Exiled.API.Features.Core.EObject.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject__ctor" data-uid="Exiled.API.Features.Core.EObject.#ctor">EObject()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EObject()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject__ctor_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.%23ctor(UnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L43">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject__ctor_" data-uid="Exiled.API.Features.Core.EObject.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject__ctor_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Core.EObject.#ctor(UnityEngine.GameObject)">EObject(GameObject)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EObject(GameObject gameObject = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><inheritdoc cref="P:Exiled.API.Features.Core.EObject.Base"></inheritdoc></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L58">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_Base_" data-uid="Exiled.API.Features.Core.EObject.Base*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_Base" data-uid="Exiled.API.Features.Core.EObject.Base">Base</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the base <span class="xref">UnityEngine.GameObject</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public GameObject Base { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_IsEditable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.IsEditable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L73">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_IsEditable_" data-uid="Exiled.API.Features.Core.EObject.IsEditable*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_IsEditable" data-uid="Exiled.API.Features.Core.EObject.IsEditable">IsEditable</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> values can be edited.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEditable { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L63">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_Name_" data-uid="Exiled.API.Features.Core.EObject.Name*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_Name" data-uid="Exiled.API.Features.Core.EObject.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the name of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_RegisteredTypes.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.RegisteredTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L53">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_RegisteredTypes_" data-uid="Exiled.API.Features.Core.EObject.RegisteredTypes*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_RegisteredTypes" data-uid="Exiled.API.Features.Core.EObject.RegisteredTypes">RegisteredTypes</h4>
+  <div class="markdown level1 summary"><p>Gets all the registered <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IReadOnlyDictionary&lt;Type, List&lt;string&gt;&gt; RegisteredTypes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyDictionary</span>&lt;<span class="xref">System.Type</span>, <span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">System.String</span>&gt;&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_Tag.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.Tag%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L68">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_Tag_" data-uid="Exiled.API.Features.Core.EObject.Tag*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_Tag" data-uid="Exiled.API.Features.Core.EObject.Tag">Tag</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the tag of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Tag { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_System_Object___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject(System.Type%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L316">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_System_Object___" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject(System.Type,System.Object[])">CreateDefaultSubobject(Type, Object[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EObject CreateDefaultSubobject(Type type, params object[] parameters)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>The parameters to initialize the object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject(System.Type%2CUnityEngine.GameObject%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L434">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject(System.Type,UnityEngine.GameObject,System.String)">CreateDefaultSubobject(Type, GameObject, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EObject CreateDefaultSubobject(Type type, GameObject gameObject, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><inheritdoc cref="P:Exiled.API.Features.Core.EObject.Base"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to be given to the new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_System_Object___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject(System.Type%2CUnityEngine.GameObject%2CSystem.String%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L452">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_System_Object___" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject(System.Type,UnityEngine.GameObject,System.String,System.Object[])">CreateDefaultSubobject(Type, GameObject, String, Object[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static EObject CreateDefaultSubobject(Type type, GameObject gameObject, string name, params object[] parameters)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><inheritdoc cref="P:Exiled.API.Features.Core.EObject.Base"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to be given to the new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>The parameters to initialize the object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L336">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject``1">CreateDefaultSubobject&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateDefaultSubobject&lt;T&gt;()
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The cast <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Object___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject%60%601(System.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L345">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Object___" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject``1(System.Object[])">CreateDefaultSubobject&lt;T&gt;(Object[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateDefaultSubobject&lt;T&gt;(params object[] parameters)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>The parameters to initialize the object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type to cast.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject%60%601(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L328">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject``1(System.Type)">CreateDefaultSubobject&lt;T&gt;(Type)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateDefaultSubobject&lt;T&gt;(Type type)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The cast <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject%60%601(System.Type%2CUnityEngine.GameObject%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L394">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject``1(System.Type,UnityEngine.GameObject,System.String)">CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateDefaultSubobject&lt;T&gt;(Type type, GameObject gameObject, string name)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><inheritdoc cref="P:Exiled.API.Features.Core.EObject.Base"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to be given to the new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The cast <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_System_Object___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject%60%601(System.Type%2CUnityEngine.GameObject%2CSystem.String%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L415">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_System_Object___" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject``1(System.Type,UnityEngine.GameObject,System.String,System.Object[])">CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String, Object[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateDefaultSubobject&lt;T&gt;(Type type, GameObject gameObject, string name, params object[] parameters)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><inheritdoc cref="P:Exiled.API.Features.Core.EObject.Base"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to be given to the new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>The parameters to initialize the object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The cast <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject%60%601(UnityEngine.GameObject%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L355">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject``1(UnityEngine.GameObject,System.String)">CreateDefaultSubobject&lt;T&gt;(GameObject, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateDefaultSubobject&lt;T&gt;(GameObject gameObject, string name)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><inheritdoc cref="P:Exiled.API.Features.Core.EObject.Base"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to be given to the new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_System_Object___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.CreateDefaultSubobject%60%601(UnityEngine.GameObject%2CSystem.String%2CSystem.Object%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L374">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject_" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_System_Object___" data-uid="Exiled.API.Features.Core.EObject.CreateDefaultSubobject``1(UnityEngine.GameObject,System.String,System.Object[])">CreateDefaultSubobject&lt;T&gt;(GameObject, String, Object[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T CreateDefaultSubobject&lt;T&gt;(GameObject gameObject, string name, params object[] parameters)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><inheritdoc cref="P:Exiled.API.Features.Core.EObject.Base"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to be given to the new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td><p>The parameters to initialize the object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The new <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_Destroy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.Destroy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L741">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_Destroy_" data-uid="Exiled.API.Features.Core.EObject.Destroy*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_Destroy" data-uid="Exiled.API.Features.Core.EObject.Destroy">Destroy()</h4>
+  <div class="markdown level1 summary"><p>Destroys the current <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Destroy()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_Destroy_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.Destroy(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L748">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_Destroy_" data-uid="Exiled.API.Features.Core.EObject.Destroy*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_Destroy_System_Boolean_" data-uid="Exiled.API.Features.Core.EObject.Destroy(System.Boolean)">Destroy(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Destroy(bool destroying)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">destroying</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_DestroyActiveObject_System_Type_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.DestroyActiveObject(System.Type%2CUnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L709">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_DestroyActiveObject_" data-uid="Exiled.API.Features.Core.EObject.DestroyActiveObject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_DestroyActiveObject_System_Type_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Core.EObject.DestroyActiveObject(System.Type,UnityEngine.GameObject)">DestroyActiveObject(Type, GameObject)</h4>
+  <div class="markdown level1 summary"><p>Destroys an active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance given the specified <span class="xref">UnityEngine.GameObject</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool DestroyActiveObject(Type type, GameObject gameObject)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type of the object.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><p>The <span class="xref">UnityEngine.GameObject</span> belonging to the object.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the object was destroyed; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_DestroyActiveObject__1_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.DestroyActiveObject%60%601(UnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L688">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_DestroyActiveObject_" data-uid="Exiled.API.Features.Core.EObject.DestroyActiveObject*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_DestroyActiveObject__1_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Core.EObject.DestroyActiveObject``1(UnityEngine.GameObject)">DestroyActiveObject&lt;T&gt;(GameObject)</h4>
+  <div class="markdown level1 summary"><p>Destroys an active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> given the specified <span class="xref">UnityEngine.GameObject</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool DestroyActiveObject&lt;T&gt;(GameObject gameObject)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><p>The <span class="xref">UnityEngine.GameObject</span> belonging to the <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance to be destroyed.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the object was destroyed; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_DestroyActiveObjectsOfType__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.DestroyActiveObjectsOfType%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L672">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_DestroyActiveObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.DestroyActiveObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_DestroyActiveObjectsOfType__1" data-uid="Exiled.API.Features.Core.EObject.DestroyActiveObjectsOfType``1">DestroyActiveObjectsOfType&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Destroys all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DestroyActiveObjectsOfType&lt;T&gt;()
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_DestroyAllObjects.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.DestroyAllObjects%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L465">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_DestroyAllObjects_" data-uid="Exiled.API.Features.Core.EObject.DestroyAllObjects*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_DestroyAllObjects" data-uid="Exiled.API.Features.Core.EObject.DestroyAllObjects">DestroyAllObjects()</h4>
+  <div class="markdown level1 summary"><p>Destroys all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DestroyAllObjects()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_DestroyAllObjectsOfType__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.DestroyAllObjectsOfType%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L479">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_DestroyAllObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.DestroyAllObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_DestroyAllObjectsOfType__1" data-uid="Exiled.API.Features.Core.EObject.DestroyAllObjectsOfType``1">DestroyAllObjectsOfType&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Destroys all the active <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void DestroyAllObjectsOfType&lt;T&gt;()
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectOfType%60%601(System.Func%7BExiled.API.Features.Core.EObject%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L499">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectOfType``1(System.Func{Exiled.API.Features.Core.EObject,System.Boolean})">FindActiveObjectOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Finds the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> filtered based on a predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T FindActiveObjectOfType&lt;T&gt;(Func&lt;EObject, bool&gt; predicate)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td><p>The condition to satify.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The corresponding active <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectsOfType%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L535">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType``1">FindActiveObjectsOfType&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Finds all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] FindActiveObjectsOfType&lt;T&gt;()
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[]</td>
+        <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>[] containing all the matching results.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func___0_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectsOfType%60%601(System.Func%7B%60%600%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L653">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func___0_System_Boolean__" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType``1(System.Func{``0,System.Boolean})">FindActiveObjectsOfType&lt;T&gt;(Func&lt;T, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Finds all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] FindActiveObjectsOfType&lt;T&gt;(Func&lt;T, bool&gt; predicate)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;T, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td><p>The condition to satify.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[]</td>
+        <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>[] containing all the elements that satify the condition.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectsOfType%60%601(System.Func%7BExiled.API.Features.Core.EObject%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L517">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType``1(System.Func{Exiled.API.Features.Core.EObject,System.Boolean})">FindActiveObjectsOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Finds all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> filtered based on a predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] FindActiveObjectsOfType&lt;T&gt;(Func&lt;EObject, bool&gt; predicate)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td><p>The condition to satify.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[]</td>
+        <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>[] containing all the matching results.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_System_Object_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectsOfType%60%601(System.Func%7BSystem.Object%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L633">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_System_Object_System_Boolean__" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType``1(System.Func{System.Object,System.Boolean})">FindActiveObjectsOfType&lt;T&gt;(Func&lt;Object, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Finds all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] FindActiveObjectsOfType&lt;T&gt;(Func&lt;object, bool&gt; predicate)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<span class="xref">System.Object</span>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td><p>The condition to satify.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[]</td>
+        <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>[] containing all the elements that satify the condition.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectsOfType%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L554">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_String_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType``1(System.String)">FindActiveObjectsOfType&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Finds all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> with the specified <code data-dev-comment-type="paramref" class="paramref">name</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] FindActiveObjectsOfType&lt;T&gt;(string name)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[]</td>
+        <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>[] containing all the matching results.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectsOfType%60%601(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L573">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType``1(System.Type)">FindActiveObjectsOfType&lt;T&gt;(Type)</h4>
+  <div class="markdown level1 summary"><p>Finds all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] FindActiveObjectsOfType&lt;T&gt;(Type type)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[]</td>
+        <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>[] containing all the matching results.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectsOfType%60%601(System.Type%2CSystem.Func%7BExiled.API.Features.Core.EObject%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L593">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsOfType``1(System.Type,System.Func{Exiled.API.Features.Core.EObject,System.Boolean})">FindActiveObjectsOfType&lt;T&gt;(Type, Func&lt;EObject, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Finds all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> filtered based on a predicate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] FindActiveObjectsOfType&lt;T&gt;(Type type, Func&lt;EObject, bool&gt; predicate)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">predicate</span></td>
+        <td><p>The condition to satify.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[]</td>
+        <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>[] containing all the matching results.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindActiveObjectsWithTagOfType__1_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindActiveObjectsWithTagOfType%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L614">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindActiveObjectsWithTagOfType_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsWithTagOfType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindActiveObjectsWithTagOfType__1_System_String_" data-uid="Exiled.API.Features.Core.EObject.FindActiveObjectsWithTagOfType``1(System.String)">FindActiveObjectsWithTagOfType&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Finds all the active <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instances of type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> with the specified <code data-dev-comment-type="paramref" class="paramref">tag</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] FindActiveObjectsWithTagOfType&lt;T&gt;(string tag)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">tag</span></td>
+        <td><p>The tag to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>T[]</td>
+        <td><p>A <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>[] containing all the matching results.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindMostAppropriateEntry__1_System_String_System_Collections_Generic_IEnumerable___0__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindMostAppropriateEntry%60%601(System.String%2CSystem.Collections.Generic.IEnumerable%7B%60%600%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L730">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindMostAppropriateEntry_" data-uid="Exiled.API.Features.Core.EObject.FindMostAppropriateEntry*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindMostAppropriateEntry__1_System_String_System_Collections_Generic_IEnumerable___0__" data-uid="Exiled.API.Features.Core.EObject.FindMostAppropriateEntry``1(System.String,System.Collections.Generic.IEnumerable{``0})">FindMostAppropriateEntry&lt;T&gt;(String, IEnumerable&lt;T&gt;)</h4>
+  <div class="markdown level1 summary"><p>Finds the most appropriate entry.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T FindMostAppropriateEntry&lt;T&gt;(string name, IEnumerable&lt;T&gt; source)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to pair.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;T&gt;</td>
+        <td><span class="parametername">source</span></td>
+        <td><p>The source on which iterate on.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The corresponding entry or <span class="xref">langword_csharp_default</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_FindUObjectDefinedTypeByName_System_String_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.FindUObjectDefinedTypeByName(System.String%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L198">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_FindUObjectDefinedTypeByName_" data-uid="Exiled.API.Features.Core.EObject.FindUObjectDefinedTypeByName*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_FindUObjectDefinedTypeByName_System_String_System_Boolean_" data-uid="Exiled.API.Features.Core.EObject.FindUObjectDefinedTypeByName(System.String,System.Boolean)">FindUObjectDefinedTypeByName(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Finds the most accurate <span class="xref">System.Type</span> matching the given <code data-dev-comment-type="paramref" class="paramref">name</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type FindUObjectDefinedTypeByName(string name, bool ignoreAbstractTypes = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name to look for.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">ignoreAbstractTypes</span></td>
+        <td><p>A value indicating whether abstract types should be ignored.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The <span class="xref">System.Type</span> with the name that matches the given name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_GetUObjectTypeByName_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.GetUObjectTypeByName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L85">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_GetUObjectTypeByName_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeByName*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_GetUObjectTypeByName_System_String_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeByName(System.String)">GetUObjectTypeByName(String)</h4>
+  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Type</span> from a given type name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetUObjectTypeByName(string typeName)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">typeName</span></td>
+        <td><p>The type name to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>A <span class="xref">System.Type</span> matching the type name or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L263">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_System_Type_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes(System.Type)">GetUObjectTypeFromRegisteredTypes(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type from all the registered types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetUObjectTypeFromRegisteredTypes(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The matching <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NullReferenceException</span></td>
+        <td><p>Occurs when the requested type is not the same as the specified type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_System_Type_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes(System.Type%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L286">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_System_Type_System_String_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes(System.Type,System.String)">GetUObjectTypeFromRegisteredTypes(Type, String)</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type from all the registered types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetUObjectTypeFromRegisteredTypes(Type type, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The matching <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NullReferenceException</span></td>
+        <td><p>Occurs when the requested type&apos;s name is not the same as the specified name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L216">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes__1" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes``1">GetUObjectTypeFromRegisteredTypes&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type from all the registered types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetUObjectTypeFromRegisteredTypes&lt;T&gt;()
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The matching <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NullReferenceException</span></td>
+        <td><p>Occurs when the requested type is not the same as the specified type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes__1_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L240">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes__1_System_String_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypes``1(System.String)">GetUObjectTypeFromRegisteredTypes&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type from all the registered types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetUObjectTypeFromRegisteredTypes&lt;T&gt;(string name)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The matching <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NullReferenceException</span></td>
+        <td><p>Occurs when the requested type&apos;s name is not the same as the specified name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypesByName_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypesByName(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L308">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypesByName_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypesByName*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypesByName_System_String_" data-uid="Exiled.API.Features.Core.EObject.GetUObjectTypeFromRegisteredTypesByName(System.String)">GetUObjectTypeFromRegisteredTypesByName(String)</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type from all the registered types.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type GetUObjectTypeFromRegisteredTypesByName(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the type to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The matching <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NullReferenceException</span></td>
+        <td><p>Occurs when the requested type&apos;s name is not the same as the specified name.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_OnBeginDestroy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.OnBeginDestroy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L766">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_OnBeginDestroy_" data-uid="Exiled.API.Features.Core.EObject.OnBeginDestroy*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_OnBeginDestroy" data-uid="Exiled.API.Features.Core.EObject.OnBeginDestroy">OnBeginDestroy()</h4>
+  <div class="markdown level1 summary"><p>Fired before the current <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance is destroyed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnBeginDestroy()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_OnDestroyed.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.OnDestroyed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L773">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_OnDestroyed_" data-uid="Exiled.API.Features.Core.EObject.OnDestroyed*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_OnDestroyed" data-uid="Exiled.API.Features.Core.EObject.OnDestroyed">OnDestroyed()</h4>
+  <div class="markdown level1 summary"><p>Fired when the current <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> instance has been explicitly destroyed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnDestroyed()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_RegisterUObjectType_System_Type_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.RegisterUObjectType(System.Type%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L138">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_RegisterUObjectType_" data-uid="Exiled.API.Features.Core.EObject.RegisterUObjectType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_RegisterUObjectType_System_Type_System_String_" data-uid="Exiled.API.Features.Core.EObject.RegisterUObjectType(System.Type,System.String)">RegisterUObjectType(Type, String)</h4>
+  <div class="markdown level1 summary"><p>Registers the specified <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> <code data-dev-comment-type="paramref" class="paramref">type</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type RegisterUObjectType(Type type, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type to register.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the registered type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The registered <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_RegisterUObjectType__1_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.RegisterUObjectType%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L104">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_RegisterUObjectType_" data-uid="Exiled.API.Features.Core.EObject.RegisterUObjectType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_RegisterUObjectType__1_System_String_" data-uid="Exiled.API.Features.Core.EObject.RegisterUObjectType``1(System.String)">RegisterUObjectType&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Registers the specified <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type <code data-dev-comment-type="typeparamref" class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Type RegisterUObjectType&lt;T&gt;(string name)
+
+    where T : EObject</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the registered type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>The registered <span class="xref">System.Type</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The type to register.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_UnregisterUObjectType_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.UnregisterUObjectType(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L178">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_UnregisterUObjectType_" data-uid="Exiled.API.Features.Core.EObject.UnregisterUObjectType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_UnregisterUObjectType_System_String_" data-uid="Exiled.API.Features.Core.EObject.UnregisterUObjectType(System.String)">UnregisterUObjectType(String)</h4>
+  <div class="markdown level1 summary"><p>Unregisters the specified <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool UnregisterUObjectType(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the type to unregister.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the type was unregistered successfully; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject_UnregisterUObjectType_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject.UnregisterUObjectType(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L171">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EObject_UnregisterUObjectType_" data-uid="Exiled.API.Features.Core.EObject.UnregisterUObjectType*"></a>
+  <h4 id="Exiled_API_Features_Core_EObject_UnregisterUObjectType_System_Type_" data-uid="Exiled.API.Features.Core.EObject.UnregisterUObjectType(System.Type)">UnregisterUObjectType(Type)</h4>
+  <div class="markdown level1 summary"><p>Registers the specified <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool UnregisterUObjectType(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The type to register.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the type was unregistered successfully; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EObject.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EObject.cs/#L24" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <strong>Exiled-Team</strong>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

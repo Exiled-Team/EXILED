@@ -1,0 +1,1287 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class EActor
+   | EXILED Docs </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class EActor
+   | EXILED Docs ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../assets/Exiled_Icon_50x50.png" alt="Exiled Docs">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Exiled.API.Features.Core.EActor">
+  
+  
+  <h1 id="Exiled_API_Features_Core_EActor" data-uid="Exiled.API.Features.Core.EActor" class="text-break">Class EActor
+  </h1>
+  <div class="markdown level0 summary"><p>Actor is the base class for a <a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a> that can be placed or spawned in-game.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.Core.EObject.html">EObject</a></div>
+    <div class="level3"><span class="xref">EActor</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisteredTypes">EObject.RegisteredTypes</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Base">EObject.Base</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Name">EObject.Name</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Tag">EObject.Tag</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_IsEditable">EObject.IsEditable</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetUObjectTypeByName_System_String_">EObject.GetUObjectTypeByName(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisterUObjectType__1_System_String_">EObject.RegisterUObjectType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_RegisterUObjectType_System_Type_System_String_">EObject.RegisterUObjectType(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_UnregisterUObjectType_System_Type_">EObject.UnregisterUObjectType(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_UnregisterUObjectType_System_String_">EObject.UnregisterUObjectType(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindUObjectDefinedTypeByName_System_String_System_Boolean_">EObject.FindUObjectDefinedTypeByName(String, Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes__1">EObject.GetUObjectTypeFromRegisteredTypes&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes__1_System_String_">EObject.GetUObjectTypeFromRegisteredTypes&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_System_Type_">EObject.GetUObjectTypeFromRegisteredTypes(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypes_System_Type_System_String_">EObject.GetUObjectTypeFromRegisteredTypes(Type, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_GetUObjectTypeFromRegisteredTypesByName_System_String_">EObject.GetUObjectTypeFromRegisteredTypesByName(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_System_Object___">EObject.CreateDefaultSubobject(Type, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_">EObject.CreateDefaultSubobject&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1">EObject.CreateDefaultSubobject&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject&lt;T&gt;(GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject__1_System_Type_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject&lt;T&gt;(Type, GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_">EObject.CreateDefaultSubobject(Type, GameObject, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_CreateDefaultSubobject_System_Type_UnityEngine_GameObject_System_String_System_Object___">EObject.CreateDefaultSubobject(Type, GameObject, String, Object[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyAllObjects">EObject.DestroyAllObjects()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyAllObjectsOfType__1">EObject.DestroyAllObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1">EObject.FindActiveObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_String_">EObject.FindActiveObjectsOfType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_">EObject.FindActiveObjectsOfType&lt;T&gt;(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Type_System_Func_Exiled_API_Features_Core_EObject_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Type, Func&lt;EObject, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsWithTagOfType__1_System_String_">EObject.FindActiveObjectsWithTagOfType&lt;T&gt;(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func_System_Object_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;Object, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindActiveObjectsOfType__1_System_Func___0_System_Boolean__">EObject.FindActiveObjectsOfType&lt;T&gt;(Func&lt;T, Boolean&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObjectsOfType__1">EObject.DestroyActiveObjectsOfType&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObject__1_UnityEngine_GameObject_">EObject.DestroyActiveObject&lt;T&gt;(GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_DestroyActiveObject_System_Type_UnityEngine_GameObject_">EObject.DestroyActiveObject(Type, GameObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_FindMostAppropriateEntry__1_System_String_System_Collections_Generic_IEnumerable___0__">EObject.FindMostAppropriateEntry&lt;T&gt;(String, IEnumerable&lt;T&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Destroy">EObject.Destroy()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_Destroy_System_Boolean_">EObject.Destroy(Boolean)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_OnDestroyed">EObject.OnDestroyed()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;EObject&gt;.Cast&lt;T&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;EObject&gt;.Cast&lt;T&gt;(T)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Features.Core.html">Exiled.API.Features.Core</a></h6>
+  <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
+  <h5 id="Exiled_API_Features_Core_EActor_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class EActor : EObject</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor__ctor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L35">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor__ctor_" data-uid="Exiled.API.Features.Core.EActor.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor__ctor" data-uid="Exiled.API.Features.Core.EActor.#ctor">EActor()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EActor()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor__ctor_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.%23ctor(UnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L50">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor__ctor_" data-uid="Exiled.API.Features.Core.EActor.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor__ctor_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Core.EActor.#ctor(UnityEngine.GameObject)">EActor(GameObject)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EActor(GameObject gameObject = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><p>The base <span class="xref">UnityEngine.GameObject</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="fields">Fields
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_DefaultFixedTickRate.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.DefaultFixedTickRate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L26">View Source</a>
+  </span>
+  <h4 id="Exiled_API_Features_Core_EActor_DefaultFixedTickRate" data-uid="Exiled.API.Features.Core.EActor.DefaultFixedTickRate">DefaultFixedTickRate</h4>
+  <div class="markdown level1 summary"><p>The default fixed tick rate.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const float DefaultFixedTickRate = 0.016F</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_CanEverTick.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.CanEverTick%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L92">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_CanEverTick_" data-uid="Exiled.API.Features.Core.EActor.CanEverTick*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_CanEverTick" data-uid="Exiled.API.Features.Core.EActor.CanEverTick">CanEverTick</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> can tick.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool CanEverTick { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_ComponentsInChildren.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.ComponentsInChildren%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L135">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_ComponentsInChildren_" data-uid="Exiled.API.Features.Core.EActor.ComponentsInChildren*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_ComponentsInChildren" data-uid="Exiled.API.Features.Core.EActor.ComponentsInChildren">ComponentsInChildren</h4>
+  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.HashSet&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> containing all the components in children.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected HashSet&lt;EActor&gt; ComponentsInChildren { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.HashSet</span>&lt;<a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_ComponentsInParent.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.ComponentsInParent%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L130">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_ComponentsInParent_" data-uid="Exiled.API.Features.Core.EActor.ComponentsInParent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_ComponentsInParent" data-uid="Exiled.API.Features.Core.EActor.ComponentsInParent">ComponentsInParent</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a>[] containing all the components in parent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected EActor[] ComponentsInParent { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_FixedTickRate.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.FixedTickRate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L115">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_FixedTickRate_" data-uid="Exiled.API.Features.Core.EActor.FixedTickRate*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_FixedTickRate" data-uid="Exiled.API.Features.Core.EActor.FixedTickRate">FixedTickRate</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the value which determines the size of every tick.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual float FixedTickRate { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_Position.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L65">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_Position_" data-uid="Exiled.API.Features.Core.EActor.Position*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_Position" data-uid="Exiled.API.Features.Core.EActor.Position">Position</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">UnityEngine.Vector3</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Vector3 Position { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_Rotation.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.Rotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L74">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_Rotation_" data-uid="Exiled.API.Features.Core.EActor.Rotation*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_Rotation" data-uid="Exiled.API.Features.Core.EActor.Rotation">Rotation</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">UnityEngine.Quaternion</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Quaternion Rotation { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_Scale.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L83">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_Scale_" data-uid="Exiled.API.Features.Core.EActor.Scale*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_Scale" data-uid="Exiled.API.Features.Core.EActor.Scale">Scale</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">UnityEngine.Vector3</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Vector3 Scale { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_Transform.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.Transform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L60">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_Transform_" data-uid="Exiled.API.Features.Core.EActor.Transform*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_Transform" data-uid="Exiled.API.Features.Core.EActor.Transform">Transform</h4>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">UnityEngine.Transform</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Transform Transform { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Transform</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_AddComponent_System_Type_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.AddComponent(System.Type%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L174">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_AddComponent_" data-uid="Exiled.API.Features.Core.EActor.AddComponent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_AddComponent_System_Type_System_String_" data-uid="Exiled.API.Features.Core.EActor.AddComponent(System.Type,System.String)">AddComponent(Type, String)</h4>
+  <div class="markdown level1 summary"><p>Adds a component to this actor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EActor AddComponent(Type type, string name = &quot;&quot;)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <span class="xref">System.Type</span> of the <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to be added.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the component.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></td>
+        <td><p>The added component.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_AddComponent__1_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.AddComponent%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L157">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_AddComponent_" data-uid="Exiled.API.Features.Core.EActor.AddComponent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_AddComponent__1_System_String_" data-uid="Exiled.API.Features.Core.EActor.AddComponent``1(System.String)">AddComponent&lt;T&gt;(String)</h4>
+  <div class="markdown level1 summary"><p>Adds a component to this actor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T AddComponent&lt;T&gt;(string name = &quot;&quot;)
+
+    where T : EActor</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The name of the component.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The added component.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to be added.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_Exiled_API_Features_Core_EActor_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.AttachTo(Exiled.API.Features.Core.EActor%2CExiled.API.Features.Core.EActor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L149">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_AttachTo_" data-uid="Exiled.API.Features.Core.EActor.AttachTo*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_Exiled_API_Features_Core_EActor_" data-uid="Exiled.API.Features.Core.EActor.AttachTo(Exiled.API.Features.Core.EActor,Exiled.API.Features.Core.EActor)">AttachTo(EActor, EActor)</h4>
+  <div class="markdown level1 summary"><p>Attaches a <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to the specified <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AttachTo(EActor to, EActor from)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></td>
+        <td><span class="parametername">to</span></td>
+        <td><p>The actor to be modified.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></td>
+        <td><span class="parametername">from</span></td>
+        <td><p>The source actor.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.AttachTo(Exiled.API.Features.Core.EActor%2CUnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L142">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_AttachTo_" data-uid="Exiled.API.Features.Core.EActor.AttachTo*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_AttachTo_Exiled_API_Features_Core_EActor_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Core.EActor.AttachTo(Exiled.API.Features.Core.EActor,UnityEngine.GameObject)">AttachTo(EActor, GameObject)</h4>
+  <div class="markdown level1 summary"><p>Attaches a <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to the specified <span class="xref">UnityEngine.GameObject</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void AttachTo(EActor comp, GameObject gameObject)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></td>
+        <td><span class="parametername">comp</span></td>
+        <td><p><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><p><span class="xref">UnityEngine.GameObject</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_GetComponent_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.GetComponent(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L197">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_GetComponent_" data-uid="Exiled.API.Features.Core.EActor.GetComponent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_GetComponent_System_Type_" data-uid="Exiled.API.Features.Core.EActor.GetComponent(System.Type)">GetComponent(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets a component from this actor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EActor GetComponent(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <span class="xref">System.Type</span> of the <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></td>
+        <td><p>The corresponding component or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_GetComponent__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.GetComponent%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L189">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_GetComponent_" data-uid="Exiled.API.Features.Core.EActor.GetComponent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_GetComponent__1" data-uid="Exiled.API.Features.Core.EActor.GetComponent``1">GetComponent&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Gets a component from this actor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T GetComponent&lt;T&gt;()
+
+    where T : EActor</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><p>The corresponding component or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_HasComponent_System_Type_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.HasComponent(System.Type)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L245">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_HasComponent_" data-uid="Exiled.API.Features.Core.EActor.HasComponent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_HasComponent_System_Type_" data-uid="Exiled.API.Features.Core.EActor.HasComponent(System.Type)">HasComponent(Type)</h4>
+  <div class="markdown level1 summary"><p>Checks if the actor has an active component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasComponent(Type type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the component was found; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_HasComponent__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.HasComponent%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L237">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_HasComponent_" data-uid="Exiled.API.Features.Core.EActor.HasComponent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_HasComponent__1" data-uid="Exiled.API.Features.Core.EActor.HasComponent``1">HasComponent&lt;T&gt;()</h4>
+  <div class="markdown level1 summary"><p>Checks if the actor has an active component.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasComponent&lt;T&gt;()
+
+    where T : EActor</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the component was found; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_OnBeginDestroy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.OnBeginDestroy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L292">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_OnBeginDestroy_" data-uid="Exiled.API.Features.Core.EActor.OnBeginDestroy*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_OnBeginDestroy" data-uid="Exiled.API.Features.Core.EActor.OnBeginDestroy">OnBeginDestroy()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void OnBeginDestroy()</code></pre>
+  </div>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.Core.EObject.html#Exiled_API_Features_Core_EObject_OnBeginDestroy">EObject.OnBeginDestroy()</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_OnBeginPlay.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.OnBeginPlay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L257">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_OnBeginPlay_" data-uid="Exiled.API.Features.Core.EActor.OnBeginPlay*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_OnBeginPlay" data-uid="Exiled.API.Features.Core.EActor.OnBeginPlay">OnBeginPlay()</h4>
+  <div class="markdown level1 summary"><p>Fired after the first fixed tick.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnBeginPlay()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_OnEndPlay.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.OnEndPlay%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L272">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_OnEndPlay_" data-uid="Exiled.API.Features.Core.EActor.OnEndPlay*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_OnEndPlay" data-uid="Exiled.API.Features.Core.EActor.OnEndPlay">OnEndPlay()</h4>
+  <div class="markdown level1 summary"><p>Fired before the current <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> instance is destroyed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void OnEndPlay()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_PostInitialize.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.PostInitialize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L250">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_PostInitialize_" data-uid="Exiled.API.Features.Core.EActor.PostInitialize*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_PostInitialize" data-uid="Exiled.API.Features.Core.EActor.PostInitialize">PostInitialize()</h4>
+  <div class="markdown level1 summary"><p>Fired after the <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> instance is created.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void PostInitialize()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_SubscribeEvents.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.SubscribeEvents%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L280">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_SubscribeEvents_" data-uid="Exiled.API.Features.Core.EActor.SubscribeEvents*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_SubscribeEvents" data-uid="Exiled.API.Features.Core.EActor.SubscribeEvents">SubscribeEvents()</h4>
+  <div class="markdown level1 summary"><p>Subscribes all the events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void SubscribeEvents()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_Tick.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.Tick%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L265">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_Tick_" data-uid="Exiled.API.Features.Core.EActor.Tick*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_Tick" data-uid="Exiled.API.Features.Core.EActor.Tick">Tick()</h4>
+  <div class="markdown level1 summary"><p>Fired every tick.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Tick()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_TryGetComponent_System_Type_Exiled_API_Features_Core_EActor__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.TryGetComponent(System.Type%2CExiled.API.Features.Core.EActor%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L222">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_TryGetComponent_" data-uid="Exiled.API.Features.Core.EActor.TryGetComponent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_TryGetComponent_System_Type_Exiled_API_Features_Core_EActor__" data-uid="Exiled.API.Features.Core.EActor.TryGetComponent(System.Type,Exiled.API.Features.Core.EActor@)">TryGetComponent(Type, out EActor)</h4>
+  <div class="markdown level1 summary"><p>Tries to get a component from this actor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetComponent(Type type, out EActor component)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <span class="xref">System.Type</span> of the <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to get.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a></td>
+        <td><span class="parametername">component</span></td>
+        <td><p>The found component.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the component was found; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_TryGetComponent__1___0__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.TryGetComponent%60%601(%60%600%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L205">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_TryGetComponent_" data-uid="Exiled.API.Features.Core.EActor.TryGetComponent*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_TryGetComponent__1___0__" data-uid="Exiled.API.Features.Core.EActor.TryGetComponent``1(``0@)">TryGetComponent&lt;T&gt;(out T)</h4>
+  <div class="markdown level1 summary"><p>Tries to get a component from this actor.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetComponent&lt;T&gt;(out T component)
+
+    where T : EActor</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">T</span></td>
+        <td><span class="parametername">component</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the component was found; otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="typeParameters">Type Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="parametername">T</span></td>
+        <td><p>The <code data-dev-comment-type="typeparamref" class="typeparamref">T</code> <a class="xref" href="Exiled.API.Features.Core.EActor.html">EActor</a> to look for.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor_UnsubscribeEvents.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor.UnsubscribeEvents%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L287">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Core_EActor_UnsubscribeEvents_" data-uid="Exiled.API.Features.Core.EActor.UnsubscribeEvents*"></a>
+  <h4 id="Exiled_API_Features_Core_EActor_UnsubscribeEvents" data-uid="Exiled.API.Features.Core.EActor.UnsubscribeEvents">UnsubscribeEvents()</h4>
+  <div class="markdown level1 summary"><p>Unsubscribes all the events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void UnsubscribeEvents()</code></pre>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Core_EActor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Core.EActor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Core/EActor.cs/#L21" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <strong>Exiled-Team</strong>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

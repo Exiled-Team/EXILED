@@ -51,7 +51,5287 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "ps3TxCCyVM5gD7qWCuSxt+1MdlIshG4ZFp4ax3xqSQ0="
+          "hash": "fL6RYcC49+8XX2q/fJMsBrobR2svpV0kzw0bKIioKDM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.AdminToyType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.AdminToyType.html",
+          "hash": "8qAmw/pocuG2WieNyWzu46yBj4iNfISs8m0/lJkC4Zw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.AmmoType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.AmmoType.html",
+          "hash": "Df7oDSN1DHSsxkifNnbHGMOcDcAIdd1E+XTd1BiQOes="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.AuthenticationType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.AuthenticationType.html",
+          "hash": "9spIVdAUFI19+2kNEynyN4nfYIeXepv3T31LOhEjXlw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.BaseCode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.BaseCode.html",
+          "hash": "RnLlbthyiCgou89PgcqnKQjP00Jzx2XY4oFinh+FJeQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.BloodType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.BloodType.html",
+          "hash": "hHSi2LpgT+XVO+RKPWvc3rR92L0HQ/weMZEV7M+CsWA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.CameraType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.CameraType.html",
+          "hash": "uZG/J7eQ5c8/uNw8g0n3aOktLr1rCDODG7aEKbmQEPk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.ConfigType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.ConfigType.html",
+          "hash": "kdTMBiYyWwZEdj2B1TT0K0psdgtaFTv/td7nJ0cmjuQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.DamageType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.DamageType.html",
+          "hash": "G2SkRTA9jglU7pDBFqJjquzaWrhFLGL5XFzrCkll2I8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.DoorBeepType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.DoorBeepType.html",
+          "hash": "QnRgBVIXof1Bq057iJXk0qCFkV02pyyq5jORuGaeVRI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.DoorLockType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.DoorLockType.html",
+          "hash": "81A6TQm5NZk02b/1VpiXAnlGNMZeU0u50jNs8rrODVU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.DoorType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.DoorType.html",
+          "hash": "5ZjZc0712ebXWefA6aKaFkjTKXxLFGlsCFyTa+6IgRQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.EffectType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.EffectType.html",
+          "hash": "f0pivPi3+8fyrcefminwX5wGk35S+3PQmmkDVrAFuyI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.ElevatorType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.ElevatorType.html",
+          "hash": "nIpFPDcIeiUic0H6F4M1xjGCZAyhlkKLntXFFfLvZWw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.EnvironmentType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.EnvironmentType.html",
+          "hash": "UKCz9in7UNPAMmX3Gn4CyqaJgFsZPNeB5LUGSIW+NkA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.GeneratorState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.GeneratorState.html",
+          "hash": "iCYoO8Iys3XqywN2P5v60K9nskAhssGZ9L0IaNXhqZo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.GlassType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.GlassType.html",
+          "hash": "qIb3LXiO0oTmAHYODiae29+VQx5mCRPitpuD5g4EFYQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.GrenadeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.GrenadeType.html",
+          "hash": "wRvS/tb4zh1nzpOWJXq4Q3ffUQ3Q5hzMVuu3vpymN2s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.HotkeyButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.HotkeyButton.html",
+          "hash": "0NrgTqTO+kDC6rR//ZjuiQnaQso1vlsNX6E/aB21JR0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.KeycardPermissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.KeycardPermissions.html",
+          "hash": "S/Iz/ovjkH9zHYEQybU9Wm3j+JnYhcW3nLWZOGCje/g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.LeadingTeam.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.LeadingTeam.html",
+          "hash": "pmg+44ZEYH217Y5Ezkg4dmuiVIaUiWaNVfNeo8TDap0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.PluginPriority.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.PluginPriority.html",
+          "hash": "pEG3KO0SuvK6kH/y/C7nwj9ZMPS+8NrqUTn7o9RCr+g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.RadioRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.RadioRange.html",
+          "hash": "aZjk3BuFL0Obyvv+s+JwL9eonKmWemYZFo7NKO4oLTA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.RespawnEffectType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.RespawnEffectType.html",
+          "hash": "tuWOFWz7GmKOl1bhiMlUZtT1njbReJNYtl+L9GHAsOQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.RoomType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.RoomType.html",
+          "hash": "OchDVCCGhVmE+tGW0ahIVb/1I6qygsTMqbUQVFSHO+Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.ShootingTargetButton.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.ShootingTargetButton.html",
+          "hash": "1wUz5rVmuzPmlAlpxK0x9eSK0wBUkEekHycktksjS1w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.ShootingTargetType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.ShootingTargetType.html",
+          "hash": "wE+j7hUgcQRKgckgplV+iv40fF7ioe9FaQXkAERA8Ac="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.Side.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.Side.html",
+          "hash": "JT+mh38vLYundgFMWYw0UyutKCqkrGP5K8AA+0Qumq8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.SpawnReason.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.SpawnReason.html",
+          "hash": "j+9XTseKjOgSn2556vMNqM66nKd2Kf8Yi11XB9WiGx8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.ThrowRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.ThrowRequest.html",
+          "hash": "mkW4kjbkGcfkkXqPop2/TO54JFc83y/UAQoIln1g1oc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.WarheadStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.WarheadStatus.html",
+          "hash": "QAsYMGRh14qKFCPzARi8LUoFOG5d02LxxPJl2V4eqtI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.ZoneType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.ZoneType.html",
+          "hash": "VMVtdYpMxCKDslbcnj3XnMPcpMoh/5hi1NW5b9bnxew="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.html",
+          "hash": "+TrpeWxiJ232mdqBfKXgkTBFPrvkFMwVkZ5E8veIpCM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.DamageTypeExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.DamageTypeExtensions.html",
+          "hash": "5AUFh81WqUlQ+I0PbUtTa1aPHUbyUCM5h6YVmlGRPr8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.EffectTypeExtension.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.EffectTypeExtension.html",
+          "hash": "rtJtT8jSeGpDafA6tzu8KhuXJTsQDusFY+q3VTeQCdQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.ItemExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.ItemExtensions.html",
+          "hash": "KEvHNezZN4NmXFLkVCFQ0ogf7Z5GQ43Mq57Oshl57qw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.MirrorExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.MirrorExtensions.html",
+          "hash": "6x22/Uv1fyJ8idU1zon4ookr/Ub3zrVfjGWg3x5hPXg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.ReflectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.ReflectionExtensions.html",
+          "hash": "ArPEEU7apkjOMuOk6N/e3vCL5r37pEVvdlWwBDB3Pu8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.RoleExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.RoleExtensions.html",
+          "hash": "Rjlv4U499UI2KDWcUyLg2cCDfPldLlSVu7cw3YFnew0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.RoomExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.RoomExtensions.html",
+          "hash": "cacDxOl2S+qllV2dWwdBAHuMBF1pvNf846v53v4zdY0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.SpawnExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.SpawnExtensions.html",
+          "hash": "1s4EzNJjkJMKhXzzCn2cCAMaRjLHW++GPrz5Eia94U0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.StringExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.StringExtensions.html",
+          "hash": "C1Eg07CD5DCh6mlaNQz/HJIIxM+9X4BNpuNXCSg7pCA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.UserGroupExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.UserGroupExtensions.html",
+          "hash": "eRBkuPn3a1pZiekROWKolODN4LhdZHuAucDQGIXCp/g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Extensions.html",
+          "hash": "udTtM65ynwG7afFmo9FgptOUD37Qn9aEoIQa/w3nVlA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Attributes.CustomAbilityAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Attributes.CustomAbilityAttribute.html",
+          "hash": "NuAiTCh2p4PAeXMNtrKAnXqn5rRKPLwL8VZZa9dEPho="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Attributes.CustomItemAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Attributes.CustomItemAttribute.html",
+          "hash": "SwKpQ2h3jUQmoU4d3tG2q8rwdDOi+/Ntmojwh2Z6ZkA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Attributes.CustomRoleAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Attributes.CustomRoleAttribute.html",
+          "hash": "TCGUQhYXidKOh2w9x6eAqfrqJv4k3ahK2uiDZgeAn0E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Attributes.PatchGroupAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Attributes.PatchGroupAttribute.html",
+          "hash": "RX5fHeYlqb9zOynZViLnbqc/aeAj6ltFnqvT5o3rakQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Attributes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Attributes.html",
+          "hash": "JxW4PBp3aQc8AlqVEv15JeQQBQwpKdBi1d6Xq+28XEA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Badge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Badge.html",
+          "hash": "6/cY0WH4maHp1j+qE5aS4b1ECZbUFsvKqlI96LfU3bg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Broadcast.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Broadcast.html",
+          "hash": "zvZotoXOcD/VOf4jWb8GGcy7AptTOROX+UxbQ5fvXn4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Camera.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Camera.html",
+          "hash": "B8gaoenERYJUjGxQF6sR1KN1Ly7TMCHsy+Z24PNdkqk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Cassie.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Cassie.html",
+          "hash": "AiDd59ht+h0yIo2kpyY+Gu0vvIiZ9z4evZfhylQKBIU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Components.CollisionHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Components.CollisionHandler.html",
+          "hash": "X+ULju63dQlV8GRMHxdwdhFeCvrDnKijhb54fc+vTpk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Components.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Components.html",
+          "hash": "iWa2XCJsxfaItK5lAmKGgqYp6VRwCdf/yCEGgy9gUuk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Core.EActor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Core.EActor.html",
+          "hash": "TvBes4ofezmZ8VumHyij4704WQLazjGHekTFzNa5bYk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Core.EObject.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Core.EObject.html",
+          "hash": "E/Q8KfN49M7LS+h/LO8Rm0XKtbGDE5UwTZUW2tsDFJM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Core.TickComponent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Core.TickComponent.html",
+          "hash": "juKbrZCjUePMVoBBpvUHKX07QqNcT/RipnBOqHIByUY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Core.TypeCastObject-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Core.TypeCastObject-1.html",
+          "hash": "+YXFEtc7HcIIW0p4jd3W0FTlmcBH1eEw4RAj+gN1SYI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Core.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Core.html",
+          "hash": "JajO2ApB4v1WhwKh9b2oW5hvaPpRxPfI34Srdr7iR0c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.CustomHealthStat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.CustomHealthStat.html",
+          "hash": "84a+1Q321e4whaUvH53diTCc7TyOskfADk561wDffTI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.AttackerDamageHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.AttackerDamageHandler.html",
+          "hash": "VdZofbwLzpV+N3Kbd2PviPWh/EVzUjD3kfdUh3SQoQA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.CustomDamageHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.CustomDamageHandler.html",
+          "hash": "TuZFdYKQu+UFEgsAhtQ4XRFP5XiuOUzjVn3NviXnXV8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.DamageHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.DamageHandler.html",
+          "hash": "8TGny+d3hcsZqW7UOPgjuHMgzTmqEN2/Y7lNqckwgFg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.DamageHandlerBase.Action.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.DamageHandlerBase.Action.html",
+          "hash": "5f8lbT+v/hENRguVxZcQHvxt4+BgLm2jRL93ujlC534="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement.html",
+          "hash": "dXtfYhltxuB85e4wQeQWgcKzsGI/FX1flTAffefSGEo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.DamageHandlerBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.DamageHandlerBase.html",
+          "hash": "0pKTwq/SvET8DkENU8i2v3Bv7ulOP94X6OaA8CkRAfg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.FirearmDamageHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.FirearmDamageHandler.html",
+          "hash": "G7/PNq2oTak7O2tsu9udnE/zL1jDgsOwGq4gVJO5p5E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.ScpDamageHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.ScpDamageHandler.html",
+          "hash": "VIbptVhoPEatIXz5aVqSajFADier9K9Al3HYCPoA73U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandlers.html",
+          "hash": "6mg+kTS313rDrpBTsuo+p98xMC3sy261pzCZoGFJnw8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Door.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Door.html",
+          "hash": "u0EaKomIlrBLbrgLA9xEqp7sarB7FTwDVtwufpC4EHY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Generator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Generator.html",
+          "hash": "PJx7KllJVhk1YBuVcwn4q8YFoQl2xH4lUsc7RuZij0o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.GenericDamageHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.GenericDamageHandler.html",
+          "hash": "CtDgZUipZG/RQh7OesLwySDn4lTcxxZ1a+6AYnOYbTw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.GlobalPatchProcessor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.GlobalPatchProcessor.html",
+          "hash": "3/x9JQZarNu9sonr56NLvHBw1d77y18aiqs66uL0p8M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Intercom.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Intercom.html",
+          "hash": "3oTKuwwaqS1/5aQIK6VcVE6YsaBSVMevUfmgrdhLHhM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Ammo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Ammo.html",
+          "hash": "bkfDNHjI3t5nhLRMgLNW0HKX1ybk7cCLo5ZKZdYbJso="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Armor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Armor.html",
+          "hash": "SrLxnYTq1lhpsJ0ZSsq7xI/KlwRktX2V7oWMMjc2UfU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.CandyAddStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.CandyAddStatus.html",
+          "hash": "EJLS2kHhCy8+2gISZj4M2++JOgYrsgEdEv5HWVIYkgI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.ExplosiveGrenade.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.ExplosiveGrenade.html",
+          "hash": "YaP2kp8uTADKiJmF6zCrxrcFH66B4FYZDq2TgrPc1bs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Firearm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Firearm.html",
+          "hash": "g4VwKU/eVwwuV6o5qBq19gaCSbdnC3xsROAjKsQ7TNQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.FlashGrenade.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.FlashGrenade.html",
+          "hash": "4xDS2elMfGgtkDCTIFKdRAFhffOD+LWo84tGHkdLlOc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Flashlight.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Flashlight.html",
+          "hash": "CtTP9zWKHsB0BAFKauwTe+lDQ/DgBOQStLIwUyG9Ci8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Item.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Item.html",
+          "hash": "74SryLDkXfgmdj/gq2ysNxI+Dd1pxdT5Rbp8edJ9xJM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Keycard.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Keycard.html",
+          "hash": "g/ryA8KkUFG3XrA0EUktL7DjfGYQwtwx2a7fuCUHW9w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.MicroHid.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.MicroHid.html",
+          "hash": "kwWOxaLA/FK2wCW8tBtfAzHFVy0yOuV6ZPz3GnV8Rak="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Pickup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Pickup.html",
+          "hash": "BGHdfNQSqKl3bWfSF2LbrOJNSMUV/y9kF8YCM8o9L2w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Radio.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Radio.html",
+          "hash": "nk5CtHWYuN7r2yHdemCrvVHhV+aTHnaE9BdrpC+wgo0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Scp2176.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Scp2176.html",
+          "hash": "PhmWrS8H8aKMjaKiOGhvMGlvFUQbdp2McH7QG9Mfeww="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Scp244.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Scp244.html",
+          "hash": "RWcE7WwtKQegEYv7IojvbS46Q4eVmZaagUhvI2EKRZc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Scp330.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Scp330.html",
+          "hash": "oEoJnul9YTeyWeRpf9DgGreiUMnGmXlsXKpPXmx4f28="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Throwable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Throwable.html",
+          "hash": "m6V4DZllhan2IQfLg5nhhuc5zuiPdbtwoiRF1ue3VSA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Usable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Usable.html",
+          "hash": "gdkccL6xgjVupdOTOKiLsunNQzDgat4WrY2zShPryek="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.html",
+          "hash": "09d4eVsoj84/4yMlZ7xTlSfhMeOaWwnxopJJX4XMzwY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Lift.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Lift.html",
+          "hash": "i21sRWkeOZfuvhHrsmSa6eijpR/pKzsX9Pn4muJTpt8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Log.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Log.html",
+          "hash": "ekS6O02wWgUPpXP9wd4h6kT0Hq5fiJnnh39Iut2Bq80="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Map.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Map.html",
+          "hash": "oGmsc3mj0TztEz8khSuTp/mrrAI/YPJheKcusIUHglk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Paths.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Paths.html",
+          "hash": "1f3BeQnKJfUQp/NtP7dzbVsX1sWAskmXNTcbYf9DNqQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Player.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Player.html",
+          "hash": "8dakc9ia8Q+BUbtrXHup26EE2ePZ7szH1yC56n++sdk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Plugin-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Plugin-1.html",
+          "hash": "M7WmF9paSHcNnFcH2xd0/pIr3Ui/YDHzMNw41KW/gy4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Plugin-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Plugin-2.html",
+          "hash": "3oS7jCreQMgsYycrbgH3nX6UVZI3E3na58cf82HBj6M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Ragdoll.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Ragdoll.html",
+          "hash": "kIGQEBbxGmyEZ9FfonRCYs57By1Hd6AYuBf5yHq+Qqc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Recontainer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Recontainer.html",
+          "hash": "VEsKE+kl8awCKSxK7z68YmzE5LHkpM2OXtS28Ym+SXk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Respawn.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Respawn.html",
+          "hash": "KHPmuWgPemycl5BG2DRGOMOeKi+q6AemAyve9HH8JsU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.HumanRole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.HumanRole.html",
+          "hash": "MPKxupNj7NJaqS1CdgPMLZOpKQg4QUv/cTVCc+KQEes="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.NoneRole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.NoneRole.html",
+          "hash": "4PN5MCmVvavFWifgxb84qCJBifJFyK4txbRoS92kcG8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.Role.html",
+          "hash": "PjOkQm3K8YAiXWqzZBsy1omJN0CFyZ38LdYuYcXDyEU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.Scp0492Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.Scp0492Role.html",
+          "hash": "JswHHgDLQV30RmPhJOS6G6JimRnwmFG4y+OWMdl0ZqI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.Scp049Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.Scp049Role.html",
+          "hash": "pxBAZyswWbven6b7TZlz99i9B4wrTL2kgaW5k9ASAH0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.Scp079Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.Scp079Role.html",
+          "hash": "wk6FHROwb0z1uPggP1Ofb9A+QChzewcslPtP1/YehAM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.Scp096Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.Scp096Role.html",
+          "hash": "UxGv9Gv9bQoM4o7vXujBpabRlGx7MhtbdkbPo9brHIs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.Scp106Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.Scp106Role.html",
+          "hash": "wV9fiCbVG4EnY+qiplMBXMcJrHwJD2x6Gtn4JRYb8bE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.Scp173Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.Scp173Role.html",
+          "hash": "gRgfuLwITVaO7Zvc5LcwNjsL4NCafSXB+iSQSTNIbrI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.Scp939Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.Scp939Role.html",
+          "hash": "vZcrMA7LS6eN+m9DKJXZejwMwG1I50jLBcjkWujh/ck="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.SpectatorRole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.SpectatorRole.html",
+          "hash": "nHlJ7Vk+ePXcXcTY4m99v16nsop2z7afG0aiU8vuStk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Roles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Roles.html",
+          "hash": "TIrXx50CySj72nhtGzaYWK6upN+HEAEfy2WsjfFpJt8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Room.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Room.html",
+          "hash": "ezJUGm2Cs2OCyHgMPO9mijUOGiUb3Hfu5h+Zgkhdsgo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Round.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Round.html",
+          "hash": "ULJpMNlzlECqv/RFCK5KrKA+55u3xRlur+EXlN6+9Og="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Scp096.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Scp096.html",
+          "hash": "30gH50jNmvEdj4fhIU/lsamHq+K4g+Ybk/LncSJriyo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Scp106Container.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Scp106Container.html",
+          "hash": "VmhNxyxbgkb+zpliXzQWdeMbnqvWMbTIJi9U2H33opA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Scp173.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Scp173.html",
+          "hash": "NQrLfuGLEeWYa7Oygbz7lJUgyAHvZTMLMj66UHnz52U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Scp914.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Scp914.html",
+          "hash": "2vcXiXaUKVapwN0nFu4XVybpn/pI3sjrdT0n8NDEZ0c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Server.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Server.html",
+          "hash": "5b4dvvHT7rLweijuhm6RT7kUyg3VH4adeSt5peSd8ac="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Spawn.DynamicSpawnPoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Spawn.DynamicSpawnPoint.html",
+          "hash": "YR8Lne2XGwbMTt2PGaupQRuF1MbgahliiPO6g0/EfME="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Spawn.RoleSpawnPoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Spawn.RoleSpawnPoint.html",
+          "hash": "AeQs8hPNJr8HEum8ttc84kdsV31ImKDVBS5V78S9+Cg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Spawn.SpawnPoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Spawn.SpawnPoint.html",
+          "hash": "Y94paAzruGB6iuSKwosY2IFloJG/CTW30RAAL6ce02I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Spawn.SpawnProperties.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Spawn.SpawnProperties.html",
+          "hash": "1/df7gYX2kYE3eIAAxyw6+jDy7ibA2Eh3IUKjKzDQUw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Spawn.StaticSpawnPoint.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Spawn.StaticSpawnPoint.html",
+          "hash": "xGF3xvORvwm/W/oQfliM0DglPRerhjJIsih0NR59ZVY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Spawn.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Spawn.html",
+          "hash": "+dThMMz5noZOah7NvAenEIcaDLMg4hcmD6j3Y3zmi4M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.TeslaGate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.TeslaGate.html",
+          "hash": "OBbZlvF8nqmm4p4nB4Ftyx8QK2PCVfexWWkSSS3sdDE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Toys.AdminToy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Toys.AdminToy.html",
+          "hash": "DVOeLC1ZFJW4s8juYXA7Vyu3WTZxdr7wYcC7X8Lf+v0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Toys.Light.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Toys.Light.html",
+          "hash": "eGT5y/6uVsF5tHe7w3MAL+dDQSuheVDaRoYmPtdCXx8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Toys.Primitive.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Toys.Primitive.html",
+          "hash": "err6Kz+Afk59JGcmRaOG/BRsdUQom936ps0sEtID7Jo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Toys.ShootingTargetToy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Toys.ShootingTargetToy.html",
+          "hash": "B3eRtlNuJ+NzV9PCX0FQqk/O20c+r6duUX+zV6zu3b4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Toys.ToysHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Toys.ToysHelper.html",
+          "hash": "goOaU1bvFGqHhufIHOBWCMfyJaBxrzEEKFFKyDQRMS0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Toys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Toys.html",
+          "hash": "/PKLwd/xVmYyGAOHITRME/M5QaFu+L4ag8shPChvh7s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Warhead.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Warhead.html",
+          "hash": "WXUSTGz3u0h2hM04V9IKxlmIKPE21M4J29f+QVxF7dg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Window.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Window.html",
+          "hash": "rMf1ZZPHGfaWr/sBel1z+mYU3L0FN7lkbsbOk/8HfZQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.html",
+          "hash": "a36e2xTxTg84ZWxGjt3YP7t5reZ9bO3sfi8U6QMbZgk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Interfaces.IConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Interfaces.IConfig.html",
+          "hash": "Yta+Lcj81lvCk7m4RbE20Ci3+bpN7t77Q0BPTQZ9tms="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Interfaces.IPlugin-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Interfaces.IPlugin-1.html",
+          "hash": "Eij+JzbVhB0uMhKJxC7iYS1MlhMBf+yC1zVJQmxaoUI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Interfaces.ITranslation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Interfaces.ITranslation.html",
+          "hash": "gLWYVlPA0mOjPL4ne6hKNz+F46ek6y+8wKvm8A1wCxA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Interfaces.html",
+          "hash": "xRaLb7nlo6aGh+6cXEINStmxurgd98g/mwOqkh/LpC4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Structs.ArmorAmmoLimit.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Structs.ArmorAmmoLimit.html",
+          "hash": "LhHr19P5iO9MQVFjriiwAGm8BlvGMOZjsMWB/BHbajo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Structs.AttachmentIdentifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Structs.AttachmentIdentifier.html",
+          "hash": "zAK6z+afWXH+YIL+cePzrailxhBDoEYiK5iv5uLNYZU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Structs.Elevator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Structs.Elevator.html",
+          "hash": "brIQ6ig97AArWWrYag5py0LYsamvMTRbRDtotBlutjQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Structs.RadioRangeSettings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Structs.RadioRangeSettings.html",
+          "hash": "yFaD73RcOHanIb6zsJmgQqCpWxUKhSOt6F1++PmPZGY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Structs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Structs.html",
+          "hash": "tEyq9liv/2pcoatKeXVFkGw3qaTHaHePQ0ceuq/+884="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Bootstrap.Bootstrap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Bootstrap.Bootstrap.html",
+          "hash": "4ZgO3enH5JhFA4B3++b7nkWm/VJIKJ5HdhQXrukP3Sw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Bootstrap.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Bootstrap.html",
+          "hash": "iYk3VKkeRz7nGHhF4RuQI5/wKVxeMs5RH3JUrbyJ5oM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.Commands.ShowCreditTag.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.Commands.ShowCreditTag.html",
+          "hash": "l/SNJZLYZ4xFnbkQdYi/6BfXoGbTxeNO0MXr1WdWnYc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.Commands.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.Commands.html",
+          "hash": "uooBEh5lRlXN1mctuvM070l8MWebQzdVuvfuATgSSe0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.Config.html",
+          "hash": "3KnguJRjMkKM467AYhSJ+NFW77o9PbnllCCMuKfpR1I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.CreditTags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.CreditTags.html",
+          "hash": "veRRVvQvOsMc4769nPmNqyOZ6W8iPZ1aDBYE8mCa7Eo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.Enums.InfoSide.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.Enums.InfoSide.html",
+          "hash": "0e1cTh/e6UiXtfqHOtTCSswPtpV/hpeHPXeb1bWj734="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.Enums.RankType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.Enums.RankType.html",
+          "hash": "nVSOO2LiH4Mluag9/W3KRiC7UGRz+ACl5RdCEtbITY4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.Enums.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.Enums.html",
+          "hash": "rQNfHB1qyZNTRMhAZMvuXJIzSdAiWO+Wy4g8av1gaes="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.Features.Rank.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.Features.Rank.html",
+          "hash": "q7Grz0ssYf/ZG7H2uwaEOHtINtQmcCqZehVLZrn46iE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.Features.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.Features.html",
+          "hash": "RPxexoS0d7T/fZCppkVwRhYq+n7tx/Q7kbe024T6H2g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CreditTags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CreditTags.html",
+          "hash": "cpzxmKrq+SY2wVifHJgLXK4J878W6TQrsciQVUdhVJU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.html",
+          "hash": "iKmHuNmGrj1BDS9hBomPJMh4nPF8ICt8MvkAM5ltUNg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.html",
+          "hash": "4EP5KEs9mQtRoP+76x6v3wONmo1v3TG6y7ty870qHHM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.html",
+          "hash": "doxtWtrcuhgDPp2oHCh5X4n++2f6LJpgG/rnFW9WjCw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.EventArgs.OwnerHandcuffingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerHandcuffingEventArgs.html",
+          "hash": "yAywOnDiAK0L5h/JlCbDU5KUSpUxM0I2jd3+5K/ZXWo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.html",
+          "hash": "/z8JilxOEk25ieTJs1k+g75N8XDLeFJtqVd6edvXiiA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs.html",
+          "hash": "FUb3DFe9+sFk2ZSKIfmb2LBeurvro3Z5un/LensK+H8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.EventArgs.html",
+          "hash": "A0F7/LOcqD3xcXfDIUTz2m4ql95kszjJhKICQ3aLW4s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.Extensions.html",
+          "hash": "4iBJODbk6+a1Arf7YKD/UXg2GsXNENFYo98rdF4xj8I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.Features.CustomArmor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.Features.CustomArmor.html",
+          "hash": "DYhf+1wE+1PQicix8B2vqrQtA0qO0cYMClvNolYj6sY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.Features.CustomGrenade.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.Features.CustomGrenade.html",
+          "hash": "7b9ArIPxTc4dTl2ZJBW+xQj1GNMgP3y5AQcRuK2u8bo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.Features.CustomItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.Features.CustomItem.html",
+          "hash": "MbOuisDZIzbMrTcCJYShC8PheOoEZCxbiXiN+WZxYQI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.Features.CustomWeapon.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.Features.CustomWeapon.html",
+          "hash": "TDNjQzyPHIWARRUcsRsrNVx7tNbBg8a09Yzx1LSIf6k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.Features.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.Features.html",
+          "hash": "TA7XXzJo+BkhUqEFw7NXkXZPc3tlz6YwnoEB9iqcF44="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.SpawnLocation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.SpawnLocation.html",
+          "hash": "KsCEgV+etI9MR+l4mkQN/f85k38c78q/V3KSLh0dSpY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.API.html",
+          "hash": "6jrteJuxSbj4nQSnClR860NHXFdHCAlJmT2fKRnYMXA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.Config.html",
+          "hash": "o0adivJhwPT2sOh32Sl08IYSthaAxQwz8W6SvHOcNsQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.CustomItems.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.CustomItems.html",
+          "hash": "kLG5cT+x+QkBVRG2EPwZxX94KGfOlpy+1PFUlhzkH4U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.Patches.PlayerInventorySee.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.Patches.PlayerInventorySee.html",
+          "hash": "UXTbIHMaWLexsun3cOoqRYkMmo1yV8CBKqVEoZE9dMM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.Patches.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.Patches.html",
+          "hash": "eUVwFx3j0GvJ62ASgycel6f/6or0485fj//wo57MTaA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomItems.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomItems.html",
+          "hash": "GJEz9D9Xb4d3s30M8yTNjMbsRVBFyiND/F8dPA0WlX8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Extensions.html",
+          "hash": "rgYDvrnzOWC63HA/o4x7KR/NIW56l4mwBJpoodyFAyc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.ActiveAbility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.ActiveAbility.html",
+          "hash": "LnF1Xe+xz1Kfbj2Z3sF+3Tqq0TNwn+gyfflsC8gO//Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.CustomAbility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.CustomAbility.html",
+          "hash": "C9JoOHGas8BeQ4D+g4SGsNVmdSEdIi9qKRAAOv9to44="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.CustomRole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.CustomRole.html",
+          "hash": "RzaOOpIn8TObh+ylRtQxttbZHjTeplkboWDrzm6PmMo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.Extensions.ParserExtension.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.Extensions.ParserExtension.html",
+          "hash": "mL2/1PjuD1K+9T/RiIEn9zupJf9Se0N73pw5kleaJIc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.Extensions.html",
+          "hash": "a7U3HuY/EVdJJVUd7qx4wqb9DtxIx1N93oP9TvfE8tQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.Interfaces.ITypeDiscriminator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.Interfaces.ITypeDiscriminator.html",
+          "hash": "sV34rMGjndVfl3k5rP20t/HKgg7kd+ecg5pd4DE+AmQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.Interfaces.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.Interfaces.html",
+          "hash": "AmRCZ+EVXLxIpJuhpodz2P9VaU86HFMzcP8jfc7X1WE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.Parsers.AbstractClassNodeTypeResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.Parsers.AbstractClassNodeTypeResolver.html",
+          "hash": "iZhCR0/Zs4sgI3btbMvrybhX3tu75QKt9qKOQI6j0M0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.Parsers.AggregateExpectationTypeResolver-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.Parsers.AggregateExpectationTypeResolver-1.html",
+          "hash": "ts05Iz1MFbgwDAsxUNQD857JVLVd+DDLB3OkNDLGZl0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.html",
+          "hash": "qNeSyIieEv+DxPcG5GgjnPr5DdndYDUhCs6sCHTOu00="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.Parsers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.Parsers.html",
+          "hash": "dQb1xUyK/iKlnszSj3HHsZnNfuJQeMyeIYbGI5TSLnA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.PassiveAbility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.PassiveAbility.html",
+          "hash": "vj1/G5940DAGtcmy5NytUn8fKc7jQIt3nJUJ3izhOcU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.Features.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.Features.html",
+          "hash": "OI85lwgtA7N/xJr5Yg5b3c0prQRBfmfO9UgxdtcWDO4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.API.html",
+          "hash": "MlbFvQV+aL7pStdpeseX15m0hMmscUIKHxmg3iqtUIo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.Commands.Parent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.Commands.Parent.html",
+          "hash": "VF7rTpQksNJ/Po6B+bd1mj62syTEhs4wsRbqVCzzhOU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.Commands.UseAbility.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.Commands.UseAbility.html",
+          "hash": "7CyfPf9du8xynpNbHVf7kgPuSsxKb1Zwy/v7M1se44o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.Commands.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.Commands.html",
+          "hash": "64C9pkxW6SGZLIdWy0DYHYUlEsOCmlTlU76ozlf9soM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.Config.html",
+          "hash": "u6e5RVFtgPOnIZtqoMKd7bipUyFxdeX/rz74jSEJRdA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.CustomRoles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.CustomRoles.html",
+          "hash": "RfP32Poip1CKiZsGny7LXngAUPVCV3a0QuJWChUJHRY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.Events.PlayerHandlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.Events.PlayerHandlers.html",
+          "hash": "CMJ0SrnHZPMJoRMd4Hv/BYqltzptCY7tgQd7KB+JxfY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.Events.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.Events.html",
+          "hash": "mpZkcs146/hRI4jfdyd+3SsCXSEXp7rkupryixaP+Zg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.CustomRoles.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.CustomRoles.html",
+          "hash": "w3l4EP4Iy5d7U4qQviMl9QODMgmsJtmLODHT6U0L/Xo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Config.EConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Config.EConfig.html",
+          "hash": "vtJ4OTHZaSI18o2qTaezinzih4XXRSHX5k9hzQ3/684="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Config.Merge.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Config.Merge.html",
+          "hash": "YWw6l71/seZBaMbsneMPa3T8e//K6wyoiAhcSHw65/k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Config.Split.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Config.Split.html",
+          "hash": "kuloO6WQlM+6o5qJNf1PHV2B3gMeNcojlbptABMglpk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Config.html",
+          "hash": "nAqhyoW7udd7R3Oks/KNxmkmFLwjijfsIvdZA1G8h6Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Reload.All.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Reload.All.html",
+          "hash": "PjjrFmPDI25Eikd0tAGGjmVgwZT63DNu551ydgVOAnM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Reload.Configs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Reload.Configs.html",
+          "hash": "05EI/ZQard0etjFV2w/BbgmaSQ4oSZK3WtfZOzX2riY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Reload.GamePlay.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Reload.GamePlay.html",
+          "hash": "X+ajyYuTojNXJe2sSw01/KCmLgH5Geask6ukqiB4Jcw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Reload.Plugins.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Reload.Plugins.html",
+          "hash": "xf1VZTYnlOijGMBNBhbYZH3H7UsM8d3FEx0SRtyN3lc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Reload.Reload.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Reload.Reload.html",
+          "hash": "lzzfp5jbSoBOPCHXEwMchkiDNW19QTvVoOcVp1gk+dk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Reload.RemoteAdmin.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Reload.RemoteAdmin.html",
+          "hash": "WUCOPeDuHZLrYCigjk5eMLbsA0mtP1Can5z90hE5gmo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Reload.Translations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Reload.Translations.html",
+          "hash": "GYnK6x2R6R8mUMsbqLOGUslczP4BmlVWLvq9HVcbImc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Reload.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Reload.html",
+          "hash": "rWJRMyFMOLHUS783i2dEJ7MwwE9mMKMIVIqKCZhbg1Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Show.Plugins.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Show.Plugins.html",
+          "hash": "BgTMNtg1G8UX2634ufSVqAT4+6hOyx2pGQTV8f/tdgU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Show.Show.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Show.Show.html",
+          "hash": "QEZQUpJbLIbfn2aoRuTJ5QLAUvbQFZsfcJO9pOap2EA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Commands.Show.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Commands.Show.html",
+          "hash": "TpqyuRJ8jnRpFlPuU7NKYmq8G6rC0E2xawsQ+FiLZT8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Config.html",
+          "hash": "zd0ZmExSqUvMAwQ3ii3reXm12cDezu6UM15L1cO/01M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ActivatingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ActivatingEventArgs.html",
+          "hash": "YOG4K+rJEM4cPjQOpNLpxHK+AnfYjMnRp4k3lkilhnA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ActivatingGeneratorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ActivatingGeneratorEventArgs.html",
+          "hash": "bsHkybRBmiw/+6nW5wX7ed257u7NLMouVLh6BgbF43g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs.html",
+          "hash": "KQ+XEcF3Gb0eJkk/lnQ/1v4Xz1Wy5l1H35cy1NV6sPI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.html",
+          "hash": "cjMiKuSVFdbCeu4unHjw2IlJOmUJd+54GIFU9hrx4N8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.AddingTargetEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.AddingTargetEventArgs.html",
+          "hash": "xkMxKZKi36AM0X5u4OOBPJ+ZZ9LKHGEUxPsvEHKn1mk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.AddingUnitNameEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.AddingUnitNameEventArgs.html",
+          "hash": "Z5BaPjFEkGdEpKToidEtTYjkt6VjA8eBQud0dhJUdI8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.AimingDownSightEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.AimingDownSightEventArgs.html",
+          "hash": "s31qXlabAOWcZV1T8DqgsCkKErt64dsaH71rEqes8fM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.AnnouncingDecontaminationEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.AnnouncingDecontaminationEventArgs.html",
+          "hash": "+DismMdHqnKoGArYJwg6C/WlNo0IUputkSURGdhn82k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs.html",
+          "hash": "KOHht70hEDLeln8o0ugEJqCLsw1VWlQU4woVfcoE4cU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html",
+          "hash": "Gc3IUE2tTLr0ATDlBsdKM+4TTBd4pl5jnJ3uov72hfI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.BannedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.BannedEventArgs.html",
+          "hash": "0moGRp6ocJFNutKMTKlW1jgrQTqnGqC6nRYGrMRSQVI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.BanningEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.BanningEventArgs.html",
+          "hash": "nUOSkcX03zScG8+CeVkjasNsdTWHJe25USezk8p1BR4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.BlinkingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.BlinkingEventArgs.html",
+          "hash": "JzBk1hamo7EX59kpIzZwqWmR38S4niOAxjFeGue+EP0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.CalmingDownEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.CalmingDownEventArgs.html",
+          "hash": "0TfM/0u9ZkOVa6s5awVMQ1NqO3wUEIlN4HoLt2AA8xk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.CancellingItemUseEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.CancellingItemUseEventArgs.html",
+          "hash": "a+MzuBc7j1RBRCex7qdkV/v075nMoWgFHPje0ZZ+Loo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingAttachmentsEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingAttachmentsEventArgs.html",
+          "hash": "0mmQFikLacqbowkMGxfgRtKLHP55/z1qTiaLIXo+jIs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingCameraEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingCameraEventArgs.html",
+          "hash": "c9yvwXrmNdEAZCTRZaX5md37tlJ4ZrYscwtt6XttnTY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingDurabilityEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingDurabilityEventArgs.html",
+          "hash": "B8d1aqyYT3JrY1zjXd0sFii0C+mhHnVN9XIMhWvWUvc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingGroupEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingGroupEventArgs.html",
+          "hash": "DGslZBcEF9OPY1oLRB31ckUsnFKgKW4cwcrFEsftMw8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.html",
+          "hash": "imBvgD+VClTaLOwBVC3Yw1VEKg0YJoL4bMgv4Ap9pFo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs.html",
+          "hash": "jncMycxcr7YcmF0er1b3MHk3KuwDAMv38LdZPXiicrk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingItemEventArgs.html",
+          "hash": "L503UsCUgPw8cxbzfaBfdd7/mxC1aKWh31UeyIUVuRg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.html",
+          "hash": "VBQf0PtOOUzGJfxx3QSviXj33aUq5zoRiXRwpaxEetw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingLeverStatusEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingLeverStatusEventArgs.html",
+          "hash": "j3/Pw7rV3SzZv5mxhD4Ga/OTjrMuSYeM561IoQiS0q0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingMicroHIDStateEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingMicroHIDStateEventArgs.html",
+          "hash": "Nq4zVqU4qdyx7omvMYfZpwfl285zMIbuh22qFvzq9rU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingMoveStateEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingMoveStateEventArgs.html",
+          "hash": "7vdM+oSY6MrNoPA1qbULs1mEXsPSNqL1WBtsmtFrkQs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.html",
+          "hash": "fuwJSg+X7eCvoGZFw7hpteZ1HRUc1CqhRIY0a0lMOuw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingRadioPresetEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingRadioPresetEventArgs.html",
+          "hash": "sYTMEhCg9K4Xk1qTfUAHrMvNX5EPdkJ2QcmM5ikMGw0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingRoleEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingRoleEventArgs.html",
+          "hash": "aEq9mYA7OmggsG1vt0+p5LVzs4Di/diUrErzWVejijE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingSpectatedPlayerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingSpectatedPlayerEventArgs.html",
+          "hash": "qDjjbrfuZyuRloLN5IaKrlflWNmW1uR72uO30Ltvf+0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChargingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChargingEventArgs.html",
+          "hash": "tzaaVhVMH3/0VP8D4FiK3mD5ycxBAPLp4l1RkINZmKs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChargingPlayerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChargingPlayerEventArgs.html",
+          "hash": "MoplUiLqvOCkYnCVv2DH1K3EpPVfaCuYNsj40gRyZ2U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ClosingGeneratorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ClosingGeneratorEventArgs.html",
+          "hash": "s0JGJQx554wEZ9U3KHFop4NRQrffo36JZ0J+kzULmnw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ContainingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ContainingEventArgs.html",
+          "hash": "1rSWvK3wZjiFa0W9Z0TPnaJ4yG+50s9ECPa8eM6Pd/E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.CreatingPortalEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.CreatingPortalEventArgs.html",
+          "hash": "T+YHyNqS1v1dYj6DJ1p/0a2bZXIa/YBQh5exdKBQMSA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DamagingScp244EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DamagingScp244EventArgs.html",
+          "hash": "luIs6sArIEZ6p2YJK50t0Cm795aSRbTA7gUaUw/Cw4I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html",
+          "hash": "mP44AEPg+6yr7Yduio/twvKWHxzuv4y0oJxgKrMc9hU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DamagingWindowEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DamagingWindowEventArgs.html",
+          "hash": "G62yE7Wp0vpE4s7NHPdU6B/IMRIMZoB1OGI4BMngqiA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.html",
+          "hash": "Tfi2ZMbGupxZV6769h7Uxg/byeh9I4BJBUjPTTjvw2g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DecontaminatingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DecontaminatingEventArgs.html",
+          "hash": "sX0IB6cqZ0NZUMbKHtGEwZx7SM/ISkT/ouRi6kMiTv4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DequippedMedicalItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DequippedMedicalItemEventArgs.html",
+          "hash": "D4Uvqnd0M5ErSU0YJB5xhKklAaP3QMAeve0KOgsibxY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DestroyingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DestroyingEventArgs.html",
+          "hash": "ewp4rGUTFJuJGvaHqqbIfhm/QCypPYPxM0vUz7Hcay8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DiedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DiedEventArgs.html",
+          "hash": "ZYKk1n8jrxW1WfaFVk1OgnYzf+6POwOQcx8Y81xu96E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DroppingAmmoEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DroppingAmmoEventArgs.html",
+          "hash": "CDifu2BdShVLyOAXbjhBLaqKuGuwa657zdZT3Lo4jXA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DroppingItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DroppingItemEventArgs.html",
+          "hash": "GT31LQjWXAPGW8REGVAaPiM6nff9xrew1YRkW34xigo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DroppingNullEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DroppingNullEventArgs.html",
+          "hash": "0uMHcdrb5k2NcYQC0furhtbFJKksS08rWEHn602KM20="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DroppingScp330EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DroppingScp330EventArgs.html",
+          "hash": "erG3gmjiiKZl5US5J0ikixipeBEuGTC+EeFTekZ+c/I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DryfiringWeaponEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DryfiringWeaponEventArgs.html",
+          "hash": "5itxHzjB3d10SkRlCKmIRr52+AJgtpnUlTmyF+pEmDM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DyingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DyingEventArgs.html",
+          "hash": "JuAoGpPwOrdTb5/JfCHTrvpL/fkwUTsyV8pEWCmtP0Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EatenScp330EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EatenScp330EventArgs.html",
+          "hash": "uQFVRulZ4ulwnOxc7gLlaB00HifDMZZ0kPT0VMDyfjk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EatingScp330EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EatingScp330EventArgs.html",
+          "hash": "HV55OfRuSogQK0TNuupQXE5ZlQn8uEVI6ZuO+Xpsse0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ElevatorTeleportEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ElevatorTeleportEventArgs.html",
+          "hash": "Dz1btQkckpqWbsx2VhGSq4qxOQNC8JZjxWXKDTGgJcQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ElevatorTeleportingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ElevatorTeleportingEventArgs.html",
+          "hash": "S6ejY79gU8oSHkhfFwbG6EazfBRop+hk7hXU2gzZiAk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EndingRoundEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EndingRoundEventArgs.html",
+          "hash": "knQh9ISvRXPneruFEprPeb12cJvZh5dAJ3UXrnkqHiQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EnragingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EnragingEventArgs.html",
+          "hash": "u52CWe7i0JJIOYPXPLKDJCuqnnUuT11CiSV+PQZvD90="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EnteringEnvironmentalHazardEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EnteringEnvironmentalHazardEventArgs.html",
+          "hash": "HTyw2giipbS57jXxvs0QFNqLUAT8a2PlhD8BRtmsm34="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs.html",
+          "hash": "0JembY/FASj4rsYxaxR5woZOyrogsCp+nqZUwrTJWps="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EnteringKillerCollisionEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EnteringKillerCollisionEventArgs.html",
+          "hash": "u/Q5+FmlYAvt8yVdEUzTada4VeLdCD1wnsfMxbfK3nU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.html",
+          "hash": "2cLZul0wC6HB1HShoEZHq6KIUZGFuIMXY+d5zOSiaAc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EscapingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EscapingEventArgs.html",
+          "hash": "zBFXFxcwxpuZOe7q5ZmZqj7reW6Fg8b2qF7P4ePZ//M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs.html",
+          "hash": "PwTkMsGu6VJ4QsFSLdVkpIKvSxWZE8NJrvsodXxW4mw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ExitingEnvironmentalHazardEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ExitingEnvironmentalHazardEventArgs.html",
+          "hash": "Xg+ESFjKONIiRLs/Ns1/WPjIg5Yz3mcUhBeuA+Q6RwM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.html",
+          "hash": "w8yMejKHduHP8qUHo+XvZxZppAKs6qyMtFPCOwZmLH8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs.html",
+          "hash": "dnCS4k6K/kXQ7PHsSaGW1Hecmnj2R4eolMY7R7ls1Rk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.FinishingRecallEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.FinishingRecallEventArgs.html",
+          "hash": "3asmBQbvduiqtLgOci4ThDtieEPRch9IdSyGKxKv8iE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.FlippingCoinEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.FlippingCoinEventArgs.html",
+          "hash": "2ar/KyqN9n69WqBEkmOs9Lz6tOMG0H4gEDRXydOtnFs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.GainingExperienceEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.GainingExperienceEventArgs.html",
+          "hash": "8DWIpcyNwUjQiDkGfvPz7FxKZvfPdgkbVt8NSHDS92s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.GainingLevelEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.GainingLevelEventArgs.html",
+          "hash": "Go4d8LSFmJxs+SYrGO2LedEH4VK9xJ0aWY455I9cbHU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.GeneratorActivatedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.GeneratorActivatedEventArgs.html",
+          "hash": "VDB7YahvDZZDTuE4Aef20Nnww3z/pYQp11/OB3Lzz00="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.HandcuffingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.HandcuffingEventArgs.html",
+          "hash": "yAwf+LjteJ4W/nEUYHkssKkIAl0d9560GoKhzwCzSsk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.HurtingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.HurtingEventArgs.html",
+          "hash": "H9YRqWXprZEYbDZEMYGQ9ElZvnTC9WdKiXIFwlRFcEo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.InteractedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.InteractedEventArgs.html",
+          "hash": "YnJlLAdZImDq320Pfuqt6FACoIZKQ9weIFow4w0jQw4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.InteractingDoorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.InteractingDoorEventArgs.html",
+          "hash": "pyHN2Y7X64VfXQbhFhX3NiCPNs232vTbCfw5LhQRAt0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.InteractingElevatorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.InteractingElevatorEventArgs.html",
+          "hash": "f6sybZy/TnIBFEs4nJHrBMFML+SGn6N6Fva0b1mnO9Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.InteractingLockerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.InteractingLockerEventArgs.html",
+          "hash": "0a4SjZVQKwUK0JrjzO2QgA/v4XSJA5SISS6lbdCKqCQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.InteractingScp330EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.InteractingScp330EventArgs.html",
+          "hash": "LX/HWSw9vB9hsajrhXoMPogsmm7sQoKwuaWScUvzsqY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.html",
+          "hash": "3/OxOXbGZFEaztzlVLhXJho6tUoXadm0KZab602U9IM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.InteractingTeslaEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.InteractingTeslaEventArgs.html",
+          "hash": "vVVVfkL45MgjkkNvZtc7jBWt5XYROXSlDi+DrOvC/AM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.IntercomSpeakingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.IntercomSpeakingEventArgs.html",
+          "hash": "R3hyACRV+iQl4ruf2VI2Y2SvYhkSk4u/wkY7H3VBxQI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ItemAddedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ItemAddedEventArgs.html",
+          "hash": "usVnMJ7Wq+WclBEW/RANkdubTagl4j4QNmLM0OQ3uXU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.JoinedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.JoinedEventArgs.html",
+          "hash": "fuJ7XA60ptS0xF9ONitFeUtwIuRsCpduny0rkJfTlJc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.JumpingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.JumpingEventArgs.html",
+          "hash": "Rx9ie83tDShdYEgeehc2bYeecatVhcOlcxGsx8CjTEA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.KeycardInteractingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.KeycardInteractingEventArgs.html",
+          "hash": "SmErRhpOK5esivhZtixAdy7Xlbdk0m1KSJ1zOT9DI2U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.KickedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.KickedEventArgs.html",
+          "hash": "8ZYysZoFlNyWbi3JngIBGh080CI1DMWKLlfJ7/4LOiI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.KickingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.KickingEventArgs.html",
+          "hash": "lSYsv9HiRewWyqZu3Lt3Sd+R4+YOF/4p1yj71VeF4g0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.KillingPlayerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.KillingPlayerEventArgs.html",
+          "hash": "U9YhICC0/J+6un3RQZ+mH+1jHznGzv14bdddIS7fgTw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.LandingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.LandingEventArgs.html",
+          "hash": "niTzxlkmQ2t0YAVschg+z0Eh1NalM0Iov90RBY71yy4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.LeftEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.LeftEventArgs.html",
+          "hash": "qwJopdp0LK5B3Zvs8BOl5U3q1L8lRM2Emm1rUuj9FnE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.LocalReportingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.LocalReportingEventArgs.html",
+          "hash": "TjOCKrr550kyFvrIXU0KIh9jaZNu3t7YReq4ZKomg8Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.LockingDownEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.LockingDownEventArgs.html",
+          "hash": "FM0XHo8vb7Wflo73rc6rXr+BIuRP47WPQ9ymfaJk+Ro="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.MakingNoiseEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.MakingNoiseEventArgs.html",
+          "hash": "tJ3rtMV43U77u25l7DGf+bcQ6u6oUqi1q8pqgvg52SA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.OpeningGeneratorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.OpeningGeneratorEventArgs.html",
+          "hash": "bXfseKdJUT6HdmMvnXy+RykYiMvGJf78jFYYsiAwdx4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.OpeningScp244EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.OpeningScp244EventArgs.html",
+          "hash": "uguwqzU+1VwsnZ4lJVBuxKSFVDnrL1AaCR3I/Na5URg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PickingUpAmmoEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PickingUpAmmoEventArgs.html",
+          "hash": "G9S86glTsdyyL6ST4kWtZbPZbj3d7BnW/jzMEXEGS+s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PickingUpArmorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PickingUpArmorEventArgs.html",
+          "hash": "C8jEiDb54Q+1iCKHt0p97d6kjYC+oOyfJCN4VUoGLSc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PickingUpItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PickingUpItemEventArgs.html",
+          "hash": "pWoFQqCOJS8it9XAKXFyV+QyFD1j0T6Z00tNgf7bE84="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PickingUpScp244EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PickingUpScp244EventArgs.html",
+          "hash": "2lCIIyjouF5gbYfhGQcjmpmSwX2ZbN92w0rXmST+c4U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PickingUpScp330EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PickingUpScp330EventArgs.html",
+          "hash": "bSvdr1aU/egChEPJneadMyzDoblbwRd0hMmaJLCiuaI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PlacingBloodEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PlacingBloodEventArgs.html",
+          "hash": "Er4x1weo6iUGKRK/k8HIKr+V+WvAIHi1ClPZkiC94sA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PlacingBulletHole.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PlacingBulletHole.html",
+          "hash": "Q6eiaIz8ZqMqkDX/CZpk8bxRleFSd8ox7H/icJa/fHA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PlacingTantrumEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PlacingTantrumEventArgs.html",
+          "hash": "83WxZAXl6n4kUlTrkepYBYkJaMpsSEgTMkIr9meLNq4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.PreAuthenticatingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.PreAuthenticatingEventArgs.html",
+          "hash": "GZi1WWNg9ePuwdIDoaTMAByc4p4eg6el/O3P+MyDpyk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ProcessingHotkeyEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ProcessingHotkeyEventArgs.html",
+          "hash": "5uTBWHa/45EnI5ryatmxMCn6U0C/kyC9WkdI+GxIuUg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ReceivingEffectEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ReceivingEffectEventArgs.html",
+          "hash": "DfTJTF05j/Vhi0vgwqAmoJgGg5ZdcYwgWaJ2riAL+6I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ReceivingPreferenceEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ReceivingPreferenceEventArgs.html",
+          "hash": "IXcfq/Zl0mQHWL/2SDloIFey0pmZnsoLzTu5cv0Wvbo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.RecontainedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.RecontainedEventArgs.html",
+          "hash": "lBfVwUr2lAq+FAQ4EXaew51HS/DRCfKS1h00A2i/c0Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ReloadingWeaponEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ReloadingWeaponEventArgs.html",
+          "hash": "gBJyAxkS1FnAAPPG9sYVPbJnt8ydXBH/De3NvRSs/nE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.RemovingHandcuffsEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.RemovingHandcuffsEventArgs.html",
+          "hash": "uKToAJkMgc099/R5NSnkaslZS367hbCUVrWT/puk3j0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html",
+          "hash": "jIUkLJHXWgQUP+zkvddMfGlXvdoKh47rB7NYgsG6SkU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.RespawningTeamEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.RespawningTeamEventArgs.html",
+          "hash": "IUFSiED5/KlnnKVFH5PtvdoFoGqfbPvEub0ntFtDWEs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.RoundEndedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.RoundEndedEventArgs.html",
+          "hash": "JQH82vhoNmOKYpXWov8PeaWP72eb1mSehEvTBlF5fo4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.SearchingPickupEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.SearchingPickupEventArgs.html",
+          "hash": "xFJoMHYDCqeAzVVH/EJpDYfCeKqTS44QsCorqiJCHJA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.SendingCassieMessageEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.SendingCassieMessageEventArgs.html",
+          "hash": "u2l8ZCmXn63ohLOIzyniS6vPmtA/+iG1y6OrTWDKEaE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ShootingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ShootingEventArgs.html",
+          "hash": "WwHxToodj7muqaCvXFJ7vlECSWceJP3mMWg9swtd9qU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ShotEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ShotEventArgs.html",
+          "hash": "iv/fYyVKeph1gN4+xIZSMQ2d5jZe9tgHbVAKvOCzR6U="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.SpawnedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.SpawnedEventArgs.html",
+          "hash": "HPW46i6ZG3M01XFCAPj2JfamIVL1vx9I4E/yyMwgfr8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.SpawningEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.SpawningEventArgs.html",
+          "hash": "OWBQu+Kk/7FZHIaz4ltDdKTsC0/4yIhnaLiFcZXWpKk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.SpawningItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.SpawningItemEventArgs.html",
+          "hash": "jcskvM+j3ir1yKIgM6/XpjpSO1btHvylv/HZcaiUauA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html",
+          "hash": "2y69cKk5FadlWpFqKT0/xkMjEwsMsJ/eiM4cd3K4BOc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.StartPryingGateEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.StartPryingGateEventArgs.html",
+          "hash": "YSsFykkKhNrePXeau4e7SiHSIEA1faUCmdcdVUch/QY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.StartingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.StartingEventArgs.html",
+          "hash": "yhfuy9c4ld+z1LXecVs5VhmADXigAWOlsMRc3wT769Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.StartingRecallEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.StartingRecallEventArgs.html",
+          "hash": "L9rBDueBQiJ4LrtJkHD5yF3owkratwg0HyyiHKdGaN4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.StartingSpeakerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.StartingSpeakerEventArgs.html",
+          "hash": "jpA/5rG2S7H+eg/LqxK0HZJNv845BsQqXmAu2nvIHpo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.StayingOnEnvironmentalHazardEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.StayingOnEnvironmentalHazardEventArgs.html",
+          "hash": "nlS6RTm6/b0IhVpu00rVghMW5iITKUun3/8JYR/LRKg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.StoppingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.StoppingEventArgs.html",
+          "hash": "zUurAbV9BKq19L3U8BHV9tEO1o8pY8Rjnr0Gg/xlHwQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.StoppingGeneratorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.StoppingGeneratorEventArgs.html",
+          "hash": "ZNeJHrjintBYXowz81Fdmw1wIwjMO1LegPFQretOxug="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.StoppingSpeakerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.StoppingSpeakerEventArgs.html",
+          "hash": "YLjY0pY7CzCdrr5Fgv/zDAnusgEr2WxaNzgeXdAdGlQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TeleportingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TeleportingEventArgs.html",
+          "hash": "FRN5rp0gDj4Q35kC1L07rI92Ocfr65G75jv9FJvbc20="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ThrowingItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ThrowingItemEventArgs.html",
+          "hash": "L/UcauRp8tQhToCz9UXi6I+hPhMHO6hbu7fDIUBGyUU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TogglingFlashlightEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TogglingFlashlightEventArgs.html",
+          "hash": "8+CmKOGy5qsmfe4yeyQU/S85tWWDXV8t18w19V9ORno="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TogglingNoClipEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TogglingNoClipEventArgs.html",
+          "hash": "MwnmLVQ29pn1l4e5+OdNVFizR7dMs7Udot5qEHL9QJ8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TogglingOverwatchEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TogglingOverwatchEventArgs.html",
+          "hash": "tt3XSLeiX+3mu18s3UIYbNrr6xah3cd89sbOWPnmqyg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TogglingWeaponFlashlightEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TogglingWeaponFlashlightEventArgs.html",
+          "hash": "usQRQnpgywFfBYXnhky3qWmorp2quGK/UDq/rb68iVs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TransmittingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TransmittingEventArgs.html",
+          "hash": "b7wKVOSTuwZrT9k8T6QoFV+2Mmz0Z+/PvIvD/yNJJTk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TriggeringDoorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TriggeringDoorEventArgs.html",
+          "hash": "KvQAfEtQnt2ErcujU522oDkzNw1ofkbE/oeIMe4/Ix0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TriggeringTeslaEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TriggeringTeslaEventArgs.html",
+          "hash": "nZt4it3t8OdT4Hlfy2bVnQ5i1jkWDyjV4o3IOj/Ptig="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TryingNotToCryEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TryingNotToCryEventArgs.html",
+          "hash": "jH57Tp7+EsfIxkhIkM+wrg/VHF5DKMWgmLFIGZF3gG8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TurningOffLightsEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TurningOffLightsEventArgs.html",
+          "hash": "0nt7kdk60YUC/UaMTRcY4oraFnBf7O5Qbf35Yg57v98="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UnloadingWeaponEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UnloadingWeaponEventArgs.html",
+          "hash": "yQSRd8UBVqkHXHSYW8vJ+23E3hATw48vKwHbA0V2R2I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UnlockingGeneratorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UnlockingGeneratorEventArgs.html",
+          "hash": "wiEd1iQ37z6XqJHheuPoJLY5QSgmQ/BA1/cs+lbrJ8Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UpgradingInventoryItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UpgradingInventoryItemEventArgs.html",
+          "hash": "Gxs/YHauiww0kIFpSiBSKnLZ5TAigUNb8N7QZEoVxfU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UpgradingItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UpgradingItemEventArgs.html",
+          "hash": "dbSr6jJcU6bNeHSOsOfReaCyPNdqkfD7S6CrvwjFp4c="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UpgradingPlayerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UpgradingPlayerEventArgs.html",
+          "hash": "gCC853zZkIs6sh5nr18cEgBKysApwrqfSkDik/29Q9Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UsedItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UsedItemEventArgs.html",
+          "hash": "Kn5UkkEX+1mUAR3flwjsMWTJN0Bf+w5bdRCjsRG4ecw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UsingBreakneckSpeedsEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UsingBreakneckSpeedsEventArgs.html",
+          "hash": "LsSu6KaVNbG+x/XxetR3oRB8hcILPyZgxFIxSoAWQV4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UsingItemEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UsingItemEventArgs.html",
+          "hash": "OBq2OJwLx4g8HxN6haZFpm/K6sbD3UjeZtqUEoukMq8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.html",
+          "hash": "stIToLA8xOuLK68QN0HAowU8NacSP8XryJuUyPaVsak="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UsingRadioBatteryEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UsingRadioBatteryEventArgs.html",
+          "hash": "pEV1Qd/GgEZb8aeIq8UB1RxGiIw+3bHkvOl39iBbyH4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UsingScp244EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UsingScp244EventArgs.html",
+          "hash": "830dFJyltlC9LR81XiCRM5acRhVUVQ2COKlwrZhEFI4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.VerifiedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.VerifiedEventArgs.html",
+          "hash": "hDGsn3yVzpfnl+feuxcNQ5L5HgKS848yQDHxUx23xEw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.VoiceChattingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.VoiceChattingEventArgs.html",
+          "hash": "lDbFKrHaJMEhl8z25W+208wCY8ZK2ONRo/DIxCchEEw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.WalkingOnSinkholeEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.WalkingOnSinkholeEventArgs.html",
+          "hash": "P0QK3h1KJMH6VLUbZStH4qNScMysM+cyerpzEhLv8Jw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.WalkingOnTantrumEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.WalkingOnTantrumEventArgs.html",
+          "hash": "Q9IqFaAJNSj6acAPZ2/evyiLAagJARa7M1gmbSeygoA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.html",
+          "hash": "x/UxlGzvWs9Hz415AuuOl8rze2HM3FhJOXVrGKciM+A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Events.CustomEventHandler-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Events.CustomEventHandler-1.html",
+          "hash": "Domgc5emyVJLBwI40PBzI+YcVj61KuTlZWftIxWh7xY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Events.CustomEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Events.CustomEventHandler.html",
+          "hash": "YWcJIFpxkHF7d6pGHVeWpcEENzCm3q8x55oX7x459Yc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Events.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Events.html",
+          "hash": "3u113Mki757iSot3u19VX6OopMdCVI4xUzkDnrmtkr0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Extensions.Event.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Extensions.Event.html",
+          "hash": "IP3dRPtleZpH70Oib41IXWg8nDDNs8AEdqpymciWSV8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Extensions.html",
+          "hash": "F/0M+gvHCTvEhyIgCiUtNW0DfLu3G3cXwnGCMc3JSLk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Cassie.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Cassie.html",
+          "hash": "a1yCsT4IvXiug4mRxAx7tDxRiNE/3WfHtIkXxxduzYE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Item.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Item.html",
+          "hash": "oOIa2Q8YYSTKzoyOQBmYyglElh6mlrtV0+Mb6pBQGBk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Map.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Map.html",
+          "hash": "O3KjMvNrcXB8WsRVisLqz7L3QnNFaVyJjoN6orypSAk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Player.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Player.html",
+          "hash": "JZ6O28P8Ggklo9sEMtKZmYSnwkt7p2YNxD026aVokeM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Scp049.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Scp049.html",
+          "hash": "WyVQpiB46gbBf1N4CyAuJmcCNROG/yc+adz4+qNqV3Q="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Scp079.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Scp079.html",
+          "hash": "drySeqW00Y44FhgprydeW5TJKANtC0+4ikQ7vsN8SNk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Scp096.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Scp096.html",
+          "hash": "Vq+EToizL0jYhQ65ChKf0Z5E0EGnVPY+ud0VgbQDIko="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Scp106.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Scp106.html",
+          "hash": "nFi3DAHhKliBhNNG1tAeLHaHlqd+Rc95zD9U2S7ApLI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Scp173.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Scp173.html",
+          "hash": "q2O8uFrhg3fIl7OJlLHbQbaMALqI6hgHNrR/5/T5J+E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Scp244.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Scp244.html",
+          "hash": "Mw0EVBqhBWtdRpT33/QBBPPxfg443d4ADzwCoYHteFc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Scp330.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Scp330.html",
+          "hash": "rFBMG+dnESCRKGSRfEkqo8a5TxBze3SV4B59sC2a7iY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Scp914.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Scp914.html",
+          "hash": "vQmAKwW2tGTGnUv/fCsglAPZ1G3iJ2EX9V3zydWx4J4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Server.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Server.html",
+          "hash": "JnXqLM7fO8xlTt6R64Cv4a6bFu5oCLycdSGApfI4CDE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.Warhead.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.Warhead.html",
+          "hash": "MJe+S4ZdsTdreiwOQsQHi1YoVZxuk/cDpYtEmHZMEnU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Handlers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Handlers.html",
+          "hash": "Ov0bWB3vhqft9HJXC995ccf5SfgyBkcY4ikB8oKdh7A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Patches.Events.Scp330.InteractingScp330.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Patches.Events.Scp330.InteractingScp330.html",
+          "hash": "gVCBh8qEcT+UW9AZRNe4B87dNgtW/cNDC+51ZJVFbfc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Patches.Events.Scp330.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Patches.Events.Scp330.html",
+          "hash": "upcmwU5x0xl4F478LaF4oqp513uD3EQgUH4h60FwyUI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Patches.Fixes.CassieNotSayingUnitNamesFix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Patches.Fixes.CassieNotSayingUnitNamesFix.html",
+          "hash": "0jquQ67QkYpANDYREGbqoFWnig48G60n3Roac510vGA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Patches.Fixes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Patches.Fixes.html",
+          "hash": "1lwKasXrrb9txQhQlYtwv5o+IOsHKIG3osaKIEm2lTI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Patches.Generic.IndividualFriendlyFire.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Patches.Generic.IndividualFriendlyFire.html",
+          "hash": "s86j9KpPFgTEY4+Roe8/l1Bd8DCgd+DsfJG+MkFC0hQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.Patches.Generic.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.Patches.Generic.html",
+          "hash": "JX6EXVQXxnRrApS5uz6vKaYk5HDTLvZzvn5qXiA6eXk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.html",
+          "hash": "SBWgknBlTOhxaGOVvKqtB2Co7TNoK7C2XOFJwsMIz6E="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Config.html",
+          "hash": "77fv+JdowB/poC38R8Ya9IwW3Cx323jQXEIHRgi2JLw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.ConfigManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.ConfigManager.html",
+          "hash": "KXhBIFYdO9hFOPibMHPlna9MQAFxTrpEcSlhIBwbBnk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CommentGatheringTypeInspector.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CommentGatheringTypeInspector.html",
+          "hash": "7k+FJnFgMdwz8/jrNqiA+6Ag6x614LthcOs2EcMRCxk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CommentsObjectDescriptor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CommentsObjectDescriptor.html",
+          "hash": "3Pt7v6L4Ew47AKOxUWCzjiAw1huvT4P8dOkaAwlp8ZQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CommentsObjectGraphVisitor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CommentsObjectGraphVisitor.html",
+          "hash": "gpuvzW6k3Hu6giuyBGBGKE/q0JB0jZtbRO2rSX/eB1k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CommentsPropertyDescriptor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CommentsPropertyDescriptor.html",
+          "hash": "qFZnX01LFF2gQBeyQIAMXwk7GL8sL0I5LFJLKostlYE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CustomConverters.AttachmentIdentifiersConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CustomConverters.AttachmentIdentifiersConverter.html",
+          "hash": "LENKE4J8adGojtl/JxUNs7IRKBWwg0xbCkV0E6YAZy0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CustomConverters.ColorConverter.html",
+          "hash": "eLVqJ9i1qHwUbcZq2+EsIt8vctWLlWhcuaUaMlJ7FNU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter.html",
+          "hash": "md1vZM+VeiPw9TeVQZXQLkethESYFsdzoZ3bmpuuAp8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.CustomConverters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.CustomConverters.html",
+          "hash": "eqOb7qOJn3/V2whdLcGo6BOtOg88M17PoKooReWJXGM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.ValidatingNodeDeserializer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.ValidatingNodeDeserializer.html",
+          "hash": "yod7HBudLNNef31q1txqrWEWryKMhxgAEVianpwbKhw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.Configs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.Configs.html",
+          "hash": "JqBgxS5M8Ox6HDRIAFJ6ksvcpkzzVgAC3C22jynUl48="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.LoaderMessages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.LoaderMessages.html",
+          "hash": "Y6CEfW1jCuq+CTZab+mTBT69LIJDx0s50RXGWu/QO8o="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.MultiAdminFeatures.ActionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.ActionType.html",
+          "hash": "2eJmJ8IFDwl8IAjRTbJ2bIBDGvp25krWubjKcdhBli0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.MultiAdminFeatures.EventType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.EventType.html",
+          "hash": "0cl84r44jUqguJe8UvQ4yxA/+nY9QjbP0qCnBjlESc0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.MultiAdminFeatures.ModFeatures.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.ModFeatures.html",
+          "hash": "8pVljQddm7mmnbn3SuesTbhC8sD5QB1lq6/w1AlHBtY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.MultiAdminFeatures.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.html",
+          "hash": "3NN4Y7AmdmVl0DmGaPmNHiCaXAWflJsyNI0WPw5be+0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.PluginPriorityComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.PluginPriorityComparer.html",
+          "hash": "XBObI8pmom9Rh8J9eZKbDq1o6mIeo2lhGHrXhqO1/Q4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Features.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Features.html",
+          "hash": "XK4iEsun14/1rrgCFT2c6m0zOBHbxugLOWN2FQVCfNo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Loader.TOKEN_ELEVATION_TYPE.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Loader.TOKEN_ELEVATION_TYPE.html",
+          "hash": "YeIXZOosWBJCMmpNr6Wt6f1lY+L2hzkVywubQYrFUnA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Loader.TOKEN_INFORMATION_CLASS.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Loader.TOKEN_INFORMATION_CLASS.html",
+          "hash": "jbcIKJIOwwKev32GBm0RQ62RsK8+4vO9r64j47SuOZw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Loader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Loader.html",
+          "hash": "S5ZXG6f/XQ9OrGA5XQGZJmRnAWgv+bAT4i9Xrhn2jGY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.PathExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.PathExtensions.html",
+          "hash": "QUpOt9O+zteX/64pLRehbbNfAqUGcr3gy42Whg0GafY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.TranslationManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.TranslationManager.html",
+          "hash": "fj+4EqhqFdfv1XnFP5brAlJzH8HCJNXicyDmxWTdsZo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.html",
+          "hash": "Vd3rUW85QEZlOzDrpQxu4o9os1mxynlds8Dit6THSCs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.Add.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.Add.html",
+          "hash": "GKC/3yi49Imn9f4fTscvSkgDrWa9914iUc4+07Ah9J8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.Group.Add.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.Group.Add.html",
+          "hash": "4aBTxCzFxv3/q7ZiR8oIEo4OYKd30Y1wNSWlDHMLbx4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.Group.Group.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.Group.Group.html",
+          "hash": "imbq3jOa+2KImHp4Kn3MkzR5f4HE6zcz5d5PZrfFjhY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.Group.Remove.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.Group.Remove.html",
+          "hash": "LcoI1UPI3IYlbIlvTJ1bzeLehilnufVUa5zjpP9P9uw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.Group.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.Group.html",
+          "hash": "nFcEpLMF/myVcjr/tIz+PILTU3dN7//g+w5qfasZQx0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.Permissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.Permissions.html",
+          "hash": "3ZTTRh1p6fSCsqcptLXEXwhHy6rm6BiqOlV3XG1XNsE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.Reload.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.Reload.html",
+          "hash": "D9Zzg54xpYytyoJxuvhTYdG9vIYpFHW88o4sN/LO9m8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.Remove.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.Remove.html",
+          "hash": "T+Mc7bWP0dqfu08QWQ+CVUsMm6qE6FAMyXARc1etrIo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Commands.Permissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Commands.Permissions.html",
+          "hash": "yj/3pdiQq9+zAoA3zfLsPZ8Qf0f5hiDazIaND8OzdMo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Config.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Config.html",
+          "hash": "67SwcM2/iyiaY6NH1Nc8mHjB3AGX6+umRAkjstE6A8A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Extensions.Permissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Extensions.Permissions.html",
+          "hash": "LL5ctQOdaLksOKhbmKthdfoWHzOT1jb3gHPijnphLb4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Extensions.html",
+          "hash": "vMxhVyd11any9q9VpbnQCA2fKBSZImwpcVyjS+bF69k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Features.Group.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Features.Group.html",
+          "hash": "hYsdJ2dovcB6UGwl4vRVOpKfyPY/d+uuE0ig00abNMU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Features.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Features.html",
+          "hash": "yiwfs0BLLDT+7bUcbqSrmnPkkNbINvyqDIxmq37/9WM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.Permissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.Permissions.html",
+          "hash": "GoB+tc/1xkpz64/buy71BjrNQg5gofibXw9e+sIInJg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Permissions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Permissions.html",
+          "hash": "IvNAjI/Inq29cSwW0LSFlXL1XrE51plPHmgwkYAKqVo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "obj/docs/api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "U112TmEH/LIrhspjwn8yW8nwOm6pWFpaNXwUUVP2Aos="
         }
       },
       "is_incremental": false,
@@ -73,9 +5353,22 @@
           "total_file_count": 1,
           "skipped_file_count": 1
         },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 439,
+          "skipped_file_count": 172
+        },
         "ResourceDocumentProcessor": {
           "can_incremental": false,
           "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
