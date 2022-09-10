@@ -2235,7 +2235,7 @@ namespace Exiled.API.Features
                 {
                     firearm.AddAttachment(identifiers);
                 }
-                else if (Preferences.TryGetValue(itemType, out AttachmentIdentifier[] attachments))
+                else if (Preferences is not null && Preferences.TryGetValue(itemType, out AttachmentIdentifier[] attachments))
                 {
                     firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                 }
@@ -2416,7 +2416,7 @@ namespace Exiled.API.Features
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
-                    if (Preferences.TryGetValue(firearm.ItemTypeId, out AttachmentIdentifier[] attachments))
+                    if (Preferences is not null && Preferences.TryGetValue(firearm.ItemTypeId, out AttachmentIdentifier[] attachments))
                     {
                         firearm.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                     }
