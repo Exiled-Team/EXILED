@@ -24,8 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     ///     Patches <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)" />.
-    ///     Adds the <see cref="Handlers.Player.EscapingPocketDimension" /> and
-    ///     <see cref="Handlers.Player.FailingEscapePocketDimension" /> event.
+    ///     Adds the <see cref="Handlers.Player.FailingEscapePocketDimension" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
     internal static class FailingEscapePocketDimension
