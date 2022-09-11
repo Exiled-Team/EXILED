@@ -3025,6 +3025,8 @@ namespace Exiled.API.Features
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
+            LockerChamber[] chambers;
+
             object randomObject = type.Name switch
             {
                 nameof(Camera) => Camera.CamerasValue[Random.Range(0, Camera.CamerasValue.Count)],
@@ -3038,24 +3040,9 @@ namespace Exiled.API.Features
                 nameof(Generator) => Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)],
                 nameof(Window) => Window.WindowValue[Random.Range(0, Window.WindowValue.Count)],
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => new Func<LockerChamber>(
-                    delegate
-                    {
-                        LockerChamber[] chambers = Map.GetRandomLocker().Chambers;
-                        return chambers[Random.Range(0, chambers.Length)];
-                    }),
+                nameof(LockerChamber) => (chambers = Map.GetRandomLocker().Chambers)[Random.Range(0, chambers.Length)],
                 _ => null,
             };
-
-            switch (randomObject)
-            {
-                case null:
-                    Log.Warn($"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
-                    return;
-                case Func<LockerChamber> func:
-                    randomObject = func.Target;
-                    break;
-            }
 
             Teleport(randomObject);
         }
