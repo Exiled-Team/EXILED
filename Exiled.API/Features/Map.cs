@@ -222,6 +222,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Broadcasts a message to all <see cref="Player">players</see>.
+        /// </summary>
+        /// <param name="duration">The duration in seconds.</param>
+        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
+        /// <param name="players">Players to shows the broadcast.</param>
+        /// <param name="type">The broadcast type.</param>
+        /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
+        public static void Broadcast(ushort duration, string message, IEnumerable<Player> players, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
+        {
+            if (players.IsEmpty())
+                return;
+
+            foreach (Player player in players.Where(p => p is not null))
+                player.Broadcast(duration, message, type, shouldClearPrevious);
+        }
+
+        /// <summary>
         /// Shows a hint to all <see cref="Player">players</see>.
         /// </summary>
         /// <param name="message">The message that will be broadcasted (supports Unity Rich Text formatting).</param>
