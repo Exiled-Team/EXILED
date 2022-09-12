@@ -1086,7 +1086,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the player invisibility effect should not be removed when interacting.
         /// </summary>
-        public bool InvisibilityInteractionProtect { get; set; } = false;
+        public bool KeepInvisibilityOnInteracting { get; set; } = false;
 
         /// <summary>
         /// Gets the player's ping.

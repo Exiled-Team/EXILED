@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Generic
 
     /// <summary>
     /// Patches <see cref="StandardDistanceVerification.ServerCanInteract(ReferenceHub, InteractableCollider)"/>.
-    /// Implements <see cref="Player.InvisibilityInteractionProtect"/> property logic.
+    /// Implements <see cref="Player.KeepInvisibilityOnInteracting"/> property logic.
     /// </summary>
     [HarmonyPatch(typeof(StandardDistanceVerification), nameof(StandardDistanceVerification.ServerCanInteract))]
     internal static class InvisibleInteractionPatch
@@ -52,7 +52,7 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Stloc_S, player.LocalIndex),
                 new CodeInstruction(OpCodes.Brfalse_S, skipEffectChangeLabel),
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.InvisibilityInteractionProtect))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.KeepInvisibilityOnInteracting))),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ceq),
             });
@@ -68,7 +68,7 @@ namespace Exiled.Events.Patches.Generic
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.OnInteract"/>.
-    /// Implements <see cref="Player.InvisibilityInteractionProtect"/> property logic.
+    /// Implements <see cref="Player.KeepInvisibilityOnInteracting"/> property logic.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract))]
     internal static class InvisibleInteractionPlayerInteractPatch
@@ -92,7 +92,7 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Stloc_S, player.LocalIndex),
                 new CodeInstruction(OpCodes.Brfalse_S, label),
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.InvisibilityInteractionProtect))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.KeepInvisibilityOnInteracting))),
                 new CodeInstruction(OpCodes.Brtrue_S, label),
             });
 
