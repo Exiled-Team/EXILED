@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="StoppingEventArgs.cs" company="Exiled Team">
+// <copyright file="StoppingWarheadEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -13,10 +13,10 @@ namespace Exiled.Events.EventArgs.Warhead
     /// <summary>
     ///     Contains all information before stopping the warhead.
     /// </summary>
-    public class StoppingEventArgs : IPlayerEvent, IDeniableEvent
+    public class StoppingWarheadEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="StoppingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="StoppingWarheadEventArgs" /> class.
         /// </summary>
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
@@ -24,7 +24,7 @@ namespace Exiled.Events.EventArgs.Warhead
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public StoppingEventArgs(Player player, bool isAllowed = true)
+        public StoppingWarheadEventArgs(Player player, bool isAllowed = true)
         {
             Player = player ?? Server.Host;
             IsAllowed = isAllowed;
