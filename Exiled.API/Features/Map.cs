@@ -231,11 +231,13 @@ namespace Exiled.API.Features
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
         public static void Broadcast(ushort duration, string message, IEnumerable<Player> players, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
         {
-            if (players.IsEmpty())
-                return;
+            foreach (Player player in players)
+            {
+                if (player is null)
+                    continue;
 
-            foreach (Player player in players.Where(p => p is not null))
                 player.Broadcast(duration, message, type, shouldClearPrevious);
+            }
         }
 
         /// <summary>
