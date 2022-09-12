@@ -67,10 +67,16 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect drains health over time.</returns>
-        /// <seealso cref="IsNegative(EffectType)"/>
-        public static bool IsHarmful(this EffectType effect) => effect is EffectType.Asphyxiated or EffectType.Bleeding
-            or EffectType.Corroding or EffectType.Decontaminating or EffectType.Hemorrhage or EffectType.Hypothermia
-            or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands;
+        /// <seealso cref="IsHealing(EffectType)"/>
+        public static bool IsHarmful(this EffectType effect) => typeof(IDamageModifierEffect).IsAssignableFrom(effect.Type());
+
+        /// <summary>
+        /// Returns whether or not the provided <paramref name="effect"/> heals a player.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/>.</param>
+        /// <returns>Whether or not the effect heals.</returns>
+        /// <seealso cref="IsHarmful(EffectType)"/>
+        public static bool IsHealing(this EffectType effect) => typeof(IHealablePlayerEffect).IsAssignableFrom(effect.Type());
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a negative effect.
@@ -88,6 +94,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect is a positive effect.</returns>
+        /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsPositive(this EffectType effect) => effect is EffectType.BodyshotReduction or EffectType.DamageReduction
             or EffectType.Invigorated or EffectType.Invisible or EffectType.MovementBoost or EffectType.RainbowTaste
             or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality;
@@ -97,9 +104,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect modifies the player's movement speed.</returns>
-        public static bool IsMovement(this EffectType effect) => effect is EffectType.Disabled or EffectType.Ensnared
-            or EffectType.Exhausted or EffectType.Invigorated or EffectType.MovementBoost or EffectType.Scp1853 or EffectType.Scp207 or EffectType.SinkHole
-            or EffectType.Stained;
+        public static bool IsMovement(this EffectType effect) => typeof(IMovementSpeedEffect).IsAssignableFrom(effect.Type());
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is displayed to spectators as text.

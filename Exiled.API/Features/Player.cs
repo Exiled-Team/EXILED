@@ -2675,9 +2675,23 @@ namespace Exiled.API.Features
         /// <summary>
         /// Disables all currently active <see cref="PlayerEffect">status effects</see>.
         /// </summary>
-        /// <param name="category">An optional category to filter the disabled effects. Set to <see cref="EffectCategory.None"/> to disable all effects.</param>
-        public void DisableAllEffects(EffectCategory category = EffectCategory.None)
+        public void DisableAllEffects()
         {
+            foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
+            {
+                effect.Value.IsEnabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Disables all currently active <see cref="PlayerEffect">status effects</see>.
+        /// </summary>
+        /// <param name="category">A category to filter the disabled effects.</param>
+        public void DisableAllEffects(EffectCategory category)
+        {
+            if (category is EffectCategory.None)
+                return;
+
             foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
             {
                 if (Enum.TryParse(effect.Key.Name, out EffectType effectType) && effectType.GetCategories().HasFlag(category))
