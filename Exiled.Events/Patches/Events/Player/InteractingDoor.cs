@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Player
                     if ((!mode.HasFlagFast(DoorLockMode.CanClose)
                          || !mode.HasFlagFast(DoorLockMode.CanOpen))
                         && (!mode.HasFlagFast(DoorLockMode.ScpOverride)
-                            || ply.characterClassManager.CurRole.team != 0)
+                            || ply.characterClassManager.CurRole.team != Team.SCP)
                         && (mode == DoorLockMode.FullLock
                             || (__instance.TargetState
                                 && !mode.HasFlagFast(DoorLockMode.CanClose))
