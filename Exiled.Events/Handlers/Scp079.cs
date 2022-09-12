@@ -143,7 +143,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Called before SCP-079 finishes using a speaker.
         /// </summary>
-        /// <param name="ev">The <see cref="StoppingEventArgs" /> instance.</param>
+        /// <param name="ev">The <see cref="StoppingWarheadEventArgs" /> instance.</param>
         public static void OnStoppingSpeaker(StoppingSpeakerEventArgs ev)
         {
             StoppingSpeaker.InvokeSafely(ev);
