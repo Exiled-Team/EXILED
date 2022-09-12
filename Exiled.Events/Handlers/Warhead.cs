@@ -20,17 +20,17 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before stopping the warhead.
         /// </summary>
-        public static event CustomEventHandler<StoppingWarheadEventArgs> Stopping;
+        public static event CustomEventHandler<StoppingWarheadEventArgs> StoppingWarhead;
 
         /// <summary>
         ///     Invoked before starting the warhead.
         /// </summary>
-        public static event CustomEventHandler<StartingWarheadEventArgs> Starting;
+        public static event CustomEventHandler<StartingWarheadEventArgs> StartingWarhead;
 
         /// <summary>
         ///     Invoked after the warhead has been detonated.
         /// </summary>
-        public static event CustomEventHandler Detonated;
+        public static event CustomEventHandler DetonatedWarhead;
 
         /// <summary>
         ///     Invoked before changing the warhead lever status.
@@ -41,18 +41,18 @@ namespace Exiled.Events.Handlers
         ///     Called before stopping the warhead.
         /// </summary>
         /// <param name="ev">The <see cref="StoppingWarheadEventArgs" /> instance.</param>
-        public static void OnStopping(StoppingWarheadEventArgs ev)
+        public static void OnStoppingWarhead(StoppingWarheadEventArgs ev)
         {
-            Stopping.InvokeSafely(ev);
+            StoppingWarhead.InvokeSafely(ev);
         }
 
         /// <summary>
         ///     Called before starting the warhead.
         /// </summary>
         /// <param name="ev">The <see cref="StartingWarheadEventArgs" /> instance.</param>
-        public static void OnStarting(StartingWarheadEventArgs ev)
+        public static void OnStartingWarhead(StartingWarheadEventArgs ev)
         {
-            Starting.InvokeSafely(ev);
+            StartingWarhead.InvokeSafely(ev);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static void OnDetonated()
         {
-            Detonated.InvokeSafely();
+            DetonatedWarhead.InvokeSafely();
         }
 
         /// <summary>
