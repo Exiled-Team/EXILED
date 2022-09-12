@@ -68,7 +68,9 @@ namespace Exiled.API.Extensions
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <returns>Whether or not the effect drains health over time.</returns>
         /// <seealso cref="IsHealing(EffectType)"/>
-        public static bool IsHarmful(this EffectType effect) => typeof(IDamageModifierEffect).IsAssignableFrom(effect.Type());
+        public static bool IsHarmful(this EffectType effect) => effect is EffectType.Asphyxiated or EffectType.Bleeding
+            or EffectType.Corroding or EffectType.Decontaminating or EffectType.Hemorrhage or EffectType.Hypothermia
+            or EffectType.Poisoned or EffectType.Scp207 or EffectType.SeveredHands;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> heals a player.
