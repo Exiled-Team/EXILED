@@ -96,8 +96,8 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.ReloadingWeapon += playerHandler.OnReloading;
             Exiled.Events.Handlers.Player.ReceivingEffect += playerHandler.OnReceivingEffect;
 
-            Exiled.Events.Handlers.Warhead.Stopping += warheadHandler.OnStopping;
-            Exiled.Events.Handlers.Warhead.Starting += warheadHandler.OnStarting;
+            Exiled.Events.Handlers.Warhead.Stopping += warheadHandler.OnStoppingWarhead;
+            Exiled.Events.Handlers.Warhead.Starting += warheadHandler.OnStartingWarhead;
 
             Exiled.Events.Handlers.Scp106.Teleporting += playerHandler.OnTeleporting;
             Exiled.Events.Handlers.Scp106.Containing += playerHandler.OnContaining;
@@ -139,8 +139,8 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.UnlockingGenerator -= playerHandler.OnUnlockingGenerator;
             Exiled.Events.Handlers.Player.PreAuthenticating -= playerHandler.OnPreAuthenticating;
 
-            Exiled.Events.Handlers.Warhead.Stopping -= warheadHandler.OnStopping;
-            Exiled.Events.Handlers.Warhead.Starting -= warheadHandler.OnStarting;
+            Exiled.Events.Handlers.Warhead.Stopping -= warheadHandler.OnStoppingWarhead;
+            Exiled.Events.Handlers.Warhead.Starting -= warheadHandler.OnStartingWarhead;
 
             Exiled.Events.Handlers.Scp106.Teleporting -= playerHandler.OnTeleporting;
             Exiled.Events.Handlers.Scp106.Containing -= playerHandler.OnContaining;
