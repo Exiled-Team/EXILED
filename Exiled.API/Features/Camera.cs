@@ -12,7 +12,6 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
-
     using UnityEngine;
 
     using CameraType = Exiled.API.Enums.CameraType;
@@ -23,9 +22,9 @@ namespace Exiled.API.Features
     public class Camera
     {
         /// <summary>
-        /// A <see cref="List{T}"/> of <see cref="Camera"/>s on the map.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="Camera079"/>s and their corresponding <see cref="Camera"/>.
         /// </summary>
-        internal static readonly List<Camera> CamerasValue = new(250);
+        internal static readonly Dictionary<Camera079, Camera> Camera079ToCamera = new(250);
 
         private static readonly Dictionary<string, CameraType> NameToCameraType = new()
         {
@@ -127,7 +126,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static IEnumerable<Camera> List
         {
-            get => CamerasValue;
+            get => Camera079ToCamera.Values;
         }
 
         /// <summary>
@@ -412,7 +411,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base <see cref="Camera079"/>.</param>
         /// <returns>A <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(Camera079 camera079) => List.FirstOrDefault(camera => camera.Base == camera079);
+        public static Camera Get(Camera079 camera079) => Camera079ToCamera.ContainsKey(camera079) ? Camera079ToCamera[camera079] : new(camera079);
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified id.

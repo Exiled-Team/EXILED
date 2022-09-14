@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Fixes
 
     /// <summary>
     /// Patches <see cref="Ragdoll.UpdateCleanup"/>.
-    /// <para>Fixes <see cref="API.Features.Ragdoll"/>s not being removed from <see cref="API.Features.Map.Ragdolls"/> when they have already been cleaned up.</para>
+    /// <para>Fixes <see cref="API.Features.Ragdoll"/>s not being removed from <see cref="API.Features.Ragdoll"/> when they have already been cleaned up.</para>
     /// </summary>
     [HarmonyPatch(typeof(Ragdoll), nameof(Ragdoll.UpdateCleanup))]
     internal static class RagdollCleanupFix
@@ -31,10 +31,10 @@ namespace Exiled.Events.Patches.Fixes
                 newInstructions.Count - 1,
                 new CodeInstruction[]
                 {
-                    new(OpCodes.Ldsfld, Field(typeof(API.Features.Map), nameof(API.Features.Map.RagdollsValue))),
+                    new(OpCodes.Ldsfld, Field(typeof(API.Features.Ragdoll), nameof(API.Features.Ragdoll.BaseRagdollToRagdoll))),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Call, Method(typeof(API.Features.Ragdoll), nameof(API.Features.Ragdoll.Get), new[] { typeof(Ragdoll) })),
-                    new(OpCodes.Callvirt, Method(typeof(List<API.Features.Ragdoll>), nameof(List<API.Features.Ragdoll>.Remove))),
+                    new(OpCodes.Callvirt, Method(typeof(Dictionary<Ragdoll, API.Features.Ragdoll>), nameof(Dictionary<Ragdoll, API.Features.Ragdoll>.Remove))),
                     new(OpCodes.Pop),
                 });
 

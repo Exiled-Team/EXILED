@@ -65,8 +65,6 @@ namespace Exiled.Events.Handlers.Internal
             Server.Broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
             Server.BanPlayer = PlayerManager.localPlayer.GetComponent<BanPlayer>();
             Scp914.Scp914Controller = Object.FindObjectOfType<Scp914Controller>();
-            GenerateTeslaGates();
-            GenerateCameras();
             GenerateRooms();
             GenerateWindow();
             GenerateLifts();
@@ -96,25 +94,13 @@ namespace Exiled.Events.Handlers.Internal
         private static void GenerateWindow()
         {
             foreach (BreakableWindow breakableWindow in Object.FindObjectsOfType<BreakableWindow>())
-                Window.WindowValue.Add(Window.Get(breakableWindow));
-        }
-
-        private static void GenerateCameras()
-        {
-            foreach (Camera079 camera079 in Object.FindObjectsOfType<Camera079>())
-                Camera.CamerasValue.Add(new Camera(camera079));
+                Window.Get(breakableWindow);
         }
 
         private static void GenerateLifts()
         {
             foreach (global::Lift lift in Object.FindObjectsOfType<global::Lift>())
                 Lift.LiftsValue.Add(new Lift(lift));
-        }
-
-        private static void GenerateTeslaGates()
-        {
-            foreach (global::TeslaGate teslaGate in Object.FindObjectsOfType<global::TeslaGate>())
-                TeslaGate.TeslasValue.Add(new TeslaGate(teslaGate));
         }
 
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());

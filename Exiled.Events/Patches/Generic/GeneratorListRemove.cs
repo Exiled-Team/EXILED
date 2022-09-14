@@ -34,10 +34,9 @@ namespace Exiled.Events.Patches.Generic
                 0,
                 new CodeInstruction[]
                 {
-                    new(OpCodes.Ldsfld, Field(typeof(Generator), nameof(Generator.GeneratorValues))),
+                    new(OpCodes.Ldsfld, Field(typeof(Generator), nameof(Generator.Scp079GeneratorToGenerator))),
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, Method(typeof(Generator), nameof(Generator.Get), new[] { typeof(Scp079Generator) })),
-                    new(OpCodes.Callvirt, Method(typeof(List<Generator>), nameof(List<Generator>.Remove))),
+                    new(OpCodes.Callvirt, Method(typeof(Dictionary<Scp079Generator, Generator>), nameof(Dictionary<Scp079Generator, Generator>.Remove))),
                     new(OpCodes.Pop),
                 });
 

@@ -34,10 +34,9 @@ namespace Exiled.Events.Patches.Generic
                 0,
                 new CodeInstruction[]
                 {
-                    new(OpCodes.Ldsfld, Field(typeof(Generator), nameof(Generator.GeneratorValues))),
-                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_1),
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Generator))[0]),
-                    new(OpCodes.Callvirt, Method(typeof(List<Generator>), nameof(List<Generator>.Add))),
+                    new(OpCodes.Pop),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

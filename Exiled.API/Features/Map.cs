@@ -50,18 +50,12 @@ namespace Exiled.API.Features
         internal static readonly List<PocketDimensionTeleport> TeleportsValue = new(8);
 
         /// <summary>
-        /// A list of <see cref="Ragdoll"/>s on the map.
-        /// </summary>
-        internal static readonly List<Ragdoll> RagdollsValue = new();
-
-        /// <summary>
         /// A list of <see cref="AdminToy"/>s on the map.
         /// </summary>
         internal static readonly List<AdminToy> ToysValue = new();
 
         private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<Ragdoll> ReadOnlyRagdollsValue = RagdollsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<AdminToy> ReadOnlyToysValue = ToysValue.AsReadOnly();
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
@@ -106,14 +100,6 @@ namespace Exiled.API.Features
 
                 return pickups.AsReadOnly();
             }
-        }
-
-        /// <summary>
-        /// Gets all <see cref="Ragdoll"/> objects.
-        /// </summary>
-        public static ReadOnlyCollection<Ragdoll> Ragdolls
-        {
-            get => ReadOnlyRagdollsValue;
         }
 
         /// <summary>
@@ -371,14 +357,14 @@ namespace Exiled.API.Features
         {
             Room.RoomsValue.Clear();
             Door.DoorVariantToDoor.Clear();
-            Camera.CamerasValue.Clear();
-            Window.WindowValue.Clear();
+            Camera.Camera079ToCamera.Clear();
+            Window.BreakableWindowToWindow.Clear();
             Lift.LiftsValue.Clear();
-            TeslaGate.TeslasValue.Clear();
-            Generator.GeneratorValues.Clear();
+            TeslaGate.BaseTeslaGateToTeslaGate.Clear();
+            Generator.Scp079GeneratorToGenerator.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
-            RagdollsValue.Clear();
+            Ragdoll.BaseRagdollToRagdoll.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Scp079Interactable.InteractablesByRoomId.Clear();
         }

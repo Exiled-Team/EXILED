@@ -3029,16 +3029,16 @@ namespace Exiled.API.Features
 
             object randomObject = type.Name switch
             {
-                nameof(Camera) => Camera.CamerasValue[Random.Range(0, Camera.CamerasValue.Count)],
+                nameof(Camera) => Camera.List.ElementAt(Random.Range(0, Camera.List.Count())),
                 nameof(Door) => Door.Random(),
-                nameof(Room) => Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)],
-                nameof(TeslaGate) => TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)],
+                nameof(Room) => Room.List.ElementAt(Random.Range(0, Room.List.Count())),
+                nameof(TeslaGate) => TeslaGate.List.ElementAt(Random.Range(0, TeslaGate.BaseTeslaGateToTeslaGate.Count())),
                 nameof(Player) => Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count)),
                 nameof(Pickup) => Map.Pickups[Random.Range(0, Map.Pickups.Count)],
-                nameof(Ragdoll) => Map.RagdollsValue[Random.Range(0, Map.RagdollsValue.Count)],
+                nameof(Ragdoll) => Ragdoll.List.ElementAt(Random.Range(0, Ragdoll.List.Count())),
                 nameof(Locker) => Map.GetRandomLocker(),
-                nameof(Generator) => Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)],
-                nameof(Window) => Window.WindowValue[Random.Range(0, Window.WindowValue.Count)],
+                nameof(Generator) => Generator.List.ElementAt(Random.Range(0, Generator.List.Count())),
+                nameof(Window) => Window.List.ElementAt(Random.Range(0, Window.List.Count())),
                 nameof(Scp914) => Scp914.Scp914Controller,
                 nameof(LockerChamber) => (chambers = Map.GetRandomLocker().Chambers)[Random.Range(0, chambers.Length)],
                 _ => null,

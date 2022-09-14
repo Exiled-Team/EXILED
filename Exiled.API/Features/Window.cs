@@ -8,6 +8,7 @@
 namespace Exiled.API.Features
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -21,11 +22,9 @@ namespace Exiled.API.Features
     public class Window
     {
         /// <summary>
-        /// A <see cref="List{T}"/> of <see cref="Window"/> on the map.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.
         /// </summary>
-        internal static readonly List<Window> WindowValue = new(30);
-
-        private static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
+        internal static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -44,7 +43,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static IEnumerable<Window> List
         {
-            get => WindowValue.AsReadOnly();
+            get => BreakableWindowToWindow.Values;
         }
 
         /// <summary>

@@ -22,9 +22,9 @@ namespace Exiled.API.Features
     public class Generator
     {
         /// <summary>
-        /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="Scp079Generator"/>s and their corresponding <see cref="Generator"/>.
         /// </summary>
-        internal static readonly List<Generator> GeneratorValues = new();
+        internal static readonly Dictionary<Scp079Generator, Generator> Scp079GeneratorToGenerator = new(3);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Generator"/> class.
@@ -33,6 +33,7 @@ namespace Exiled.API.Features
         internal Generator(Scp079Generator scp079Generator)
         {
             Base = scp079Generator;
+            Scp079GeneratorToGenerator.Add(scp079Generator, this);
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static IEnumerable<Generator> List
         {
-            get => GeneratorValues;
+            get => Scp079GeneratorToGenerator.Values;
         }
 
         /// <summary>
