@@ -387,9 +387,9 @@ namespace Exiled.API.Features
             };
         }
 
-        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController)
+        private void FindObjectsInRoom(out List<Camera> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController)
         {
-            cameraList = new List<Camera079>();
+            cameraList = new List<Camera>();
             doors = new List<Door>();
             teslaGate = null;
             flickerableLightController = null;
@@ -406,11 +406,11 @@ namespace Exiled.API.Features
                         {
                             case Scp079Interactable.InteractableType.Door:
                                 if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                    doors.Add(Door.Get(doorVariant, this));
+                                    doors.Add(new(doorVariant, this));
                                 break;
                             case Scp079Interactable.InteractableType.Camera:
                                 if (scp079Interactable.TryGetComponent(out Camera079 camera))
-                                    cameraList.Add(camera);
+                                    cameraList.Add(new(camera, this));
                                 break;
                             case Scp079Interactable.InteractableType.LightController:
                                 if (scp079Interactable.TryGetComponent(
@@ -443,9 +443,9 @@ namespace Exiled.API.Features
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
             RoomIdentToRoomDict.Add(RoomIdentifier, this);
 
-            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
+            FindObjectsInRoom(out List<Camera> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
             Doors = doors;
-            Cameras = Camera.Get(cameras);
+            Cameras = cameras;
             TeslaGate = teslagate;
             if (flickerableLightController is null)
             {

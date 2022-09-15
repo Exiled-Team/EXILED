@@ -116,9 +116,12 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Camera"/> class.
         /// </summary>
         /// <param name="camera079">The base camera.</param>
-        internal Camera(Camera079 camera079)
+        /// <param name="room">The Room wher is this camera.</param>
+        internal Camera(Camera079 camera079, Room room)
         {
+            Camera079ToCamera.Add(camera079, this);
             Base = camera079;
+            Room = room;
         }
 
         /// <summary>
@@ -178,10 +181,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="Features.Room"/>.
         /// </summary>
-        public Room Room
-        {
-            get => Map.FindParentRoom(GameObject);
-        }
+        public Room Room { get; }
 
         /// <summary>
         /// Gets the camera's <see cref="ZoneType"/>.
@@ -411,7 +411,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base <see cref="Camera079"/>.</param>
         /// <returns>A <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(Camera079 camera079) => Camera079ToCamera.ContainsKey(camera079) ? Camera079ToCamera[camera079] : new(camera079);
+        public static Camera Get(Camera079 camera079) => Camera079ToCamera.ContainsKey(camera079) ? Camera079ToCamera[camera079] : new(camera079, Map.FindParentRoom(camera079.gameObject));
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified id.
