@@ -18,7 +18,7 @@ namespace Exiled.Events.Handlers
     public static class Item
     {
         /// <summary>
-        ///     Invoked before the durability of an item is changed.
+        ///     Invoked before the ammo of an firearm are changed.
         /// </summary>
         public static event CustomEventHandler<ChangingAmmoEventArgs> ChangingAmmo;
 

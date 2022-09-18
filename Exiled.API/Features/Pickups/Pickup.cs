@@ -49,6 +49,11 @@ namespace Exiled.API.Features.Pickups
         internal Pickup(ItemPickupBase pickupBase)
         {
             Base = pickupBase;
+
+            // prevent prefabs like `InventoryItemLoader.AvailableItems[ItemType.GrenadeHE].PickupDropModel` from adding to pickup list
+            if (pickupBase.Info.ItemId == ItemType.None)
+                return;
+
             BaseToPickup.Add(pickupBase, this);
         }
 
@@ -58,16 +63,16 @@ namespace Exiled.API.Features.Pickups
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Pickup(ItemType type)
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out var value))
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
                 return;
 
-            Base = Object.Instantiate(value.PickupDropModel);
+            Base = Object.Instantiate(itemBase.PickupDropModel);
 
             PickupSyncInfo psi = new()
             {
                 ItemId = type,
                 Serial = ItemSerialGenerator.GenerateNext(),
-                Weight = value.Weight,
+                Weight = itemBase.Weight,
             };
 
             Info = psi;

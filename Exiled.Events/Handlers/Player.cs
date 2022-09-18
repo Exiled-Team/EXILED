@@ -133,12 +133,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
-        /// Invoked afer receving a throwing request <see cref="API.Features.Items.Item"/>.
+        /// Invoked afer throwing an <see cref="API.Features.Items.Throwable"/>.
         /// </summary>
-        public static event CustomEventHandler<ThrowedItemEventArgs> ThrowedItem;
+        public static event CustomEventHandler<ThrownItemEventArgs> ThrownItem;
 
         /// <summary>
-        /// Invoked before receving a throwing request an <see cref="API.Features.Items.Item"/>.
+        /// Invoked before receving a throwing request an <see cref="API.Features.Items.Throwable"/>.
         /// </summary>
         public static event CustomEventHandler<ThrowingRequestEventArgs> ThrowingRequest;
 
@@ -583,8 +583,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrowedItemEventArgs"/> instance.</param>
-        public static void OnThrowingItem(ThrowedItemEventArgs ev) => ThrowedItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ThrownItemEventArgs"/> instance.</param>
+        public static void OnThrowingItem(ThrownItemEventArgs ev) => ThrownItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.

@@ -2430,6 +2430,15 @@ namespace Exiled.API.Features
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
                 }
 
+                // Dont care, didnt ask, ratio
+                Timing.CallDelayed(0.02f, () =>
+                {
+                    if (item.Type is ItemType.SCP330 && item.Base != null)
+                    {
+                        ((Scp330)item).Base.ServerRefreshBag();
+                    }
+                });
+
                 ItemsValue.Add(item);
 
                 Inventory.SendItemsNextFrame = true;
