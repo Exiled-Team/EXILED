@@ -13,7 +13,6 @@ namespace Exiled.API.Features
 
     using DeathAnimations;
     using Exiled.API.Enums;
-    using Interactables.Interobjects.DoorUtils;
     using Mirror;
     using PlayableScps;
     using PlayerStatsSystem;

@@ -100,9 +100,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Ragdoll), nameof(Ragdoll.gameObject))),
                     new(OpCodes.Ldnull),
                     new(OpCodes.Call, Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })),
-                    new(OpCodes.Ldsfld, Field(typeof(API.Features.Ragdoll), nameof(API.Features.Ragdoll.BaseRagdollToRagdoll))),
-                    new(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
-                    new(OpCodes.Callvirt, Method(typeof(Dictionary<API.Features.Ragdoll, Ragdoll>), nameof(Dictionary<API.Features.Ragdoll, Ragdoll>.Add))),
                 });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
