@@ -117,18 +117,27 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Camera"/> class.
         /// </summary>
         /// <param name="camera079">The base camera.</param>
-        internal Camera(Camera079 camera079) => Base = camera079;
+        internal Camera(Camera079 camera079)
+        {
+            Base = camera079;
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances.
         /// </summary>
-        public static IEnumerable<Camera> List => CamerasValue;
+        public static IEnumerable<Camera> List
+        {
+            get => CamerasValue;
+        }
 
         /// <summary>
         /// Gets a random <see cref="Camera"/>.
         /// </summary>
         /// <returns><see cref="Camera"/> object.</returns>
-        public static Camera Random => List.ElementAt(UnityEngine.Random.Range(0, List.Count()));
+        public static Camera Random
+        {
+            get => List.ElementAt(UnityEngine.Random.Range(0, List.Count()));
+        }
 
         /// <summary>
         /// Gets the base <see cref="Camera079"/>.
@@ -138,32 +147,50 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public GameObject GameObject
+        {
+            get => Base.gameObject;
+        }
 
         /// <summary>
         /// Gets the camera's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => Base.transform;
+        public Transform Transform
+        {
+            get => Base.transform;
+        }
 
         /// <summary>
         /// Gets the camera's name.
         /// </summary>
-        public string Name => Base.cameraName;
+        public string Name
+        {
+            get => Base.cameraName;
+        }
 
         /// <summary>
         /// Gets the camera's id.
         /// </summary>
-        public ushort Id => Base.cameraId;
+        public ushort Id
+        {
+            get => Base.cameraId;
+        }
 
         /// <summary>
         /// Gets the camera's <see cref="Features.Room"/>.
         /// </summary>
-        public Room Room => Map.FindParentRoom(GameObject);
+        public Room Room
+        {
+            get => Map.FindParentRoom(GameObject);
+        }
 
         /// <summary>
         /// Gets the camera's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room.Zone;
+        public ZoneType Zone
+        {
+            get => Room.Zone;
+        }
 
         /// <summary>
         /// Gets the camera's <see cref="CameraType"/>.
@@ -232,7 +259,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the position of the camera's head.
         /// </summary>
-        public Vector3 HeadPosition => Base.head.localPosition;
+        public Vector3 HeadPosition
+        {
+            get => Base.head.localPosition;
+        }
 
         /// <summary>
         /// Gets or sets the rotation of the camera's head.
@@ -246,7 +276,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera's position.
         /// </summary>
-        public Vector3 Position => Transform.position;
+        public Vector3 Position
+        {
+            get => Transform.position;
+        }
 
         /// <summary>
         /// Gets or sets the camera's pitch.

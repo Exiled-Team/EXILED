@@ -9,9 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
     using System.Linq;
-
     using Exiled.API.Features.Pickups;
-
     using InventorySystem.Items;
     using InventorySystem.Items.Usables.Scp330;
 
@@ -72,7 +70,10 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="CandyKindID"/>s held in this bag.
         /// </summary>
-        public IReadOnlyCollection<CandyKindID> Candies => Base.Candies.AsReadOnly();
+        public IReadOnlyCollection<CandyKindID> Candies
+        {
+            get => Base.Candies.AsReadOnly();
+        }
 
         /// <summary>
         /// Gets or sets the exposed type. When set to a candy color, the bag will appear as that candy when dropped with the <see cref="Spawn"/> method. Setting it to <see cref="CandyKindID.None"/> results in it looking like a bag.
@@ -180,7 +181,7 @@ namespace Exiled.API.Features.Items
 
             List<Scp330Pickup> pickups = new();
 
-            if (count > 1 && !dropIndividual)
+            if ((count > 1) && !dropIndividual)
             {
                 Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, Owner.Position, default));
                 if (exposedType is not CandyKindID.None)

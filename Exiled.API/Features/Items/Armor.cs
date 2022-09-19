@@ -47,17 +47,26 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
-        public bool Equippable => Base.AllowEquip;
+        public bool Equippable
+        {
+            get => Base.AllowEquip;
+        }
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
-        public bool Holsterable => Base.AllowHolster;
+        public bool Holsterable
+        {
+            get => Base.AllowHolster;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this is a worn item.
         /// </summary>
-        public bool IsWorn => Base.IsWorn;
+        public bool IsWorn
+        {
+            get => Base.IsWorn;
+        }
 
         /// <summary>
         /// Gets or sets the Weight of the armor.

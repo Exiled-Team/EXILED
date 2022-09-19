@@ -60,45 +60,45 @@ namespace Exiled.Events.Patches.Events.Map
 
             // Setup EventArgs, call event, check ev.IsAllowed and implement ev.Type changing
             newInstructions.InsertRange(index, new[]
-            {
-                // this
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(enterLabel),
+                {
+                    // this
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(enterLabel),
 
-                // var ev = new ChangingIntoGrenadeEventArgs(TimedGrenadePickup);
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntoGrenadeEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, changingIntoGrenade.LocalIndex),
+                    // var ev = new ChangingIntoGrenadeEventArgs(TimedGrenadePickup);
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntoGrenadeEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, changingIntoGrenade.LocalIndex),
 
-                // Map.OnChangingIntoGrenade(ev);
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnChangingIntoGrenade))),
+                    // Map.OnChangingIntoGrenade(ev);
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnChangingIntoGrenade))),
 
-                // if (!ev.IsAllowed)
-                // {
-                //     this._replaceNextFrame = false;
-                //     return;
-                // }
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, dontResetLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Stfld, Field(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup._replaceNextFrame))),
-                new(OpCodes.Ret),
+                    // if (!ev.IsAllowed)
+                    // {
+                    //     this._replaceNextFrame = false;
+                    //     return;
+                    // }
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, dontResetLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Stfld, Field(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup._replaceNextFrame))),
+                    new(OpCodes.Ret),
 
-                // if (!InventoryItemLoader.AvailableItems.TryGetValue(ev.Type, out itemBase) || !(itemBase is ThrowableItem throwableItem))
-                //    return;
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
-                new(OpCodes.Ldloc_S, changingIntoGrenade.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
-                new(OpCodes.Ldloca_S, 0),
-                new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Isinst, typeof(ThrowableItem)),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_1),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+                    // if (!InventoryItemLoader.AvailableItems.TryGetValue(ev.Type, out itemBase) || !(itemBase is ThrowableItem throwableItem))
+                    //    return;
+                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
+                    new(OpCodes.Ldloc_S, changingIntoGrenade.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
+                    new(OpCodes.Ldloca_S, 0),
+                    new(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Isinst, typeof(ThrowableItem)),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_1),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             offset = -2;
             index = newInstructions.FindIndex(i => i.Calls(Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;

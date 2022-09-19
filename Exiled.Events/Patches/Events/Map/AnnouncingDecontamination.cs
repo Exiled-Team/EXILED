@@ -46,6 +46,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingDecontamination))),
             });
 
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 

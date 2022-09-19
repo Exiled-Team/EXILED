@@ -46,12 +46,18 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
-        public bool Equippable => Base.AllowEquip;
+        public bool Equippable
+        {
+            get => Base.AllowEquip;
+        }
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
-        public bool Holsterable => Base.AllowHolster;
+        public bool Holsterable
+        {
+            get => Base.AllowHolster;
+        }
 
         /// <summary>
         /// Gets or sets the weight of the item.
@@ -65,7 +71,10 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether the item is currently being used.
         /// </summary>
-        public bool IsUsing => Base.IsUsing;
+        public bool IsUsing
+        {
+            get => Base.IsUsing;
+        }
 
         /// <summary>
         /// Gets or sets how long it takes to use the item.

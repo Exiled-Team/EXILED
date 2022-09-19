@@ -10,14 +10,12 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Server;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
 
-    using Respawning;
     using Respawning.NamingRules;
 
     using static HarmonyLib.AccessTools;
@@ -36,30 +34,34 @@ namespace Exiled.Events.Patches.Events.Server
             Label returnLabel = generator.DefineLabel();
             Label skipLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldc_I4_1),
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldc_I4_1),
 
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AddingUnitNameEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AddingUnitNameEventArgs))[0]),
 
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
 
-                new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnAddingUnitName))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AddingUnitNameEventArgs), nameof(AddingUnitNameEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, skipLabel),
+                    new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnAddingUnitName))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AddingUnitNameEventArgs), nameof(AddingUnitNameEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, skipLabel),
 
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AddingUnitNameEventArgs), nameof(AddingUnitNameEventArgs.UnitName))),
-                new(OpCodes.Starg_S, 1),
-            });
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AddingUnitNameEventArgs), nameof(AddingUnitNameEventArgs.UnitName))),
+                    new(OpCodes.Starg_S, 1),
+                });
 
-            newInstructions.InsertRange(newInstructions.Count - 1, new[]
-            {
-                new(OpCodes.Br_S, returnLabel),
-                new CodeInstruction(OpCodes.Pop).WithLabels(skipLabel),
-                new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
-            });
+            newInstructions.InsertRange(
+                newInstructions.Count - 1,
+                new[]
+                {
+                    new(OpCodes.Br_S, returnLabel),
+                    new CodeInstruction(OpCodes.Pop).WithLabels(skipLabel),
+                    new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

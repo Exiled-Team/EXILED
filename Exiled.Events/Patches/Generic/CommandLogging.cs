@@ -79,17 +79,19 @@ namespace Exiled.Events.Patches.Generic
             const int index = 0;
             Label continueLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.LogRaCommands))),
-                new(OpCodes.Brfalse, continueLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.LogRaCommands))),
+                    new(OpCodes.Brfalse, continueLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

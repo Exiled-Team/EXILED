@@ -42,49 +42,49 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions[0].labels.Add(cdcLabel);
 
             newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpItemEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUpItem))),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
-                new(OpCodes.Ldflda, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.Pickup))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Pickups.Pickup), nameof(API.Features.Pickups.Pickup.Serial))),
-                new(OpCodes.Stfld, Field(typeof(PickupSyncInfo), nameof(PickupSyncInfo.Serial))),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, cdcLabel),
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpItemEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUpItem))),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
+                    new(OpCodes.Ldflda, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.Pickup))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Pickups.Pickup), nameof(API.Features.Pickups.Pickup.Serial))),
+                    new(OpCodes.Stfld, Field(typeof(PickupSyncInfo), nameof(PickupSyncInfo.Serial))),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, cdcLabel),
 
-                // TargetPickup.Info.InUse = false;
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
-                new(OpCodes.Ldflda, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Callvirt, PropertySetter(typeof(PickupSyncInfo), nameof(PickupSyncInfo.InUse))),
+                    // TargetPickup.Info.InUse = false;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
+                    new(OpCodes.Ldflda, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(PickupSyncInfo), nameof(PickupSyncInfo.InUse))),
 
-                // TargetPickup.Info.InUse = true;
-                // TargetPickup.NetworkInfo = PickupBase.Info;
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
-                new(OpCodes.Dup),
-                new(OpCodes.Ldfld, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
-                new(OpCodes.Ldflda, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Callvirt, PropertySetter(typeof(PickupSyncInfo), nameof(PickupSyncInfo.InUse))),
-                new(OpCodes.Callvirt, PropertySetter(typeof(ItemPickupBase), nameof(ItemPickupBase.NetworkInfo))),
-                new(OpCodes.Br, retLabel),
-            });
+                    // TargetPickup.Info.InUse = true;
+                    // TargetPickup.NetworkInfo = PickupBase.Info;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Ldfld, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
+                    new(OpCodes.Ldflda, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(PickupSyncInfo), nameof(PickupSyncInfo.InUse))),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(ItemPickupBase), nameof(ItemPickupBase.NetworkInfo))),
+                    new(OpCodes.Br, retLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
