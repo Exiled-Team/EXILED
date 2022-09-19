@@ -16,7 +16,7 @@ namespace Exiled.API.Enums
     public enum ProjectileType
     {
         /// <summary>
-        /// Not grenade.
+        /// Not Projectile.
         /// </summary>
         None,
 
