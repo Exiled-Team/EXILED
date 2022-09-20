@@ -1084,9 +1084,9 @@ namespace Exiled.API.Features
         public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player invisibility effect should not be removed when interacting.
+        /// Gets or sets a value indicating whether the invisibility effect should be removed when interacting.
         /// </summary>
-        public bool KeepInvisibilityOnInteracting { get; set; } = false;
+        public bool KeepInvisibilityOnInteracting { get; set; }
 
         /// <summary>
         /// Gets the player's ping.

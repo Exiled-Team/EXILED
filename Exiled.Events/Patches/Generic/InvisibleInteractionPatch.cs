@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Generic
 
     /// <summary>
     /// Patches <see cref="StandardDistanceVerification.ServerCanInteract(ReferenceHub, InteractableCollider)"/>.
-    /// Implements <see cref="Player.KeepInvisibilityOnInteracting"/> property logic.
+    /// Implements <see cref="Player.KeepInvisibilityOnInteracting"/>.
     /// </summary>
     [HarmonyPatch(typeof(StandardDistanceVerification), nameof(StandardDistanceVerification.ServerCanInteract))]
     internal static class InvisibleInteractionPatch
@@ -68,7 +68,7 @@ namespace Exiled.Events.Patches.Generic
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.OnInteract"/>.
-    /// Implements <see cref="Player.KeepInvisibilityOnInteracting"/> property logic.
+    /// Implements <see cref="Player.KeepInvisibilityOnInteracting"/>.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract))]
     internal static class InvisibleInteractionPlayerInteractPatch
