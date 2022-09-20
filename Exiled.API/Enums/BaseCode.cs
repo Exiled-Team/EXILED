@@ -10,7 +10,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Firearms base codes.
     /// </summary>
-    public enum BaseCode
+    public enum BaseCode : uint
     {
         /// <summary>
         /// The COM15's base code.
