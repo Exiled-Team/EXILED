@@ -356,7 +356,7 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
-            Room.RoomIdentifiersToRooms.Clear();
+            Room.RoomsValue.Clear();
             Door.DoorVariantToDoor.Clear();
             Camera.CamerasValue.Clear();
             Window.WindowValue.Clear();
