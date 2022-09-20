@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Fixes
 
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Player;
-
     using HarmonyLib;
 
     using InventorySystem;
