@@ -20,7 +20,10 @@ namespace Exiled.API.Features.Roles
         /// Initializes a new instance of the <see cref="Scp079Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp079Role(Player player) => Owner = player;
+        internal Scp079Role(Player player)
+        {
+            Owner = player;
+        }
 
         /// <inheritdoc/>
         public override Player Owner { get; }
@@ -28,7 +31,10 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp079PlayerScript"/> script for the role.
         /// </summary>
-        public Scp079PlayerScript Script => script ??= Owner.ReferenceHub.scp079PlayerScript;
+        public Scp079PlayerScript Script
+        {
+            get => script ??= Owner.ReferenceHub.scp079PlayerScript;
+        }
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
@@ -154,7 +160,10 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Scp079;
+        internal override RoleType RoleType
+        {
+            get => RoleType.Scp079;
+        }
 
         /// <summary>
         /// Sets the camera SCP-079 is currently located at.

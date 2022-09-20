@@ -73,27 +73,27 @@ namespace Exiled.Example
         {
             {
                 "First Key", new Dictionary<string, int>()
-            {
-                { "First Key", 1 },
-                { "Second Key", 2 },
-                { "Third Key", 3 },
-            }
+                {
+                    { "First Key", 1 },
+                    { "Second Key", 2 },
+                    { "Third Key", 3 },
+                }
             },
             {
                 "Second Key", new Dictionary<string, int>()
-            {
-                { "First Key", 4 },
-                { "Second Key", 5 },
-                { "Third Key", 6 },
-            }
+                {
+                    { "First Key", 4 },
+                    { "Second Key", 5 },
+                    { "Third Key", 6 },
+                }
             },
             {
                 "Third Key", new Dictionary<string, int>()
-            {
-                { "First Key", 7 },
-                { "Second Key", 8 },
-                { "Third Key", 9 },
-            }
+                {
+                    { "First Key", 7 },
+                    { "Second Key", 8 },
+                    { "Third Key", 9 },
+                }
             },
         };
 

@@ -90,8 +90,8 @@ namespace Exiled.Events.Patches.Generic
                                 if (scp939Role.VisiblePlayers.Contains(player2))
                                     continue;
 
-                                if (player2.Role.Team != Team.SCP
-                                    && player2.Role.Team != Team.RIP
+                                if ((player2.Role.Team != Team.SCP)
+                                    && (player2.Role.Team != Team.RIP)
                                     && !player2.ReferenceHub
                                         .GetComponent<Scp939_VisionController>()
                                         .CanSee(player.ReferenceHub.playerEffectsController.GetEffect<Visuals939>()))
@@ -101,7 +101,7 @@ namespace Exiled.Events.Patches.Generic
                             }
                         }
                     }
-                    else if (player.Role.Type != RoleType.Spectator && player.Role.Type != RoleType.Scp079)
+                    else if ((player.Role.Type != RoleType.Spectator) && (player.Role.Type != RoleType.Scp079))
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
@@ -152,7 +152,7 @@ namespace Exiled.Events.Patches.Generic
                                 if (scp096 is not null
                                     && scp096.EnragedOrEnraging
                                     && !scp096.HasTarget(currentTarget.ReferenceHub)
-                                    && currentTarget.Role.Team != Team.SCP)
+                                    && (currentTarget.Role.Team != Team.SCP))
                                 {
 #if DEBUG
                                     Log.Debug($"[Scp096@GhostModePatch] {player.UserId} can't see {currentTarget.UserId}");
@@ -165,9 +165,9 @@ namespace Exiled.Events.Patches.Generic
                                     if (scp096 is not null)
                                         flag2 = scp096.HasTarget(currentTarget.ReferenceHub);
 
-                                    if (currentTarget != player && player.Role.Type != RoleType.Scp079
-                                                                && player.Role.Type != RoleType.Spectator
-                                                                && !flag2)
+                                    if ((currentTarget != player) && (player.Role.Type != RoleType.Scp079)
+                                                                  && (player.Role.Type != RoleType.Spectator)
+                                                                  && !flag2)
                                     {
                                         MakeGhost(index, __instance._transmitBuffer);
                                     }
@@ -223,7 +223,8 @@ namespace Exiled.Events.Patches.Generic
                         if (__instance._usedData <= 20)
                         {
                             networkConnection.Send(
-                                new PositionPPMMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
+                                new PositionPPMMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0),
+                                1);
                         }
                         else
                         {

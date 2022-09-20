@@ -43,13 +43,14 @@ namespace Exiled.API.Structs
         /// </summary>
         /// <param name="armorLimit">Base game armor limit.</param>
         public static implicit operator ArmorAmmoLimit(BodyArmor.ArmorAmmoLimit armorLimit) =>
-            new ArmorAmmoLimit(armorLimit.AmmoType.GetAmmoType(), armorLimit.Limit);
+            new(armorLimit.AmmoType.GetAmmoType(), armorLimit.Limit);
 
         /// <summary>
         /// Converts a <see cref="ArmorAmmoLimit"/> to its appropriate base game <see cref="BodyArmor.ArmorAmmoLimit"/>.
         /// </summary>
         /// <param name="armorLimit">armor limit.</param>
         public static explicit operator BodyArmor.ArmorAmmoLimit(ArmorAmmoLimit armorLimit) =>
-            new BodyArmor.ArmorAmmoLimit { AmmoType = armorLimit.AmmoType.GetItemType(), Limit = armorLimit.Limit };
+            new()
+                { AmmoType = armorLimit.AmmoType.GetItemType(), Limit = armorLimit.Limit };
     }
 }

@@ -23,8 +23,8 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="handler"> DamageHandler instance. </param>
         public KillingPlayerEventArgs(API.Features.Player player, ref DamageHandlerBase handler)
         {
-            this.Player = player;
-            this.Handler = handler;
+            Player = player;
+            Handler = handler;
         }
 
         /// <summary>

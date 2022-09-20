@@ -137,7 +137,7 @@ namespace Exiled.Events.Handlers.Internal
                 List<AttachmentIdentifier> attachmentIdentifiers = new();
                 foreach (Attachment att in firearm.Attachments)
                 {
-                    attachmentIdentifiers.Add(new(code, att.Name, att.Slot));
+                    attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));
                     code *= 2U;
                 }
 
