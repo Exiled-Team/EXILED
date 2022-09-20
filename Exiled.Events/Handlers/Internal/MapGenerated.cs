@@ -86,7 +86,7 @@ namespace Exiled.Events.Handlers.Internal
                 throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
 
             foreach (RoomIdentifier roomIdentifier in roomIdentifiers)
-                Room.RoomIdentifierToRoom.Add(roomIdentifier, Room.CreateComponent(roomIdentifier.gameObject));
+                Room.CreateComponent(roomIdentifier.gameObject);
 
             ListPool<RoomIdentifier>.Shared.Return(roomIdentifiers);
         }

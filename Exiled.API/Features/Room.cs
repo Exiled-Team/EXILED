@@ -99,7 +99,7 @@ namespace Exiled.API.Features
         /// </summary>
         public IEnumerable<Player> Players
         {
-            get => Player.List.Where(player => player.IsAlive && !(player.CurrentRoom is null) && (player.CurrentRoom.Transform == Transform));
+            get => Player.List.Where(player => player.IsAlive && player.CurrentRoom is not null && (player.CurrentRoom.Transform == Transform));
         }
 
         /// <summary>
@@ -186,11 +186,6 @@ namespace Exiled.API.Features
         public FlickerableLightController FlickerableLightController { get; private set; }
 
         /// <summary>
-        /// Gets a dictionary that allows you to get a room from a given room identifier.
-        /// </summary>
-        internal static Dictionary<RoomIdentifier, Room> RoomIdentToRoomDict { get; } = new();
-
-        /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.
         /// </summary>
         /// <param name="roomType">The <see cref="RoomType"/> to search for.</param>
@@ -202,17 +197,23 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roomIdentifier">The <see cref="RoomIdentifier"/> to search with.</param>
         /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
-        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentToRoomDict.ContainsKey(roomIdentifier)
-            ? RoomIdentToRoomDict[roomIdentifier]
+        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentifierToRoom.ContainsKey(roomIdentifier)
+            ? RoomIdentifierToRoom[roomIdentifier]
             : null;
+
+        /// <summary>
+        /// Gets a <see cref="Room"/> from a given <see cref="RoomIdentifier"/>.
+        /// </summary>
+        /// <param name="flickerableLightController">The <see cref="FlickerableLightController"/> to search with.</param>
+        /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
+        public static Room Get(FlickerableLightController flickerableLightController) => flickerableLightController.GetComponentInParent<Room>();
 
         /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="Vector3"/>.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="Vector3"/> or <see langword="null"/> if not found.</returns>
-        public static Room Get(Vector3 position) => List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPosition(position).UniqueId)
-                                                    ?? List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPositionRaycasts(position).UniqueId);
+        public static Room Get(Vector3 position) => RoomIdUtils.RoomAtPosition(position) is RoomIdentifier identifier ? Get(identifier) : null;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.
@@ -441,7 +442,7 @@ namespace Exiled.API.Features
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
-            RoomIdentToRoomDict.Add(RoomIdentifier, this);
+            RoomIdentifierToRoom.Add(RoomIdentifier, this);
 
             FindObjectsInRoom(out List<Camera> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
             Doors = doors;

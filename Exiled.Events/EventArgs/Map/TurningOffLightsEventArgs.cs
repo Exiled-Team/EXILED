@@ -7,12 +7,13 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     /// Contains all information before turning off lights.
     /// </summary>
-    public class TurningOffLightsEventArgs : IDeniableEvent
+    public class TurningOffLightsEventArgs : IDeniableEvent, IRoomEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TurningOffLightsEventArgs"/> class.
@@ -25,7 +26,13 @@ namespace Exiled.Events.EventArgs.Map
             FlickerableLightControllerHandler = flickerableLightControllerHandler;
             Duration = duration;
             IsAllowed = isAllowed;
+            Room = Room.Get(flickerableLightControllerHandler);
         }
+
+        /// <summary>
+        /// Gets the <see cref="API.Features.Room" /> triggering the event.
+        /// </summary>
+        public Room Room { get; }
 
         /// <summary>
         /// Gets the <see cref="FlickerableLightController"/>.
