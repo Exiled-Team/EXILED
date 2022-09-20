@@ -197,12 +197,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="items">The items to convert.</param>
         /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
-        public static IEnumerable<ItemType> GetItemTypes(this IEnumerable<Item> items)
-        {
-            Item[] arr = items.ToArray();
-            for (int i = 0; i < arr.Length; i++)
-                yield return arr[i].Type;
-        }
+        public static IEnumerable<ItemType> GetItemTypes(this IEnumerable<Item> items) => items.Select(item => item.Type);
 
         /// <summary>
         /// Gets all <see cref="AttachmentIdentifier"/>s present on an <see cref="ItemType"/>.
@@ -256,8 +251,13 @@ namespace Exiled.API.Extensions
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> which contains all the firearm's attachments.</returns>
         public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this Firearm firearm)
         {
-            foreach (Attachment attachment in firearm.Attachments.Where(att => att.IsEnabled))
-                yield return Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment);
+            foreach (Attachment attachment in firearm.Attachments)
+            {
+                if (attachment.IsEnabled)
+                {
+                    yield return Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment);
+                }
+            }
         }
 
         /// <summary>
