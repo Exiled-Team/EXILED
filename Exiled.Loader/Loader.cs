@@ -91,6 +91,11 @@ namespace Exiled.Loader
         public static Random Random { get; } = new();
 
         /// <summary>
+        /// Gets the NameVersion of the assembly.
+        /// </summary>
+        public static string VersionName { get; } = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+
+        /// <summary>
         /// Gets the version of the assembly.
         /// </summary>
         public static Version Version { get; } = Assembly.GetExecutingAssembly().GetName().Version;
