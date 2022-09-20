@@ -28,14 +28,16 @@ namespace Exiled.Installer
     internal enum PathResolution
     {
         Undefined,
+
         /// <summary>
         ///     Absolute path that is routed to AppData.
         /// </summary>
         Absolute,
+
         /// <summary>
         ///     The path that goes through the path of the game passing through the subfolders.
         /// </summary>
-        Game
+        Game,
     }
 
     internal static class Program
@@ -50,19 +52,20 @@ namespace Exiled.Installer
         private static readonly uint SecondsWaitForDownload = 480;
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
+
         private static readonly GitHubClient GitHubClient = new(
             new ProductHeaderValue(Header));
 
         // Force use of LF because the file uses LF
         private static readonly Dictionary<string, string> Markup = Resources.Markup.Trim().Split('\n').ToDictionary(s => s.Split(':')[0], s => s.Split(':', 2)[1]);
 
-        private static async Task Main(string[] args)
+        private async static Task Main(string[] args)
         {
             Console.OutputEncoding = new UTF8Encoding(false, false);
             await CommandSettings.Parse(args).ConfigureAwait(false);
         }
 
-        internal static async Task MainSafe(CommandSettings args)
+        internal async static Task MainSafe(CommandSettings args)
         {
             try
             {
@@ -95,7 +98,7 @@ namespace Exiled.Installer
 
                 Console.WriteLine(Resources.Program_MainSafe_Receiving_releases___);
                 Console.WriteLine(Resources.Program_MainSafe_Prereleases_included____0_, args.PreReleases);
-                Console.WriteLine(Resources.Program_MainSafe_Target_release_version____0_, (string.IsNullOrEmpty(args.TargetVersion) ? "(null)" : args.TargetVersion));
+                Console.WriteLine(Resources.Program_MainSafe_Target_release_version____0_, string.IsNullOrEmpty(args.TargetVersion) ? "(null)" : args.TargetVersion);
 
                 IEnumerable<Release> releases = await GetReleases().ConfigureAwait(false);
                 Console.WriteLine(Resources.Program_MainSafe_Searching_for_the_latest_release_that_matches_the_parameters___);
@@ -121,17 +124,17 @@ namespace Exiled.Installer
                 Console.WriteLine(Resources.Program_MainSafe_Asset_found_);
                 Console.WriteLine(FormatAsset(exiledAsset));
 
-                using HttpClient httpClient = new HttpClient
+                using HttpClient httpClient = new()
                 {
-                    Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload)
+                    Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload),
                 };
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
 
                 using HttpResponseMessage downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
                 using Stream downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
-                using GZipInputStream gzInputStream = new GZipInputStream(downloadArchiveStream);
-                using TarInputStream tarInputStream = new TarInputStream(gzInputStream, null);
+                using GZipInputStream gzInputStream = new (downloadArchiveStream);
+                using TarInputStream tarInputStream = new (gzInputStream, null);
 
                 TarEntry entry;
                 while (!((entry = tarInputStream.GetNextEntry()) is null))
@@ -154,11 +157,12 @@ namespace Exiled.Installer
                 Environment.Exit(0);
         }
 
-        private static async Task<IEnumerable<Release>> GetReleases()
+        private async static Task<IEnumerable<Release>> GetReleases()
         {
             IEnumerable<Release> releases = (await GitHubClient.Repository.Release.GetAll(RepoID).ConfigureAwait(false))
-                .Where(r => Version.TryParse(r.TagName, out Version version)
-                    && (version > VersionLimit));
+                .Where(
+                    r => Version.TryParse(r.TagName, out Version version)
+                         && (version > VersionLimit));
 
             return releases.OrderByDescending(r => r.CreatedAt.Ticks);
         }
@@ -168,7 +172,7 @@ namespace Exiled.Installer
 
         private static string FormatRelease(Release r, bool includeAssets)
         {
-            StringBuilder builder = new StringBuilder(30);
+            StringBuilder builder = new (30);
             builder.AppendLine($"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}");
             if (includeAssets)
             {
@@ -179,10 +183,7 @@ namespace Exiled.Installer
             return builder.ToString().Trim('\r', '\n');
         }
 
-        private static string FormatAsset(ReleaseAsset a)
-        {
-            return $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url} | DownloadURL: {a.BrowserDownloadUrl}";
-        }
+        private static string FormatAsset(ReleaseAsset a) => $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url} | DownloadURL: {a.BrowserDownloadUrl}";
 
         private static void ResolvePath(CommandSettings args, string filePath, out string path)
         {
@@ -284,7 +285,7 @@ namespace Exiled.Installer
                     return TryParse(pair.Value);
                 }
                 else if (!fileInFolder && !isFolder &&
-                    pair.Key.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                         pair.Key.Equals(fileName, StringComparison.OrdinalIgnoreCase))
                 {
                     return TryParse(pair.Value);
                 }
@@ -302,7 +303,7 @@ namespace Exiled.Installer
             {
                 release = r;
 
-                if ((targetVersion == new Version(r.TagName)))
+                if (targetVersion == new Version(r.TagName))
                     return true;
 
                 if ((r.Prerelease && args.PreReleases) || !r.Prerelease)

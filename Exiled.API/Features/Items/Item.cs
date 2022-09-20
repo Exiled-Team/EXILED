@@ -107,7 +107,10 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ItemCategory"/> of the item.
         /// </summary>
-        public ItemCategory Category => Base.Category;
+        public ItemCategory Category
+        {
+            get => Base.Category;
+        }
 
         /// <summary>
         /// Gets the <see cref="ItemTierFlags"/> of the item.
@@ -117,7 +120,10 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the weight of the item.
         /// </summary>
-        public float Weight => Base.Weight;
+        public float Weight
+        {
+            get => Base.Weight;
+        }
 
         /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.
@@ -145,7 +151,7 @@ namespace Exiled.API.Features.Items
                 {
                     Scp330Bag scp330Bag => new Scp330(scp330Bag),
                     Scp244Item scp244Item => new Scp244(scp244Item),
-                    _ => new Usable(usable)
+                    _ => new Usable(usable),
                 },
                 RadioItem radio => new Radio(radio),
                 MicroHIDItem micro => new MicroHid(micro),
@@ -159,7 +165,7 @@ namespace Exiled.API.Features.Items
                     Scp2176Projectile => new Scp2176(throwable),
                     _ => new Throwable(throwable),
                 },
-                _ => new Item(itemBase)
+                _ => new Item(itemBase),
             };
         }
 
@@ -209,7 +215,8 @@ namespace Exiled.API.Features.Items
             ItemType.GrenadeFlash => new FlashGrenade(owner),
             ItemType.GrenadeHE or ItemType.SCP018 => new ExplosiveGrenade(type, owner),
             ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new Firearm(type),
-            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new Keycard(type),
+            ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardChaosInsurgency or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or
+                ItemType.KeycardNTFOfficer => new Keycard(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new Armor(type),
             ItemType.SCP330 => new Scp330(),
             ItemType.SCP2176 => new Scp2176(owner),

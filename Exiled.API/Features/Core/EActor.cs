@@ -57,7 +57,10 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => Base.transform;
+        public Transform Transform
+        {
+            get => Base.transform;
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="Vector3">position</see>.
@@ -127,7 +130,10 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets a <see cref="EActor"/>[] containing all the components in parent.
         /// </summary>
-        protected EActor[] ComponentsInParent => FindActiveObjectsOfType<EActor>().Where(actor => actor.ComponentsInChildren.Any(comp => comp == this)).ToArray();
+        protected EActor[] ComponentsInParent
+        {
+            get => FindActiveObjectsOfType<EActor>().Where(actor => actor.ComponentsInChildren.Any(comp => comp == this)).ToArray();
+        }
 
         /// <summary>
         /// Gets a <see cref="HashSet{T}"/> of <see cref="EActor"/> containing all the components in children.

@@ -55,7 +55,7 @@ namespace Exiled.API.Structs
         /// <param name="left">The left-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
         /// <param name="right">The right-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(AttachmentIdentifier left, AttachmentIdentifier right) => left.Name == right.Name && left.Code == right.Code && left.Slot == right.Slot;
+        public static bool operator ==(AttachmentIdentifier left, AttachmentIdentifier right) => (left.Name == right.Name) && (left.Code == right.Code) && (left.Slot == right.Slot);
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="AttachmentIdentifier"/>.
@@ -63,7 +63,7 @@ namespace Exiled.API.Structs
         /// <param name="left">The left-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
         /// <param name="right">The right-hand <see cref="AttachmentIdentifier"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator !=(AttachmentIdentifier left, AttachmentIdentifier right) => left.Name != right.Name && left.Code != right.Code && left.Slot != right.Slot;
+        public static bool operator !=(AttachmentIdentifier left, AttachmentIdentifier right) => (left.Name != right.Name) && (left.Code != right.Code) && (left.Slot != right.Slot);
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="Attachment"/>.
@@ -71,7 +71,7 @@ namespace Exiled.API.Structs
         /// <param name="left">The <see cref="AttachmentIdentifier"/> to compare.</param>
         /// <param name="right">The <see cref="Attachment"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(AttachmentIdentifier left, Attachment right) => left.Name == right.Name && left.Slot == right.Slot;
+        public static bool operator ==(AttachmentIdentifier left, Attachment right) => (left.Name == right.Name) && (left.Slot == right.Slot);
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="Attachment"/>.

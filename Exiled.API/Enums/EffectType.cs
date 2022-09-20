@@ -145,7 +145,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Causes the player to blink.
         /// </summary>
-        Visual173Blink,
+        Visuals173Blink,
 
         /// <summary>
         /// Causes the player to slowly regenerate health.

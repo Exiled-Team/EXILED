@@ -43,26 +43,29 @@ namespace Exiled.Events.Patches.Generic
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = -2;
-            int index = newInstructions.FindIndex(i =>
-                i.opcode == OpCodes.Callvirt &&
-                (MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded))) + offset;
+            int index = newInstructions.FindIndex(
+                i =>
+                    (i.opcode == OpCodes.Callvirt) &&
+                    ((MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded)))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(inv._hub)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(inv._hub)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // itemInstance
-                new(OpCodes.Ldloc_1),
+                    // itemInstance
+                    new(OpCodes.Ldloc_1),
 
-                // pickup
-                new(OpCodes.Ldarg_3),
+                    // pickup
+                    new(OpCodes.Ldarg_3),
 
-                // AddItem(player, itemInstance, pickup)
-                new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
-            });
+                    // AddItem(player, itemInstance, pickup)
+                    new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -96,14 +99,16 @@ namespace Exiled.Events.Patches.Generic
             const int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Throw) + offset;
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -151,7 +156,7 @@ namespace Exiled.Events.Patches.Generic
                 foreach (Item item in player.Items)
                         Log.Debug($"{item})");
 #endif
-            });
+                });
         }
     }
 }

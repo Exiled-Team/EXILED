@@ -76,6 +76,7 @@ namespace Exiled.API.Features.Items
                 Energy = Energy,
             };
 
+
             return cloneableItem;
         }
 

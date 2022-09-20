@@ -49,7 +49,10 @@ namespace Exiled.Events
         /// <summary>
         /// Gets the plugin instance.
         /// </summary>
-        public static Events Instance => instance;
+        public static Events Instance
+        {
+            get => instance;
+        }
 
         /// <summary>
         /// Gets a set of types and methods for which EXILED patches should not be run.

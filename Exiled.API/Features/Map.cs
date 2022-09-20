@@ -68,27 +68,42 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._nextPhase;
+        public static bool IsLczDecontaminated
+        {
+            get => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
+        }
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports => ReadOnlyTeleportsValue;
+        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports
+        {
+            get => ReadOnlyTeleportsValue;
+        }
 
         /// <summary>
         /// Gets all <see cref="Locker"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
+        public static ReadOnlyCollection<Locker> Lockers
+        {
+            get => ReadOnlyLockersValue;
+        }
 
         /// <summary>
         /// Gets all <see cref="Ragdoll"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Ragdoll> Ragdolls => ReadOnlyRagdollsValue;
+        public static ReadOnlyCollection<Ragdoll> Ragdolls
+        {
+            get => ReadOnlyRagdollsValue;
+        }
 
         /// <summary>
         /// Gets all <see cref="AdminToy"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<AdminToy> Toys => ReadOnlyToysValue;
+        public static ReadOnlyCollection<AdminToy> Toys
+        {
+            get => ReadOnlyToysValue;
+        }
 
         /// <summary>
         /// Gets or sets the current seed of the map.
@@ -231,7 +246,7 @@ namespace Exiled.API.Features
                 if (room is null)
                     continue;
 
-                if (zoneTypes == ZoneType.Unspecified || (room is not null && zoneTypes == room.Zone))
+                if (zoneTypes == ZoneType.Unspecified || (room is not null && (zoneTypes == room.Zone)))
                     controller.ServerFlickerLights(duration);
             }
         }

@@ -16,7 +16,6 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-
     using Interactables.Interobjects.DoorUtils;
 
     using MapGeneration;

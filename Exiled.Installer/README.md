@@ -1,7 +1,9 @@
 ### TL;DR
+
 EXILED.Installer - EXILED online installer. Downloads the latest release from the GitHub repository and installs it.
 
 #### Usage
+
 ```
 Usage:
   Exiled.Installer [options] [[--] <additional arguments>...]]
@@ -26,6 +28,7 @@ Additional Arguments:
 #### Examples
 
 - ##### Basic installation in the folder you are in
+
 ```
 PS E:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server> .\Exiled.Installer-Win --pre-releases
 Exiled.Installer-Win-3.1.0.0
@@ -57,8 +60,8 @@ Extracting 'Assembly-CSharp.dll' into 'E:\SteamLibrary\steamapps\common\SCP Secr
 Installation complete
 ```
 
-
 - ##### Installation in a specific folder, specific version and specific appdata folder
+
 ```
 irebbok@iRebbok:~$ ./Exiled.Installer-Linux -p /home/irebbok/scpsl/dedi --appdata /home/irebbok/scpsl --target-version 2.0.8
 Exiled.Installer-Linux-3.1.0.0

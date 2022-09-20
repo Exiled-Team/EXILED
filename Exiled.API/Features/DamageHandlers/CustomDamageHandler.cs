@@ -83,7 +83,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="damageType">The <see cref="DamageType"/> to be set.</param>
         /// <param name="cassieAnnouncement">The <see cref="DamageHandlerBase.CassieAnnouncement"/> to be set.</param>
         public CustomDamageHandler(Player target, Player attacker, float damage, DamageType damageType, CassieAnnouncement cassieAnnouncement)
-            : this(target, attacker, damage, damageType) => CassieDeathAnnouncement = cassieAnnouncement;
+            : this(target, attacker, damage, damageType)
+        {
+            CassieDeathAnnouncement = cassieAnnouncement;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomDamageHandler"/> class.
@@ -94,7 +97,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="damageType">The <see cref="DamageType"/> to be set.</param>
         /// <param name="cassieAnnouncement">The <see cref="DamageHandlerBase.CassieAnnouncement"/> to be set.</param>
         public CustomDamageHandler(Player target, Player attacker, float damage, DamageType damageType, string cassieAnnouncement)
-            : this(target, attacker, damage, damageType) => CassieDeathAnnouncement = new CassieAnnouncement(cassieAnnouncement);
+            : this(target, attacker, damage, damageType)
+        {
+            CassieDeathAnnouncement = new CassieAnnouncement(cassieAnnouncement);
+        }
 
         /// <summary>
         /// Gets the base <see cref="DamageHandlerBase"/>.

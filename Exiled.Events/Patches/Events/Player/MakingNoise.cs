@@ -36,25 +36,27 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(FootstepSync), nameof(FootstepSync._ccm))),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(MakingNoiseEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnMakingNoise))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(MakingNoiseEventArgs), nameof(MakingNoiseEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(MakingNoiseEventArgs), nameof(MakingNoiseEventArgs.Volume))),
-                new(OpCodes.Starg_S, 1),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(FootstepSync), nameof(FootstepSync._ccm))),
+                    new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(MakingNoiseEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnMakingNoise))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(MakingNoiseEventArgs), nameof(MakingNoiseEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(MakingNoiseEventArgs), nameof(MakingNoiseEventArgs.Volume))),
+                    new(OpCodes.Starg_S, 1),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

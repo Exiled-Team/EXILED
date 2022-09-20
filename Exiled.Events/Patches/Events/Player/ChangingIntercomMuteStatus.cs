@@ -36,32 +36,34 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[0].labels.Add(cdcLabel);
 
-            newInstructions.InsertRange(0, new[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntercomMuteStatusEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingIntercomMuteStatus))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntercomMuteStatusEventArgs), nameof(ChangingIntercomMuteStatusEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, cdcLabel),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Brtrue_S, jccLabel),
-                new(OpCodes.Ldstr, "ICOM-"),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
-                new(OpCodes.Callvirt, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
-                new(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.IssuePersistentMute))),
-                new CodeInstruction(OpCodes.Ldstr, "ICOM-").WithLabels(jccLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
-                new(OpCodes.Callvirt, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
-                new(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.RevokePersistentMute))),
-                new(OpCodes.Br_S, retLabel),
-            });
+            newInstructions.InsertRange(
+                0,
+                new[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntercomMuteStatusEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingIntercomMuteStatus))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntercomMuteStatusEventArgs), nameof(ChangingIntercomMuteStatusEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, cdcLabel),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Brtrue_S, jccLabel),
+                    new(OpCodes.Ldstr, "ICOM-"),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
+                    new(OpCodes.Callvirt, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
+                    new(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.IssuePersistentMute))),
+                    new CodeInstruction(OpCodes.Ldstr, "ICOM-").WithLabels(jccLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
+                    new(OpCodes.Callvirt, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
+                    new(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.RevokePersistentMute))),
+                    new(OpCodes.Br_S, retLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
