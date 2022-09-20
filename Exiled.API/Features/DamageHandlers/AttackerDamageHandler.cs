@@ -63,7 +63,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets a value indicating whether the self damage is allowed.
         /// </summary>
-        public bool AllowSelfDamage => Is(out PlayerStatsSystem.AttackerDamageHandler handler) && handler.AllowSelfDamage;
+        public bool AllowSelfDamage
+        {
+            get => Is(out PlayerStatsSystem.AttackerDamageHandler handler) && handler.AllowSelfDamage;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the damage is friendly fire.
@@ -87,7 +90,7 @@ namespace Exiled.API.Features.DamageHandlers
             if (!Is(out PlayerStatsSystem.AttackerDamageHandler _))
                 return;
 
-            if ((player.IsSpawnProtected && player != Attacker) ||
+            if ((player.IsSpawnProtected && (player != Attacker)) ||
                 (!PlayerStatsSystem.AttackerDamageHandler._allowSpawnProtectedDamage &&
                  Attacker is not null && Attacker.IsSpawnProtected))
             {
@@ -95,7 +98,7 @@ namespace Exiled.API.Features.DamageHandlers
                 return;
             }
 
-            if (player != Attacker && !ForceFullFriendlyFire)
+            if ((player != Attacker) && !ForceFullFriendlyFire)
             {
                 if (HitboxIdentity.CheckFriendlyFire(Attacker.Role, player.Role, true))
                     return;

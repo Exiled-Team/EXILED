@@ -36,8 +36,9 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = 2;
-            int index = newInstructions.FindIndex(instruction => instruction.operand is MethodInfo methodInfo
-                                                                 && methodInfo == Method(typeof(Locker), nameof(Locker.RpcPlayDenied))) + offset;
+            int index = newInstructions.FindIndex(
+                instruction => instruction.operand is MethodInfo methodInfo
+                               && (methodInfo == Method(typeof(Locker), nameof(Locker.RpcPlayDenied)))) + offset;
 
             Label openLockerLabel = newInstructions[index].labels[0];
 
@@ -52,51 +53,53 @@ namespace Exiled.Events.Patches.Events.Player
             Label evLabel = generator.DefineLabel();
             Label trueLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
-            {
-                // Player.Get(ply);
-                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(runChecksLabel),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(ply);
+                    new CodeInstruction(OpCodes.Ldarg_1).WithLabels(runChecksLabel),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // this
-                new(OpCodes.Ldarg_0),
+                    // this
+                    new(OpCodes.Ldarg_0),
 
-                // this.__instance.Chambers[colliderId]
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Locker), nameof(Locker.Chambers))),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldelem_Ref),
+                    // this.__instance.Chambers[colliderId]
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Locker), nameof(Locker.Chambers))),
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Ldelem_Ref),
 
-                // colliderId
-                new(OpCodes.Ldarg_2),
+                    // colliderId
+                    new(OpCodes.Ldarg_2),
 
-                // __instance.CheckPerms(__instance.Chambers[colliderId].RequiredPermissions, ply) || ply.serverRoles.BypassMode
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Locker), nameof(Locker.Chambers))),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldelem_Ref),
-                new(OpCodes.Ldfld, Field(typeof(LockerChamber), nameof(LockerChamber.RequiredPermissions))),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Callvirt, Method(typeof(Locker), nameof(Locker.CheckPerms), new[] { typeof(KeycardPermissions), typeof(ReferenceHub) })),
-                new(OpCodes.Brtrue_S, trueLabel),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.serverRoles))),
-                new(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles.BypassMode))),
-                new(OpCodes.Br_S, evLabel),
-                new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(trueLabel),
+                    // __instance.CheckPerms(__instance.Chambers[colliderId].RequiredPermissions, ply) || ply.serverRoles.BypassMode
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Locker), nameof(Locker.Chambers))),
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Ldelem_Ref),
+                    new(OpCodes.Ldfld, Field(typeof(LockerChamber), nameof(LockerChamber.RequiredPermissions))),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Callvirt, Method(typeof(Locker), nameof(Locker.CheckPerms), new[] { typeof(KeycardPermissions), typeof(ReferenceHub) })),
+                    new(OpCodes.Brtrue_S, trueLabel),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.serverRoles))),
+                    new(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles.BypassMode))),
+                    new(OpCodes.Br_S, evLabel),
+                    new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(trueLabel),
 
-                // var ev = new AddingTargetEventArgs(...)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingLockerEventArgs))[0]).WithLabels(evLabel),
+                    // var ev = new AddingTargetEventArgs(...)
+                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingLockerEventArgs))[0]).WithLabels(evLabel),
 
-                // Handlers.Player.OnInteractingLocker(ev)
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingLocker))),
+                    // Handlers.Player.OnInteractingLocker(ev)
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingLocker))),
 
-                // if (ev.IsAllowed) goto openLockerLabel
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingLockerEventArgs), nameof(InteractingLockerEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, openLockerLabel),
-            });
+                    // if (ev.IsAllowed) goto openLockerLabel
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingLockerEventArgs), nameof(InteractingLockerEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, openLockerLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

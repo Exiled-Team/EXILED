@@ -41,17 +41,19 @@ namespace Exiled.Events.Patches.Events.Scp244
             int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot)))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnOpeningScp244))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnOpeningScp244))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, retLabel),
+                });
 
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(Stopwatch), nameof(Stopwatch.Restart)));
+            index = newInstructions.FindIndex(i => (i.opcode == OpCodes.Callvirt) && ((MethodInfo)i.operand == Method(typeof(Stopwatch), nameof(Stopwatch.Restart))));
 
             newInstructions[index].WithLabels(retLabel);
 

@@ -14,7 +14,6 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
 
@@ -45,7 +44,7 @@ namespace Exiled.CustomItems.API.Features
             get => base.Type;
             set
             {
-                if (!value.IsThrowable() && value != ItemType.None)
+                if (!value.IsThrowable() && (value != ItemType.None))
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid grenade type.");
 
                 base.Type = value;

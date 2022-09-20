@@ -26,11 +26,13 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new[]
-            {
-                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(MuteHandler), nameof(MuteHandler.Mutes))),
-                new(OpCodes.Callvirt, Method(typeof(HashSet<string>), nameof(HashSet<string>.Clear))),
-            });
+            newInstructions.InsertRange(
+                0,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldsfld, Field(typeof(MuteHandler), nameof(MuteHandler.Mutes))),
+                    new(OpCodes.Callvirt, Method(typeof(HashSet<string>), nameof(HashSet<string>.Clear))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
