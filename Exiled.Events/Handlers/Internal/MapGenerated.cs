@@ -79,16 +79,16 @@ namespace Exiled.Events.Handlers.Internal
         private static void GenerateRooms()
         {
             // Get bulk of rooms with sorted.
-            List<GameObject> roomObjects = ListPool<GameObject>.Shared.Rent(Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject));
+            List<RoomIdentifier> roomIdentifiers = ListPool<RoomIdentifier>.Shared.Rent(Object.FindObjectsOfType<RoomIdentifier>());
 
             // If no rooms were found, it means a plugin is trying to access this before the map is created.
-            if (roomObjects.Count == 0)
+            if (roomIdentifiers.Any())
                 throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
 
-            foreach (GameObject roomObject in roomObjects)
-                Room.RoomsValue.Add(Room.CreateComponent(roomObject));
+            foreach (RoomIdentifier roomIdentifier in roomIdentifiers)
+                Room.RoomIdentifierToRoom.Add(roomIdentifier, Room.CreateComponent(roomIdentifier.gameObject));
 
-            ListPool<GameObject>.Shared.Return(roomObjects);
+            ListPool<RoomIdentifier>.Shared.Return(roomIdentifiers);
         }
 
         private static void GenerateWindow()

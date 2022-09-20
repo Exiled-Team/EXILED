@@ -352,7 +352,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
         /// <returns>The created <see cref="Ragdoll"/>.</returns>
-        public static Ragdoll Spawn(RagdollInfo ragdollInfo) => _ = new Ragdoll(ragdollInfo, true);
+        public static Ragdoll Spawn(RagdollInfo ragdollInfo) => new(ragdollInfo, true);
 
         /// <summary>
         /// Deletes the ragdoll.
