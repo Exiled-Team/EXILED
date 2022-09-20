@@ -67,12 +67,9 @@ namespace Exiled.API.Features
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
         /// <summary>
-        /// Gets a value indicating whether decontamination has begun in the light containment zone.
+        /// Gets a value indicating what the actual state of the Decontamination.
         /// </summary>
-        public static bool IsLczDecontaminated
-        {
-            get => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
-        }
+        public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._nextPhase;
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.

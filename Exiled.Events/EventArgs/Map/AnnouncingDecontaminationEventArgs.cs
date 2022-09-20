@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
@@ -25,14 +26,14 @@ namespace Exiled.Events.EventArgs.Map
         /// </param>
         public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal)
         {
-            Id = announcementId;
+            DecontaminationPhase = (DecontaminationPhase)announcementId;
             IsGlobal = isGlobal;
         }
 
         /// <summary>
-        ///     Gets the announcement id, from 0 to 6.
+        ///     Gets the announcement for the new DecontaminationPhase.
         /// </summary>
-        public int Id { get; }
+        public DecontaminationPhase DecontaminationPhase { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the announcement is going to be global or not.
