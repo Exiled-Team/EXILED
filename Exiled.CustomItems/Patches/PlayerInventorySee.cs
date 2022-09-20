@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="PlayerInventorySee.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -39,7 +39,7 @@ namespace Exiled.CustomItems.Patches
             LocalBuilder customItem = generator.DeclareLocal(typeof(CustomItem));
 
             int offset = 0;
-            int index = newInstruction.FindIndex(i => (i.opcode == OpCodes.Ldfld) && ((FieldInfo)i.operand == Field(typeof(ItemBase), nameof(ItemBase.ItemTypeId)))) + offset;
+            int index = newInstruction.FindIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == Field(typeof(ItemBase), nameof(ItemBase.ItemTypeId))) + offset;
 
             Label continueLabel = generator.DefineLabel();
             Label checkLabel = generator.DefineLabel();
