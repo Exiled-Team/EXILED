@@ -159,7 +159,13 @@ namespace Exiled.API.Features
                     room = FindParentRoom(role.Camera.GameObject);
             }
 
-            if (room is null)
+            if (room != null)
+                return room;
+
+            // Try to get room using NW methods
+            room = Room.Get(objectInRoom.transform.position);
+
+            if (room == null)
             {
                 // Then try for objects that aren't children, like players and pickups.
                 Ray downRay = new(objectInRoom.transform.position, Vector3.down);
