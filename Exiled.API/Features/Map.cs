@@ -68,7 +68,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static DecontaminationPhase DecontaminationPhase => (DecontaminationPhase)DecontaminationController.Singleton._nextPhase;
+        public static bool IsLczDecontaminated
+        {
+            get => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
+        }
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.

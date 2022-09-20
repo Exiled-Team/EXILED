@@ -21,20 +21,21 @@ namespace Exiled.Events.EventArgs.Map
         ///     Initializes a new instance of the <see cref="AnnouncingDecontaminationEventArgs" /> class.
         /// </summary>
         /// <param name="announcementId">
-        ///     <inheritdoc cref="DecontaminationPhase" />
+        ///     <inheritdoc cref="Id" />
         /// </param>
-        public AnnouncingDecontaminationEventArgs(int announcementId)
+        /// <param name="isGlobal">
+        ///     <inheritdoc cref="IsGlobal" />
+        /// </param>
+        public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal)
         {
-            DecontaminationPhase = (DecontaminationPhase)announcementId;
-            IsGlobal = DecontaminationController.Singleton.DecontaminationPhases[announcementId].Function
-                is DecontaminationController.DecontaminationPhase.PhaseFunction.GloballyAudible
-                or DecontaminationController.DecontaminationPhase.PhaseFunction.Final;
+            Id = announcementId;
+            IsGlobal = isGlobal;
         }
 
         /// <summary>
         ///     Gets the announcement id, from 0 to 6.
         /// </summary>
-        public DecontaminationPhase DecontaminationPhase { get; }
+        public int Id { get; }
 
         /// <summary>
         ///     Gets a value indicating whether the announcement is going to be global or not.
