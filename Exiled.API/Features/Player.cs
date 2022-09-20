@@ -82,20 +82,27 @@ namespace Exiled.API.Features
 #pragma warning restore SA1401
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
-        private readonly HashSet<EActor> components = new();
 
+        /// <summary>
+        /// The running speed of the player.
+        /// </summary>
         private float? runningSpeed;
+
+        /// <summary>
+        /// The walk speed of the player.
+        /// </summary>
         private float? walkingSpeed;
 
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
+        private HashSet<EActor> components = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
-        internal Player(ReferenceHub referenceHub)
+        public Player(ReferenceHub referenceHub)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
@@ -106,7 +113,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
-        internal Player(GameObject gameObject)
+        public Player(GameObject gameObject)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
@@ -584,6 +591,30 @@ namespace Exiled.API.Features
         public bool IsGrounded
         {
             get => ReferenceHub.playerMovementSync.NetworkGrounded;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is sprinting.
+        /// </summary>
+        public bool IsSprinting
+        {
+            get => MoveState == PlayerMovementState.Sprinting;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is walking.
+        /// </summary>
+        public bool IsWalking
+        {
+            get => MoveState == PlayerMovementState.Walking;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is sneaking.
+        /// </summary>
+        public bool IsSneaking
+        {
+            get => MoveState == PlayerMovementState.Sneaking;
         }
 
         /// <summary>
@@ -1942,8 +1973,7 @@ namespace Exiled.API.Features
         /// Hurts the player.
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
-        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
-        public bool Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
+        public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
 
         /// <summary>
         /// Hurts the player.
@@ -1952,8 +1982,7 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
-        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
-        public bool Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null) =>
+        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null) =>
             Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
 
         /// <summary>
@@ -1964,8 +1993,7 @@ namespace Exiled.API.Features
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
         /// <param name="deathText"> The <see langword="string"/> death text to appear on <see cref="Player"/> screen. </param>
-        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
-        public bool Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null, string deathText = null) =>
+        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null, string deathText = null) =>
             Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement, deathText));
 
         /// <summary>
@@ -1975,8 +2003,7 @@ namespace Exiled.API.Features
         /// <param name="damage">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="force">The throw force.</param>
         /// <param name="armorPenetration">The armor penetration amount.</param>
-        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
-        public bool Hurt(Player attacker, float damage, Vector3 force = default, int armorPenetration = 0) =>
+        public void Hurt(Player attacker, float damage, Vector3 force = default, int armorPenetration = 0) =>
             Hurt(new ExplosionDamageHandler(attacker.Footprint, force, damage, armorPenetration));
 
         /// <summary>
@@ -1985,8 +2012,7 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
-        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
-        public bool Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "") =>
+        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "") =>
             Hurt(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, amount, cassieAnnouncement));
 
         /// <summary>
@@ -1995,8 +2021,7 @@ namespace Exiled.API.Features
         /// <param name="damage">The amount of damage to deal.</param>
         /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
-        /// <returns><see langword="true"/> if the damage has being deal; otherwise, <see langword="false"/>.</returns>
-        public bool Hurt(float damage, string damageReason, string cassieAnnouncement = "") =>
+        public void Hurt(float damage, string damageReason, string cassieAnnouncement = "") =>
             Hurt(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
 
         /// <summary>

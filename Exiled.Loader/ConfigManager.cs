@@ -106,7 +106,10 @@ namespace Exiled.Loader
         /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
         public static IConfig LoadDefaultConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs)
         {
-            rawConfigs ??= Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
+            if (rawConfigs is null)
+            {
+                rawConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
+            }
 
             if (!rawConfigs.TryGetValue(plugin.Prefix, out object rawDeserializedConfig))
             {
