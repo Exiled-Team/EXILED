@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
@@ -22,10 +23,16 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public TurningOffLightsEventArgs(FlickerableLightController flickerableLightControllerHandler, float duration, bool isAllowed = true)
         {
+            Room = Room.Get(flickerableLightControllerHandler);
             FlickerableLightControllerHandler = flickerableLightControllerHandler;
             Duration = duration;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the <see cref="API.Features.Room" /> triggering the event.
+        /// </summary>
+        public Room Room { get; }
 
         /// <summary>
         /// Gets the <see cref="FlickerableLightController"/>.
