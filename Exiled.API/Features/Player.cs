@@ -2240,7 +2240,7 @@ namespace Exiled.API.Features
                 {
                     firearm.AddAttachment(identifiers);
                 }
-                else if (Preferences.TryGetValue(itemType, out AttachmentIdentifier[] attachments))
+                else if (Preferences is not null && Preferences.TryGetValue(itemType, out AttachmentIdentifier[] attachments))
                 {
                     firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                 }
@@ -2421,7 +2421,7 @@ namespace Exiled.API.Features
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
-                    if (Preferences.TryGetValue(firearm.ItemTypeId, out AttachmentIdentifier[] attachments))
+                    if (Preferences is not null && Preferences.TryGetValue(firearm.ItemTypeId, out AttachmentIdentifier[] attachments))
                     {
                         firearm.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                     }
@@ -2683,7 +2683,27 @@ namespace Exiled.API.Features
         public void DisableAllEffects()
         {
             foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
+            {
                 effect.Value.IsEnabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Disables all currently active <see cref="PlayerEffect">status effects</see>.
+        /// </summary>
+        /// <param name="category">A category to filter the disabled effects.</param>
+        public void DisableAllEffects(EffectCategory category)
+        {
+            if (category is EffectCategory.None)
+                return;
+
+            foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
+            {
+                if (Enum.TryParse(effect.Key.Name, out EffectType effectType) && effectType.GetCategories().HasFlag(category))
+                {
+                    effect.Value.IsEnabled = false;
+                }
+            }
         }
 
         /// <summary>
@@ -2757,13 +2777,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Enables a random <see cref="EffectType"/> on the player.
         /// </summary>
+        /// <param name="category">An optional category to filter the applied effect. Set to <see cref="EffectCategory.None"/> for any effect.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
-        public EffectType ApplyRandomEffect(float duration = 0f, bool addDurationIfActive = false)
+        public EffectType ApplyRandomEffect(EffectCategory category = EffectCategory.None, float duration = 0f, bool addDurationIfActive = false)
         {
             Array effectTypes = Enum.GetValues(typeof(EffectType));
-            EffectType effectType = (EffectType)effectTypes.GetValue(Random.Range(0, effectTypes.Length));
+            IEnumerable<EffectType> validEffects = effectTypes.ToArray<EffectType>().Where(effect => effect.GetCategories().HasFlag(category));
+            EffectType effectType = validEffects.ElementAt(Random.Range(0, effectTypes.Length));
             EnableEffect(effectType, duration, addDurationIfActive);
             return effectType;
         }
@@ -3030,6 +3052,8 @@ namespace Exiled.API.Features
         /// <param name="type">Object for teleport.</param>
         public void RandomTeleport(Type type)
         {
+            LockerChamber[] chambers;
+
             object randomObject = type.Name switch
             {
                 nameof(Camera) => Camera.CamerasValue[Random.Range(0, Camera.CamerasValue.Count)],
@@ -3043,24 +3067,9 @@ namespace Exiled.API.Features
                 nameof(Generator) => Generator.GeneratorValues[Random.Range(0, Generator.GeneratorValues.Count)],
                 nameof(Window) => Window.WindowValue[Random.Range(0, Window.WindowValue.Count)],
                 nameof(Scp914) => Scp914.Scp914Controller,
-                nameof(LockerChamber) => new Func<LockerChamber>(
-                    delegate
-                    {
-                        LockerChamber[] chambers = Map.GetRandomLocker().Chambers;
-                        return chambers[Random.Range(0, chambers.Length)];
-                    }),
+                nameof(LockerChamber) => (chambers = Map.GetRandomLocker().Chambers)[Random.Range(0, chambers.Length)],
                 _ => null,
             };
-
-            switch (randomObject)
-            {
-                case null:
-                    Log.Warn($"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
-                    return;
-                case Func<LockerChamber> func:
-                    randomObject = func.Target;
-                    break;
-            }
 
             Teleport(randomObject);
         }
