@@ -1076,7 +1076,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => GetEffectActive<Corroding>() || Map.FindParentRoom(GameObject)?.Type is RoomType.Pocket;
+        public bool IsInPocketDimension
+        {
+            get => GetEffectActive<Corroding>() || Map.FindParentRoom(GameObject)?.Type == RoomType.Pocket;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.
@@ -1102,7 +1105,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is empty.
         /// </summary>
-        public bool IsInventoryEmpty => Items.Any();
+        public bool IsInventoryEmpty
+        {
+            get => Items.Count == 0;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is full.
@@ -1141,8 +1147,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> which contains all player's preferences.
         /// </summary>
-        public Dictionary<ItemType, AttachmentIdentifier[]> Preferences =>
-            Firearm.PlayerPreferences.FirstOrDefault(kvp => kvp.Key == this).Value;
+        public Dictionary<ItemType, AttachmentIdentifier[]> Preferences
+        {
+            get => Firearm.PlayerPreferences.FirstOrDefault(kvp => kvp.Key == this).Value;
+        }
 
         /// <summary>
         /// Gets the player's <see cref="Footprinting.Footprint"/>.
@@ -1451,7 +1459,10 @@ namespace Exiled.API.Features
         /// Wrapper to call <see cref="SetFriendlyFire(RoleType, float)"/>.
         /// </summary>
         /// <param name="roleFF"> Role with FF to add even if it exists. </param>
-        public void SetFriendlyFire(KeyValuePair<RoleType, float> roleFF) => SetFriendlyFire(roleFF.Key, roleFF.Value);
+        public void SetFriendlyFire(KeyValuePair<RoleType, float> roleFF)
+        {
+            SetFriendlyFire(roleFF.Key, roleFF.Value);
+        }
 
         /// <summary>
         /// Tries to add <see cref="RoleType"/> to FriendlyFire rules.
@@ -1538,10 +1549,8 @@ namespace Exiled.API.Features
             }
             else
             {
-                Dictionary<RoleType, float> newFFRules = new()
-                {
-                    { roleToAdd, ffMult },
-                };
+                Dictionary<RoleType, float> newFFRules = new();
+                newFFRules.Add(roleToAdd, ffMult);
                 CustomRoleFriendlyFireMultiplier.Add(roleType, newFFRules);
             }
         }

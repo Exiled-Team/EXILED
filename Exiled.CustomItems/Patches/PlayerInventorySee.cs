@@ -49,24 +49,26 @@ namespace Exiled.CustomItems.Patches
 
             newInstruction.RemoveRange(index, 2);
 
-            newInstruction.InsertRange(index, new[]
-            {
-                new(OpCodes.Call,  Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, item.LocalIndex),
-                new(OpCodes.Brfalse_S, continueLabel),
-                new(OpCodes.Ldloc_S, item.LocalIndex),
-                new(OpCodes.Ldloca_S, customItem.LocalIndex),
-                new(OpCodes.Call, Method(typeof(CustomItem), nameof(CustomItem.TryGet), new[] { typeof(Item), typeof(CustomItem).MakeByRefType() })),
-                new(OpCodes.Brfalse_S, checkLabel),
-                new(OpCodes.Ldloc_S, customItem.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(CustomItem), nameof(CustomItem.Name))),
-                new(OpCodes.Br_S, endLabel),
-                new CodeInstruction(OpCodes.Ldloc_S, item.LocalIndex).WithLabels(checkLabel),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Type))),
-                new(OpCodes.Box, typeof(ItemType)),
-                new CodeInstruction(OpCodes.Nop).WithLabels(endLabel),
-            });
+            newInstruction.InsertRange(
+                index,
+                new[]
+                {
+                    new(OpCodes.Call,  Method(typeof(Item), nameof(Item.Get))),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, item.LocalIndex),
+                    new(OpCodes.Brfalse_S, continueLabel),
+                    new(OpCodes.Ldloc_S, item.LocalIndex),
+                    new(OpCodes.Ldloca_S, customItem.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(CustomItem), nameof(CustomItem.TryGet), new[] { typeof(Item), typeof(CustomItem).MakeByRefType() })),
+                    new(OpCodes.Brfalse_S, checkLabel),
+                    new(OpCodes.Ldloc_S, customItem.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(CustomItem), nameof(CustomItem.Name))),
+                    new(OpCodes.Br_S, endLabel),
+                    new CodeInstruction(OpCodes.Ldloc_S, item.LocalIndex).WithLabels(checkLabel),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Type))),
+                    new(OpCodes.Box, typeof(ItemType)),
+                    new CodeInstruction(OpCodes.Nop).WithLabels(endLabel),
+                });
 
             for (int z = 0; z < newInstruction.Count; z++)
                 yield return newInstruction[z];
