@@ -42,7 +42,6 @@ namespace Exiled.Events.Patches.Events.Map
                 {
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(DecontaminationController), nameof(DecontaminationController._nextPhase))),
-                    new(OpCodes.Ldarg_1),
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AnnouncingDecontaminationEventArgs))[0]),
                     new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnAnnouncingDecontamination))),
                 });
