@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="InvisibleInteractionPatch.cs" company="Exiled Team">
+// <copyright file="ServerCanInteractPatch.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Generic
     /// Implements <see cref="Player.KeepInvisibilityOnInteracting"/>.
     /// </summary>
     [HarmonyPatch(typeof(StandardDistanceVerification), nameof(StandardDistanceVerification.ServerCanInteract))]
-    internal static class InvisibleInteractionPatch
+    internal static class ServerCanInteractPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Generic
     /// Implements <see cref="Player.KeepInvisibilityOnInteracting"/>.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract))]
-    internal static class InvisibleInteractionPlayerInteractPatch
+    internal static class PlayerInteractPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
