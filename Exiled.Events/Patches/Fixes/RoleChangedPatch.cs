@@ -7,6 +7,9 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Player;
 
@@ -20,6 +23,9 @@ namespace Exiled.Events.Patches.Fixes
     [HarmonyPatch(typeof(InventoryItemProvider), nameof(InventoryItemProvider.RoleChanged))]
     internal static class RoleChangedPatch
     {
-        private static bool Prefix() => false;
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            yield return new CodeInstruction(OpCodes.Ret);
+        }
     }
 }
