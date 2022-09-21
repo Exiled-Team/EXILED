@@ -43,8 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
             const int offset = -1;
             int index = newInstructions.FindIndex(i => (i.opcode == OpCodes.Call) && ((MethodInfo)i.operand == Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions)))) + offset;
 
-            // Player player;
-            // if(!Player.UnverifiedPlayers.TryGetValue(_hub, out player)) {
+            // if(!Player.UnverifiedPlayers.TryGetValue(_hub, out Player player)) {
             //     Means the player connected before WaitingForPlayers event is fired
             //     Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
             //     Blame NorthWood
@@ -77,12 +76,12 @@ namespace Exiled.Events.Patches.Events.Player
 
                     new CodeInstruction(OpCodes.Nop).WithLabels(callJoined),
 #if DEBUG
-                new(OpCodes.Ldstr, "{0} has verified!"),
-                new(OpCodes.Ldloc_S, player.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Nickname))),
-                new(OpCodes.Callvirt, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object) })),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Call, Method(typeof(Log), nameof(Log.Debug), new[] { typeof(string), typeof(bool) })),
+                    new(OpCodes.Ldstr, "{0} has verified!"),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Nickname))),
+                    new(OpCodes.Callvirt, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object) })),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Call, Method(typeof(Log), nameof(Log.Debug), new[] { typeof(string), typeof(bool) })),
 #endif
                     new(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.Dictionary))),
                     new(OpCodes.Ldarg_0),

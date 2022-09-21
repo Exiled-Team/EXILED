@@ -33,9 +33,9 @@ namespace Exiled.API.Features.Core
         protected TickComponent()
             : base()
         {
-            CanEverTick = true;
             executeAllHandle = Timing.RunCoroutine(ExecuteAll());
             boundHandles = new HashSet<CoroutineHandle>();
+            CanEverTick = true;
         }
 
         /// <summary>
