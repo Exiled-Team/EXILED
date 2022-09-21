@@ -31,12 +31,14 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter))),
-            });
+            newInstructions.InsertRange(
+                0,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter))),
+                });
 
             int offset = -2;
             int index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(EnvironmentalHazard), nameof(EnvironmentalHazard.OnEnter)))) + offset;

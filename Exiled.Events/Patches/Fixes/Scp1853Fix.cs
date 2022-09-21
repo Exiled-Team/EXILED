@@ -35,16 +35,18 @@ namespace Exiled.Events.Patches.Fixes
             int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse_S) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp1853), nameof(Scp1853.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldc_I4, (int)EffectType.Poisoned),
-                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.GetEffect))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerEffect), nameof(PlayerEffect.IsEnabled))),
-                new(OpCodes.Brtrue_S, retLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp1853), nameof(Scp1853.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldc_I4, (int)EffectType.Poisoned),
+                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.GetEffect))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerEffect), nameof(PlayerEffect.IsEnabled))),
+                    new(OpCodes.Brtrue_S, retLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 

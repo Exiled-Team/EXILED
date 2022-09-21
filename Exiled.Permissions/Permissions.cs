@@ -21,7 +21,10 @@ namespace Exiled.Permissions
         /// <summary>
         /// Gets the permissions instance.
         /// </summary>
-        public static Permissions Instance => instance;
+        public static Permissions Instance
+        {
+            get => instance;
+        }
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -30,11 +33,13 @@ namespace Exiled.Permissions
 
             base.OnEnabled();
 
-            Timing.CallDelayed(5f, () =>
-            {
-                Extensions.Permissions.Create();
-                Extensions.Permissions.Reload();
-            });
+            Timing.CallDelayed(
+                5f,
+                () =>
+                {
+                    Extensions.Permissions.Create();
+                    Extensions.Permissions.Reload();
+                });
         }
 
         /// <inheritdoc/>

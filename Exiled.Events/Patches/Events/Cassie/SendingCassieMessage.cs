@@ -43,27 +43,29 @@ namespace Exiled.Events.Patches.Events.Cassie
             //
             // if (!ev.IsAllowed)
             //     return;
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingCassieMessageEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Cassie), nameof(Cassie.OnSendingCassieMessage))),
-                new(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.Words))),
-                new(OpCodes.Starg_S, 0),
-                new(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.MakeHold))),
-                new(OpCodes.Starg_S, 1),
-                new(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.MakeNoise))),
-                new(OpCodes.Starg_S, 2),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingCassieMessageEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Cassie), nameof(Cassie.OnSendingCassieMessage))),
+                    new(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.Words))),
+                    new(OpCodes.Starg_S, 0),
+                    new(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.MakeHold))),
+                    new(OpCodes.Starg_S, 1),
+                    new(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.MakeNoise))),
+                    new(OpCodes.Starg_S, 2),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
