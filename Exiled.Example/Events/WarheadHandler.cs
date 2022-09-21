@@ -15,13 +15,13 @@ namespace Exiled.Example.Events
     /// </summary>
     internal sealed class WarheadHandler
     {
-        /// <inheritdoc cref="Exiled.Events.EventArgs.Warhead.StoppingEventArgs"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Warhead.StoppingEventArgs"/>
         public void OnStopping(StoppingEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} stopped the warhead!");
         }
 
-        /// <inheritdoc cref="Exiled.Events.EventArgs.Warhead.StartingEventArgs"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Warhead.StartingEventArgs"/>
         public void OnStarting(StartingEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} started the warhead!");
