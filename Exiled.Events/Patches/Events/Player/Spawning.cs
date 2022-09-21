@@ -40,8 +40,10 @@ namespace Exiled.Events.Patches.Events.Player
                                                    AccessTools.PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.SpawnProtected)))) + offset;
 
             // Remove all existing this._pms.OnPlayerClassChange calls (we will want to call this ourselves after our even fires, to allow their spawn position to change.)
-            newInstructions.RemoveAll(i =>
-                i.opcode == OpCodes.Call && (MethodInfo)i.operand == AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange)));
+            foreach (CodeInstruction instruction in newInstructions.FindAll(
+                i =>
+                    (i.opcode == OpCodes.Call) && ((MethodInfo)i.operand == AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange)))))
+                newInstructions.Remove(instruction);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(SpawningEventArgs));
 
