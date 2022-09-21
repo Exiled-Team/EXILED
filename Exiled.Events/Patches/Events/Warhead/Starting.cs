@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     /// <summary>
     ///     Patch the <see cref="PlayerInteract.UserCode_CmdDetonateWarhead" />.
-    ///     Adds the <see cref="Handlers.Warhead.Starting" /> event.
+    ///     Adds the <see cref="Handlers.Warhead.StartingWarhead" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdDetonateWarhead))]
     internal static class Starting
@@ -42,9 +42,9 @@ namespace Exiled.Events.Patches.Events.Warhead
             // if (!Warhead.CanBeStarted)
             //   return;
             //
-            // var ev = new StartingEventArgs(Player.Get(this.gameObject), true);
+            // var ev = new StartingWarheadEventArgs(Player.Get(this.gameObject), true);
             //
-            // Handlers.Warhead.OnStarting(ev);
+            // Handlers.Warhead.OnStartingWarhead(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
@@ -58,10 +58,10 @@ namespace Exiled.Events.Patches.Events.Warhead
                     new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingWarheadEventArgs))[0]),
                     new(OpCodes.Dup),
-                    new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
-                    new(OpCodes.Call, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStartingWarhead))),
+                    new(OpCodes.Call, PropertyGetter(typeof(StartingWarheadEventArgs), nameof(StartingWarheadEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
                     new(OpCodes.Ldsfld, Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Host))),
                     new(OpCodes.Dup),

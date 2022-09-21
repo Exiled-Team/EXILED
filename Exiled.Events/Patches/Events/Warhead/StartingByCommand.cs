@@ -46,10 +46,10 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new CodeInstruction(OpCodes.Ldarg_2).MoveLabelsFrom(instructions[index]),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ICommandSender) })),
                 new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingWarheadEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStarting))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
+                new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStartingWarhead))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(StartingWarheadEventArgs), nameof(StartingWarheadEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue, cdcLabel),
                 new(OpCodes.Ldarg_3),
                 new(OpCodes.Ldstr, "Action prevented by a plugin."),
@@ -65,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     /// <summary>
     ///     Patches <see cref="CommandSystem.Commands.RemoteAdmin.Warhead.DetonateCommand.Execute" /> to add the
-    ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
+    ///     <see cref="Handlers.Warhead.StartingWarhead" /> event when triggered by a command.
     /// </summary>
     [HarmonyPatch(typeof(DetonateCommand), nameof(DetonateCommand.Execute))]
     internal static class StartingByDetonateCommand
@@ -87,7 +87,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     /// <summary>
     ///     Patches <see cref="CommandSystem.Commands.RemoteAdmin.Warhead.InstantCommand.Execute" /> to add the
-    ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
+    ///     <see cref="Handlers.Warhead.StartingWarhead" /> event when triggered by a command.
     /// </summary>
     [HarmonyPatch(typeof(InstantCommand), nameof(InstantCommand.Execute))]
     internal static class StartingByInstantCommand
@@ -109,7 +109,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     /// <summary>
     ///     Patches <see cref="CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationStartCommand.Execute" /> to add the
-    ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
+    ///     <see cref="Handlers.Warhead.StartingWarhead" /> event when triggered by a command.
     /// </summary>
     [HarmonyPatch(typeof(DetonationStartCommand), nameof(DetonationStartCommand.Execute))]
     internal static class StartingByEventDetonateCommand
@@ -131,7 +131,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     /// <summary>
     ///     Patches <see cref="CommandSystem.Commands.RemoteAdmin.ServerEvent.DetonationInstantCommand.Execute" /> to add the
-    ///     <see cref="Handlers.Warhead.Starting" /> event when triggered by a command.
+    ///     <see cref="Handlers.Warhead.StartingWarhead" /> event when triggered by a command.
     /// </summary>
     [HarmonyPatch(typeof(DetonationInstantCommand), nameof(DetonationInstantCommand.Execute))]
     internal static class StartingByEventInstantDetonateCommand
