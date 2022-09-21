@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs.Map
         ///     Initializes a new instance of the <see cref="AnnouncingDecontaminationEventArgs" /> class.
         /// </summary>
         /// <param name="announcementId">
-        ///     <inheritdoc cref="Id" />
+        ///     <inheritdoc cref="DecontaminationPhase" />
         /// </param>
         public AnnouncingDecontaminationEventArgs(int announcementId)
         {
