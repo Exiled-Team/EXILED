@@ -96,8 +96,7 @@ namespace Exiled.API.Features
         /// <remarks>There are two sounds only.
         /// The values to identify them are <see cref="Scp914InteractCode.ChangeMode"/>, which stands for the sound played when SCP-914 is being activated,
         /// and <see cref="Scp914InteractCode.Activate"/>, which stands for the sound played when SCP-914's knob state is being changed.</remarks>
-        public static void PlaySound(Scp914InteractCode code) => scp914Controller.RpcPlaySound((byte)code);
-
+        public static void PlaySound(Scp914InteractCode code) => Scp914Controller.RpcPlaySound((byte)code);
 
         /// <summary>
         /// Interacts with SCP-914.
