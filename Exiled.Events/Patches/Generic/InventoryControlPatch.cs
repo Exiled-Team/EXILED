@@ -139,14 +139,14 @@ namespace Exiled.Events.Patches.Generic
                         player.Inventory.UserInventory.Items.Remove(serial);
                         player.Inventory.SendItemsNextFrame = true;
 #if DEBUG
-                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
+                        Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
 #endif
                     }
 #if DEBUG
-                Log.Debug($"Item ({serial}) removed from {player.Nickname}");
-                Log.Debug(
+                    Log.Debug($"Item ({serial}) removed from {player.Nickname}");
+                    Log.Debug(
                     $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
-                foreach (Item item in player.Items)
+                    foreach (Item item in player.Items)
                     Log.Debug($"{item.Type} ({item.Serial})");
 #endif
                 });
