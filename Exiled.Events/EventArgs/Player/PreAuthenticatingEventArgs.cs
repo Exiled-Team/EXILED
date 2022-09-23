@@ -106,7 +106,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
         public void Delay(byte seconds, bool isForced)
         {
-            if (seconds < 1 && seconds > 25)
+            if (seconds is < 1 or > 25)
                 throw new Exception("Delay duration must be between 1 and 25 seconds.");
 
             Reject(RejectionReason.Delay, isForced, null, 0, seconds);
@@ -183,7 +183,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="port">The redirection port (Redirect reason only).</param>
         public void Reject(RejectionReason rejectionReason, bool isForced, string customReason = null, long expiration = 0, byte seconds = 0, ushort port = 0)
         {
-            if (customReason is not null && customReason.Length > 400)
+            if (customReason is not null && (customReason.Length > 400))
                 throw new ArgumentOutOfRangeException(nameof(rejectionReason), "Reason can't be longer than 400 characters.");
 
             if (!IsAllowed)
@@ -213,9 +213,6 @@ namespace Exiled.Events.EventArgs.Player
                 case RejectionReason.Redirect:
                     rejectData.Put(port);
                     break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(rejectionReason), rejectionReason, null);
             }
 
             if (isForced)

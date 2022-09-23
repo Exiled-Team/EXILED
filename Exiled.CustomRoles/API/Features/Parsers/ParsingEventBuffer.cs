@@ -30,7 +30,10 @@ namespace Exiled.CustomRoles.API.Features.Parsers
         }
 
         /// <inheritdoc/>
-        public ParsingEvent Current => current?.Value;
+        public ParsingEvent Current
+        {
+            get => current?.Value;
+        }
 
         /// <inheritdoc />
         public bool MoveNext()

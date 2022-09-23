@@ -26,7 +26,10 @@ namespace Exiled.CreditTags.Features
 
         public HttpStatusCode Code { get; private set; }
 
-        public bool Done => done;
+        public bool Done
+        {
+            get => done;
+        }
 
         public static void Go(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer)
         {
@@ -37,14 +40,15 @@ namespace Exiled.CreditTags.Features
         {
             ThreadSafeRequest request = new();
 
-            Task.Run(() =>
-            {
-                request.Result = HttpQuery.Get(url, out bool success, out HttpStatusCode code);
-                request.Success = success;
-                request.Code = code;
+            Task.Run(
+                () =>
+                {
+                    request.Result = HttpQuery.Get(url, out bool success, out HttpStatusCode code);
+                    request.Success = success;
+                    request.Code = code;
 
-                request.done = true;
-            });
+                    request.done = true;
+                });
 
             yield return Timing.WaitUntilTrue(() => request.done);
 
