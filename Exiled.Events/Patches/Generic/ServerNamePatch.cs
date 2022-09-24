@@ -5,10 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features;
-
 namespace Exiled.Events.Patches.Generic
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -36,17 +35,25 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.IsNameTrackingEnabled))),
                 new(OpCodes.Brfalse_S, skipLabel),
 
-                new(OpCodes.Ldstr, "{0}<color=#00000000><size=1>Exiled {1}</size></color>"),
-                new(OpCodes.Ldstr, "yes"),
-                //new(OpCodes.Callvirt, PropertyGetter(typeof(ServerConsole), nameof(ServerConsole._serverName))),
-                new(OpCodes.Ldstr, "0.0.1"),
+                new(OpCodes.Ldstr, "{0} <color=#00000000><size=1>Exiled {1}</size></color>"),
+
+                new(OpCodes.Ldsfld, Field(typeof(ServerConsole), nameof(ServerConsole._serverName))),
+
+                new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Version))),
+                new(OpCodes.Ldc_I4_3),
+                new(OpCodes.Call, Method(typeof(Version), nameof(Version.ToString), new[] { typeof(int) })),
 
                 new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object), typeof(object) })),
-                new CodeInstruction(OpCodes.Ret).WithLabels(skipLabel),
+                new(OpCodes.Stsfld, Field(typeof(ServerConsole), nameof(ServerConsole._serverName))),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(skipLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
