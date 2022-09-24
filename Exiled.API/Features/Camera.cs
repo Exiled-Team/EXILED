@@ -414,14 +414,6 @@ namespace Exiled.API.Features
         public static Camera Get(Camera079 camera079) => Camera079ToCamera.ContainsKey(camera079) ? Camera079ToCamera[camera079] : new(camera079, Map.FindParentRoom(camera079.gameObject));
 
         /// <summary>
-        /// Gets the <see cref="Camera"/> belonging to the <see cref="Camera079"/>, if any.
-        /// </summary>
-        /// <param name="camera079">The base <see cref="Camera079"/>.</param>
-        /// <param name="room">Specified Room of where is the camera <see cref="Room"/>.</param>
-        /// <returns>A <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(Camera079 camera079, Room room) => Camera079ToCamera.ContainsKey(camera079) ? Camera079ToCamera[camera079] : new(camera079, room);
-
-        /// <summary>
         /// Gets a <see cref="Camera"/> given the specified id.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
@@ -454,5 +446,16 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Camera-related data.</returns>
         public override string ToString() => $"{Zone} ({Type}) [{Room}] *{Name}* |{Id}| ={IsBeingUsed}=";
+
+        /// <summary>
+        /// Gets the <see cref="Camera"/> belonging to the <see cref="Camera079"/>, if any.
+        /// </summary>
+        /// <param name="camera079">The base <see cref="Camera079"/>.</param>
+        /// <param name="room">The <see cref="Room"/> this camera is in.</param>
+        /// <remarks>The 'room' parameter is only used if a new door wrapper needs to be created.</remarks>
+        /// <returns>A <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
+        internal static Camera Get(Camera079 camera079, Room room) => Camera079ToCamera.ContainsKey(camera079)
+            ? Camera079ToCamera[camera079]
+            : new(camera079, room);
     }
 }
