@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Map
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
+    using System.Text.RegularExpressions;
 
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
@@ -41,7 +42,8 @@ namespace Exiled.Events.Patches.Events.Map
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
 
             // int scpsLeft = ReferenceHub.GetAllHubs().Values.Count(x => x.characterClassManager.CurRole.team == Team.SCP && x.characterClassManager.CurClass != RoleType.Scp0492);
-            // string[] unitInformation = unitName.Split('-');
+            // string unitNameClear = Regex.Replace(unitName, "<[^>]*?>", string.Empty);
+            // string[] unitInformation = unitNameClear.Split('-');
             // var ev = new AnnouncingNtfEntranceEventArgs(scpsLeft, unitInformation[0], int.Parse(unitInformation[1]));
             // Map.OnAnnouncingNtfEntrance(ev);
             // if(!ev.IsAllowed)
@@ -56,8 +58,11 @@ namespace Exiled.Events.Patches.Events.Map
                     // int scpsLeft = ReferenceHub.GetAllHubs().Values.Count(x => x.characterClassManager.CurRole.team == Team.SCP && x.characterClassManager.CurClass != RoleType.Scp0492);
                     new CodeInstruction(OpCodes.Ldloc_1),
 
-                    // string[] unitInformation = unitName.Split('-');
+                    // string[] unitInformation = unitNameClear.Split('-');
                     new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldstr, "<[^>]*?>"),
+                    new(OpCodes.Ldsfld, Field(typeof(string), nameof(string.Empty))),
+                    new(OpCodes.Call, Method(typeof(Regex), nameof(Regex.Replace), new System.Type[] { typeof(string), typeof(string), typeof(string) })),
                     new(OpCodes.Ldc_I4_1),
                     new(OpCodes.Newarr, typeof(char)),
                     new(OpCodes.Dup),

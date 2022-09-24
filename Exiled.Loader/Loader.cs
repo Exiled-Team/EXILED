@@ -326,7 +326,7 @@ namespace Exiled.Loader
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" thew an exeption while enabling: {e}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exeption while enabling: {e}");
                 }
             }
 
