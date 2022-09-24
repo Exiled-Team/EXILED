@@ -60,6 +60,20 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Door"/> class.
+        /// </summary>
+        /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
+        /// <param name="room">The <see cref="Room"/> for this door.</param>
+        /// <param name="doorType">The <see cref="DoorType"/> for this door.</param>
+        private Door(DoorVariant door, Room room, DoorType doorType)
+        {
+            DoorVariantToDoor.Add(door, this);
+            Base = door;
+            Room = room;
+            Type = doorType;
+        }
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
         public static IEnumerable<Door> List
@@ -582,12 +596,29 @@ namespace Exiled.API.Features
                 };
             }
 
+            // Door who are a checkpoint
+            if (Base is CheckpointDoor checkpointDoor)
+            {
+                DoorType doorType = Nametag.RemoveBracketsOnEndOfName() switch
+                {
+                    // Doors contains the DoorNameTagExtension component
+                    "CHECKPOINT_LCZ_A" => DoorType.CheckpointLczA,
+                    "CHECKPOINT_EZ_HCZ" => DoorType.CheckpointEntrance,
+                    "CHECKPOINT_LCZ_B" => DoorType.CheckpointLczB,
+                    _ => DoorType.UnknownDoor,
+                };
+                foreach (DoorVariant doorvariant in checkpointDoor._subDoors)
+                {
+                    DoorVariantToDoor.Remove(doorvariant);
+                    new Door(doorvariant, Room, doorType);
+                }
+
+                return doorType;
+            }
+
             return Nametag.RemoveBracketsOnEndOfName() switch
             {
                 // Doors contains the DoorNameTagExtension component
-                "CHECKPOINT_LCZ_A" => DoorType.CheckpointLczA,
-                "CHECKPOINT_EZ_HCZ" => DoorType.CheckpointEntrance,
-                "CHECKPOINT_LCZ_B" => DoorType.CheckpointLczB,
                 "106_PRIMARY" => DoorType.Scp106Primary,
                 "106_SECONDARY" => DoorType.Scp106Secondary,
                 "106_BOTTOM" => DoorType.Scp106Bottom,
