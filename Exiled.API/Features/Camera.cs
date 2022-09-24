@@ -414,6 +414,14 @@ namespace Exiled.API.Features
         public static Camera Get(Camera079 camera079) => Camera079ToCamera.ContainsKey(camera079) ? Camera079ToCamera[camera079] : new(camera079, Map.FindParentRoom(camera079.gameObject));
 
         /// <summary>
+        /// Gets the <see cref="Camera"/> belonging to the <see cref="Camera079"/>, if any.
+        /// </summary>
+        /// <param name="camera079">The base <see cref="Camera079"/>.</param>
+        /// <param name="room">Specified Room of where is the camera <see cref="Room"/>.</param>
+        /// <returns>A <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
+        public static Camera Get(Camera079 camera079, Room room) => Camera079ToCamera.ContainsKey(camera079) ? Camera079ToCamera[camera079] : new(camera079, room);
+
+        /// <summary>
         /// Gets a <see cref="Camera"/> given the specified id.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>

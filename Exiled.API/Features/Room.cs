@@ -407,11 +407,11 @@ namespace Exiled.API.Features
                         {
                             case Scp079Interactable.InteractableType.Door:
                                 if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                    doors.Add(new(doorVariant, this));
+                                    doors.Add(Door.Get(doorVariant, this));
                                 break;
                             case Scp079Interactable.InteractableType.Camera:
                                 if (scp079Interactable.TryGetComponent(out Camera079 camera))
-                                    cameraList.Add(new(camera, this));
+                                    cameraList.Add(Camera.Get(camera, this));
                                 break;
                             case Scp079Interactable.InteractableType.LightController:
                                 if (scp079Interactable.TryGetComponent(
