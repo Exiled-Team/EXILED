@@ -569,21 +569,16 @@ namespace Exiled.API.Features
         {
             if (Nametag is null)
             {
-                return Room.Type switch
+                string doorName = GameObject.name.GetBefore(' ');
+                return doorName switch
                 {
-                    RoomType.HczEzCheckpoint => DoorType.CheckpointEntrance,
-                    RoomType.HczChkpA => DoorType.CheckpointLczA,
-                    RoomType.HczChkpB => DoorType.CheckpointLczB,
-                    _ => GameObject.name.GetBefore(' ') switch
-                    {
-                        "LCZ" => DoorType.LightContainmentDoor,
-                        "HCZ" => DoorType.HeavyContainmentDoor,
-                        "EZ" => DoorType.EntranceDoor,
-                        "Prison" => DoorType.PrisonDoor,
-                        "914" => DoorType.Scp914Door,
-                        "Unsecured" => DoorType.Scp049Gate,
-                        _ => DoorType.UnknownDoor,
-                    },
+                    "LCZ" => DoorType.LightContainmentDoor,
+                    "HCZ" => DoorType.HeavyContainmentDoor,
+                    "EZ" => DoorType.EntranceDoor,
+                    "Prison" => DoorType.PrisonDoor,
+                    "914" => DoorType.Scp914Door,
+                    "Unsecured" => DoorType.Scp049Gate,
+                    _ => DoorType.UnknownDoor,
                 };
             }
 
