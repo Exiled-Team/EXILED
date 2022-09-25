@@ -405,7 +405,11 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="cameras">The <see cref="IEnumerable{T}"/> of <see cref="Camera079"/>.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/>.</returns>
-        public static IEnumerable<Camera> Get(IEnumerable<Camera079> cameras) => cameras.Select(Get);
+        public static IEnumerable<Camera> Get(IEnumerable<Camera079> cameras)
+        {
+            foreach (Camera079 camera in cameras)
+                yield return Get(camera);
+        }
 
         /// <summary>
         /// Gets the <see cref="Camera"/> belonging to the <see cref="Camera079"/>, if any.

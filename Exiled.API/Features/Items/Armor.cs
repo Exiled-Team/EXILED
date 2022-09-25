@@ -148,8 +148,13 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public IEnumerable<ArmorAmmoLimit> AmmoLimits
         {
-            get => Base.AmmoLimits.Select(limit => (ArmorAmmoLimit)limit);
-
+            get
+            {
+                foreach (BodyArmor.ArmorAmmoLimit limit in Base.AmmoLimits)
+                {
+                    yield return (ArmorAmmoLimit)limit;
+                }
+            }
             set => Base.AmmoLimits = value.Select(limit => (BodyArmor.ArmorAmmoLimit)limit).ToArray();
         }
 
