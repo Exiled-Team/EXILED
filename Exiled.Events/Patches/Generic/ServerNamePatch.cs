@@ -26,14 +26,14 @@ namespace Exiled.Events.Patches.Generic
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            Label skipLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
             {
                 new(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.IsNameTrackingEnabled))),
-                new(OpCodes.Brfalse_S, skipLabel),
+                new(OpCodes.Brfalse_S, returnLabel),
 
                 new(OpCodes.Ldstr, "{0} <color=#00000000><size=1>Exiled {1}</size></color>"),
 
@@ -48,7 +48,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Stsfld, Field(typeof(ServerConsole), nameof(ServerConsole._serverName))),
             });
 
-            newInstructions[newInstructions.Count - 1].labels.Add(skipLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
