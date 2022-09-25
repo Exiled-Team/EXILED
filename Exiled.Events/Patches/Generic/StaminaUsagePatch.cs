@@ -7,9 +7,14 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.API.Features;
-#pragma warning disable SA1313
     using HarmonyLib;
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Stamina.ProcessStamina()"/>.
@@ -17,6 +22,33 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Stamina), nameof(Stamina.ProcessStamina))]
     internal class StaminaUsagePatch
     {
-        private static bool Prefix(Stamina __instance) => Player.Get(__instance._hub)?.IsUsingStamina ?? true;
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            Label returnLabel = generator.DefineLabel();
+            Label skipLabel = generator.DefineLabel();
+
+            int lastCount = newInstructions.Count;
+
+            newInstructions.InsertRange(0, new CodeInstruction[]
+            {
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(Stamina), nameof(Stamina._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Brfalse_S, skipLabel),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsUsingStamina))),
+                new(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            newInstructions[newInstructions.Count - lastCount + 1].labels.Add(skipLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
     }
 }
