@@ -7,12 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -23,8 +18,8 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
-    using BaseTeslaGate = TeslaGate;
 
+    using BaseTeslaGate = TeslaGate;
 
     /// <summary>
     ///     Patches <see cref="TeslaGateController.FixedUpdate" />.
@@ -92,9 +87,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // Continue;
                     new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(continueLabel),
                     new CodeInstruction(OpCodes.Brfalse_S, returnLabel).WithLabels(continueLabel2),
-
-                    new CodeInstruction(OpCodes.Ldstr, "TrigerringTesla"),
-                    new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
 
                     // TriggeringTeslaEventArgs ev = new(player, tesla);
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
