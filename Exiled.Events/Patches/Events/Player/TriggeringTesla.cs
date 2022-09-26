@@ -73,10 +73,7 @@ namespace Exiled.Events.Patches.Events.Player
                 index2,
                 new[]
                 {
-                    new CodeInstruction(OpCodes.Ldstr, "PlayerCheck"),
-                    new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
-
-                    // if (Player.TryGet(hub.Key, out Player player) || !tesla.CanBeIdle(player))
+                    // if (!Player.TryGet(hub.Key, out Player player) || !tesla.CanBeIdle(player))
                     //      continue;
 
                     // if (Player.TryGet(hub.Key, out Player player) ||
@@ -84,19 +81,17 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
                     new CodeInstruction(OpCodes.Ldloca_S, player.LocalIndex),
                     new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.TryGet), new[] { typeof(GameObject), typeof(Player).MakeByRefType() })),
-                    new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
+                    new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
 
                     // !tesla.CanBeIdle(player)
                     new CodeInstruction(OpCodes.Ldloc_S, teslaGate.LocalIndex),
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.CanBeIdle))),
-                    new CodeInstruction(OpCodes.Ldc_I4_1),
-                    new CodeInstruction(OpCodes.Ceq),
                     new CodeInstruction(OpCodes.Br_S, continueLabel2),
 
                     // Continue;
-                    new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(continueLabel),
-                    new CodeInstruction(OpCodes.Brtrue_S, returnLabel).WithLabels(continueLabel2),
+                    new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(continueLabel),
+                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel).WithLabels(continueLabel2),
 
                     new CodeInstruction(OpCodes.Ldstr, "TrigerringTesla"),
                     new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info), new[] { typeof(string) })),
@@ -116,22 +111,22 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringTeslaEventArgs), nameof(TriggeringTeslaEventArgs.IsAllowed))),
                     new CodeInstruction(OpCodes.Brfalse_S, isAllowed),
-                    new CodeInstruction(OpCodes.Ldloc_3),
+                    new CodeInstruction(OpCodes.Ldloc_S, 4),
                     new CodeInstruction(OpCodes.Brtrue, isAllowed),
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringTeslaEventArgs), nameof(TriggeringTeslaEventArgs.IsAllowed))),
-                    new CodeInstruction(OpCodes.Stloc_3),
+                    new CodeInstruction(OpCodes.Stloc_S, 4),
 
                     // if (ev.IsInIdleRange && !inIdleRange)
                     //      inIdleRange = ev.IsInIdleRange;
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(isAllowed),
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringTeslaEventArgs), nameof(TriggeringTeslaEventArgs.IsInIdleRange))),
                     new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                    new CodeInstruction(OpCodes.Ldloc_2),
+                    new CodeInstruction(OpCodes.Ldloc_3),
                     new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringTeslaEventArgs), nameof(TriggeringTeslaEventArgs.IsInIdleRange))),
-                    new CodeInstruction(OpCodes.Stloc_2),
+                    new CodeInstruction(OpCodes.Stloc_3),
                     new CodeInstruction(OpCodes.Nop).WithLabels(returnLabel),
                 });
 
