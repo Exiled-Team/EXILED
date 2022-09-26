@@ -58,10 +58,10 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Stloc_S, teslaGate.LocalIndex),
                     new CodeInstruction(OpCodes.Brfalse_S, nullTeslaCheck),
                 });
+
             newInstructions.Find(x => x.opcode == OpCodes.Br).labels.Add(nullTeslaCheck);
 
-            const int offset2 = 0;
-            int index2 = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldloc_3) + offset2;
+            int index2 = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldloc_3);
 
             newInstructions.RemoveRange(index2, 25);
             newInstructions.InsertRange(
@@ -121,6 +121,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Stloc_3),
                     new CodeInstruction(OpCodes.Nop).WithLabels(returnLabel),
                 });
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
