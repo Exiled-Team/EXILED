@@ -475,8 +475,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's position.
+        /// Gets or sets the player's position. See <see cref="Teleport(object)"/> to move the player to an object.
         /// </summary>
+        /// <seealso cref="Teleport(Vector3)"/>
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
@@ -2967,6 +2968,12 @@ namespace Exiled.API.Features
                     break;
                 case Player player:
                     Teleport(player.Position);
+                    break;
+                case Role role:
+                    if (role.Owner is not null)
+                        Teleport(role.Owner.Position);
+                    else
+                        Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
                     break;
                 case Pickup pickup:
                     Teleport(pickup.Position + Vector3.up);
