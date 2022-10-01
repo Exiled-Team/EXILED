@@ -118,9 +118,6 @@ namespace Exiled.CustomItems.Commands
         /// <summary>
         /// Checks if the player is eligible to receive custom items.
         /// </summary>
-        private bool CheckEligible(Player player)
-        {
-            return player.IsAlive && !player.IsCuffed && player.Items.Count < 8;
-        }
+        private bool CheckEligible(Player player) => player.IsAlive && !player.IsCuffed && (player.Items.Count < 8);
     }
 }

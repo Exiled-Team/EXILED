@@ -13,7 +13,6 @@ namespace Exiled.API.Features.DamageHandlers
     using PlayerStatsSystem;
 
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
-
     using BaseScpHandler = PlayerStatsSystem.ScpDamageHandler;
 
     /// <summary>

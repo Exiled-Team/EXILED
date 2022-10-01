@@ -15,7 +15,10 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Paths
     {
-        static Paths() => Reload();
+        static Paths()
+        {
+            Reload();
+        }
 
         /// <summary>
         /// Gets AppData path.
@@ -30,7 +33,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the server's config path.
         /// </summary>
-        public static string ServerConfig { get; } = Path.Combine(AppData, "SCP Secret Laboratory", "config", Server.IsDedicated ? Server.Port.ToString() : "nondedicated");
+        public static string ServerConfig { get; } = FileManager.GetAppFolder(serverConfig: true);
 
         /// <summary>
         /// Gets or sets exiled directory path.

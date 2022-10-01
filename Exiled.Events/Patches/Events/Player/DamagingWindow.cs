@@ -11,7 +11,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features.DamageHandlers;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -22,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="BreakableWindow.Damage(float, PlayerStatsSystem.DamageHandlerBase, Vector3)"/>.
-    /// Adds the <see cref="Handlers.Player.PlayerDamageWindow"/> event.
+    ///     Patch the <see cref="BreakableWindow.Damage(float, PlayerStatsSystem.DamageHandlerBase, Vector3)" />.
+    ///     Adds the <see cref="Handlers.Player.PlayerDamageWindow" /> event.
     /// </summary>
     [HarmonyPatch(typeof(BreakableWindow), nameof(BreakableWindow.Damage))]
     internal static class DamagingWindow
@@ -36,37 +37,39 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(DamagingWindowEventArgs));
             Label retLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // this
-                new(OpCodes.Ldarg_0),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // this
+                    new(OpCodes.Ldarg_0),
 
-                // damage
-                new(OpCodes.Ldarg_1),
+                    // damage
+                    new(OpCodes.Ldarg_1),
 
-                // handler
-                new(OpCodes.Ldarg_2),
+                    // handler
+                    new(OpCodes.Ldarg_2),
 
-                // ev = new(player, this, damage, handler);
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingWindowEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+                    // ev = new(player, this, damage, handler);
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingWindowEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
 
-                // Handlers.Player.OnPlayerDamageWindow(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPlayerDamageWindow))),
+                    // Handlers.Player.OnPlayerDamageWindow(ev);
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnPlayerDamageWindow))),
 
-                // if (!ev.IsAllowed)
-                //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, retLabel),
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, retLabel),
 
-                // damage = ev.Handler.Damage;
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.Handler))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(CustomDamageHandler), nameof(CustomDamageHandler.Damage))),
-                new(OpCodes.Starg, 1),
-            });
+                    // damage = ev.Handler.Damage;
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.Handler))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(CustomDamageHandler), nameof(CustomDamageHandler.Damage))),
+                    new(OpCodes.Starg, 1),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 

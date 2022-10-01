@@ -17,7 +17,9 @@ namespace Exiled.Loader.Features
         /// <summary>
         /// Gets the default loader message.
         /// </summary>
-        public static string Default => @"
+        public static string Default
+        {
+            get => @"
    ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
   ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
   ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
@@ -27,11 +29,14 @@ namespace Exiled.Loader.Features
   ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
   ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
                                   ▀                                 ";
+        }
 
         /// <summary>
         /// Gets the easter egg loader message.
         /// </summary>
-        public static string EasterEgg => @"
+        public static string EasterEgg
+        {
+            get => @"
    ▄████████    ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
   ███    ███   ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
   ███    █▀    ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
@@ -41,11 +46,14 @@ namespace Exiled.Loader.Features
    ▄█    ███   ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
  ▄████████▀    ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
                                                                                 ";
+        }
 
         /// <summary>
         /// Gets the christmas loader message.
         /// </summary>
-        public static string Christmas => @"
+        public static string Christmas
+        {
+            get => @"
        __
     .-'  |
    /   <\|        ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
@@ -58,11 +66,14 @@ namespace Exiled.Loader.Features
   '.   ____/     ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
    | -|-|_
    |____)_)";
+        }
 
         /// <summary>
         /// Gets the halloween loader message.
         /// </summary>
-        public static string Halloween => @"
+        public static string Halloween
+        {
+            get => @"
 @@@@@@@@  @@@  @@@  @@@  @@@       @@@@@@@@  @@@@@@@
 @@@@@@@@  @@@  @@@  @@@  @@@       @@@@@@@@  @@@@@@@@
 @@!       @@!  !@@  @@!  @@!       @@!       @@!  @@@
@@ -74,6 +85,7 @@ namespace Exiled.Loader.Features
  :: ::::   ::  :::   ::   :: ::::   :: ::::   :::: ::
 : :: ::    :   ::   :    : :: : :  : :: ::   :: :  :
                                                        ";
+        }
 
         /// <summary>
         /// Gets the loader message according to the actual month.

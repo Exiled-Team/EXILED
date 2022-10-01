@@ -12,8 +12,6 @@ namespace Exiled.API.Features.Core
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.API.Features.Core;
-
     using NorthwoodLib.Pools;
 
     using UnityEngine;
@@ -43,14 +41,17 @@ namespace Exiled.API.Features.Core
         protected EObject(GameObject gameObject = null)
             : this()
         {
-            if (gameObject is not null)
+            if (gameObject)
                 Base = gameObject;
         }
 
         /// <summary>
         /// Gets all the registered <see cref="EObject"/> types.
         /// </summary>
-        public static IReadOnlyDictionary<Type, List<string>> RegisteredTypes => RegisteredTypesValue;
+        public static IReadOnlyDictionary<Type, List<string>> RegisteredTypes
+        {
+            get => RegisteredTypesValue;
+        }
 
         /// <summary>
         /// Gets or sets the base <see cref="GameObject"/>.
@@ -119,8 +120,7 @@ namespace Exiled.API.Features.Core
                 }
                 else
                 {
-                    List<string> values = new();
-                    values.Add(name);
+                    List<string> values = new() { name };
                     RegisteredTypesValue.Add(t, values);
                 }
 
@@ -142,8 +142,9 @@ namespace Exiled.API.Features.Core
             if (matching is not null)
                 return matching;
 
-            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes().Where(item =>
-            item.BaseType == typeof(EObject) || item.IsSubclassOf(typeof(EObject))))
+            foreach (Type t in Assembly.GetExecutingAssembly().GetTypes().Where(
+                item =>
+                    item.BaseType == typeof(EObject) || item.IsSubclassOf(typeof(EObject))))
             {
                 if (t.Name != type.Name)
                     continue;
@@ -154,8 +155,7 @@ namespace Exiled.API.Features.Core
                 }
                 else
                 {
-                    List<string> values = new();
-                    values.Add(name);
+                    List<string> values = new() { name };
                     RegisteredTypesValue.Add(t, values);
                 }
 
@@ -199,13 +199,15 @@ namespace Exiled.API.Features.Core
         /// <returns>The <see cref="Type"/> with the name that matches the given name.</returns>
         public static Type FindUObjectDefinedTypeByName(string name, bool ignoreAbstractTypes = true)
         {
-            Type[] assemblyTypes = ignoreAbstractTypes ?
-                Assembly.GetExecutingAssembly().GetTypes()
-                .Where(t => !t.IsAbstract).ToArray() :
-                Assembly.GetExecutingAssembly().GetTypes();
+            Type[] assemblyTypes = ignoreAbstractTypes
+                ? Assembly.GetExecutingAssembly().GetTypes()
+                    .Where(t => !t.IsAbstract).ToArray()
+                : Assembly.GetExecutingAssembly().GetTypes();
             List<int> matches = new();
-            matches.AddRange(assemblyTypes.Select(type =>
-            LevenshteinDistance(type.Name, name)));
+            matches.AddRange(
+                assemblyTypes.Select(
+                    type =>
+                        LevenshteinDistance(type.Name, name)));
             return assemblyTypes[matches.IndexOf(matches.Min())];
         }
 
@@ -559,7 +561,7 @@ namespace Exiled.API.Features.Core
             List<T> objects = new();
             foreach (EObject @object in InternalObjects)
             {
-                if (@object.Cast(out T obj) && obj.Name == name)
+                if (@object.Cast(out T obj) && (obj.Name == name))
                     objects.Add(obj);
             }
 
@@ -692,7 +694,7 @@ namespace Exiled.API.Features.Core
         {
             foreach (EObject @object in InternalObjects)
             {
-                if (@object.Cast(out T obj) && obj.Base == gameObject)
+                if (@object.Cast(out T obj) && (obj.Base == gameObject))
                 {
                     obj.Destroy();
                     return true;
@@ -712,7 +714,7 @@ namespace Exiled.API.Features.Core
         {
             foreach (EObject @object in InternalObjects)
             {
-                if (@object.GetType() == type && @object.Base == gameObject)
+                if ((@object.GetType() == type) && (@object.Base == gameObject))
                 {
                     @object.Destroy();
                     return true;
@@ -732,8 +734,10 @@ namespace Exiled.API.Features.Core
         public static T FindMostAppropriateEntry<T>(string name, IEnumerable<T> source)
         {
             List<int> matches = new();
-            matches.AddRange(source.Select(type =>
-            LevenshteinDistance(type.GetType().Name, name)));
+            matches.AddRange(
+                source.Select(
+                    type =>
+                        LevenshteinDistance(type.GetType().Name, name)));
             return source.ElementAt(matches.IndexOf(matches.Min()));
         }
 
@@ -785,11 +789,7 @@ namespace Exiled.API.Features.Core
                 return source.Length;
 
             if (source.Length > target.Length)
-            {
-                string temp = target;
-                target = source;
-                source = temp;
-            }
+                (source, target) = (target, source);
 
             int m = target.Length;
             int n = source.Length;
@@ -809,8 +809,8 @@ namespace Exiled.API.Features.Core
                     int cost = target[j - 1] == source[i - 1] ? 0 : 1;
                     distance[currentRow, j] = Math.Min(
                         Math.Min(
-                        distance[previousRow, j] + 1,
-                        distance[currentRow, j - 1] + 1),
+                            distance[previousRow, j] + 1,
+                            distance[currentRow, j - 1] + 1),
                         distance[previousRow, j - 1] + cost);
                 }
             }

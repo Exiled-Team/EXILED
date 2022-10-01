@@ -52,5 +52,17 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing Keycard-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
+
+        /// <summary>
+        /// Clones current <see cref="Keycard"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Keycard"/> object. </returns>
+        public override Item Clone()
+        {
+            Keycard cloneableItem = new(Type);
+            cloneableItem.Permissions = Permissions;
+
+            return cloneableItem;
+        }
     }
 }

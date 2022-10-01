@@ -21,7 +21,10 @@ namespace Exiled.CustomRoles.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="Parent"/> class.
         /// </summary>
-        public Parent() => LoadGeneratedCommands();
+        public Parent()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "customroles";

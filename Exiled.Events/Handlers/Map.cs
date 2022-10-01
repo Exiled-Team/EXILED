@@ -8,7 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Extensions;
 
     using MapGeneration.Distributors;
@@ -76,15 +76,20 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade;
 
         /// <summary>
+        /// Invoked before turning off lights.
+        /// </summary>
+        public static event CustomEventHandler<TurningOffLightsEventArgs> TurningOffLights;
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.Map.PlacingBulletHole"/> instance.</param>
         public static void OnPlacingBulletHole(PlacingBulletHole ev) => PlacingBulletHole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before placing bloods.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.Map.PlacingBulletHole"/> instance.</param>
         public static void OnPlacingBlood(PlacingBloodEventArgs ev) => PlacingBlood.InvokeSafely(ev);
 
         /// <summary>
@@ -139,5 +144,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
         public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before turning off lights.
+        /// </summary>
+        /// <param name="ev">The <see cref="TurningOffLightsEventArgs"/> instance.</param>
+        public static void OnTurningOffLights(TurningOffLightsEventArgs ev) => TurningOffLights.InvokeSafely(ev);
     }
 }

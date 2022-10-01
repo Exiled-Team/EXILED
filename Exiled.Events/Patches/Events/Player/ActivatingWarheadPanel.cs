@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -20,8 +20,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="PlayerInteract.UserCode_CmdSwitchAWButton"/>.
-    /// Adds the <see cref="Handlers.Player.ActivatingWarheadPanel"/> event.
+    ///     Patch the <see cref="PlayerInteract.UserCode_CmdSwitchAWButton" />.
+    ///     Adds the <see cref="Handlers.Player.ActivatingWarheadPanel" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdSwitchAWButton))]
     internal static class ActivatingWarheadPanel
@@ -48,15 +48,17 @@ namespace Exiled.Events.Patches.Events.Player
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Isinst) + offset;
 
             newInstructions[index].labels.Add(jne);
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
-                new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
-                new(OpCodes.Brfalse_S, jne),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
-                new(OpCodes.Br_S, jmp),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                    new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
+                    new(OpCodes.Brfalse_S, jne),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                    new(OpCodes.Br_S, jmp),
+                });
 
             offset = 1;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
@@ -64,17 +66,19 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = 1;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Brfalse_S, ceq),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
-                new(OpCodes.Br_S, je),
-                new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(ceq),
-                new(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, cmp_0x01.LocalIndex).WithLabels(je),
-                new(OpCodes.Brfalse_S, jmp),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new(OpCodes.Brfalse_S, ceq),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
+                    new(OpCodes.Br_S, je),
+                    new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(ceq),
+                    new(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldloc_S, cmp_0x01.LocalIndex).WithLabels(je),
+                    new(OpCodes.Brfalse_S, jmp),
+                });
 
             offset = 0;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brfalse_S) + offset;
@@ -82,21 +86,23 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = 0;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldloc_S, cmp_0x01.LocalIndex),
-                new(OpCodes.Ceq),
-                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jmp),
-                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, ret),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new(OpCodes.Ldloc_S, cmp_0x01.LocalIndex),
+                    new(OpCodes.Ceq),
+                    new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jmp),
+                    new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, ret),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
 

@@ -9,7 +9,7 @@ namespace Exiled.CustomItems.API.EventArgs
 {
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using InventorySystem.Items;
 

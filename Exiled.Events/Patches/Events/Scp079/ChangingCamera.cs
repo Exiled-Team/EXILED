@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp079;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -21,9 +21,11 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)"/>.
-    /// Adds the <see cref="ChangingCamera"/> event.
+    ///     Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)" />.
+    ///     Adds the <see cref="ChangingCamera" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_CmdSwitchCamera))]
     internal static class ChangingCamera
@@ -52,46 +54,48 @@ namespace Exiled.Events.Patches.Events.Scp079
             //   return;
             //
             // num = ev.AuxiliaryPowerCost
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(this.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(this.gameObject)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // camera
-                new(OpCodes.Ldloc_0),
+                    // camera
+                    new(OpCodes.Ldloc_0),
 
-                // num (auxiliary power cost)
-                new(OpCodes.Ldloc_1),
+                    // num (auxiliary power cost)
+                    new(OpCodes.Ldloc_1),
 
-                // !(num > this.curMana) --> num <= this.curMana
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
-                new(OpCodes.Cgt),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ceq),
+                    // !(num > this.curMana) --> num <= this.curMana
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
+                    new(OpCodes.Cgt),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ceq),
 
-                // var ev = new ChangingCameraEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, changingCameraEv.LocalIndex),
+                    // var ev = new ChangingCameraEventArgs(...)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, changingCameraEv.LocalIndex),
 
-                // Handlers.Scp079.OnChangingCamera(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnChangingCamera))),
+                    // Handlers.Scp079.OnChangingCamera(ev)
+                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnChangingCamera))),
 
-                // if (!ev.IsAllowed)
-                //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
+                    // if (!ev.IsAllowed)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
 
-                // num = ev.AuxiliaryPowerCost
-                new(OpCodes.Ldloc_S, changingCameraEv.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.AuxiliaryPowerCost))),
-                new(OpCodes.Stloc_1),
-            });
+                    // num = ev.AuxiliaryPowerCost
+                    new(OpCodes.Ldloc_S, changingCameraEv.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.AuxiliaryPowerCost))),
+                    new(OpCodes.Stloc_1),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

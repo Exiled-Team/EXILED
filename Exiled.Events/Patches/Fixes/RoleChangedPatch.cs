@@ -7,16 +7,25 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Items;
+    using Exiled.Events.EventArgs.Player;
+
     using HarmonyLib;
 
     using InventorySystem;
 
     /// <summary>
-    /// Patches <see cref="InventoryItemProvider.RoleChanged"/> to help override in <see cref="EventArgs.ChangingRoleEventArgs.Items"/> and <see cref="EventArgs.ChangingRoleEventArgs.Ammo"/>.
+    /// Patches <see cref="InventoryItemProvider.RoleChanged"/> to help override in <see cref="ChangingRoleEventArgs.Items"/> and <see cref="Ammo"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryItemProvider), nameof(InventoryItemProvider.RoleChanged))]
     internal static class RoleChangedPatch
     {
-        private static bool Prefix() => false;
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            yield return new CodeInstruction(OpCodes.Ret);
+        }
     }
 }

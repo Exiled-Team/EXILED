@@ -5,10 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.API.Features.DamageHandlers
 {
-    using System;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
 
@@ -16,19 +14,17 @@ namespace Exiled.API.Features
 
     using PlayerStatsSystem;
 
-    using Subtitles;
-
     /// <summary>
     /// Allows generic damage to player.
     /// </summary>
-    public class GenericDamageHandler : PlayerStatsSystem.CustomReasonDamageHandler
+    public class GenericDamageHandler : CustomReasonDamageHandler
     {
         private const string DamageTextDefault = "You were damaged by Unknown Cause";
         private string genericDamageText;
         private string genericEnvironmentDamageText;
         private Player player;
         private DamageType damageType;
-        private DamageHandlers.DamageHandlerBase.CassieAnnouncement customCassieAnnouncement;
+        private Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement customCassieAnnouncement;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericDamageHandler"/> class.
@@ -40,23 +36,23 @@ namespace Exiled.API.Features
         /// <param name="damageType"> Damage type. </param>
         /// <param name="cassieAnnouncement"> Custom cassie announcment. </param>
         /// <param name="damageText"> Text to provide to player death screen. </param>
-        public GenericDamageHandler(Player player, Player attacker, float damage, DamageType damageType, DamageHandlers.DamageHandlerBase.CassieAnnouncement cassieAnnouncement, string damageText = null)
+        public GenericDamageHandler(Player player, Player attacker, float damage, DamageType damageType, Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement cassieAnnouncement, string damageText = null)
             : base(DamageTextDefault)
         {
             this.player = player;
             this.damageType = damageType;
-            this.customCassieAnnouncement = cassieAnnouncement;
-            if (this.customCassieAnnouncement is not null)
+            customCassieAnnouncement = cassieAnnouncement;
+            if (customCassieAnnouncement is not null)
             {
-                this.customCassieAnnouncement.Announcement = customCassieAnnouncement.Announcement ?? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}";
+                customCassieAnnouncement.Announcement = customCassieAnnouncement.Announcement ?? $"{player.Nickname} killed by {attacker.Nickname} utilizing {damageType}";
             }
 
-            this.Attacker = attacker.Footprint;
-            this.AllowSelfDamage = true;
-            this.Damage = damage;
-            this.ServerLogsText = $"GenericDamageHandler damage processing";
-            this.genericDamageText = $"You were damaged by {damageType}";
-            this.genericEnvironmentDamageText = $"Environemntal damage of type {damageType}";
+            Attacker = attacker.Footprint;
+            AllowSelfDamage = true;
+            Damage = damage;
+            ServerLogsText = $"GenericDamageHandler damage processing";
+            genericDamageText = $"You were damaged by {damageType}";
+            genericEnvironmentDamageText = $"Environemntal damage of type {damageType}";
 
             switch (damageType)
             {
@@ -155,28 +151,28 @@ namespace Exiled.API.Features
                     Base = new Scp096DamageHandler(curr096, damage, Scp096DamageHandler.AttackType.Slap);
                     break;
                 case DamageType.Scp:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
                     break;
                 case DamageType.Scp018:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Unknown);
                     break;
                 case DamageType.Scp207:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp207);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp207);
                     break;
                 case DamageType.Scp049:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp049);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp049);
                     break;
                 case DamageType.Scp173:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp173);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp173);
                     break;
                 case DamageType.Scp939:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp939);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Scp939);
                     break;
                 case DamageType.Scp0492:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Zombie);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.Zombie);
                     break;
                 case DamageType.Scp106:
-                    Base = new ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.PocketDecay);
+                    Base = new PlayerStatsSystem.ScpDamageHandler(attacker.ReferenceHub, damage, DeathTranslations.PocketDecay);
                     break;
                 case DamageType.Custom:
                 case DamageType.Unknown:
@@ -189,7 +185,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets custom base.
         /// </summary>
-        public DamageHandlerBase Base { get; set; }
+        public PlayerStatsSystem.DamageHandlerBase Base { get; set; }
 
         /// <summary>
         /// Gets or sets current attacker.
@@ -215,11 +211,11 @@ namespace Exiled.API.Features
         public override HandlerOutput ApplyDamage(ReferenceHub ply)
         {
             HandlerOutput output = base.ApplyDamage(ply);
-            if(output is HandlerOutput.Death)
+            if (output is HandlerOutput.Death)
             {
-                if (this.customCassieAnnouncement?.Announcement != null)
+                if (customCassieAnnouncement?.Announcement != null)
                 {
-                    Cassie.Message(this.customCassieAnnouncement.Announcement);
+                    Cassie.Message(customCassieAnnouncement.Announcement);
                 }
             }
 
@@ -243,7 +239,7 @@ namespace Exiled.API.Features
                     Owner = attacker.ReferenceHub,
                 },
             };
-            Base = new FirearmDamageHandler(firearm.Base, amount);
+            Base = new PlayerStatsSystem.FirearmDamageHandler(firearm.Base, amount);
         }
     }
 }

@@ -62,7 +62,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IEnumerable<Door> List => DoorVariantToDoor.Values.ToList().AsReadOnly();
+        public static IEnumerable<Door> List
+        {
+            get => DoorVariantToDoor.Values.ToList().AsReadOnly();
+        }
 
         /// <summary>
         /// Gets the base-game <see cref="DoorVariant"/> for this door.
@@ -72,12 +75,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the door.
         /// </summary>
-        public GameObject GameObject => Base.gameObject;
+        public GameObject GameObject
+        {
+            get => Base.gameObject;
+        }
 
         /// <summary>
         /// Gets the door's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => GameObject.transform;
+        public Transform Transform
+        {
+            get => GameObject.transform;
+        }
 
         /// <summary>
         /// Gets the <see cref="DoorType"/> of the door.
@@ -90,7 +99,39 @@ namespace Exiled.API.Features
         public Room Room { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the door is open.
+        /// Gets a value indicating whether or not the door is fully closed.
+        /// </summary>
+        public bool IsFullyClosed
+        {
+            get => ExactState is 0;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the door is fully open.
+        /// </summary>
+        public bool IsFullyOpen
+        {
+            get => ExactState is 1;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the door is currently moving.
+        /// </summary>
+        public bool IsMoving
+        {
+            get => ExactState is not(0 or 1);
+        }
+
+        /// <summary>
+        /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
+        /// </summary>
+        public float ExactState
+        {
+            get => Base.GetExactState();
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the door is open.
         /// </summary>
         public bool IsOpen
         {
@@ -101,19 +142,28 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not this door is a gate.
         /// </summary>
-        public bool IsGate => Type is DoorType.GateA or DoorType.GateB or DoorType.GR18Gate or
-            DoorType.Scp049Gate or DoorType.Scp173Gate or DoorType.Scp914Gate or DoorType.SurfaceGate;
+        public bool IsGate
+        {
+            get => Type is DoorType.GateA or DoorType.GateB or DoorType.GR18Gate or
+                DoorType.Scp049Gate or DoorType.Scp173Gate or DoorType.Scp914Gate or DoorType.SurfaceGate;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this door is a checkpoint door.
         /// </summary>
-        public bool IsCheckpoint => Type is DoorType.CheckpointEntrance or DoorType.CheckpointLczA or
-            DoorType.CheckpointLczB;
+        public bool IsCheckpoint
+        {
+            get => Type is DoorType.CheckpointEntrance or DoorType.CheckpointLczA or
+                DoorType.CheckpointLczB;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
         /// </summary>
-        public bool IsKeycardDoor => RequiredPermissions.RequiredPermissions != Interactables.Interobjects.DoorUtils.KeycardPermissions.None;
+        public bool IsKeycardDoor
+        {
+            get => RequiredPermissions.RequiredPermissions != Interactables.Interobjects.DoorUtils.KeycardPermissions.None;
+        }
 
         /// <summary>
         /// Gets or sets the door's position.
@@ -141,32 +191,50 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the door is locked.
         /// </summary>
-        public bool IsLocked => DoorLockType > 0;
+        public bool IsLocked
+        {
+            get => DoorLockType > 0;
+        }
 
         /// <summary>
         /// Gets or the door lock type.
         /// </summary>
-        public DoorLockType DoorLockType => (DoorLockType)Base.NetworkActiveLocks;
+        public DoorLockType DoorLockType
+        {
+            get => (DoorLockType)Base.NetworkActiveLocks;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
         /// </summary>
-        public bool IsBreakable => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
+        public bool IsBreakable
+        {
+            get => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not this door is broken.
         /// </summary>
-        public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
+        public bool IsBroken
+        {
+            get => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
+        }
 
         /// <summary>
         /// Gets the door's Instance ID.
         /// </summary>
-        public int InstanceId => Base.GetInstanceID();
+        public int InstanceId
+        {
+            get => Base.GetInstanceID();
+        }
 
         /// <summary>
         /// Gets a nametag of a door.
         /// </summary>
-        public string Nametag => Base.TryGetComponent(out DoorNametagExtension name) ? name.GetName : null;
+        public string Nametag
+        {
+            get => Base.TryGetComponent(out DoorNametagExtension name) ? name.GetName : null;
+        }
 
         /// <summary>
         /// Gets or sets the required permissions to open the door.
@@ -247,7 +315,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the door's <see cref="ZoneType"/>.
         /// </summary>
-        public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
+        public ZoneType Zone
+        {
+            get => Room?.Zone ?? ZoneType.Unspecified;
+        }
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
@@ -300,10 +371,10 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
-        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
         public static void LockAll(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && door.Zone == zoneType))
+            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && (door.Zone == zoneType)))
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
@@ -316,7 +387,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
-        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
         public static void LockAll(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (ZoneType zone in zoneTypes)
@@ -327,10 +398,10 @@ namespace Exiled.API.Features
         /// Locks all <see cref="Door">doors</see> in the facility.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="lockType">The specified <see cref="DoorLockType"/>.</param>
+        /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
         public static void LockAll(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Door.List)
+            foreach (Door door in List)
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
@@ -424,7 +495,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks the door with the given lock type.
+        /// Change the door lock with the given lock type.
         /// </summary>
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
         public void ChangeLock(DoorLockType lockType)
@@ -448,6 +519,24 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Locks all active locks on the door.
+        /// </summary>
+        /// <param name="flagsToLock">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
+        [Obsolete("has been deprecated, use ChangeLock(DoorLockType) instead", true)]
+        public void Lock(DoorLockType flagsToLock) => ChangeLock(flagsToLock);
+
+        /// <summary>
+        /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
+        /// </summary>
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
+        public void Lock(float time, DoorLockType lockType)
+        {
+            ChangeLock(lockType);
+            Unlock(time, lockType);
+        }
+
+        /// <summary>
         /// Unlocks and clears all active locks on the door.
         /// </summary>
         public void Unlock() => ChangeLock(DoorLockType.None);
@@ -456,25 +545,14 @@ namespace Exiled.API.Features
         /// Unlocks and clears all active locks on the door after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
+        /// <param name="flagsToUnlock">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
         public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
 
         /// <summary>
-        /// Locks all active locks on the door.
+        /// Returns the Door in a human-readable format.
         /// </summary>
-        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
-        public void Lock(DoorLockType flagsToUnlock) => ChangeLock(flagsToUnlock);
-
-        /// <summary>
-        /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
-        /// </summary>
-        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
-        /// <param name="flagsToUnlock">The <see cref="DoorLockType"/> of the lockdown.</param>
-        public void Lock(float time, DoorLockType flagsToUnlock)
-        {
-            ChangeLock(flagsToUnlock);
-            Unlock(time, flagsToUnlock);
-        }
+        /// <returns>A string containing Door-related data.</returns>
+        public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* |{Health}/{MaxHealth}| ={RequiredPermissions.RequiredPermissions}= -{IgnoredDamageTypes}-";
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.

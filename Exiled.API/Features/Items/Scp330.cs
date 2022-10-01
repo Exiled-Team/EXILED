@@ -18,9 +18,30 @@ namespace Exiled.API.Features.Items
     using Object = UnityEngine.Object;
 
     /// <summary>
+    /// Candy enumeration status.
+    /// </summary>
+    public enum CandyAddStatus
+    {
+        /// <summary>
+        /// If no candy was able to be added.
+        /// </summary>
+        NoCandyAdded,
+
+        /// <summary>
+        /// If at least one candy was added.
+        /// </summary>
+        SomeCandyAdded,
+
+        /// <summary>
+        /// If all candies provided were added.
+        /// </summary>
+        AllCandyAdded,
+    }
+
+    /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
-    public class Scp330 : Usable
+    public partial class Scp330 : Usable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
@@ -48,7 +69,10 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="CandyKindID"/>s held in this bag.
         /// </summary>
-        public IReadOnlyCollection<CandyKindID> Candies => Base.Candies.AsReadOnly();
+        public IReadOnlyCollection<CandyKindID> Candies
+        {
+            get => Base.Candies.AsReadOnly();
+        }
 
         /// <summary>
         /// Gets or sets the exposed type. When set to a candy color, the bag will appear as that candy when dropped with the <see cref="Spawn"/> method. Setting it to <see cref="CandyKindID.None"/> results in it looking like a bag.
@@ -69,6 +93,27 @@ namespace Exiled.API.Features.Items
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Adds a collection of candy's to a bag.
+        /// </summary>
+        /// <param name="candies">The <see cref="CandyKindID"/>'s to add.</param>
+        /// <returns> <see cref="CandyAddStatus"/> based on insertion status. </returns>
+        public CandyAddStatus AddCandy(IEnumerable<CandyKindID> candies)
+        {
+            bool addedCandy = false;
+            foreach (CandyKindID candy in candies)
+            {
+                if (!Base.TryAddSpecific(candy))
+                {
+                    return addedCandy ? CandyAddStatus.SomeCandyAdded : CandyAddStatus.NoCandyAdded;
+                }
+
+                addedCandy = true;
+            }
+
+            return CandyAddStatus.AllCandyAdded;
         }
 
         /// <summary>
@@ -117,7 +162,7 @@ namespace Exiled.API.Features.Items
 
             List<Pickup> pickups = new();
 
-            if (count > 1 && !dropIndividual)
+            if ((count > 1) && !dropIndividual)
             {
                 Scp330Pickup ipb = (Scp330Pickup)Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
                 ipb.NetworkExposedCandy = overrideExposedType ? exposedType : CandyKindID.None;
@@ -178,5 +223,17 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <returns>A string containing SCP-330 related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
+
+        /// <summary>
+        /// Clones current <see cref="Scp330"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Scp330"/> object. </returns>
+        public override Item Clone()
+        {
+            Scp330 cloneableItem = new();
+            cloneableItem.ExposedType = ExposedType;
+            cloneableItem.AddCandy(Candies);
+            return cloneableItem;
+        }
     }
 }

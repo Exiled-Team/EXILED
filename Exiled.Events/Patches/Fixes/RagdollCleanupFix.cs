@@ -27,14 +27,16 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
-            {
-                new(OpCodes.Ldsfld, Field(typeof(API.Features.Map), nameof(API.Features.Map.RagdollsValue))),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(API.Features.Ragdoll), nameof(API.Features.Ragdoll.Get), new[] { typeof(Ragdoll) })),
-                new(OpCodes.Callvirt, Method(typeof(List<API.Features.Ragdoll>), nameof(List<API.Features.Ragdoll>.Remove))),
-                new(OpCodes.Pop),
-            });
+            newInstructions.InsertRange(
+                newInstructions.Count - 1,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldsfld, Field(typeof(API.Features.Map), nameof(API.Features.Map.RagdollsValue))),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, Method(typeof(API.Features.Ragdoll), nameof(API.Features.Ragdoll.Get), new[] { typeof(Ragdoll) })),
+                    new(OpCodes.Callvirt, Method(typeof(List<API.Features.Ragdoll>), nameof(List<API.Features.Ragdoll>.Remove))),
+                    new(OpCodes.Pop),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

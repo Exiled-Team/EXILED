@@ -57,7 +57,7 @@ namespace Exiled.Loader
 
             ConfigManager.LoadLoaderConfigs();
 
-            if (Config.Environment != EnvironmentType.Production && Config.Environment != EnvironmentType.ProductionDebug)
+            if ((Config.Environment != EnvironmentType.Production) && (Config.Environment != EnvironmentType.ProductionDebug))
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                 Paths.Reload($"EXILED-Testing");
@@ -103,7 +103,10 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
         /// </summary>
-        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development || Config.Environment == EnvironmentType.ProductionDebug;
+        public static bool ShouldDebugBeShown
+        {
+            get => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development || Config.Environment == EnvironmentType.ProductionDebug;
+        }
 
         /// <summary>
         /// Gets plugin dependencies.
@@ -187,8 +190,6 @@ namespace Exiled.Loader
                     continue;
 
                 Locations[assembly] = assemblyPath;
-
-                Log.Info($"Loaded plugin {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
             }
 
             foreach (Assembly assembly in Locations.Keys)
@@ -200,6 +201,10 @@ namespace Exiled.Loader
 
                 if (plugin is null)
                     continue;
+
+                AssemblyInformationalVersionAttribute attribute = plugin.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+
+                Log.Info($"Loaded plugin {plugin.Name}@{(plugin.Version is not null ? $"{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
 
                 PluginAssemblies.Add(assembly, plugin);
                 Plugins.Add(plugin);
@@ -321,7 +326,7 @@ namespace Exiled.Loader
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" thew an exeption while enabling: {e}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exeption while enabling: {e}");
                 }
             }
 
@@ -429,6 +434,9 @@ namespace Exiled.Loader
 
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
+            if (plugin.IgnoreRequiredVersionCheck)
+                return false;
+
             Version requiredVersion = plugin.RequiredExiledVersion;
             Version actualVersion = Version;
 
@@ -440,15 +448,17 @@ namespace Exiled.Loader
                 // Exiled is outdated
                 if (requiredVersion.Major > actualVersion.Major)
                 {
-                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                              $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+                    Log.Error(
+                        $"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
+                        $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
 
                     return true;
                 }
-                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
+                else if ((requiredVersion.Major < actualVersion.Major) && !Config.ShouldLoadOutdatedPlugins)
                 {
-                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
-                              $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
+                    Log.Error(
+                        $"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
+                        $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
 
                     return true;
                 }

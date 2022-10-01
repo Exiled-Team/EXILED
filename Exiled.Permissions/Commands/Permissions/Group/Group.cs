@@ -24,7 +24,10 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         /// <summary>
         /// Initializes a new instance of the <see cref="Group"/> class.
         /// </summary>
-        public Group() => LoadGeneratedCommands();
+        public Group()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "groups";
@@ -94,8 +97,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
                     stringBuilder.AppendLine($"- {permission}");
             }
 
-            response = stringBuilder.ToString();
-            StringBuilderPool.Shared.Return(stringBuilder);
+            response = StringBuilderPool.Shared.ToStringReturn(stringBuilder);
             return true;
         }
     }

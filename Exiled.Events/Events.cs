@@ -14,6 +14,7 @@ namespace Exiled.Events
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -35,10 +36,10 @@ namespace Exiled.Events
         /// <summary>
         /// The custom <see cref="EventHandler"/> delegate.
         /// </summary>
-        /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
-        /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
-        public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev)
-            where TEventArgs : System.EventArgs;
+        /// <typeparam name="TInterface">The <see cref="EventHandler{TInterface}"/> type.</typeparam>
+        /// <param name="ev">The <see cref="EventHandler{TInterface}"/> instance.</param>
+        public delegate void CustomEventHandler<TInterface>(TInterface ev)
+            where TInterface : IExiledEvent;
 
         /// <summary>
         /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
@@ -48,7 +49,10 @@ namespace Exiled.Events
         /// <summary>
         /// Gets the plugin instance.
         /// </summary>
-        public static Events Instance => instance;
+        public static Events Instance
+        {
+            get => instance;
+        }
 
         /// <summary>
         /// Gets a set of types and methods for which EXILED patches should not be run.

@@ -7,25 +7,28 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Cassie;
     using Exiled.Events.Extensions;
 
-    using static Exiled.Events.Events;
+    using static Events;
 
     /// <summary>
-    /// Cassie related events.
+    ///     Cassie related events.
     /// </summary>
     public static class Cassie
     {
         /// <summary>
-        /// Invoked before sending a cassie message.
+        ///     Invoked before sending a cassie message.
         /// </summary>
         public static event CustomEventHandler<SendingCassieMessageEventArgs> SendingCassieMessage;
 
         /// <summary>
-        /// Called before sending a cassie message.
+        ///     Called before sending a cassie message.
         /// </summary>
-        /// <param name="ev">The <see cref="SendingCassieMessageEventArgs"/> instance.</param>
-        public static void OnSendingCassieMessage(SendingCassieMessageEventArgs ev) => SendingCassieMessage.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="SendingCassieMessageEventArgs" /> instance.</param>
+        public static void OnSendingCassieMessage(SendingCassieMessageEventArgs ev)
+        {
+            SendingCassieMessage.InvokeSafely(ev);
+        }
     }
 }

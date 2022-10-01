@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -23,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CustomNetworkManager.OnServerDisconnect(NetworkConnection)"/>.
-    /// Adds the <see cref="Handlers.Player.Left"/> event.
+    ///     Patches <see cref="CustomNetworkManager.OnServerDisconnect(NetworkConnection)" />.
+    ///     Adds the <see cref="Handlers.Player.Left" /> event.
     /// </summary>
     [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), typeof(NetworkConnection))]
     internal static class Left
@@ -41,37 +41,39 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[0].labels.Add(cdc);
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
-                new(OpCodes.Brfalse_S, cdc),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, netIdentity.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                new(OpCodes.Ldloca_S, hub.LocalIndex),
-                new(OpCodes.Call, Method(typeof(ReferenceHub), nameof(ReferenceHub.TryGetHubNetID))),
-                new(OpCodes.Brfalse_S, cdc),
-                new(OpCodes.Ldloc_S, hub.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, player.LocalIndex),
-                new(OpCodes.Brfalse_S, cdc),
-                new(OpCodes.Ldloc_S, player.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsHost))),
-                new(OpCodes.Brtrue_S, cdc),
-                new(OpCodes.Ldstr, "Player {0} disconnected"),
-                new(OpCodes.Ldloc_S, player.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Nickname))),
-                new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object) })),
-                new(OpCodes.Ldc_I4_S, 10),
-                new(OpCodes.Call, Method(typeof(Log), nameof(Log.SendRaw), new[] { typeof(string), typeof(ConsoleColor) })),
-                new(OpCodes.Ldloc_S, player.LocalIndex),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LeftEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnLeft))),
-            });
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
+                    new(OpCodes.Brfalse_S, cdc),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, netIdentity.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
+                    new(OpCodes.Ldloca_S, hub.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(ReferenceHub), nameof(ReferenceHub.TryGetHubNetID))),
+                    new(OpCodes.Brfalse_S, cdc),
+                    new(OpCodes.Ldloc_S, hub.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, cdc),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsHost))),
+                    new(OpCodes.Brtrue_S, cdc),
+                    new(OpCodes.Ldstr, "Player {0} disconnected"),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Nickname))),
+                    new(OpCodes.Call, Method(typeof(string), nameof(string.Format), new[] { typeof(string), typeof(object) })),
+                    new(OpCodes.Ldc_I4_S, 10),
+                    new(OpCodes.Call, Method(typeof(Log), nameof(Log.SendRaw), new[] { typeof(string), typeof(ConsoleColor) })),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LeftEventArgs))[0]),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnLeft))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

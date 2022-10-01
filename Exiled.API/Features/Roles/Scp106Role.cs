@@ -20,7 +20,10 @@ namespace Exiled.API.Features.Roles
         /// Initializes a new instance of the <see cref="Scp106Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp106Role(Player player) => Owner = player;
+        internal Scp106Role(Player player)
+        {
+            Owner = player;
+        }
 
         /// <inheritdoc/>
         public override Player Owner { get; }
@@ -28,22 +31,34 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106PlayerScript"/> script for the role.
         /// </summary>
-        public Scp106PlayerScript Script => script ??= Owner.ReferenceHub.scp106PlayerScript;
+        public Scp106PlayerScript Script
+        {
+            get => script ??= Owner.ReferenceHub.scp106PlayerScript;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of an object.
         /// </summary>
-        public bool IsInsideObject => Script.ObjectCurrentlyIn is not null;
+        public bool IsInsideObject
+        {
+            get => Script.ObjectCurrentlyIn is not null;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of a door.
         /// </summary>
-        public bool IsInsideDoor => Script.DoorCurrentlyIn is not null;
+        public bool IsInsideDoor
+        {
+            get => Script.DoorCurrentlyIn is not null;
+        }
 
         /// <summary>
         /// Gets the door that SCP-106 is currently inside of.
         /// </summary>
-        public Door InsideDoor => Door.Get(Script.DoorCurrentlyIn);
+        public Door InsideDoor
+        {
+            get => Door.Get(Script.DoorCurrentlyIn);
+        }
 
         /// <summary>
         /// Gets or sets the location of SCP-106's portal.
@@ -67,7 +82,10 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Scp106;
+        internal override RoleType RoleType
+        {
+            get => RoleType.Scp106;
+        }
 
         /// <summary>
         /// Forces SCP-106 to use its portal, if one is placed.
@@ -78,6 +96,13 @@ namespace Exiled.API.Features.Roles
         /// Contains SCP-106.
         /// </summary>
         /// <param name="container">The player who recontained SCP-106.</param>
-        public void Contain(Player container) => Script.Contain(container.Footprint);
+        /// <exception cref="System.ArgumentException">Container cannot be <see langword="null"/>.</exception>
+        public void Contain(Player container)
+        {
+            if (container is null)
+                throw new System.ArgumentException("Container cannot be null.", nameof(container));
+
+            Script.Contain(container.Footprint);
+        }
     }
 }
