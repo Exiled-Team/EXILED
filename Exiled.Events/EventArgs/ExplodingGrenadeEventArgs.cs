@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
         {
-            Thrower = thrower;
+            Thrower = thrower ?? Server.Host;
             Position = grenade.Rb.position;
             GrenadeType = GrenadeAccessors[grenade.GetType()];
             Grenade = grenade;
@@ -68,7 +68,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
         public ExplodingGrenadeEventArgs(Player thrower, Vector3 position, EffectGrenade grenade, Collider[] targets)
         {
-            Thrower = thrower;
+            Thrower = thrower ?? Server.Host;
             Position = position;
             GrenadeType = GrenadeAccessors[grenade.GetType()];
             Grenade = grenade;
@@ -95,7 +95,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="players"><inheritdoc cref="TargetsToAffect"/></param>
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
         {
-            Thrower = thrower;
+            Thrower = thrower ?? Server.Host;
             Position = grenade.Rb.position;
             GrenadeType = GrenadeAccessors[grenade.GetType()];
             Grenade = grenade;
