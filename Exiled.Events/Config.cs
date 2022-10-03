@@ -61,6 +61,12 @@ namespace Exiled.Events
         public bool CanKeycardThrowAffectDoors { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the grenade damage is suppressed when the thrower quits from the server.
+        /// </summary>
+        [Description("Indicates whether the grenade damage is suppressed when the thrower quits from the server")]
+        public bool IsGrenadeDamageSuppressedOnQuit { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.
         /// </summary>
         [Description("Indicates whether configs have to be reloaded every round restart")]
