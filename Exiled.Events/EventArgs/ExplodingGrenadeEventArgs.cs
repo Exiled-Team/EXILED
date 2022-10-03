@@ -24,7 +24,7 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ExplodingGrenadeEventArgs : EventArgs
     {
-        private static Dictionary<Type, GrenadeType> grenadeDictionary = new()
+        private static readonly Dictionary<Type, GrenadeType> GrenadeAccessors = new()
         {
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
             { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
@@ -40,9 +40,9 @@ namespace Exiled.Events.EventArgs
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
         {
-            Thrower = thrower ?? Server.Host;
+            Thrower = thrower;
             Position = grenade.Rb.position;
-            GrenadeType = grenadeDictionary[grenade.GetType()];
+            GrenadeType = GrenadeAccessors[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
@@ -68,9 +68,9 @@ namespace Exiled.Events.EventArgs
         /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
         public ExplodingGrenadeEventArgs(Player thrower, Vector3 position, EffectGrenade grenade, Collider[] targets)
         {
-            Thrower = thrower ?? Server.Host;
+            Thrower = thrower;
             Position = position;
-            GrenadeType = grenadeDictionary[grenade.GetType()];
+            GrenadeType = GrenadeAccessors[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
@@ -95,9 +95,9 @@ namespace Exiled.Events.EventArgs
         /// <param name="players"><inheritdoc cref="TargetsToAffect"/></param>
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
         {
-            Thrower = thrower ?? Server.Host;
+            Thrower = thrower;
             Position = grenade.Rb.position;
-            GrenadeType = grenadeDictionary[grenade.GetType()];
+            GrenadeType = GrenadeAccessors[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             TargetsToAffect.AddRange(players);
