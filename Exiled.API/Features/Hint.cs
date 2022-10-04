@@ -14,7 +14,7 @@ namespace Exiled.API.Features
     using BaseHint = Hints.Hint;
 
     /// <summary>
-    /// Useful class to save broadcast configs in a cleaner way.
+    /// Useful class to save hint in a cleaner way.
     /// </summary>
     public class Hint
     {
@@ -61,9 +61,9 @@ namespace Exiled.API.Features
         public bool Custom { get; internal set; }
 
         /// <summary>
-        /// Returns the Broadcast in a human-readable format.
+        /// Returns the Hint in a human-readable format.
         /// </summary>
-        /// <returns>A string containing Broadcast-related data.</returns>
+        /// <returns>A string containing Hint-related data.</returns>
         public override string ToString() => $"({(Custom ? Content : Translations)}) {Duration} {Custom}";
     }
 }

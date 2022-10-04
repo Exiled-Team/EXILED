@@ -72,6 +72,10 @@ namespace Exiled.Events.Patches.Generic
             player.BroadcastsInQueue.RemoveAt(0);
         }
 
+        /// <summary>
+        /// Patches <see cref="BaseBroadcast.RpcAddElement"/>.
+        /// Add the broadcast for all the <see cref="Player"/>.
+        /// </summary>
         [HarmonyPatch(typeof(BaseBroadcast), nameof(BaseBroadcast.RpcAddElement))]
         internal static class PlayerAddCurrentBroadcastEveryone
         {
@@ -84,6 +88,10 @@ namespace Exiled.Events.Patches.Generic
             }
         }
 
+        /// <summary>
+        /// Patches <see cref="BaseBroadcast.RpcClearElements"/>.
+        /// Clear all the broadcast for all the <see cref="Player"/>.
+        /// </summary>
         [HarmonyPatch(typeof(BaseBroadcast), nameof(BaseBroadcast.RpcClearElements))]
         internal static class PlayerClearCurrentBroadcastEveryone
         {
@@ -96,6 +104,10 @@ namespace Exiled.Events.Patches.Generic
             }
         }
 
+        /// <summary>
+        /// Patches <see cref="BaseBroadcast.TargetAddElement"/>.
+        /// Add the broadcast for a specific the <see cref="Player"/>.
+        /// </summary>
         [HarmonyPatch(typeof(BaseBroadcast), nameof(BaseBroadcast.TargetAddElement))]
         internal static class PlayerAddCurrentBroadcast
         {
@@ -105,6 +117,10 @@ namespace Exiled.Events.Patches.Generic
             }
         }
 
+        /// <summary>
+        /// Patches <see cref="BaseBroadcast.TargetClearElements"/>.
+        /// Clear all the broadcast for a specific the <see cref="Player"/>.
+        /// </summary>
         [HarmonyPatch(typeof(BaseBroadcast), nameof(BaseBroadcast.TargetClearElements))]
         internal static class PlayerClearCurrentBroadcast
         {
