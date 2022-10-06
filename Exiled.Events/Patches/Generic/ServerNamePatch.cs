@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.IsNameTrackingEnabled))),
                 new(OpCodes.Brfalse_S, returnLabel),
 
-                new(OpCodes.Ldstr, "{0} <color=#00000000><size=1>Exiled {1}</size></color>"),
+                new(OpCodes.Ldstr, "{0}<color=#00000000><size=1>Exiled {1}</size></color>"),
 
                 new(OpCodes.Ldsfld, Field(typeof(ServerConsole), nameof(ServerConsole._serverName))),
 
