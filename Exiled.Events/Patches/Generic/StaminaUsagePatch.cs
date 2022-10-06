@@ -40,9 +40,9 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Brfalse_S, skipLabel),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsUsingStamina))),
                 new(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Nop).WithLabels(skipLabel),
             });
 
-            newInstructions[newInstructions.Count - lastCount + 1].labels.Add(skipLabel);
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
