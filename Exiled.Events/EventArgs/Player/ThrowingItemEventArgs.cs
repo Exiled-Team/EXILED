@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    ///     Contains all information before a player throws a grenade.
+    ///     Contains all information before a player throws an item.
     /// </summary>
     public class ThrowingItemEventArgs : IPlayerEvent, IDeniableEvent
     {
