@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Player
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
-    ///     Contains all information before a player throws a grenade.
+    ///     Contains all information before a player throws an item.
     /// </summary>
     public class ThrowingItemEventArgs : IPlayerEvent, IDeniableEvent
     {
@@ -53,12 +53,12 @@ namespace Exiled.Events.EventArgs.Player
         public ThrowRequest RequestType { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the grenade can be thrown.
+        ///     Gets or sets a value indicating whether or not the item can be thrown.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        ///     Gets the player who's throwing the grenade.
+        ///     Gets the player who's throwing the item.
         /// </summary>
         public Player Player { get; }
     }
