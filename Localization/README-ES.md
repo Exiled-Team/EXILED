@@ -18,8 +18,10 @@ Todos los eventos de EXILED están hechos con Harmony, lo que significa que no e
  - Segundo, ya que todo el código relacionado con EXILED no está integrado en el código del servidor, cosas como actualizaciones pequeñas tendrán un pequeño (si acaso) efecto. Esto permite que siga siendo compatible con actualizaciones futuras, también agiliza el proceso de actualización cuando de verdad *es* necesario.
 
 # READMEs Traducidas
+- [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
-- [English](https://github.com/Exiled-Team/EXILED/blob/master/README.md)
+- [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
+- [Frençais](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
 
 # Instalación
 La instalación de EXILED puede parecer muy complicada al contrario de otras plataformas, pero en realidad es bastante simple. Como se menciona previamente, la mayoría de EXILED no está dentro del archivo "Assembly-CSharp.dll" del servidor, sin embargo, si hay una única y pequeña modificación a este archivo, la cual se requiere para poder *iniciar* EXILED junto al servidor, una versión del archivo con esta modificación se incluye junto al instalador.
