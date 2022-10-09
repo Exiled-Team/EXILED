@@ -159,3 +159,4 @@ En tant que tels, les plug-ins qui prennent en charge les mises à jour dynamiqu
 
 Mais tous les plug-ins ne doivent pas prendre en charge les mises à jour dynamiques. Si vous n'avez pas l'intention de prendre en charge les mises à jour dynamiques, ne changez pas le nom d'assembly de votre plug-in lorsque vous créez une nouvelle version, assurez-vous simplement que les hôtes de server savent qu'ils devront redémarrer complètement leurs servers pour mettre à jour votre plug-in.
 
+Traduction par Warquys
