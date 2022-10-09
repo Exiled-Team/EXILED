@@ -21,7 +21,7 @@ Wszystkie zdarzenia EXILED'a są zaprogromowane za pomocą Harmony, co oznacza �
 - [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
-- [Frençais](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
 
 # Instalacja
 Instalacja EXILED'a może wydawać się bardziej skomplikowana i wymagająca niż innych framework'ów ale tak naprawdę jest to całkiem proste.
