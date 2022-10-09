@@ -15,7 +15,7 @@ EXILED est un framework pour des plug-ins de bas niveau pour les servers SCP : 
 Tous les événements d’EXILED sont codés avec Harmony, ce qui signifie qu'ils ne nécessitent aucune modification directe des bibliothèques  du server pour fonctionner, ce qui offre deux avantages uniques.
 
  – Premièrement, l'intégralité du code du framework est publiée et partagée, permettant aux développeurs de mieux comprendre *comment* cela fonctionne, ainsi que de proposer des ajouts ou modifications.
- - Deuxièmement, étant donné que tout le code lié au framework est fait en dehors des bibliothèques du server, des choses comme de petites mises à jour auront peu ou pas d'effet sur le framework. Cela le rendant plus compatible avec les futures mises à jour du jeu, ainsi que de faciliter les mises à jour lorsqu'il *est* nécessaire.
+ - Deuxièmement, étant donné que tout le code lié au framework est fait en dehors des bibliothèques du server, des choses comme de petites mises à jour auront peu ou pas d'effet sur le framework, le rendant plus compatible avec les futures mises à jour du jeu, ainsi que de faciliter les mises à jour lorsqu'il *est* nécessaire.
 
 # READMEs traduit
 - [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
@@ -24,8 +24,8 @@ Tous les événements d’EXILED sont codés avec Harmony, ce qui signifie qu'il
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 
 # Installation
-L'installation d'EXILED peut sembler très compliquée contrairement à d'autres plateformes, mais il est en fait simple.
-Comme mentionné précédemment, la majeure partie d'EXILED ne se trouve pas dans le fichier "Assembly-CSharp.dll" du server. Cependant, une modification à ce fichier est nécessaire pour *démarrer* EXILED avec le server, la version du fichier avec cette modification est incluse avec le programme d'installation.
+L'installation d'EXILED peut sembler très compliquée contrairement à d'autres plateformes, mais cella est en fait simple.
+Comme mentionné précédemment, la majeure partie d'EXILED ne se trouve pas dans le fichier "Assembly-CSharp.dll" du serveur. Cependant, une modification à ce fichier est nécessaire pour *démarrer* EXILED avec le server, la version du fichier avec cette modification est incluse avec le programme d'installation.
 
 Si vous choisissez d'utiliser le programme d'installation (et s'il est exécuté correctement). Alors, il s'occupera d'installer `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` et `Exiled.Events`, et il s'assurera que votre server a le bon fichier Assembly-CSharp.dll installé.
 
@@ -53,7 +53,7 @@ Si vous choisissez d'utiliser le programme d'installation (et s'il est exécuté
 ### Installation des plug-ins
 Voilà, EXILED devrait maintenant être installé et actif au prochain démarrage de votre server. Notez qu'EXILED par lui-même ne fera presque rien, alors assurez-vous d'obtenir de nouveaux plug-ins sur notre **[server discord](https://discord.gg/PyUkWTg)**.
 - Pour installer un plug-in, il suffit de :
-  - Télécharger le plug-in de [*ça* page des versions](https://i.imgur.com/u34wgPD.jpg) (**ça DOIT être un fichier `.dll` !**)
+  - Télécharger le plug-in [*sur ça* page des versions](https://i.imgur.com/u34wgPD.jpg) (**le fichier DOIT être un fichier `.dll` !**)
   - Le déplacer dans : ``C:\Users\(Votre_Utilisateur)\AppData\Roaming\EXILED\Plugins`` (déplacez-vous vers ce dossier en appuyant sur Win + R, puis en tapant `%appdata%`)
 
 # Linux
@@ -78,7 +78,7 @@ Voilà, EXILED devrait maintenant être installé et actif au prochain démarrag
 ### Installation des plug-ins
 Voilà, EXILED devrait maintenant être installé et actif au prochain démarrage de votre server. Notez qu'EXILED par lui-même ne fera presque rien, alors assurez-vous d'obtenir de nouveaux plug-ins sur notre **[server discord](https://discord.gg/PyUkWTg)**
 - Pour installer un plug-in, il suffit de :
-  - Télécharger le plug-in de [*ça* page des versions](https://i.imgur.com/u34wgPD.jpg) (**ça DOIT être un fichier `.dll`!**)
+  - Télécharger le plug-in [*sur ça* page des versions](https://i.imgur.com/u34wgPD.jpg) (**le fichier DOIT être un fichier `.dll`!**)
   - Le déplacer vers : ``~/.config/EXILED/Plugins`` (si vous utilisez votre SSH en tant que root, recherchez le bon `.config` qui sera à l'intérieur `/home/(SCP_Server_Utilisateur)`)
 
 # Configs
@@ -88,7 +88,7 @@ Tous sont générés automatiquement au démarrage du server, ils sont situés d
 Les configurations des plug-ins ***NE SONT POINT*** dans le fichier ``config_gameplay.txt`` ! Mais, les configurations de plug-in sont définies dans les fichiers ``~/.config/EXILED/Configs/(PortServer)-config.yml`` (et pour Windows les fichiers ``%AppData%\EXILED\(PortServer)-config.yml``).
 Cependant, certains plug-ins peuvent avoir leurs paramètres de configuration à d'autres emplacements, les locations présentées ci-dessus sont celles par défaut des plug-ins EXILED, en cas de problèmes référez-vous au plug-in.
 
-# Pour Les Devloppeurs
+# Pour Les Développeurs
 
 Si vous souhaitez créer un Plugin pour EXILED, et obtenir un rapide aperçu, veuillez visiter notre page [Premiers pas.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
 
