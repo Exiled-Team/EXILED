@@ -18,6 +18,7 @@ Todos los eventos de EXILED están hechos con Harmony, lo que significa que no e
  - Segundo, ya que todo el código relacionado con EXILED no está integrado en el código del servidor, cosas como actualizaciones pequeñas tendrán un pequeño (si acaso) efecto. Esto permite que siga siendo compatible con actualizaciones futuras, también agiliza el proceso de actualización cuando de verdad *es* necesario.
 
 # READMEs Traducidas
+- [English](https://github.com/Exiled-Team/EXILED/blob/master/README.md)
 - [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
