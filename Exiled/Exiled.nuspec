@@ -9,9 +9,9 @@
     <owners>Galaxy119</owners>
     <copyright>Copyright © Exiled Team 2020 - $year$</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <repository type="Git" url="https://github.com/galaxy119/EXILED" />
-    <licenseUrl>https://github.com/galaxy119/EXILED/blob/master/LICENSE.md</licenseUrl>
-    <projectUrl>https://github.com/galaxy119/EXILED</projectUrl>
+    <repository type="Git" url="https://github.com/Exiled-Team/EXILED" />
+    <licenseUrl>https://github.com/Exiled-Team/EXILED/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/Exiled-Team/EXILED</projectUrl>
     <icon>images\Exiled_Icon.jpg</icon>
     <description>Plugin framework for SCP: Secret Laboratory.</description>
 
@@ -26,6 +26,7 @@
     <file src="..\References\Assembly-CSharp-Publicized.dll" target="lib\net472" />
     <file src="..\References\CommandSystem.Core.dll" target="lib\net472" />
     <file src="..\References\NorthwoodLib.dll" target="lib\net472" />
+
     <file src="..\bin\Release\Exiled.API.dll" target="lib\net472" />
     <file src="..\bin\Release\Exiled.API.xml" target="lib\net472" />
 

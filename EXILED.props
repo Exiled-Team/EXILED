@@ -26,8 +26,8 @@
 
     <Copyright>Copyright © $(Authors) 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <RepositoryType>Git</RepositoryType>
-    <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/galaxy119/EXILED</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Exiled-Team/EXILED</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Exiled-Team/EXILED</PackageProjectUrl>
     <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
 
     <DefineConstants Condition="$(PublicBeta) == 'true'">$(DefineConstants);PUBLIC_BETA</DefineConstants>
