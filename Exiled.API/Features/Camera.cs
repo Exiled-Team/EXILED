@@ -378,13 +378,10 @@ namespace Exiled.API.Features
         {
             get
             {
-                using (List<Scp079PlayerScript>.Enumerator enumerator = Scp079PlayerScript.instances.GetEnumerator())
+                foreach (Scp079PlayerScript script in Scp079PlayerScript.instances)
                 {
-                    while (enumerator.MoveNext())
+                    if(script.currentCamera == Base)
                     {
-                        if (enumerator.Current.currentCamera is null || enumerator.Current.currentCamera != Base)
-                            continue;
-
                         return true;
                     }
                 }
@@ -394,9 +391,10 @@ namespace Exiled.API.Features
 
             set
             {
-                using List<Scp079PlayerScript>.Enumerator enumerator = Scp079PlayerScript.instances.GetEnumerator();
-                while (enumerator.MoveNext())
-                    enumerator.Current.RpcSwitchCamera(Id, true);
+                foreach (Scp079PlayerScript script in Scp079PlayerScript.instances)
+                {
+                    script.RpcSwitchCamera(Id, true);
+                }
             }
         }
 
