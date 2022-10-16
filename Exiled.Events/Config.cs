@@ -34,7 +34,7 @@ namespace Exiled.Events
         /// Gets or sets a value indicating whether flashbangs flash original thrower.
         /// </summary>
         [Description("Indicates whether flashbangs flash original thrower.")]
-        public bool CanFlashbangsAffectThrower { get; set; } = true;
+        public bool CanFlashbangsAffectThrower { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether the name tracking is enabled or not.
