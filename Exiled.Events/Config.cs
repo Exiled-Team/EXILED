@@ -22,13 +22,13 @@ namespace Exiled.Events
         /// Gets or sets a value indicating whether SCP-173 can be blocked or not by the tutorial.
         /// </summary>
         [Description("Indicates whether SCP-173 can be blocked or not by the tutorial")]
-        public bool CanTutorialBlockScp173 { get; set; } = true;
+        public bool CanTutorialBlockScp173 { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether SCP-096 can be triggered or not by the tutorial.
         /// </summary>
         [Description("Indicates whether SCP-096 can be triggered or not by the tutorial")]
-        public bool CanTutorialTriggerScp096 { get; set; } = true;
+        public bool CanTutorialTriggerScp096 { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether flashbangs flash original thrower.
