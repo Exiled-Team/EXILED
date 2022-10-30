@@ -91,37 +91,38 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Brfalse, returnLabel),
             });
 
-            offset = 2;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Pop) + offset;
+            offset = -3;
+            index = newInstructions.FindIndex(instruction => instruction.Calls(PropertySetter(typeof(IAdsModule), nameof(IAdsModule.ServerAds)))) + offset;
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, player.LocalIndex),
-                new(OpCodes.Brfalse_S, skipAdsLabel),
-                new(OpCodes.Ldloc, player.LocalIndex),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnAimingDownSight))),
-                new CodeInstruction(OpCodes.Nop).WithLabels(skipAdsLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, skipAdsLabel),
+                    new(OpCodes.Ldloc, player.LocalIndex),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnAimingDownSight))),
+                    new CodeInstruction(OpCodes.Nop).WithLabels(skipAdsLabel),
+                });
 
             offset = -3;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            (FieldInfo)instruction.operand == Field(typeof(FirearmStatus), nameof(FirearmStatus.Flags))) + offset;
+            index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertySetter(typeof(IAdsModule), nameof(IAdsModule.ServerAds)))) + offset;
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnAimingDownSight))),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AimingDownSightEventArgs))[0]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnAimingDownSight))),
+                });
 
             offset = -6;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call) + offset;
