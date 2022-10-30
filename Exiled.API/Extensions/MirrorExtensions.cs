@@ -227,11 +227,13 @@ namespace Exiled.API.Extensions
             for (int i = 0; i < cassies.Length; i++)
                 annoucement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
 
+            string message = annoucement.ToString();
+
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {
                 if (controller != null)
                 {
-                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), message, makeHold, makeNoise, isSubtitles);
                 }
             }
 
