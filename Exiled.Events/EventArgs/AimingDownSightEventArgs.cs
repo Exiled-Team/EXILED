@@ -22,6 +22,25 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="adsIn"><inheritdoc cref="AdsIn"/></param>
+        /// <param name="adsOut"><inheritdoc cref="AdsOut"/></param>
+        [Obsolete("Use AimingDownSightEventArgs(Player, bool) instead.", true)]
+        public AimingDownSightEventArgs(Player player, bool adsIn, bool adsOut)
+        {
+            if (player?.CurrentItem is Firearm firearm)
+                Firearm = firearm;
+            else
+                Firearm = null;
+
+            Player = player;
+            AdsIn = adsIn;
+            AdsOut = adsOut;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AimingDownSightEventArgs"/> class.
+        /// </summary>
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="adsIn"><inheritdoc cref="AdsIn"/></param>
         public AimingDownSightEventArgs(Player player, bool adsIn)
         {
             if (player?.CurrentItem is Firearm firearm)
