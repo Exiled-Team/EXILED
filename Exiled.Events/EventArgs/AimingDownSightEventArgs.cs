@@ -43,10 +43,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="adsIn"><inheritdoc cref="AdsIn"/></param>
         public AimingDownSightEventArgs(Player player, bool adsIn)
         {
-            if (player?.CurrentItem is Firearm firearm)
-                Firearm = firearm;
-            else
-                Firearm = null;
+            Firearm = player?.CurrentItem as Firearm;
 
             Player = player;
             AdsIn = adsIn;
