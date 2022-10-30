@@ -26266,6 +26266,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.AimingDownSightEventArgs
   fullName: Exiled.Events.EventArgs.AimingDownSightEventArgs
   nameWithType: AimingDownSightEventArgs
+- uid: Exiled.Events.EventArgs.AimingDownSightEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean)
+  name: AimingDownSightEventArgs(Player, Boolean)
+  href: api/Exiled.Events.EventArgs.AimingDownSightEventArgs.html#Exiled_Events_EventArgs_AimingDownSightEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.AimingDownSightEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean)
+  fullName: Exiled.Events.EventArgs.AimingDownSightEventArgs.AimingDownSightEventArgs(Exiled.API.Features.Player, System.Boolean)
+  nameWithType: AimingDownSightEventArgs.AimingDownSightEventArgs(Player, Boolean)
 - uid: Exiled.Events.EventArgs.AimingDownSightEventArgs.#ctor(Exiled.API.Features.Player,System.Boolean,System.Boolean)
   name: AimingDownSightEventArgs(Player, Boolean, Boolean)
   href: api/Exiled.Events.EventArgs.AimingDownSightEventArgs.html#Exiled_Events_EventArgs_AimingDownSightEventArgs__ctor_Exiled_API_Features_Player_System_Boolean_System_Boolean_
