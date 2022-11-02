@@ -22,6 +22,7 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
+- [Français](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-FR.md)
 
 # Installation
 Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
