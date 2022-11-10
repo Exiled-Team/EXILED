@@ -49,14 +49,14 @@ namespace Exiled.Events.Commands.Show
             sb.AppendLine("All patches:");
             sb.AppendLine("Patched:");
 
-            foreach (Type patch in Patcher.GetAllPatches().Where((type) => !Patcher.UnpatchedPatches.Contains(type)))
+            foreach (Type patch in Patcher.GetAllPatchTypes().Where((type) => !Patcher.UnpatchedTypes.Contains(type)))
             {
                 sb.AppendLine($"\t{patch.FullName}");
             }
 
             sb.AppendLine("Unpatched: ");
 
-            foreach (Type patch in Patcher.UnpatchedPatches)
+            foreach (Type patch in Patcher.UnpatchedTypes)
             {
                 sb.AppendLine($"\t{patch.FullName}");
             }

@@ -40,7 +40,7 @@ namespace Exiled.Events.Features
         /// <summary>
         /// Gets a <see cref="HashSet{T}"/> that contains all patch types that haven't been patched.
         /// </summary>
-        public static HashSet<Type> UnpatchedPatches { get; private set; } = GetAllPatches();
+        public static HashSet<Type> UnpatchedTypes { get; private set; } = GetAllPatchTypes();
 
         /// <summary>
         /// Gets a set of types and methods for which EXILED patches should not be run.
@@ -61,7 +61,7 @@ namespace Exiled.Events.Features
             try
             {
                 List<Type> toRemove = new();
-                foreach (Type type in UnpatchedPatches)
+                foreach (Type type in UnpatchedTypes)
                 {
                     if (type.GetCustomAttributes<EventPatchAttribute>().Any((epa) => epa.Event == @event))
                     {
@@ -70,7 +70,7 @@ namespace Exiled.Events.Features
                     }
                 }
 
-                UnpatchedPatches.RemoveWhere((type) => toRemove.Contains(type));
+                UnpatchedTypes.RemoveWhere((type) => toRemove.Contains(type));
             }
             catch (Exception ex)
             {
@@ -91,14 +91,14 @@ namespace Exiled.Events.Features
                 Harmony.DEBUG = true;
 #endif
                 List<Type> toRemove = new();
-                IEnumerable<Type> toPatch = includeEvents ? UnpatchedPatches : UnpatchedPatches.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any());
+                IEnumerable<Type> toPatch = includeEvents ? UnpatchedTypes : UnpatchedTypes.Where((type) => !type.GetCustomAttributes<EventPatchAttribute>().Any());
                 foreach (Type patch in toPatch)
                 {
                     new PatchClassProcessor(Harmony, patch).Patch();
                     toRemove.Add(patch);
                 }
 
-                UnpatchedPatches.RemoveWhere((type) => toRemove.Contains(type));
+                UnpatchedTypes.RemoveWhere((type) => toRemove.Contains(type));
 
                 Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
 #if DEBUG
@@ -131,7 +131,7 @@ namespace Exiled.Events.Features
         {
             Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
             Harmony.UnpatchAll();
-            UnpatchedPatches = GetAllPatches();
+            UnpatchedTypes = GetAllPatchTypes();
 
             Log.Debug("All events have been unpatched. Goodbye!", Loader.ShouldDebugBeShown);
         }
@@ -140,6 +140,6 @@ namespace Exiled.Events.Features
         /// Gets all types that have a <see cref="HarmonyPatch"/> attributed to them.
         /// </summary>
         /// <returns>A <see cref="HashSet{T}"/> of all patch types.</returns>
-        internal static HashSet<Type> GetAllPatches() => Assembly.GetExecutingAssembly().GetTypes().Where((type) => type.CustomAttributes.Any((customAtt) => customAtt.AttributeType == typeof(HarmonyPatch))).ToHashSet();
+        internal static HashSet<Type> GetAllPatchTypes() => Assembly.GetExecutingAssembly().GetTypes().Where((type) => type.CustomAttributes.Any((customAtt) => customAtt.AttributeType == typeof(HarmonyPatch))).ToHashSet();
     }
 }
