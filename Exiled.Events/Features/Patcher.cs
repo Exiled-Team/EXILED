@@ -19,6 +19,8 @@ namespace Exiled.Events.Features
 
     using HarmonyLib;
 
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// A tool for patching.
     /// </summary>
@@ -41,11 +43,6 @@ namespace Exiled.Events.Features
         /// Gets a <see cref="HashSet{T}"/> that contains all patch types that haven't been patched.
         /// </summary>
         public static HashSet<Type> UnpatchedTypes { get; private set; } = GetAllPatchTypes();
-
-        /// <summary>
-        /// Gets a set of types and methods for which EXILED patches should not be run.
-        /// </summary>
-        public static HashSet<MethodBase> DisabledPatchesHashSet { get; } = new();
 
         /// <summary>
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
@@ -112,25 +109,12 @@ namespace Exiled.Events.Features
         }
 
         /// <summary>
-        /// Checks the <see cref="DisabledPatchesHashSet"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
-        /// </summary>
-        public void ReloadDisabledPatches()
-        {
-            foreach (MethodBase method in DisabledPatchesHashSet)
-            {
-                Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
-
-                Log.Info($"Unpatched {method.Name}");
-            }
-        }
-
-        /// <summary>
         /// Unpatches all events.
         /// </summary>
         public void UnpatchAll()
         {
             Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
-            Harmony.UnpatchAll();
+            Harmony.UnpatchAll(Harmony.Id);
             UnpatchedTypes = GetAllPatchTypes();
 
             Log.Debug("All events have been unpatched. Goodbye!", Loader.ShouldDebugBeShown);
