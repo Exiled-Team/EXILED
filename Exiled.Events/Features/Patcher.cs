@@ -19,8 +19,6 @@ namespace Exiled.Events.Features
 
     using HarmonyLib;
 
-    using static HarmonyLib.AccessTools;
-
     /// <summary>
     /// A tool for patching.
     /// </summary>
