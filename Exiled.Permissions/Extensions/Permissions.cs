@@ -170,7 +170,7 @@ namespace Exiled.Permissions.Extensions
         /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
         public static bool CheckPermission(this CommandSender sender, string permission)
         {
-            if (sender.FullPermissions || sender is ServerConsoleSender || sender is GameCore.ConsoleCommandSender)
+            if (sender.FullPermissions || sender is ServerConsoleSender || sender is GameCore.ConsoleCommandSender || sender == Server.Host.Sender)
             {
                 return true;
             }
@@ -181,7 +181,7 @@ namespace Exiled.Permissions.Extensions
                 if (player is null)
                     return false;
 
-                return player == Server.Host || player.CheckPermission(permission);
+                return player.CheckPermission(permission);
             }
 
             return false;
