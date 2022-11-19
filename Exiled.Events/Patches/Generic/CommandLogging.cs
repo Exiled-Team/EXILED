@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Generic
                 if (query.Equals("$0 1"))
                     return;
 
-                Player player = sender is PlayerCommandSender playerCommandSender
+                Player player = sender is PlayerCommandSender playerCommandSender && sender != Server.Host.Sender
                     ? Player.Get(playerCommandSender)
                     : Server.Host;
 
