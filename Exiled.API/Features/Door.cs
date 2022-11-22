@@ -647,15 +647,10 @@ namespace Exiled.API.Features
 
         private DoorType GetGateType(DoorType doorType)
         {
-            if (Base is CheckpointDoor checkpointDoor)
+            foreach (DoorVariant doorvariant in (Base as CheckpointDoor)._subDoors)
             {
-                foreach (DoorVariant doorvariant in checkpointDoor._subDoors)
-                {
-                    DoorVariantToDoor.Remove(doorvariant);
-                    new Door(doorvariant, Room, doorType);
-                }
-
-                return doorType;
+                DoorVariantToDoor.Remove(doorvariant);
+                new Door(doorvariant, Room, doorType);
             }
 
             return doorType;
