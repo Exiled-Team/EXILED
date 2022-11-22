@@ -599,9 +599,9 @@ namespace Exiled.API.Features
             return Nametag.RemoveBracketsOnEndOfName() switch
             {
                 // Doors contains the DoorNameTagExtension component
-                "CHECKPOINT_LCZ_A" => GetGateType(DoorType.CheckpointLczA),
-                "CHECKPOINT_EZ_HCZ" => GetGateType(DoorType.CheckpointEntrance),
-                "CHECKPOINT_LCZ_B" => GetGateType(DoorType.CheckpointLczB),
+                "CHECKPOINT_LCZ_A" => FixSubdoorType(DoorType.CheckpointLczA),
+                "CHECKPOINT_EZ_HCZ" => FixSubdoorType(DoorType.CheckpointEntrance),
+                "CHECKPOINT_LCZ_B" => FixSubdoorType(DoorType.CheckpointLczB),
                 "106_PRIMARY" => DoorType.Scp106Primary,
                 "106_SECONDARY" => DoorType.Scp106Secondary,
                 "106_BOTTOM" => DoorType.Scp106Bottom,
@@ -645,7 +645,7 @@ namespace Exiled.API.Features
             };
         }
 
-        private DoorType GetGateType(DoorType doorType)
+        private DoorType FixSubdoorType(DoorType doorType)
         {
             foreach (DoorVariant doorvariant in (Base as CheckpointDoor)._subDoors)
             {
