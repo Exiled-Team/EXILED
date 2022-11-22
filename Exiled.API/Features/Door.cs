@@ -596,29 +596,12 @@ namespace Exiled.API.Features
                 };
             }
 
-            // Door who are a checkpoint
-            if (Base is CheckpointDoor checkpointDoor)
-            {
-                DoorType doorType = Nametag.RemoveBracketsOnEndOfName() switch
-                {
-                    // Doors contains the DoorNameTagExtension component
-                    "CHECKPOINT_LCZ_A" => DoorType.CheckpointLczA,
-                    "CHECKPOINT_EZ_HCZ" => DoorType.CheckpointEntrance,
-                    "CHECKPOINT_LCZ_B" => DoorType.CheckpointLczB,
-                    _ => DoorType.UnknownDoor,
-                };
-                foreach (DoorVariant doorvariant in checkpointDoor._subDoors)
-                {
-                    DoorVariantToDoor.Remove(doorvariant);
-                    new Door(doorvariant, Room, doorType);
-                }
-
-                return doorType;
-            }
-
             return Nametag.RemoveBracketsOnEndOfName() switch
             {
                 // Doors contains the DoorNameTagExtension component
+                "CHECKPOINT_LCZ_A" => GetGateType(DoorType.CheckpointLczA),
+                "CHECKPOINT_EZ_HCZ" => GetGateType(DoorType.CheckpointEntrance),
+                "CHECKPOINT_LCZ_B" => GetGateType(DoorType.CheckpointLczB),
                 "106_PRIMARY" => DoorType.Scp106Primary,
                 "106_SECONDARY" => DoorType.Scp106Secondary,
                 "106_BOTTOM" => DoorType.Scp106Bottom,
@@ -660,6 +643,22 @@ namespace Exiled.API.Features
                 "EntrDoor" => DoorType.EntranceDoor,
                 _ => DoorType.UnknownDoor,
             };
+        }
+
+        private DoorType GetGateType(DoorType doorType)
+        {
+            if (Base is CheckpointDoor checkpointDoor)
+            {
+                foreach (DoorVariant doorvariant in checkpointDoor._subDoors)
+                {
+                    DoorVariantToDoor.Remove(doorvariant);
+                    new Door(doorvariant, Room, doorType);
+                }
+
+                return doorType;
+            }
+
+            return doorType;
         }
     }
 }
