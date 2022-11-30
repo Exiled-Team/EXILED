@@ -2792,10 +2792,10 @@ namespace Exiled.API.Features
                     Teleport(camera.Position);
                     break;
                 case Door door:
-                    Teleport(door.Position);
+                    Teleport(door.Position + (Vector3.forward * 2));
                     break;
                 case DoorType doorType:
-                    Teleport(Door.Get(doorType).Position);
+                    Teleport(Door.Get(doorType).Position + (Vector3.forward * 2));
                     break;
                 case RoomType roomType:
                     Teleport(Room.Get(roomType).Position);
