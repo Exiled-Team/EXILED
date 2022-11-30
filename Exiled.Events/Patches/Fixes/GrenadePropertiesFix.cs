@@ -74,7 +74,7 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Throwable), nameof(Throwable.Projectile))),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, projectile.LocalIndex),
-                new(OpCodes.Callvirt, DeclaredPropertyGetter(typeof(Projectile),nameof(Projectile.Base))),
+                new(OpCodes.Callvirt, DeclaredPropertyGetter(typeof(Projectile), nameof(Projectile.Base))),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
