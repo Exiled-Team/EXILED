@@ -19,19 +19,19 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information before receving a throwing request.
     /// </summary>
-    public class ThrowingRequestEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
+    public class ThrowingRequestEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ThrowingRequestEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="item"><inheritdoc cref="Item"/></param>
+        /// <param name="item"><inheritdoc cref="Throwable"/></param>
         /// <param name="request"><inheritdoc cref="RequestType"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public ThrowingRequestEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true)
         {
             Player = player;
-            Item = Item.Get(item);
+            Throwable = (Throwable)Item.Get(item);
             RequestType = (ThrowRequest)request;
             IsAllowed = isAllowed;
         }
@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets the item being thrown.
         /// </summary>
-        public Item Item { get; set; }
+        public Throwable Throwable { get; set; }
 
         /// <summary>
         ///  Gets or sets the type of throw being requested.

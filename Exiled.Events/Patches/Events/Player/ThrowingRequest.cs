@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowingRequestEventArgs), nameof(ThrowingRequestEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, returnLabel),
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowingRequestEventArgs), nameof(ThrowingRequestEventArgs.Item))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowingRequestEventArgs), nameof(ThrowingRequestEventArgs.Throwable))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Base))),
                 new(OpCodes.Stloc_1),
                 new(OpCodes.Ldarg_1),

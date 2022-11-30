@@ -123,7 +123,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalThrownItem(ThrownItemEventArgs ev)
         {
-            if (!Check(ev.Item))
+            if (!Check(ev.Throwable))
                 return;
 
             OnThrownItem(ev);
