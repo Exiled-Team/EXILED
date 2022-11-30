@@ -2778,7 +2778,7 @@ namespace Exiled.API.Features
         /// Teleports the player to the given <see cref="Vector3"/> coordinates.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> coordinates to move the player to.</param>
-        public void Teleport(Vector3 position) => Position = position;
+        public void Teleport(Vector3 position) => ReferenceHub.playerMovementSync.OverridePosition(position);
 
         /// <summary>
         /// Teleports the player to the given object.
@@ -2789,64 +2789,65 @@ namespace Exiled.API.Features
             switch (obj)
             {
                 case Camera camera:
-                    Teleport(camera.Position + Vector3.down);
+                    Teleport(camera.Position);
                     break;
                 case Door door:
-                    Teleport(door.Position + Vector3.up);
+                    Teleport(door.Position);
                     break;
                 case DoorType doorType:
-                    Teleport(Door.Get(doorType).Position + Vector3.up);
+                    Teleport(Door.Get(doorType).Position);
                     break;
                 case RoomType roomType:
-                    Teleport(Room.Get(roomType).Position + Vector3.up);
+                    Teleport(Room.Get(roomType).Position);
                     break;
                 case Enums.CameraType cameraType:
                     Teleport(Camera.Get(cameraType).Position);
                     break;
                 case ElevatorType elevatorType:
-                    Teleport(Lift.Get(elevatorType).Position + Vector3.up);
+                    Teleport(Lift.Get(elevatorType).Position);
                     break;
                 case Room room:
-                    Teleport(room.Position + Vector3.up);
+                    Teleport(room.Position);
                     break;
                 case TeslaGate teslaGate:
-                    Teleport((teslaGate.Position + Vector3.up) +
-                             (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
-                                 ? new Vector3(3, 0, 0)
-                                 : new Vector3(0, 0, 3)));
+                    Teleport(
+                        teslaGate.Position +
+                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
+                            ? new Vector3(3, 0, 0)
+                            : new Vector3(0, 0, 3)));
                     break;
                 case Scp914Controller scp914:
-                    Teleport(scp914._knobTransform.position + Vector3.up);
+                    Teleport(scp914._knobTransform.position);
                     break;
                 case Player player:
                     Teleport(player.Position);
                     break;
                 case Pickup pickup:
-                    Teleport(pickup.Position + Vector3.up);
+                    Teleport(pickup.Position);
                     break;
                 case Ragdoll ragdoll:
-                    Teleport(ragdoll.Position + Vector3.up);
+                    Teleport(ragdoll.Position);
                     break;
                 case Locker locker:
-                    Teleport(locker.transform.position + Vector3.up);
+                    Teleport(locker.transform.position);
                     break;
                 case LockerChamber chamber:
-                    Teleport(chamber._spawnpoint.position + Vector3.up);
+                    Teleport(chamber._spawnpoint.position);
                     break;
                 case Generator generator:
-                    Teleport(generator.Position + Vector3.up);
+                    Teleport(generator.Position);
                     break;
                 case Window window:
-                    Teleport(window.Position + Vector3.up);
+                    Teleport(window.Position);
                     break;
                 case Toys.AdminToy toy:
-                    Teleport(toy.Position + Vector3.up);
+                    Teleport(toy.Position);
                     break;
                 case Elevator elevator:
-                    Teleport(elevator.Position + Vector3.up);
+                    Teleport(elevator.Position);
                     break;
                 case EActor ea:
-                    Teleport(ea.Position + Vector3.up);
+                    Teleport(ea.Position);
                     break;
                 case Item item:
                     if (item.Owner is not null)
@@ -2863,10 +2864,10 @@ namespace Exiled.API.Features
                     Teleport(v3);
                     break;
                 case Component comp:
-                    Teleport(comp.transform.position + Vector3.up);
+                    Teleport(comp.transform.position);
                     break;
                 case GameObject go:
-                    Teleport(go.transform.position + Vector3.up);
+                    Teleport(go.transform.position);
                     break;
 
                 default:
