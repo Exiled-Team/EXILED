@@ -545,10 +545,12 @@ namespace Exiled.API.Features.Items
         /// <returns> New <see cref="Firearm"/> object. </returns>
         public override Item Clone()
         {
-            Firearm cloneableItem = new(Type);
-
-            cloneableItem.Ammo = Ammo;
-            cloneableItem.FireRate = FireRate;
+            Firearm cloneableItem = new(Type)
+            {
+                Ammo = Ammo,
+            };
+            if (Base is AutomaticFirearm)
+                cloneableItem.FireRate = FireRate;
 
             return cloneableItem;
         }
