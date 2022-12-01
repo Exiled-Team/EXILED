@@ -2778,7 +2778,12 @@ namespace Exiled.API.Features
         /// Teleports the player to the given <see cref="Vector3"/> coordinates.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> coordinates to move the player to.</param>
-        public void Teleport(Vector3 position) => ReferenceHub.playerMovementSync.OverridePosition(position);
+        public void Teleport(Vector3 position)
+        {
+            if (!PlayerMovementSync.FindSafePosition(position, out Vector3 safepos, true, true))
+                safepos = position;
+            ReferenceHub.playerMovementSync.OverridePosition(safepos);
+        }
 
         /// <summary>
         /// Teleports the player to the given object.
@@ -2792,10 +2797,10 @@ namespace Exiled.API.Features
                     Teleport(camera.Position);
                     break;
                 case Door door:
-                    Teleport(door.Position + (Vector3.forward * 2));
+                    Teleport(door.Position);
                     break;
                 case DoorType doorType:
-                    Teleport(Door.Get(doorType).Position + (Vector3.forward * 2));
+                    Teleport(Door.Get(doorType).Position);
                     break;
                 case RoomType roomType:
                     Teleport(Room.Get(roomType).Position);
