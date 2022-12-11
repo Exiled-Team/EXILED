@@ -25828,19 +25828,6 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Config.IsEnabled
   nameWithType: Config.IsEnabled
-- uid: Exiled.Events.Config.IsGrenadeDamageSuppressedOnQuit
-  name: IsGrenadeDamageSuppressedOnQuit
-  href: api/Exiled.Events.Config.html#Exiled_Events_Config_IsGrenadeDamageSuppressedOnQuit
-  commentId: P:Exiled.Events.Config.IsGrenadeDamageSuppressedOnQuit
-  fullName: Exiled.Events.Config.IsGrenadeDamageSuppressedOnQuit
-  nameWithType: Config.IsGrenadeDamageSuppressedOnQuit
-- uid: Exiled.Events.Config.IsGrenadeDamageSuppressedOnQuit*
-  name: IsGrenadeDamageSuppressedOnQuit
-  href: api/Exiled.Events.Config.html#Exiled_Events_Config_IsGrenadeDamageSuppressedOnQuit_
-  commentId: Overload:Exiled.Events.Config.IsGrenadeDamageSuppressedOnQuit
-  isSpec: "True"
-  fullName: Exiled.Events.Config.IsGrenadeDamageSuppressedOnQuit
-  nameWithType: Config.IsGrenadeDamageSuppressedOnQuit
 - uid: Exiled.Events.Config.IsNameTrackingEnabled
   name: IsNameTrackingEnabled
   href: api/Exiled.Events.Config.html#Exiled_Events_Config_IsNameTrackingEnabled
