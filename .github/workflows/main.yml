@@ -3,13 +3,13 @@ name: Exiled Main CI
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 env:
-  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/EA_REFS.zip
+  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/Master.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:
