@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class PreAuthenticatingEventArgs : EventArgs
     {
-        private bool isAllowed;
+        private bool serverFull;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PreAuthenticatingEventArgs"/> class.
@@ -28,7 +28,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="readerStartPosition"><inheritdoc cref="ReaderStartPosition"/></param>
         /// <param name="flags"><inheritdoc cref="Flags"/></param>
         /// <param name="country"><inheritdoc cref="Country"/></param>
-        /// <param name="num"><inheritdoc cref="IsAllowed"/></param>
+        /// <param name="num">Maximum amount of allowed players.</param>
         public PreAuthenticatingEventArgs(string userId, ConnectionRequest request, int readerStartPosition, byte flags, string country, int num)
         {
             UserId = userId;
@@ -36,8 +36,8 @@ namespace Exiled.Events.EventArgs
             ReaderStartPosition = readerStartPosition;
             Flags = flags;
             Country = country;
-            isAllowed = LiteNetLib4MirrorCore.Host.ConnectedPeersCount < num;
-            ServerFull = !IsAllowed;
+            IsAllowed = true;
+            serverFull = LiteNetLib4MirrorCore.Host.ConnectedPeersCount >= num;
         }
 
         /// <summary>
@@ -66,23 +66,29 @@ namespace Exiled.Events.EventArgs
         public ConnectionRequest Request { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player can be authenticated or not.
+        /// Gets a value indicating whether the player can be authenticated or not.
         /// </summary>
-        public bool IsAllowed
+        public bool IsAllowed { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether all available slots on the server are occupied.
+        /// </summary>
+        public bool ServerFull
         {
-            get => isAllowed;
+            get => serverFull;
             set
             {
-                if (!value)
-                    throw new InvalidOperationException("You cannot set IsAllowed to false. Use ev.Reject instead.");
-                isAllowed = true;
+                if (!IsAllowed)
+                    throw new InvalidOperationException("You cannot set this value if the event is not allowed.");
+
+                serverFull = value;
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the server is full.
+        /// Gets a value indicating whether the connection should be accepted (player can be authenticated and has a free slot).
         /// </summary>
-        public bool ServerFull { get; }
+        internal bool AcceptConnection => IsAllowed && !ServerFull;
 
         /// <summary>
         /// Delays the connection.
@@ -91,8 +97,8 @@ namespace Exiled.Events.EventArgs
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
         public void Delay(byte seconds, bool isForced)
         {
-            if (seconds < 1 && seconds > 25)
-                throw new Exception("Delay duration must be between 1 and 25 seconds.");
+            if (seconds < 1 || seconds > 25)
+                throw new ArgumentOutOfRangeException(nameof(seconds), "Delay duration must be between 1 and 25 seconds.");
 
             Reject(RejectionReason.Delay, isForced, null, 0, seconds);
         }
@@ -136,7 +142,7 @@ namespace Exiled.Events.EventArgs
             if (!IsAllowed)
                 return;
 
-            isAllowed = false;
+            Disallow();
 
             if (isForced)
                 Request.RejectForce(writer);
@@ -168,7 +174,7 @@ namespace Exiled.Events.EventArgs
             if (!IsAllowed)
                 return;
 
-            isAllowed = false;
+            Disallow();
 
             NetDataWriter rejectData = new();
 
@@ -206,6 +212,10 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Disallows the connection without sending any reason. Should only be used when the connection has already been terminated by the plugin itself.
         /// </summary>
-        public void Disallow() => isAllowed = false;
+        public void Disallow()
+        {
+            IsAllowed = false;
+            serverFull = false;
+        }
     }
 }
