@@ -14,13 +14,15 @@ namespace Exiled.API.Features
     using DeathAnimations;
 
     using Enums;
+
     using Exiled.API.Extensions;
-    using Interactables.Interobjects.DoorUtils;
-    using MapGeneration;
+
     using Mirror;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.Ragdolls;
+
     using PlayerStatsSystem;
 
     using UnityEngine;

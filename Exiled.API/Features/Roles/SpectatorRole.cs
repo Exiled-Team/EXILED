@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Roles
     using System;
 
     using PlayerRoles;
+
     using UnityEngine;
 
     using SpectatorGameRole = PlayerRoles.Spectating.SpectatorRole;

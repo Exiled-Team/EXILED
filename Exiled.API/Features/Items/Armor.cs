@@ -12,7 +12,9 @@ namespace Exiled.API.Features.Items
     using System.Linq;
 
     using InventorySystem.Items.Armor;
+
     using PlayerRoles;
+
     using Structs;
 
     /// <summary>

@@ -11,9 +11,13 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Scp914;
+
     using global::Scp914;
+
     using Handlers;
+
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;

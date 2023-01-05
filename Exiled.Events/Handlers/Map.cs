@@ -9,6 +9,7 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Map;
+
     using Extensions;
 
     using MapGeneration.Distributors;

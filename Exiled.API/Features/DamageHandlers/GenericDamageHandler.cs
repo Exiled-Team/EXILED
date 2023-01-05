@@ -8,10 +8,14 @@
 namespace Exiled.API.Features.DamageHandlers
 {
     using Enums;
+
     using Footprinting;
+
     using Items;
+
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.PlayableScps.Scp939;
+
     using PlayerStatsSystem;
 
     /// <summary>

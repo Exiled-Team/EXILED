@@ -12,7 +12,9 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
     using Exiled.Loader.Features;
+
     using InventorySystem;
+
     using PlayerRoles;
 
     /// <summary>

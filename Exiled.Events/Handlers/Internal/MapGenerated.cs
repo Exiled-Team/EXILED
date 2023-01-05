@@ -14,16 +14,24 @@ namespace Exiled.Events.Handlers.Internal
     using API.Features;
     using API.Features.Items;
     using API.Structs;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+
     using Interactables.Interobjects;
+
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
+
     using MapGeneration;
     using MapGeneration.Distributors;
+
     using MEC;
+
     using NorthwoodLib.Pools;
+
     using PlayerRoles.PlayableScps.Scp079.Cameras;
+
     using Utils.NonAllocLINQ;
 
     using Broadcast = Broadcast;

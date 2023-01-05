@@ -8,7 +8,9 @@
 namespace Exiled.API.Features.Items
 {
     using Enums;
+
     using InventorySystem.Items.Radio;
+
     using Structs;
 
     /// <summary>

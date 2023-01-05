@@ -11,9 +11,11 @@ namespace Exiled.Events.EventArgs.Player
 
     using API.Enums;
     using API.Features;
+
     using Interfaces;
 
     using InventorySystem.Configs;
+
     using PlayerRoles;
 
     /// <summary>

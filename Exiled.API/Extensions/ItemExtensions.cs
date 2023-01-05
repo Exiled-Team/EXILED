@@ -12,10 +12,13 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using Enums;
+
     using Features.Items;
+
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms.Attachments;
+
     using Structs;
 
     /// <summary>

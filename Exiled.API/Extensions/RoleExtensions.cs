@@ -8,10 +8,13 @@
 namespace Exiled.API.Extensions
 {
     using Enums;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Spawn;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+
     using UnityEngine;
 
     using Team = PlayerRoles.Team;

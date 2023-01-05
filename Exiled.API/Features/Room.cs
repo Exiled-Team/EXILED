@@ -12,15 +12,20 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
 
     using Interactables.Interobjects.DoorUtils;
+
     using MapGeneration;
+
     using MEC;
+
     using Mirror;
+
     using PlayerRoles.PlayableScps.Scp079;
+
     using UnityEngine;
 
     /// <summary>

@@ -13,8 +13,11 @@ namespace Exiled.API.Features.DamageHandlers
     using System.Linq;
 
     using Enums;
+
     using Extensions;
+
     using PlayerRoles.PlayableScps.Scp939;
+
     using PlayerStatsSystem;
 
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;

@@ -12,12 +12,15 @@ namespace Exiled.API.Features.Pickups
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
+
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
+
     using Mirror;
+
     using UnityEngine;
 
     using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;

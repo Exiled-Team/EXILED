@@ -8,7 +8,6 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using Exiled.API.Features.Pickups;
 
@@ -190,7 +189,7 @@ namespace Exiled.API.Features.Items
                 if (exposedType is not CandyKindID.None)
                     pickup.ExposedCandy = exposedType;
                 for (int i = 0; i < count; i++)
-                pickup.Candies.Add(type);
+                    pickup.Candies.Add(type);
                 pickup.Info = new(Type, Owner.Position, default, Weight, ItemSerialGenerator.GenerateNext());
                 pickup.Base.InfoReceived(default, pickup.Info);
                 pickup.Scale = Scale;

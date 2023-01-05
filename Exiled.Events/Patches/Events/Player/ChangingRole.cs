@@ -23,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.Pickups;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
 
     using static HarmonyLib.AccessTools;

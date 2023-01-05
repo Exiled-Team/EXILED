@@ -22,8 +22,11 @@ namespace Exiled.API.Extensions
     using Mirror;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
+
     using RelativePositioning;
+
     using Respawning;
 
     using UnityEngine;

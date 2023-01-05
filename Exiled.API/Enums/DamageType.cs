@@ -8,6 +8,7 @@
 namespace Exiled.API.Enums
 {
     using Features;
+
     using PlayerRoles;
 
     /// <summary>
