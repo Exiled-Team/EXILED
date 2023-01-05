@@ -26,6 +26,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
+    using InventorySystem.Items.Pickups;
 
     using UnityEngine;
 
@@ -566,10 +567,13 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            FirearmPickup pickup = (FirearmPickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            pickup.Info = new(Type, position, rotation, pickup.Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Scale = Scale;
+            ipb.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.gameObject.transform.localScale = Scale;
+
+            FirearmPickup pickup = Pickup.Get(ipb).As<FirearmPickup>();
+
             pickup.Status = Base.Status;
 
             if (spawn)

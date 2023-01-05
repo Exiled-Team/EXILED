@@ -67,15 +67,17 @@ namespace Exiled.API.Features.Items
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
-            Scp2176Projectile grenade = (Scp2176Projectile)Pickup.Get(Object.Instantiate(Projectile.Base, position, Quaternion.identity));
+            ItemPickupBase ipb = Object.Instantiate(Projectile.Base, position, Quaternion.identity);
+
+            ipb.Info = new PickupSyncInfo(Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
+
+            Scp2176Projectile grenade = (Scp2176Projectile)Pickup.Get(ipb);
 
             grenade.Base.gameObject.SetActive(true);
 
             grenade.FuseTime = FuseTime;
 
             grenade.PreviousOwner = owner ?? Server.Host;
-
-            grenade.Info = new PickupSyncInfo(grenade.Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
 
             grenade.Spawn();
 
