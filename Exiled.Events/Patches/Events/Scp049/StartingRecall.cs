@@ -26,52 +26,41 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
     ///     Adds the <see cref="Handlers.Scp049.StartingRecall" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerValidateAny))]
+    [HarmonyPatch(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.ServerValidateBegin))]
     internal static class StartingRecall
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
-
+            Label returnLabel = generator.DefineLabel();
             newInstructions.InsertRange(
-                index,
+                0,
                 new[]
                 {
-                    // Player.Get(ownerHub)
-                    new CodeInstruction(OpCodes.Ldloc_0),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    // Scp049SenseAbility
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(StartingRecall), nameof(ServerValidateProcess))),
+                    new(OpCodes.Br, returnLabel),
 
-                    // Player.Get(base.Owner)
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp049Role>), nameof(ScpStandardSubroutine<Scp049Role>.Owner))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
-                    // base.CurRagdoll
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(RagdollAbilityBase<Scp049Role>), nameof(RagdollAbilityBase<Scp049Role>.CurRagdoll))),
-
-                    // flag
-                    new(OpCodes.Ldloc_1),
-
-                    // StartingRecallEventArgs ev = new(Player, Player, BasicRagdoll, bool)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingRecallEventArgs))[0]),
-                    new(OpCodes.Dup),
-
-                    // Handlers.Scp049.OnStartingRecall(ev)
-                    new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnStartingRecall))),
-
-                    // flag = ev.IsAllowed
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(StartingRecallEventArgs), nameof(StartingRecallEventArgs.IsAllowed))),
-                    new(OpCodes.Stloc_1),
                 });
 
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static bool ServerValidateProcess(Scp049ResurrectAbility instance, BasicRagdoll ragdoll)
+        {
+            if (!instance.ServerValidateAny())
+                return true;
+            Scp049ResurrectAbility.ResurrectError resurrectError = instance.CheckBeginConditions(ragdoll);
+            StartingReviveEventArgs startingReviveEvent = new StartingReviveEventArgs(Player.Get(ragdoll.Info.OwnerHub), Player.Get(instance.Owner), ragdoll, resurrectError);
+            Handlers.Scp049.OnStartingRecall(startingReviveEvent);
+            //NW funny 0 is good, 1 is bad
+            return !startingReviveEvent.IsAllowed;
         }
     }
 }
