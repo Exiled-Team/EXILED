@@ -369,8 +369,8 @@ namespace Exiled.API.Features
         /// </summary>
         public bool IsOverwatchEnabled
         {
-            get => ReferenceHub.serverRoles.OverwatchEnabled;
-            set => ReferenceHub.serverRoles.SetOverwatchStatus(value);
+            get => ReferenceHub.serverRoles.IsInOverwatch;
+            set => ReferenceHub.serverRoles.SetOverwatchStatus((byte)(value ? 1 : 0));
         }
 
         /// <summary>

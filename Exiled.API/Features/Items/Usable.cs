@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the usable item.</param>
         internal Usable(ItemType type)
-            : this((UsableItem)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((UsableItem)Server.Host.Inventory.CreateItemInstance(new(type, ItemSerialGenerator.GenerateNext()), false))
         {
         }
 

@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
+    using InventorySystem.Items;
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
@@ -28,7 +29,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="MicroHid"/> class, as well as a new Micro HID item.
         /// </summary>
         internal MicroHid()
-            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(ItemType.MicroHID, false))
+            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.MicroHID, ItemSerialGenerator.GenerateNext()), false))
         {
         }
 

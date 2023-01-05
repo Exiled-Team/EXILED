@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         internal FlashGrenade(Player player = null)
-            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.GrenadeFlash, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.GrenadeFlash, true))
+            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.GrenadeFlash, ItemSerialGenerator.GenerateNext()), false) : (ThrowableItem)player.Inventory.CreateItemInstance(new(ItemType.GrenadeFlash, ItemSerialGenerator.GenerateNext()), true))
         {
         }
 

@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using Exiled.API.Enums;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Keycards;
 
     /// <summary>
@@ -31,7 +32,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the keycard.</param>
         internal Keycard(ItemType type)
-            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(new(type, ItemSerialGenerator.GenerateNext()), false))
         {
         }
 

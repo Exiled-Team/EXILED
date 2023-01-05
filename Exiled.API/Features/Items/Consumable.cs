@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using InventorySystem.Items;
+
     using BaseConsumable = InventorySystem.Items.Usables.Consumable;
 
     /// <summary>
@@ -29,7 +31,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the usable item.</param>
         internal Consumable(ItemType type)
-            : this((BaseConsumable)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((BaseConsumable)Server.Host.Inventory.CreateItemInstance(new(type, ItemSerialGenerator.GenerateNext()), false))
         {
         }
 

@@ -67,7 +67,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the item to create.</param>
         internal Item(ItemType type)
-            : this(Server.Host.Inventory.CreateItemInstance(type, false))
+            : this(Server.Host.Inventory.CreateItemInstance(new(type, ItemSerialGenerator.GenerateNext()), false))
         {
         }
 
