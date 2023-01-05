@@ -10,9 +10,8 @@ namespace Exiled.Events.Commands.Reload
     using System;
 
     using CommandSystem;
-
-    using Exiled.Loader;
     using Exiled.Permissions.Extensions;
+    using Loader;
 
     /// <summary>
     /// The reload remoteadmin command.

@@ -9,8 +9,8 @@ namespace Exiled.API.Enums
 {
     using System;
 
-    using Exiled.API.Features;
-    using Exiled.API.Features.Items;
+    using Features;
+    using Features.Items;
 
     /// <summary>
     /// The types of permissions assigned to keycards.

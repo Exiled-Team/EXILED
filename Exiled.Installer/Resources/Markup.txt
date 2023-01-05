@@ -1,2 +1,2 @@
-EXILED\:ABSOLUTE
-Assembly-CSharp.dll:GAME
+EXILED\:EXILED
+SCP Secret Laboratory\:ABSOLUTE

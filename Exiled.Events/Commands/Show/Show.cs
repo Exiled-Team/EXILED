@@ -21,7 +21,10 @@ namespace Exiled.Events.Commands.Show
         /// <summary>
         /// Initializes a new instance of the <see cref="Show"/> class.
         /// </summary>
-        public Show() => LoadGeneratedCommands();
+        public Show()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "show";
@@ -33,10 +36,7 @@ namespace Exiled.Events.Commands.Show
         public override string Description { get; } = "Show plugins";
 
         /// <inheritdoc/>
-        public override void LoadGeneratedCommands()
-        {
-            RegisterCommand(new Plugins());
-        }
+        public override void LoadGeneratedCommands() => RegisterCommand(new Plugins());
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

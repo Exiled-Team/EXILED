@@ -8,11 +8,11 @@
 namespace Exiled.Events.Patches.Events.Scp330
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp330;
+
+    using Handlers;
 
     using HarmonyLib;
 
@@ -22,9 +22,11 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using static HarmonyLib.AccessTools;
 
+    using Player = API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted"/>.
-    /// Adds the <see cref="Handlers.Scp330.EatingScp330"/> and <see cref="Handlers.Scp330.EatenScp330"/> event.
+    ///     Patches <see cref="Scp330Bag.ServerOnUsingCompleted" />.
+    ///     Adds the <see cref="Scp330.EatingScp330" /> and <see cref="Scp330.EatenScp330" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerOnUsingCompleted))]
     internal static class EatingScp330
@@ -34,58 +36,61 @@ namespace Exiled.Events.Patches.Events.Scp330
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = -3;
-
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(ICandy), nameof(ICandy.ServerApplyEffects))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(ICandy), nameof(ICandy.ServerApplyEffects)))) + offset;
 
             Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
-            {
-                // Player.Get(this.Owner)
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(this.Owner)
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // ICandy
-                new(OpCodes.Ldloc_0),
+                    // ICandy
+                    new(OpCodes.Ldloc_0),
 
-                // true
-                new(OpCodes.Ldc_I4_1),
+                    // true
+                    new(OpCodes.Ldc_I4_1),
 
-                // var ev = new EatingScp330EventArgs(player, candy, true)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingScp330EventArgs))[0]),
-                new(OpCodes.Dup),
+                    // EatingScp330EventArgs ev = new(player, candy, true)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingScp330EventArgs))[0]),
+                    new(OpCodes.Dup),
 
-                // Handlers.Scp330.OnEatingScp330(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEatingScp330))),
+                    // Handlers.Scp330.OnEatingScp330(ev)
+                    new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnEatingScp330))),
 
-                // if (!ev.IsAllowed)
-                //  return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EatingScp330EventArgs), nameof(EatingScp330EventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-            });
+                    // if (!ev.IsAllowed)
+                    //  return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EatingScp330EventArgs), nameof(EatingScp330EventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             offset = -1;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerRefreshBag))) + offset;
+            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerRefreshBag)))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(this.Owner)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(this.Owner)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // ICandy
-                new(OpCodes.Ldloc_0),
+                    // ICandy
+                    new(OpCodes.Ldloc_0),
 
-                // var ev = new EatenScp330EventArgs(player, candy)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatenScp330EventArgs))[0]),
+                    // EatenScp330EventArgs ev = new(player, candy)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatenScp330EventArgs))[0]),
 
-                // Handlers.Scp330.OnEatenScp330(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEatenScp330))),
-            });
+                    // Handlers.Scp330.OnEatenScp330(ev)
+                    new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnEatenScp330))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

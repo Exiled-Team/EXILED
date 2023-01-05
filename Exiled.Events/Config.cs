@@ -9,14 +9,16 @@ namespace Exiled.Events
 {
     using System.ComponentModel;
 
-    using Exiled.API.Interfaces;
+    using API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig
     {
         /// <inheritdoc/>
-        [Description("Indicates whether the plugin is enabled or not")]
         public bool IsEnabled { get; set; } = true;
+
+        /// <inheritdoc/>
+        public bool Debug { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether SCP-173 can be blocked or not by the tutorial.
@@ -59,12 +61,6 @@ namespace Exiled.Events
         /// </summary>
         [Description("Indicates whether thrown keycards can affect doors that don't require any permissions")]
         public bool CanKeycardThrowAffectDoors { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the grenade damage is suppressed when the thrower quits from the server.
-        /// </summary>
-        [Description("Indicates whether the grenade damage is suppressed when the thrower quits from the server")]
-        public bool IsGrenadeDamageSuppressedOnQuit { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.

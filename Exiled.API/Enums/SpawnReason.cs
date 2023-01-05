@@ -53,8 +53,8 @@ namespace Exiled.API.Enums
         ForceClass,
 
         /// <summary>
-        /// The user has entered Overwatch mode.
+        /// The user will be destroyed.
         /// </summary>
-        Overwatch,
+        Destroyed,
     }
 }

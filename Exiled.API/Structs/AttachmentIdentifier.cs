@@ -8,41 +8,18 @@
 namespace Exiled.API.Structs
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Enums;
-
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
 
     /// <summary>
     /// A tool to identify attachments.
     /// </summary>
-    public struct AttachmentIdentifier
+    public readonly struct AttachmentIdentifier
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
-        /// </summary>
-        /// <param name="name">The name of the attachment.</param>
-        public AttachmentIdentifier(AttachmentName name)
-        {
-            Code = 0;
-            Name = name;
-            Slot = default;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
-        /// </summary>
-        /// <param name="name">The name of the attachment.</param>
-        /// <param name="slot">The slot of the attachment.</param>
-        public AttachmentIdentifier(AttachmentName name, AttachmentSlot slot)
-        {
-            Code = 0;
-            Name = name;
-            Slot = slot;
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
         /// </summary>
@@ -77,7 +54,7 @@ namespace Exiled.API.Structs
         /// <param name="left">The left-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
         /// <param name="right">The right-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(AttachmentIdentifier left, AttachmentIdentifier right) => left.Name == right.Name && left.Code == right.Code && left.Slot == right.Slot;
+        public static bool operator ==(AttachmentIdentifier left, AttachmentIdentifier right) => (left.Name == right.Name) && (left.Code == right.Code) && (left.Slot == right.Slot);
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="AttachmentIdentifier"/>.
@@ -85,7 +62,7 @@ namespace Exiled.API.Structs
         /// <param name="left">The left-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
         /// <param name="right">The right-hand <see cref="AttachmentIdentifier"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator !=(AttachmentIdentifier left, AttachmentIdentifier right) => left.Name != right.Name && left.Code != right.Code && left.Slot != right.Slot;
+        public static bool operator !=(AttachmentIdentifier left, AttachmentIdentifier right) => (left.Name != right.Name) && (left.Code != right.Code) && (left.Slot != right.Slot);
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="Attachment"/>.
@@ -93,7 +70,7 @@ namespace Exiled.API.Structs
         /// <param name="left">The <see cref="AttachmentIdentifier"/> to compare.</param>
         /// <param name="right">The <see cref="Attachment"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(AttachmentIdentifier left, Attachment right) => left.Name == right.Name && left.Slot == right.Slot;
+        public static bool operator ==(AttachmentIdentifier left, Attachment right) => (left.Name == right.Name) && (left.Slot == right.Slot);
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="Attachment"/>.
@@ -152,38 +129,6 @@ namespace Exiled.API.Structs
         public static uint operator -(uint left, AttachmentIdentifier right) => left - right.Code;
 
         /// <summary>
-        /// Computes the sum of its right-hand <see cref="BaseCode"/> operand and its left-hand <see cref="AttachmentIdentifier"/> operand.
-        /// </summary>
-        /// <param name="left">The <see cref="AttachmentIdentifier"/> to be added up.</param>
-        /// <param name="right">The <see cref="BaseCode"/> to be added up.</param>
-        /// <returns>A <see cref="uint"/> value that represents the sum of the two operands.</returns>
-        public static uint operator +(AttachmentIdentifier left, BaseCode right) => left.Code + (uint)right;
-
-        /// <summary>
-        /// Subtracts its right-hand <see cref="BaseCode"/> operand from its left-hand <see cref="AttachmentIdentifier"/> operand.
-        /// </summary>
-        /// <param name="left">The <see cref="BaseCode"/> to be subtracted.</param>
-        /// <param name="right">The <see cref="AttachmentIdentifier"/> to be subtracted.</param>
-        /// <returns>A <see cref="BaseCode"/> value representing the subtraction between the two operands.</returns>
-        public static uint operator -(AttachmentIdentifier left, BaseCode right) => left.Code - (uint)right;
-
-        /// <summary>
-        /// Computes the sum of its right-hand <see cref="AttachmentIdentifier"/> operand and its left-hand <see cref="BaseCode"/> operand.
-        /// </summary>
-        /// <param name="left">The <see cref="BaseCode"/> to be added up.</param>
-        /// <param name="right">The <see cref="AttachmentIdentifier"/> to be added up.</param>
-        /// <returns>A <see cref="uint"/> value that represents the sum of the two operands.</returns>
-        public static uint operator +(BaseCode left, AttachmentIdentifier right) => right + left;
-
-        /// <summary>
-        /// Subtracts its right-hand <see cref="AttachmentIdentifier"/> operand from its left-hand <see cref="BaseCode"/> operand.
-        /// </summary>
-        /// <param name="left">The <see cref="BaseCode"/> to be subtracted.</param>
-        /// <param name="right">The <see cref="AttachmentIdentifier"/> to be subtracted.</param>
-        /// <returns>A <see cref="uint"/> value representing the subtraction between the two operands.</returns>
-        public static uint operator -(BaseCode left, AttachmentIdentifier right) => (uint)left - right.Code;
-
-        /// <summary>
         /// Converts the string representation of a <see cref="AttachmentIdentifier"/> to its <see cref="AttachmentIdentifier"/> equivalent.
         /// A return value indicates whether the conversion is succeeded or failed.
         /// </summary>
@@ -202,6 +147,22 @@ namespace Exiled.API.Structs
 
             return false;
         }
+
+        /// <summary>
+        /// Gets a <see cref="AttachmentIdentifier"/> by name.
+        /// </summary>
+        /// <param name="type">Weapons <see cref="FirearmType"/>.</param>
+        /// <param name="name">Attachment name.</param>
+        /// <returns><see cref="AttachmentIdentifier"/> instance.</returns>
+        public static AttachmentIdentifier Get(FirearmType type, AttachmentName name) => Features.Items.Firearm.AvailableAttachments[type].FirstOrDefault(identifier => identifier.Name == name);
+
+        /// <summary>
+        /// Gets the all <see cref="AttachmentIdentifier"/>'s for type, by slot.
+        /// </summary>
+        /// <param name="type">Weapons <see cref="FirearmType"/>.</param>
+        /// <param name="slot">Attachment slot.</param>
+        /// <returns><see cref="AttachmentIdentifier"/> instance.</returns>
+        public static IEnumerable<AttachmentIdentifier> Get(FirearmType type, AttachmentSlot slot) => Features.Items.Firearm.AvailableAttachments[type].Where(identifier => identifier.Slot == slot);
 
         /// <summary>
         /// Converts the string representation of a <see cref="AttachmentName"/> to its <see cref="AttachmentName"/> equivalent.

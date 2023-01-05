@@ -7,13 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Scp244
 {
-#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp244;
+    using Handlers;
 
     using HarmonyLib;
 
@@ -24,7 +23,8 @@ namespace Exiled.Events.Patches.Events.Scp244
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp244DeployablePickup"/> to add missing event handler to the <see cref="Scp244DeployablePickup"/>.
+    ///     Patches <see cref="Scp244DeployablePickup" /> to add missing event handler to the
+    ///     <see cref="Scp244DeployablePickup" />.
     /// </summary>
     [HarmonyPatch(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup.UpdateRange))]
     internal static class UpdateScp244
@@ -33,24 +33,36 @@ namespace Exiled.Events.Patches.Events.Scp244
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label retLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
             int offset = 2;
-            int index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot)))) + offset;
+            int index = newInstructions.FindIndex(
+                instruction => instruction.LoadsField(Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._activationDot)))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp244), nameof(Handlers.Scp244.OnOpeningScp244))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // this
+                    new(OpCodes.Ldarg_0),
 
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(Stopwatch), nameof(Stopwatch.Restart)));
+                    // OpeningScp244EventArgs ev = new(Scp244DeployablePickup)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(OpeningScp244EventArgs))[0]),
+                    new(OpCodes.Dup),
 
-            newInstructions[index].WithLabels(retLabel);
+                    // Scp244.OnOpeningScp244(ev)
+                    new(OpCodes.Call, Method(typeof(Scp244), nameof(Scp244.OnOpeningScp244))),
+
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(OpeningScp244EventArgs), nameof(OpeningScp244EventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, continueLabel),
+                });
+
+            offset = -2;
+            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(Stopwatch), nameof(Stopwatch.Restart)))) + offset;
+
+            newInstructions[index].WithLabels(continueLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

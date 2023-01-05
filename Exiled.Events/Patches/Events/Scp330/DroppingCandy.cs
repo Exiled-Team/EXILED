@@ -7,25 +7,26 @@
 
 namespace Exiled.Events.Patches.Events.Scp330
 {
-#pragma warning disable SA1313
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp330;
+    using Handlers;
 
     using HarmonyLib;
 
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
-
+    using Mirror;
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
+    using Player = API.Features.Player;
+
     /// <summary>
-    /// Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived"/> method to add the <see cref="Handlers.Scp330.DroppingScp330"/> event.
+    ///     Patches the <see cref="Scp330NetworkHandler.ServerSelectMessageReceived(NetworkConnection, SelectScp330Message)" /> method to add the
+    ///     <see cref="Scp330.DroppingScp330" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330NetworkHandler), nameof(Scp330NetworkHandler.ServerSelectMessageReceived))]
     internal static class DroppingCandy
@@ -36,45 +37,65 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             Label returnLabel = generator.DefineLabel();
 
-            LocalBuilder eventHandler = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(DroppingScp330EventArgs));
 
-            int offset = -3;
+            const int offset = -1;
             int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory)))) + offset;
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(SelectScp330Message), nameof(SelectScp330Message.CandyID))),
-                new(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingScp330EventArgs))[0]),
-                new(OpCodes.Stloc, eventHandler.LocalIndex),
-                new(OpCodes.Ldloc, eventHandler.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnDroppingScp330))),
-                new(OpCodes.Ldloc, eventHandler.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(referenceHub)
+                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // scp330Bag
+                    new(OpCodes.Ldloc_1),
+
+                    // scp330Bag.TryRemove(msg.CandyId)
+                    new(OpCodes.Dup),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(SelectScp330Message), nameof(SelectScp330Message.CandyID))),
+                    new(OpCodes.Callvirt, Method(typeof(Scp330Bag), nameof(Scp330Bag.TryRemove))),
+
+                    // DroppingScp330EventArgs ev = new(Player, Scp330Bag, CandyKindID)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingScp330EventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
+
+                    // Scp330.OnDroppingScp330(ev)
+                    new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnDroppingScp330))),
+
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.IsAllowed))),
+                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                });
 
             // Set our location of previous owner
             int jumpOverOffset = 1;
-            int jumpOverIndex = newInstructions.FindLastIndex(instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
+            int jumpOverIndex = newInstructions.FindLastIndex(
+                instruction => instruction.StoresField(Field(typeof(ItemPickupBase), nameof(ItemPickupBase.PreviousOwner)))) + jumpOverOffset;
 
             // Remove TryRemove candy logic since we did it earlier from current location
             newInstructions.RemoveRange(jumpOverIndex, 6);
 
             int candyKindIdIndex = 4;
 
-            newInstructions.InsertRange(jumpOverIndex, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc, eventHandler.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.Candy))),
-                new(OpCodes.Stloc, candyKindIdIndex),
-                new(OpCodes.Ldloc, candyKindIdIndex),
-            });
+            newInstructions.InsertRange(
+                jumpOverIndex,
+                new[]
+                {
+                    // candyKindID = ev.Candy
+                    new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingScp330EventArgs), nameof(DroppingScp330EventArgs.Candy))),
+                    new(OpCodes.Stloc, candyKindIdIndex),
+
+                    // candyKindID
+                    new(OpCodes.Ldloc, candyKindIdIndex),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

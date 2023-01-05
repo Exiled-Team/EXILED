@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.Handlers;
+    using Handlers;
 
     using HarmonyLib;
 
@@ -19,8 +19,8 @@ namespace Exiled.Events.Patches.Events.Warhead
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="AlphaWarheadController.Detonate"/>.
-    /// Adds the WarheadDetonated event.
+    ///     Patches <see cref="AlphaWarheadController.Detonate" />.
+    ///     Adds the WarheadDetonated event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     internal static class Detonated
@@ -29,11 +29,17 @@ namespace Exiled.Events.Patches.Events.Warhead
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Warhead.OnDetonated();
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnDetonated))),
-            });
+            const int offset = 1;
+            int index = newInstructions.FindIndex(
+                instruction => instruction.Calls(Method(typeof(AlphaWarheadController), nameof(AlphaWarheadController.RpcShake)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Warhead.OnDetonated();
+                    new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnDetonated))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

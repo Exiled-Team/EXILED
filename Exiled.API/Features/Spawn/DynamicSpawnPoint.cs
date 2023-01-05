@@ -9,8 +9,8 @@ namespace Exiled.API.Features.Spawn
 {
     using System;
 
-    using Exiled.API.Extensions;
-    using Exiled.CustomItems.API;
+    using Exiled.API.Enums;
+    using Extensions;
 
     using UnityEngine;
 
@@ -22,9 +22,9 @@ namespace Exiled.API.Features.Spawn
     public class DynamicSpawnPoint : SpawnPoint
     {
         /// <summary>
-        /// Gets or sets the <see cref="SpawnLocation"/> for this item.
+        /// Gets or sets the <see cref="SpawnLocationType"/> for this item.
         /// </summary>
-        public SpawnLocation Location { get; set; }
+        public SpawnLocationType Location { get; set; }
 
         /// <inheritdoc/>
         public override float Chance { get; set; }
@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Spawn
         public override string Name
         {
             get => Location.ToString();
-            set => throw new InvalidOperationException("You cannot change the name of a dynamic spawn location.");
+            set => throw new InvalidOperationException("The name of a dynamic spawn location cannot be changed.");
         }
 
         /// <inheritdoc/>
@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Spawn
         public override Vector3 Position
         {
             get => Location.GetPosition();
-            set => throw new InvalidOperationException("You cannot change the spawn vector of a dynamic spawn location.");
+            set => throw new InvalidOperationException("The spawn vector of a dynamic spawn location cannot be changed.");
         }
     }
 }

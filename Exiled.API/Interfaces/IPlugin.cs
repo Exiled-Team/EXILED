@@ -13,8 +13,8 @@ namespace Exiled.API.Interfaces
 
     using CommandSystem;
 
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
+    using Enums;
+    using Features;
 
     /// <summary>
     /// Defines the contract for basic plugin features.

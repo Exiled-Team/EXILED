@@ -7,13 +7,13 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
+    using Exiled.API.Features.Pickups;
+    using Exiled.Events.EventArgs.Map;
+    using Extensions;
 
     using MapGeneration.Distributors;
 
-    using static Exiled.Events.Events;
+    using static Events;
 
     /// <summary>
     /// Map related events.
@@ -76,6 +76,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade;
 
         /// <summary>
+        /// Invoked after the server changes a pickup into a grenade, when triggered by an explosion.
+        /// </summary>
+        public static event CustomEventHandler<ChangedIntoGrenadeEventArgs> ChangedIntoGrenade;
+
+        /// <summary>
         /// Invoked before turning off lights.
         /// </summary>
         public static event CustomEventHandler<TurningOffLightsEventArgs> TurningOffLights;
@@ -83,13 +88,13 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before placing a decal.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.Map.PlacingBulletHole"/> instance.</param>
         public static void OnPlacingBulletHole(PlacingBulletHole ev) => PlacingBulletHole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before placing bloods.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.Map.PlacingBulletHole"/> instance.</param>
         public static void OnPlacingBlood(PlacingBloodEventArgs ev) => PlacingBlood.InvokeSafely(ev);
 
         /// <summary>
@@ -144,6 +149,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
         public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after the server changes a <see cref="Pickup"/> into a live Grenade when hit by an explosion.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
+        public static void OnChangedIntoGrenade(ChangedIntoGrenadeEventArgs ev) => ChangedIntoGrenade.InvokeSafely(ev);
 
         /// <summary>
         /// Called before turning off lights.
