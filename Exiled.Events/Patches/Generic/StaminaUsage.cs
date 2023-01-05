@@ -30,8 +30,6 @@ namespace Exiled.Events.Patches.Generic
             Label returnLabel = generator.DefineLabel();
             Label skipLabel = generator.DefineLabel();
 
-            int lastCount = newInstructions.Count;
-
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
