@@ -151,7 +151,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked afer throwing an <see cref="API.Features.Items.Throwable"/>.
         /// </summary>
-        public static event CustomEventHandler<ThrownGrenadeEventArgs> ThrownItem;
+        public static event CustomEventHandler<ThrownGrenadeEventArgs> ThrownGrenade;
 
         /// <summary>
         /// Invoked before receving a throwing request an <see cref="API.Features.Items.Throwable"/>.
@@ -560,7 +560,7 @@ namespace Exiled.Events.Handlers
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrownGrenadeEventArgs"/> instance.</param>
-        public static void OnThrowingItem(ThrownGrenadeEventArgs ev) => ThrownItem.InvokeSafely(ev);
+        public static void OnThrowingGrenade(ThrownGrenadeEventArgs ev) => ThrownGrenade.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.
