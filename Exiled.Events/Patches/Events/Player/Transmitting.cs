@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
@@ -25,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="PersonalRadioPlayback.IsTransmitting(ReferenceHub)" />.
     ///     Adds the <see cref="Handlers.Player.Transmitting" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.IsTransmitting))]
+    [HarmonyPatch(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.Update))]
     internal static class Transmitting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -34,9 +36,9 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label retLabel = generator.DefineLabel();
 
-            const int offset = -1;
+            const int offset = 3;
             int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(PropertyGetter(typeof(NetworkBehaviour), nameof(NetworkBehaviour.isLocalPlayer)))) + offset;
+                instruction => instruction.Calls(Method(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.IsTransmitting)))) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -44,9 +46,6 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     // hub
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-
-                    // voiceModule
-                    new(OpCodes.Ldloc_1),
 
                     // HandleTransmitting(ReferenceHub, VoiceModule)
                     new(OpCodes.Call, Method(typeof(Transmitting), nameof(HandleTransmitting))),
@@ -56,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
                 });
 
             // -2 to return false
-            newInstructions[newInstructions.Count - 2].WithLabels(retLabel);
+            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -64,12 +63,16 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static bool HandleTransmitting(ReferenceHub hub, VoiceModuleBase voiceModule)
+        private static bool HandleTransmitting(PersonalRadioPlayback radioPlayback)
         {
-            if (hub == null || Player.Get(hub) is not Player player)
+            ReferenceHub hub = radioPlayback._owner;
+            if (hub == null || Player.Get(hub) is not Player player || Server.Host.ReferenceHub == hub)
+            {
                 return false;
+            }
 
-            TransmittingEventArgs ev = new(player, voiceModule);
+            IVoiceRole voiceModule = player.RoleManager.CurrentRole as IVoiceRole;
+            TransmittingEventArgs ev = new(player, voiceModule?.VoiceModule);
 
             Handlers.Player.OnTransmitting(ev);
 
