@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrownItemEventArgs))[0]),
 
                 // Handlers.Player.OnThrowingItem(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingItem))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrownItem))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
