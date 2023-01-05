@@ -320,6 +320,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRadioPresetEventArgs> ChangingRadioPreset;
 
         /// <summary>
+        /// Called before a user's audio is sent to others.
+        /// </summary>
+        public static event CustomEventHandler<ReceivingAudioEventArgs> ReceivingAudio;
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> MicroHID state is changed.
         /// </summary>
         public static event CustomEventHandler<ChangingMicroHIDStateEventArgs> ChangingMicroHIDState;
@@ -934,6 +939,13 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance. </param>
         public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
+
+
+        /// <summary>
+        /// Called before a user's audio is sent to others.
+        /// </summary>
+        /// <param name="ev">The <see cref="ReceivingAudioEventArgs"/> instance. </param>
+        public static void OnReceivingAudio(ReceivingAudioEventArgs ev) => ReceivingAudio.InvokeSafely(ev);
 
         /// <summary>
         /// Called before hurting a player.
