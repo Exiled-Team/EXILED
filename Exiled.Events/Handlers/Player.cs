@@ -553,10 +553,10 @@ namespace Exiled.Events.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after throwing a grenade.
+        /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrownItemEventArgs"/> instance.</param>
-        public static void OnThrownItem(ThrownItemEventArgs ev) => ThrownItem.InvokeSafely(ev);
+        public static void OnThrowingItem(ThrownItemEventArgs ev) => ThrownItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.
