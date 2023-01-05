@@ -19,10 +19,24 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="newValue"><inheritdoc cref="IsEnabled"/></param>
-        public TogglingOverwatchEventArgs(API.Features.Player player, bool newValue)
+        public TogglingOverwatchEventArgs(API.Features.Player player, byte newValue)
         {
             Player = player;
-            IsEnabled = newValue;
+
+            switch (newValue)
+            {
+                case 0:
+                    IsEnabled = false;
+                    break;
+                case 1:
+                    IsEnabled = true;
+                    break;
+                case 2:
+                    IsEnabled = !player.IsOverwatchEnabled;
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
