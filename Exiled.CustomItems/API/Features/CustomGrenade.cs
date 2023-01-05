@@ -90,7 +90,7 @@ namespace Exiled.CustomItems.API.Features
         /// Handles tracking thrown custom grenades.
         /// </summary>
         /// <param name="ev"><see cref="ThrownItemEventArgs"/>.</param>
-        protected virtual void OnThrownItem(ThrownItemEventArgs ev)
+        protected virtual void OnThrownItem(ThrownGrenadeEventArgs ev)
         {
         }
 
@@ -121,7 +121,7 @@ namespace Exiled.CustomItems.API.Features
             return;
         }
 
-        private void OnInternalThrownItem(ThrownItemEventArgs ev)
+        private void OnInternalThrownItem(ThrownGrenadeEventArgs ev)
         {
             if (!Check(ev.Throwable))
                 return;
