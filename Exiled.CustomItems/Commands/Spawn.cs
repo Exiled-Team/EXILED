@@ -11,9 +11,9 @@ namespace Exiled.CustomItems.Commands
 
     using CommandSystem;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.CustomItems.API;
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
 
@@ -65,7 +65,7 @@ namespace Exiled.CustomItems.Commands
 
             Vector3 position;
 
-            if (Enum.TryParse(arguments.At(1), out SpawnLocation location))
+            if (Enum.TryParse(arguments.At(1), out SpawnLocationType location))
             {
                 position = location.GetPosition();
             }
@@ -95,7 +95,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            item.Spawn(position, (Player)null);
+            item.Spawn(position, null);
 
             response = $"{item.Name} ({item.Type}) has been spawned at {position}.";
             return true;

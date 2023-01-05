@@ -12,8 +12,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using AdminToys;
 
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -26,8 +26,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)"/>.
-    /// Adds the <see cref="Handlers.Player.DamagingShootingTarget"/> event.
+    ///     Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)" />.
+    ///     Adds the <see cref="Handlers.Player.DamagingShootingTarget" /> event.
     /// </summary>
     [HarmonyPatch(typeof(ShootingTarget), nameof(ShootingTarget.Damage))]
     internal static class DamagingShootingTarget
@@ -37,41 +37,67 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = 1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_2) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_2) + offset;
 
             Label allowedLabel = generator.DefineLabel();
 
-            // DamagingShootingTargetEventArgs ev = new(Player.Get(hub), damage, distance, hitLocation, this, damageHandler, true);
-            // Player.OnDamagingShootingTarget(ev);
-            // if(!ev.IsAllowed)
-            //     return;
-            // damage = ev.Amount;
-            // distance = ev.Distance;
-            newInstructions.InsertRange(index, new[]
-            {
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Ldarg_3),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_2),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDamagingShootingTarget))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, allowedLabel),
-                new(OpCodes.Pop),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Dup).WithLabels(allowedLabel),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
-                new(OpCodes.Starg_S, 1),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Distance))),
-                new(OpCodes.Stloc_2),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(hub)
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // damage
+                    new(OpCodes.Ldarg_1),
+
+                    // distance
+                    new(OpCodes.Ldloc_2),
+
+                    // hitLocation
+                    new(OpCodes.Ldarg_3),
+
+                    // this
+                    new(OpCodes.Ldarg_0),
+
+                    // damageHandler
+                    new(OpCodes.Ldarg_2),
+
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // DamagingShootingTargetEventArgs ev = new(Player, float, float, Vector3, ShootingTarget, DamageHandlerBase, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+
+                    // Player.OnDamagingShootingTarget(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDamagingShootingTarget))),
+
+                    // if (ev.IsAllowed)
+                    //    goto allowedLabel;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, allowedLabel),
+
+                    // Pop the ev still in the stack
+                    new(OpCodes.Pop),
+
+                    // return false;
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Ret),
+
+                    // allowedLabel:
+                    //
+                    // damage = ev.Amount;
+                    new CodeInstruction(OpCodes.Dup).WithLabels(allowedLabel),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
+                    new(OpCodes.Starg_S, 1),
+
+                    // distance = ev.Distance;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Distance))),
+                    new(OpCodes.Stloc_2),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

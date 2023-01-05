@@ -10,7 +10,7 @@ namespace Exiled.Loader
     using System;
     using System.Reflection;
 
-    using Exiled.API.Interfaces;
+    using API.Interfaces;
 
     /// <summary>
     /// Contains the extensions to get a path.

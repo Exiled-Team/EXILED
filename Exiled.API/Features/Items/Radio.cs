@@ -7,12 +7,9 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Exiled.API.Enums;
-    using Exiled.API.Structs;
-
+    using Enums;
     using InventorySystem.Items.Radio;
-
-    using MEC;
+    using Structs;
 
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
@@ -43,7 +40,7 @@ namespace Exiled.API.Features.Items
         public new RadioItem Base { get; }
 
         /// <summary>
-        /// Gets or sets the percentage of the radio's battery.
+        /// Gets or sets the percentage of the radio's battery, between <c>0-100</c>.
         /// </summary>
         public byte BatteryLevel
         {
@@ -56,8 +53,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public RadioRange Range
         {
-            get => (RadioRange)Base.CurRange;
-            set => Base.CurRange = (int)value;
+            get => (RadioRange)Base._rangeId;
+            set => Base._rangeId = (byte)value;
         }
 
         /// <summary>
@@ -82,9 +79,39 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Turns off the radio.
+        /// Gets or sets a value indicating whether the radio is enabled or not.
         /// </summary>
-        public void Disable() => Base._radio.ForceDisableRadio();
+        public bool IsEnabled
+        {
+            get => Base._enabled;
+            set => Base._enabled = value;
+        }
+
+        /// <summary>
+        /// Sets the <see cref="RadioRangeSettings"/> of the given <paramref name="range"/>.
+        /// </summary>
+        /// <param name="range">The <see cref="RadioRange"/> to modify.</param>
+        /// <param name="settings">The new settings of the specified range.</param>
+        public void SetRangeSettings(RadioRange range, RadioRangeSettings settings)
+        {
+            Base.Ranges[(int)range] = new RadioRangeMode
+            {
+                MaximumRange = settings.MaxRange,
+                MinuteCostWhenIdle = settings.IdleUsage,
+                MinuteCostWhenTalking = settings.TalkingUsage,
+            };
+        }
+
+        /// <summary>
+        /// Clones current <see cref="Radio"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Radio"/> object. </returns>
+        public override Item Clone() => new Radio()
+        {
+            BatteryLevel = BatteryLevel,
+            Range = Range,
+            RangeSettings = RangeSettings,
+        };
 
         /// <summary>
         /// Returns the Radio in a human readable format.
@@ -93,20 +120,10 @@ namespace Exiled.API.Features.Items
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
 
         /// <summary>
-        /// Clones current <see cref="Radio"/> object.
+        /// <inheritdoc/>
         /// </summary>
-        /// <returns> New <see cref="Radio"/> object. </returns>
-        public override Item Clone()
-        {
-            Radio radio = new();
-
-            Timing.CallDelayed(1f, () =>
-            {
-                radio.BatteryLevel = BatteryLevel;
-                radio.Range = Range;
-                radio.RangeSettings = RangeSettings;
-            });
-            return radio;
-        }
+        /// <param name="oldOwner">old <see cref="Item"/> owner.</param>
+        /// <param name="newOwner">new <see cref="Item"/> owner.</param>
+        internal override void ChangeOwner(Player oldOwner, Player newOwner) => Base.Owner = newOwner.ReferenceHub;
     }
 }

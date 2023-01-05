@@ -7,44 +7,54 @@
 
 namespace Exiled.API.Features.Core
 {
+#pragma warning disable CS0419 // Ambiguous reference in cref attribute
+
     /// <summary>
     /// The interface which allows defined objects to be cast to each other.
     /// </summary>
-    /// <typeparam name="T1">The type of the object to cast.</typeparam>
-    public abstract class TypeCastObject<T1>
-        where T1 : class
+    /// <typeparam name="T">The type of the object to cast.</typeparam>
+    public abstract class TypeCastObject<T>
+        where T : class
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TypeCastObject{T1}"/> class.
         /// </summary>
-        public TypeCastObject()
+        protected TypeCastObject()
         {
         }
 
         /// <summary>
-        /// Unsafely casts the current <typeparamref name="T1"/> instance to the specified <typeparamref name="T"/> type.
+        /// Unsafely casts the current <typeparamref name="T"/> instance to the specified <typeparamref name="TObject"/> type.
         /// </summary>
-        /// <typeparam name="T">The type to which to cast the <typeparamref name="T1"/> instance.</typeparam>
-        /// <returns>The cast <typeparamref name="T1"/> instance.</returns>
-        public T Cast<T>()
-            where T : class => this as T1 as T;
+        /// <typeparam name="TObject">The type to which to cast the <typeparamref name="T"/> instance.</typeparam>
+        /// <returns>The cast <typeparamref name="T"/> instance.</returns>
+        public TObject Cast<TObject>()
+            where TObject : class => this as T as TObject;
 
         /// <summary>
-        /// Safely casts the current <typeparamref name="T1"/> instance to the specified <typeparamref name="T"/> type.
+        /// Safely casts the current <typeparamref name="TObject"/> instance to the specified <typeparamref name="TObject"/> type.
         /// </summary>
-        /// <typeparam name="T">The type to which to cast the <typeparamref name="T1"/> instance.</typeparam>
+        /// <typeparam name="TObject">The type to which to cast the <typeparamref name="TObject"/> instance.</typeparam>
         /// <param name="param">The cast object.</param>
-        /// <returns><see langword="true"/> if the <typeparamref name="T1"/> instance was successfully cast; otherwise, <see langword="false"/>.</returns>
-        public bool Cast<T>(out T param)
-            where T : class
+        /// <returns><see langword="true"/> if the <typeparamref name="TObject"/> instance was successfully cast; otherwise, <see langword="false"/>.</returns>
+        public bool Cast<TObject>(out TObject param)
+            where TObject : class
         {
             param = default;
 
-            if (this as T1 is not T cast)
+            if (this as TObject is not TObject cast)
                 return false;
 
             param = cast;
             return true;
         }
+
+        /// <inheritdoc cref="Cast{T}"/>
+        public TObject As<TObject>()
+            where TObject : class => Cast<TObject>();
+
+        /// <inheritdoc cref="Cast{T}(out T)"/>
+        public bool Is<TObject>(out TObject param)
+            where TObject : class => Cast(out param);
     }
 }

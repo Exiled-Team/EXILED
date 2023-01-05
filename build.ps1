@@ -5,7 +5,6 @@ param (
 )
 
 $Projects = @(
-    'Exiled.Bootstrap',
     'Exiled.Loader',
     'Exiled.API',
     'Exiled.Permissions',

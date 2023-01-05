@@ -371,3 +371,6 @@ NuGet.config
 
 # DocFX site
 _site/
+
+# JSON Schemas
+JSON/

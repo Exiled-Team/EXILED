@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Toys
 
     using AdminToys;
 
-    using Exiled.API.Enums;
+    using Enums;
 
     using UnityEngine;
 
@@ -140,9 +140,7 @@ namespace Exiled.API.Features.Toys
             UnSpawn();
 
             Vector3 scale = Scale;
-            Base.transform.localScale = Collidable ?
-                new(Math.Abs(scale.x), Math.Abs(scale.y), Math.Abs(scale.z)) :
-                new(-Math.Abs(scale.x), -Math.Abs(scale.y), -Math.Abs(scale.z));
+            Base.transform.localScale = Collidable ? new Vector3(Math.Abs(scale.x), Math.Abs(scale.y), Math.Abs(scale.z)) : new Vector3(-Math.Abs(scale.x), -Math.Abs(scale.y), -Math.Abs(scale.z));
 
             Spawn();
         }

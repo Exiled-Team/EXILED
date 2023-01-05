@@ -30,11 +30,13 @@ namespace Exiled.Permissions
 
             base.OnEnabled();
 
-            Timing.CallDelayed(5f, () =>
-            {
-                Extensions.Permissions.Create();
-                Extensions.Permissions.Reload();
-            });
+            Timing.CallDelayed(
+                5f,
+                () =>
+                {
+                    Extensions.Permissions.Create();
+                    Extensions.Permissions.Reload();
+                });
         }
 
         /// <inheritdoc/>

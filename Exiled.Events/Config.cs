@@ -9,14 +9,16 @@ namespace Exiled.Events
 {
     using System.ComponentModel;
 
-    using Exiled.API.Interfaces;
+    using API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig
     {
         /// <inheritdoc/>
-        [Description("Indicates whether the plugin is enabled or not")]
         public bool IsEnabled { get; set; } = true;
+
+        /// <inheritdoc/>
+        public bool Debug { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether SCP-173 can be blocked or not by the tutorial.

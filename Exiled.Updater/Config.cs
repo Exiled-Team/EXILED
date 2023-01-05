@@ -16,8 +16,10 @@ namespace Exiled.Updater
     public sealed class Config : IConfig
     {
         /// <inheritdoc/>
-        [Description("Indicates whether the plugin is enabled or not")]
         public bool IsEnabled { get; set; } = true;
+
+        /// <inheritdoc/>
+        public bool Debug { get; set; }
 
         [Description("Indicates whether the debug should be shown or not")]
         public bool ShouldDebugBeShown { get; internal set; } = false;

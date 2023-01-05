@@ -7,6 +7,10 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using PlayerRoles;
+
+    using NoneGameRole = PlayerRoles.NoneRole;
+
     /// <summary>
     /// Defines a role that represents players with no role.
     /// </summary>
@@ -15,13 +19,13 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Initializes a new instance of the <see cref="NoneRole"/> class.
         /// </summary>
-        /// <param name="player">The encapsulated player.</param>
-        internal NoneRole(Player player) => Owner = player;
+        /// <param name="baseRole">the base <see cref="NoneGameRole"/>.</param>
+        internal NoneRole(PlayerRoleBase baseRole)
+            : base(baseRole)
+        {
+        }
 
         /// <inheritdoc/>
-        public override Player Owner { get; }
-
-        /// <inheritdoc/>
-        internal override RoleType RoleType { get; } = RoleType.None;
+        public override RoleTypeId Type { get; } = RoleTypeId.None;
     }
 }

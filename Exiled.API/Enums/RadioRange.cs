@@ -7,17 +7,14 @@
 
 namespace Exiled.API.Enums
 {
+    using Features.Items;
+
     /// <summary>
     /// All possible <see cref="Radio"/> ranges.
     /// </summary>
-    /// <seealso cref="Features.Items.Radio.Range"/>
-    public enum RadioRange
+    /// <seealso cref="Radio.Range"/>
+    public enum RadioRange : byte
     {
-        /// <summary>
-        /// The radio is disabled.
-        /// </summary>
-        Disabled = -1,
-
         /// <summary>
         /// The shortest range with the least battery usage.
         /// </summary>

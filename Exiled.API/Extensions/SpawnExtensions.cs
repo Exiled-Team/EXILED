@@ -7,42 +7,42 @@
 
 namespace Exiled.API.Extensions
 {
-    using Exiled.CustomItems.API;
+    using Enums;
 
     using Interactables.Interobjects.DoorUtils;
 
     using UnityEngine;
 
     /// <summary>
-    /// A set of extensions for <see cref="SpawnLocation"/>.
+    /// A set of extensions for <see cref="SpawnLocationType"/>.
     /// </summary>
     public static class SpawnExtensions
     {
         /// <summary>
         /// The names of spawn locations who's positions are on the opposite side of their door, and must be corrected.
         /// </summary>
-        public static readonly SpawnLocation[] ReversedLocations =
+        public static readonly SpawnLocationType[] ReversedLocations =
         {
-            SpawnLocation.InsideServersBottom,
-            SpawnLocation.InsideHczArmory,
-            SpawnLocation.Inside079First,
-            SpawnLocation.InsideHidRight,
-            SpawnLocation.Inside173Gate,
-            SpawnLocation.InsideHidLeft,
-            SpawnLocation.InsideGateA,
-            SpawnLocation.InsideGateB,
-            SpawnLocation.InsideLczWc,
-            SpawnLocation.InsideGr18,
-            SpawnLocation.Inside914,
-            SpawnLocation.InsideHid,
+            SpawnLocationType.InsideServersBottom,
+            SpawnLocationType.InsideHczArmory,
+            SpawnLocationType.Inside079First,
+            SpawnLocationType.InsideHidRight,
+            SpawnLocationType.Inside173Gate,
+            SpawnLocationType.InsideHidLeft,
+            SpawnLocationType.InsideGateA,
+            SpawnLocationType.InsideGateB,
+            SpawnLocationType.InsideLczWc,
+            SpawnLocationType.InsideGr18,
+            SpawnLocationType.Inside914,
+            SpawnLocationType.InsideHid,
         };
 
         /// <summary>
-        /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.
+        /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocationType"/>.
         /// </summary>
-        /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
+        /// <param name="location">The <see cref="SpawnLocationType"/> to check.</param>
         /// <returns>The <see cref="Transform"/> used for that spawn location. Can be <see langword="null"/>.</returns>
-        public static Transform GetDoor(this SpawnLocation location)
+        public static Transform GetDoor(this SpawnLocationType location)
         {
             string doorName = location.GetDoorName();
 
@@ -53,11 +53,11 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Tries to get the <see cref="Vector3"/> used for a specific <see cref="SpawnLocation"/>.
+        /// Tries to get the <see cref="Vector3"/> used for a specific <see cref="SpawnLocationType"/>.
         /// </summary>
-        /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
+        /// <param name="location">The <see cref="SpawnLocationType"/> to check.</param>
         /// <returns>The <see cref="Vector3"/> used for that spawn location. Can be <see cref="Vector3.zero"/>.</returns>
-        public static Vector3 GetPosition(this SpawnLocation location)
+        public static Vector3 GetPosition(this SpawnLocationType location)
         {
             Transform transform = location.GetDoor();
 
@@ -74,38 +74,38 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// The names of the doors attached to each spawn location.
         /// </summary>
-        /// <param name="spawnLocation">The <see cref="SpawnLocation"/>.</param>
+        /// <param name="spawnLocation">The <see cref="SpawnLocationType"/>.</param>
         /// <returns>Returns the door name.</returns>
-        public static string GetDoorName(this SpawnLocation spawnLocation) => spawnLocation switch
+        public static string GetDoorName(this SpawnLocationType spawnLocation) => spawnLocation switch
         {
-            SpawnLocation.Inside012 => "012",
-            SpawnLocation.Inside096 => "096",
-            SpawnLocation.Inside914 => "914",
-            SpawnLocation.InsideHid => "HID",
-            SpawnLocation.InsideGr18 => "GR18",
-            SpawnLocation.InsideGateA => "GATE_A",
-            SpawnLocation.InsideGateB => "GATE_B",
-            SpawnLocation.InsideLczWc => "LCZ_WC",
-            SpawnLocation.InsideHidLeft => "HID_LEFT",
-            SpawnLocation.InsideLczCafe => "LCZ_CAFE",
-            SpawnLocation.Inside173Gate => "173_GATE",
-            SpawnLocation.InsideIntercom => "INTERCOM",
-            SpawnLocation.InsideHidRight => "HID_RIGHT",
-            SpawnLocation.Inside079First => "079_FIRST",
-            SpawnLocation.Inside012Bottom => "012_BOTTOM",
-            SpawnLocation.Inside012Locker => "012_LOCKER",
-            SpawnLocation.Inside049Armory => "049_ARMORY",
-            SpawnLocation.Inside173Armory => "173_ARMORY",
-            SpawnLocation.Inside173Bottom => "173_BOTTOM",
-            SpawnLocation.InsideLczArmory => "LCZ_ARMORY",
-            SpawnLocation.InsideHczArmory => "HCZ_ARMORY",
-            SpawnLocation.InsideNukeArmory => "NUKE_ARMORY",
-            SpawnLocation.InsideSurfaceNuke => "SURFACE_NUKE",
-            SpawnLocation.Inside079Secondary => "079_SECOND",
-            SpawnLocation.Inside173Connector => "173_CONNECTOR",
-            SpawnLocation.InsideServersBottom => "SERVERS_BOTTOM",
-            SpawnLocation.InsideEscapePrimary => "ESCAPE_PRIMARY",
-            SpawnLocation.InsideEscapeSecondary => "ESCAPE_SECONDARY",
+            SpawnLocationType.Inside012 => "012",
+            SpawnLocationType.Inside096 => "096",
+            SpawnLocationType.Inside914 => "914",
+            SpawnLocationType.InsideHid => "HID",
+            SpawnLocationType.InsideGr18 => "GR18",
+            SpawnLocationType.InsideGateA => "GATE_A",
+            SpawnLocationType.InsideGateB => "GATE_B",
+            SpawnLocationType.InsideLczWc => "LCZ_WC",
+            SpawnLocationType.InsideHidLeft => "HID_LEFT",
+            SpawnLocationType.InsideLczCafe => "LCZ_CAFE",
+            SpawnLocationType.Inside173Gate => "173_GATE",
+            SpawnLocationType.InsideIntercom => "INTERCOM",
+            SpawnLocationType.InsideHidRight => "HID_RIGHT",
+            SpawnLocationType.Inside079First => "079_FIRST",
+            SpawnLocationType.Inside012Bottom => "012_BOTTOM",
+            SpawnLocationType.Inside012Locker => "012_LOCKER",
+            SpawnLocationType.Inside049Armory => "049_ARMORY",
+            SpawnLocationType.Inside173Armory => "173_ARMORY",
+            SpawnLocationType.Inside173Bottom => "173_BOTTOM",
+            SpawnLocationType.InsideLczArmory => "LCZ_ARMORY",
+            SpawnLocationType.InsideHczArmory => "HCZ_ARMORY",
+            SpawnLocationType.InsideNukeArmory => "NUKE_ARMORY",
+            SpawnLocationType.InsideSurfaceNuke => "SURFACE_NUKE",
+            SpawnLocationType.Inside079Secondary => "079_SECOND",
+            SpawnLocationType.Inside173Connector => "173_CONNECTOR",
+            SpawnLocationType.InsideServersBottom => "SERVERS_BOTTOM",
+            SpawnLocationType.InsideEscapePrimary => "ESCAPE_PRIMARY",
+            SpawnLocationType.InsideEscapeSecondary => "ESCAPE_SECONDARY",
             _ => default,
         };
     }

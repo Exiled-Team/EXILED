@@ -12,7 +12,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
     using CommandSystem;
 
-    using Exiled.Permissions.Extensions;
+    using Extensions;
 
     using NorthwoodLib.Pools;
 
@@ -24,7 +24,10 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         /// <summary>
         /// Initializes a new instance of the <see cref="Group"/> class.
         /// </summary>
-        public Group() => LoadGeneratedCommands();
+        public Group()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "groups";

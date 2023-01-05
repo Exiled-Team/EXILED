@@ -7,47 +7,47 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Extensions;
-
-    using Exiled.API.Features;
+    using Extensions;
+    using Features;
+    using PlayerRoles;
 
     /// <summary>
-    /// In which side a certain <see cref="RoleType"/> belongs.
+    /// In which side a certain <see cref="RoleTypeId"/> belongs.
     /// </summary>
-    /// <seealso cref="RoleExtensions.GetSide(RoleType)"/>
+    /// <seealso cref="RoleExtensions.GetSide(RoleTypeId)"/>
     /// <seealso cref="RoleExtensions.GetSide(Team)"/>
     /// <seealso cref="Player.Get(Side)"/>
     /// <seealso cref="Round.AliveSides"/>
-    /// <seealso cref="Features.Roles.Role.Side"/>
+    /// <seealso cref="Side"/>
     public enum Side
     {
         /// <summary>
-        /// SCP team. Same as <see cref="Team.SCP"/>.
-        /// Contains all SCP-related roles: <see cref="RoleType.Scp049"/>, <see cref="RoleType.Scp0492"/>, <see cref="RoleType.Scp079"/>, <see cref="RoleType.Scp096"/>,
-        /// <see cref="RoleType.Scp106"/>, <see cref="RoleType.Scp173"/>, <see cref="RoleType.Scp93953"/>, and <see cref="RoleType.Scp93989"/>.
+        /// SCP team. Same as <see cref="Team.SCPs"/>.
+        /// Contains all SCP-related roles: <see cref="RoleTypeId.Scp049"/>, <see cref="RoleTypeId.Scp0492"/>, <see cref="RoleTypeId.Scp079"/>, <see cref="RoleTypeId.Scp096"/>,
+        /// <see cref="RoleTypeId.Scp106"/>, <see cref="RoleTypeId.Scp173"/>, and <see cref="RoleTypeId.Scp939"/>.
         /// </summary>
         Scp,
 
         /// <summary>
         /// Mobile Task Forces team.
-        /// Contains <see cref="RoleType.Scientist"/>, <see cref="RoleType.FacilityGuard"/>, <see cref="RoleType.NtfPrivate"/>, <see cref="RoleType.NtfSergeant"/>,
-        /// <see cref="RoleType.NtfCaptain"/> and <see cref="RoleType.NtfSpecialist"/>.
+        /// Contains <see cref="RoleTypeId.Scientist"/>, <see cref="RoleTypeId.FacilityGuard"/>, <see cref="RoleTypeId.NtfPrivate"/>, <see cref="RoleTypeId.NtfSergeant"/>,
+        /// <see cref="RoleTypeId.NtfCaptain"/> and <see cref="RoleTypeId.NtfSpecialist"/>.
         /// </summary>
         Mtf,
 
         /// <summary>
         /// Chaos Insurgency team.
-        /// Contains <see cref="RoleType.ClassD"/>, <see cref="RoleType.ChaosConscript"/>, <see cref="RoleType.ChaosRepressor"/>, <see cref="RoleType.ChaosRifleman"/> and <see cref="RoleType.ChaosMarauder"/>.
+        /// Contains <see cref="RoleTypeId.ClassD"/>, <see cref="RoleTypeId.ChaosConscript"/>, <see cref="RoleTypeId.ChaosRepressor"/>, <see cref="RoleTypeId.ChaosRifleman"/> and <see cref="RoleTypeId.ChaosMarauder"/>.
         /// </summary>
         ChaosInsurgency,
 
         /// <summary>
-        /// Tutorial team. Contains <see cref="RoleType.Tutorial"/>. Same as <see cref="Team.TUT"/>.
+        /// Tutorial team. Contains <see cref="RoleTypeId.Tutorial"/>. Same as <see cref="Team.OtherAlive"/>.
         /// </summary>
         Tutorial,
 
         /// <summary>
-        /// No team. Same as <see cref="Team.RIP"/>.
+        /// No team. Same as <see cref="Team.Dead"/>.
         /// </summary>
         None,
     }

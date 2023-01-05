@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
+    using API.Features;
 
     using HarmonyLib;
 
@@ -30,13 +30,15 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(codeInstructions);
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldsfld, Field(typeof(Generator), nameof(Generator.GeneratorValues))),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Generator))[0]),
-                new(OpCodes.Callvirt, Method(typeof(List<Generator>), nameof(List<Generator>.Add))),
-            });
+            // new Generator(this)
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(Generator))[0]),
+                    new(OpCodes.Pop),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -7,6 +7,9 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pickups.Projectiles;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     using UnityEngine;
@@ -24,6 +27,10 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
+            Base.Projectile.gameObject.SetActive(false);
+            Projectile = Pickup.Get(Object.Instantiate(Base.Projectile)) as Projectile;
+            Base.Projectile.gameObject.SetActive(true);
+            Projectile.Serial = Serial;
         }
 
         /// <summary>
@@ -40,7 +47,12 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ThrowableItem"/> base for this item.
         /// </summary>
-        public new ThrowableItem Base { get; internal set; }
+        public new ThrowableItem Base { get; }
+
+        /// <summary>
+        /// Gets a <see cref="Pickups.Projectiles.Projectile"/> to change grenade properties.
+        /// </summary>
+        public Projectile Projectile { get; }
 
         /// <summary>
         /// Gets or sets the amount of time it takes to pull the pin.
@@ -52,31 +64,40 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether players can pickup grenade after throw.
+        /// </summary>
+        public bool Repickable
+        {
+            get => Base._repickupable;
+            set => Base._repickupable = value;
+        }
+
+        /// <summary>
         /// Throws the item.
         /// </summary>
-        /// <param name="fullForce">Whether to use full or half force.</param>
+        /// <param name="fullForce">Whether to use full or weak force.</param>
         /// this.ServerThrow(projectileSettings.StartVelocity, projectileSettings.UpwardsFactor, projectileSettings.StartTorque, startVel);
         public void Throw(bool fullForce = true)
         {
             ThrowableItem.ProjectileSettings settings = fullForce ? Base.FullThrowSettings : Base.WeakThrowSettings;
-            Base.ServerThrow(settings.StartVelocity, settings.UpwardsFactor, settings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(Base.Owner?.playerMovementSync.PlayerVelocity ?? Vector3.one));
+
+            Base.ServerThrow(settings.StartVelocity, settings.UpwardsFactor, settings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(Owner?.Velocity ?? Vector3.one));
         }
+
+        /// <summary>
+        /// Clones current <see cref="Throwable"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Throwable"/> object. </returns>
+        public override Item Clone() => new Throwable(Type)
+        {
+            PinPullTime = PinPullTime,
+            Repickable = Repickable,
+        };
 
         /// <summary>
         /// Returns the Throwable in a human readable format.
         /// </summary>
         /// <returns>A string containing Throwable-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
-
-        /// <summary>
-        /// Clones current <see cref="Throwable"/> object.
-        /// </summary>
-        /// <returns> New <see cref="Throwable"/> object. </returns>
-        public override Item Clone()
-        {
-            Throwable cloneableItem = new(Type);
-            cloneableItem.PinPullTime = PinPullTime;
-            return cloneableItem;
-        }
     }
 }

@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Toys
 
     using AdminToys;
 
-    using Exiled.API.Enums;
+    using Enums;
 
     using Mirror;
 

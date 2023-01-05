@@ -10,91 +10,102 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using Handlers;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
+    using Mirror;
 
+    using NorthwoodLib.Pools;
+    using PlayerRoles.Ragdolls;
     using PlayerStatsSystem;
 
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
+    using Map = API.Features.Map;
+
     /// <summary>
-    /// Patches <see cref="Ragdoll.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)"/>.
-    /// Adds the <see cref="Handlers.Player.SpawningRagdoll"/> event.
+    ///     Patches <see cref="RagdollManager.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.
+    ///     Adds the <see cref="Player.SpawningRagdoll" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Ragdoll), nameof(Ragdoll.ServerSpawnRagdoll))]
+    [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.ServerSpawnRagdoll))]
     internal static class SpawningRagdoll
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            Label ret = generator.DefineLabel();
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(SpawningRagdollEventArgs));
+            LocalBuilder newRagdoll = generator.DeclareLocal(typeof(API.Features.Ragdoll));
+
             int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
 
-            LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(SpawningRagdollEventArgs));
-            LocalBuilder mem_0x02 = generator.DeclareLocal(typeof(API.Features.Ragdoll));
-
-            Label ret = generator.DefineLabel();
-
-            newInstructions.RemoveRange(index, 9);
+            newInstructions.RemoveRange(index, 7);
 
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localPosition))),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localRotation))),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RagdollInfo))[0]),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningRagdollEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, mem_0x01.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawningRagdoll))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, ret),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // hub
+                    new CodeInstruction(OpCodes.Ldarg_0),
 
-            offset = -1;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+                    // handler
+                    new(OpCodes.Ldarg_1),
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
-            });
+                    // ragdollRole.transform.localPosition
+                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localPosition))),
 
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
+                    // ragdollRole.transform.localRotation
+                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localRotation))),
 
-            newInstructions.RemoveRange(index, 4);
+                    // new RagdollInfo(ReferenceHub, DamageHandlerBase, Vector3, Quaternion)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RagdollData))[0]),
 
-            newInstructions.InsertRange(newInstructions.Count - 1, new CodeInstruction[]
-            {
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Ragdoll))[2]),
-                new(OpCodes.Stloc_S, mem_0x02.LocalIndex),
-                new(OpCodes.Ldloc_1, mem_0x01.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Ragdoll), nameof(Ragdoll.gameObject))),
-                new(OpCodes.Ldnull),
-                new(OpCodes.Call, Method(typeof(Mirror.NetworkServer), nameof(Mirror.NetworkServer.Spawn), new[] { typeof(GameObject), typeof(Mirror.NetworkConnection) })),
-                new(OpCodes.Ldsfld, Field(typeof(API.Features.Map), nameof(API.Features.Map.RagdollsValue))),
-                new(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
-                new(OpCodes.Callvirt, Method(typeof(List<API.Features.Ragdoll>), nameof(List<API.Features.Ragdoll>.Add))),
-            });
+                    // handler
+                    new(OpCodes.Ldarg_1),
 
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // SpawningRagdollEventArgs ev = new(RagdollInfo, DamageHandlerBase, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningRagdollEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Player.OnSpawningRagdoll(ev)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawningRagdoll))),
+
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, ret),
+                });
+
+            // Search the index in which our logic will be injected
+            offset = 0;
+            index = newInstructions.FindIndex(instruction => instruction.Calls(PropertySetter(typeof(BasicRagdoll), nameof(BasicRagdoll.NetworkInfo)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // ev.Info
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
+                });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
