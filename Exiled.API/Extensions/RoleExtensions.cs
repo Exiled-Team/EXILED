@@ -77,7 +77,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
         /// <returns>The <see cref="PlayerRoleBase"/>.</returns>
-        public static PlayerRoleBase GetRoleBase(this RoleTypeId roleType) => Server.Host.RoleManager.GetRoleBase(roleType);
+        public static PlayerRoleBase GetRoleBase(this RoleTypeId roleType) => PlayerRoleLoader.TryGetRoleTemplate(roleType, out PlayerRoleBase roleBase) ? roleBase : null;
 
         /// <summary>
         /// Gets the <see cref="LeadingTeam"/>.
