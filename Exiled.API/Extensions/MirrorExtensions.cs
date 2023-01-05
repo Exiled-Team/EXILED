@@ -214,15 +214,15 @@ namespace Exiled.API.Extensions
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = StringBuilderPool.Shared.Rent();
+            StringBuilder announcement = StringBuilderPool.Shared.Rent();
 
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
 
             for (int i = 0; i < cassies.Length; i++)
-                annoucement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
+                announcement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
 
-            string message = annoucement.ToString();
+            string message = StringBuilderPool.Shared.ToStringReturn(announcement);
 
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {
@@ -231,8 +231,6 @@ namespace Exiled.API.Extensions
                     SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), message, makeHold, makeNoise, isSubtitles);
                 }
             }
-
-            StringBuilderPool.Shared.Return(annoucement);
         }
 
         /// <summary>
