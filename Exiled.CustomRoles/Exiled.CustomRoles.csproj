@@ -21,7 +21,6 @@
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
-        <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
         <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
     </ItemGroup>
 
@@ -39,6 +38,7 @@
         <Reference Include="UnityEngine.CoreModule" HintPath="$(BETA_EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
         <Reference Include="UnityEngine.PhysicsModule" HintPath="$(BETA_EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
         <Reference Include="System.ComponentModel.DataAnnotations" Private="false" />
+        <Reference Include="YamlDotNet" HintPath="$(BETA_EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">

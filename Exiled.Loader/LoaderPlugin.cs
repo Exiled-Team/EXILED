@@ -64,12 +64,6 @@ namespace Exiled.Loader
                 return;
             }
 
-            if (!File.Exists(Path.Combine(Paths.Dependencies, "YamlDotNet.dll")))
-            {
-                Log.Error($"YamlDotNet.dll was not found at {Path.Combine(Paths.Dependencies, "YamlDotNet.dll")}, Exiled won't be loaded!");
-                return;
-            }
-
             new Loader().Run();
         }
     }

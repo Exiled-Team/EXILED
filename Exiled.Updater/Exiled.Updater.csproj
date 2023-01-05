@@ -16,7 +16,6 @@
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
-        <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
         <PackageReference Include="SemanticVersioning" Version="$(SemanticVersioningVersion)" />
     </ItemGroup>
 
@@ -31,6 +30,7 @@
         <Reference Include="Assembly-CSharp-firstpass" HintPath="$(BETA_EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
         <Reference Include="CommandSystem.Core" HintPath="$(BETA_EXILED_REFERENCES)\CommandSystem.Core.dll" Private="false" />
         <Reference Include="Mono.Posix" HintPath="$(BETA_EXILED_REFERENCES)\Mono.Posix.dll" Private="false" />
+        <Reference Include="YamlDotNet" HintPath="$(BETA_EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
     </ItemGroup>
 
 </Project>
