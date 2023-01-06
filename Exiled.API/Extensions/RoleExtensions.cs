@@ -10,8 +10,11 @@ namespace Exiled.API.Extensions
     using Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Spawn;
+    using InventorySystem;
+    using InventorySystem.Configs;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+    using System;
     using UnityEngine;
 
     using Team = PlayerRoles.Team;
@@ -114,6 +117,19 @@ namespace Exiled.API.Extensions
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the starting items of a <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
+        /// <returns>An <see cref="Array"/> of <see cref="ItemType"/> that the role receives on spawn. Can be empty.</returns>
+        public static ItemType[] GetStartingInventory(this RoleTypeId roleType)
+        {
+            if (StartingInventories.DefinedInventories.TryGetValue(roleType, out InventoryRoleInfo info))
+                return info.Items;
+
+            return Array.Empty<ItemType>();
         }
     }
 }
