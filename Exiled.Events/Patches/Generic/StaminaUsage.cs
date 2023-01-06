@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PlayerRoles.FirstPersonControl;
+
 namespace Exiled.Events.Patches.Generic
 {
     using System.Collections.Generic;
@@ -20,7 +22,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="StaminaStat.ModifyAmount(float)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(StaminaStat), nameof(StaminaStat.ModifyAmount))]
+    [HarmonyPatch(typeof(StaminaStat), nameof(StaminaStat.CurValue))]
     internal class StaminaUsage
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -32,7 +34,6 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(StaminaStat), nameof(StaminaStat.Hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
