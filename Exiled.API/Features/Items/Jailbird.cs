@@ -83,11 +83,15 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the amount of damage remaining.
+        /// Gets or sets the amount of damage remaining before the Jailbird breaks.
         /// </summary>
-        /// <remarks>To extend the amount of damage a Jailbird can deal, <see cref="TotalDamageDealt"/> can be modified.</remarks>
+        /// <remarks>Modifying this value will directly modify <see cref="TotalDamageDealt"/>.</remarks>
         /// <seealso cref="TotalDamageDealt"/>
-        public float RemainingDamage => JailbirdItem.DamageLimit - TotalDamageDealt;
+        public float RemainingDamage
+        {
+            get => JailbirdItem.DamageLimit - TotalDamageDealt;
+            set => TotalDamageDealt = JailbirdItem.DamageLimit - value;
+        }
 
         /// <summary>
         /// Gets or sets the number of times the item has been charged and used.
@@ -99,11 +103,15 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the amount of charges remaining.
+        /// Gets or sets the amount of charges remaining before the Jailbird breaks.
         /// </summary>
-        /// <remarks>To extend the amount of charges a Jailbird has, <see cref="TotalCharges"/> can be modified.</remarks>
+        /// <remarks>Modifying this value will directly modify <see cref="TotalCharges"/>.</remarks>
         /// <seealso cref="TotalCharges"/>
-        public int RemainingCharges => JailbirdItem.ChargesLimit - Base.TotalChargesPerformed;
+        public int RemainingCharges
+        {
+            get => JailbirdItem.ChargesLimit - TotalCharges;
+            set => TotalCharges = JailbirdItem.ChargesLimit - value;
+        }
 
         /// <summary>
         /// Breaks the Jailbird.
