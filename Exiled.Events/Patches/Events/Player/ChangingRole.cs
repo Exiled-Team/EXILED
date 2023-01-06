@@ -183,7 +183,7 @@ namespace Exiled.Events.Patches.Events.Player
             API.Features.Player player = ev.Player;
             List<ItemType> items = ev.Items;
             Dictionary<ItemType, ushort> ammo = ev.Ammo;
-            RoleChangeReason reason = (RoleChangeReason) ev.Reason;
+            RoleChangeReason reason = (RoleChangeReason)ev.Reason;
             RoleTypeId newRole = ev.NewRole;
             try
             {
