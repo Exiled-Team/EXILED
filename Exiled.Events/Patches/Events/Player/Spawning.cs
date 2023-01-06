@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
             return Method(TypeByName("PlayerRoles.FirstPersonControl.Spawnpoints.RoleSpawnpointManager").GetNestedTypes(all)[1], "<Init>b__2_0");
         }
 
-        private static void MethodHelper(ReferenceHub hub, PlayerRoleBase prevRole, PlayerRoleBase newRole)
+        private static bool Prefix(ReferenceHub hub, PlayerRoleBase prevRole, PlayerRoleBase newRole)
         {
             if (NetworkServer.active && Player.TryGet(hub, out Player player))
             {
@@ -64,14 +64,8 @@ namespace Exiled.Events.Patches.Events.Player
                     Handlers.Player.OnSpawning(ev);
                 }
             }
-        }
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            yield return new CodeInstruction(OpCodes.Ldarg_1);
-            yield return new CodeInstruction(OpCodes.Ldarg_2);
-            yield return new CodeInstruction(OpCodes.Ldarg_3);
-            yield return new CodeInstruction(OpCodes.Call, Method(typeof(Spawning), nameof(Spawning.MethodHelper)));
+            return false;
         }
     }
 }
