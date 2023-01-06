@@ -381,7 +381,7 @@ namespace Exiled.API.Features
         public bool IsNoclipPermitted
         {
             get => FpcNoclip.IsPermitted(ReferenceHub);
-            set => _ = value ? FpcNoclip.PermitPlayer(ReferenceHub) : FpcNoclip.UnpermitPlayer(ReferenceHub)
+            set => _ = value ? FpcNoclip.PermitPlayer(ReferenceHub) : FpcNoclip.UnpermitPlayer(ReferenceHub);
         }
 
         /// <summary>
