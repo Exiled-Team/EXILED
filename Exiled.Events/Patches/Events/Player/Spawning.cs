@@ -28,12 +28,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
-#pragma warning disable SA1649
-#pragma warning disable SA1402
-
     /// <summary>
     /// Patches <see cref="RoleSpawnpointManager.Init"/> delegate.
-    /// Adds the <see cref="Handlers.Player.Spawning"/> event for fps roles without 0492.
+    /// Adds the <see cref="Handlers.Player.Spawning"/> event.
     /// </summary>
     [HarmonyPatch]
     internal static class Spawning
