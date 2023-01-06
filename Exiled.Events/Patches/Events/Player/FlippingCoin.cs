@@ -16,20 +16,23 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Coin;
 
     using Mirror;
 
     using NorthwoodLib.Pools;
 
+    using UnityEngine;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches
-    ///     <see cref="CoinNetworkHandler.ServerProcessMessage(NetworkConnection, CoinNetworkHandler.CoinFlipMessage)" />.
+    ///     <see cref="Coin.ServerProcessCmd(NetworkReader)" />.
     ///     Adds the <see cref="Handlers.Player.FlippingCoin" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(CoinNetworkHandler), nameof(CoinNetworkHandler.ServerProcessMessage))]
+    [HarmonyPatch(typeof(Coin), nameof(Coin.ServerProcessCmd))]
     internal static class FlippingCoin
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -41,32 +44,24 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(FlippingCoinEventArgs));
 
             int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
-
-            // Extract the old labels, before removing it
-            List<Label> oldLabels = newInstructions[index].ExtractLabels();
-
-            // Remove both NW events and logic
-            newInstructions.RemoveRange(index, 45);
-
-            // Redirect the old labels to the new starting point
-            newInstructions[index].WithLabels(oldLabels);
+            int index = newInstructions.FindIndex(instruction => instruction.LoadsConstant(109)) + offset;
 
             offset = -1;
-            index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Coin), nameof(Coin.RateLimiter)))) + offset;
+            int replaceIndex = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Random), nameof(Random.value)))) + offset;
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
                     // Player.Get(ReferenceHub)
-                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]).MoveLabelsFrom(newInstructions[replaceIndex]),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
+                    // isTails
+                    new(OpCodes.Ldloc_1),
 
-                    // FlippingCoinEventArgs ev = new(Player, bool, true)
+                    // FlippingCoinEventArgs ev = new(Player, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FlippingCoinEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
@@ -83,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // flag = ev.IsTails
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsTails))),
-                    new(OpCodes.Stloc_3),
+                    new(OpCodes.Stloc_1),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

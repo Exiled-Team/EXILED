@@ -225,8 +225,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReloadingWeaponEventArgs> ReloadingWeapon;
 
         /// <summary>
-        /// Invoked before spawning a <see cref="API.Features.Player"/>(called only when possibly to change position).
-        /// use <see cref="Spawned"/> or <see cref="ChangingRole"/>for all class changes.
+        /// Invoked before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
         public static event CustomEventHandler<SpawningEventArgs> Spawning;
 

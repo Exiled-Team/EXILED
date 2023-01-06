@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         internal Scp2176(Player player = null)
-            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.SCP2176, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.SCP2176, true))
+            : this((ThrowableItem)(player ?? Server.Host).Inventory.CreateItemInstance(new(ItemType.SCP2176, 0), true))
         {
         }
 

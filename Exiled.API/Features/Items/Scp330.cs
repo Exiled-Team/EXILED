@@ -60,7 +60,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Scp330"/> class, as well as a new SCP-330 bag item.
         /// </summary>
         internal Scp330()
-            : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(ItemType.SCP330, false))
+            : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(new(ItemType.SCP330, 0), false))
         {
         }
 

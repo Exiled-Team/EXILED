@@ -129,13 +129,12 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateAttachments()
         {
-            foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+            foreach (FirearmType firearmType in Enum.GetValues(typeof(FirearmType)))
             {
-                FirearmType firearmType = type.GetFirearmType();
-                if (!type.IsWeapon(false))
+                if (firearmType == FirearmType.None)
                     continue;
 
-                if (Item.Create(type) is not Firearm firearm)
+                if (Item.Create(firearmType.GetItemType()) is not Firearm firearm)
                     continue;
 
                 Firearm.ItemTypeToFirearmInstance.Add(firearmType, firearm);
