@@ -8,7 +8,8 @@
 namespace Exiled.API.Extensions
 {
     using System;
-
+    using System.Collections.Generic;
+    using System.Linq;
     using Enums;
 
     using Exiled.API.Features;
@@ -141,6 +142,19 @@ namespace Exiled.API.Extensions
                 return info.Items;
 
             return Array.Empty<ItemType>();
+        }
+
+        /// <summary>
+        /// Gets the starting ammo of a <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
+        /// <returns>An <see cref="Array"/> of <see cref="ItemType"/> that the role receives on spawn. Will be <see langword="null"/> for classes that do not spawn with ammo.</returns>
+        public static Dictionary<AmmoType, ushort> GetStartingAmmo(this RoleTypeId roleType)
+        {
+            if (StartingInventories.DefinedInventories.TryGetValue(roleType, out InventoryRoleInfo info))
+                return info.Ammo.ToDictionary(kvp => kvp.Key.GetAmmoType(), kvp => kvp.Value);
+
+            return null;
         }
     }
 }
