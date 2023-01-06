@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Jailbird;
 
     /// <summary>
@@ -39,21 +38,54 @@ namespace Exiled.API.Features.Items
         public new JailbirdItem Base { get; }
 
         /// <summary>
-        /// Gets or Sets the saving value of the total damage dealt.
+        /// Gets or sets the amount of damage dealt with a Jailbird melee hit.
         /// </summary>
-        public float TotalMelee
+        public float MeleeDamage
+        {
+            get => Base._hitreg._damageMelee;
+            set => Base._hitreg._damageMelee = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of damage dealt with a Jailbird charge hit.
+        /// </summary>
+        public float ChargeDamage
+        {
+            get => Base._hitreg._damageCharge;
+            set => Base._hitreg._damageCharge = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the total amount of damage dealt with the Jailbird.
+        /// </summary>
+        public float TotalDamageDealt
         {
             get => Base._hitreg.TotalMeleeDamageDealt;
             set => Base._hitreg.TotalMeleeDamageDealt = value;
         }
 
         /// <summary>
-        /// Gets or Sets the number of charge remaining in the item.
+        /// Gets or sets the number of times the item has been charged and used.
         /// </summary>
         public int TotalCharges
         {
             get => Base.TotalChargesPerformed;
             set => Base.TotalChargesPerformed = value;
+        }
+
+        /// <summary>
+        /// Gets the amount of charges remaining.
+        /// </summary>
+        /// <seealso cref="TotalCharges"/>
+        public int RemainingCharges => 5 - Base.TotalChargesPerformed; // Hard coded
+
+        /// <summary>
+        /// Breaks the Jailbird.
+        /// </summary>
+        public void Break()
+        {
+            Base._broken = true;
+            Base.SendRpc(JailbirdMessageType.Broken);
         }
 
         /// <summary>
