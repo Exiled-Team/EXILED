@@ -253,6 +253,7 @@ namespace Exiled.API.Features.Items
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new Armor(type),
             ItemType.SCP330 => new Scp330(),
             ItemType.SCP2176 => new Scp2176(owner),
+            ItemType.SCP1576 => new Scp1576(),
             _ => new Item(type),
         };
 
