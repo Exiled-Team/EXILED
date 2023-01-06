@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
@@ -19,6 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.Firearms.Modules;
 
     using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

@@ -12,10 +12,13 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Map;
+
     using Handlers;
 
     using HarmonyLib;
+
     using Interactables.Interobjects.DoorUtils;
+
     using MapGeneration.Distributors;
 
     using NorthwoodLib.Pools;

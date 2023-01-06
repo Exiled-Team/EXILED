@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles.Voice;
 
     using static HarmonyLib.AccessTools;

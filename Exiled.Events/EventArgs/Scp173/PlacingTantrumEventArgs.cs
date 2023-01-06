@@ -9,7 +9,9 @@ namespace Exiled.Events.EventArgs.Scp173
 {
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
+
     using Hazards;
+
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
 

@@ -22,7 +22,9 @@ namespace Exiled.Events.Patches.Generic
     using InventorySystem.Items.ThrowableProjectiles;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
+
     using PlayerStatsSystem;
 
     using static HarmonyLib.AccessTools;

@@ -12,6 +12,7 @@ namespace Exiled.Events.EventArgs.Player
     using API.Features;
     using API.Features.Items;
     using API.Features.Toys;
+
     using Interfaces;
 
     using PlayerStatsSystem;

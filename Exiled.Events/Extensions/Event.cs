@@ -10,6 +10,7 @@ namespace Exiled.Events.Extensions
     using System;
 
     using API.Features;
+
     using EventArgs.Interfaces;
 
     /// <summary>

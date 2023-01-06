@@ -11,13 +11,16 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Scp330;
+
     using Handlers;
 
     using HarmonyLib;
 
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp330;
+
     using Mirror;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
