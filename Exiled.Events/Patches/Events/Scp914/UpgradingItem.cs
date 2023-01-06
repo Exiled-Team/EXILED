@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Dup),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPickupEventArgs), nameof(UpgradingPickupEventArgs.OutputPosition))),
-                    new(OpCodes.Stloc_0),
+                    new(OpCodes.Stloc_1),
 
                     // setting = ev.KnobSetting
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPickupEventArgs), nameof(UpgradingPickupEventArgs.KnobSetting))),
