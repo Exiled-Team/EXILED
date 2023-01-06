@@ -104,7 +104,6 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public SpawnReason Reason { get; set; }
 
-
         /// <summary>
         ///     Gets or sets the spawn flags for their class change.
         /// </summary>
