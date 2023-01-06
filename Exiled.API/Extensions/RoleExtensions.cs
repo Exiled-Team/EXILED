@@ -10,9 +10,8 @@ namespace Exiled.API.Extensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Enums;
 
-    using Exiled.API.Features;
+    using Enums;
     using Exiled.API.Features.Spawn;
     using InventorySystem;
     using InventorySystem.Configs;
