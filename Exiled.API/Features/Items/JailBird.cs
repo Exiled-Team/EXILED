@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="JailBird.cs" company="Exiled Team">
+// <copyright file="Jailbird.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,22 +12,22 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
     /// </summary>
-    public class JailBird : Item
+    public class Jailbird : Item
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="JailBird"/> class.
+        /// Initializes a new instance of the <see cref="Jailbird"/> class.
         /// </summary>
         /// <param name="itemBase">The base <see cref="JailbirdItem"/> class.</param>
-        public JailBird(JailbirdItem itemBase)
+        public Jailbird(JailbirdItem itemBase)
             : base(itemBase)
         {
             Base = itemBase;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="JailBird"/> class, as well as a new Flashlight item.
+        /// Initializes a new instance of the <see cref="Jailbird"/> class, as well as a new Jailbird item.
         /// </summary>
-        internal JailBird()
+        internal Jailbird()
             : this((JailbirdItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.Jailbird, 0), false))
         {
         }
@@ -89,10 +89,10 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Clones current <see cref="JailBird"/> object.
+        /// Clones current <see cref="Jailbird"/> object.
         /// </summary>
-        /// <returns> New <see cref="JailBird"/> object. </returns>
-        public override Item Clone() => new JailBird()
+        /// <returns> New <see cref="Jailbird"/> object. </returns>
+        public override Item Clone() => new Jailbird()
         {
             MeleeDamage = MeleeDamage,
             ChargeDamage = ChargeDamage,

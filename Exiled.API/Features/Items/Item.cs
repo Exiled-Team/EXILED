@@ -194,7 +194,7 @@ namespace Exiled.API.Features.Items
                 BodyArmor armor => new Armor(armor),
                 AmmoItem ammo => new Ammo(ammo),
                 FlashlightItem flashlight => new Flashlight(flashlight),
-                JailbirdItem jailbird => new JailBird(jailbird),
+                JailbirdItem jailbird => new Jailbird(jailbird),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
                     FlashbangGrenade => new FlashGrenade(throwable),
@@ -261,7 +261,7 @@ namespace Exiled.API.Features.Items
             ItemType.SCP330 => new Scp330(),
             ItemType.SCP2176 => new Scp2176(owner),
             ItemType.SCP1576 => new Scp1576(),
-            ItemType.Jailbird => new JailBird(),
+            ItemType.Jailbird => new Jailbird(),
             _ => new Item(type),
         };
 
