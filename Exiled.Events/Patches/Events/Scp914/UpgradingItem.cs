@@ -48,9 +48,6 @@ namespace Exiled.Events.Patches.Events.Scp914
                     // knobSetting
                     new(OpCodes.Ldarg_3),
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
-
                     // UpgradingPickupEventArgs ev = new(pickup, outputPos, knobSetting)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPickupEventArgs))[0]),
 
