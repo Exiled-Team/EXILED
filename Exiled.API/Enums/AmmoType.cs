@@ -10,6 +10,9 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Ammo types present in the game.
     /// </summary>
+    /// <seealso cref="Extensions.ItemExtensions.GetAmmoType(ItemType)"/>
+    /// <seealso cref="Extensions.ItemExtensions.GetItemType(AmmoType)"/>
+    /// <seealso cref="Extensions.ItemExtensions.GetWeaponAmmoType(FirearmType)"/>
     public enum AmmoType
     {
         /// <summary>
