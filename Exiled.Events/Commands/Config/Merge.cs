@@ -14,7 +14,9 @@ namespace Exiled.Events.Commands.Config
     using API.Enums;
     using API.Features;
     using API.Interfaces;
+
     using CommandSystem;
+
     using Loader;
 
     /// <summary>

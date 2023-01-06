@@ -27,7 +27,9 @@ namespace Exiled.CustomRoles.API.Features
     using Mirror;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
+
     using UnityEngine;
 
     using YamlDotNet.Serialization;

@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>

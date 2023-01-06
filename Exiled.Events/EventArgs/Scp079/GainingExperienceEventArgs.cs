@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs.Scp079
 {
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
+
     using PlayerRoles.PlayableScps.Scp079;
 
     /// <summary>

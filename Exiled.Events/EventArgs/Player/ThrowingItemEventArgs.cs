@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs.Player
     using API.Enums;
     using API.Features;
     using API.Features.Items;
+
     using Interfaces;
 
     using InventorySystem.Items.ThrowableProjectiles;

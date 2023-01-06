@@ -14,6 +14,7 @@ namespace Exiled.API.Extensions
     using Enums;
 
     using InventorySystem.Items.Usables.Scp244.Hypothermia;
+
     using PlayerRoles.FirstPersonControl;
 
     /// <summary>

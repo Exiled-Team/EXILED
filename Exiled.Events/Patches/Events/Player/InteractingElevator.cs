@@ -14,9 +14,13 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
     using Interactables.Interobjects;
+
     using Mirror;
+
     using NorthwoodLib.Pools;
+
     using PluginAPI.Enums;
 
     using static HarmonyLib.AccessTools;
