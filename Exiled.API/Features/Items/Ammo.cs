@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the ammo.</param>
         internal Ammo(ItemType type)
-            : this((AmmoItem)Server.Host.Inventory.CreateItemInstance(new(type, ItemSerialGenerator.GenerateNext()), false))
+            : this((AmmoItem)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 

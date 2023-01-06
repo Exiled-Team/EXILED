@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="scp244Type">The type of SCP-244, either <see cref="ItemType.SCP244a"/> or <see cref="ItemType.SCP244b"/>.</param>
         internal Scp244(ItemType scp244Type)
-            : this((Scp244Item)Server.Host.Inventory.CreateItemInstance(new(scp244Type, ItemSerialGenerator.GenerateNext()), false))
+            : this((Scp244Item)Server.Host.Inventory.CreateItemInstance(new(scp244Type, 0), false))
         {
         }
 

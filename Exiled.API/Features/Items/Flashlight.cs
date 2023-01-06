@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Flashlight"/> class, as well as a new Flashlight item.
         /// </summary>
         internal Flashlight()
-            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.Flashlight, ItemSerialGenerator.GenerateNext()), false))
+            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.Flashlight, 0), false))
         {
         }
 

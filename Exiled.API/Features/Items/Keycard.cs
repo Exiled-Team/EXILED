@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the keycard.</param>
         internal Keycard(ItemType type)
-            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(new(type, ItemSerialGenerator.GenerateNext()), false))
+            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 

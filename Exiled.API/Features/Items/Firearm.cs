@@ -58,7 +58,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the firearm.</param>
         internal Firearm(ItemType type)
-            : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(new(type, ItemSerialGenerator.GenerateNext()), false))
+            : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
             FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))

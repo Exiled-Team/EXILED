@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the usable item.</param>
         internal Scp1576(ItemType type)
-            : this((Scp1576Item)Server.Host.Inventory.CreateItemInstance(new(type, ItemSerialGenerator.GenerateNext()), false))
+            : this((Scp1576Item)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 
