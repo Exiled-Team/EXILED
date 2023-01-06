@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="StaminaStat.ModifyAmount(float)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(StaminaStat), nameof(StaminaStat.CurValue))]
+    [HarmonyPatch(typeof(StaminaStat), nameof(StaminaStat.CurValue), MethodType.Setter)]
     internal class StaminaUsage
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
