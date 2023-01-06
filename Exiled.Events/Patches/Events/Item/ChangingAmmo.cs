@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Item;
+
     using Handlers;
 
     using HarmonyLib;

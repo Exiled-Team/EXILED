@@ -9,7 +9,9 @@ namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
     using Exiled.API.Features;
+
     using HarmonyLib;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
 

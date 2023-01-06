@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Map
     using InventorySystem.Items.Firearms.Modules;
 
     using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

@@ -14,12 +14,17 @@ namespace Exiled.Events
 
     using API.Enums;
     using API.Features;
+
     using EventArgs.Interfaces;
+
     using HarmonyLib;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
+
     using PluginAPI.Events;
+
     using UnityEngine.SceneManagement;
 
     /// <summary>

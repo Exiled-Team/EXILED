@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Item
 
     using API.Features;
     using API.Features.Items;
+
     using Exiled.Events.EventArgs.Item;
 
     using HarmonyLib;

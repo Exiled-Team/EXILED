@@ -13,7 +13,9 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
+
     using PlayerRoles;
+
     using Structs;
 
     /// <summary>

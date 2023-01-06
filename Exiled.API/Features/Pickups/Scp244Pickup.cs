@@ -10,7 +10,9 @@ namespace Exiled.API.Features.Pickups
     using System;
 
     using Exiled.API.Features.DamageHandlers;
+
     using InventorySystem.Items.Usables.Scp244;
+
     using UnityEngine;
 
     /// <summary>

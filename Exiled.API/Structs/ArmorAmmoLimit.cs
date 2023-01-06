@@ -8,6 +8,7 @@
 namespace Exiled.API.Structs
 {
     using Enums;
+
     using Extensions;
 
     using InventorySystem.Items.Armor;

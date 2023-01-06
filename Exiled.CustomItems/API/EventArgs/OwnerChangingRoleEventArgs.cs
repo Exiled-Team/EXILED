@@ -12,6 +12,7 @@ namespace Exiled.CustomItems.API.EventArgs
     using Exiled.Events.EventArgs.Player;
 
     using InventorySystem.Items;
+
     using PlayerRoles;
 
     /// <summary>

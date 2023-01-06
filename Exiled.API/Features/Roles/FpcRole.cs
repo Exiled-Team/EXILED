@@ -10,9 +10,10 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.PlayableScps.HumeShield;
+
     using PlayerStatsSystem;
 
     /// <summary>
