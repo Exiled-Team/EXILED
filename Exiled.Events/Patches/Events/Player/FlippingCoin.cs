@@ -14,11 +14,15 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Coin;
 
     using Mirror;
 
     using NorthwoodLib.Pools;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -41,18 +45,22 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.LoadsConstant(109)) + offset;
 
+            offset = -1;
+            int replaseIndex = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Random), nameof(Random.value)))) + offset;
+
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
                     // Player.Get(ReferenceHub)
-                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]).MoveLabelsFrom(newInstructions[replaseIndex]),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // isTails
                     new(OpCodes.Ldloc_1),
 
-                    // FlippingCoinEventArgs ev = new(Player, bool, true)
+                    // FlippingCoinEventArgs ev = new(Player, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FlippingCoinEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
