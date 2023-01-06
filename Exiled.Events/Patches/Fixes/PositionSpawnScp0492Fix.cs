@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Fixes
 
             const int toRemove = 7;
 
-            int offset = -1;
+            const int offset = -1;
             int index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(Component), nameof(Component.transform)))) + offset;
 
             newInstructions[index + toRemove].MoveLabelsFrom(newInstructions[index]);
