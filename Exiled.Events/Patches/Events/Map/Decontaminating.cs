@@ -10,7 +10,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
+    using Handlers;
 
     using HarmonyLib;
 
@@ -21,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="DecontaminationController.FinishDecontamination"/>.
-    /// Adds the <see cref="Decontaminating"/> event.
+    ///     Patches <see cref="DecontaminationController.FinishDecontamination" />.
+    ///     Adds the <see cref="Decontaminating" /> event.
     /// </summary>
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.FinishDecontamination))]
     internal static class Decontaminating
@@ -33,15 +34,25 @@ namespace Exiled.Events.Patches.Events.Map
 
             Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DecontaminatingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnDecontaminating))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DecontaminatingEventArgs), nameof(DecontaminatingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-            });
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // DecontaminatingEventArgs ev = new(bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DecontaminatingEventArgs))[0]),
+                    new(OpCodes.Dup),
+
+                    // Map.OnDecontaminating(ev)
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnDecontaminating))),
+
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DecontaminatingEventArgs), nameof(DecontaminatingEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

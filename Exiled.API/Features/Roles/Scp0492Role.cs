@@ -7,59 +7,128 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using PlayerRoles;
+    using PlayerRoles.PlayableScps.HumeShield;
+    using PlayerRoles.PlayableScps.Scp049;
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.PlayableScps.Scp079;
+    using PlayerRoles.PlayableScps.Subroutines;
+
     /// <summary>
     /// Defines a role that represents SCP-049-2.
     /// </summary>
-    public class Scp0492Role : Role
+    public class Scp0492Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
     {
-        private Scp049_2PlayerScript script;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp0492Role"/> class.
         /// </summary>
-        /// <param name="player">The encapsulated player.</param>
-        internal Scp0492Role(Player player)
+        /// <param name="baseRole">the base <see cref="ZombieRole"/>.</param>
+        internal Scp0492Role(ZombieRole baseRole)
+            : base(baseRole)
         {
-            Owner = player;
-            script = player.ReferenceHub.characterClassManager.Scp0492;
+            SubroutineModule = baseRole.SubroutineModule;
+            HumeShieldModule = baseRole.HumeShieldModule;
+
+            if (!SubroutineModule.TryGetSubroutine(out ZombieAttackAbility zombieAttackAbility))
+                Log.Error("ZombieAttackAbility subroutine not found in Scp0492Role::ctor");
+
+            AttackAbility = zombieAttackAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out ZombieBloodlustAbility zombieBloodlustAbility))
+                Log.Error("ZombieBloodlustAbility subroutine not found in Scp0492Role::ctor");
+
+            BloodlustAbility = zombieBloodlustAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out ZombieConsumeAbility zombieConsumeAbility492))
+                Log.Error("ZombieConsumeAbility subroutine not found in Scp0492Role::ctor");
+
+            ConsumeAbility = zombieConsumeAbility492;
+
+            AttackDamage = AttackAbility.DamageAmount;
         }
 
         /// <inheritdoc/>
-        public override Player Owner { get; }
+        public override RoleTypeId Type { get; } = RoleTypeId.Scp0492;
+
+        /// <inheritdoc/>
+        public SubroutineManagerModule SubroutineModule { get; }
+
+        /// <inheritdoc/>
+        public HumeShieldModuleBase HumeShieldModule { get; }
 
         /// <summary>
-        /// Gets the <see cref="Scp049_2PlayerScript"/> for this role.
+        /// Gets SCP-049-2's <see cref="ZombieAttackAbility"/>.
         /// </summary>
-        public Scp049_2PlayerScript Script => script ??= Owner.ReferenceHub.characterClassManager.Scp0492;
+        public ZombieAttackAbility AttackAbility { get; }
 
         /// <summary>
-        /// Gets or sets the SCP-049-2 attack distance.
+        /// Gets SCP-049-2's <see cref="ZombieBloodlustAbility"/>.
         /// </summary>
-        public float AttackDistance
+        public ZombieBloodlustAbility BloodlustAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-049-2's <see cref="ZombieConsumeAbility"/>.
+        /// </summary>
+        public ZombieConsumeAbility ConsumeAbility { get; }
+
+        /// <summary>
+        /// Gets or sets the amount of times this SCP-049-2 has been resurrected.
+        /// </summary>
+        public int ResurrectNumber
         {
-            get => Script.distance;
-            set => Script.distance = value;
+            get => Scp049ResurrectAbility.GetResurrectionsNumber(Owner.ReferenceHub);
+            set => Scp049ResurrectAbility.ResurrectedPlayers[Owner.ReferenceHub.netId] = value;
         }
 
         /// <summary>
         /// Gets or sets the SCP-049-2 attack damage.
         /// </summary>
-        public float AttackDamage
+        /// <remarks>Setter will work later //TODO.</remarks>
+        public float AttackDamage { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the amount of time to simulate SCP-049-2's Bloodlust ability.
+        /// </summary>
+        public float SimulatedStare
         {
-            get => Script.damage;
-            set => Script.damage = value;
+            get => BloodlustAbility.SimulatedStare;
+            set => BloodlustAbility.SimulatedStare = value;
         }
 
         /// <summary>
-        /// Gets or sets the amount of time in between SCP-049-2 attacks.
+        /// Gets a value indicating whether or not SCP-049-2 is currently pursuing a target (Bloodlust ability).
         /// </summary>
-        public float AttackCooldown
-        {
-            get => Script.attackCooldown;
-            set => Script.attackCooldown = value;
-        }
+        public bool BloodlustActive => BloodlustAbility.LookingAtTarget;
 
-        /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Scp0492;
+        /// <summary>
+        /// Gets a value indicating whether or not SCP-049-2 is consuming a ragdoll.
+        /// </summary>
+        public bool IsConsuming => ConsumeAbility.IsInProgress;
+
+        /// <summary>
+        /// Gets the <see cref="Ragdoll"/> that SCP-049-2 is currently consuming. Will be <see langword="null"/> if <see cref="IsConsuming"/> is <see langword="false"/>.
+        /// </summary>
+        public Ragdoll RagdollConsuming => Ragdoll.Get(ConsumeAbility.CurRagdoll);
+
+        /// <summary>
+        /// Gets the amount of time in between SCP-049-2 attacks.
+        /// </summary>
+        public float AttackCooldown => AttackAbility.BaseCooldown;
+
+        /// <summary>
+        /// Returns a <see langword="bool"/> indicating whether or not SCP-049-2 is close enough to a ragdoll to consume it.
+        /// </summary>
+        /// <remarks>This method only returns whether or not SCP-049-2 is close enough to the body to consume it; the body may have been consumed previously. Make sure to check <see cref="Ragdoll.IsConsumed"/> to ensure the body can be consumed.</remarks>
+        /// <param name="ragdoll">The ragdoll to check.</param>
+        /// <returns><see langword="true"/> if close enough to consume the body; otherwise, <see langword="false"/>.</returns>
+        public bool IsInConsumeRange(BasicRagdoll ragdoll) => ConsumeAbility.IsCloseEnough(Owner.Position, ragdoll.transform.position);
+
+        /// <summary>
+        /// Returns a <see langword="bool"/> indicating whether or not SCP-049-2 is close enough to a ragdoll to consume it.
+        /// </summary>
+        /// <remarks>This method only returns whether or not SCP-049-2 is close enough to the body to consume it; the body may have been consumed previously. Make sure to check <see cref="Ragdoll.IsConsumed"/> to ensure the body can be consumed.</remarks>
+        /// <param name="ragdoll">The ragdoll to check.</param>
+        /// <returns><see langword="true"/> if close enough to consume the body; otherwise, <see langword="false"/>.</returns>
+        public bool IsInConsumeRange(Ragdoll ragdoll) => IsInConsumeRange(ragdoll.Base);
     }
 }

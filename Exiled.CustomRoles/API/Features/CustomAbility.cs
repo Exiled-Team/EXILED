@@ -16,7 +16,6 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Interfaces;
-    using Exiled.Loader;
 
     using YamlDotNet.Serialization;
 
@@ -28,7 +27,10 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomAbility"/> class.
         /// </summary>
-        public CustomAbility() => AbilityType = GetType().Name;
+        public CustomAbility()
+        {
+            AbilityType = GetType().Name;
+        }
 
         /// <summary>
         /// Gets a list of all registered custom abilities.
@@ -98,9 +100,9 @@ namespace Exiled.CustomRoles.API.Features
 
                 CustomAbility customAbility = null;
 
-                if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                if (!skipReflection && Server.PluginAssemblies.ContainsKey(assembly))
                 {
-                    IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+                    IPlugin<IConfig> plugin = Server.PluginAssemblies[assembly];
 
                     foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ??
                                                       plugin.Config.GetType().GetProperties())
@@ -137,15 +139,15 @@ namespace Exiled.CustomRoles.API.Features
             Assembly assembly = Assembly.GetCallingAssembly();
             foreach (Type type in assembly.GetTypes())
             {
-                if ((type.BaseType != typeof(CustomAbility) && !type.IsSubclassOf(typeof(CustomAbility))) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
+                if (((type.BaseType != typeof(CustomAbility)) && !type.IsSubclassOf(typeof(CustomAbility))) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
                     (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
                     continue;
 
                 CustomAbility customAbility = null;
 
-                if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                if (!skipReflection && Server.PluginAssemblies.ContainsKey(assembly))
                 {
-                    IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+                    IPlugin<IConfig> plugin = Server.PluginAssemblies[assembly];
 
                     foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
                     {
@@ -264,7 +266,7 @@ namespace Exiled.CustomRoles.API.Features
                 Registered.Add(this);
                 Init();
 
-                Log.Debug($"{Name} has been successfully registered.", CustomRoles.Instance.Config.Debug);
+                Log.Debug($"{Name} has been successfully registered.");
 
                 return true;
             }

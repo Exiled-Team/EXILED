@@ -9,7 +9,7 @@ namespace Exiled.API.Enums
 {
     using System;
 
-    using Exiled.API.Features;
+    using Features;
 
     /// <summary>
     /// Represents the state of a <see cref="Generator"/>.

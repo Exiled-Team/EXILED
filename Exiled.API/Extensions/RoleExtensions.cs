@@ -7,92 +7,113 @@
 
 namespace Exiled.API.Extensions
 {
-    using System;
-
-    using Exiled.API.Enums;
-
+    using Enums;
+    using Exiled.API.Features;
+    using Exiled.API.Features.Spawn;
+    using PlayerRoles;
+    using PlayerRoles.FirstPersonControl;
     using UnityEngine;
 
+    using Team = PlayerRoles.Team;
+
     /// <summary>
-    /// A set of extensions for <see cref="RoleType"/>.
+    /// A set of extensions for <see cref="RoleTypeId"/>.
     /// </summary>
     public static class RoleExtensions
     {
         /// <summary>
-        /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>.
+        /// Gets a <see cref="RoleTypeId">role's</see> <see cref="Color"/>.
         /// </summary>
-        /// <param name="role">The <see cref="RoleType"/> to get the color of.</param>
+        /// <param name="roleType">The <see cref="RoleTypeId"/> to get the color of.</param>
         /// <returns>The <see cref="Color"/> of the role.</returns>
-        public static Color GetColor(this RoleType role) => role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
+        public static Color GetColor(this RoleTypeId roleType) => roleType == RoleTypeId.None ? Color.white : roleType.GetRoleBase().RoleColor;
 
         /// <summary>
-        /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>.
+        /// Gets a <see cref="RoleTypeId">role's</see> <see cref="Side"/>.
         /// </summary>
-        /// <param name="role">The <see cref="RoleType"/> to check the side of.</param>
+        /// <param name="roleType">The <see cref="RoleTypeId"/> to check the side of.</param>
         /// <returns><see cref="Side"/>.</returns>
-        public static Side GetSide(this RoleType role) => role.GetTeam().GetSide();
+        public static Side GetSide(this RoleTypeId roleType) => GetTeam(roleType).GetSide();
 
         /// <summary>
-        /// Get a <see cref="Team">team's</see> <see cref="Side"/>.
+        /// Gets a <see cref="Team">team's</see> <see cref="Side"/>.
         /// </summary>
         /// <param name="team">The <see cref="Team"/> to get the <see cref="Side"/> of.</param>
         /// <returns><see cref="Side"/>.</returns>.
         public static Side GetSide(this Team team) => team switch
         {
-            Team.SCP => Side.Scp,
-            Team.MTF or Team.RSC => Side.Mtf,
-            Team.CHI or Team.CDP => Side.ChaosInsurgency,
-            Team.TUT => Side.Tutorial,
+            Team.SCPs => Side.Scp,
+            Team.FoundationForces or Team.Scientists => Side.Mtf,
+            Team.ChaosInsurgency or Team.ClassD => Side.ChaosInsurgency,
+            Team.OtherAlive => Side.Tutorial,
             _ => Side.None,
         };
 
         /// <summary>
-        /// Get the <see cref="Team"/> of the given <see cref="RoleType"/>.
+        /// Gets the <see cref="Team"/> of the given <see cref="RoleTypeId"/>.
         /// </summary>
-        /// <param name="roleType">Role.</param>
+        /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
         /// <returns><see cref="Team"/>.</returns>
-        public static Team GetTeam(this RoleType roleType) => roleType switch
+        public static Team GetTeam(this RoleTypeId roleType) => roleType switch
         {
-            RoleType.ChaosConscript or RoleType.ChaosMarauder or RoleType.ChaosRepressor or RoleType.ChaosRifleman => Team.CHI,
-            RoleType.Scientist => Team.RSC,
-            RoleType.ClassD => Team.CDP,
-            RoleType.Scp049 or RoleType.Scp93953 or RoleType.Scp93989 or RoleType.Scp0492 or RoleType.Scp079 or RoleType.Scp096 or RoleType.Scp106 or RoleType.Scp173 => Team.SCP,
-            RoleType.Spectator => Team.RIP,
-            RoleType.FacilityGuard or RoleType.NtfCaptain or RoleType.NtfPrivate or RoleType.NtfSergeant or RoleType.NtfSpecialist => Team.MTF,
-            RoleType.Tutorial => Team.TUT,
-            _ => Team.RIP,
+            RoleTypeId.ChaosConscript or RoleTypeId.ChaosMarauder or RoleTypeId.ChaosRepressor or RoleTypeId.ChaosRifleman => Team.ChaosInsurgency,
+            RoleTypeId.Scientist => Team.Scientists,
+            RoleTypeId.ClassD => Team.ClassD,
+            RoleTypeId.Scp049 or RoleTypeId.Scp939 or RoleTypeId.Scp0492 or RoleTypeId.Scp079 or RoleTypeId.Scp096 or RoleTypeId.Scp106 or RoleTypeId.Scp173 => Team.SCPs,
+            RoleTypeId.FacilityGuard or RoleTypeId.NtfCaptain or RoleTypeId.NtfPrivate or RoleTypeId.NtfSergeant or RoleTypeId.NtfSpecialist => Team.FoundationForces,
+            RoleTypeId.Tutorial => Team.OtherAlive,
+            _ => Team.Dead,
         };
 
         /// <summary>
-        /// Gets the full name of the given <see cref="RoleType"/>.
+        /// Gets the full name of the given <see cref="RoleTypeId"/>.
         /// </summary>
-        /// <param name="roleType">Role.</param>
+        /// <param name="typeId">The <see cref="RoleTypeId"/>.</param>
         /// <returns>The full name.</returns>
-        public static string GetFullName(this RoleType roleType) => CharacterClassManager._staticClasses.SafeGet(roleType).fullName;
+        public static string GetFullName(this RoleTypeId typeId) => typeId.GetRoleBase().RoleName;
 
         /// <summary>
-        /// Get the <see cref="LeadingTeam"/>.
+        /// Gets the base <see cref="PlayerRoleBase"/> of the given <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
+        /// <returns>The <see cref="PlayerRoleBase"/>.</returns>
+        public static PlayerRoleBase GetRoleBase(this RoleTypeId roleType) => Server.Host.RoleManager.GetRoleBase(roleType);
+
+        /// <summary>
+        /// Gets the <see cref="LeadingTeam"/>.
         /// </summary>
         /// <param name="team">Team.</param>
         /// <returns><see cref="LeadingTeam"/>.</returns>
         public static LeadingTeam GetLeadingTeam(this Team team) => team switch
         {
-            Team.CDP or Team.CHI => LeadingTeam.ChaosInsurgency,
-            Team.MTF or Team.RSC => LeadingTeam.FacilityForces,
-            Team.SCP => LeadingTeam.Anomalies,
+            Team.ClassD or Team.ChaosInsurgency => LeadingTeam.ChaosInsurgency,
+            Team.FoundationForces or Team.Scientists => LeadingTeam.FacilityForces,
+            Team.SCPs => LeadingTeam.Anomalies,
             _ => LeadingTeam.Draw,
         };
 
         /// <summary>
-        /// Gets a random spawn point of a <see cref="RoleType"/>.
+        /// Checks whether a <see cref="RoleTypeId"/> is an <see cref="IFpcRole"/> or not.
         /// </summary>
-        /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
-        /// <returns>Returns the spawn point <see cref="Vector3"/> and rotation <see cref="float"/>.</returns>
-        public static Tuple<Vector3, float> GetRandomSpawnProperties(this RoleType roleType)
-        {
-            GameObject randomPosition = SpawnpointManager.GetRandomPosition(roleType);
+        /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
+        /// <returns>Returns whether <paramref name="roleType"/> is an <see cref="IFpcRole"/> or not.</returns>
+        public static bool IsFpcRole(this RoleTypeId roleType) => roleType.GetRoleBase() is IFpcRole;
 
-            return randomPosition is null ? new Tuple<Vector3, float>(Vector3.zero, 0f) : new Tuple<Vector3, float>(randomPosition.transform.position, randomPosition.transform.rotation.eulerAngles.y);
+        /// <summary>
+        /// Gets a random spawn point of a <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="roleType">The <see cref="RoleTypeId"/> to get the spawn point from.</param>
+        /// <returns>Returns a <see cref="SpawnLocation"/> representing the spawn, or <see langword="null"/> if no spawns were found.</returns>
+        public static SpawnLocation GetRandomSpawnLocation(this RoleTypeId roleType)
+        {
+            if (roleType.GetRoleBase() is IFpcRole fpcRole &&
+                fpcRole.SpawnpointHandler != null &&
+                fpcRole.SpawnpointHandler.TryGetSpawnpoint(out Vector3 position, out float horizontalRotation))
+            {
+                return new SpawnLocation(roleType, position, horizontalRotation);
+            }
+
+            return null;
         }
     }
 }

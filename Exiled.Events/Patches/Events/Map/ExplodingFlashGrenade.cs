@@ -9,11 +9,10 @@ namespace Exiled.Events.Patches.Events.Map
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     using Footprinting;
 
@@ -23,9 +22,9 @@ namespace Exiled.Events.Patches.Events.Map
 
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
+
+    using ExiledEvents = Exiled.Events.Events;
 
     /// <summary>
     /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
@@ -38,80 +37,90 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Remove check if player is thrower. Grenade on self should affect themself.
-            int removeSelfCheckOffset = -4;
-            int removeSelfCheck = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(Footprint), nameof(Footprint.Hub)))) + removeSelfCheckOffset;
-            newInstructions.RemoveRange(removeSelfCheck, 7);
-
-            int offset = -3;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer))) + offset;
             Label returnLabel = generator.DefineLabel();
+
             LocalBuilder ev = generator.DeclareLocal(typeof(ExplodingGrenadeEventArgs));
             LocalBuilder list = generator.DeclareLocal(typeof(List<ReferenceHub>));
-            int instructionsToRemove = 4;
 
-            newInstructions.RemoveRange(index, instructionsToRemove);
+            // Remove check if player is thrower. Grenade on self should affect themself.
+            int removeSelfCheckOffset = -3;
+            int removeSelfCheck = newInstructions.FindIndex(
+                instruction => instruction.LoadsField(Field(typeof(Footprint), nameof(Footprint.Hub)))) + removeSelfCheckOffset;
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                // list = ListPool<ReferenceHub>.Shared.Rent();
-                new(OpCodes.Ldsfld, Field(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared))),
-                new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared.Rent))),
-                new(OpCodes.Stloc, list.LocalIndex),
-            });
+            newInstructions.RemoveRange(removeSelfCheck, 6);
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // list.Add(allHub.Value)
-                new(OpCodes.Ldloc, list.LocalIndex),
-                new(OpCodes.Ldloca_S, 2),
-                new(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
-                new(OpCodes.Callvirt, Method(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.Add))),
-            });
+            // Replace the original player processing with the Exiled one
+            int offset = -2;
+            int index = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ProcessPlayer)))) + offset;
 
-            newInstructions.InsertRange(newInstructions.Count - 1, new[]
-            {
-                // Player player = Player.Get(this.PreviousOwner.Hub)
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[newInstructions.Count - 1]),
-                new(OpCodes.Ldfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.RemoveRange(index, 3);
 
-                // this
-                new(OpCodes.Ldarg_0),
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    // list = ListPool<ReferenceHub>.Shared.Rent();
+                    new(OpCodes.Ldsfld, Field(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared))),
+                    new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared.Rent))),
+                    new(OpCodes.Stloc, list.LocalIndex),
+                });
 
-                // List<Player> players = ConvertHubs(list);
-                new(OpCodes.Ldloc, list.LocalIndex),
-                new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ConvertHubs))),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // list.Add(referenceHub)
+                    new(OpCodes.Ldloc, list.LocalIndex),
+                    new(OpCodes.Ldloc_S, 2),
+                    new(OpCodes.Callvirt, Method(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.Add))),
+                });
 
-                // var ev = new ExplodingGrenadeEventArgs(player, this, players);
-                new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(List<Player>) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+            newInstructions.InsertRange(
+                newInstructions.Count - 1,
+                new[]
+                {
+                    // Player player = Player.Get(this.PreviousOwner.Hub)
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[newInstructions.Count - 1]),
+                    new(OpCodes.Ldflda, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
+                    new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // Handlers.Map.OnExplodingGrenade(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
+                    // this
+                    new(OpCodes.Ldarg_0),
 
-                // if (!ev.IsAllowed)
-                //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                    // List<Player> players = ConvertHubs(list);
+                    new(OpCodes.Ldloc, list.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ConvertHubs))),
 
-                // ProcessPlayers(this, ev.TargetsToAffect);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.TargetsToAffect))),
-                new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessPlayers))),
+                    // ExplodingGrenadeEventArgs ev = new(player, this, players);
+                    new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(List<Player>) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
 
-                // ListPool<ReferenceHub>.Shared.Return(list);
-                new(OpCodes.Ldsfld, Field(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared))),
-                new(OpCodes.Ldloc, list.LocalIndex),
-                new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared.Return))),
+                    // Handlers.Map.OnExplodingGrenade(ev);
+                    new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
 
-                // return;
-                new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
-            });
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+
+                    // ProcessPlayers(this, ev.TargetsToAffect);
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.TargetsToAffect))),
+                    new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessPlayers))),
+
+                    // ListPool<ReferenceHub>.Shared.Return(list);
+                    new(OpCodes.Ldsfld, Field(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared))),
+                    new(OpCodes.Ldloc, list.LocalIndex),
+                    new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared.Return))),
+
+                    // return;
+                    new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -125,14 +134,10 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                if(Exiled.Events.Events.Instance.Config.CanFlashbangsAffectThrower && Player.Get(grenade.PreviousOwner.Hub) == player)
-                {
+                if (ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && (Player.Get(grenade.PreviousOwner.Hub) == player))
                     grenade.ProcessPlayer(player.ReferenceHub);
-                }
-                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
-                {
+                else if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Hub, player.ReferenceHub))
                     grenade.ProcessPlayer(player.ReferenceHub);
-                }
             }
         }
     }

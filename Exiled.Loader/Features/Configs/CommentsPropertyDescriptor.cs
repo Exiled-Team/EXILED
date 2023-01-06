@@ -64,10 +64,7 @@ namespace Exiled.Loader.Features.Configs
 
         /// <inheritdoc/>
         public T GetCustomAttribute<T>()
-            where T : Attribute
-        {
-            return baseDescriptor.GetCustomAttribute<T>();
-        }
+            where T : Attribute => baseDescriptor.GetCustomAttribute<T>();
 
         /// <inheritdoc/>
         public IObjectDescriptor Read(object target)

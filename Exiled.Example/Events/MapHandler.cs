@@ -10,7 +10,7 @@ namespace Exiled.Example.Events
     using System.Linq;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Map;
 
     /// <summary>
     /// Handles Map events.
@@ -20,7 +20,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnExplodingGrenade(ExplodingGrenadeEventArgs)"/>
         public void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
-            Log.Info($"A grenade thrown by {ev.Thrower.Nickname} is exploding: {ev.Grenade.name}\n[Targets]\n\n{string.Join("\n", ev.TargetsToAffect.Select(player => $"[{player.Nickname}]"))}");
+            Log.Info($"A grenade thrown by {ev.Player.Nickname} is exploding: {ev.Projectile.Base.name}\n[Targets]\n\n{string.Join("\n", ev.TargetsToAffect.Select(player => $"[{player.Nickname}]"))}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnGeneratorActivated(GeneratorActivatedEventArgs)"/>

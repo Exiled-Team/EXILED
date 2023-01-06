@@ -10,7 +10,7 @@ namespace Exiled.Updater.Models
     using System;
     using System.Reflection;
 
-    using Version = SemVer.Version;
+    using Version = SemanticVersioning.Version;
 
     public readonly struct ExiledLibrary : IComparable, IComparable<ExiledLibrary>
     {

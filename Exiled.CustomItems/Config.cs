@@ -22,6 +22,9 @@ namespace Exiled.CustomItems
         [Description("Indicates whether this plugin is enabled or not.")]
         public bool IsEnabled { get; set; } = true;
 
+        /// <inheritdoc/>
+        public bool Debug { get; set; } = false;
+
         /// <summary>
         /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
         /// </summary>
@@ -33,11 +36,5 @@ namespace Exiled.CustomItems
         /// </summary>
         [Description("The hint that is shown when someone selects a custom item.")]
         public Broadcast SelectedHint { get; private set; } = new("You have selected a {0}\n{1}", 5);
-
-        /// <summary>
-        /// Gets a value indicating whether if debug mode is enabled.
-        /// </summary>
-        [Description("Whether or not debug messages should be displayed in the server console.")]
-        public bool Debug { get; private set; } = false;
     }
 }

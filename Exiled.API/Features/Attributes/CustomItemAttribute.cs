@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Attributes
 {
-#pragma warning disable 1584
     using System;
 
     /// <summary>
@@ -20,7 +19,10 @@ namespace Exiled.API.Features.Attributes
         /// Initializes a new instance of the <see cref="CustomItemAttribute"/> class.
         /// </summary>
         /// <param name="type">The <see cref="global::ItemType"/> to serialize.</param>
-        public CustomItemAttribute(ItemType type) => ItemType = type;
+        public CustomItemAttribute(ItemType type)
+        {
+            ItemType = type;
+        }
 
         /// <summary>
         /// Gets the attribute's <see cref="global::ItemType"/>.

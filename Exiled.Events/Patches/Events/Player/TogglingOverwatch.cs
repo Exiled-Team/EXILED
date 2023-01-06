@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="TogglingOverwatch.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,8 +10,10 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
@@ -26,30 +28,46 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Label bef = generator.DefineLabel();
+            Label isAllowed = generator.DefineLabel();
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingOverwatchEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTogglingOverwatch))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brtrue_S, bef),
-                new CodeInstruction(OpCodes.Pop),
-                new CodeInstruction(OpCodes.Br_S, ret),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.IsEnabled))).WithLabels(bef),
-                new CodeInstruction(OpCodes.Starg_S, 1),
-            });
+            newInstructions.InsertRange(
+                0,
+                new[]
+                {
+                    // Player.Get(ServerRoles._hub)
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles._hub))),
+                    new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+                    // status
+                    new CodeInstruction(OpCodes.Ldarg_1),
 
-            foreach (var instruction in newInstructions)
+                    // TogglingOverwatchEventArgs ev = new(Player, bool)
+                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingOverwatchEventArgs))[0]),
+                    new CodeInstruction(OpCodes.Dup),
+                    new CodeInstruction(OpCodes.Dup),
+
+                    // Handlers.Player.OnTogglingOverwatch(ev)
+                    new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTogglingOverwatch))),
+
+                    // if (!ev.IsAllowed)
+                    //    goto bef;
+                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.IsAllowed))),
+                    new CodeInstruction(OpCodes.Brtrue_S, isAllowed),
+
+                    // pop the event still in the stack and return
+                    new CodeInstruction(OpCodes.Pop),
+                    new CodeInstruction(OpCodes.Br_S, ret),
+
+                    // isAllowed:
+                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TogglingOverwatchEventArgs), nameof(TogglingOverwatchEventArgs.IsEnabled))).WithLabels(isAllowed),
+                    new CodeInstruction(OpCodes.Starg_S, 1),
+                });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(ret);
+
+            foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

@@ -10,24 +10,22 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
     using InventorySystem.Items.Coin;
 
     using Mirror;
 
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CoinNetworkHandler.ServerProcessMessage(NetworkConnection, CoinNetworkHandler.CoinFlipMessage)"/>.
-    /// Adds the <see cref="Handlers.Player.FlippingCoin"/> event.
+    ///     Patches
+    ///     <see cref="CoinNetworkHandler.ServerProcessMessage(NetworkConnection, CoinNetworkHandler.CoinFlipMessage)" />.
+    ///     Adds the <see cref="Handlers.Player.FlippingCoin" /> event.
     /// </summary>
     [HarmonyPatch(typeof(CoinNetworkHandler), nameof(CoinNetworkHandler.ServerProcessMessage))]
     internal static class FlippingCoin
@@ -37,63 +35,57 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             Label returnLabel = generator.DefineLabel();
+
             LocalBuilder ev = generator.DeclareLocal(typeof(FlippingCoinEventArgs));
 
-            const int instructionsToRemove = 12;
-            const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
+            int offset = 0;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
 
-            newInstructions.RemoveRange(index, instructionsToRemove);
+            // Extract the old labels, before removing it
+            List<Label> oldLabels = newInstructions[index].ExtractLabels();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(ReferenceHub)
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            // Remove both NW events and logic
+            newInstructions.RemoveRange(index, 45);
 
-                // IsTails = Random.value >= 5
-                new(OpCodes.Call, PropertyGetter(typeof(Random), nameof(Random.value))),
-                new(OpCodes.Ldc_R4, 0.5f),
-                new(OpCodes.Clt_Un),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ceq),
+            // Redirect the old labels to the new starting point
+            newInstructions[index].WithLabels(oldLabels);
 
-                new(OpCodes.Ldc_I4_1),
+            offset = -1;
+            index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Coin), nameof(Coin.RateLimiter)))) + offset;
 
-                // var ev = FlippingCoinEventArgs(Player, IsTails, true)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FlippingCoinEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(ReferenceHub)
+                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // OnFlippingCoin(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFlippingCoin))),
+                    // true
+                    new(OpCodes.Ldc_I4_1),
 
-                // if (ev.IsAllowed)
-                //   return
-                new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
+                    // FlippingCoinEventArgs ev = new(Player, bool, true)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FlippingCoinEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Item.SerialNumber
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.inventory))),
-                new(OpCodes.Ldflda, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.CurItem))),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Items.ItemIdentifier), nameof(InventorySystem.Items.ItemIdentifier.SerialNumber))),
+                    // OnFlippingCoin(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFlippingCoin))),
 
-                // ev.IsTails
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsTails))),
+                    // if (!ev.IsAllowed)
+                    //   return
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
 
-                // new CoinFlipMessage(SerialNumber, IsTails)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(CoinNetworkHandler.CoinFlipMessage))[0]),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ldc_I4_0),
+                    // flag = ev.IsTails
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsTails))),
+                    new(OpCodes.Stloc_3),
+                });
 
-                // NetworkServer.SendToAll<CoinFlipMessage>(CoinFlipMessage, 0, false)
-                new(OpCodes.Call, Method(typeof(NetworkServer), nameof(NetworkServer.SendToAll), null, new[] { typeof(CoinNetworkHandler.CoinFlipMessage) })),
-            });
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 

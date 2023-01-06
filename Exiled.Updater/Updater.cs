@@ -28,7 +28,6 @@ namespace Exiled.Updater
     using UnityEngine;
 
 #pragma warning disable SA1124 // Do not use regions
-#pragma warning disable SA1300 // Element should begin with upper-case letter
 
     public sealed class Updater : Plugin<Config>
     {
@@ -77,34 +76,12 @@ namespace Exiled.Updater
             // FixInvalidProxyHandling();
             if (_stage == Stage.Free)
             {
-                Timing.RunCoroutine(_CheckUpdate(forced), Segment.EndOfFrame);
+                Timing.RunCoroutine(CheckUpdateInternal(forced), Segment.EndOfFrame);
                 return true;
             }
 
             return false;
         }
-
-        /* "I don't think that will be necessary." -Zabszk
-        private void FixInvalidProxyHandling()
-        {
-            // https://github.com/mono/mono/pull/12595
-            if (PlatformId == PlatformID.Win32NT)
-            {
-                const string keyName = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
-
-                var proxyEnabled = (int)Microsoft.Win32.Registry.GetValue(keyName, "ProxyEnable", 0);
-                var strProxy = (string)Microsoft.Win32.Registry.GetValue(keyName, "ProxyServer", null);
-                if (proxyEnabled > 0 && strProxy is null)
-                {
-                    Log.Info("HttpProxy detected, bypassing...");
-                    Microsoft.Win32.Registry.SetValue(keyName, "ProxyEnable", 0);
-                    Log.Info("Bypassed!");
-
-                    GameCore.Console.HttpMode = HttpQueryMode.HttpClient;
-                    GameCore.Console.LockHttpMode = false;
-                }
-            }
-        }*/
 
         private HttpClient CreateHttpClient()
         {
@@ -113,30 +90,31 @@ namespace Exiled.Updater
                 Timeout = TimeSpan.FromSeconds(480),
             };
 
-            client.DefaultRequestHeaders.Add("User-Agent", $"Exiled.Updater (https://github.com/galaxy119/EXILED, {Assembly.GetName().Version.ToString(3)})");
+            client.DefaultRequestHeaders.Add("User-Agent", $"Exiled.Updater (https://github.com/Exiled-Team/EXILED, {Assembly.GetName().Version.ToString(3)})");
 
             return client;
         }
 
-        private IEnumerator<float> _CheckUpdate(bool forced)
+        private IEnumerator<float> CheckUpdateInternal(bool forced)
         {
             _stage = Stage.Start;
 
-            Thread updateThread = new(() =>
-            {
-                using (HttpClient client = CreateHttpClient())
+            Thread updateThread = new(
+                () =>
                 {
-                    if (FindUpdate(client, forced, out NewVersion newVersion))
+                    using (HttpClient client = CreateHttpClient())
                     {
-                        _stage = Stage.Installing;
-                        Update(client, newVersion);
+                        if (FindUpdate(client, forced, out NewVersion newVersion))
+                        {
+                            _stage = Stage.Installing;
+                            Update(client, newVersion);
+                        }
                     }
-                }
-            })
-            {
-                IsBackground = false,
-                Priority = System.Threading.ThreadPriority.AboveNormal,
-            };
+                })
+                {
+                    IsBackground = false,
+                    Priority = System.Threading.ThreadPriority.AboveNormal,
+                };
 
             updateThread.Start();
 
@@ -178,7 +156,7 @@ namespace Exiled.Updater
                     else
                     {
                         Log.Info($"Found asset - Name: {asset.Name} | Size: {asset.Size} Download: {asset.BrowserDownloadUrl}");
-                        newVersion = new(targetRelease, asset);
+                        newVersion = new NewVersion(targetRelease, asset);
                         return true;
                     }
                 }
@@ -207,7 +185,7 @@ namespace Exiled.Updater
                 if (taggedRelease.Release.PreRelease && !includePRE)
                     continue;
 
-                if ((taggedRelease.Version > smallestVersion.Version) || forced)
+                if (taggedRelease.Version > smallestVersion.Version || forced)
                 {
                     release = taggedRelease.Release;
                     return true;
@@ -270,15 +248,12 @@ namespace Exiled.Updater
 
         private bool OneOfExiledIsPrerelease() => GetExiledLibs().Any(l => l.Version.PreRelease is not null);
 
-        private IEnumerable<ExiledLibrary> GetExiledLibs()
-        {
-            return from a in AppDomain.CurrentDomain.GetAssemblies()
-                   let name = a.GetName().Name
-                   where name.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase)
-                   && !(Config.ExcludeAssemblies?.Contains(name, StringComparison.OrdinalIgnoreCase) ?? false)
-                   && name != Assembly.GetName().Name
-                   select new ExiledLibrary(a);
-        }
+        private IEnumerable<ExiledLibrary> GetExiledLibs() => from a in AppDomain.CurrentDomain.GetAssemblies()
+                                                              let name = a.GetName().Name
+                                                              where name.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase)
+                                                                    && !(Config.ExcludeAssemblies?.Contains(name, StringComparison.OrdinalIgnoreCase) ?? false)
+                                                                    && (name != Assembly.GetName().Name)
+                                                              select new ExiledLibrary(a);
 
         #endregion
 
@@ -294,7 +269,7 @@ namespace Exiled.Updater
                     string serverPath = Environment.CurrentDirectory;
                     string installerPath = Path.Combine(serverPath, newVersion.Asset.Name);
 
-                    if (File.Exists(installerPath) && PlatformId == PlatformID.Unix)
+                    if (File.Exists(installerPath) && (PlatformId == PlatformID.Unix))
                         LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
 
                     using (Stream installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
@@ -317,7 +292,7 @@ namespace Exiled.Updater
                         FileName = installerPath,
                         UseShellExecute = false,
                         CreateNoWindow = true,
-                        Arguments = $"--exit --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\"",
+                        Arguments = $"--exit --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\" --exiled \"{Path.Combine(Paths.Exiled, "..")}\"",
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         StandardErrorEncoding = ProcessEncoding,

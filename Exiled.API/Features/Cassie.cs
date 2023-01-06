@@ -14,14 +14,13 @@ namespace Exiled.API.Features
     using MEC;
 
     using NorthwoodLib.Pools;
-
+    using PlayerRoles;
     using PlayerStatsSystem;
 
     using Respawning;
 
-    using CustomFirearmHandler = Exiled.API.Features.DamageHandlers.FirearmDamageHandler;
-
-    using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
+    using CustomFirearmHandler = DamageHandlers.FirearmDamageHandler;
+    using CustomHandlerBase = DamageHandlers.DamageHandlerBase;
 
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E.
@@ -104,7 +103,7 @@ namespace Exiled.API.Features
             Timing.CallDelayed(delay, () => Announcer.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance));
 
         /// <summary>
-        /// Calculates duration of a C.A.S.S.I.E message.
+        /// Calculates the duration of a C.A.S.S.I.E message.
         /// </summary>
         /// <param name="message">The message, which duration will be calculated.</param>
         /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
@@ -113,7 +112,7 @@ namespace Exiled.API.Features
             => Announcer.CalculateDuration(message, rawNumber);
 
         /// <summary>
-        /// Converts a Team into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
+        /// Converts a <see cref="Team"/> into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
         /// </summary>
         /// <param name="team"><see cref="Team"/>.</param>
         /// <param name="unitName">Unit Name.</param>
@@ -122,7 +121,7 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.ConvertTeam(team, unitName);
 
         /// <summary>
-        /// Converts Number into Cassie-Readable String.
+        /// Converts a number into a Cassie-Readable String.
         /// </summary>
         /// <param name="num">Number to convert.</param>
         /// <returns>A CASSIE-readable <see cref="string"/> representing the number.</returns>
@@ -153,10 +152,12 @@ namespace Exiled.API.Features
                 result += " LOST IN DECONTAMINATION SEQUENCE";
             else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
+
+                // result += "To be changed";
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
 
-            float num = (AlphaWarheadController.Host.timeToDetonation <= 0f) ? 3.5f : 1f;
+            float num = AlphaWarheadController.TimeUntilDetonation <= 0f ? 3.5f : 1f;
             GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
         }
 

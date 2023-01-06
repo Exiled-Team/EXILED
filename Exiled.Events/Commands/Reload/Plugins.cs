@@ -10,9 +10,9 @@ namespace Exiled.Events.Commands.Reload
     using System;
 
     using CommandSystem;
-
-    using Exiled.Loader;
+    using Exiled.Events.Handlers;
     using Exiled.Permissions.Extensions;
+    using Loader;
 
     /// <summary>
     /// The reload plugins command.
@@ -45,6 +45,8 @@ namespace Exiled.Events.Commands.Reload
             sender.Respond("Reloading plugins...");
 
             Loader.ReloadPlugins();
+
+            Server.OnReloadedPlugins();
 
             response = "Plugins have been reloaded successfully!";
             return true;

@@ -7,8 +7,9 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
+    using Extensions;
+    using Features;
+    using PlayerRoles;
 
     /// <summary>
     /// The team that is currently leading the round.

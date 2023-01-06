@@ -10,7 +10,8 @@ namespace Exiled.CustomItems.API.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+    using PlayerRoles;
 
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> escapes.
@@ -23,7 +24,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
         public OwnerEscapingEventArgs(Item item, EscapingEventArgs ev)
-            : this(item, ev.Player)
+            : this(item, ev.Player, ev.NewRole)
         {
         }
 
@@ -32,8 +33,9 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="player"><inheritdoc cref="EscapingEventArgs.Player"/></param>
-        public OwnerEscapingEventArgs(Item item, Player player)
-            : base(player)
+        /// <param name="newRole"><inheritdoc cref="EscapingEventArgs.NewRole"/></param>
+        public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole)
+            : base(player, newRole)
         {
             Item = item;
         }

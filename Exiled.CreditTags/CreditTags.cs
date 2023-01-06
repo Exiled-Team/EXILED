@@ -110,13 +110,13 @@ namespace Exiled.CreditTags
                 }
                 else
                 {
-                    Log.Debug($"{nameof(SuccessHandler)}: Invalid RankKind - response: {result}", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug($"{nameof(SuccessHandler)}: Invalid RankKind - response: {result}");
                 }
             }
 
             void ErrorHandler(ThreadSafeRequest request)
             {
-                Log.Debug($"{nameof(ErrorHandler)}: Response: {request.Result} Code: {request.Code}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"{nameof(ErrorHandler)}: Response: {request.Result} Code: {request.Code}");
 
                 errorHandler?.Invoke();
             }
@@ -127,8 +127,7 @@ namespace Exiled.CreditTags
                                              (((string.IsNullOrEmpty(player.RankName) &&
                                                 string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge)) ||
                                                Config.BadgeOverride) && player.GlobalBadge is null);
-                bool canReceiveCreditCustomInfo =
-                    string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride;
+                bool canReceiveCreditCustomInfo = string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride;
 
                 if (Ranks.TryGetValue(rank, out Rank value))
                 {
@@ -136,27 +135,19 @@ namespace Exiled.CreditTags
                     {
                         case InfoSide.Badge:
                             if (canReceiveCreditBadge)
-                            {
                                 SetCreditBadge(player, value);
-                            }
 
                             break;
                         case InfoSide.CustomPlayerInfo:
                             if (canReceiveCreditCustomInfo)
-                            {
                                 SetCreditCustomInfo(player, value);
-                            }
 
                             break;
                         case InfoSide.FirstAvailable:
                             if (canReceiveCreditBadge)
-                            {
                                 SetCreditBadge(player, value);
-                            }
                             else if (canReceiveCreditCustomInfo)
-                            {
                                 SetCreditCustomInfo(player, value);
-                            }
 
                             break;
                     }
@@ -170,10 +161,7 @@ namespace Exiled.CreditTags
             player.RankColor = value.Color;
         }
 
-        private void SetCreditCustomInfo(Player player, Rank value)
-        {
-            player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
-        }
+        private void SetCreditCustomInfo(Player player, Rank value) => player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
 
         private void RefreshHandler() => handler = new CreditsHandler();
 
