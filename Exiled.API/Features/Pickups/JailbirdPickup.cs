@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using InventorySystem.Items.Jailbird;
+
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
 
     /// <summary>
@@ -48,6 +50,13 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
+        /// Gets the amount of damage remaining.
+        /// </summary>
+        /// <remarks>To extend the amount of damage a Jailbird can deal, <see cref="TotalDamageDealt"/> can be modified.</remarks>
+        /// <seealso cref="TotalDamageDealt"/>
+        public float RemainingDamage => JailbirdItem.DamageLimit - TotalDamageDealt;
+
+        /// <summary>
         /// Gets or sets the number of times the item has been charged and used.
         /// </summary>
         public int TotalCharges
@@ -59,8 +68,9 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the amount of charges remaining.
         /// </summary>
+        /// <remarks>To extend the amount of charges a Jailbird has, <see cref="TotalCharges"/> can be modified.</remarks>
         /// <seealso cref="TotalCharges"/>
-        public int RemainingCharges => 5 - Base.TotalCharges; // Hard coded
+        public int RemainingCharges => JailbirdItem.ChargesLimit - Base.TotalCharges;
 
         /// <summary>
         /// Returns the jailbird in a human readable format.

@@ -56,6 +56,24 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets the amount of time in seconds that the <see cref="CustomPlayerEffects.Flashed"/> effect will be applied on being hit.
+        /// </summary>
+        public float FlashDuration
+        {
+            get => Base._hitreg._flashDuration;
+            set => Base._hitreg._flashDuration = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the radius of the Jailbird's hit register.
+        /// </summary>
+        public float Radius
+        {
+            get => Base._hitreg._hitregRadius;
+            set => Base._hitreg._hitregRadius = value;
+        }
+
+        /// <summary>
         /// Gets or sets the total amount of damage dealt with the Jailbird.
         /// </summary>
         public float TotalDamageDealt
