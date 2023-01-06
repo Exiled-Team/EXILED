@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Extensions
 {
+    using System;
+
     using Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Spawn;
@@ -14,7 +16,6 @@ namespace Exiled.API.Extensions
     using InventorySystem.Configs;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using System;
     using UnityEngine;
 
     using Team = PlayerRoles.Team;
