@@ -61,8 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else
                 {
-                    SpawningEventArgs ev = new(player, oldPosition, prevRole);
-                    Handlers.Player.OnSpawning(ev);
+                    Handlers.Player.OnSpawning(new(player, oldPosition, prevRole));
                 }
             }
 
