@@ -94,7 +94,9 @@ namespace Exiled.API.Features.Items
         /// <returns> New <see cref="JailBird"/> object. </returns>
         public override Item Clone() => new JailBird()
         {
-            TotalMelee = TotalMelee,
+            MeleeDamage = MeleeDamage,
+            ChargeDamage = ChargeDamage,
+            TotalDamageDealt = TotalDamageDealt,
             TotalCharges = TotalCharges,
         };
 
