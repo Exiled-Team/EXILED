@@ -31,17 +31,18 @@ namespace Exiled.Events.EventArgs.Scp914
         /// <param name="knobSetting">
         ///     <inheritdoc cref="KnobSetting" />
         /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
-        /// </param>
-        public UpgradingPickupEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting, bool isAllowed = true)
+        public UpgradingPickupEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting)
         {
             Scp914 = API.Features.Scp914.Scp914Controller;
             Pickup = Pickup.Get(item);
             OutputPosition = newPos;
             KnobSetting = knobSetting;
-            IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        ///     Gets a list of items to be upgraded inside SCP-914.
+        /// </summary>
+        public Pickup Pickup { get; }
 
         /// <summary>
         ///     Gets the <see cref="Scp914Controller" /> instance.
@@ -61,11 +62,6 @@ namespace Exiled.Events.EventArgs.Scp914
         /// <summary>
         ///     Gets or sets a value indicating whether or not the upgrade is successful.
         /// </summary>
-        public bool IsAllowed { get; set; }
-
-        /// <summary>
-        ///     Gets a list of items to be upgraded inside SCP-914.
-        /// </summary>
-        public Pickup Pickup { get; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

@@ -29,8 +29,8 @@ namespace Exiled.Events.Patches.Events.Scp914
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+            const int offset = 1;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPickupEventArgs));
             Label returnLabel = generator.DefineLabel();
@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                     new(OpCodes.Ldarg_0),
 
                     // outputPos
-                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Ldloc_1),
 
                     // knobSetting
                     new(OpCodes.Ldarg_3),
