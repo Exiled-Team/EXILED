@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Items
         public new JailbirdItem Base { get; }
 
         /// <summary>
-        /// 
+        /// Gets or Sets the saving value of the total damage dealt.
         /// </summary>
         public float TotalMelee
         {
@@ -50,7 +50,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// 
+        /// Gets or Sets the number of charge remaining in the item.
         /// </summary>
         public int TotalCharges
         {

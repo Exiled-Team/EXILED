@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Pickups
         public new BaseJailbirdPickup Base { get; }
 
         /// <summary>
-        /// 
+        /// Gets or Sets the saving value of the total damage dealt.
         /// </summary>
         public float TotalMelee
         {
@@ -50,7 +50,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// 
+        /// Gets or Sets the number of charge remaining in the item.
         /// </summary>
         public int TotalCharges
         {
