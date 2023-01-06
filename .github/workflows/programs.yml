@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        proj_name: [Exiled.Installer, Exiled.Patcher]
+        proj_name: [Exiled.Installer]
         include:
         - os: ubuntu-latest
           target: linux-x64

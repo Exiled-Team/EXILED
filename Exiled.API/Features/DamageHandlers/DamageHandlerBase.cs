@@ -111,6 +111,8 @@ namespace Exiled.API.Features.DamageHandlers
                         return DamageType.ParticleDisruptor;
                     case Scp939DamageHandler:
                         return DamageType.Scp939;
+                    case JailbirdDamageHandler:
+                        return DamageType.Jailbird;
                     case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
