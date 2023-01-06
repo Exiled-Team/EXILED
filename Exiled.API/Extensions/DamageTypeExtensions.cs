@@ -10,6 +10,7 @@ namespace Exiled.API.Extensions
     using System.Collections.Generic;
 
     using Enums;
+
     using Features;
 
     using PlayerStatsSystem;

@@ -11,6 +11,7 @@ namespace Exiled.Events.EventArgs.Server
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
+
     using Respawning;
 
     /// <summary>

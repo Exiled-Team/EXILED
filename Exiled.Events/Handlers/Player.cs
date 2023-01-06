@@ -7,17 +7,13 @@
 
 namespace Exiled.Events.Handlers
 {
-    using API.Extensions;
-    using API.Features;
     using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Scp079;
+
     using Extensions;
-    using Interactables.Interobjects.DoorUtils;
-    using InventorySystem.Items.Radio;
-    using MapGeneration.Distributors;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl.Thirdperson;
-    using PlayerStatsSystem;
+
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
     using PluginAPI.Events;

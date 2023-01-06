@@ -11,9 +11,10 @@ namespace Exiled.Events.EventArgs.Scp079
     using Exiled.API.Extensions;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
+
     using MapGeneration;
+
     using PlayerRoles.PlayableScps.Scp079;
 
     /// <summary>

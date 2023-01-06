@@ -7,10 +7,7 @@
 
 namespace Exiled.Events.EventArgs.Map
 {
-    using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Interfaces;
-
-    using LightContainmentZoneDecontamination;
 
     /// <summary>
     ///     Contains all information before C.A.S.S.I.E announces light containment zone decontamination.
