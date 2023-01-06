@@ -234,7 +234,7 @@ namespace Exiled.API.Features.Items
         /// <br />- SCP-330 can be casted to <see cref="Scp330"/>.
         /// <br />- SCP-2176 can be casted to the <see cref="Scp2176"/> class.
         /// <br />- SCP-1576 can be casted to the <see cref="Scp1576"/> class.
-        /// <br />- Jailbird can be casted to the <see cref="JailBird"/> class.
+        /// <br />- Jailbird can be casted to the <see cref="Jailbird"/> class.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Item"/> class.
