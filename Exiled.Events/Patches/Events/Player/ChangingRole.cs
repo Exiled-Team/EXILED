@@ -47,18 +47,15 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
 
-            int offset = -2;
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(PlayerRoleManager), nameof(PlayerRoleManager.GetRoleBase)))) + offset;
-
             newInstructions.InsertRange(
-                index,
+                0,
                 new[]
                 {
                     // player = Player.Get(this._hub)
                     //
                     // if (player == null)
                     //    goto continueLabel;
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.Hub))),
                     new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Dup),
@@ -83,7 +80,10 @@ namespace Exiled.Events.Patches.Events.Player
                     // reason
                     new(OpCodes.Ldarg_2),
 
-                    // ChangingRoleEventArgs ev = new(Player, RoleTypeId, RoleChangeReason)
+                    // spawnFlags
+                    new(OpCodes.Ldarg_3),
+
+                    // ChangingRoleEventArgs ev = new(Player, RoleTypeId, RoleChangeReason, SpawnFlags)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRoleEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
@@ -100,11 +100,16 @@ namespace Exiled.Events.Patches.Events.Player
                     // newRole = ev.NewRole;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
                     new(OpCodes.Starg_S, 1),
 
                     // reason = ev.Reason
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
+                    new(OpCodes.Starg_S, 2),
+
+                    // spawnFlags = ev.SpawnFlags
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.SpawnFlags))),
                     new(OpCodes.Starg_S, 2),
 
                     // UpdatePlayerRole(ev.NewRole, ev.Player)
@@ -149,8 +154,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
 
-            offset = 1;
-            index = newInstructions.FindIndex(
+            int offset = 1;
+            int index = newInstructions.FindIndex(
                 instruction => instruction.Calls(Method(typeof(GameObjectPools.PoolObject), nameof(GameObjectPools.PoolObject.SpawnPoolObject)))) + offset;
 
             newInstructions[index].WithLabels(continueLabel1);
