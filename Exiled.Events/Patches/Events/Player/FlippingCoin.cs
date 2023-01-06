@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new[]
                 {
                     // Player.Get(ReferenceHub)
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]).MoveLabelsFrom(newInstructions[replaseIndex]),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]).MoveLabelsFrom(newInstructions[replaceIndex]),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
