@@ -7,10 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
-    using InventorySystem.Items;
     using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Jailbird;
-    using Utils.Networking;
 
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
@@ -36,7 +34,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the <see cref="FlashlightItem"/> that this class is encapsulating.
+        /// Gets the <see cref="JailbirdItem"/> that this class is encapsulating.
         /// </summary>
         public new JailbirdItem Base { get; }
 
@@ -69,9 +67,9 @@ namespace Exiled.API.Features.Items
         };
 
         /// <summary>
-        /// Returns the Flashlight in a human readable format.
+        /// Returns the JailBird in a human readable format.
         /// </summary>
-        /// <returns>A string containing Flashlight-related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
+        /// <returns>A string containing JailBird-related data.</returns>
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
     }
 }
