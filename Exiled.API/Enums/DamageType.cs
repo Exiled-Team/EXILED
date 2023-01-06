@@ -218,5 +218,10 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.GunCom45"/>.
         /// </summary>
         Com45,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.Jailbird"/>.
+        /// </summary>
+        Jailbird,
     }
 }
