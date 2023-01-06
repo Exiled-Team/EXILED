@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using PlayerRoles.FirstPersonControl;
-
 namespace Exiled.Events.Patches.Generic
 {
     using System.Collections.Generic;
@@ -20,7 +18,7 @@ namespace Exiled.Events.Patches.Generic
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="StaminaStat.ModifyAmount(float)"/>.
+    /// Patches <see cref="StaminaStat.CurValue"/>.
     /// </summary>
     [HarmonyPatch(typeof(StaminaStat), nameof(StaminaStat.CurValue), MethodType.Setter)]
     internal class StaminaUsage
