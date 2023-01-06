@@ -56,6 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
                     SpawningEventArgs ev = new(player, oldPosition, prevRole);
 
                     Handlers.Player.OnSpawning(ev);
+
                     hub.transform.position = ev.Position;
                 }
                 else
