@@ -172,9 +172,7 @@ namespace Exiled.Permissions.Extensions
             }
             else if (sender is PlayerCommandSender)
             {
-                Player player = Player.Get(sender.SenderId);
-
-                if (player is null)
+                if (Player.Get(sender.SenderId) is not Player player)
                     return false;
 
                 return player.CheckPermission(permission);
