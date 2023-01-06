@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Items
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
@@ -19,12 +20,14 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Jailbird;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
+
     using UnityEngine;
 
     using BaseConsumable = InventorySystem.Items.Usables.Consumable;
@@ -282,10 +285,12 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Pickup pickup = Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            pickup.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Scale = Scale;
+            ipb.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.gameObject.transform.localScale = Scale;
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();

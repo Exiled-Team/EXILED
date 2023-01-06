@@ -11,8 +11,11 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Player;
+
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using PlayerRoles.Spectating;
 
     using static HarmonyLib.AccessTools;

@@ -14,6 +14,7 @@ namespace Exiled.API.Interfaces
     using CommandSystem;
 
     using Enums;
+
     using Features;
 
     /// <summary>

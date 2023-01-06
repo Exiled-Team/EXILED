@@ -13,11 +13,10 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Exiled.Events.EventArgs.Scp079;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using PlayerRoles.PlayableScps.Scp079;
-    using PlayerRoles.PlayableScps.Scp079.Pinging;
-    using PlayerRoles.PlayableScps.Subroutines;
-    using RelativePositioning;
 
     using static HarmonyLib.AccessTools;
 
