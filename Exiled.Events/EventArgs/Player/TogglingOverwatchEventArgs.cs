@@ -34,8 +34,6 @@ namespace Exiled.Events.EventArgs.Player
                 case 2:
                     IsEnabled = !player.IsOverwatchEnabled;
                     break;
-                default:
-                    break;
             }
         }
 
