@@ -93,9 +93,7 @@ namespace Exiled.Events.EventArgs.Player
             get => (SpawnFlags & RoleSpawnFlags.AssignInventory) != RoleSpawnFlags.AssignInventory;
             set
             {
-                SpawnFlags = value ?
-                    (SpawnFlags & ~RoleSpawnFlags.AssignInventory) :
-                    (SpawnFlags | RoleSpawnFlags.AssignInventory);
+                SpawnFlags = value ? (SpawnFlags & ~RoleSpawnFlags.AssignInventory) : (SpawnFlags | RoleSpawnFlags.AssignInventory);
             }
         }
 
