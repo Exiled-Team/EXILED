@@ -10,6 +10,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// An enum which represents the categories of an effect.
     /// </summary>
+    /// <seealso cref="Extensions.EffectTypeExtension.GetCategories(EffectType)"/>
     [System.Flags]
     public enum EffectCategory
     {
