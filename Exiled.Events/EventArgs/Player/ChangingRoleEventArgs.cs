@@ -43,10 +43,8 @@ namespace Exiled.Events.EventArgs.Player
         public ChangingRoleEventArgs(Player player, RoleTypeId newRole, RoleChangeReason reason, RoleSpawnFlags spawnFlags)
         {
             Player = player;
-            Log.Info($"What was original reason {reason} and current {Reason}");
             NewRole = newRole;
             Reason = (SpawnReason)reason;
-            Log.Info($"What was original reason {reason} and current {Reason}");
             SpawnFlags = spawnFlags;
         }
 
