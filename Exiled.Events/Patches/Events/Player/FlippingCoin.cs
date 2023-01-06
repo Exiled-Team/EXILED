@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindIndex(instruction => instruction.LoadsConstant(109)) + offset;
 
             offset = -1;
-            int replaseIndex = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Random), nameof(Random.value)))) + offset;
+            int replaceIndex = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Random), nameof(Random.value)))) + offset;
 
             newInstructions.InsertRange(
                 index,
