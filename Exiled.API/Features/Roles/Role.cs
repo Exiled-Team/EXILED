@@ -8,7 +8,6 @@
 namespace Exiled.API.Features.Roles
 {
     using System;
-    using System.Diagnostics;
 
     using Enums;
 
@@ -16,8 +15,10 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Features.Spawn;
 
     using Extensions;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+
     using UnityEngine;
 
     using HumanGameRole = PlayerRoles.HumanRole;

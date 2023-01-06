@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using API.Features.Items;
+
     using EventArgs.Player;
 
     using HarmonyLib;

@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Player;
-    using Footprinting;
+
     using Handlers;
 
     using HarmonyLib;

@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Generic
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles.PlayableScps.Scp079;
 
     using static HarmonyLib.AccessTools;

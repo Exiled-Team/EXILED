@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
     using PlayerRoles.PlayableScps.Subroutines;
+
     using UnityEngine;
 
     using Scp939GameRole = PlayerRoles.PlayableScps.Scp939.Scp939Role;

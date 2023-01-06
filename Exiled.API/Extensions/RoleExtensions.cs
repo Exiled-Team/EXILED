@@ -10,12 +10,14 @@ namespace Exiled.API.Extensions
     using System;
 
     using Enums;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Spawn;
     using InventorySystem;
     using InventorySystem.Configs;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
+
     using UnityEngine;
 
     using Team = PlayerRoles.Team;
@@ -81,7 +83,15 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
         /// <returns>The <see cref="PlayerRoleBase"/>.</returns>
-        public static PlayerRoleBase GetRoleBase(this RoleTypeId roleType) => Server.Host.RoleManager.GetRoleBase(roleType);
+        public static PlayerRoleBase GetRoleBase(this RoleTypeId roleType) => roleType.TryGetRoleBase(out PlayerRoleBase roleBase) ? roleBase : null;
+
+        /// <summary>
+        /// Tries to get the base <see cref="PlayerRoleBase"/> of the given <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
+        /// <param name="roleBase">The <see cref="PlayerRoleBase"/> to return.</param>
+        /// <returns>The <see cref="PlayerRoleBase"/>.</returns>
+        public static bool TryGetRoleBase(this RoleTypeId roleType, out PlayerRoleBase roleBase) => PlayerRoleLoader.TryGetRoleTemplate(roleType, out roleBase);
 
         /// <summary>
         /// Gets the <see cref="LeadingTeam"/>.

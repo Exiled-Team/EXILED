@@ -8,10 +8,13 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
+
     using Interfaces;
 
     using InventorySystem.Items.Firearms.BasicMessages;
+
     using RelativePositioning;
+
     using UnityEngine;
 
     /// <summary>
