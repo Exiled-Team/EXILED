@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using System.Reflection.Emit;
 
     using API.Features;
+
     using Exiled.Events.EventArgs.Scp049;
 
     using HarmonyLib;

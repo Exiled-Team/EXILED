@@ -12,12 +12,15 @@ namespace Exiled.API.Features.Pickups
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
+
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
+
     using Mirror;
+
     using UnityEngine;
 
     using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
@@ -51,10 +54,6 @@ namespace Exiled.API.Features.Pickups
 
             // prevent prefabs like `InventoryItemLoader.AvailableItems[ItemType.GrenadeHE].PickupDropModel` from adding to pickup list
             if (pickupBase.Info.ItemId == ItemType.None)
-                return;
-
-            // prevent exploded grenades to added in dict
-            if (!PhysicsPredictionPickup.AllPickups.Contains(pickupBase))
                 return;
 
             BaseToPickup.Add(pickupBase, this);

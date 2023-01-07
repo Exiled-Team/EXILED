@@ -11,8 +11,11 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Armor;
+
     using PlayerRoles;
+
     using Structs;
 
     /// <summary>
@@ -35,7 +38,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the armor.</param>
         internal Armor(ItemType type)
-            : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 

@@ -14,7 +14,9 @@ namespace Exiled.API.Features
     using MEC;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
+
     using PlayerStatsSystem;
 
     using Respawning;
@@ -153,7 +155,7 @@ namespace Exiled.API.Features
             else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
 
-                // result += "To be changed";
+            // result += "To be changed";
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
 

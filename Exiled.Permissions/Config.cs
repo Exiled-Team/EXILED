@@ -11,6 +11,7 @@ namespace Exiled.Permissions
     using System.IO;
 
     using API.Interfaces;
+
     using Exiled.API.Features;
 
     /// <inheritdoc cref="IConfig"/>

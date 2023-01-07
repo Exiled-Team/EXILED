@@ -11,10 +11,15 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features.DamageHandlers;
+
     using Exiled.Events.EventArgs.Player;
+
     using Handlers;
+
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

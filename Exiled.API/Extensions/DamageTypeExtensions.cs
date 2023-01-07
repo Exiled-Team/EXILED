@@ -10,6 +10,7 @@ namespace Exiled.API.Extensions
     using System.Collections.Generic;
 
     using Enums;
+
     using Features;
 
     using PlayerStatsSystem;
@@ -91,6 +92,7 @@ namespace Exiled.API.Extensions
             { ItemType.GunE11SR, DamageType.E11Sr },
             { ItemType.MicroHID, DamageType.MicroHid },
             { ItemType.ParticleDisruptor, DamageType.ParticleDisruptor },
+            { ItemType.Jailbird, DamageType.Jailbird },
         };
 
         /// <summary>
