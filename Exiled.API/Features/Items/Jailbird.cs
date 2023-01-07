@@ -110,7 +110,7 @@ namespace Exiled.API.Features.Items
         public int RemainingCharges
         {
             get => JailbirdItem.ChargesLimit - TotalCharges;
-            set => TotalCharges = JailbirdItem.ChargesLimit - value;
+            set => TotalCharges = Mathf.Clamp(JailbirdItem.ChargesLimit - value, 0, JailbirdItem.ChargesLimit);
         }
 
         /// <summary>
