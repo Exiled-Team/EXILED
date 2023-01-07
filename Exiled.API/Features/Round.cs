@@ -10,9 +10,11 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
 
-    using Exiled.API.Enums;
+    using Enums;
 
     using GameCore;
+
+    using PlayerRoles;
 
     using RoundRestarting;
 
@@ -47,7 +49,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round is ended or not.
         /// </summary>
-        public static bool IsEnded => RoundSummary.singleton.RoundEnded;
+        public static bool IsEnded => RoundSummary.singleton._roundEnded;
 
         /// <summary>
         /// Gets a value indicating whether the round is lobby or not.
@@ -73,7 +75,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the number of players who have escaped as <see cref="RoleType.ClassD"/>.
+        /// Gets or sets the number of players who have escaped as <see cref="RoleTypeId.ClassD"/>.
         /// </summary>
         public static int EscapedDClasses
         {
@@ -82,7 +84,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the number of players who have escaped as <see cref="RoleType.Scientist"/>.
+        /// Gets or sets the number of players who have escaped as <see cref="RoleTypeId.Scientist"/>.
         /// </summary>
         public static int EscapedScientists
         {
@@ -139,10 +141,10 @@ namespace Exiled.API.Features
             get
             {
                 List<Side> sides = new(4);
-                foreach (Player ply in Player.Get(ply => ply.IsAlive))
+                foreach (Player player in Player.Get(ply => ply.IsAlive))
                 {
-                    if (!sides.Contains(ply.Role.Side))
-                        sides.Add(ply.Role.Side);
+                    if (!sides.Contains(player.Role.Side))
+                        sides.Add(player.Role.Side);
                 }
 
                 return sides;
@@ -198,10 +200,8 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
         public static bool EndRound(bool forceEnd = false)
         {
-            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2 && !forceEnd)
-            {
+            if (RoundSummary.singleton.KeepRoundOnOne && Player.Dictionary.Count < 2 && !forceEnd)
                 return false;
-            }
 
             if ((IsStarted && !IsLocked) || forceEnd)
             {

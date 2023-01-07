@@ -37,14 +37,15 @@ namespace Exiled.CreditTags.Features
         {
             ThreadSafeRequest request = new();
 
-            Task.Run(() =>
-            {
-                request.Result = HttpQuery.Get(url, out bool success, out HttpStatusCode code);
-                request.Success = success;
-                request.Code = code;
+            Task.Run(
+                () =>
+                {
+                    request.Result = HttpQuery.Get(url, out bool success, out HttpStatusCode code);
+                    request.Success = success;
+                    request.Code = code;
 
-                request.done = true;
-            });
+                    request.done = true;
+                });
 
             yield return Timing.WaitUntilTrue(() => request.done);
 

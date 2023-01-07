@@ -11,9 +11,17 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Reflection;
 
+    using CustomPlayerEffects;
+
+    using GameCore;
+
+    using Interfaces;
+
     using MEC;
 
     using Mirror;
+
+    using PlayerRoles.RoleAssign;
 
     using RoundRestarting;
 
@@ -27,6 +35,11 @@ namespace Exiled.API.Features
         private static MethodInfo sendSpawnMessage;
 
         /// <summary>
+        /// Gets a dictionary that pairs assemblies with their associated plugins.
+        /// </summary>
+        public static Dictionary<Assembly, IPlugin<IConfig>> PluginAssemblies { get; } = new();
+
+        /// <summary>
         /// Gets the player's host of the server.
         /// Might be <see langword="null"/> when called when the server isn't loaded.
         /// </summary>
@@ -36,11 +49,6 @@ namespace Exiled.API.Features
         /// Gets the cached <see cref="global::Broadcast"/> component.
         /// </summary>
         public static global::Broadcast Broadcast { get; internal set; }
-
-        /// <summary>
-        /// Gets the cached <see cref="global::BanPlayer"/> component.
-        /// </summary>
-        public static BanPlayer BanPlayer { get; internal set; }
 
         /// <summary>
         /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
@@ -106,6 +114,11 @@ namespace Exiled.API.Features
         public static double Tps => Math.Round(1f / Time.smoothDeltaTime);
 
         /// <summary>
+        /// Gets the actual frametime of the server.
+        /// </summary>
+        public static double Frametime => Math.Round(1f / Time.deltaTime);
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not friendly fire is enabled.
         /// </summary>
         /// <seealso cref="Player.IsFriendlyFireEnabled"/>
@@ -116,6 +129,7 @@ namespace Exiled.API.Features
             {
                 ServerConsole.FriendlyFire = value;
                 ServerConfigSynchronizer.Singleton.RefreshMainBools();
+
                 PlayerStatsSystem.AttackerDamageHandler.RefreshConfigs();
             }
         }
@@ -136,30 +150,22 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not later join is enabled.
+        /// Gets a value indicating whether or not late join is enabled.
         /// </summary>
-        public static bool LaterJoinEnabled
-        {
-            get => CharacterClassManager.LaterJoinEnabled;
-            set => CharacterClassManager.LaterJoinEnabled = value;
-        }
+        public static bool LateJoinEnabled => LateJoinTime > 0;
 
         /// <summary>
-        /// Gets or sets the late join time, in seconds. If a player joins less than this many seconds into a game, they will be given a random class.
+        /// Gets the late join time, in seconds. If a player joins less than this many seconds into a game, they will be given a random class.
         /// </summary>
-        public static float LaterJoinTime
-        {
-            get => CharacterClassManager.LaterJoinTime;
-            set => CharacterClassManager.LaterJoinTime = value;
-        }
+        public static float LateJoinTime => ConfigFile.ServerConfig.GetFloat(RoleAssigner.LateJoinKey, 0f);
 
         /// <summary>
         /// Gets or sets the spawn protection time, in seconds.
         /// </summary>
         public static float SpawnProtectTime
         {
-            get => CharacterClassManager.SProtectedDuration;
-            set => CharacterClassManager.SProtectedDuration = value;
+            get => SpawnProtected.SpawnDuration;
+            set => SpawnProtected.SpawnDuration = value;
         }
 
         /// <summary>
@@ -198,19 +204,13 @@ namespace Exiled.API.Features
         /// Restarts the server, reconnects all players.
         /// </summary>
         /// <seealso cref="RestartRedirect(ushort)"/>
-        public static void Restart()
-        {
-            Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
-        }
+        public static void Restart() => Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
 
         /// <summary>
         /// Shutdowns the server, disconnects all players.
         /// </summary>
         /// <seealso cref="ShutdownRedirect(ushort)"/>
-        public static void Shutdown()
-        {
-            global::Shutdown.Quit();
-        }
+        public static void Shutdown() => global::Shutdown.Quit();
 
         /// <summary>
         /// Redirects players to a server on another port, restarts the current server.
@@ -236,6 +236,7 @@ namespace Exiled.API.Features
         {
             NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true, false));
             Timing.CallDelayed(0.5f, Shutdown);
+
             return true;
         }
 

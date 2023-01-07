@@ -7,76 +7,66 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+    using Mirror;
 
     using NorthwoodLib.Pools;
 
+    using PlayerRoles;
+    using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.FirstPersonControl.Spawnpoints;
+    using PlayerRoles.PlayableScps.Scp049;
+    using PlayerRoles.PlayableScps.Subroutines;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.ApplyProperties(bool, bool)"/>.
-    /// Adds the <see cref="Spawning"/> event.
+    /// Patches <see cref="RoleSpawnpointManager.Init"/> delegate.
+    /// Adds the <see cref="Handlers.Player.Spawning"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.ApplyProperties))]
+    [HarmonyPatch]
     internal static class Spawning
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static MethodInfo TargetMethod()
         {
-            // Player RoleType Vector3 float
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            return Method(TypeByName("PlayerRoles.FirstPersonControl.Spawnpoints.RoleSpawnpointManager").GetNestedTypes(all)[1], "<Init>b__2_0");
+        }
 
-            // Find the index of the ldarg.0 before the only ldfld CharacterClassManager::SpawnProtected
-            const int offset = -1;
-            int index = newInstructions.FindIndex(i =>
-            i.opcode == OpCodes.Call && (MethodInfo)i.operand ==
-            AccessTools.PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.SpawnProtected))) + offset;
-
-            // Remove all existing this._pms.OnPlayerClassChange calls (we will want to call this ourselves after our even fires, to allow their spawn position to change.)
-            foreach (CodeInstruction instruction in newInstructions.FindAll(i =>
-                i.opcode == OpCodes.Call && (MethodInfo)i.operand == AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange))))
-                newInstructions.Remove(instruction);
-
-            LocalBuilder ev = generator.DeclareLocal(typeof(SpawningEventArgs));
-
-            newInstructions.InsertRange(index, new[]
+        private static bool Prefix(ReferenceHub hub, PlayerRoleBase prevRole, PlayerRoleBase newRole)
+        {
+            if (Player.TryGet(hub, out Player player))
             {
-                // Player.Get(this._hub)
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                Vector3 oldPosition = hub.transform.position;
+                if (newRole is IFpcRole fpcRole)
+                {
+                    if (newRole.ServerSpawnFlags.HasFlag(RoleSpawnFlags.UseSpawnpoint) && fpcRole.SpawnpointHandler != null && fpcRole.SpawnpointHandler.TryGetSpawnpoint(out Vector3 position, out float horizontalRot))
+                    {
+                        oldPosition = position;
+                        fpcRole.FpcModule.MouseLook.CurrentHorizontal = horizontalRot;
+                    }
 
-                // this.CurClass
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
+                    SpawningEventArgs ev = new(player, oldPosition, prevRole);
 
-                // var ev = new SpawningEventArgs(Player, RoleType)
-                // Exiled.Events.Handlers.Player.OnSpawning(ev);
-                new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawning))),
+                    Handlers.Player.OnSpawning(ev);
 
-                // this._pms.OnPlayerClassChange(ev.Position, ev.RotationY)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._pms))),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.Position))),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.RotationY))),
-                new(OpCodes.Call, AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange))),
-            });
+                    hub.transform.position = ev.Position;
+                }
+                else
+                {
+                    Handlers.Player.OnSpawning(new(player, oldPosition, prevRole));
+                }
+            }
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            return false;
         }
     }
 }

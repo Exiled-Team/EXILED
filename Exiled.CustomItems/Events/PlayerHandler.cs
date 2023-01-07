@@ -5,12 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems
+namespace Exiled.CustomItems.Events
 {
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
+
+    using PlayerRoles;
 
     /// <summary>
     /// Handles Player events for the CustomItem API.
@@ -20,7 +22,7 @@ namespace Exiled.CustomItems
         /// <inheritdoc cref="ChangingRoleEventArgs"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.NewRole == RoleType.Spectator)
+            if (ev.NewRole == RoleTypeId.Spectator)
             {
                 foreach (Player player in Player.List)
                 {

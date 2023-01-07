@@ -21,7 +21,10 @@ namespace Exiled.Events.Commands.Reload
         /// <summary>
         /// Initializes a new instance of the <see cref="Reload"/> class.
         /// </summary>
-        public Reload() => LoadGeneratedCommands();
+        public Reload()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <inheritdoc/>
         public override string Command { get; } = "reload";
@@ -30,7 +33,7 @@ namespace Exiled.Events.Commands.Reload
         public override string[] Aliases { get; } = new[] { "rld" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Reload plugins, plugin configs, gameplay and remote admin configs.";
+        public override string Description { get; } = "Reload plugins, configs, gameplay configs, remote admin configs, translations, permissions or all of them.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
@@ -41,12 +44,13 @@ namespace Exiled.Events.Commands.Reload
             RegisterCommand(Plugins.Instance);
             RegisterCommand(GamePlay.Instance);
             RegisterCommand(RemoteAdmin.Instance);
+            RegisterCommand(Permissions.Instance);
         }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: all, plugins, gameplay, configs, remoteadmin, translations";
+            response = "Please, specify a valid subcommand! Available ones: all, plugins, gameplay, configs, remoteadmin, translations, permissions";
             return false;
         }
     }

@@ -16,7 +16,7 @@ namespace Exiled.API.Features.Core
     /// <summary>
     /// The component which handles tick related features.
     /// </summary>
-    public class TickComponent : EObject
+    public sealed class TickComponent : EObject
     {
         /// <summary>
         /// The default fixed tick rate.
@@ -30,12 +30,12 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Initializes a new instance of the <see cref="TickComponent"/> class.
         /// </summary>
-        protected TickComponent()
+        internal TickComponent()
             : base()
         {
-            CanEverTick = true;
             executeAllHandle = Timing.RunCoroutine(ExecuteAll());
-            boundHandles = new();
+            boundHandles = new HashSet<CoroutineHandle>();
+            CanEverTick = true;
         }
 
         /// <summary>
@@ -60,12 +60,11 @@ namespace Exiled.API.Features.Core
                 {
                     Timing.ResumeCoroutines(executeAllHandle);
                     Timing.ResumeCoroutines(boundHandles.ToArray());
+                    return;
                 }
-                else
-                {
-                    Timing.PauseCoroutines(executeAllHandle);
-                    Timing.PauseCoroutines(boundHandles.ToArray());
-                }
+
+                Timing.PauseCoroutines(executeAllHandle);
+                Timing.PauseCoroutines(boundHandles.ToArray());
             }
         }
 
@@ -132,7 +131,7 @@ namespace Exiled.API.Features.Core
                     {
                         action();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Log.Error(ex);
                     }

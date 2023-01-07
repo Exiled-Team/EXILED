@@ -5,18 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Server
+namespace Exiled.Events.Patches.Fixes
 {
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
+    using API.Features;
+    using API.Features.DamageHandlers;
+
+    using EventArgs.Player;
 
     using HarmonyLib;
 
@@ -24,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Server
 
     using PlayerStatsSystem;
 
-    using static Exiled.Events.Events;
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
     /// Prefix of KillPlayer action.
@@ -32,9 +28,9 @@ namespace Exiled.Events.Patches.Events.Server
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal class KillPlayer
     {
-        private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler)
+        private static void Prefix(PlayerStats __instance, ref DamageHandlerBase handler) // TODO: Transpiler
         {
-            if(!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
+            if (!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {
                 if (handler is GenericDamageHandler exiledHandler)
                 {
@@ -42,8 +38,9 @@ namespace Exiled.Events.Patches.Events.Server
                 }
                 else
                 {
-                    KillingPlayerEventArgs ev = new KillingPlayerEventArgs(Player.Get(__instance._hub), ref handler);
+                    KillingPlayerEventArgs ev = new(Player.Get(__instance._hub), ref handler);
                     Handlers.Player.OnKillPlayer(ev);
+
                     handler = ev.Handler;
                 }
             }

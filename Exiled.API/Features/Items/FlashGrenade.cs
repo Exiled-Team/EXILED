@@ -7,15 +7,13 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System.Collections.Generic;
-
     using Exiled.API.Enums;
+    using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pickups.Projectiles;
 
-    using Footprinting;
-
+    using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using Mirror;
 
     using UnityEngine;
 
@@ -33,11 +31,7 @@ namespace Exiled.API.Features.Items
         public FlashGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
-            FlashbangGrenade grenade = (FlashbangGrenade)Base.Projectile;
-            BlindCurve = grenade._blindingOverDistance;
-            SurfaceDistanceIntensifier = grenade._surfaceZoneDistanceIntensifier;
-            DeafenCurve = grenade._deafenDurationOverDistance;
-            FuseTime = grenade._fuseTime;
+            Projectile = (FlashbangProjectile)((Throwable)this).Projectile;
         }
 
         /// <summary>
@@ -46,75 +40,102 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         internal FlashGrenade(Player player = null)
-            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.GrenadeFlash, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.GrenadeFlash, true))
+            : this((ThrowableItem)(player ?? Server.Host).Inventory.CreateItemInstance(new(ItemType.GrenadeFlash, 0), true))
         {
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="AnimationCurve"/> for determining how long the <see cref="EffectType.Blinded"/> effect will last.
+        /// Gets a <see cref="FlashbangProjectile"/> to change grenade properties.
         /// </summary>
-        public AnimationCurve BlindCurve { get; set; }
+        public new FlashbangProjectile Projectile { get; }
 
         /// <summary>
-        /// Gets or sets the multiplier for damage against <see cref="Side.Scp"/> players.
+        /// Gets or sets the minimum duration of player can take the effect.
         /// </summary>
-        public float SurfaceDistanceIntensifier { get; set; }
+        public float MinimalDurationEffect
+        {
+            get => Projectile.MinimalDurationEffect;
+            set => Projectile.MinimalDurationEffect = value;
+        }
 
         /// <summary>
-        /// Gets or sets the <see cref="AnimationCurve"/> for determining how long the <see cref="EffectType.Deafened"/> effect will last.
+        /// Gets or sets the additional duration of the <see cref="EffectType.Blinded"/> effect.
         /// </summary>
-        public AnimationCurve DeafenCurve { get; set; }
+        public float AdditionalBlindedEffect
+        {
+            get => Projectile.AdditionalBlindedEffect;
+            set => Projectile.AdditionalBlindedEffect = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the how mush the flash grenade going to be intensified when explode at <see cref="RoomType.Surface"/>.
+        /// </summary>
+        public float SurfaceDistanceIntensifier
+        {
+            get => Projectile.SurfaceDistanceIntensifier;
+            set => Projectile.SurfaceDistanceIntensifier = value;
+        }
 
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
-        public float FuseTime { get; set; }
-
-        /// <summary>
-        /// Gets or sets all the currently known <see cref="EffectGrenade"/>:<see cref="Throwable"/> items.
-        /// </summary>
-        internal static Dictionary<FlashbangGrenade, FlashGrenade> GrenadeToItem { get; set; } = new();
+        public float FuseTime
+        {
+            get => Projectile.FuseTime;
+            set => Projectile.FuseTime = value;
+        }
 
         /// <summary>
         /// Spawns an active grenade on the map at the specified location.
         /// </summary>
         /// <param name="position">The location to spawn the grenade.</param>
         /// <param name="owner">Optional: The <see cref="Player"/> owner of the grenade.</param>
-        public void SpawnActive(Vector3 position, Player owner = null)
+        /// <returns>Spawned <see cref="FlashbangProjectile">grenade</see>.</returns>
+        public FlashbangProjectile SpawnActive(Vector3 position, Player owner = null)
         {
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
-            FlashbangGrenade grenade = (FlashbangGrenade)Object.Instantiate(Base.Projectile, position, Quaternion.identity);
-            grenade.PreviousOwner = new Footprint(owner is not null ? owner.ReferenceHub : Server.Host.ReferenceHub);
-            grenade._blindingOverDistance = BlindCurve;
-            grenade._surfaceZoneDistanceIntensifier = SurfaceDistanceIntensifier;
-            grenade._deafenDurationOverDistance = DeafenCurve;
-            grenade._fuseTime = FuseTime;
-            NetworkServer.Spawn(grenade.gameObject);
-            grenade.ServerActivate();
+            ItemPickupBase ipb = Object.Instantiate(Projectile.Base, position, Quaternion.identity);
+
+            ipb.Info = new PickupSyncInfo(Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
+
+            FlashbangProjectile grenade = (FlashbangProjectile)Pickup.Get(ipb);
+
+            grenade.Base.gameObject.SetActive(true);
+
+            grenade.MinimalDurationEffect = MinimalDurationEffect;
+            grenade.AdditionalBlindedEffect = AdditionalBlindedEffect;
+            grenade.SurfaceDistanceIntensifier = SurfaceDistanceIntensifier;
+            grenade.FuseTime = FuseTime;
+
+            grenade.PreviousOwner = owner ?? Server.Host;
+
+            grenade.Spawn();
+
+            grenade.Base.ServerActivate();
+
+            return grenade;
         }
+
+        /// <summary>
+        /// Clones current <see cref="FlashGrenade"/> object.
+        /// </summary>
+        /// <returns> New <see cref="FlashGrenade"/> object. </returns>
+        public override Item Clone() => new FlashGrenade()
+        {
+            MinimalDurationEffect = MinimalDurationEffect,
+            AdditionalBlindedEffect = AdditionalBlindedEffect,
+            SurfaceDistanceIntensifier = SurfaceDistanceIntensifier,
+            FuseTime = FuseTime,
+            Repickable = Repickable,
+            PinPullTime = PinPullTime,
+        };
 
         /// <summary>
         /// Returns the FlashGrenade in a human readable format.
         /// </summary>
         /// <returns>A string containing FlashGrenade-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
-
-        /// <summary>
-        /// Clones current <see cref="FlashGrenade"/> object.
-        /// </summary>
-        /// <returns> New <see cref="FlashGrenade"/> object. </returns>
-        public override Item Clone()
-        {
-            FlashGrenade cloneableItem = new();
-
-            cloneableItem.BlindCurve = BlindCurve;
-            cloneableItem.SurfaceDistanceIntensifier = SurfaceDistanceIntensifier;
-            cloneableItem.DeafenCurve = DeafenCurve;
-            cloneableItem.FuseTime = FuseTime;
-
-            return cloneableItem;
-        }
     }
 }

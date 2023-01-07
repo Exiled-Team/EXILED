@@ -11,8 +11,9 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
+    using Enums;
+
+    using Extensions;
 
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
@@ -22,6 +23,8 @@ namespace Exiled.API.Features
     using Mirror;
 
     using UnityEngine;
+
+    using static Interactables.Interobjects.ElevatorManager;
 
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
@@ -37,23 +40,12 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
-        [Obsolete("Use new Door(DoorVariant, Room) instead.", true)]
-        public Door(DoorVariant door)
-        {
-            DoorVariantToDoor.Add(door, this);
-            Base = door;
-            Room = door.GetComponentInParent<Room>();
-            Type = GetDoorType();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Door"/> class.
-        /// </summary>
-        /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         /// <param name="room">The <see cref="Room"/> for this door.</param>
         public Door(DoorVariant door, Room room)
         {
-            DoorVariantToDoor.Add(door, this);
+            if (room != null)
+                DoorVariantToDoor.Add(door, this);
+
             Base = door;
             Room = room;
             Type = GetDoorType();
@@ -62,7 +54,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IEnumerable<Door> List => DoorVariantToDoor.Values.ToList().AsReadOnly();
+        public static IEnumerable<Door> List => DoorVariantToDoor.Values;
 
         /// <summary>
         /// Gets the base-game <see cref="DoorVariant"/> for this door.
@@ -77,7 +69,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the door's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => GameObject.transform;
+        public Transform Transform => Base.transform;
 
         /// <summary>
         /// Gets the <see cref="DoorType"/> of the door.
@@ -122,13 +114,14 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not this door is a gate.
         /// </summary>
         public bool IsGate => Type is DoorType.GateA or DoorType.GateB or DoorType.GR18Gate or
-            DoorType.Scp049Gate or DoorType.Scp173Gate or DoorType.Scp914Gate or DoorType.SurfaceGate;
+                DoorType.Scp049Gate or DoorType.Scp173Gate or DoorType.Scp914Gate or
+                DoorType.SurfaceGate or DoorType.UnknownGate or DoorType.CheckpointGate;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is a checkpoint door.
         /// </summary>
-        public bool IsCheckpoint => Type is DoorType.CheckpointEntrance or DoorType.CheckpointLczA or
-            DoorType.CheckpointLczB;
+        public bool IsCheckpoint => Type is DoorType.CheckpointEzHczA or DoorType.CheckpointEzHczB or DoorType.CheckpointLczA or
+                DoorType.CheckpointLczB;
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
@@ -150,13 +143,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-106 can walk through the door.
+        /// Gets a value indicating whether or not SCP-106 can walk through the door.
         /// </summary>
-        public bool AllowsScp106
-        {
-            get => Base.UsedBy106;
-            set => Base.UsedBy106 = value;
-        }
+        public bool AllowsScp106 => Base is IScp106PassableDoor door && door.IsScp106Passable;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is locked.
@@ -186,7 +175,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a nametag of a door.
         /// </summary>
-        public string Nametag => Base.TryGetComponent(out DoorNametagExtension name) ? name.GetName : null;
+        public DoorNametagExtension Nametag => Base.GetComponent<DoorNametagExtension>();
+
+        /// <summary>
+        /// Gets the name of this door.
+        /// </summary>
+        public string Name => Nametag == null ? GameObject.name.GetBefore(' ') : Nametag.GetName.RemoveBracketsOnEndOfName();
 
         /// <summary>
         /// Gets or sets the required permissions to open the door.
@@ -215,11 +209,11 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => Base is BreakableDoor breakable ? breakable._remainingHealth : float.NaN;
+            get => Base is BreakableDoor breakable ? breakable.RemainingHealth : float.NaN;
             set
             {
                 if (Base is BreakableDoor breakable)
-                    breakable._remainingHealth = value;
+                    breakable.RemainingHealth = value;
             }
         }
 
@@ -274,9 +268,9 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
-        public static Door Get(DoorVariant doorVariant) => DoorVariantToDoor.ContainsKey(doorVariant)
-            ? DoorVariantToDoor[doorVariant]
-            : new Door(doorVariant, doorVariant.GetComponentInParent<Room>());
+        public static Door Get(DoorVariant doorVariant) => doorVariant != null ? (DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
+            ? door
+            : new Door(doorVariant, doorVariant.GetComponentInParent<Room>())) : null;
 
         /// <summary>
         /// Gets a <see cref="Door"/> given the specified name.
@@ -304,6 +298,20 @@ namespace Exiled.API.Features
         public static Door Get(DoorType doorType) => List.FirstOrDefault(x => x.Type == doorType);
 
         /// <summary>
+        /// Returns the closest <see cref="Door"/> to the given <paramref name="position"/>.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3">position</see> to find the closest door to.</param>
+        /// <param name="distance">The distance between the door and the point.</param>
+        /// <returns>The door closest to the provided position.</returns>
+        public static Door GetClosest(Vector3 position, out float distance)
+        {
+            Door doorToReturn = List.OrderBy(door => Vector3.Distance(position, door.Position)).FirstOrDefault();
+
+            distance = Vector3.Distance(position, doorToReturn.Position);
+            return doorToReturn;
+        }
+
+        /// <summary>
         /// Gets a random <see cref="Door"/>.
         /// </summary>
         /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
@@ -323,7 +331,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
         public static void LockAll(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && door.Zone == zoneType))
+            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && (door.Zone == zoneType)))
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
@@ -350,7 +358,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
         public static void LockAll(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Door.List)
+            foreach (Door door in List)
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
@@ -388,13 +396,6 @@ namespace Exiled.API.Features
             foreach (Door door in Get(predicate))
                 door.Unlock();
         }
-
-        /// <summary>
-        /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
-        /// </summary>
-        /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
-        [Obsolete("BreakDoor() will be obsolete in future versions, please use BreakDoor(DoorDamageType)", false)]
-        public bool BreakDoor() => BreakDoor(DoorDamageType.ServerCommand);
 
         /// <summary>
         /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
@@ -468,13 +469,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks all active locks on the door.
-        /// </summary>
-        /// <param name="flagsToLock">The <see cref="Enums.DoorLockType"/> of the lockdown.</param>
-        [Obsolete("has been deprecated, use ChangeLock(DoorLockType) instead", true)]
-        public void Lock(DoorLockType flagsToLock) => ChangeLock(flagsToLock);
-
-        /// <summary>
         /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
         /// </summary>
         /// <param name="time">The amount of time that must pass before unlocking the door.</param>
@@ -526,17 +520,39 @@ namespace Exiled.API.Features
                     "EZ" => DoorType.EntranceDoor,
                     "Prison" => DoorType.PrisonDoor,
                     "914" => DoorType.Scp914Door,
-                    "Unsecured" => DoorType.Scp049Gate,
+                    "Intercom" => Room?.Type switch
+                    {
+                        RoomType.HczEzCheckpointA => DoorType.CheckpointArmoryA,
+                        RoomType.HczEzCheckpointB => DoorType.CheckpointArmoryB,
+                        _ => DoorType.UnknownDoor,
+                    },
+                    "Unsecured" => Room?.Type switch
+                    {
+                        RoomType.EzCheckpointHallway => DoorType.CheckpointGate,
+                        RoomType.Hcz049 => DoorType.Scp049Gate,
+                        _ => DoorType.UnknownGate,
+                    },
+                    "Elevator" => (Base as ElevatorDoor)?.Group switch
+                    {
+                        ElevatorGroup.Nuke => DoorType.ElevatorNuke,
+                        ElevatorGroup.Scp049 => DoorType.ElevatorScp049,
+                        ElevatorGroup.GateB => DoorType.ElevatorGateB,
+                        ElevatorGroup.GateA => DoorType.ElevatorGateA,
+                        ElevatorGroup.LczA01 or ElevatorGroup.LczA02 => DoorType.ElevatorLczA,
+                        ElevatorGroup.LczB01 or ElevatorGroup.LczB02 => DoorType.ElevatorLczB,
+                        _ => DoorType.UnknownElevator,
+                    },
                     _ => DoorType.UnknownDoor,
                 };
             }
 
-            return Nametag.RemoveBracketsOnEndOfName() switch
+            return Name.RemoveBracketsOnEndOfName() switch
             {
                 // Doors contains the DoorNameTagExtension component
                 "CHECKPOINT_LCZ_A" => DoorType.CheckpointLczA,
-                "CHECKPOINT_EZ_HCZ" => DoorType.CheckpointEntrance,
                 "CHECKPOINT_LCZ_B" => DoorType.CheckpointLczB,
+                "CHECKPOINT_EZ_HCZ_A" => DoorType.CheckpointEzHczA,
+                "CHECKPOINT_EZ_HCZ_B" => DoorType.CheckpointEzHczB,
                 "106_PRIMARY" => DoorType.Scp106Primary,
                 "106_SECONDARY" => DoorType.Scp106Secondary,
                 "106_BOTTOM" => DoorType.Scp106Bottom,
@@ -567,6 +583,7 @@ namespace Exiled.API.Features
                 "330" => DoorType.Scp330,
                 "330_CHAMBER" => DoorType.Scp330Chamber,
                 "GR18_INNER" => DoorType.GR18Inner,
+                "939_CRYO" => DoorType.Scp939Cryo,
 
                 // Doors spawned by the DoorSpawnPoint component
                 "LCZ_CAFE" => DoorType.LczCafe,

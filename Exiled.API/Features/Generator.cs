@@ -10,7 +10,7 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
+    using Enums;
 
     using MapGeneration.Distributors;
 
@@ -24,18 +24,23 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.
         /// </summary>
-        internal static readonly List<Generator> GeneratorValues = new();
+        internal static readonly Dictionary<Scp079Generator, Generator> Scp079GeneratorToGenerator = new();
+        private Room room;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Generator"/> class.
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/>.</param>
-        internal Generator(Scp079Generator scp079Generator) => Base = scp079Generator;
+        internal Generator(Scp079Generator scp079Generator)
+        {
+            Base = scp079Generator;
+            Scp079GeneratorToGenerator.Add(scp079Generator, this);
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
-        public static IEnumerable<Generator> List => GeneratorValues;
+        public static IEnumerable<Generator> List => Scp079GeneratorToGenerator.Values;
 
         /// <summary>
         /// Gets the base <see cref="Scp079Generator"/>.
@@ -55,7 +60,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
         /// </summary>
-        public Room Room => Map.FindParentRoom(GameObject);
+        public Room Room => room ??= Map.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets or sets the generator' state.
@@ -208,19 +213,32 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/> instance.</param>
         /// <returns>A <see cref="Generator"/> or <see langword="null"/> if not found.</returns>
-        public static Generator Get(Scp079Generator scp079Generator) => List.FirstOrDefault(generator => generator.Base == scp079Generator);
+        public static Generator Get(Scp079Generator scp079Generator) =>
+            Scp079GeneratorToGenerator.TryGetValue(scp079Generator, out Generator generator) ?
+            generator :
+            new(scp079Generator);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> given the specified <see cref="GeneratorState"/>.
         /// </summary>
         /// <param name="state">The <see cref="GeneratorState"/> to search for.</param>
         /// <returns>The <see cref="Generator"/> with the given <see cref="GeneratorState"/> or <see langword="null"/> if not found.</returns>
-        public static IEnumerable<Generator> Get(GeneratorState state) => List.Where(generator => generator.Base.HasFlag(generator.Base.Network_flags, (Scp079Generator.GeneratorFlags)state));
+        public static IEnumerable<Generator> Get(GeneratorState state)
+            => List.Where(generator => generator.Base.HasFlag(generator.Base.Network_flags, (Scp079Generator.GeneratorFlags)state));
 
         /// <summary>
         /// Denies the unlock.
         /// </summary>
         public void DenyUnlock() => Base.RpcDenied();
+
+        /// <summary>
+        /// Denies the unlock and resets the interaction cooldown.
+        /// </summary>
+        public void DenyUnlockAndResetCooldown()
+        {
+            InteractionCooldown = UnlockCooldown;
+            DenyUnlock();
+        }
 
         /// <summary>
         /// Sets the specified <see cref="KeycardPermissions"/> flag.

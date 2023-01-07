@@ -12,11 +12,14 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
-    using Exiled.API.Structs;
+
+    using Interactables.Interobjects;
+    using Interactables.Interobjects.DoorUtils;
 
     using UnityEngine;
 
-    using BaseLift = global::Lift;
+    using static Interactables.Interobjects.ElevatorChamber;
+    using static Interactables.Interobjects.ElevatorManager;
 
     /// <summary>
     /// The in-game lift.
@@ -24,44 +27,53 @@ namespace Exiled.API.Features
     public class Lift
     {
         /// <summary>
-        /// A <see cref="List{T}"/> of <see cref="Lift"/>s on the map.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="ElevatorChamber"/>s and their corresponding <see cref="Lift"/>.
         /// </summary>
-        internal static readonly List<Lift> LiftsValue = new(10);
+        internal static readonly Dictionary<ElevatorChamber, Lift> ElevatorChamberToLift = new(8);
 
-        private readonly List<Elevator> elevators = new();
+        /// <summary>
+        /// Internal list that contains all ElevatorDoor for current group.
+        /// </summary>
+        private readonly List<ElevatorDoor> internalDoorsList = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Lift"/> class.
         /// </summary>
-        /// <param name="baseLift">The <see cref="BaseLift"/> to wrap.</param>
-        internal Lift(BaseLift baseLift)
+        /// <param name="elevator">The <see cref="ElevatorChamber"/> to wrap.</param>
+        internal Lift(ElevatorChamber elevator)
         {
-            Base = baseLift;
+            Base = elevator;
+            ElevatorChamberToLift.Add(elevator, this);
 
-            foreach (BaseLift.Elevator elevator in baseLift.elevators)
-                elevators.Add(new Elevator(elevator));
+            foreach (ElevatorDoor door in ElevatorDoor.AllElevatorDoors.First(elevator => elevator.Key == Base.AssignedGroup).Value)
+                internalDoorsList.Add(door);
         }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances.
         /// </summary>
-        public static IEnumerable<Lift> List => LiftsValue;
+        public static IEnumerable<Lift> List => ElevatorChamberToLift.Values;
 
         /// <summary>
         /// Gets a random <see cref="Lift"/>.
         /// </summary>
         /// <returns><see cref="Lift"/> object.</returns>
-        public static Lift Random => LiftsValue[UnityEngine.Random.Range(0, LiftsValue.Count)];
+        public static Lift Random => List.ToArray()[UnityEngine.Random.Range(0, ElevatorChamberToLift.Count)];
 
         /// <summary>
-        /// Gets the base <see cref="BaseLift"/>.
+        /// Gets the base <see cref="ElevatorChamber"/>.
         /// </summary>
-        public BaseLift Base { get; }
+        public ElevatorChamber Base { get; }
+
+        /// <summary>
+        /// Gets a value of the internal doors list.
+        /// </summary>
+        public IReadOnlyCollection<ElevatorDoor> Doors => internalDoorsList;
 
         /// <summary>
         /// Gets the lift's name.
         /// </summary>
-        public string Name => Base.elevatorName;
+        public string Name => Base.AssignedGroup.ToString();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the lift.
@@ -71,118 +83,117 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform => GameObject.transform;
+        public Transform Transform => Base.transform;
 
         /// <summary>
-        /// Gets the lift's position.
+        /// Gets or sets the lift's position.
         /// </summary>
-        public Vector3 Position => Base.transform.position;
-
-        /// <summary>
-        /// Gets the lift's rotation.
-        /// </summary>
-        public Quaternion Rotation => Base.transform.rotation;
-
-        /// <summary>
-        /// Gets or sets the lift's <see cref="BaseLift.Status"/>.
-        /// </summary>
-        public BaseLift.Status Status
+        public Vector3 Position
         {
-            get => (BaseLift.Status)Base.NetworkstatusID;
-            set => Base.SetStatus((byte)value);
+            get => Base.transform.position;
+            set => Base.transform.position = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the lift's rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => Base.transform.rotation;
+            set => Base.transform.rotation = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the lift's <see cref="ElevatorChamber"/> status.
+        /// </summary>
+        public ElevatorSequence Status
+        {
+            get => Base._curSequence;
+            set => Base._curSequence = value;
         }
 
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
         /// </summary>
-#pragma warning disable SA1122
-        public ElevatorType Type => Name switch
+        public ElevatorType Type => Base.AssignedGroup switch
         {
-            "SCP-049" => ElevatorType.Scp049,
-            "GateA" => ElevatorType.GateA,
-            "GateB" => ElevatorType.GateB,
-            "ElA" or "ElA2" => ElevatorType.LczA,
-            "ElB" or "ElB2" => ElevatorType.LczB,
-            "" => ElevatorType.Nuke,
+            ElevatorGroup.Scp049 => ElevatorType.Scp049,
+            ElevatorGroup.GateA => ElevatorType.GateA,
+            ElevatorGroup.GateB => ElevatorType.GateB,
+            ElevatorGroup.LczA01 or ElevatorGroup.LczA02 => ElevatorType.LczA,
+            ElevatorGroup.LczB01 or ElevatorGroup.LczB02 => ElevatorType.LczB,
+            ElevatorGroup.Nuke => ElevatorType.Nuke,
             _ => ElevatorType.Unknown,
         };
-#pragma warning restore SA1122
+
+        /// <summary>
+        /// Gets the <see cref="ElevatorGroup"/>.
+        /// </summary>
+        public ElevatorGroup Group => Base.AssignedGroup;
 
         /// <summary>
         /// Gets a value indicating whether the lift is operative.
         /// </summary>
-        public bool IsOperative => Base.operative;
+        public bool IsOperative => Base.IsReady;
 
         /// <summary>
         /// Gets a value indicating whether the lift is currently moving.
         /// </summary>
-        public bool IsMoving => Base.status == BaseLift.Status.Moving;
+        public bool IsMoving => Status == ElevatorSequence.MovingAway || Status == ElevatorSequence.Arriving;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the lift is locked.
+        /// Gets a value indicating whether the lift is locked.
         /// </summary>
-        public bool IsLocked
+        public bool IsLocked => Base.ActiveLocks > 0;
+
+        /// <summary>
+        /// Gets or sets the <see cref="AnimationTime"/>.
+        /// </summary>
+        public float AnimationTime
         {
-            get => Base.Network_locked;
-            set => Base.Network_locked = value;
+            get => Base._animationTime;
+            set => Base._animationTime = value;
         }
 
         /// <summary>
-        /// Gets a value indicating whether the lift is lockable.
+        /// Gets the <see cref="CurrentLevel"/>.
         /// </summary>
-        public bool IsLockable => Base.lockable;
+        public int CurrentLevel => Base.CurrentLevel;
 
         /// <summary>
-        /// Gets or sets the lift's moving speed.
+        /// Gets the <see cref="CurrentDestination"/>.
         /// </summary>
-        public float MovingSpeed
-        {
-            get => Base.movingSpeed;
-            set => Base.movingSpeed = value;
-        }
+        public ElevatorDoor CurrentDestination => Base.CurrentDestination;
 
         /// <summary>
-        /// Gets or sets the maximum distance from which an object should be considered inside the lift's range.
+        /// Compares two operands: <see cref="Lift"/> and <see cref="Lift"/>.
         /// </summary>
-        public float MaxDistance
-        {
-            get => Base.maxDistance;
-            set => Base.maxDistance = value;
-        }
+        /// <param name="left">The first <see cref="Lift"/> to compare.</param>
+        /// <param name="right">The second <see cref="Lift"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
+        public static bool operator ==(Lift left, Lift right) => left.Base.Equals(right.Base);
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Vector3"/> which contains all the lift's cached items' position.
+        /// Compares two operands: <see cref="Lift"/> and <see cref="Lift"/>.
         /// </summary>
-        public IEnumerable<Vector3> CachedItemPositions => Base._cachedItemTransforms.Select(item => item.position);
+        /// <param name="left">The first <see cref="Lift"/> to compare.</param>
+        /// <param name="right">The second <see cref="Lift"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
+        public static bool operator !=(Lift left, Lift right) => !(left == right);
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Vector3"/> which contains all the lift's cached items' rotation.
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="Status"/>.
         /// </summary>
-        public IEnumerable<Quaternion> CachedItemRotations => Base._cachedItemTransforms.Select(item => item.rotation);
-
-        /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Vector3"/> which contains all the lift's cached items' <see cref="Transform"/>.
-        /// </summary>
-        public IEnumerable<Transform> CachedItemTransformss => Base._cachedItemTransforms;
-
-        /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Elevator"/> which contains all the lift's elevators.
-        /// </summary>
-        public IEnumerable<Elevator> Elevators => elevators;
-
-        /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="BaseLift.Status"/>.
-        /// </summary>
-        /// <param name="status">The specified <see cref="BaseLift.Status"/>.</param>
+        /// <param name="status">The specified <see cref="ElevatorChamber"/>.</param>
         /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static IEnumerable<Lift> Get(BaseLift.Status status) => Get(lift => lift.Status == status);
+        public static IEnumerable<Lift> Get(ElevatorSequence status) => Get(lift => lift.Status == status);
 
         /// <summary>
-        /// Gets the <see cref="Lift"/> belonging to the <see cref="BaseLift"/>, if any.
+        /// Gets the <see cref="Lift"/> belonging to the <see cref="ElevatorChamber"/>, if any.
         /// </summary>
-        /// <param name="baseLift">The <see cref="BaseLift"/> instance.</param>
+        /// <param name="elevator">The <see cref="ElevatorChamber"/> instance.</param>
         /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static Lift Get(BaseLift baseLift) => Get(lift => lift.Base == baseLift).FirstOrDefault();
+        public static Lift Get(ElevatorChamber elevator) => ElevatorChamberToLift.TryGetValue(elevator, out Lift lift) ? lift : new(elevator);
 
         /// <summary>
         /// Gets the <see cref="Lift"/> corresponding to the specified <see cref="ElevatorType"/>, if any.
@@ -229,20 +240,51 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Plays the lift's music.
-        /// </summary>
-        public void PlayMusic() => Base.RpcPlayMusic();
-
-        /// <summary>
         /// Tries to start the lift.
         /// </summary>
+        /// <param name="level">The destination level.</param>
+        /// <param name="isForced">Indicates whether the start will be forced or not.</param>
         /// <returns><see langword="true"/> if the lift was started successfully; otherwise, <see langword="false"/>.</returns>
-        public bool TryStart() => Base.UseLift();
+        public bool TryStart(int level, bool isForced = false) => TrySetDestination(Base.AssignedGroup, level, isForced);
+
+        /// <summary>
+        /// Changes lock of the lift.
+        /// </summary>
+        /// <param name="lockReason">Type of lift lockdown.</param>
+        public void ChangeLock(DoorLockReason lockReason)
+        {
+            bool forceLock = lockReason != DoorLockReason.None;
+
+            foreach (ElevatorDoor door in Doors)
+            {
+                if (!forceLock)
+                {
+                    door.NetworkActiveLocks = 0;
+
+                    door.ServerChangeLock(DoorLockReason.None, true);
+                }
+                else
+                {
+                    door.ServerChangeLock(lockReason, true);
+
+                    if (CurrentLevel != 1)
+                        TrySetDestination(Group, 1, true);
+                }
+
+                Base.RefreshLocks(Group, door);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj) => Base.Equals(obj);
+
+        /// <inheritdoc/>
+        public override int GetHashCode() => Base.GetHashCode();
 
         /// <summary>
         /// Returns the Lift in a human-readable format.
         /// </summary>
         /// <returns>A string containing Lift-related data.</returns>
-        public override string ToString() => $"{Type} {Status} [{MovingSpeed}] *{IsLocked}* |{IsLockable}|";
+        public override string ToString() => $"{Type} {Status} [{CurrentLevel}] *{IsLocked}*";
     }
 }

@@ -10,119 +10,77 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using Mirror;
-
     using NorthwoodLib.Pools;
+
+    using PlayerRoles.FirstPersonControl;
 
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerMovementSync.ReceivePosition2DJump(NetworkConnection, PositionMessage2DJump)"/> and
-    /// <see cref="PlayerMovementSync.ReceivePositionJump(NetworkConnection, PositionMessageJump)"/>.
-    /// Adds the <see cref="Player.Jumping"/> event.
+    ///     Patches <see cref="FpcMotor.UpdateGrounded(ref Vector3, ref bool, float)" />
+    ///     Adds the <see cref="Player.Jumping" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerMovementSync))]
+    [HarmonyPatch(typeof(FpcMotor), nameof(FpcMotor.UpdateGrounded))]
     internal static class Jumping
     {
-        [HarmonyPatch(nameof(PlayerMovementSync.ReceivePosition2DJump))]
-        [HarmonyTranspiler]
-        private static IEnumerable<CodeInstruction> Transpiler2D(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            LocalBuilder ev = generator.DeclareLocal(typeof(JumpingEventArgs));
-            LocalBuilder pos = generator.DeclareLocal(typeof(Vector2));
-
-            Label retLabel = generator.DefineLabel();
-
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
-
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(PositionMessage2DJump), nameof(PositionMessage2DJump.Position))),
-                new(OpCodes.Stloc_S, pos.LocalIndex),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
-                new(OpCodes.Call, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
-                new(OpCodes.Ldloc_S, pos.LocalIndex),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(JumpingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnJumping))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.Player))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.IsJumping))),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.Player))),
-                new(OpCodes.Call, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.ReferenceHub))),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))),
-                new(OpCodes.Ldloc_S, pos.LocalIndex),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Call, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ReceivePosition2D), new[] { typeof(Vector2), typeof(bool) })),
-            });
-
-            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-
-        [HarmonyPatch(nameof(PlayerMovementSync.ReceivePositionJump))]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(JumpingEventArgs));
-            LocalBuilder pos = generator.DeclareLocal(typeof(Vector3));
+            LocalBuilder direction = generator.DeclareLocal(typeof(Vector3));
 
-            Label retLabel = generator.DefineLabel();
+            Label ret = generator.DefineLabel();
 
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
+            const int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stfld) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(PositionMessageJump), nameof(PositionMessageJump.Position))),
-                new(OpCodes.Stloc_S, pos.LocalIndex),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
-                new(OpCodes.Call, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
-                new(OpCodes.Ldloc_S, pos.LocalIndex),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(JumpingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnJumping))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-                new(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.Player))),
-                new(OpCodes.Call, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.ReferenceHub))),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))),
-                new(OpCodes.Ldloc_S, pos.LocalIndex),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Call, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ReceivePosition), new[] { typeof(Vector3), typeof(bool) })),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(this.Hub)
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldfld, Field(typeof(FpcMotor), nameof(FpcMotor.Hub))),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
+                    // moveDir
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldobj, typeof(Vector3)),
+
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // JumpingEventArgs ev = new(Player, Vector3, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(JumpingEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Player.OnJumping(ev)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnJumping))),
+
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, ret),
+
+                    // moveDir = ev.Direction
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.Direction))),
+                    new(OpCodes.Stloc_S, direction.LocalIndex),
+                    new(OpCodes.Ldloca_S, direction.LocalIndex),
+                    new(OpCodes.Starg_S, 1),
+                });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

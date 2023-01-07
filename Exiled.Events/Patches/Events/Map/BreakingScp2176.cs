@@ -10,7 +10,11 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using API.Features;
+
+    using Exiled.Events.EventArgs.Map;
+
+    using Footprinting;
 
     using HarmonyLib;
 
@@ -20,9 +24,11 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
+    using Map = Handlers.Map;
+
     /// <summary>
-    /// Patches <see cref="Scp2176Projectile.ServerShatter"/>.
-    /// Supplements the <see cref="Handlers.Map.ExplodingGrenade"/> event.
+    ///     Patches <see cref="Scp2176Projectile.ServerShatter" />.
+    ///     Supplements the <see cref="Map.ExplodingGrenade" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp2176Projectile), nameof(Scp2176Projectile.ServerShatter))]
     internal static class BreakingScp2176
@@ -34,26 +40,34 @@ namespace Exiled.Events.Patches.Events.Map
             // The return label
             Label retLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                // new ExplodingGrenadeEventArgs(Player.Get(PreviousOwner.Hub), this, Array.Empty<Collider>());
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldflda, Field(typeof(Scp2176Projectile), nameof(Scp2176Projectile.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Newarr, typeof(UnityEngine.Collider)),
-                new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(API.Features.Player), typeof(EffectGrenade), typeof(UnityEngine.Collider[]) })),
-                new(OpCodes.Dup),
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    // Player.Get(PreviousOwner.Hub)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldflda, Field(typeof(Scp2176Projectile), nameof(Scp2176Projectile.PreviousOwner))),
+                    new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // Handlers.Map.OnExplodingGrenade(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
+                    // this
+                    new(OpCodes.Ldarg_0),
 
-                // if(!ev.IsAllowed) return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-            });
+                    // new List<Player>
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(List<Player>))[0]),
+
+                    // new ExplodingGrenadeEventArgs(Player, EffectGrenade, List<Player>)
+                    new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(List<Player>), })),
+                    new(OpCodes.Dup),
+
+                    // Handlers.Map.OnExplodingGrenade(ev);
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnExplodingGrenade))),
+
+                    // if (!ev.IsAllowed)
+                    //     return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, retLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 

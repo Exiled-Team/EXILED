@@ -95,10 +95,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Reloads all paths.
         /// </summary>
-        /// <param name="rootDirectoryName">The new root directory name.</param>
-        public static void Reload(string rootDirectoryName = "EXILED")
+        /// <param name="rootDirectory">The new root directory.</param>
+        public static void Reload(string rootDirectory = null)
         {
-            Exiled = Path.Combine(AppData, rootDirectoryName);
+            rootDirectory ??= Path.Combine(AppData, "EXILED");
+
+            Exiled = rootDirectory;
             Plugins = Path.Combine(Exiled, "Plugins");
             Dependencies = Path.Combine(Plugins, "dependencies");
             Configs = Path.Combine(Exiled, "Configs");

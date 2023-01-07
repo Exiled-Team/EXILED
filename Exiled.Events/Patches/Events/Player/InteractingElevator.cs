@@ -10,47 +10,69 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
+    using Interactables.Interobjects;
+
+    using Mirror;
+
     using NorthwoodLib.Pools;
+
+    using PluginAPI.Enums;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.UserCode_CmdUseElevator(UnityEngine.GameObject)"/>.
-    /// Adds the <see cref="Handlers.Player.InteractingElevator"/> event.
+    ///     Patches <see cref="ElevatorManager.ServerReceiveMessage(NetworkConnection, ElevatorManager.ElevatorSyncMsg)" />.
+    ///     Adds the <see cref="Handlers.Player.InteractingElevator" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUseElevator))]
+    [HarmonyPatch(typeof(ElevatorManager), nameof(ElevatorManager.ServerReceiveMessage))]
     internal class InteractingElevator
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = -2;
-            int index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(global::Lift), nameof(global::Lift.UseLift)))) + offset;
+            Label @break = (Label)newInstructions.FindLast(i => i.opcode == OpCodes.Leave_S).operand;
 
-            Label continueLabel = newInstructions[index + 6].labels[0];
+            int offset = 0;
+            int index = newInstructions.FindLastIndex(i => i.LoadsConstant(ServerEventType.PlayerInteractElevator)) + offset;
 
-            // InteractingElevatorEventArgs ev = new(API.Features.Player.Get(hub), elevator, lift);
+            // InteractingElevatorEventArgs ev = new(Player.Get(referenceHub), elevatorChamber, true);
+            //
             // Handlers.Player.OnInteractingElevator(ev);
+            //
             // if (!ev.IsAllowed)
             //     continue;
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingElevatorEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingElevator))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingElevatorEventArgs), nameof(InteractingElevatorEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, continueLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(referenceHub)
+                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // elevatorChamber
+                    new(OpCodes.Ldloc_3),
+
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // InteractingElevatorEventArgs ev = new(Player, ElevatorChamber, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingElevatorEventArgs))[0]),
+                    new(OpCodes.Dup),
+
+                    // Handlers.Player.OnInteractingElevator(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingElevator))),
+
+                    // if (!ev.IsAllowed)
+                    //     continue;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingElevatorEventArgs), nameof(InteractingElevatorEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, @break),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

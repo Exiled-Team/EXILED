@@ -9,7 +9,7 @@ namespace Exiled.CustomItems.API.EventArgs
 {
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp914;
 
     using InventorySystem.Items;
 
@@ -24,18 +24,12 @@ namespace Exiled.CustomItems.API.EventArgs
         /// Initializes a new instance of the <see cref="UpgradingItemEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="knobSetting"><inheritdoc cref="Events.EventArgs.UpgradingItemEventArgs.KnobSetting"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="Events.EventArgs.UpgradingItemEventArgs.IsAllowed"/></param>
+        /// <param name="item"><inheritdoc cref="UpgradingInventoryItemEventArgs.Item"/></param>
+        /// <param name="knobSetting"><inheritdoc cref="UpgradingInventoryItemEventArgs.KnobSetting"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="UpgradingInventoryItemEventArgs.IsAllowed"/></param>
         public UpgradingItemEventArgs(Player player, ItemBase item, Scp914KnobSetting knobSetting, bool isAllowed = true)
             : base(player, item, knobSetting, isAllowed)
         {
-            Item = item;
         }
-
-        /// <summary>
-        /// Gets the upgrading <see cref="Item"/> as a<see cref="CustomItem"/>.
-        /// </summary>
-        public new ItemBase Item { get; }
     }
 }

@@ -7,8 +7,9 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Exiled.API.Enums;
+    using Enums;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Firearms.Ammo;
 
     /// <summary>
@@ -39,7 +40,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the ammo.</param>
         internal Ammo(ItemType type)
-            : this((AmmoItem)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((AmmoItem)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 
@@ -52,10 +53,6 @@ namespace Exiled.API.Features.Items
         /// Clones current <see cref="Ammo"/> object.
         /// </summary>
         /// <returns> New <see cref="Ammo"/> object. </returns>
-        public override Item Clone()
-        {
-            Ammo cloneableItem = new(Type);
-            return cloneableItem;
-        }
+        public override Item Clone() => new(Type);
     }
 }

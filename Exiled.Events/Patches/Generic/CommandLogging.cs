@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Generic
     using System.IO;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
+    using API.Features;
 
     using HarmonyLib;
 
@@ -39,57 +39,76 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                if (query.Equals("$0 1"))
+                if (query.StartsWith("$", StringComparison.Ordinal))
                     return;
 
-                Player player = sender is PlayerCommandSender playerCommandSender
-                    ? Player.Get(playerCommandSender)
-                    : Server.Host;
+                Player player = sender is PlayerCommandSender playerCommandSender ? Player.Get(playerCommandSender) : Server.Host;
 
                 string logMessage = string.Empty;
+
                 try
                 {
                     logMessage =
-                        $"[{DateTime.Now}] {(player == Server.Host ? "Server Console" : $"{player.Nickname} ({player.UserId}) {player.IPAddress}")} has run the command {query}.\n";
+                        $"[{DateTime.Now}] {(player == Server.Host ? "Server Console" : $"{player?.Nickname} ({player?.UserId}) {player?.IPAddress}")}" +
+                        $" has run the command {query}.\n";
                 }
-                catch (Exception e)
+                catch (Exception exception)
                 {
-                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player is null}\n{e}");
+                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player is null}\n{exception}");
                 }
 
                 if (string.IsNullOrEmpty(logMessage))
                     return;
+
                 string directory = Path.Combine(Paths.Exiled, "Logs");
+
                 if (!Directory.Exists(directory))
                     Directory.CreateDirectory(directory);
+
                 string filePath = Path.Combine(directory, $"{Server.Port}-RAlog.txt");
+
                 if (!File.Exists(filePath))
                     File.Create(filePath).Close();
+
                 File.AppendAllText(filePath, logMessage);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender is null}\n{e}");
+                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender is null}\n{exception}");
             }
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
             const int index = 0;
+
             Label continueLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.LogRaCommands))),
-                new(OpCodes.Brfalse, continueLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // if (!Events.Instance.Config.LogRaCommands)
+                    //   goto continueLabel;
+                    new(OpCodes.Call, PropertyGetter(typeof(Events), nameof(Events.Instance))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Events), nameof(Events.Config))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.LogRaCommands))),
+                    new(OpCodes.Brfalse, continueLabel),
+
+                    // q
+                    new(OpCodes.Ldarg_0),
+
+                    // sender
+                    new(OpCodes.Ldarg_1),
+
+                    // LogCommand(q, sender)
+                    new(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
+
+                    // continueLabel:
+                    new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -7,9 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using InventorySystem.Items;
     using InventorySystem.Items.MicroHID;
-
-    using MEC;
 
     /// <summary>
     /// A wrapper class for <see cref="MicroHIDItem"/>.
@@ -30,7 +29,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="MicroHid"/> class, as well as a new Micro HID item.
         /// </summary>
         internal MicroHid()
-            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(ItemType.MicroHID, false))
+            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.MicroHID, 0), false))
         {
         }
 
@@ -60,33 +59,27 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Starts firing the MicroHID.
         /// </summary>
-        public void Fire()
+        public void Fire() => Base.Fire();
+
+        /// <summary>
+        /// Recharges the MicroHID.
+        /// </summary>
+        public void Recharge() => Base.Recharge();
+
+        /// <summary>
+        /// Clones current <see cref="MicroHid"/> object.
+        /// </summary>
+        /// <returns> New <see cref="MicroHid"/> object. </returns>
+        public override Item Clone() => new MicroHid()
         {
-            Base.UserInput = HidUserInput.Fire;
-            State = HidState.Firing;
-        }
+            State = State,
+            Energy = Energy,
+        };
 
         /// <summary>
         /// Returns the MicroHid in a human readable format.
         /// </summary>
         /// <returns>A string containing MicroHid-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{State}-";
-
-        /// <summary>
-        /// Clones current <see cref="MicroHid"/> object.
-        /// </summary>
-        /// <returns> New <see cref="MicroHid"/> object. </returns>
-        public override Item Clone()
-        {
-            MicroHid cloneableItem = new();
-
-            Timing.CallDelayed(1f, () =>
-            {
-                cloneableItem.State = State;
-                cloneableItem.Energy = Energy;
-            });
-
-            return cloneableItem;
-        }
     }
 }

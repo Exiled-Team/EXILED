@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
+    using InventorySystem.Items;
     using InventorySystem.Items.Flashlight;
 
     using Utils.Networking;
@@ -30,7 +31,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Flashlight"/> class, as well as a new Flashlight item.
         /// </summary>
         internal Flashlight()
-            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(ItemType.Flashlight, false))
+            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.Flashlight, 0), false))
         {
         }
 
@@ -53,20 +54,18 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Clones current <see cref="Flashlight"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Flashlight"/> object. </returns>
+        public override Item Clone() => new Flashlight()
+        {
+            Active = Active,
+        };
+
+        /// <summary>
         /// Returns the Flashlight in a human readable format.
         /// </summary>
         /// <returns>A string containing Flashlight-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
-
-        /// <summary>
-        /// Clones current <see cref="Flashlight"/> object.
-        /// </summary>
-        /// <returns> New <see cref="Flashlight"/> object. </returns>
-        public override Item Clone()
-        {
-            Flashlight cloneableItem = new();
-            cloneableItem.Active = Active;
-            return cloneableItem;
-        }
     }
 }

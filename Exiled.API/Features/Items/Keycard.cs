@@ -7,6 +7,9 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Enums;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Keycards;
 
     /// <summary>
@@ -29,7 +32,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the keycard.</param>
         internal Keycard(ItemType type)
-            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 
@@ -39,30 +42,27 @@ namespace Exiled.API.Features.Items
         public new KeycardItem Base { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Enums.KeycardPermissions"/> of the keycard.
+        /// Gets or sets the <see cref="KeycardPermissions"/> of the keycard.
         /// </summary>
-        public Enums.KeycardPermissions Permissions
+        public KeycardPermissions Permissions
         {
-            get => (Enums.KeycardPermissions)Base.Permissions;
+            get => (KeycardPermissions)Base.Permissions;
             set => Base.Permissions = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
         }
+
+        /// <summary>
+        /// Clones current <see cref="Keycard"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Keycard"/> object. </returns>
+        public override Item Clone() => new Keycard(Type)
+        {
+            Permissions = Permissions,
+        };
 
         /// <summary>
         /// Returns the Keycard in a human readable format.
         /// </summary>
         /// <returns>A string containing Keycard-related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
-
-        /// <summary>
-        /// Clones current <see cref="Keycard"/> object.
-        /// </summary>
-        /// <returns> New <see cref="Keycard"/> object. </returns>
-        public override Item Clone()
-        {
-            Keycard cloneableItem = new(Type);
-            cloneableItem.Permissions = Permissions;
-
-            return cloneableItem;
-        }
     }
 }

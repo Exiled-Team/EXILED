@@ -7,8 +7,9 @@
 
 namespace Exiled.API.Features.Attributes
 {
-#pragma warning disable 1584
     using System;
+
+    using PlayerRoles;
 
     /// <summary>
     /// An attribute to easily manage CustomRole initialization.
@@ -19,12 +20,15 @@ namespace Exiled.API.Features.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomRoleAttribute"/> class.
         /// </summary>
-        /// <param name="type">The <see cref="global::RoleType"/> to serialize.</param>
-        public CustomRoleAttribute(RoleType type) => RoleType = type;
+        /// <param name="type">The <see cref="PlayerRoles.RoleTypeId"/> to serialize.</param>
+        public CustomRoleAttribute(RoleTypeId type)
+        {
+            RoleTypeId = type;
+        }
 
         /// <summary>
-        /// Gets the attribute's <see cref="global::RoleType"/>.
+        /// Gets the attribute's <see cref="PlayerRoles.RoleTypeId"/>.
         /// </summary>
-        public RoleType RoleType { get; }
+        public RoleTypeId RoleTypeId { get; }
     }
 }

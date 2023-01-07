@@ -11,8 +11,6 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Loader;
-
     using GameCore;
 
     using HarmonyLib;
@@ -33,27 +31,35 @@ namespace Exiled.Events.Patches.Events.Server
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
-                new(OpCodes.Ldstr, "Round restarting"),
-                new(OpCodes.Call, PropertyGetter(typeof(Loader), nameof(Loader.ShouldDebugBeShown))),
-                new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string), typeof(bool) })),
-            });
 
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse);
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    // Handlers.Server.OnRestartingRound()
+                    new(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
 
-            newInstructions.InsertRange(index + 1, new CodeInstruction[]
-            {
-                // if(ServerStatic.StopNextRound == ServerStatic.NextRoundAction.Restart)  -> goto normal round restart
-                new(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Beq_S, newInstructions[index].operand),
+                    // API.Features.Log.Debug("Round restarting", Loader.ShouldDebugBeShown)
+                    new(OpCodes.Ldstr, "Round restarting"),
+                    new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug), new[] { typeof(string) })),
+                });
 
-                // if (ShouldServerRestart()) -> goto normal round restart
-                new(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
-                new(OpCodes.Brtrue, newInstructions[index].operand),
-            });
+            const int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse);
+
+            newInstructions.InsertRange(
+                index + offset,
+                new CodeInstruction[]
+                {
+                    // if (ServerStatic.StopNextRound == ServerStatic.NextRoundAction.Restart)  -> goto normal round restart
+                    new(OpCodes.Call, PropertyGetter(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
+                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Beq_S, newInstructions[index].operand),
+
+                    // if (ShouldServerRestart()) -> goto normal round restart
+                    new(OpCodes.Call, Method(typeof(RestartingRound), nameof(ShouldServerRestart))),
+                    new(OpCodes.Brtrue, newInstructions[index].operand),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -68,6 +74,7 @@ namespace Exiled.Events.Patches.Events.Server
             try
             {
                 int num = ConfigFile.ServerConfig.GetInt("restart_after_rounds");
+
                 flag = num > 0 && RoundRestart.UptimeRounds >= num;
             }
             catch (Exception ex)

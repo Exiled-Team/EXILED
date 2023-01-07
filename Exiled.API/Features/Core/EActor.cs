@@ -11,6 +11,8 @@ namespace Exiled.API.Features.Core
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Features.Core.Interfaces;
+
     using MEC;
 
     using UnityEngine;
@@ -18,13 +20,14 @@ namespace Exiled.API.Features.Core
     /// <summary>
     /// Actor is the base class for a <see cref="EObject"/> that can be placed or spawned in-game.
     /// </summary>
-    public abstract class EActor : EObject
+    public abstract class EActor : EObject, IEntity
     {
         /// <summary>
         /// The default fixed tick rate.
         /// </summary>
         public const float DefaultFixedTickRate = TickComponent.DefaultFixedTickRate;
 
+        private readonly HashSet<EActor> componentsInChildren = new();
         private CoroutineHandle serverTick;
         private bool canEverTick;
         private float fixedTickRate;
@@ -53,6 +56,9 @@ namespace Exiled.API.Features.Core
             if (gameObject)
                 Base = gameObject;
         }
+
+        /// <inheritdoc/>
+        public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Transform"/>.
@@ -127,12 +133,7 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets a <see cref="EActor"/>[] containing all the components in parent.
         /// </summary>
-        protected EActor[] ComponentsInParent => FindActiveObjectsOfType<EActor>().Where(actor => actor.ComponentsInChildren.Any(comp => comp == this)).ToArray();
-
-        /// <summary>
-        /// Gets a <see cref="HashSet{T}"/> of <see cref="EActor"/> containing all the components in children.
-        /// </summary>
-        protected HashSet<EActor> ComponentsInChildren { get; } = new();
+        protected IEnumerable<EActor> ComponentsInParent => FindActiveObjectsOfType<EActor>().Where(actor => actor.ComponentsInChildren.Any(comp => comp == this));
 
         /// <summary>
         /// Attaches a <see cref="EActor"/> to the specified <see cref="GameObject"/>.
@@ -148,12 +149,7 @@ namespace Exiled.API.Features.Core
         /// <param name="from">The source actor.</param>
         public static void AttachTo(EActor to, EActor from) => to.Base = from.Base;
 
-        /// <summary>
-        /// Adds a component to this actor.
-        /// </summary>
-        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to be added.</typeparam>
-        /// <param name="name">The name of the component.</param>
-        /// <returns>The added component.</returns>
+        /// <inheritdoc/>
         public T AddComponent<T>(string name = "")
             where T : EActor
         {
@@ -161,47 +157,49 @@ namespace Exiled.API.Features.Core
             if (component is null)
                 return null;
 
-            ComponentsInChildren.Add(component);
+            componentsInChildren.Add(component);
             return component.Cast<T>();
         }
 
-        /// <summary>
-        /// Adds a component to this actor.
-        /// </summary>
-        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to be added.</param>
-        /// <param name="name">The name of the component.</param>
-        /// <returns>The added component.</returns>
+        /// <inheritdoc/>
         public EActor AddComponent(Type type, string name = "")
         {
             EActor component = CreateDefaultSubobject(type, Base, string.IsNullOrEmpty(name) ? $"{GetType().Name}-Component#{ComponentsInChildren.Count}" : name).Cast<EActor>();
             if (component is null)
                 return null;
 
-            ComponentsInChildren.Add(component);
+            componentsInChildren.Add(component);
             return component;
         }
 
-        /// <summary>
-        /// Gets a component from this actor.
-        /// </summary>
-        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>
-        /// <returns>The corresponding component or <see langword="null"/> if not found.</returns>
+        /// <inheritdoc/>
+        public T AddComponent<T>(Type type, string name = "")
+            where T : EActor => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
+
+        /// <inheritdoc/>
+        public EActor GetComponent(Type type) => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType());
+
+        /// <inheritdoc/>
         public T GetComponent<T>()
             where T : EActor => ComponentsInChildren.FirstOrDefault(comp => typeof(T) == comp.GetType()).Cast<T>();
 
-        /// <summary>
-        /// Gets a component from this actor.
-        /// </summary>
-        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to look for.</param>
-        /// <returns>The corresponding component or <see langword="null"/> if not found.</returns>
-        public EActor GetComponent(Type type) => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType());
+        /// <inheritdoc/>
+        public T GetComponent<T>(Type type)
+            where T : EActor => ComponentsInChildren.FirstOrDefault(comp => type == comp.GetType()).Cast<T>();
 
-        /// <summary>
-        /// Tries to get a component from this actor.
-        /// </summary>
-        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>
-        /// <param name="component">The <typeparamref name="T"/> <see cref="EActor"/>.</param>
-        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        /// <inheritdoc/>
+        public bool TryGetComponent<T>(Type type, out T component)
+            where T : EActor
+        {
+            EActor actor = GetComponent(type);
+
+            if (actor.Cast(out component))
+                component = actor.Cast<T>();
+
+            return component;
+        }
+
+        /// <inheritdoc/>
         public bool TryGetComponent<T>(out T component)
             where T : EActor
         {
@@ -213,12 +211,7 @@ namespace Exiled.API.Features.Core
             return component is not null;
         }
 
-        /// <summary>
-        /// Tries to get a component from this actor.
-        /// </summary>
-        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to get.</param>
-        /// <param name="component">The found component.</param>
-        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        /// <inheritdoc/>
         public bool TryGetComponent(Type type, out EActor component)
         {
             component = null;
@@ -229,20 +222,15 @@ namespace Exiled.API.Features.Core
             return component is not null;
         }
 
-        /// <summary>
-        /// Checks if the actor has an active component.
-        /// </summary>
-        /// <typeparam name="T">The <see cref="EActor"/> to look for.</typeparam>
-        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
-        public bool HasComponent<T>()
-            where T : EActor => ComponentsInChildren.Any(comp => typeof(T) == comp.GetType());
+        /// <inheritdoc/>
+        public bool HasComponent<T>(bool depthInheritance = false) => depthInheritance
+            ? ComponentsInChildren.Any(comp => typeof(T).IsSubclassOf(comp.GetType()))
+            : ComponentsInChildren.Any(comp => typeof(T) == comp.GetType());
 
-        /// <summary>
-        /// Checks if the actor has an active component.
-        /// </summary>
-        /// <param name="type">The <see cref="EActor"/> to look for.</param>
-        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
-        public bool HasComponent(Type type) => ComponentsInChildren.Any(comp => type == comp.GetType());
+        /// <inheritdoc/>
+        public bool HasComponent(Type type, bool depthInheritance = false) => depthInheritance
+            ? ComponentsInChildren.Any(comp => type.IsSubclassOf(comp.GetType()))
+            : ComponentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
         /// Fired after the <see cref="EActor"/> instance is created.

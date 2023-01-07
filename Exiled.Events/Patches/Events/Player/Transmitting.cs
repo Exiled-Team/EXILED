@@ -10,19 +10,26 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
+    using Mirror;
+
     using NorthwoodLib.Pools;
+
+    using PlayerRoles.Voice;
+
+    using VoiceChat.Playbacks;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Radio.UserCode_CmdSyncTransmissionStatus(bool)"/>.
-    /// Adds the <see cref="Handlers.Player.Transmitting"/> event.
+    ///     Patches <see cref="PersonalRadioPlayback.IsTransmitting(ReferenceHub)" />.
+    ///     Adds the <see cref="Handlers.Player.Transmitting" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Radio), nameof(Radio.UserCode_CmdSyncTransmissionStatus))]
+    [HarmonyPatch(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.IsTransmitting))]
     internal static class Transmitting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -31,29 +38,46 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label retLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Radio), nameof(Radio._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Dup),
-                new(OpCodes.Ldfld, Field(typeof(Radio), nameof(Radio._dissonanceSetup))),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TransmittingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTransmitting))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(TransmittingEventArgs), nameof(TransmittingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retLabel),
-            });
+            const int offset = -1;
+            int index = newInstructions.FindIndex(
+                instruction => instruction.Calls(PropertyGetter(typeof(NetworkBehaviour), nameof(NetworkBehaviour.isLocalPlayer)))) + offset;
 
-            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // hub
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+
+                    // voiceModule
+                    new(OpCodes.Ldloc_1),
+
+                    // HandleTransmitting(ReferenceHub, VoiceModule)
+                    new(OpCodes.Call, Method(typeof(Transmitting), nameof(HandleTransmitting))),
+
+                    // return false if not allowed
+                    new(OpCodes.Brfalse_S, retLabel),
+                });
+
+            // -2 to return false
+            newInstructions[newInstructions.Count - 2].WithLabels(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static bool HandleTransmitting(ReferenceHub hub, VoiceModuleBase voiceModule)
+        {
+            if (hub == null || Player.Get(hub) is not Player player)
+                return false;
+
+            TransmittingEventArgs ev = new(player, voiceModule);
+
+            Handlers.Player.OnTransmitting(ev);
+
+            return ev.IsAllowed;
         }
     }
 }

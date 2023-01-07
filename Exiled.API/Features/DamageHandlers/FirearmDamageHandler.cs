@@ -7,9 +7,11 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features.Items;
+    using Enums;
+
+    using Extensions;
+
+    using Items;
 
     using PlayerStatsSystem;
 
@@ -28,7 +30,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="item">The <see cref="Items.Item"/> to be set.</param>
         /// <param name="target">The target to be set.</param>
         public FirearmDamageHandler(Item item, Player target, BaseHandler baseHandler)
-            : base(target, baseHandler) => Item = item;
+            : base(target, baseHandler)
+        {
+            Item = item;
+        }
 
         /// <inheritdoc/>
         public override DamageType Type => Item switch

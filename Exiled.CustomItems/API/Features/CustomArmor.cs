@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="CustomArmor.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -13,7 +13,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using MEC;
 
@@ -30,7 +30,7 @@ namespace Exiled.CustomItems.API.Features
             get => base.Type;
             set
             {
-                if (!value.IsArmor() && value != ItemType.None)
+                if (!value.IsArmor() && (value != ItemType.None))
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid armor type.");
 
                 base.Type = value;
@@ -72,27 +72,27 @@ namespace Exiled.CustomItems.API.Features
 
             Timing.CallDelayed(0.05f, () => OnAcquired(player));
 
-            if(displayMessage)
+            if (displayMessage)
                 ShowPickedUpMessage(player);
         }
 
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.PickingUpArmor += OnInternalPickingUpArmor;
+            Exiled.Events.Handlers.Player.PickingUpItem += OnInternalPickingUpItem;
             base.SubscribeEvents();
         }
 
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.PickingUpArmor -= OnInternalPickingUpArmor;
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnInternalPickingUpItem;
             base.UnsubscribeEvents();
         }
 
-        private void OnInternalPickingUpArmor(PickingUpArmorEventArgs ev)
+        private void OnInternalPickingUpItem(PickingUpItemEventArgs ev)
         {
-            if (!Check(ev.Pickup) || ev.Player.Items.Count >= 8)
+            if (!Check(ev.Pickup) || ev.Player.Items.Count >= 8 || ev.Pickup is Exiled.API.Features.Pickups.BodyArmorPickup)
                 return;
 
             OnPickingUp(ev);

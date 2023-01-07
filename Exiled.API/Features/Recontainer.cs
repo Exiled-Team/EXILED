@@ -10,19 +10,21 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
+    using Enums;
+
+    using PlayerRoles.PlayableScps.Scp079;
 
     using UnityEngine;
 
     /// <summary>
-    /// A wrapper class for <see cref="Recontainer079"/>.
+    /// A wrapper class for <see cref="Scp079Recontainer"/>.
     /// </summary>
     public static class Recontainer
     {
         /// <summary>
-        /// Gets the base <see cref="Recontainer079"/>.
+        /// Gets the base <see cref="Scp079Recontainer"/>.
         /// </summary>
-        public static Recontainer079 Base { get; internal set; }
+        public static Scp079Recontainer Base { get; internal set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances used for the containment zone.

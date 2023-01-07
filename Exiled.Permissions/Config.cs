@@ -10,8 +10,9 @@ namespace Exiled.Permissions
     using System.ComponentModel;
     using System.IO;
 
+    using API.Interfaces;
+
     using Exiled.API.Features;
-    using Exiled.API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig
@@ -44,7 +45,9 @@ namespace Exiled.Permissions
         public string FullPath { get; private set; }
 
         /// <inheritdoc/>
-        [Description("Indicates whether the plugin is enabled or not")]
         public bool IsEnabled { get; set; } = true;
+
+        /// <inheritdoc/>
+        public bool Debug { get; set; }
     }
 }

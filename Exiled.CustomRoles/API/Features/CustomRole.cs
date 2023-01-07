@@ -19,7 +19,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
 
     using MEC;
@@ -27,6 +27,8 @@ namespace Exiled.CustomRoles.API.Features
     using Mirror;
 
     using NorthwoodLib.Pools;
+
+    using PlayerRoles;
 
     using UnityEngine;
 
@@ -48,9 +50,9 @@ namespace Exiled.CustomRoles.API.Features
         public abstract uint Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="RoleType"/> to spawn this role as.
+        /// Gets or sets the <see cref="RoleTypeId"/> to spawn this role as.
         /// </summary>
-        public abstract RoleType Role { get; set; }
+        public abstract RoleTypeId Role { get; set; }
 
         /// <summary>
         /// Gets or sets the max <see cref="Player.Health"/> for the role.
@@ -121,7 +123,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier.
         /// </summary>
-        public virtual Dictionary<RoleType, float> CustomRoleFFMultiplier { get; set; } = new();
+        public virtual Dictionary<RoleTypeId, float> CustomRoleFFMultiplier { get; set; } = new();
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
@@ -166,7 +168,9 @@ namespace Exiled.CustomRoles.API.Features
         public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object overrideClass = null)
         {
             List<CustomRole> roles = new();
-            Log.Warn("Registering roles..");
+
+            Log.Warn("Registering roles...");
+
             Assembly assembly = Assembly.GetCallingAssembly();
 
             foreach (Type type in assembly.GetTypes())
@@ -178,9 +182,9 @@ namespace Exiled.CustomRoles.API.Features
                 {
                     CustomRole customRole = null;
 
-                    if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                    if (!skipReflection && Server.PluginAssemblies.ContainsKey(assembly))
                     {
-                        IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+                        IPlugin<IConfig> plugin = Server.PluginAssemblies[assembly];
 
                         foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
                         {
@@ -192,11 +196,10 @@ namespace Exiled.CustomRoles.API.Features
                         }
                     }
 
-                    if (customRole is null)
-                        customRole = (CustomRole)Activator.CreateInstance(type);
+                    customRole ??= (CustomRole)Activator.CreateInstance(type);
 
-                    if (customRole.Role == RoleType.None)
-                        customRole.Role = ((CustomRoleAttribute)attribute).RoleType;
+                    if (customRole.Role == RoleTypeId.None)
+                        customRole.Role = ((CustomRoleAttribute)attribute).RoleTypeId;
 
                     if (customRole.TryRegister())
                         roles.Add(customRole);
@@ -221,17 +224,21 @@ namespace Exiled.CustomRoles.API.Features
 
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null ||
-                    (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
+                if (type.BaseType != typeof(CustomItem) ||
+                    type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null ||
+                    (isIgnored && targetTypes.Contains(type)) ||
+                    (!isIgnored && !targetTypes.Contains(type)))
+                {
                     continue;
+                }
 
                 foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true))
                 {
                     CustomRole customRole = null;
 
-                    if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                    if (!skipReflection && Server.PluginAssemblies.ContainsKey(assembly))
                     {
-                        IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+                        IPlugin<IConfig> plugin = Server.PluginAssemblies[assembly];
 
                         foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ??
                                                           plugin.Config.GetType().GetProperties())
@@ -243,11 +250,10 @@ namespace Exiled.CustomRoles.API.Features
                         }
                     }
 
-                    if (customRole is null)
-                        customRole = (CustomRole)Activator.CreateInstance(type);
+                    customRole ??= (CustomRole)Activator.CreateInstance(type);
 
-                    if (customRole.Role == RoleType.None)
-                        customRole.Role = ((CustomRoleAttribute)attribute).RoleType;
+                    if (customRole.Role == RoleTypeId.None)
+                        customRole.Role = ((CustomRoleAttribute)attribute).RoleTypeId;
 
                     if (customRole.TryRegister())
                         roles.Add(customRole);
@@ -350,7 +356,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="overwrite"> <see cref="bool"/> whether to force sync (Overwriting previous information). </param>
         public static void SyncPlayerFriendlyFire(CustomRole roleToSync, Player player, bool overwrite = false)
         {
-            if(overwrite)
+            if (overwrite)
             {
                 player.TryAddCustomRoleFriendlyFire(roleToSync.Name, roleToSync.CustomRoleFFMultiplier, overwrite);
                 player.UniqueRole = roleToSync.Name;
@@ -395,51 +401,53 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void AddRole(Player player)
         {
             Vector3 oldPos = player.Position;
-            Log.Debug($"{Name}: Adding role to {player.Nickname}.", CustomRoles.Instance.Config.Debug);
-            if (Role != RoleType.None)
-            {
-                player.SetRole(Role, SpawnReason.ForceClass, true);
-            }
 
-            Timing.CallDelayed(1.5f, () =>
-            {
-                Vector3 pos = GetSpawnPosition();
+            Log.Debug($"{Name}: Adding role to {player.Nickname}.");
 
-                Log.Debug($"{nameof(AddRole)}: Found {pos} to spawn {player.Nickname}", CustomRoles.Instance.Config.Debug);
+            if (Role != RoleTypeId.None)
+                player.Role.Set(Role, SpawnReason.ForceClass);
 
-                // If the spawn pos isn't 0,0,0, We add vector3.up * 1.5 here to ensure they do not spawn inside the ground and get stuck.
-                player.Position = oldPos;
-                if (pos != Vector3.zero)
+            Timing.CallDelayed(
+                1.5f,
+                () =>
                 {
-                    Log.Debug($"{nameof(AddRole)}: Setting {player.Nickname} position..", CustomRoles.Instance.Config.Debug);
-                    player.Position = pos + (Vector3.up * 1.5f);
-                }
+                    Vector3 pos = GetSpawnPosition();
 
-                if (!KeepInventoryOnSpawn)
-                {
-                    Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.", CustomRoles.Instance.Config.Debug);
-                    player.ClearInventory();
-                }
+                    Log.Debug($"{nameof(AddRole)}: Found {pos} to spawn {player.Nickname}");
 
-                foreach (string itemName in Inventory)
-                {
-                    Log.Debug($"{Name}: Adding {itemName} to inventory.", CustomRoles.Instance.Config.Debug);
-                    TryAddItem(player, itemName);
-                }
+                    // If the spawn pos isn't 0,0,0, We add vector3.up * 1.5 here to ensure they do not spawn inside the ground and get stuck.
+                    player.Position = oldPos;
+                    if (pos != Vector3.zero)
+                    {
+                        Log.Debug($"{nameof(AddRole)}: Setting {player.Nickname} position..");
+                        player.Position = pos + (Vector3.up * 1.5f);
+                    }
 
-                foreach (AmmoType ammo in Ammo.Keys)
-                {
-                    Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.", CustomRoles.Instance.Config.Debug);
-                    player.SetAmmo(ammo, Ammo[ammo]);
-                }
+                    if (!KeepInventoryOnSpawn)
+                    {
+                        Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
+                        player.ClearInventory();
+                    }
 
-                Log.Debug($"{Name}: Setting health values.", CustomRoles.Instance.Config.Debug);
-                player.Health = MaxHealth;
-                player.MaxHealth = MaxHealth;
-                player.Scale = Scale;
-            });
+                    foreach (string itemName in Inventory)
+                    {
+                        Log.Debug($"{Name}: Adding {itemName} to inventory.");
+                        TryAddItem(player, itemName);
+                    }
 
-            Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
+                    foreach (AmmoType ammo in Ammo.Keys)
+                    {
+                        Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.");
+                        player.SetAmmo(ammo, Ammo[ammo]);
+                    }
+
+                    Log.Debug($"{Name}: Setting health values.");
+                    player.Health = MaxHealth;
+                    player.MaxHealth = MaxHealth;
+                    player.Scale = Scale;
+                });
+
+            Log.Debug($"{Name}: Setting player info");
             player.CustomInfo = CustomInfo;
             player.InfoArea &= ~PlayerInfoArea.Role;
             if (CustomAbilities is not null)
@@ -451,8 +459,8 @@ namespace Exiled.CustomRoles.API.Features
             ShowMessage(player);
             RoleAdded(player);
             TrackedPlayers.Add(player);
-            player.UniqueRole = this.Name;
-            player.TryAddCustomRoleFriendlyFire(this.Name, CustomRoleFFMultiplier);
+            player.UniqueRole = Name;
+            player.TryAddCustomRoleFriendlyFire(Name, CustomRoleFFMultiplier);
         }
 
         /// <summary>
@@ -461,13 +469,13 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
         public virtual void RemoveRole(Player player)
         {
-            Log.Debug($"{Name}: Removing role from {player.Nickname}", CustomRoles.Instance.Config.Debug);
+            Log.Debug($"{Name}: Removing role from {player.Nickname}");
             TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
             player.InfoArea |= PlayerInfoArea.Role;
             player.Scale = Vector3.one;
             if (RemovalKillsPlayer)
-                player.SetRole(RoleType.Spectator);
+                player.Role.Set(RoleTypeId.Spectator);
             foreach (CustomAbility ability in CustomAbilities)
             {
                 ability.RemoveAbility(player);
@@ -475,17 +483,17 @@ namespace Exiled.CustomRoles.API.Features
 
             RoleRemoved(player);
             player.UniqueRole = string.Empty;
-            player.TryRemoveCustomeRoleFriendlyFire(this.Name);
+            player.TryRemoveCustomeRoleFriendlyFire(Name);
         }
 
         /// <summary>
-        /// Tries to add <see cref="RoleType"/> to CustomRole FriendlyFire rules.
+        /// Tries to add <see cref="RoleTypeId"/> to CustomRole FriendlyFire rules.
         /// </summary>
         /// <param name="roleToAdd"> Role to add. </param>
         /// <param name="ffMult"> Friendly fire multiplier. </param>
-        public void SetFriendlyFire(RoleType roleToAdd, float ffMult)
+        public void SetFriendlyFire(RoleTypeId roleToAdd, float ffMult)
         {
-            if (this.CustomRoleFFMultiplier.ContainsKey(roleToAdd))
+            if (CustomRoleFFMultiplier.ContainsKey(roleToAdd))
             {
                 CustomRoleFFMultiplier[roleToAdd] = ffMult;
             }
@@ -496,21 +504,21 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
-        /// Wrapper to call <see cref="SetFriendlyFire(RoleType, float)"/>.
+        /// Wrapper to call <see cref="SetFriendlyFire(RoleTypeId, float)"/>.
         /// </summary>
         /// <param name="roleFF"> Role with FF to add even if it exists. </param>
-        public void SetFriendlyFire(KeyValuePair<RoleType, float> roleFF)
+        public void SetFriendlyFire(KeyValuePair<RoleTypeId, float> roleFF)
         {
             SetFriendlyFire(roleFF.Key, roleFF.Value);
         }
 
         /// <summary>
-        /// Tries to add <see cref="RoleType"/> to CustomRole FriendlyFire rules.
+        /// Tries to add <see cref="RoleTypeId"/> to CustomRole FriendlyFire rules.
         /// </summary>
         /// <param name="roleToAdd"> Role to add. </param>
         /// <param name="ffMult"> Friendly fire multiplier. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddFriendlyFire(RoleType roleToAdd, float ffMult)
+        public bool TryAddFriendlyFire(RoleTypeId roleToAdd, float ffMult)
         {
             if (CustomRoleFFMultiplier.ContainsKey(roleToAdd))
             {
@@ -522,25 +530,22 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
-        /// Tries to add <see cref="RoleType"/> to CustomRole FriendlyFire rules.
+        /// Tries to add <see cref="RoleTypeId"/> to CustomRole FriendlyFire rules.
         /// </summary>
         /// <param name="pairedRoleFF"> Role FF multiplier to add. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddFriendlyFire(KeyValuePair<RoleType, float> pairedRoleFF)
-        {
-            return TryAddFriendlyFire(pairedRoleFF.Key, pairedRoleFF.Value);
-        }
+        public bool TryAddFriendlyFire(KeyValuePair<RoleTypeId, float> pairedRoleFF) => TryAddFriendlyFire(pairedRoleFF.Key, pairedRoleFF.Value);
 
         /// <summary>
-        /// Tries to add <see cref="RoleType"/> to CustomRole FriendlyFire rules.
+        /// Tries to add <see cref="RoleTypeId"/> to CustomRole FriendlyFire rules.
         /// </summary>
         /// <param name="ffRules"> Roles to add with friendly fire values. </param>
         /// <param name="overwrite"> Whether to overwrite current values if they exist. </param>
         /// <returns> Whether the item was able to be added. </returns>
-        public bool TryAddFriendlyFire(Dictionary<RoleType, float> ffRules, bool overwrite = false)
+        public bool TryAddFriendlyFire(Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleType, float> temporaryFriendlyFireRules = new();
-            foreach (KeyValuePair<RoleType, float> roleFF in ffRules)
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = new();
+            foreach (KeyValuePair<RoleTypeId, float> roleFF in ffRules)
             {
                 if (overwrite)
                 {
@@ -548,7 +553,7 @@ namespace Exiled.CustomRoles.API.Features
                 }
                 else
                 {
-                    if (!this.CustomRoleFFMultiplier.ContainsKey(roleFF.Key))
+                    if (!CustomRoleFFMultiplier.ContainsKey(roleFF.Key))
                     {
                         temporaryFriendlyFireRules.Add(roleFF.Key, roleFF.Value);
                     }
@@ -562,7 +567,7 @@ namespace Exiled.CustomRoles.API.Features
 
             if (!overwrite)
             {
-                foreach (KeyValuePair<RoleType, float> roleFF in temporaryFriendlyFireRules)
+                foreach (KeyValuePair<RoleTypeId, float> roleFF in temporaryFriendlyFireRules)
                 {
                     TryAddFriendlyFire(roleFF);
                 }
@@ -592,7 +597,7 @@ namespace Exiled.CustomRoles.API.Features
                 Registered.Add(this);
                 Init();
 
-                Log.Debug($"{Name} ({Id}) has been successfully registered.", CustomRoles.Instance.Config.Debug);
+                Log.Debug($"{Name} ({Id}) has been successfully registered.");
 
                 return true;
             }
@@ -697,7 +702,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         protected virtual void SubscribeEvents()
         {
-            Log.Debug($"{Name}: Loading events.", CustomRoles.Instance.Config.Debug);
+            Log.Debug($"{Name}: Loading events.");
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Dying += OnInternalDying;
         }
@@ -710,7 +715,7 @@ namespace Exiled.CustomRoles.API.Features
             foreach (Player player in TrackedPlayers)
                 RemoveRole(player);
 
-            Log.Debug($"{Name}: Unloading events.", CustomRoles.Instance.Config.Debug);
+            Log.Debug($"{Name}: Unloading events.");
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Dying -= OnInternalDying;
         }
@@ -739,16 +744,16 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
         {
-            if (Check(ev.Player) && ((ev.NewRole == RoleType.Spectator && !KeepRoleOnDeath) || (ev.NewRole != RoleType.Spectator && ev.NewRole != Role)))
+            if (Check(ev.Player) && (((ev.NewRole == RoleTypeId.Spectator) && !KeepRoleOnDeath) || ((ev.NewRole != RoleTypeId.Spectator) && (ev.NewRole != Role))))
                 RemoveRole(ev.Player);
         }
 
         private void OnInternalDying(DyingEventArgs ev)
         {
-            if (Check(ev.Target))
+            if (Check(ev.Player))
             {
-                CustomRoles.Instance.StopRagdollPlayers.Add(ev.Target);
-                _ = new Ragdoll(new RagdollInfo(ev.Target.ReferenceHub, ev.Handler, Role, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), ev.Target.DisplayNickname, NetworkTime.time), true);
+                CustomRoles.Instance.StopRagdollPlayers.Add(ev.Player);
+                Ragdoll.CreateAndSpawn(new RagdollData(ev.Player.ReferenceHub, ev.DamageHandler, Role, ev.Player.Position, Quaternion.Euler(ev.Player.Rotation), ev.Player.DisplayNickname, NetworkTime.time));
             }
         }
     }

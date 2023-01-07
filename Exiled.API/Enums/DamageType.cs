@@ -7,7 +7,9 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Features;
+    using Features;
+
+    using PlayerRoles;
 
     /// <summary>
     /// Identifiers for types of damage.
@@ -69,7 +71,7 @@ namespace Exiled.API.Enums
         Tesla,
 
         /// <summary>
-        /// Damage is dealt by a <see cref="Side.Scp"/> when the <see cref="RoleType"/> used is not available.
+        /// Damage is dealt by a <see cref="Side.Scp"/> when the <see cref="RoleTypeId"/> used is not available.
         /// </summary>
         Scp,
 
@@ -124,32 +126,32 @@ namespace Exiled.API.Enums
         Custom,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleType.Scp049"/>.
+        /// Damage caused by <see cref="RoleTypeId.Scp049"/>.
         /// </summary>
         Scp049,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleType.Scp096"/>.
+        /// Damage caused by <see cref="RoleTypeId.Scp096"/>.
         /// </summary>
         Scp096,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleType.Scp173"/>.
+        /// Damage caused by <see cref="RoleTypeId.Scp173"/>.
         /// </summary>
         Scp173,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleType.Scp93953"/> or <see cref="RoleType.Scp93989"/>.
+        /// Damage caused by <see cref="RoleTypeId.Scp939"/>.
         /// </summary>
         Scp939,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleType.Scp0492"/>.
+        /// Damage caused by <see cref="RoleTypeId.Scp0492"/>.
         /// </summary>
         Scp0492,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleType.Scp106"/>.
+        /// Damage caused by <see cref="RoleTypeId.Scp106"/>.
         /// </summary>
         Scp106,
 
@@ -207,5 +209,20 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.ParticleDisruptor"/>.
         /// </summary>
         ParticleDisruptor,
+
+        /// <summary>
+        /// Damage caused by SCP-956.
+        /// </summary>
+        Scp956,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunCom45"/>.
+        /// </summary>
+        Com45,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.Jailbird"/>.
+        /// </summary>
+        Jailbird,
     }
 }
