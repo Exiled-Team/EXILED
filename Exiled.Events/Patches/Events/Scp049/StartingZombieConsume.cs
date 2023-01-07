@@ -39,8 +39,9 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             int offset = -1;
             //Find IsCorpse, then going backwards, find IsInProgress
-            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.IsCorpseNearby))));
-            index = newInstructions.FindLastIndex(index, instruction => instruction.Calls(PropertyGetter(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.IsInProgress)))) + offset;
+            // int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.IsCorpseNearby))));
+            // index = newInstructions.FindLastIndex(index, instruction => instruction.Calls(PropertyGetter(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.IsInProgress)))) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>._errorCode)))) + offset;
             // Immediately return
             Label returnLabel = generator.DefineLabel();
 
@@ -49,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 new[]
                 {
                     // RagdollAbilityBase<ZombieRole>
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Call, Method(typeof(StartingZombieConsume), nameof(ServerProcessCmdRewrite))),
                     new(OpCodes.Br, returnLabel),
 
@@ -72,36 +73,22 @@ namespace Exiled.Events.Patches.Events.Scp049
         private static void ServerProcessCmdRewrite(RagdollAbilityBase<ZombieRole> zombieAbilityBase)
         {
 
-            if (zombieAbilityBase.IsInProgress)
-            {
-                return;
-            }
-            Transform transform;
-            Vector3 position = zombieAbilityBase.ScpRole.FpcModule.Position;
-            if (!zombieAbilityBase.IsCorpseNearby(position, zombieAbilityBase._syncRagdoll, out transform))
-            {
-                return;
-            }
-
             Transform ragdollTransform = zombieAbilityBase._ragdollTransform;
             BasicRagdoll curRagdoll = zombieAbilityBase.CurRagdoll;
-            zombieAbilityBase._ragdollTransform = transform;
-            zombieAbilityBase.CurRagdoll = zombieAbilityBase._syncRagdoll;
-            zombieAbilityBase._errorCode = zombieAbilityBase.ServerValidateBegin(zombieAbilityBase._syncRagdoll);
 
             API.Features.Player currentPlayer = API.Features.Player.Get(zombieAbilityBase.Owner);
             if (currentPlayer.Role.Type is not RoleTypeId.Scp049)
             {
-                ZombieConsumeEventArgs zombieConsumeEvent = new ZombieConsumeEventArgs(currentPlayer, curRagdoll, ZombieConsumeAbility.ConsumedRagdolls, zombieAbilityBase._errorCode);
-                Handlers.Scp049.OnStartingConsume(zombieConsumeEvent);
+                ZombieConsumeEventArgs ev = new ZombieConsumeEventArgs(currentPlayer, curRagdoll, ZombieConsumeAbility.ConsumedRagdolls, zombieAbilityBase._errorCode);
+                Handlers.Scp049.OnStartingConsume(ev);
 
-                if (!zombieConsumeEvent.IsAllowed)
+                if (!ev.IsAllowed)
                 {
                     return;
                 }
 
-                curRagdoll = zombieConsumeEvent.TargetRagdoll;
-                zombieAbilityBase._errorCode = zombieConsumeEvent.ErrorCode;
+                curRagdoll = ev.TargetRagdoll;
+                zombieAbilityBase._errorCode = ev.ErrorCode;
             }
 
             bool flag = zombieAbilityBase._errorCode > 0;
@@ -109,15 +96,11 @@ namespace Exiled.Events.Patches.Events.Scp049
             {
                 zombieAbilityBase._ragdollTransform = ragdollTransform;
                 zombieAbilityBase.CurRagdoll = curRagdoll;
-                if (flag)
-                {
-                    zombieAbilityBase.ServerSendRpc(true);
-                }
+                zombieAbilityBase.ServerSendRpc(true);
                 return;
             }
+
             zombieAbilityBase.IsInProgress = true;
-
         }
-
     }
 }
