@@ -11,7 +11,9 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using HarmonyLib;
+
     using Hazards;
+
     using NorthwoodLib.Pools;
 
     /// <summary>

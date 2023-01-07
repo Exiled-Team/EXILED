@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.DamageHandlers
 {
     using Enums;
+
     using Extensions;
 
     using PlayerStatsSystem;

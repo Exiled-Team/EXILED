@@ -8,6 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Cassie;
+
     using Extensions;
 
     using static Events;

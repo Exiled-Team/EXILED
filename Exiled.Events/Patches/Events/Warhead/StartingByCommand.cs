@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using CommandSystem;
     using CommandSystem.Commands.RemoteAdmin.ServerEvent;
     using CommandSystem.Commands.RemoteAdmin.Warhead;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Warhead;
 
