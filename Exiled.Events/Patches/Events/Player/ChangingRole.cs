@@ -134,7 +134,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
 
-                    // ChangingRole.ChangeInventory(ev.Player, ev.Items, ev.Ammo, currentRole, newRole, reason);
+                    // ChangingRole.ChangeInventory(ev, oldRoleType);
                     new(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
 
                     new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
@@ -184,7 +184,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 Inventory inventory = ev.Player.Inventory;
 
-                if ((RoleChangeReason)ev.Reason == RoleChangeReason.Escaped && prevRole != ev.NewRole)
+                if (ev.Reason == API.Enums.SpawnReason.Escaped)
                 {
                     List<ItemPickupBase> list = new();
                     if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
