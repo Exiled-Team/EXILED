@@ -158,14 +158,20 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Forces SCP-106 to use its portal, and Teleport to position.
         /// </summary>
-        /// <param name="position"> where player will be Teleport.</param>
-        /// <param name="cost"> how mush Vigor it's required and conssume.</param>
+        /// <param name="position">Where the player will be teleported.</param>
+        /// <param name="cost">The amount of vigor that is required and will be consumed.</param>
         /// <returns>If the player will be teleport.</returns>
         public bool UsePortal(Vector3 position, float cost = 0f)
         {
+            if (Room.Get(position) is not Room room)
+            {
+                throw new System.InvalidOperationException("Invalid room provided.");
+            }
+
+            HuntersAtlasAbility._syncRoom = room.Identifier;
             HuntersAtlasAbility._syncPos = position;
 
-            if (Vigor > cost)
+            if (Vigor < cost)
                 return false;
 
             HuntersAtlasAbility._estimatedCost = cost;

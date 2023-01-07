@@ -897,7 +897,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)
         {
-            player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
+            player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.SelectedHint.Duration);
         }
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
