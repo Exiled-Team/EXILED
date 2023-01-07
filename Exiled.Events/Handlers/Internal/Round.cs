@@ -34,6 +34,7 @@ namespace Exiled.Events.Handlers.Internal
                 TranslationManager.Reload();
 
             RoundSummary.RoundLock = false;
+            Warhead.Controller._alreadyDetonated = false;
         }
 
         /// <inheritdoc cref="Handlers.Server.OnRestartingRound" />
