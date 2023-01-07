@@ -165,8 +165,7 @@ namespace Exiled.API.Features.Roles
         {
             if (Room.Get(position) is not Room room)
             {
-                // TODO: normal message
-                throw new System.InvalidOperationException("Room doesn't found");
+                throw new System.InvalidOperationException("Invalid room provided.");
             }
 
             HuntersAtlasAbility._syncRoom = room.Identifier;
