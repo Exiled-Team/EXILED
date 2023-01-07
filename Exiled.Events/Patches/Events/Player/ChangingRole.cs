@@ -180,16 +180,11 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void ChangeInventory(ChangingRoleEventArgs ev, RoleTypeId prevRole)
         {
-            API.Features.Player player = ev.Player;
-            List<ItemType> items = ev.Items;
-            Dictionary<ItemType, ushort> ammo = ev.Ammo;
-            RoleChangeReason reason = (RoleChangeReason)ev.Reason;
-            RoleTypeId newRole = ev.NewRole;
             try
             {
-                Inventory inventory = player.Inventory;
+                Inventory inventory = ev.Player.Inventory;
 
-                if (reason == RoleChangeReason.Escaped && prevRole != newRole)
+                if ((RoleChangeReason)ev.Reason == RoleChangeReason.Escaped && prevRole != ev.NewRole)
                 {
                     List<ItemPickupBase> list = new();
                     if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
@@ -208,7 +203,7 @@ namespace Exiled.Events.Patches.Events.Player
                             list.Add(item);
                     }
 
-                    InventoryItemProvider.PreviousInventoryPickups[player.ReferenceHub] = list;
+                    InventoryItemProvider.PreviousInventoryPickups[ev.Player.ReferenceHub] = list;
                 }
                 else
                 {
@@ -227,13 +222,13 @@ namespace Exiled.Events.Patches.Events.Player
                     inventory.SendAmmoNextFrame = true;
                 }
 
-                foreach (KeyValuePair<ItemType, ushort> keyValuePair in ammo)
+                foreach (KeyValuePair<ItemType, ushort> keyValuePair in ev.Ammo)
                     inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
 
-                foreach (ItemType item in items)
-                    InventoryItemProvider.OnItemProvided?.Invoke(player.ReferenceHub, inventory.ServerAddItem(item));
+                foreach (ItemType item in ev.Items)
+                    InventoryItemProvider.OnItemProvided?.Invoke(ev.Player.ReferenceHub, inventory.ServerAddItem(item));
 
-                InventoryItemProvider.SpawnPreviousInventoryPickups(player.ReferenceHub);
+                InventoryItemProvider.SpawnPreviousInventoryPickups(ev.Player.ReferenceHub);
             }
             catch (Exception exception)
             {
