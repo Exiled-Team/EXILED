@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldarg_1),
                     // Returns DoctorSenseEventArgs
-                    new(OpCodes.Call, Method(typeof(DoctorSense), nameof(Scp049GoodSense))),
+                    new(OpCodes.Call, Method(typeof(DoctorSense), nameof(Scp049Sense))),
                     // If !ev.IsAllowed, return
                     new(OpCodes.Br, returnLabel),
 
@@ -61,44 +61,50 @@ namespace Exiled.Events.Patches.Events.Scp049
         /// <param name="senseAbility"></param>
         /// <param name="reader"></param>
         /// <returns></returns>
-        private static void Scp049GoodSense(Scp049SenseAbility senseAbility, NetworkReader reader)
+        private static void Scp049Sense(Scp049SenseAbility senseAbility, NetworkReader reader)
         {
-            API.Features.Player currentPlayer = API.Features.Player.Get(senseAbility.Owner);
-            API.Features.Player target = API.Features.Player.Get(reader.ReadReferenceHub());
-            DoctorSenseEventArgs doctorSenseEvent = new DoctorSenseEventArgs(currentPlayer, target, reader);
-            Handlers.Scp049.OnDoctorSense(doctorSenseEvent);
-            if (!doctorSenseEvent.IsAllowed)
+            DoctorSenseEventArgs ev = new DoctorSenseEventArgs(API.Features.Player.Get(senseAbility.Owner), API.Features.Player.Get(reader.ReadReferenceHub()), reader, senseAbility);
+            Handlers.Scp049.OnDoctorSense(ev);
+            if (!ev.IsAllowed)
             {
                 return;
             }
 
-            if (!doctorSenseEvent.BypassChecks)
+            // If users want to force event
+            if (!ev.BypassChecks)
             {
                 if (!senseAbility.Cooldown.IsReady || !senseAbility.Duration.IsReady)
                 {
                     return;
                 }
             }
+
             senseAbility.HasTarget = false;
-            senseAbility.Target = doctorSenseEvent.Target?.ReferenceHub;
+            senseAbility.Target = ev.Target?.ReferenceHub;
+
+            // If no targets, allow custom cooldown
             if (senseAbility.Target == null)
             {
-                senseAbility.Cooldown.Trigger(doctorSenseEvent.Cooldown);
+                senseAbility.Cooldown.Trigger(ev.Cooldown);
                 senseAbility.ServerSendRpc(true);
                 return;
             }
+
             HumanRole humanRole;
             if ((humanRole = senseAbility.Target.roleManager.CurrentRole as HumanRole) == null)
             {
                 return;
             }
+
             float radius = humanRole.FpcModule.CharController.radius;
             Vector3 cameraPosition = humanRole.CameraPosition;
+            senseAbility._distanceThreshold = ev.Distance;
             if (!VisionInformation.GetVisionInformation(senseAbility.Owner, senseAbility.Owner.PlayerCameraReference, cameraPosition, radius, senseAbility._distanceThreshold, true, true, 0).IsLooking)
             {
                 return;
             }
-            senseAbility.Duration.Trigger(doctorSenseEvent.Duration);
+
+            senseAbility.Duration.Trigger(ev.Duration);
             senseAbility.HasTarget = true;
             senseAbility.ServerSendRpc(true);
         }

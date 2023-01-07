@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 
 using Mirror;
+using PlayerRoles.PlayableScps.Scp049;
 
 namespace Exiled.Events.EventArgs.Scp049
 {
@@ -25,16 +26,27 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <param name="reader"> <inheritdoc cref="Reader" /></param>
         /// <param name="bypassChecks"> <inheritdoc cref="BypassChecks" /></param>
         /// <param name="isAllowed"> <inheritdoc cref="IsAllowed" /></param>
-        public DoctorSenseEventArgs(Player scp049, Player target, NetworkReader reader, bool bypassChecks = false, bool isAllowed = true)
+        public DoctorSenseEventArgs(Player scp049, Player target, NetworkReader reader, Scp049SenseAbility senseAbility, bool isAllowed = true)
         {
             Player = scp049;
             Target = target;
             Reader = reader;
-            BypassChecks = bypassChecks;
+            SenseAbility = senseAbility;
             IsAllowed = isAllowed;
             Cooldown = 5f;
             Duration = 20f;
+            Distance = senseAbility._distanceThreshold;
         }
+
+        /// <summary>
+        /// Distance allowed for doctor to see players.
+        /// </summary>
+        public float Distance { get; set; }
+
+        /// <summary>
+        /// 049 Sense ability <see cref="Scp049SenseAbility"/>.
+        /// </summary>
+        public Scp049SenseAbility SenseAbility { get;}
 
         /// <summary>
         /// Scp049 Duration of sense.
@@ -47,7 +59,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public float Cooldown { get; set; }
 
         /// <summary>
-        /// Ignore NW original checks.
+        /// Ignore NW original checks for cooldown and duration.
         /// </summary>
         public bool BypassChecks { get; set; }
 
