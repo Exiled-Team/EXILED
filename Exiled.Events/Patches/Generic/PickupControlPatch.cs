@@ -19,7 +19,9 @@ namespace Exiled.Events.Patches.Generic
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
+
     using MapGeneration.Distributors;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;

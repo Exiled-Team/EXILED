@@ -8,9 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using API.Features;
+
     using Exiled.API.Enums;
+
     using Interfaces;
+
     using RelativePositioning;
+
     using UnityEngine;
 
     /// <summary>
@@ -36,7 +40,7 @@ namespace Exiled.Events.EventArgs.Scp079
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public PingingEventArgs(ReferenceHub hub, RelativePosition position, int powerCost, byte proccesorindex,  bool isAllowed = true)
+        public PingingEventArgs(ReferenceHub hub, RelativePosition position, int powerCost, byte proccesorindex, bool isAllowed = true)
         {
             Player = Player.Get(hub);
             Position = position.Position;

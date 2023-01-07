@@ -7,17 +7,13 @@
 
 namespace Exiled.Events.Handlers
 {
-    using API.Extensions;
-    using API.Features;
     using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Scp079;
+
     using Extensions;
-    using Interactables.Interobjects.DoorUtils;
-    using InventorySystem.Items.Radio;
-    using MapGeneration.Distributors;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl.Thirdperson;
-    using PlayerStatsSystem;
+
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
     using PluginAPI.Events;
@@ -229,8 +225,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReloadingWeaponEventArgs> ReloadingWeapon;
 
         /// <summary>
-        /// Invoked before spawning a <see cref="API.Features.Player"/>(called only when possibly to change position).
-        /// use <see cref="Spawned"/> or <see cref="ChangingRole"/>for all class changes.
+        /// Invoked before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
         public static event CustomEventHandler<SpawningEventArgs> Spawning;
 

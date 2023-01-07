@@ -124,8 +124,8 @@ namespace Exiled.Installer
                 using HttpResponseMessage downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
                 using Stream downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
-                using GZipInputStream gzInputStream = new (downloadArchiveStream);
-                using TarInputStream tarInputStream = new (gzInputStream, null);
+                using GZipInputStream gzInputStream = new(downloadArchiveStream);
+                using TarInputStream tarInputStream = new(gzInputStream, null);
 
                 TarEntry entry;
                 while ((entry = tarInputStream.GetNextEntry()) is not null)
@@ -163,7 +163,7 @@ namespace Exiled.Installer
 
         private static string FormatRelease(Release r, bool includeAssets)
         {
-            StringBuilder builder = new (30);
+            StringBuilder builder = new(30);
             builder.AppendLine($"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}");
             if (includeAssets)
             {

@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Runtime.CompilerServices;
 
     using API.Features;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;

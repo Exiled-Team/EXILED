@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     using Exiled.API.Extensions;
 
     using InventorySystem.Items.ThrowableProjectiles;
+
     using UnityEngine;
 
     /// <summary>

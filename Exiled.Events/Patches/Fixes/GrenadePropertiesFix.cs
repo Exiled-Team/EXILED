@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
 
     using HarmonyLib;

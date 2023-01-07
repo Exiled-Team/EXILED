@@ -8,7 +8,6 @@
 namespace Exiled.API.Features.Roles
 {
     using System;
-    using System.Diagnostics;
 
     using Enums;
 
@@ -16,8 +15,10 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Features.Spawn;
 
     using Extensions;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
+
     using UnityEngine;
 
     using HumanGameRole = PlayerRoles.HumanRole;
@@ -63,9 +64,14 @@ namespace Exiled.API.Features.Roles
         public PlayerRoleBase Base { get; }
 
         /// <summary>
-        /// Gets the <see cref="SpawnReason"/>.
+        /// Gets the <see cref="RoleChangeReason"/>.
         /// </summary>
         public RoleChangeReason SpawnReason => Base.ServerSpawnReason;
+
+        /// <summary>
+        /// Gets the <see cref="RoleSpawnFlags"/>.
+        /// </summary>
+        public RoleSpawnFlags SpawnFlags => Base.ServerSpawnFlags;
 
         /// <summary>
         /// Gets the <see cref="PlayerRoles.Team"/> of this <see cref="Role"/>.
@@ -183,14 +189,10 @@ namespace Exiled.API.Features.Roles
         /// Sets the player's <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
-        /// <param name="reason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
-        public virtual void Set(RoleTypeId newRole, SpawnReason reason = Enums.SpawnReason.ForceClass)
-        {
-            if (Owner.Role == newRole)
-                return;
-
-            Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)reason);
-        }
+        /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
+        /// <param name="spawnFlags">The <see cref="RoleSpawnFlags"/> defining player spawn logic.</param>
+        public virtual void Set(RoleTypeId newRole, SpawnReason reason = Enums.SpawnReason.ForceClass, RoleSpawnFlags spawnFlags = RoleSpawnFlags.All) =>
+            Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)reason, spawnFlags);
 
         /// <summary>
         /// Creates a role from <see cref="RoleTypeId"/> and <see cref="Player"/>.

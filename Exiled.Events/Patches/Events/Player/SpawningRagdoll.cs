@@ -11,21 +11,20 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Player;
+
     using Handlers;
 
     using HarmonyLib;
 
-    using Mirror;
-
     using NorthwoodLib.Pools;
+
     using PlayerRoles.Ragdolls;
+
     using PlayerStatsSystem;
 
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
-
-    using Map = API.Features.Map;
 
     /// <summary>
     ///     Patches <see cref="RagdollManager.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)" />.

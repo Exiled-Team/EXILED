@@ -12,9 +12,13 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Player;
+
     using Handlers;
+
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;

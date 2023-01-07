@@ -8,10 +8,15 @@
 namespace Exiled.API.Features.DamageHandlers
 {
     using CustomPlayerEffects;
+
     using Enums;
+
     using Exiled.API.Extensions;
+
     using Items;
+
     using PlayerStatsSystem;
+
     using UnityEngine;
 
     using BaseFirearmHandler = PlayerStatsSystem.FirearmDamageHandler;
