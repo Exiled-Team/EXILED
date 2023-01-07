@@ -14,19 +14,29 @@ namespace Exiled.API.Features
     using System.Runtime.CompilerServices;
 
     using Core;
+
     using CustomPlayerEffects;
+
     using DamageHandlers;
+
     using Enums;
+
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Roles;
     using Exiled.API.Structs;
+
     using Extensions;
+
     using Footprinting;
+
     using global::Scp914;
+
     using Hints;
+
     using Interactables.Interobjects;
+
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
@@ -36,12 +46,17 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
+
     using MapGeneration.Distributors;
+
     using MEC;
+
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
+
     using NorthwoodLib;
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp079;
@@ -50,11 +65,17 @@ namespace Exiled.API.Features
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
+
     using PlayerStatsSystem;
+
     using RemoteAdmin;
+
     using RoundRestarting;
+
     using UnityEngine;
+
     using Utils.Networking;
+
     using VoiceChat;
     using VoiceChat.Playbacks;
 
@@ -369,8 +390,8 @@ namespace Exiled.API.Features
         /// </summary>
         public bool IsOverwatchEnabled
         {
-            get => ReferenceHub.serverRoles.OverwatchEnabled;
-            set => ReferenceHub.serverRoles.SetOverwatchStatus(value);
+            get => ReferenceHub.serverRoles.IsInOverwatch;
+            set => ReferenceHub.serverRoles.SetOverwatchStatus((byte)(value ? 1 : 0));
         }
 
         /// <summary>
@@ -383,9 +404,9 @@ namespace Exiled.API.Features
             get => FpcNoclip.IsPermitted(ReferenceHub);
             set
             {
-                if (value && !FpcNoclip.PermittedPlayers.Contains(ReferenceHub.netId))
+                if (value)
                     FpcNoclip.PermitPlayer(ReferenceHub);
-                else if (!value && FpcNoclip.PermittedPlayers.Contains(ReferenceHub.netId))
+                else
                     FpcNoclip.UnpermitPlayer(ReferenceHub);
             }
         }
@@ -470,10 +491,10 @@ namespace Exiled.API.Features
         /// This role is automatically cached until it changes, and it is recommended to use this property directly rather than storing the property yourself.
         /// </para>
         /// <para>
-        /// Roles and RoleTypeIds can be compared directly. <c>Player.Role == RoleTypeId.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Role.Set(RoleTypeId, SpawnReason)"/>.
+        /// Roles and RoleTypeIds can be compared directly. <c>Player.Role == RoleTypeId.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>.
         /// </para>
         /// </summary>
-        /// <seealso cref="Role.Set(RoleTypeId, SpawnReason)"/>
+        /// <seealso cref="Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>
         public Role Role
         {
             get => role ??= Role.Create(RoleManager.CurrentRole);

@@ -118,11 +118,6 @@ namespace Exiled.API.Enums
         SinkHole,
 
         /// <summary>
-        /// Gives the player the SCP-939 sound vision.
-        /// </summary>
-        Visuals939,
-
-        /// <summary>
         /// Reduces overall damage taken.
         /// </summary>
         DamageReduction,

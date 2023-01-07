@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
     using PlayerRoles.Voice;
 

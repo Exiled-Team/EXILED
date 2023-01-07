@@ -13,9 +13,13 @@ namespace Exiled.Events.Commands.Show
     using System.Text;
 
     using API.Interfaces;
+
     using CommandSystem;
+
     using Exiled.Permissions.Extensions;
+
     using NorthwoodLib.Pools;
+
     using RemoteAdmin;
 
     /// <summary>

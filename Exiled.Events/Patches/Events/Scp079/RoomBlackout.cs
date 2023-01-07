@@ -13,11 +13,10 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Exiled.Events.EventArgs.Scp079;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using PlayerRoles.PlayableScps.Scp079;
-    using PlayerRoles.PlayableScps.Scp079.Pinging;
-    using PlayerRoles.PlayableScps.Subroutines;
-    using RelativePositioning;
 
     using static HarmonyLib.AccessTools;
 
@@ -61,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
         private static bool ProcessRoomBlackout(Scp079BlackoutRoomAbility instance)
         {
-            RoomBlackoutEventArgs ev = new(instance.Owner, instance._roomController.Room, instance._cost, instance._blackoutDuration, instance._cooldown, instance.LostSignalHandler.Lost);
+            RoomBlackoutEventArgs ev = new(instance.Owner, instance._roomController.Room, instance._cost, instance._blackoutDuration, instance._cooldown, !instance.LostSignalHandler.Lost);
 
             Handlers.Scp079.OnRoomBlackout(ev);
 
