@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ThrownItem.cs" company="Exiled Team">
+// <copyright file="ThrownProjectile.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -26,10 +26,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="ThrowableItem.ServerThrow"/>.
-    /// Adds the <see cref="Handlers.Player.ThrownItem"/> event.
+    /// Adds the <see cref="Handlers.Player.ThrownProjectile"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow))]
-    internal static class ThrownItem
+    internal static class ThrownProjectile
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -54,10 +54,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldloc_0),
 
                 // ThrownItemEventArgs ev = new(Player.Get(this.Owner), this, thrownProjectile);
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrownItemEventArgs))[0]),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrownProjectileEventArgs))[0]),
 
                 // Handlers.Player.OnThrowingItem(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingItem))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingProjectile))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
