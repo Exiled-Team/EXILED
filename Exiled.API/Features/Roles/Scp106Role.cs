@@ -159,7 +159,7 @@ namespace Exiled.API.Features.Roles
         /// Forces SCP-106 to use its portal, and Teleport to position.
         /// </summary>
         /// <param name="position">Where player will be Teleport.</param>
-        /// <param name="cost">How mush Vigor it's required and conssume.</param>
+        /// <param name="cost">The amount of vigor that is required and will be consumed.</param>
         /// <returns>If the player will be teleport.</returns>
         public bool UsePortal(Vector3 position, float cost = 0f)
         {
