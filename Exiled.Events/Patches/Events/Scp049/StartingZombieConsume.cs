@@ -48,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 index,
                 new[]
                 {
-                    // Scp049SenseAbility
+                    // RagdollAbilityBase<ZombieRole>
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(StartingZombieConsume), nameof(ServerProcessCmdRewrite))),
                     new(OpCodes.Br, returnLabel),
@@ -101,7 +101,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 }
 
                 curRagdoll = zombieConsumeEvent.TargetRagdoll;
-                zombieAbilityBase._errorCode = zombieConsumeEvent.Errorcode;
+                zombieAbilityBase._errorCode = zombieConsumeEvent.ErrorCode;
             }
 
             bool flag = zombieAbilityBase._errorCode > 0;

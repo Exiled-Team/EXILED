@@ -32,13 +32,13 @@ namespace Exiled.Events.EventArgs.Scp049
             TargetRagdoll = target;
             ConsomedRagdolls = consumedRagdolls;
             IsAllowed = isAllowed;
-            Errorcode = errorCode;
+            ErrorCode = errorCode;
         }
 
         /// <summary>
         /// Error code to send back to client
         /// </summary>
-        public byte Errorcode { get; set; }
+        public byte ErrorCode { get; set; }
 
         /// <summary>
         /// Scp0492 ragdolls consumed thus far.
