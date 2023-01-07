@@ -7,6 +7,9 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using InventorySystem.Items.Jailbird;
+    using UnityEngine;
+
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
 
     /// <summary>
@@ -39,21 +42,43 @@ namespace Exiled.API.Features.Pickups
         public new BaseJailbirdPickup Base { get; }
 
         /// <summary>
-        /// Gets or Sets the saving value of the total damage dealt.
+        /// Gets or sets the total amount of damage dealt with the Jailbird.
         /// </summary>
-        public float TotalMelee
+        public float TotalDamageDealt
         {
             get => Base.TotalMelee;
             set => Base.TotalMelee = value;
         }
 
         /// <summary>
-        /// Gets or Sets the number of charge remaining in the item.
+        /// Gets or sets the amount of damage remaining before the Jailbird breaks.
+        /// </summary>
+        /// <remarks>Modifying this value will directly modify <see cref="TotalDamageDealt"/>.</remarks>
+        /// <seealso cref="TotalDamageDealt"/>
+        public float RemainingDamage
+        {
+            get => JailbirdItem.DamageLimit - TotalDamageDealt;
+            set => TotalDamageDealt = Mathf.Clamp(JailbirdItem.DamageLimit - value, 0, JailbirdItem.DamageLimit);
+        }
+
+        /// <summary>
+        /// Gets or sets the number of times the item has been charged and used.
         /// </summary>
         public int TotalCharges
         {
             get => Base.TotalCharges;
             set => Base.TotalCharges = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of charges remaining before the Jailbird breaks.
+        /// </summary>
+        /// <remarks>Modifying this value will directly modify <see cref="TotalCharges"/>.</remarks>
+        /// <seealso cref="TotalCharges"/>
+        public int RemainingCharges
+        {
+            get => JailbirdItem.ChargesLimit - TotalCharges;
+            set => TotalCharges = Mathf.Clamp(JailbirdItem.ChargesLimit - value, 0, JailbirdItem.ChargesLimit);
         }
 
         /// <summary>
