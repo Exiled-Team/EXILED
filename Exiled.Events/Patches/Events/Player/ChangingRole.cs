@@ -63,15 +63,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel),
 
-                    // if (this.CurrentRole.RoleTypeId == newRole)
-                    //    return;
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ceq),
-                    new(OpCodes.Brtrue_S, continueLabel),
-
                     // player
                     new(OpCodes.Ldloc_S, player.LocalIndex),
 
