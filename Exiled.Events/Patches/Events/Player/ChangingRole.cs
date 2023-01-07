@@ -44,6 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label returnLabel = generator.DefineLabel();
             Label continueLabel = generator.DefineLabel();
             Label continueLabel1 = generator.DefineLabel();
+            Label continueLabel2 = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
@@ -137,17 +138,18 @@ namespace Exiled.Events.Patches.Events.Player
                 });
 
             offset = 1;
-            index = newInstructions.FindIndex(i => i.Calls(Method(typeof(PlayerRoleManager.RoleChanged), nameof(PlayerRoleManager.RoleChanged)))) + offset;
+            index = newInstructions.FindIndex(i => i.Calls(Method(typeof(PlayerRoleManager.RoleChanged), nameof(PlayerRoleManager.RoleChanged.Invoke)))) + offset;
+
+            newInstructions[index].labels.Add(continueLabel2);
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
-                    // if (ev.ShouldPreserveInventory)
-                    //    goto continueLabel;
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.ShouldPreserveInventory))),
-                    new(OpCodes.Brtrue_S, returnLabel),
+                    // if (player == null)
+                    //     continue
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, continueLabel2),
 
                     // ev
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
