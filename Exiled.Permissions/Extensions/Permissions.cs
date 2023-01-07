@@ -17,7 +17,7 @@ namespace Exiled.Permissions.Extensions
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-
+    using Exiled.API.Features.Pools;
     using Features;
 
     using NorthwoodLib.Pools;
@@ -101,7 +101,7 @@ namespace Exiled.Permissions.Extensions
 
             try
             {
-                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
+                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? DictPool<string, object>.Shared.Rent();
                 Dictionary<string, Group> deserializedPerms = new();
                 foreach (KeyValuePair<string, object> group in rawDeserializedPerms)
                 {
@@ -122,6 +122,8 @@ namespace Exiled.Permissions.Extensions
                         Log.Debug($"{exception.Message}\n{exception.StackTrace}");
                     }
                 }
+
+                DictPool<string, object>.Shared.Return(rawDeserializedPerms);
 
                 Groups = deserializedPerms;
             }

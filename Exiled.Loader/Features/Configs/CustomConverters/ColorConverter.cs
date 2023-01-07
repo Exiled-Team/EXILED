@@ -12,6 +12,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
     using System.Globalization;
     using System.IO;
 
+    using Exiled.API.Features.Pools;
     using NorthwoodLib.Pools;
 
     using UnityEngine;
@@ -64,7 +65,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         /// <inheritdoc />
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
-            Dictionary<string, float> coordinates = new(4);
+            Dictionary<string, float> coordinates = DictPool<string, float>.Shared.Rent();
 
             if (value is Color color)
             {
@@ -82,6 +83,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
                 emitter.Emit(new Scalar(coordinate.Value.ToString(CultureInfo.GetCultureInfo("en-US"))));
             }
 
+            DictPool<string, float>.Shared.Return(coordinates);
             emitter.Emit(new MappingEnd());
         }
     }

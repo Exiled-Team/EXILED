@@ -16,6 +16,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
@@ -544,7 +545,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns> Whether the item was able to be added. </returns>
         public bool TryAddFriendlyFire(Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = new();
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictPool<RoleTypeId, float>.Shared.Rent();
             foreach (KeyValuePair<RoleTypeId, float> roleFF in ffRules)
             {
                 if (overwrite)
@@ -573,6 +574,7 @@ namespace Exiled.CustomRoles.API.Features
                 }
             }
 
+            DictPool<RoleTypeId, float>.Shared.Return(temporaryFriendlyFireRules);
             return true;
         }
 
