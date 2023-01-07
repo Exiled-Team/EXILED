@@ -111,23 +111,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
                     new(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
 
-                    // if (ev.ShouldPreserveInventory)
-                    //    goto continueLabel;
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.ShouldPreserveInventory))),
-                    new(OpCodes.Brtrue_S, continueLabel),
-
-                    // ev
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-
-                    // this.CurrentRole.RoleTypeId
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
-
-                    // ChangingRole.ChangeInventory(ev, oldRoleType);
-                    new(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
-
                     new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
 
@@ -153,6 +136,26 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
                 });
 
+            offset = 1;
+            index = newInstructions.FindIndex(i => i.Calls(Method(typeof(PlayerRoleManager.RoleChanged), nameof(PlayerRoleManager.RoleChanged)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // if (ev.ShouldPreserveInventory)
+                    //    goto continueLabel;
+                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.ShouldPreserveInventory))),
+                    new(OpCodes.Brtrue_S, returnLabel),
+
+                    // ev
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+
+                    // ChangingRole.ChangeInventory(ev, oldRoleType);
+                    new(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
+                });
+
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -169,10 +172,13 @@ namespace Exiled.Events.Patches.Events.Player
             player.MaxHealth = default;
         }
 
-        private static void ChangeInventory(ChangingRoleEventArgs ev, RoleTypeId prevRole)
+        private static void ChangeInventory(ChangingRoleEventArgs ev)
         {
             try
             {
+                if (ev.ShouldPreserveInventory)
+                    return;
+
                 Inventory inventory = ev.Player.Inventory;
 
                 if (ev.Reason == API.Enums.SpawnReason.Escaped)
