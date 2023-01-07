@@ -17,8 +17,10 @@ namespace Exiled.Events.Patches.Events.Scp173
     using Mirror;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

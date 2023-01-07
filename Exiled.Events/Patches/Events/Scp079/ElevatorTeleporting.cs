@@ -14,8 +14,11 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
     using Mirror;
+
     using NorthwoodLib.Pools;
+
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
     using PlayerRoles.PlayableScps.Subroutines;

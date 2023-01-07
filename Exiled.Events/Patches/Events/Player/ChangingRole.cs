@@ -23,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.Pickups;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
 
     using static HarmonyLib.AccessTools;
@@ -110,7 +111,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // spawnFlags = ev.SpawnFlags
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.SpawnFlags))),
-                    new(OpCodes.Starg_S, 2),
+                    new(OpCodes.Starg_S, 3),
 
                     // UpdatePlayerRole(ev.NewRole, ev.Player)
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -125,28 +126,13 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.ShouldPreserveInventory))),
                     new(OpCodes.Brtrue_S, continueLabel),
 
-                    // ev.Player
+                    // ev
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
-
-                    // ev.Items
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
-
-                    // ev.Ammo
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Ammo))),
 
                     // this.CurrentRole.RoleTypeId
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
-
-                    // newRole
-                    new(OpCodes.Ldarg_1),
-
-                    // reason
-                    new(OpCodes.Ldarg_2),
 
                     // ChangingRole.ChangeInventory(ev.Player, ev.Items, ev.Ammo, currentRole, newRole, reason);
                     new(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
@@ -192,16 +178,15 @@ namespace Exiled.Events.Patches.Events.Player
             player.MaxHealth = default;
         }
 
-        private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleTypeId prevRole, RoleTypeId newRole, RoleChangeReason reason)
+        private static void ChangeInventory(ChangingRoleEventArgs ev, RoleTypeId prevRole)
         {
             try
             {
-                Inventory inventory = player.Inventory;
+                Inventory inventory = ev.Player.Inventory;
 
-                if (reason == RoleChangeReason.Escaped && prevRole != newRole)
+                if ((RoleChangeReason)ev.Reason == RoleChangeReason.Escaped && prevRole != ev.NewRole)
                 {
                     List<ItemPickupBase> list = new();
-
                     if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
                         bodyArmor.DontRemoveExcessOnDrop = true;
 
@@ -218,7 +203,7 @@ namespace Exiled.Events.Patches.Events.Player
                             list.Add(item);
                     }
 
-                    InventoryItemProvider.PreviousInventoryPickups[player.ReferenceHub] = list;
+                    InventoryItemProvider.PreviousInventoryPickups[ev.Player.ReferenceHub] = list;
                 }
                 else
                 {
@@ -237,13 +222,13 @@ namespace Exiled.Events.Patches.Events.Player
                     inventory.SendAmmoNextFrame = true;
                 }
 
-                foreach (KeyValuePair<ItemType, ushort> keyValuePair in ammo)
+                foreach (KeyValuePair<ItemType, ushort> keyValuePair in ev.Ammo)
                     inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
 
-                foreach (ItemType item in items)
-                    InventoryItemProvider.OnItemProvided?.Invoke(player.ReferenceHub, inventory.ServerAddItem(item));
+                foreach (ItemType item in ev.Items)
+                    InventoryItemProvider.OnItemProvided?.Invoke(ev.Player.ReferenceHub, inventory.ServerAddItem(item));
 
-                InventoryItemProvider.SpawnPreviousInventoryPickups(player.ReferenceHub);
+                InventoryItemProvider.SpawnPreviousInventoryPickups(ev.Player.ReferenceHub);
             }
             catch (Exception exception)
             {

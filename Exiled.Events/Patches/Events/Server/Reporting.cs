@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Server
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

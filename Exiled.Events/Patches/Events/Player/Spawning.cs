@@ -24,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     using PlayerRoles.FirstPersonControl.Spawnpoints;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Subroutines;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

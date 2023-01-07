@@ -8,7 +8,9 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
+
     using Interfaces;
+
     using PlayerRoles.FirstPersonControl;
 
     /// <summary>

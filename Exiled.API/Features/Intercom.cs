@@ -8,7 +8,9 @@
 namespace Exiled.API.Features
 {
     using Mirror;
+
     using PlayerRoles.Voice;
+
     using UnityEngine;
 
     using GameIntercom = PlayerRoles.Voice.Intercom;

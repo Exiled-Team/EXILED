@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Items
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
@@ -19,12 +20,14 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Jailbird;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
+
     using UnityEngine;
 
     using BaseConsumable = InventorySystem.Items.Usables.Consumable;
@@ -191,7 +194,7 @@ namespace Exiled.API.Features.Items
                 BodyArmor armor => new Armor(armor),
                 AmmoItem ammo => new Ammo(ammo),
                 FlashlightItem flashlight => new Flashlight(flashlight),
-                JailbirdItem jailbird => new JailBird(jailbird),
+                JailbirdItem jailbird => new Jailbird(jailbird),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
                     FlashbangGrenade => new FlashGrenade(throwable),
@@ -231,7 +234,7 @@ namespace Exiled.API.Features.Items
         /// <br />- SCP-330 can be casted to <see cref="Scp330"/>.
         /// <br />- SCP-2176 can be casted to the <see cref="Scp2176"/> class.
         /// <br />- SCP-1576 can be casted to the <see cref="Scp1576"/> class.
-        /// <br />- Jailbird can be casted to the <see cref="JailBird"/> class.
+        /// <br />- Jailbird can be casted to the <see cref="Jailbird"/> class.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Item"/> class.
@@ -258,7 +261,7 @@ namespace Exiled.API.Features.Items
             ItemType.SCP330 => new Scp330(),
             ItemType.SCP2176 => new Scp2176(owner),
             ItemType.SCP1576 => new Scp1576(),
-            ItemType.Jailbird => new JailBird(),
+            ItemType.Jailbird => new Jailbird(),
             _ => new Item(type),
         };
 
@@ -282,10 +285,12 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Pickup pickup = Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            pickup.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Scale = Scale;
+            ipb.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.gameObject.transform.localScale = Scale;
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();

@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Scp244;
+
     using Handlers;
 
     using HarmonyLib;

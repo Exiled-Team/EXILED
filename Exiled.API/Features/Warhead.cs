@@ -8,7 +8,9 @@
 namespace Exiled.API.Features
 {
     using Enums;
+
     using Mirror;
+
     using UnityEngine;
 
     /// <summary>

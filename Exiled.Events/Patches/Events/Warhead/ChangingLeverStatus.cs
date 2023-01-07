@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using API.Features;
+
     using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;

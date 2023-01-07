@@ -10,6 +10,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Door beep types.
     /// </summary>
+    /// <seealso cref="Features.Door.PlaySound(DoorBeepType)"/>
     public enum DoorBeepType
     {
         /// <summary>
