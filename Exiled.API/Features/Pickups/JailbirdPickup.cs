@@ -57,7 +57,7 @@ namespace Exiled.API.Features.Pickups
         public float RemainingDamage
         {
             get => JailbirdItem.DamageLimit - TotalDamageDealt;
-            set => TotalDamageDealt = JailbirdItem.DamageLimit - value;
+            set => TotalDamageDealt = Mathf.Clamp(JailbirdItem.DamageLimit - value, 0, JailbirdItem.DamageLimit);
         }
 
         /// <summary>
