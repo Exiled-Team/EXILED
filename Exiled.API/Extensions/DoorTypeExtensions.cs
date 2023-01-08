@@ -36,7 +36,7 @@ namespace Exiled.API.Extensions
         /// Checks if a <see cref="DoorType">door type</see> is an elevator.
         /// </summary>
         /// <param name="door">The door to be checked.</param>
-        /// <returns>Returns whether the <see cref="DoorType"/> is a elevator or not.</returns>
+        /// <returns>Returns whether the <see cref="DoorType"/> is an elevator or not.</returns>
         public static bool IsElevator(this DoorType door) => door is DoorType.ElevatorGateA or DoorType.ElevatorGateB
             or DoorType.ElevatorLczA or DoorType.ElevatorLczB or DoorType.ElevatorNuke or DoorType.ElevatorScp049;
     }

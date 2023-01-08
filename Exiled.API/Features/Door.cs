@@ -121,7 +121,7 @@ namespace Exiled.API.Features
         public bool IsCheckpoint => Base is CheckpointDoor;
 
         /// <summary>
-        /// Gets a value indicating whether or not this door is a elevator door.
+        /// Gets a value indicating whether or not this door is an elevator door.
         /// </summary>
         public bool IsElevator => Base is ElevatorDoor;
 
