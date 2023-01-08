@@ -43,7 +43,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(StartingRecall), nameof(ServerValidateProcess))),
                     new(OpCodes.Br, returnLabel),
-
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -59,7 +58,8 @@ namespace Exiled.Events.Patches.Events.Scp049
                 return true;
             StartingReviveEventArgs startingReviveEvent = new StartingReviveEventArgs(Player.Get(ragdoll.Info.OwnerHub), Player.Get(instance.Owner), ragdoll, instance.CheckBeginConditions(ragdoll));
             Handlers.Scp049.OnStartingRecall(startingReviveEvent);
-            //NW funny 0 is good, 1 is bad
+
+            // NW funny 0 is good, 1 is bad
             return !startingReviveEvent.IsAllowed;
         }
     }

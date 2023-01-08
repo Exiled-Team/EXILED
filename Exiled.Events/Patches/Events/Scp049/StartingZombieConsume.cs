@@ -1,36 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
-using Exiled.Events.EventArgs.Scp049;
-using HarmonyLib;
-using Mirror;
-using NorthwoodLib.Pools;
-using PlayerRoles;
-using PlayerRoles.PlayableScps;
-using PlayerRoles.PlayableScps.Scp049;
-using PlayerRoles.PlayableScps.Scp049.Zombies;
-using PlayerRoles.PlayableScps.Subroutines;
-using PlayerStatsSystem;
-using PluginAPI.Core;
-using UnityEngine;
-using Utils.Networking;
-using VoiceChat.Networking;
+﻿// -----------------------------------------------------------------------
+// <copyright file="StartingZombieConsume.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Scp049
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.Events.EventArgs.Scp049;
+    using HarmonyLib;
+    using NorthwoodLib.Pools;
+    using PlayerRoles;
+    using PlayerRoles.PlayableScps.Scp049;
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using UnityEngine;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
     ///     Adds the <see cref="Handlers.Scp049.FinishingRecall" /> event.
     /// </summary>
-
-
     [HarmonyPatch]
     public class StartingZombieConsume
     {
-
         [HarmonyPatch(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.ServerProcessCmd))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -38,11 +34,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = -1;
-            //Find IsCorpse, then going backwards, find IsInProgress
-            // int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.IsCorpseNearby))));
-            // index = newInstructions.FindLastIndex(index, instruction => instruction.Calls(PropertyGetter(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.IsInProgress)))) + offset;
             int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>._errorCode)))) + offset;
-            // Immediately return
             Label returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(
@@ -53,7 +45,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Call, Method(typeof(StartingZombieConsume), nameof(ServerProcessCmdRewrite))),
                     new(OpCodes.Br, returnLabel),
-
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -65,21 +56,18 @@ namespace Exiled.Events.Patches.Events.Scp049
         }
 
         /// <summary>
-        /// Basically rewrites the ServerProcessCmd - It really is not worth it to not do zombieAbilityBase
+        /// Processes Ragdoll ability for ZombieRole/049 interaction.
         /// </summary>
-        /// <param name="senseAbility"></param>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+        /// <param name="zombieAbilityBase"> <see cref="ZombieRole"/> parameterized <see cref="RagdollAbilityBase{T}"/>. </param>
         private static void ServerProcessCmdRewrite(RagdollAbilityBase<ZombieRole> zombieAbilityBase)
         {
-
             Transform ragdollTransform = zombieAbilityBase._ragdollTransform;
             BasicRagdoll curRagdoll = zombieAbilityBase.CurRagdoll;
 
             API.Features.Player currentPlayer = API.Features.Player.Get(zombieAbilityBase.Owner);
             if (currentPlayer.Role.Type is not RoleTypeId.Scp049)
             {
-                ZombieConsumeEventArgs ev = new ZombieConsumeEventArgs(currentPlayer, curRagdoll, ZombieConsumeAbility.ConsumedRagdolls, zombieAbilityBase._errorCode);
+                ZombieStartConsumeEventArgs ev = new ZombieStartConsumeEventArgs(currentPlayer, curRagdoll, ZombieConsumeAbility.ConsumedRagdolls, zombieAbilityBase._errorCode);
                 Handlers.Scp049.OnStartingConsume(ev);
 
                 if (!ev.IsAllowed)

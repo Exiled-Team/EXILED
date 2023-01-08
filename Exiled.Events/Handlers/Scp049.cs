@@ -41,7 +41,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-0492 can consume
         /// </summary>
-        public static event CustomEventHandler<ZombieConsumeEventArgs> StartingZombieConsume;
+        public static event CustomEventHandler<ZombieStartConsumeEventArgs> StartingZombieConsume;
 
         /// <summary>
         ///     Called before SCP-049 finishes recalling a player.
@@ -70,7 +70,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Called before SCP-0492 can start consuming.
         /// </summary>
-        /// <param name="ev">The <see cref="ZombieConsumeEventArgs" /> instance.</param>
-        public static void OnStartingConsume(ZombieConsumeEventArgs ev) => StartingZombieConsume.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ZombieStartConsumeEventArgs" /> instance.</param>
+        public static void OnStartingConsume(ZombieStartConsumeEventArgs ev) => StartingZombieConsume.InvokeSafely(ev);
     }
 }
