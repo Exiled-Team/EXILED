@@ -10,10 +10,10 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
+    using API.Features.Pools;
 
-    using Exiled.API.Features.Items;
-    using Exiled.API.Features.Pickups.Projectiles;
+    using API.Features.Items;
+    using API.Features.Pickups.Projectiles;
 
     using HarmonyLib;
 

@@ -11,9 +11,9 @@ namespace Exiled.Events.Patches.Events.Scp173
     using System.Linq;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
+    using API.Features.Pools;
 
-    using Exiled.API.Features;
+    using API.Features;
     using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;

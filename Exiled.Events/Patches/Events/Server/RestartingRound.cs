@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
+    using API.Features.Pools;
 
     using GameCore;
 

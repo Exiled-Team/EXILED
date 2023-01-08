@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Diagnostics;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
+    using API.Features.Pools;
 
     using Exiled.Events.EventArgs.Map;
 

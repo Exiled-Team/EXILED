@@ -10,9 +10,9 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pools;
+    using API.Features.Pools;
 
-    using Exiled.API.Features;
+    using API.Features;
     using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
