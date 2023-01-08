@@ -70,8 +70,8 @@ namespace Exiled.Events.Patches.Events.Player
                 return false;
             }
 
-            IVoiceRole voiceModule = player.RoleManager.CurrentRole as IVoiceRole;
-            TransmittingEventArgs ev = new(player, voiceModule?.VoiceModule);
+            IVoiceRole voiceRole = player.RoleManager.CurrentRole as IVoiceRole;
+            TransmittingEventArgs ev = new(player, voiceRole == null ? null : voiceRole.VoiceModule);
 
             Handlers.Player.OnTransmitting(ev);
 
