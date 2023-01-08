@@ -72,13 +72,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
             set
             {
                 if (value && Base.TargetTime == 0.0f)
-                {
                     Base.RpcSetTime(FuseTime);
-                }
                 else if (!value && Base.TargetTime != 0.0f)
-                {
                     Base.RpcSetTime(-Time.timeSinceLevelLoad);
-                }
             }
         }
 
