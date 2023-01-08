@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using InventorySystem.Items.Usables.Scp330;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     using Player = API.Features.Player;

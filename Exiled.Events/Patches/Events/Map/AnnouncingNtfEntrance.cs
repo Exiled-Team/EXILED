@@ -9,17 +9,15 @@ namespace Exiled.Events.Patches.Events.Map
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
+    using System.Text.RegularExpressions;
 
     using API.Features.Pools;
-    using System.Text.RegularExpressions;
 
     using Exiled.Events.EventArgs.Map;
 
     using Handlers;
 
     using HarmonyLib;
-
-    
 
     using Respawning.NamingRules;
 

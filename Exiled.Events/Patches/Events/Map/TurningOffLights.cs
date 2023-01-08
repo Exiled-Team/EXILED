@@ -16,8 +16,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using HarmonyLib;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

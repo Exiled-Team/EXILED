@@ -10,15 +10,12 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features.DamageHandlers;
+    using API.Features.Pools;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
-    
 
     using static HarmonyLib.AccessTools;
 

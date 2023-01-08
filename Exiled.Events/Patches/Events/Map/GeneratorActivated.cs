@@ -21,8 +21,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using MapGeneration.Distributors;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

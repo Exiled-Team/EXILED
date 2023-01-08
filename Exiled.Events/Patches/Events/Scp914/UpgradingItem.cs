@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using HarmonyLib;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

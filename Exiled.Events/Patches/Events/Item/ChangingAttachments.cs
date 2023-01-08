@@ -10,10 +10,9 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features;
     using API.Features.Items;
+    using API.Features.Pools;
 
     using Exiled.Events.EventArgs.Item;
 
@@ -22,8 +21,6 @@ namespace Exiled.Events.Patches.Events.Item
     using InventorySystem.Items.Firearms.Attachments;
 
     using Mirror;
-
-    
 
     using static HarmonyLib.AccessTools;
 

@@ -10,14 +10,11 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features;
+    using API.Features.Pools;
     using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
-
-    
 
     using static HarmonyLib.AccessTools;
 

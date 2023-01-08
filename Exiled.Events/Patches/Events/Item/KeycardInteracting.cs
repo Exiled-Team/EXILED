@@ -10,9 +10,8 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features;
+    using API.Features.Pools;
 
     using Exiled.Events;
     using Exiled.Events.EventArgs.Item;
@@ -24,8 +23,6 @@ namespace Exiled.Events.Patches.Events.Item
     using Interactables.Interobjects.DoorUtils;
 
     using InventorySystem.Items.Keycards;
-
-    
 
     using UnityEngine;
 

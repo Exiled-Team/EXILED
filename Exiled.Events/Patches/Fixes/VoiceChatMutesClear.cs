@@ -14,8 +14,6 @@ namespace Exiled.Events.Patches.Fixes
 
     using HarmonyLib;
 
-    
-
     using VoiceChat;
 
     using static HarmonyLib.AccessTools;

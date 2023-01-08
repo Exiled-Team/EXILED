@@ -16,8 +16,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using HarmonyLib;
 
-    
-
     using PlayerRoles.PlayableScps.Scp079;
 
     using static HarmonyLib.AccessTools;

@@ -17,8 +17,6 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using HarmonyLib;
 
-    
-
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Subroutines;
 

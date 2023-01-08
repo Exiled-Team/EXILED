@@ -18,8 +18,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using HarmonyLib;
 
-    
-
     using PlayerRoles;
     using PlayerRoles.Voice;
 

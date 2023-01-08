@@ -11,10 +11,9 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features.Items;
     using API.Features.Pickups;
+    using API.Features.Pools;
 
     using HarmonyLib;
 
@@ -23,8 +22,6 @@ namespace Exiled.Events.Patches.Generic
     using InventorySystem.Items.Pickups;
 
     using MapGeneration.Distributors;
-
-    
 
     using static HarmonyLib.AccessTools;
 

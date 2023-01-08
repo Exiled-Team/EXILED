@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using Interactables.Interobjects.DoorUtils;
 
-    
-
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Subroutines;
 

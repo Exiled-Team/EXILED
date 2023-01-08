@@ -18,8 +18,6 @@ namespace Exiled.Events.Patches.Events.Server
 
     using HarmonyLib;
 
-    
-
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

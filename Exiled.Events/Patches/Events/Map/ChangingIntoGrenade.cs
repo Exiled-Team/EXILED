@@ -24,8 +24,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Mirror;
 
-    
-
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

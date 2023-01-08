@@ -18,8 +18,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using Mirror;
 
-    
-
     using PlayerRoles.PlayableScps.Scp079.Pinging;
 
     using RelativePositioning;

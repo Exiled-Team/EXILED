@@ -18,8 +18,6 @@ namespace Exiled.Events.Patches.Events.Scp173
 
     using Mirror;
 
-    
-
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
 

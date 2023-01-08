@@ -12,18 +12,16 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features;
     using API.Features.Pools;
 
     using CommandSystem;
     using CommandSystem.Commands.RemoteAdmin.ServerEvent;
     using CommandSystem.Commands.RemoteAdmin.Warhead;
 
-    using API.Features;
     using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
-
-    
 
     using static HarmonyLib.AccessTools;
 

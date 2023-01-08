@@ -10,15 +10,12 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features;
+    using API.Features.Pools;
 
     using HarmonyLib;
 
     using MapGeneration.Distributors;
-
-    
 
     using static HarmonyLib.AccessTools;
 

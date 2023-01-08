@@ -10,17 +10,14 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features;
+    using API.Features.Pools;
 
     using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
 
     using Mirror;
-
-    
 
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.PlayableScps.Subroutines;

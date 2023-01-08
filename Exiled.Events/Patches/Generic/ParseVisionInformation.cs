@@ -10,13 +10,10 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features;
     using API.Features.Pools;
 
-    using API.Features;
-
     using HarmonyLib;
-
-    
 
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp096;

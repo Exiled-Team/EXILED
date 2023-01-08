@@ -23,8 +23,6 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using Mirror;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     using Player = API.Features.Player;

@@ -18,8 +18,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using InventorySystem.Items.Firearms.Modules;
 
-    
-
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

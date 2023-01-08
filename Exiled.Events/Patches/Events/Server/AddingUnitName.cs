@@ -16,8 +16,6 @@ namespace Exiled.Events.Patches.Events.Server
 
     using HarmonyLib;
 
-    
-
     using Respawning;
     using Respawning.NamingRules;
 

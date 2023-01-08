@@ -11,16 +11,13 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features.Pickups;
+    using API.Features.Pools;
 
     using HarmonyLib;
 
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
-    
 
     using static HarmonyLib.AccessTools;
 

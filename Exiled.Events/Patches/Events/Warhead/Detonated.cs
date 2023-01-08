@@ -16,8 +16,6 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using HarmonyLib;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

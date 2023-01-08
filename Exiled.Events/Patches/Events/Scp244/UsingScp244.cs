@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using InventorySystem.Items.Usables.Scp244;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     using Player = API.Features.Player;

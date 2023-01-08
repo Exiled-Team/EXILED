@@ -13,17 +13,14 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features;
+    using API.Features.Pools;
 
     using Footprinting;
 
     using HarmonyLib;
 
     using InventorySystem.Items.ThrowableProjectiles;
-
-    
 
     using PlayerRoles;
 

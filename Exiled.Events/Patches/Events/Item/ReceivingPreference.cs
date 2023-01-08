@@ -22,8 +22,6 @@ namespace Exiled.Events.Patches.Events.Item
 
     using Mirror;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     using Player = API.Features.Player;

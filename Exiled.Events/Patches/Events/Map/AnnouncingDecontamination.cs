@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using LightContainmentZoneDecontamination;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

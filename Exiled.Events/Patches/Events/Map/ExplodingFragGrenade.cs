@@ -10,9 +10,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Pools;
-
     using API.Features;
+    using API.Features.Pools;
 
     using Exiled.Events.EventArgs.Map;
 
@@ -21,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Map
     using HarmonyLib;
 
     using InventorySystem.Items.ThrowableProjectiles;
-
-    
 
     using UnityEngine;
 

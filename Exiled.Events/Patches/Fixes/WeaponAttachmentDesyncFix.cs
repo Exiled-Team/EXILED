@@ -16,8 +16,6 @@ namespace Exiled.Events.Patches.Fixes
 
     using InventorySystem.Items.Firearms.Attachments;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
