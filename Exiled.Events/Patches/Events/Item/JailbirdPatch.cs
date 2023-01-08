@@ -7,15 +7,18 @@
 
 namespace Exiled.Events.Patches.Events.Item
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs.Item;
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using Handlers;
-
     using HarmonyLib;
-
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Jailbird;
     using Mirror;
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches
@@ -25,29 +28,76 @@ namespace Exiled.Events.Patches.Events.Item
     [HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
     internal static class JailbirdPatch
     {
-        private static bool Prefix(JailbirdItem __instance, NetworkReader reader)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (__instance._broken)
-            {
-                return false;
-            }
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            JailbirdMessageType jailbirdMessageType = (JailbirdMessageType)reader.ReadByte();
-            if (jailbirdMessageType is JailbirdMessageType.AttackTriggered)
-            {
-                SwingingEventArgs ev = new(__instance.Owner, __instance);
-                Item.OnSwinging(ev);
-                return ev.IsAllowed;
-            }
-            else if (jailbirdMessageType is JailbirdMessageType.ChargeStarted)
-            {
-                ChargingJailbirdEventArgs ev = new(__instance.Owner, __instance);
-                Item.OnChargingJailbird(ev);
-                return ev.IsAllowed;
-            }
+            Label retLabel = generator.DefineLabel();
 
-            return true;
+            const int offset = 2;
+            int index = newInstructions.FindIndex(
+                instruction => instruction.Calls(Method(typeof(NetworkReader), nameof(NetworkReader.ReadByte)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // hub
+                    new CodeInstruction(OpCodes.Ldarg_0),
+
+                    // JailbirdMessageType
+                    new CodeInstruction(OpCodes.Ldloc_1),
+
+                    // HandleTransmitting(ReferenceHub, VoiceModule)
+                    new(OpCodes.Call, Method(typeof(JailbirdPatch), nameof(HandleJailbird))),
+
+                    // return false if not allowed
+                    new(OpCodes.Brfalse_S, retLabel),
+                });
+
+            // -2 to return false
+            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        /// <summary>
+        /// Processes Jailbird statuses.
+        /// </summary>
+        /// <param name="instance"> <see cref="JailbirdItem"/> instance. </param>
+        /// <param name="messageType"> <see cref="JailbirdMessageType"/> type. </param>
+        /// <returns> <see cref="bool"/>. </returns>
+        private static bool HandleJailbird(JailbirdItem instance, JailbirdMessageType messageType)
+        {
+            switch (messageType)
+            {
+                case JailbirdMessageType.AttackTriggered:
+                {
+                    SwingingEventArgs ev = new(instance.Owner, instance);
+                    Item.OnSwinging(ev);
+                    return ev.IsAllowed;
+                }
+
+                case JailbirdMessageType.ChargeStarted:
+                {
+                    ChargingJailbirdEventArgs ev = new(instance.Owner, instance);
+                    Item.OnChargingJailbird(ev);
+                    return ev.IsAllowed;
+                }
+
+                case JailbirdMessageType.AlmostDepleted:
+                case JailbirdMessageType.Broken:
+                case JailbirdMessageType.Holstered:
+                case JailbirdMessageType.AttackPerformed:
+                case JailbirdMessageType.ChargeLoadTriggered:
+                case JailbirdMessageType.ChargeFailed:
+                case JailbirdMessageType.Inspect:
+                default:
+                    return true;
+            }
         }
     }
-#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
 }
