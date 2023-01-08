@@ -10,8 +10,6 @@ namespace Exiled.API.Features.Pools
     using System.Collections.Concurrent;
     using System.Collections.Generic;
 
-    using NorthwoodLib.Pools;
-
     /// <summary>
     /// Defines a system used to store and retrieve <see cref="Dictionary{TKey, TValue}"/> objects.
     /// </summary>
@@ -25,13 +23,13 @@ namespace Exiled.API.Features.Pools
         /// <summary>
         /// Gets a <see cref="DictPool{TKey, TValue}"/> that stores dictionaries.
         /// </summary>
-        public static DictPool<TKey, TValue> Shared { get; } = new();
+        public static DictPool<TKey, TValue> Pool { get; } = new();
 
         /// <summary>
         /// Rent a <see cref="Dictionary{TKey, TValue}"/> temporarily.
         /// </summary>
         /// <returns>The <see cref="Dictionary{TKey, TValue}"/>.</returns>
-        public Dictionary<TKey, TValue> Rent()
+        public Dictionary<TKey, TValue> Get()
         {
             if (pool.TryPeek(out Dictionary<TKey, TValue> result))
                 return result;
