@@ -12,20 +12,31 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using Enums;
-
+    using Exiled.API.Features.Pickups;
     using Features.Items;
 
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
-
+    using InventorySystem.Items.Firearms.Attachments.Components;
     using Structs;
+
+    using Firearm = Features.Items.Firearm;
+    using FirearmPickup = Features.Pickups.FirearmPickup;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
     /// </summary>
     public static class ItemExtensions
     {
+        private static Attachment[] attachmentsValue;
+
+        /// <summary>
+        /// Gets a list of all the <see cref="Attachment"/>s.
+        /// </summary>
+        public static Attachment[] AttachmentsList => attachmentsValue ??= UnityEngine.Object.FindObjectsOfType<Attachment>();
+
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an ammo.
         /// </summary>
@@ -307,6 +318,48 @@ namespace Exiled.API.Extensions
                 return baseCode;
             else
                 throw new KeyNotFoundException($"Basecode for weapon {type} not found! Stored BaseCodesValue:\n{Firearm.BaseCodesValue.Keys.ToString(true)}\n{Firearm.BaseCodesValue.Values.ToString(true)}");
+        }
+
+        /// <summary>
+        /// Gets the default Maxammo of a weapon.
+        /// </summary>
+        /// <param name="pickup">The <see cref="Pickup">item</see> that you want to get durability of.</param>
+        /// <returns>Returns the item durability.</returns>
+        public static byte GetMaxAmmo(this Pickup pickup)
+        {
+            if (pickup is not FirearmPickup firearm)
+                return 0;
+            byte ammo = GetMaxAmmo(firearm.Info.ItemId.GetFirearmType());
+
+            if (firearm.Status.Flags.HasFlag(FirearmStatusFlags.Chambered))
+                ammo++;
+
+            return ammo += (byte)UnityEngine.Mathf.Clamp(GetAttachmentsValue(firearm, AttachmentParam.MagazineCapacityModifier), byte.MinValue, byte.MaxValue);
+        }
+
+        /// <summary>
+        /// Gets the value of an AttachmentParam on a FirearmPickup.
+        /// </summary>
+        /// <param name="firearmPickup">The <see cref="FirearmPickup">pickup</see> that you want to get the value of.</param>
+        /// <param name="attachmentParam">The <see cref="AttachmentParam">AttachmentParam</see> for get the Parameter change you need.</param>
+        /// <returns>Returns the float value.</returns>
+        public static float GetAttachmentsValue(this FirearmPickup firearmPickup, AttachmentParam attachmentParam)
+        {
+            IEnumerable<AttachmentIdentifier> attachements = GetAttachmentIdentifiers(firearmPickup.Info.ItemId.GetFirearmType(), firearmPickup.Status.Attachments);
+
+            AttachmentParameterDefinition definitionOfParam = AttachmentsUtils.GetDefinitionOfParam((int)attachmentParam);
+            float num = definitionOfParam.DefaultValue;
+
+            foreach (AttachmentIdentifier attachement in attachements)
+            {
+                Attachment attachment = AttachmentsList.FirstOrDefault(x => x.Name == attachement.Name);
+                if (attachment is null || !attachment.TryGetValue((int)attachmentParam, out float paraValue))
+                    continue;
+
+                num = AttachmentsUtils.MixValue(num, paraValue, definitionOfParam.MixingMode);
+            }
+
+            return num;
         }
     }
 }
