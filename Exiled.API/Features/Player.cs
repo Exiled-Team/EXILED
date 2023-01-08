@@ -2782,6 +2782,7 @@ namespace Exiled.API.Features
         {
             if (!PlayerMovementSync.FindSafePosition(position, out Vector3 safepos, true, true))
                 safepos = position;
+
             ReferenceHub.playerMovementSync.OverridePosition(safepos);
         }
 
