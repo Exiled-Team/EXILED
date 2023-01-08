@@ -33,7 +33,7 @@ namespace Exiled.API.Extensions
             or DoorType.CheckpointLczB or DoorType.CheckpointEzHczA or DoorType.CheckpointEzHczB;
 
         /// <summary>
-        /// Checks if a <see cref="DoorType">door type</see> is a elevator.
+        /// Checks if a <see cref="DoorType">door type</see> is an elevator.
         /// </summary>
         /// <param name="door">The door to be checked.</param>
         /// <returns>Returns whether the <see cref="DoorType"/> is a elevator or not.</returns>
