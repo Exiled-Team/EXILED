@@ -94,7 +94,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <param name="shouldActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Projectile"/> Spawn.</returns>
-        public static Projectile Spawn(Projectile pickup, Vector3 position, Quaternion rotation, bool shouldActive = true, Player previousOwner = null)
+        public static Projectile Spawn(Projectile pickup, Vector3 position, Quaternion rotation, bool shouldBeActive = true, Player previousOwner = null)
         {
             pickup.Position = position;
             pickup.Rotation = rotation;
