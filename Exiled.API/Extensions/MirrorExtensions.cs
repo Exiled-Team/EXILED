@@ -16,12 +16,11 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
+    using Features.Pools;
 
     using InventorySystem.Items.Firearms;
 
     using Mirror;
-
-    using Exiled.API.Features.Pools;
 
     using PlayerRoles;
 

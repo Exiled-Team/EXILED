@@ -11,9 +11,9 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Text;
 
-    using MEC;
-
     using Exiled.API.Features.Pools;
+
+    using MEC;
 
     using PlayerRoles;
 
