@@ -42,7 +42,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new CodeInstruction(OpCodes.Ldarg_1),
                     // Returns DoctorSenseEventArgs
                     new(OpCodes.Call, Method(typeof(DoctorSense), nameof(Scp049Sense))),
-                    // If !ev.IsAllowed, return
                     new(OpCodes.Br, returnLabel),
 
                 });
@@ -79,6 +78,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 }
             }
 
+            senseAbility._distanceThreshold = ev.Distance;
             senseAbility.HasTarget = false;
             senseAbility.Target = ev.Target?.ReferenceHub;
 

@@ -57,8 +57,7 @@ namespace Exiled.Events.Patches.Events.Scp049
         {
             if (!instance.ServerValidateAny())
                 return true;
-            Scp049ResurrectAbility.ResurrectError resurrectError = instance.CheckBeginConditions(ragdoll);
-            StartingReviveEventArgs startingReviveEvent = new StartingReviveEventArgs(Player.Get(ragdoll.Info.OwnerHub), Player.Get(instance.Owner), ragdoll, resurrectError);
+            StartingReviveEventArgs startingReviveEvent = new StartingReviveEventArgs(Player.Get(ragdoll.Info.OwnerHub), Player.Get(instance.Owner), ragdoll, instance.CheckBeginConditions(ragdoll));
             Handlers.Scp049.OnStartingRecall(startingReviveEvent);
             //NW funny 0 is good, 1 is bad
             return !startingReviveEvent.IsAllowed;

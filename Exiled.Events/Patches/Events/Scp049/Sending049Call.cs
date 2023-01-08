@@ -60,8 +60,7 @@ namespace Exiled.Events.Patches.Events.Scp049
         /// <returns></returns>
         private static void Scp049SendingCall(Scp049CallAbility callAbility, NetworkReader reader)
         {
-            API.Features.Player currentPlayer = API.Features.Player.Get(callAbility.Owner);
-            Sending049CallEventArgs sendingCallEvent = new Sending049CallEventArgs(currentPlayer, reader);
+            Sending049CallEventArgs sendingCallEvent = new Sending049CallEventArgs(API.Features.Player.Get(callAbility.Owner), reader);
             Handlers.Scp049.OnSendingCall(sendingCallEvent);
 
             if (!sendingCallEvent.IsAllowed)
