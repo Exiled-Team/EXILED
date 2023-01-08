@@ -8,7 +8,9 @@
 namespace Exiled.API.Features
 {
     using Enums;
+
     using Mirror;
+
     using UnityEngine;
 
     /// <summary>
@@ -19,7 +21,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
-        public static AlphaWarheadController Controller { get; } = AlphaWarheadController.Singleton;
+        public static AlphaWarheadController Controller => AlphaWarheadController.Singleton;
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.

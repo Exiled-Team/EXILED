@@ -10,8 +10,11 @@ namespace Exiled.Events.Commands.Reload
     using System;
 
     using API.Interfaces;
+
     using CommandSystem;
+
     using Exiled.Permissions.Extensions;
+
     using Loader;
 
     /// <summary>

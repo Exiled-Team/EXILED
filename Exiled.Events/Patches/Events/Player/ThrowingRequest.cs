@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;

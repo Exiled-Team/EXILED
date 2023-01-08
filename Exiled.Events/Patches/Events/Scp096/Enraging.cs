@@ -11,11 +11,13 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Reflection.Emit;
 
     using API.Features;
+
     using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.PlayableScps.Subroutines;
 

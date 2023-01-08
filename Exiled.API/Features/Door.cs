@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+
     using Extensions;
 
     using Interactables.Interobjects;

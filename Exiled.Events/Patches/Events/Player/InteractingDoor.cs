@@ -20,6 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using Interactables.Interobjects.DoorUtils;
+
     using PlayerRoles;
 
     /// <summary>

@@ -12,8 +12,10 @@ namespace Exiled.Events.EventArgs.Item
 
     using API.Features;
     using API.Structs;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+
     using Interfaces;
 
     /// <summary>

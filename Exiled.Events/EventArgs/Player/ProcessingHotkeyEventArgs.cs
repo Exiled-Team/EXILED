@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs.Player
 {
     using API.Enums;
     using API.Features;
+
     using Interfaces;
 
     /// <summary>

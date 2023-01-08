@@ -7,17 +7,13 @@
 
 namespace Exiled.Events.Handlers
 {
-    using API.Extensions;
-    using API.Features;
     using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Scp079;
+
     using Extensions;
-    using Interactables.Interobjects.DoorUtils;
-    using InventorySystem.Items.Radio;
-    using MapGeneration.Distributors;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl.Thirdperson;
-    using PlayerStatsSystem;
+
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
     using PluginAPI.Events;
@@ -151,7 +147,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked afer throwing an <see cref="API.Features.Items.Throwable"/>.
         /// </summary>
-        public static event CustomEventHandler<ThrownItemEventArgs> ThrownItem;
+        public static event CustomEventHandler<ThrownProjectileEventArgs> ThrownProjectile;
 
         /// <summary>
         /// Invoked before receving a throwing request an <see cref="API.Features.Items.Throwable"/>.
@@ -229,8 +225,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReloadingWeaponEventArgs> ReloadingWeapon;
 
         /// <summary>
-        /// Invoked before spawning a <see cref="API.Features.Player"/>(called only when possibly to change position).
-        /// use <see cref="Spawned"/> or <see cref="ChangingRole"/>for all class changes.
+        /// Invoked before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
         public static event CustomEventHandler<SpawningEventArgs> Spawning;
 
@@ -564,8 +559,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrownItemEventArgs"/> instance.</param>
-        public static void OnThrowingItem(ThrownItemEventArgs ev) => ThrownItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ThrownProjectileEventArgs"/> instance.</param>
+        public static void OnThrowingProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.

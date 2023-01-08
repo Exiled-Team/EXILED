@@ -19,9 +19,9 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// patches <see cref="ServerRoles.SetOverwatchStatus(bool)"/> to add the <see cref="Handlers.Player.TogglingOverwatch"/> event.
+    /// patches <see cref="ServerRoles.SetOverwatchStatus(byte)"/> to add the <see cref="Handlers.Player.TogglingOverwatch"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetOverwatchStatus), typeof(bool))]
+    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetOverwatchStatus), typeof(byte))]
     internal static class TogglingOverwatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
