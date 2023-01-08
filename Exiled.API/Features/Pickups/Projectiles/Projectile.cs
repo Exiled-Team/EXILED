@@ -110,10 +110,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Activates the current <see cref="Projectile"/>.
         /// </summary>
-        public void Active()
-        {
-            Base.ServerActivate();
-        }
+        public void Active() => Base.ServerActivate();
 
         /// <summary>
         /// Returns the ProjectilePickup in a human readable format.
