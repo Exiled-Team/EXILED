@@ -7,7 +7,11 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.ThrowableProjectiles;
+
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for TimeGrenade.
@@ -40,13 +44,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public new TimeGrenade Base { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the grenade has already exploded.
+        /// Gets a value indicating whether the grenade has already exploded.
         /// </summary>
-        public bool IsAlreadyDetonated
-        {
-            get => Base._alreadyDetonated;
-            set => Base._alreadyDetonated = value;
-        }
+        public bool IsAlreadyDetonated => Base._alreadyDetonated;
 
         /// <summary>
         /// Gets or sets FuseTime.
@@ -54,22 +54,47 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public float FuseTime
         {
             get => Base._fuseTime;
-            set => Base._fuseTime = value;
+            set
+            {
+                if (IsActive)
+                    Base.RpcSetTime(value);
+                else
+                    Base._fuseTime = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets time indicating how long it will take to explode.
+        /// Gets or sets a value indicating whether the greande is active.
         /// </summary>
-        public float TargetTime
+        public bool IsActive
         {
-            get => Base.TargetTime;
-            set => Base.TargetTime = value;
+            get => Base.TargetTime != 0.0f;
+            set
+            {
+                if (value && Base.TargetTime == 0.0f)
+                {
+                    Base.RpcSetTime(FuseTime);
+                }
+                else if (!value && Base.TargetTime != 0.0f)
+                {
+                    Base.RpcSetTime(-Time.timeSinceLevelLoad);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Immediately exploding the <see cref="TimeGrenadeProjectile"/>.
+        /// </summary>
+        public void Explode()
+        {
+            Base.ServerFuseEnd();
+            Base._alreadyDetonated = true;
         }
 
         /// <summary>
         /// Returns the TimeGrenadePickup in a human readable format.
         /// </summary>
         /// <returns>A string containing TimeGrenadePickup related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}| -{TargetTime}- ={IsAlreadyDetonated}=";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}| ={IsAlreadyDetonated}=";
     }
 }
