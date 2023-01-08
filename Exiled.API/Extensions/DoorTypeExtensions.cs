@@ -17,7 +17,7 @@ namespace Exiled.API.Extensions
     public static class DoorTypeExtensions
     {
         /// <summary>
-        /// Checks if a <see cref="DoorType">room type</see> is a gate.
+        /// Checks if a <see cref="DoorType">door type</see> is a gate.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="DoorType"/> is a gate or not.</returns>
@@ -25,7 +25,7 @@ namespace Exiled.API.Extensions
             DoorType.Scp049Gate or DoorType.GR18Gate or DoorType.SurfaceGate or DoorType.Scp173Gate;
 
         /// <summary>
-        /// Checks if a <see cref="DoorType">room type</see> is a checkpoint.
+        /// Checks if a <see cref="DoorType">door type</see> is a checkpoint.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="DoorType"/> is a checkpoint or not.</returns>
@@ -33,7 +33,7 @@ namespace Exiled.API.Extensions
             or DoorType.CheckpointLczB or DoorType.CheckpointEzHczA or DoorType.CheckpointEzHczB;
 
         /// <summary>
-        /// Checks if a <see cref="DoorType">room type</see> is a elevator.
+        /// Checks if a <see cref="DoorType">door type</see> is a elevator.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="DoorType"/> is a elevator or not.</returns>
