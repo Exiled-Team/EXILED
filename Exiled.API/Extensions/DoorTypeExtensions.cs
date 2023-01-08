@@ -19,25 +19,25 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Checks if a <see cref="DoorType">door type</see> is a gate.
         /// </summary>
-        /// <param name="room">The door to be checked.</param>
+        /// <param name="door">The door to be checked.</param>
         /// <returns>Returns whether the <see cref="DoorType"/> is a gate or not.</returns>
-        public static bool IsGate(this DoorType room) => room is DoorType.GateA or DoorType.GateB or DoorType.Scp914Gate or
+        public static bool IsGate(this DoorType door) => door is DoorType.GateA or DoorType.GateB or DoorType.Scp914Gate or
             DoorType.Scp049Gate or DoorType.GR18Gate or DoorType.SurfaceGate or DoorType.Scp173Gate;
 
         /// <summary>
         /// Checks if a <see cref="DoorType">door type</see> is a checkpoint.
         /// </summary>
-        /// <param name="room">The door to be checked.</param>
+        /// <param name="door">The door to be checked.</param>
         /// <returns>Returns whether the <see cref="DoorType"/> is a checkpoint or not.</returns>
-        public static bool IsCheckpoint(this DoorType room) => room is DoorType.CheckpointLczA
+        public static bool IsCheckpoint(this DoorType door) => door is DoorType.CheckpointLczA
             or DoorType.CheckpointLczB or DoorType.CheckpointEzHczA or DoorType.CheckpointEzHczB;
 
         /// <summary>
         /// Checks if a <see cref="DoorType">door type</see> is a elevator.
         /// </summary>
-        /// <param name="room">The door to be checked.</param>
+        /// <param name="door">The door to be checked.</param>
         /// <returns>Returns whether the <see cref="DoorType"/> is a elevator or not.</returns>
-        public static bool IsElevator(this DoorType room) => room is DoorType.ElevatorGateA or DoorType.ElevatorGateB
+        public static bool IsElevator(this DoorType door) => door is DoorType.ElevatorGateA or DoorType.ElevatorGateB
             or DoorType.ElevatorLczA or DoorType.ElevatorLczB or DoorType.ElevatorNuke or DoorType.ElevatorScp049;
     }
 }
