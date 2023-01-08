@@ -77,7 +77,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="colorType">The <see cref="Misc.PlayerInfoColorTypes"/> to get the hex color code of.</param>
         /// <returns>The hex color code, including the <c>#</c>.</returns>
-        public static string GetHexColor(Misc.PlayerInfoColorTypes colorType) => Misc.AllowedColors.FirstOrDefault(option => option.Key == colorType).Value;
+        public static string GetHexColor(Misc.PlayerInfoColorTypes colorType) => Misc.AllowedColors[colorType];
 
         /// <summary>
         /// Returns the Badge in a human-readable format.
