@@ -80,10 +80,10 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         /// <param name="position">The position to spawn the <see cref="Projectile"/> at.</param>
         /// <param name="rotation">The rotation to spawn the <see cref="Projectile"/>.</param>
-        /// <param name="shouldActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
+        /// <param name="shouldBeActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Projectile"/>. See documentation of <see cref="Pickup.Create(ItemType)"/> for more information on casting.</returns>
-        public static Projectile CreateAndSpawn(ProjectileType type, Vector3 position, Quaternion rotation, bool shouldActive = true, Player previousOwner = null) => Spawn(Create(type), position, rotation, shouldActive, previousOwner);
+        public static Projectile CreateAndSpawn(ProjectileType type, Vector3 position, Quaternion rotation, bool shouldBeActive = true, Player previousOwner = null) => Spawn(Create(type), position, rotation, shouldBeActive, previousOwner);
 
         /// <summary>
         /// Spawns a <see cref="Projectile"/>.
@@ -91,7 +91,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <param name="pickup">The <see cref="Projectile"/> too spawn.</param>
         /// <param name="position">The position to spawn the <see cref="Projectile"/> at.</param>
         /// <param name="rotation">The rotation to spawn the <see cref="Projectile"/>.</param>
-        /// <param name="shouldActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
+        /// <param name="shouldBeActive">Whether the <see cref="Projectile"/> should be in active state after spawn.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Projectile"/> Spawn.</returns>
         public static Projectile Spawn(Projectile pickup, Vector3 position, Quaternion rotation, bool shouldBeActive = true, Player previousOwner = null)
