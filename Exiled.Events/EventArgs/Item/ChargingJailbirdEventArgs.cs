@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Item
     /// <summary>
     /// Contains all information before a player charges a <see cref="Jailbird"/>.
     /// </summary>
-    public class ChargingJailbirdEventArgs : IPlayerEvent
+    public class ChargingJailbirdEventArgs : IPlayerEvent, IItemEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChargingJailbirdEventArgs"/> class.
@@ -24,7 +24,7 @@ namespace Exiled.Events.EventArgs.Item
         /// <param name="isAllowed">Whether the item can be charged or not.</param>
         public ChargingJailbirdEventArgs(ReferenceHub player, InventorySystem.Items.ItemBase swingItem, bool isAllowed = true)
         {
-            Item item = API.Features.Items.Item.Get(swingItem);
+            Item item = Item.Get(swingItem);
 
             Player = Player.Get(player);
             Item = (Jailbird)item;
@@ -37,9 +37,9 @@ namespace Exiled.Events.EventArgs.Item
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Jailbird"/> that is being charged.
+        /// Gets the <see cref="API.Features.Items.Item"/> that is being charged. This will always be a <see cref="Jailbird"/>.
         /// </summary>
-        public Jailbird Item { get; }
+        public Item Item { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the Jailbird can be charged.
