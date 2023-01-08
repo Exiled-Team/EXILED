@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
@@ -16,9 +14,6 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using Mirror;
-
     using NorthwoodLib.Pools;
 
     using PlayerRoles.Voice;
