@@ -44,6 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label returnLabel = generator.DefineLabel();
             Label continueLabel = generator.DefineLabel();
             Label continueLabel1 = generator.DefineLabel();
+            Label continueLabel2 = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
@@ -62,15 +63,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel),
-
-                    // if (this.CurrentRole.RoleTypeId == newRole)
-                    //    return;
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ceq),
-                    new(OpCodes.Brtrue_S, continueLabel),
 
                     // player
                     new(OpCodes.Ldloc_S, player.LocalIndex),
@@ -111,7 +103,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // spawnFlags = ev.SpawnFlags
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.SpawnFlags))),
-                    new(OpCodes.Starg_S, 2),
+                    new(OpCodes.Starg_S, 3),
 
                     // UpdatePlayerRole(ev.NewRole, ev.Player)
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -119,38 +111,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
                     new(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
-
-                    // if (ev.ShouldPreserveInventory)
-                    //    goto continueLabel;
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.ShouldPreserveInventory))),
-                    new(OpCodes.Brtrue_S, continueLabel),
-
-                    // ev.Player
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
-
-                    // ev.Items
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
-
-                    // ev.Ammo
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Ammo))),
-
-                    // this.CurrentRole.RoleTypeId
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerRoleBase), nameof(PlayerRoleBase.RoleTypeId))),
-
-                    // newRole
-                    new(OpCodes.Ldarg_1),
-
-                    // reason
-                    new(OpCodes.Ldarg_2),
-
-                    // ChangingRole.ChangeInventory(ev.Player, ev.Items, ev.Ammo, currentRole, newRole, reason);
-                    new(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
 
                     new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
@@ -177,6 +137,27 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
                 });
 
+            offset = 1;
+            index = newInstructions.FindIndex(i => i.Calls(Method(typeof(PlayerRoleManager.RoleChanged), nameof(PlayerRoleManager.RoleChanged.Invoke)))) + offset;
+
+            newInstructions[index].labels.Add(continueLabel2);
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // if (player == null)
+                    //     continue
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Brfalse_S, continueLabel2),
+
+                    // ev
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+
+                    // ChangingRole.ChangeInventory(ev, oldRoleType);
+                    new(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
+                });
+
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -193,16 +174,18 @@ namespace Exiled.Events.Patches.Events.Player
             player.MaxHealth = default;
         }
 
-        private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleTypeId prevRole, RoleTypeId newRole, RoleChangeReason reason)
+        private static void ChangeInventory(ChangingRoleEventArgs ev)
         {
             try
             {
-                Inventory inventory = player.Inventory;
+                if (ev.ShouldPreserveInventory)
+                    return;
 
-                if (reason == RoleChangeReason.Escaped && prevRole != newRole)
+                Inventory inventory = ev.Player.Inventory;
+
+                if (ev.Reason == API.Enums.SpawnReason.Escaped)
                 {
                     List<ItemPickupBase> list = new();
-
                     if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
                         bodyArmor.DontRemoveExcessOnDrop = true;
 
@@ -219,7 +202,7 @@ namespace Exiled.Events.Patches.Events.Player
                             list.Add(item);
                     }
 
-                    InventoryItemProvider.PreviousInventoryPickups[player.ReferenceHub] = list;
+                    InventoryItemProvider.PreviousInventoryPickups[ev.Player.ReferenceHub] = list;
                 }
                 else
                 {
@@ -238,13 +221,13 @@ namespace Exiled.Events.Patches.Events.Player
                     inventory.SendAmmoNextFrame = true;
                 }
 
-                foreach (KeyValuePair<ItemType, ushort> keyValuePair in ammo)
+                foreach (KeyValuePair<ItemType, ushort> keyValuePair in ev.Ammo)
                     inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
 
-                foreach (ItemType item in items)
-                    InventoryItemProvider.OnItemProvided?.Invoke(player.ReferenceHub, inventory.ServerAddItem(item));
+                foreach (ItemType item in ev.Items)
+                    InventoryItemProvider.OnItemProvided?.Invoke(ev.Player.ReferenceHub, inventory.ServerAddItem(item));
 
-                InventoryItemProvider.SpawnPreviousInventoryPickups(player.ReferenceHub);
+                InventoryItemProvider.SpawnPreviousInventoryPickups(ev.Player.ReferenceHub);
             }
             catch (Exception exception)
             {

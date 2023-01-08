@@ -404,9 +404,9 @@ namespace Exiled.API.Features
             get => FpcNoclip.IsPermitted(ReferenceHub);
             set
             {
-                if (value && !FpcNoclip.PermittedPlayers.Contains(ReferenceHub.netId))
+                if (value)
                     FpcNoclip.PermitPlayer(ReferenceHub);
-                else if (!value && FpcNoclip.PermittedPlayers.Contains(ReferenceHub.netId))
+                else
                     FpcNoclip.UnpermitPlayer(ReferenceHub);
             }
         }
