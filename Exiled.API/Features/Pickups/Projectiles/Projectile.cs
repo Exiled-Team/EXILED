@@ -101,7 +101,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
             pickup.PreviousOwner = previousOwner;
             pickup.Spawn();
 
-            if (shouldActive)
+            if (shouldBeActive)
                 pickup.Active();
 
             return pickup;
