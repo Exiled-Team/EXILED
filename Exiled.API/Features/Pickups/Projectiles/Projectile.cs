@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <param name="rotation">The rotation to spawn the <see cref="Projectile"/>.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Projectile"/>. See documentation of <see cref="Pickup.Create(ItemType)"/> for more information on casting.</returns>
-        public static Projectile CreateAndSpawn(ProjectileType type, Vector3 position, Quaternion rotation, Player previousOwner = null) => Spawn((Projectile)Create(type.GetItemType()), position, rotation, previousOwner);
+        public static Projectile CreateAndSpawn(ProjectileType type, Vector3 position, Quaternion rotation, Player previousOwner = null) => Spawn(Create(type), position, rotation, previousOwner);
 
         /// <summary>
         /// Spawns a <see cref="Projectile"/>.
