@@ -7,46 +7,72 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
+#pragma warning disable SA1313
 
     using Exiled.API.Features;
     using HarmonyLib;
-    using NorthwoodLib.Pools;
-    using PlayerStatsSystem;
-
-    using static HarmonyLib.AccessTools;
+    using Mirror;
+    using PlayerRoles.FirstPersonControl;
+    using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="StaminaStat.CurValue"/>.
+    /// Patches <see cref="FpcStateProcessor.UpdateMovementState"/>.
+    /// Implements <see cref="Player.IsUsingStamina"/>.
     /// </summary>
-    [HarmonyPatch(typeof(StaminaStat), nameof(StaminaStat.CurValue), MethodType.Setter)]
+    [HarmonyPatch(typeof(FpcStateProcessor), nameof(FpcStateProcessor.UpdateMovementState))]
     internal class StaminaUsage
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(FpcStateProcessor __instance, PlayerMovementState state, ref PlayerMovementState __result)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            if (!Player.TryGet(__instance._hub, out Player player))
+                return true;
 
-            Label returnLabel = generator.DefineLabel();
-            Label skipLabel = generator.DefineLabel();
+            bool isCrouching = state == PlayerMovementState.Crouching;
+            float height = __instance._mod.CharacterControllerSettings.Height;
+            float num1 = height * __instance._mod.CrouchHeightRatio;
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            if (__instance.UpdateCrouching(isCrouching, num1, height) || __instance._firstUpdate)
             {
-                new(OpCodes.Ldfld, Field(typeof(StaminaStat), nameof(StaminaStat.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Dup),
-                new(OpCodes.Brfalse_S, skipLabel),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsUsingStamina))),
-                new(OpCodes.Brfalse_S, returnLabel),
-                new CodeInstruction(OpCodes.Nop).WithLabels(skipLabel),
-            });
+                __instance._firstUpdate = false;
 
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+                float num2 = Mathf.Lerp(0.0f, (float)((height - (double)num1) / 2.0), __instance.CrouchPercent);
+                float num3 = Mathf.Lerp(height, num1, __instance.CrouchPercent);
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+                float radius = __instance._mod.CharController.radius;
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+                __instance._mod.CharController.height = num3;
+                __instance._mod.CharController.center = Vector3.down * num2;
+                __instance._camPivot.localPosition = Vector3.up * (float)((num3 / 2.0) - num2 - radius + 0.08799999952316284);
+            }
+
+            if (!NetworkServer.active || __instance._useRate == 0.0)
+            {
+                __result = state;
+                return false;
+            }
+
+            if (state == PlayerMovementState.Sprinting)
+            {
+                if (__instance._stat.CurValue > 0.0 && !__instance.SprintingDisabled)
+                {
+                    __instance._stat.CurValue = !player.IsUsingStamina ? 1 : Mathf.Clamp01(__instance._stat.CurValue - (Time.deltaTime * __instance.ServerUseRate));
+                    __instance._regenStopwatch.Restart();
+                    __result = PlayerMovementState.Sprinting;
+                    return false;
+                }
+
+                state = PlayerMovementState.Walking;
+            }
+
+            if (__instance._stat.CurValue >= 1.0)
+            {
+                __result = state;
+                return false;
+            }
+
+            __instance._stat.CurValue = !player.IsUsingStamina ? 1 : Mathf.Clamp01(__instance._stat.CurValue + (__instance.ServerRegenRate * Time.deltaTime));
+            __result = state;
+            return false;
         }
     }
 }
