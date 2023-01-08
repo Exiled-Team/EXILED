@@ -113,15 +113,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not this door is a gate.
         /// </summary>
-        public bool IsGate => Type is DoorType.GateA or DoorType.GateB or DoorType.GR18Gate or
-                DoorType.Scp049Gate or DoorType.Scp173Gate or DoorType.Scp914Gate or
-                DoorType.SurfaceGate or DoorType.UnknownGate or DoorType.CheckpointGate;
+        public bool IsGate => Base is PryableDoor;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is a checkpoint door.
         /// </summary>
-        public bool IsCheckpoint => Type is DoorType.CheckpointEzHczA or DoorType.CheckpointEzHczB or DoorType.CheckpointLczA or
-                DoorType.CheckpointLczB;
+        public bool IsCheckpoint => Base is CheckpointDoor;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is a elevator door.
+        /// </summary>
+        public bool IsElevator => Base is ElevatorDoor;
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
