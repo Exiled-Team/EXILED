@@ -20,8 +20,6 @@ namespace Exiled.Permissions.Extensions
     using Exiled.API.Features.Pools;
     using Features;
 
-    using Exiled.API.Features.Pools;
-
     using Properties;
 
     using RemoteAdmin;

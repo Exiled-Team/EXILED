@@ -12,9 +12,9 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
     using CommandSystem;
 
-    using Extensions;
-
     using Exiled.API.Features.Pools;
+
+    using Extensions;
 
     /// <summary>
     /// Handles commands about permissions groups.
