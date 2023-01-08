@@ -1,23 +1,34 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using Exiled.Events.EventArgs.Player;
-using HarmonyLib;
-using Mirror;
-using NorthwoodLib.Pools;
-using PlayerRoles;
-using PlayerRoles.PlayableScps.Scp049;
-using PlayerRoles.Voice;
-using PluginAPI.Core;
-using UnityEngine;
-using VoiceChat;
-using VoiceChat.Networking;
+﻿// -----------------------------------------------------------------------
+// <copyright file="ReceivingAudio.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Player
 {
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
+    using System.Text;
+
+    using Exiled.Events.EventArgs.Player;
+    using HarmonyLib;
+    using Mirror;
+    using NorthwoodLib.Pools;
+    using PlayerRoles;
+    using PlayerRoles.PlayableScps.Scp049;
+    using PlayerRoles.Voice;
+    using PluginAPI.Core;
+    using UnityEngine;
+    using VoiceChat;
+    using VoiceChat.Networking;
+
     using static HarmonyLib.AccessTools;
 
+    /// <summary>
+    /// Patches <see cref="VoiceTransceiver.ServerReceiveMessage"/>.
+    /// </summary>
     [HarmonyPatch(typeof(VoiceTransceiver), nameof(VoiceTransceiver.ServerReceiveMessage))]
     public class ReceivingAudio
     {
@@ -41,11 +52,10 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldarg_1),
+
                     // Returns DoctorSenseEventArgs
                     new(OpCodes.Call, Method(typeof(ReceivingAudio), nameof(ReceivingAudioMessage))),
-                    // If !ev.IsAllowed, return
                     new(OpCodes.Br, returnLabel),
-
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -56,7 +66,13 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        public static void ReceivingAudioMessage(IVoiceRole voiceRole, NetworkConnection connection, VoiceMessage msg)
+        /// <summary>
+        /// Processes <see cref="ReceivingAudio"/> transpiler data.
+        /// </summary>
+        /// <param name="voiceRole"> <see cref="IVoiceRole"/>. </param>
+        /// <param name="connection"> <see cref="NetworkConnection"/>. </param>
+        /// <param name="msg"> <see cref="VoiceMessage"/>. </param>
+        private static void ReceivingAudioMessage(IVoiceRole voiceRole, NetworkConnection connection, VoiceMessage msg)
         {
             API.Features.Player currentPlayer = API.Features.Player.Get(msg.Speaker);
             ReceivingAudioEventArgs playerAudioEvent = new ReceivingAudioEventArgs(currentPlayer, voiceRole, connection, msg);
@@ -99,7 +115,7 @@ namespace Exiled.Events.Patches.Events.Player
                 foreach (ReferenceHub customConnectionPlayer in playerAudioEvent.CustomConnectionPlayers)
                 {
                     Log.Info($"Sending custom chat from {msg.Speaker.name} to {customConnectionPlayer.name} in channel {voiceChatChannel}");
-                    handleSendingAudio(customConnectionPlayer, playerAudioEvent, msg, voiceChatChannel);
+                    HandleSendingAudio(customConnectionPlayer, playerAudioEvent, msg, voiceChatChannel);
                 }
             }
             else
@@ -112,12 +128,19 @@ namespace Exiled.Events.Patches.Events.Player
                         continue;
                     }
 
-                    handleSendingAudio(referenceHub, playerAudioEvent, msg, voiceChatChannel);
+                    HandleSendingAudio(referenceHub, playerAudioEvent, msg, voiceChatChannel);
                 }
             }
         }
 
-        private static void handleSendingAudio(ReferenceHub referenceHub, ReceivingAudioEventArgs playerAudioEvent, VoiceMessage msg, VoiceChatChannel voiceChatChannel)
+        /// <summary>
+        ///  Processes audio to specified players.
+        /// </summary>
+        /// <param name="referenceHub"> <see cref="ReferenceHub"/>. </param>
+        /// <param name="playerAudioEvent"> <see cref="ReceivingAudioEventArgs"/>. </param>
+        /// <param name="msg"> <see cref="VoiceMessage"/>. </param>
+        /// <param name="voiceChatChannel"> <see cref="VoiceChatChannel"/>. </param>
+        private static void HandleSendingAudio(ReferenceHub referenceHub, ReceivingAudioEventArgs playerAudioEvent, VoiceMessage msg, VoiceChatChannel voiceChatChannel)
         {
             IVoiceRole voiceRole2;
             if ((voiceRole2 = referenceHub.roleManager.CurrentRole as IVoiceRole) != null)
@@ -133,16 +156,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 msg.Channel = voiceChannelOfNewClient;
                 referenceHub.connectionToClient.Send(msg);
-
             }
-        }
-
-        public static string ByteArrayToString(byte[] ba)
-        {
-            StringBuilder hex = new StringBuilder(ba.Length * 2);
-            foreach (byte b in ba)
-                hex.AppendFormat("{0:x2}", b);
-            return hex.ToString();
         }
     }
 }

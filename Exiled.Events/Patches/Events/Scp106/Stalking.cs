@@ -1,13 +1,9 @@
 // -----------------------------------------------------------------------
-// <copyright file="Teleporting.cs" company="Exiled Team">
+// <copyright file="Stalking.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
-using GameCore;
-using Mirror;
-using UnityEngine;
 
 namespace Exiled.Events.Patches.Events.Scp106
 {
@@ -16,22 +12,24 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.Handlers;
-
+    using GameCore;
     using HarmonyLib;
-
+    using Mirror;
     using NorthwoodLib.Pools;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Subroutines;
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     using Player = API.Features.Player;
 
-
+    /// <summary>
+    /// Patches <see cref="Scp106StalkAbility.ServerProcessCmd"/>.
+    /// </summary>
     [HarmonyPatch]
     internal static class Stalking
     {
-
         /// <summary>
         ///     Patches <see cref="Scp106HuntersAtlasAbility.ServerProcessCmd" />.
         ///     Adds the <see cref="Teleporting" /> event.
@@ -57,14 +55,13 @@ namespace Exiled.Events.Patches.Events.Scp106
                     // SCp106StalkAbility, NetworkReader
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new CodeInstruction(OpCodes.Ldarg_1),
+
                     // Returns DoctorSenseEventArgs
                     new(OpCodes.Call, Method(typeof(Stalking), nameof(Scp106Stalking))),
+
                     // If !ev.IsAllowed, return
                     new(OpCodes.Brfalse_S, returnLabel),
-
                 });
-
-
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
@@ -73,7 +70,6 @@ namespace Exiled.Events.Patches.Events.Scp106
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
 
         /// <summary>
         ///     Patches <see cref="Scp106HuntersAtlasAbility.ServerProcessCmd" />.
@@ -100,11 +96,12 @@ namespace Exiled.Events.Patches.Events.Scp106
                     // SCp106StalkAbility, NetworkReader
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new CodeInstruction(OpCodes.Ldarg_1),
+
                     // Returns DoctorSenseEventArgs
                     new(OpCodes.Call, Method(typeof(Stalking), nameof(Scp106ChangingIsActive))),
+
                     // If !ev.IsAllowed, return
                     new(OpCodes.Brfalse_S, returnLabel),
-
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -125,7 +122,7 @@ namespace Exiled.Events.Patches.Events.Scp106
             // to slow down spam of 60 per minute
             if (!playerChangingStalkStatus.IsAllowed)
             {
-                //If NW handler is true, continue, otherwise, instant return
+                // If NW handler is true, continue, otherwise, instant return
                 return playerChangingStalkStatus.AllowNwEventHandler;
             }
 
@@ -142,6 +139,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                 instance.ScpRole.Sinkhole.TargetDuration = playerChangingStalkStatus.TargetDuration;
                 return false;
             }
+
             if (NetworkServer.active)
             {
                 instance._sinkhole.Cooldown.Trigger(playerChangingStalkStatus.Cooldown);
@@ -152,7 +150,6 @@ namespace Exiled.Events.Patches.Events.Scp106
 
         private static bool Scp106Stalking(Scp106StalkAbility instance, NetworkReader reader)
         {
-
             API.Features.Player currentPlayer = API.Features.Player.Get(instance.Owner);
             if (!instance.IsActive)
             {
@@ -172,8 +169,9 @@ namespace Exiled.Events.Patches.Events.Scp106
             {
                 if (instance.Role.IsLocalPlayer)
                 {
-                    Scp106Hud.PlayFlashAnimation();
+                    Scp106Hud.PlayFlash(true);
                 }
+
                 instance.ServerSendRpc(false);
                 instance.IsActive = false;
                 return false;
@@ -193,25 +191,28 @@ namespace Exiled.Events.Patches.Events.Scp106
             {
                 if (instance.Role.IsLocalPlayer)
                 {
-                    Scp106Hud.PlayFlashAnimation();
+                    Scp106Hud.PlayFlash(true);
                 }
+
                 instance.ServerSendRpc(false);
                 instance.IsActive = false;
                 return false;
             }
+
             return true;
         }
 
         private static bool Scp106OnLeavingStalkingHandler(Scp106StalkAbility instance, PlayerTryLeaveStalkEventArgs playerTryLeaveStalkEventArgs)
         {
-            if ( !playerTryLeaveStalkEventArgs.IsAllowed || (playerTryLeaveStalkEventArgs.MustUseAllVigor && instance.Vigor.VigorAmount > 0.0f))
+            if (!playerTryLeaveStalkEventArgs.IsAllowed || (playerTryLeaveStalkEventArgs.MustUseAllVigor && instance.Vigor.VigorAmount > 0.0f))
             {
                 // Force sinkhole/submerged
                 instance.IsActive = true;
                 if (instance.Role.IsLocalPlayer)
                 {
-                    Scp106Hud.PlayFlashAnimation();
+                    Scp106Hud.PlayFlash(true);
                 }
+
                 instance.ServerSendRpc(false);
                 return false;
             }
@@ -225,6 +226,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                 instance.IsActive = false;
                 return false;
             }
+
             return true;
         }
     }

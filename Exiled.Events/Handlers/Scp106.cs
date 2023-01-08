@@ -28,7 +28,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<PlayerTryEnterStalkEventArgs> Stalking;
 
-
         /// <summary>
         ///     Invoked before SCP-106 leaves stalks
         /// </summary>
@@ -38,7 +37,6 @@ namespace Exiled.Events.Handlers
         ///     Invoked before Server code for SCP-106 changes stalk status
         /// </summary>
         public static event CustomEventHandler<ServerChangingStalk> ServerChangingStalk;
-
 
         /// <summary>
         ///     Called before SCP-106 teleports through the minimap.

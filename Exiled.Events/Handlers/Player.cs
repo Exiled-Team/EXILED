@@ -935,7 +935,6 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance. </param>
         public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
 
-
         /// <summary>
         /// Called before a user's audio is sent to others.
         /// </summary>
