@@ -12,8 +12,10 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
+
     using UnityEngine;
 
     using static Interactables.Interobjects.ElevatorChamber;

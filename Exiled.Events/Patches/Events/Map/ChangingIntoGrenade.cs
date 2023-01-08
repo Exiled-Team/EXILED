@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs.Map;
+
     using Handlers;
 
     using HarmonyLib;

@@ -8,6 +8,7 @@
 namespace Exiled.API.Extensions
 {
     using Exiled.API.Enums;
+
     using MapGeneration;
 
     /// <summary>

@@ -146,7 +146,7 @@ namespace Exiled.Events.Patches.Generic
             Log.Debug(
                 $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
             foreach (Item item in player.Items)
-                    Log.Debug($"{item})");
+                Log.Debug($"{item})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
 
@@ -161,9 +161,9 @@ namespace Exiled.Events.Patches.Generic
                 Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
 
                 foreach (Item item in player.Items)
-                        Log.Debug($"{item})");
+                    Log.Debug($"{item})");
 #endif
-                });
+            });
         }
     }
 }

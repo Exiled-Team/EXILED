@@ -12,16 +12,22 @@ namespace Exiled.API.Features.Items
     using System.Linq;
 
     using CameraShaking;
+
     using Enums;
+
     using Exiled.API.Features.Pickups;
     using Exiled.API.Structs;
+
     using Extensions;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
+    using InventorySystem.Items.Pickups;
+
     using UnityEngine;
 
     using BaseFirearm = InventorySystem.Items.Firearms.Firearm;
@@ -58,7 +64,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the firearm.</param>
         internal Firearm(ItemType type)
-            : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((BaseFirearm)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
             FirearmStatusFlags firearmStatusFlags = FirearmStatusFlags.MagazineInserted;
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
@@ -561,10 +567,13 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            FirearmPickup pickup = (FirearmPickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            pickup.Info = new(Type, position, rotation, pickup.Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Scale = Scale;
+            ipb.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.gameObject.transform.localScale = Scale;
+
+            FirearmPickup pickup = Pickup.Get(ipb).As<FirearmPickup>();
+
             pickup.Status = Base.Status;
 
             if (spawn)

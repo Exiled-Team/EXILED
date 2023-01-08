@@ -10,8 +10,11 @@ namespace Exiled.Events.EventArgs.Scp096
     using System.Linq;
 
     using API.Features;
+
     using Interfaces;
+
     using PlayerRoles.PlayableScps.Scp096;
+
     using UnityEngine;
 
     /// <summary>

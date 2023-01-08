@@ -12,6 +12,7 @@ namespace Exiled.CustomItems.API.EventArgs
     using Exiled.Events.EventArgs.Player;
 
     using InventorySystem.Items;
+
     using PlayerRoles;
 
     /// <summary>
@@ -38,7 +39,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="shouldPreserveInventory"><inheritdoc cref="ChangingRoleEventArgs.ShouldPreserveInventory"/></param>
         /// <param name="reason"><inheritdoc cref="ChangingRoleEventArgs.Reason"/></param>
         public OwnerChangingRoleEventArgs(ItemBase item, Player player, RoleTypeId newRole, bool shouldPreserveInventory, RoleChangeReason reason)
-            : base(player, newRole, reason)
+            : base(player, newRole, reason, RoleSpawnFlags.All)
         {
             Item = item;
             ShouldPreserveInventory = shouldPreserveInventory;

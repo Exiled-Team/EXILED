@@ -10,7 +10,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
     using Exiled.API.Enums;
 
     using InventorySystem.Items.ThrowableProjectiles;
+
     using PlayerRoles;
+
     using UnityEngine;
 
     /// <summary>

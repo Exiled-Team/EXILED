@@ -8,7 +8,10 @@
 namespace Exiled.API.Features.Items
 {
     using Enums;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Radio;
+
     using Structs;
 
     /// <summary>
@@ -30,7 +33,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Radio"/> class, as well as a new Radio item.
         /// </summary>
         internal Radio()
-            : this((RadioItem)Server.Host.Inventory.CreateItemInstance(ItemType.Radio, false))
+            : this((RadioItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.Radio, 0), false))
         {
         }
 

@@ -10,6 +10,14 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Represents a firearm.
     /// </summary>
+    /// <seealso cref="Extensions.ItemExtensions.GetAttachmentIdentifiers(FirearmType, uint)"/>
+    /// <seealso cref="Extensions.ItemExtensions.GetBaseCode(FirearmType)"/>
+    /// <seealso cref="Extensions.ItemExtensions.GetFirearmType(ItemType)"/>
+    /// <seealso cref="Extensions.ItemExtensions.GetItemType(FirearmType)"/>
+    /// <seealso cref="Extensions.ItemExtensions.GetMaxAmmo(FirearmType)"/>
+    /// <seealso cref="Extensions.ItemExtensions.GetWeaponAmmoType(FirearmType)"/>
+    /// <seealso cref="Extensions.ItemExtensions.TryGetAttachments(FirearmType, uint, out System.Collections.Generic.IEnumerable{Structs.AttachmentIdentifier})"/>
+    /// <seealso cref="Features.Items.Firearm.FirearmType"/>
     public enum FirearmType
     {
         /// <summary>

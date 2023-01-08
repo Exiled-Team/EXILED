@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Roles
     using System.Linq;
 
     using Mirror;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp173;

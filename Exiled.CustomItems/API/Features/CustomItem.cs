@@ -21,7 +21,6 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp914;
     using Exiled.Loader;
@@ -34,7 +33,9 @@ namespace Exiled.CustomItems.API.Features
     using MEC;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
+
     using UnityEngine;
 
     using YamlDotNet.Serialization;
@@ -896,7 +897,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)
         {
-            player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
+            player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.SelectedHint.Duration);
         }
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
