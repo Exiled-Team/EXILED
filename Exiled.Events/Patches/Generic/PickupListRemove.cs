@@ -56,6 +56,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
+            // remove all code and save only base.OnDestroy()
             yield return new CodeInstruction(OpCodes.Ldarg_0);
             yield return new(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.OnDestroy)));
             yield return new(OpCodes.Ret);
@@ -74,6 +75,7 @@ namespace Exiled.Events.Patches.Generic
 
             Label skip = generator.DefineLabel();
 
+            // PlayExplosionEffects()
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
@@ -101,6 +103,7 @@ namespace Exiled.Events.Patches.Generic
             offset = -1;
             int index2 = newInstructions.FindIndex(i => i.Calls(Method(typeof(EffectGrenade), nameof(EffectGrenade.ServerFuseEnd)))) + offset;
 
+            // fix labels
             newInstructions[index].MoveLabelsFrom(newInstructions[index2]);
 
             // remove EffectGrenade::ServerFuseEnd at start
@@ -128,6 +131,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
+            // remove all code and save only base.FixedUpdate()
             yield return new(OpCodes.Ldarg_0);
             yield return new(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.FixedUpdate)));
             yield return new(OpCodes.Ret);
