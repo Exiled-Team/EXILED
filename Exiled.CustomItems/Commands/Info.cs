@@ -13,10 +13,9 @@ namespace Exiled.CustomItems.Commands
     using CommandSystem;
 
     using Exiled.API.Features.Spawn;
+    using Exiled.API.Features.Pools;
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
-
-    using Exiled.API.Features.Pools;
 
     /// <summary>
     /// The command to view info about a specific item.

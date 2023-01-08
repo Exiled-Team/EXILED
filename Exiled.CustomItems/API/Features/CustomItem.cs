@@ -18,6 +18,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
@@ -31,8 +32,6 @@ namespace Exiled.CustomItems.API.Features
     using MapGeneration.Distributors;
 
     using MEC;
-
-    using Exiled.API.Features.Pools;
 
     using PlayerRoles;
 

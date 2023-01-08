@@ -13,10 +13,9 @@ namespace Exiled.CustomItems.Commands.List
 
     using CommandSystem;
 
+    using Exiled.API.Features.Pools;
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
-
-    using Exiled.API.Features.Pools;
 
     /// <inheritdoc/>
     internal sealed class Registered : ICommand

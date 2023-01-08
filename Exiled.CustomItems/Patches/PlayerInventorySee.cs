@@ -14,13 +14,12 @@ namespace Exiled.CustomItems.Patches
     using CommandSystem.Commands.RemoteAdmin;
 
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pools;
     using Exiled.CustomItems.API.Features;
 
     using HarmonyLib;
 
     using InventorySystem.Items;
-
-    using Exiled.API.Features.Pools;
 
     using static HarmonyLib.AccessTools;
 
