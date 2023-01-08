@@ -321,7 +321,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
+            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
             return doors[UnityEngine.Random.Range(0, doors.Count)];
         }
 
@@ -333,7 +333,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
         public static void LockAll(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && (door.Zone == zoneType)))
+            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && door.Zone.HasFlag(zoneType)))
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
@@ -381,7 +381,7 @@ namespace Exiled.API.Features
         /// Unlocks all <see cref="Door">doors</see> in the facility.
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
-        public static void UnlockAll(ZoneType zoneType) => UnlockAll(door => door.Zone == zoneType);
+        public static void UnlockAll(ZoneType zoneType) => UnlockAll(door => door.Zone.HasFlag(zoneType));
 
         /// <summary>
         /// Unlocks all <see cref="Door">doors</see> in the facility.
