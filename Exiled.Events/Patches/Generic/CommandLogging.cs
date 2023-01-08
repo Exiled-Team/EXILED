@@ -13,10 +13,9 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using API.Features;
+    using API.Features.Pools;
 
     using HarmonyLib;
-
-    using Exiled.API.Features.Pools;
 
     using RemoteAdmin;
 

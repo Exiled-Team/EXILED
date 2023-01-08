@@ -13,7 +13,6 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
     using System.IO;
 
     using Exiled.API.Features.Pools;
-    using Exiled.API.Features.Pools;
 
     using UnityEngine;
 

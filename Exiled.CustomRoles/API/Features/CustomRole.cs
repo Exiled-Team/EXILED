@@ -27,8 +27,6 @@ namespace Exiled.CustomRoles.API.Features
 
     using Mirror;
 
-    using Exiled.API.Features.Pools;
-
     using PlayerRoles;
 
     using UnityEngine;

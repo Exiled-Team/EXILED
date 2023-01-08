@@ -11,11 +11,10 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
 
     using HarmonyLib;
-
-    using Exiled.API.Features.Pools;
 
     using PlayerRoles.FirstPersonControl.NetworkMessages;
     using PlayerRoles.Visibility;
