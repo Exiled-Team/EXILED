@@ -13,6 +13,7 @@ namespace Exiled.Events.Handlers.Internal
 
     using API.Features;
     using API.Features.Items;
+    using API.Features.Pools;
     using API.Structs;
 
     using Exiled.API.Enums;
@@ -27,8 +28,6 @@ namespace Exiled.Events.Handlers.Internal
     using MapGeneration.Distributors;
 
     using MEC;
-
-    using Exiled.API.Features.Pools;
 
     using PlayerRoles.PlayableScps.Scp079.Cameras;
 

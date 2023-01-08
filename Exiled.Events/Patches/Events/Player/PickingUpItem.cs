@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.Pickups;
     using InventorySystem.Searching;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

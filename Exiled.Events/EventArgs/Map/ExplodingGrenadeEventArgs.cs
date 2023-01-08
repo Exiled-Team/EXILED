@@ -12,11 +12,10 @@ namespace Exiled.Events.EventArgs.Map
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
 
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using Exiled.API.Features.Pools;
 
     using UnityEngine;
 

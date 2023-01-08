@@ -17,8 +17,6 @@ namespace Exiled.Events.Patches.Events.Server
 
     using HarmonyLib;
 
-    
-
     using RoundRestarting;
 
     using static HarmonyLib.AccessTools;

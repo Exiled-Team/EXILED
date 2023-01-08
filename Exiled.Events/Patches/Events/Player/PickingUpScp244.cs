@@ -18,8 +18,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using InventorySystem.Searching;
 
-    
-
     using static HarmonyLib.AccessTools;
 
     using Player = API.Features.Player;
