@@ -65,10 +65,9 @@ namespace Exiled.Events.Patches.Events.Player
         private static bool HandleTransmitting(PersonalRadioPlayback radioPlayback)
         {
             ReferenceHub hub = radioPlayback._owner;
+
             if (hub == null || Player.Get(hub) is not Player player || Server.Host.ReferenceHub == hub)
-            {
                 return false;
-            }
 
             IVoiceRole voiceRole = player.RoleManager.CurrentRole as IVoiceRole;
             TransmittingEventArgs ev = new(player, voiceRole == null ? null : voiceRole.VoiceModule);
