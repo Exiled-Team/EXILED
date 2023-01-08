@@ -12,8 +12,8 @@ namespace Exiled.CustomItems.Commands
 
     using CommandSystem;
 
-    using Exiled.API.Features.Spawn;
     using Exiled.API.Features.Pools;
+    using Exiled.API.Features.Spawn;
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
 
