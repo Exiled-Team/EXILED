@@ -10,11 +10,13 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using HarmonyLib;
 
     using InventorySystem.Items.Firearms.Attachments;
 
-    using Exiled.API.Features.Pools;
+    
 
     using static HarmonyLib.AccessTools;
 

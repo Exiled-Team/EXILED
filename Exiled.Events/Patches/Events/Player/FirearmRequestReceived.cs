@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
@@ -18,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using InventorySystem.Items.Firearms.BasicMessages;
 
-    using Exiled.API.Features.Pools;
+    
 
     using PluginAPI.Enums;
 

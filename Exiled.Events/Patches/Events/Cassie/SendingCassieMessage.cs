@@ -10,14 +10,12 @@ namespace Exiled.Events.Patches.Events.Cassie
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Cassie;
 
     using Handlers;
 
     using HarmonyLib;
-
-    using Exiled.API.Features.Pools;
-
     using Respawning;
 
     using static HarmonyLib.AccessTools;

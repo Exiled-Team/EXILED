@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
 
@@ -18,7 +20,7 @@ namespace Exiled.Events.Patches.Fixes
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using Exiled.API.Features.Pools;
+    
 
     using UnityEngine;
 

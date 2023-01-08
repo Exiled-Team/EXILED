@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.Events.EventArgs.Scp330;
 
     using Handlers;
@@ -21,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using Mirror;
 
-    using Exiled.API.Features.Pools;
+    
 
     using static HarmonyLib.AccessTools;
 

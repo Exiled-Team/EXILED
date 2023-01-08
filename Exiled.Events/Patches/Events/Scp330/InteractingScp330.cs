@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp330
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using CustomPlayerEffects;
 
     using Exiled.Events.EventArgs.Scp330;
@@ -22,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp330
     using InventorySystem;
     using InventorySystem.Items.Usables.Scp330;
 
-    using Exiled.API.Features.Pools;
+    
 
     using static HarmonyLib.AccessTools;
 

@@ -11,14 +11,13 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
+    using API.Features.Pools;
 
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using InventorySystem;
-
-    using Exiled.API.Features.Pools;
 
     using static HarmonyLib.AccessTools;
 

@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Items;
+    using API.Features.Pools;
 
     using Exiled.Events.EventArgs.Player;
 
@@ -19,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using InventorySystem;
     using InventorySystem.Items;
-
-    using Exiled.API.Features.Pools;
 
     using static HarmonyLib.AccessTools;
 

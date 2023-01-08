@@ -9,6 +9,8 @@ namespace Exiled.Events.Patches.Events.Map
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
+    using Exiled.API.Features.Pools;
     using System.Text.RegularExpressions;
 
     using Exiled.Events.EventArgs.Map;
@@ -17,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using HarmonyLib;
 
-    using Exiled.API.Features.Pools;
+    
 
     using Respawning.NamingRules;
 

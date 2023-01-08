@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.Events.EventArgs.Scp244;
 
     using Handlers;
@@ -18,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Scp244
 
     using InventorySystem.Items.Usables.Scp244;
 
-    using Exiled.API.Features.Pools;
+    
 
     using static HarmonyLib.AccessTools;
 

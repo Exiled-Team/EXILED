@@ -12,7 +12,10 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Linq;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.API.Features;
+    
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Player;
 
@@ -21,8 +24,6 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Pickups;
-
-    using Exiled.API.Features.Pools;
 
     using PlayerRoles;
 

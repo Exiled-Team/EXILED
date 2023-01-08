@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.API.Enums;
     using Exiled.Events.EventArgs.Player;
 
@@ -17,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using Exiled.API.Features.Pools;
+    
 
     using PluginAPI.Events;
 

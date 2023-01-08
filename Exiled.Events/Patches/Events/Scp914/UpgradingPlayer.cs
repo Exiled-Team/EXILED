@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using API.Features;
 
     using Exiled.Events.EventArgs.Scp914;
@@ -18,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using HarmonyLib;
 
-    using Exiled.API.Features.Pools;
+    
 
     using UnityEngine;
 

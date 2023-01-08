@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using API.Features;
 
     using Exiled.Events.EventArgs.Scp096;
@@ -18,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using Mirror;
 
-    using Exiled.API.Features.Pools;
+    
 
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.PlayableScps.Subroutines;

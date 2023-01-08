@@ -11,11 +11,13 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using GameCore;
 
     using HarmonyLib;
 
-    using Exiled.API.Features.Pools;
+    
 
     using RoundRestarting;
 

@@ -10,13 +10,15 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using Exiled.API.Features.Pools;
+    
 
     using PlayerRoles;
     using PlayerRoles.Voice;

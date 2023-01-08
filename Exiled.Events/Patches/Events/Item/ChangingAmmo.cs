@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ChangingAmmo.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Item;
 
     using Handlers;
@@ -17,8 +18,6 @@ namespace Exiled.Events.Patches.Events.Item
     using HarmonyLib;
 
     using InventorySystem.Items.Firearms;
-
-    using Exiled.API.Features.Pools;
 
     using static HarmonyLib.AccessTools;
 

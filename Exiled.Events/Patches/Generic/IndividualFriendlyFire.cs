@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using API.Features;
 
     using Footprinting;
@@ -21,7 +23,7 @@ namespace Exiled.Events.Patches.Generic
 
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using Exiled.API.Features.Pools;
+    
 
     using PlayerRoles;
 

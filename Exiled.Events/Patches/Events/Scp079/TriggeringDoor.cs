@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
@@ -17,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using Interactables.Interobjects.DoorUtils;
 
-    using Exiled.API.Features.Pools;
+    
 
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Subroutines;

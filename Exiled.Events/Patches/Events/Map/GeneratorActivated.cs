@@ -11,6 +11,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Diagnostics;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.Events.EventArgs.Map;
 
     using Handlers;
@@ -19,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using MapGeneration.Distributors;
 
-    using Exiled.API.Features.Pools;
+    
 
     using static HarmonyLib.AccessTools;
 

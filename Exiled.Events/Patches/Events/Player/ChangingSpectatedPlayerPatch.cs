@@ -10,11 +10,12 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
+    
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using Exiled.API.Features.Pools;
 
     using PlayerRoles.Spectating;
 

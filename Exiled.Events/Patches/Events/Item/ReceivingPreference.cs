@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features.Pools;
+
     using Exiled.Events.EventArgs.Item;
 
     using Handlers;
@@ -20,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Item
 
     using Mirror;
 
-    using Exiled.API.Features.Pools;
+    
 
     using static HarmonyLib.AccessTools;
 
