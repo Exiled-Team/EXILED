@@ -17,7 +17,7 @@ namespace Exiled.CustomItems.Commands.List
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using RemoteAdmin;
 
@@ -57,7 +57,7 @@ namespace Exiled.CustomItems.Commands.List
                 return false;
             }
 
-            StringBuilder message = StringBuilderPool.Shared.Rent();
+            StringBuilder message = StringBuilderPool.Pool.Get();
 
             int count = 0;
 
@@ -90,7 +90,7 @@ namespace Exiled.CustomItems.Commands.List
             else
                 message.Insert(0, Environment.NewLine + "[Custom items inside inventories (" + count + ")]" + Environment.NewLine);
 
-            response = StringBuilderPool.Shared.ToStringReturn(message);
+            response = StringBuilderPool.Pool.ToStringReturn(message);
             return true;
         }
     }

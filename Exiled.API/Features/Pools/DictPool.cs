@@ -16,6 +16,7 @@ namespace Exiled.API.Features.Pools
     /// <typeparam name="TKey">The type of the key in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of the value in the dictionary.</typeparam>
     /// <seealso cref="ListPool{T}"/>
+    /// <seealso cref="HashSetPool{T}"/>
     public class DictPool<TKey, TValue> : IPool<Dictionary<TKey, TValue>>
     {
         private readonly ConcurrentQueue<Dictionary<TKey, TValue>> pool = new();

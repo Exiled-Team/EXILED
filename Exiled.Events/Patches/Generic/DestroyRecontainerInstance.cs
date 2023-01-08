@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Generic
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using PlayerRoles.PlayableScps.Scp079;
 
@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             // Recontainer.Base = null;
             newInstructions.InsertRange(
@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Generic
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

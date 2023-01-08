@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Core
 
     using Exiled.API.Features.Core.Attributes;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using UnityEngine;
 
@@ -487,12 +487,12 @@ namespace Exiled.API.Features.Core
         /// </summary>
         public static void DestroyAllObjects()
         {
-            List<EObject> objects = ListPool<EObject>.Shared.Rent(InternalObjects);
+            List<EObject> objects = ListPool<EObject>.Pool.Get(InternalObjects);
             foreach (EObject @object in objects)
                 @object.Destroy();
 
             objects.Clear();
-            ListPool<EObject>.Shared.Return(objects);
+            ListPool<EObject>.Pool.Return(objects);
         }
 
         /// <summary>
@@ -502,7 +502,7 @@ namespace Exiled.API.Features.Core
         public static void DestroyAllObjectsOfType<T>()
             where T : EObject
         {
-            List<EObject> objects = ListPool<EObject>.Shared.Rent(InternalObjects);
+            List<EObject> objects = ListPool<EObject>.Pool.Get(InternalObjects);
             foreach (EObject @object in objects)
             {
                 if (@object.Cast(out T obj))
@@ -510,7 +510,7 @@ namespace Exiled.API.Features.Core
             }
 
             objects.Clear();
-            ListPool<EObject>.Shared.Return(objects);
+            ListPool<EObject>.Pool.Return(objects);
         }
 
         /// <summary>

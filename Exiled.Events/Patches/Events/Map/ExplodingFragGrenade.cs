@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using UnityEngine;
 
@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Map
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_3) + offset;
@@ -111,7 +111,7 @@ namespace Exiled.Events.Patches.Events.Map
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

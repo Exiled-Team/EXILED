@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.Generic
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using PlayerRoles.FirstPersonControl.NetworkMessages;
     using PlayerRoles.Visibility;
@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             const int offset = 6;
             int index = newInstructions.FindIndex(
@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Generic
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
         private static void HandleGhostMode(ReferenceHub hubReceiver, ReferenceHub hubTarget, ref bool isInvisible)

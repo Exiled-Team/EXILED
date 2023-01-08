@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Item
 
     using Mirror;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Item
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             const int offset = -3;
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_1) + offset;
@@ -109,7 +109,7 @@ namespace Exiled.Events.Patches.Events.Item
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

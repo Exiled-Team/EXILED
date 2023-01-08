@@ -28,7 +28,7 @@ namespace Exiled.Events.Handlers.Internal
 
     using MEC;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using PlayerRoles.PlayableScps.Scp079.Cameras;
 
@@ -87,7 +87,7 @@ namespace Exiled.Events.Handlers.Internal
         private static void GenerateRooms()
         {
             // Get bulk of rooms with sorted.
-            List<RoomIdentifier> roomIdentifiers = ListPool<RoomIdentifier>.Shared.Rent(RoomIdentifier.AllRoomIdentifiers);
+            List<RoomIdentifier> roomIdentifiers = ListPool<RoomIdentifier>.Pool.Get(RoomIdentifier.AllRoomIdentifiers);
 
             // If no rooms were found, it means a plugin is trying to access this before the map is created.
             if (roomIdentifiers.Count == 0)
@@ -96,7 +96,7 @@ namespace Exiled.Events.Handlers.Internal
             foreach (RoomIdentifier roomIdentifier in roomIdentifiers)
                 Room.RoomIdentifierToRoom.Add(roomIdentifier, Room.CreateComponent(roomIdentifier.gameObject));
 
-            ListPool<RoomIdentifier>.Shared.Return(roomIdentifiers);
+            ListPool<RoomIdentifier>.Pool.Return(roomIdentifiers);
         }
 
         private static void GenerateWindows()

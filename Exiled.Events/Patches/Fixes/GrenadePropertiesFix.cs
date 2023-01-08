@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Fixes
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using UnityEngine;
 
@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Fixes
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder throwable = generator.DeclareLocal(typeof(ThrowableItem));
             LocalBuilder projectile = generator.DeclareLocal(typeof(Projectile));
@@ -114,7 +114,7 @@ namespace Exiled.Events.Patches.Fixes
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

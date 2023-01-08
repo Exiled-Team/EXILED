@@ -36,7 +36,7 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading plugin translations... ({LoaderPlugin.Config.ConfigType})");
 
-                Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? DictPool<string, object>.Shared.Rent();
+                Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? DictPool<string, object>.Pool.Get();
                 SortedDictionary<string, ITranslation> deserializedTranslations = new(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
@@ -56,7 +56,7 @@ namespace Exiled.Loader
 
                 Log.Info("Plugin translations loaded successfully!");
 
-                DictPool<string, object>.Shared.Return(rawDeserializedTranslations);
+                DictPool<string, object>.Pool.Return(rawDeserializedTranslations);
                 return deserializedTranslations;
             }
             catch (Exception exception)
@@ -213,7 +213,7 @@ namespace Exiled.Loader
         {
             if (rawTranslations is null)
             {
-                rawTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? DictPool<string, object>.Shared.Rent();
+                rawTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? DictPool<string, object>.Pool.Get();
             }
 
             if (!rawTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
@@ -235,7 +235,7 @@ namespace Exiled.Loader
                 translation = plugin.InternalTranslation;
             }
 
-            DictPool<string, object>.Shared.Return(rawTranslations);
+            DictPool<string, object>.Pool.Return(rawTranslations);
             return translation;
         }
 

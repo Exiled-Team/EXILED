@@ -18,7 +18,7 @@ namespace Exiled.Events.Commands.Show
 
     using Exiled.Permissions.Extensions;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using RemoteAdmin;
 
@@ -47,7 +47,7 @@ namespace Exiled.Events.Commands.Show
                 return false;
             }
 
-            StringBuilder sb = StringBuilderPool.Shared.Rent();
+            StringBuilder sb = StringBuilderPool.Pool.Get();
 
             // Append a new line to start the response on a new line
             sb.AppendLine();
@@ -86,7 +86,7 @@ namespace Exiled.Events.Commands.Show
             }
 
             response = sb.ToString();
-            StringBuilderPool.Shared.Return(sb);
+            StringBuilderPool.Pool.Return(sb);
             return true;
         }
     }

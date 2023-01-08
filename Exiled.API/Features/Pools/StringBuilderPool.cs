@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ListPool.cs" company="Exiled Team">
+// <copyright file="StringBuilderPool.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -8,17 +8,19 @@
 namespace Exiled.API.Features.Pools
 {
     using System.Collections.Concurrent;
-    using System.Collections.Generic;
     using System.Text;
 
-    internal class StringBuilderPool : IPool<StringBuilder>
+    /// <summary>
+    /// Defines a system used to store and retrieve <see cref="StringBuilder"/> objects.
+    /// </summary>
+    public class StringBuilderPool : IPool<StringBuilder>
     {
         private readonly ConcurrentQueue<StringBuilder> pool = new();
 
         /// <summary>
         /// Gets a <see cref="StringBuilderPool"/> that stores <see cref="StringBuilder"/>.
         /// </summary>
-        public static StringBuilder Pool { get; } = new();
+        public static StringBuilderPool Pool { get; } = new();
 
         /// <inheritdoc/>
         public StringBuilder Get()
@@ -50,6 +52,18 @@ namespace Exiled.API.Features.Pools
         {
             obj.Clear();
             pool.Enqueue(obj);
+        }
+
+        /// <summary>
+        /// Returns the contents of the <see cref="StringBuilder"/> and returns it to the pool.
+        /// </summary>
+        /// <param name="obj">The <see cref="StringBuilder"/> to return.</param>
+        /// <returns>The value of the <see cref="StringBuilder"/>.</returns>
+        public string ToStringReturn(StringBuilder obj)
+        {
+            string s = obj.ToString();
+            Return(obj);
+            return s;
         }
     }
 }

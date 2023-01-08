@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.Fixes
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using PlayerRoles.PlayableScps.Scp049;
 
@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Fixes
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label continueLabel = generator.DefineLabel();
 
@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Fixes
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

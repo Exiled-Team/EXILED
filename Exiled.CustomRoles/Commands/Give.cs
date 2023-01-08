@@ -17,7 +17,7 @@ namespace Exiled.CustomRoles.Commands
     using Exiled.CustomRoles.API.Features;
     using Exiled.Permissions.Extensions;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using RemoteAdmin;
 
@@ -86,13 +86,13 @@ namespace Exiled.CustomRoles.Commands
             {
                 case "*":
                 case "all":
-                    List<Player> players = ListPool<Player>.Shared.Rent(Player.List);
+                    List<Player> players = ListPool<Player>.Pool.Get(Player.List);
 
                     foreach (Player player in players)
                         role.AddRole(player);
 
                     response = $"Custom role {role.Name} given to all players.";
-                    ListPool<Player>.Shared.Return(players);
+                    ListPool<Player>.Pool.Return(players);
                     return true;
                 default:
                     if (Player.Get(identifier) is not Player ply)

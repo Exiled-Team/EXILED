@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Generic
 
     using MEC;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Generic
             IEnumerable<CodeInstruction> instructions,
             ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             const int offset = -2;
             int index = newInstructions.FindIndex(
@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Generic
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
         private static void AddItem(Player player, ItemBase itemBase, ItemPickupBase itemPickupBase)
@@ -95,7 +95,7 @@ namespace Exiled.Events.Patches.Generic
             IEnumerable<CodeInstruction> instructions,
             ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
             const int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Throw) + offset;
 
@@ -119,7 +119,7 @@ namespace Exiled.Events.Patches.Generic
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
         private static void RemoveItem(Player player, ushort serial)

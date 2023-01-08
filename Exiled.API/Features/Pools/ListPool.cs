@@ -10,7 +10,13 @@ namespace Exiled.API.Features.Pools
     using System.Collections.Concurrent;
     using System.Collections.Generic;
 
-    internal class ListPool<T> : IPool<List<T>>
+    /// <summary>
+    /// Defines a system used to store and retrieve <see cref="List{T}"/> objects.
+    /// </summary>
+    /// <typeparam name="T">The type of the objects in the list.</typeparam>
+    /// <seealso cref="DictPool{TKey, TValue}"/>
+    /// <seealso cref="HashSetPool{T}"/>
+    public class ListPool<T> : IPool<List<T>>
     {
         private readonly ConcurrentQueue<List<T>> pool = new();
 

@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Mirror;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using PluginAPI.Enums;
 
@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label @break = (Label)newInstructions.FindLast(i => i.opcode == OpCodes.Leave_S).operand;
 
@@ -77,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

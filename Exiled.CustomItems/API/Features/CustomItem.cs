@@ -32,7 +32,7 @@ namespace Exiled.CustomItems.API.Features
 
     using MEC;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using PlayerRoles;
 
@@ -320,7 +320,7 @@ namespace Exiled.CustomItems.API.Features
                             {
                                 if (property.GetValue(overrideClass ?? plugin.Config) is IEnumerable enumerable)
                                 {
-                                    List<CustomItem> list = ListPool<CustomItem>.Shared.Rent();
+                                    List<CustomItem> list = ListPool<CustomItem>.Pool.Get();
                                     foreach (object item in enumerable)
                                     {
                                         if (item is CustomItem ci)
@@ -342,7 +342,7 @@ namespace Exiled.CustomItems.API.Features
                                         items.Add(item);
                                     }
 
-                                    ListPool<CustomItem>.Shared.Return(list);
+                                    ListPool<CustomItem>.Pool.Return(list);
                                 }
 
                                 continue;

@@ -15,7 +15,7 @@ namespace Exiled.CustomRoles.Commands
     using Exiled.CustomRoles.API.Features;
     using Exiled.Permissions.Extensions;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     /// <summary>
     /// The command to view info about a specific role.
@@ -62,7 +62,7 @@ namespace Exiled.CustomRoles.Commands
                 return false;
             }
 
-            StringBuilder builder = StringBuilderPool.Shared.Rent().AppendLine();
+            StringBuilder builder = StringBuilderPool.Pool.Get().AppendLine();
 
             builder.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(role.Name)
                 .Append("</color> <color=#05C4E8>(").Append(role.Id).Append(")</color>")
@@ -70,7 +70,7 @@ namespace Exiled.CustomRoles.Commands
                 .AppendLine(role.Role.ToString())
                 .Append("- Health: ").AppendLine(role.MaxHealth.ToString()).AppendLine();
 
-            response = StringBuilderPool.Shared.ToStringReturn(builder);
+            response = StringBuilderPool.Pool.ToStringReturn(builder);
             return true;
         }
     }

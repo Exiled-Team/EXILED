@@ -14,7 +14,7 @@ namespace Exiled.API.Extensions
     using System.Text;
     using System.Text.RegularExpressions;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     /// <summary>
     /// A set of extensions for <see cref="string"/>.
@@ -96,7 +96,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the converted <see cref="IEnumerable{T}"/>.</returns>
         public static string ToString<T>(this IEnumerable<T> enumerable, bool showIndex = true)
         {
-            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
+            StringBuilder stringBuilder = StringBuilderPool.Pool.Get();
             int index = 0;
 
             stringBuilder.AppendLine();
@@ -109,7 +109,7 @@ namespace Exiled.API.Extensions
                 stringBuilder.AppendLine(enumerator.ToString());
             }
 
-            return StringBuilderPool.Shared.ToStringReturn(stringBuilder);
+            return StringBuilderPool.Pool.ToStringReturn(stringBuilder);
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using MapGeneration.Distributors;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             const int index = 0;
 
@@ -93,7 +93,7 @@ namespace Exiled.Events.Patches.Events.Map
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }
