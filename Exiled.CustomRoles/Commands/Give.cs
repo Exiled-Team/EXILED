@@ -14,10 +14,9 @@ namespace Exiled.CustomRoles.Commands
     using CommandSystem;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Permissions.Extensions;
-
-    using Exiled.API.Features.Pools;
 
     using RemoteAdmin;
 
