@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Map
         /// <returns>An array of colliders.</returns>
         public static Collider[] TrimColliders(ExplodingGrenadeEventArgs ev, Collider[] colliderArray)
         {
-            List<Collider> colliders = new();
+            List<Collider> colliders = ListPool<Collider>.Pool.Get();
 
             foreach (Collider collider in colliderArray)
             {
@@ -52,7 +52,10 @@ namespace Exiled.Events.Patches.Events.Map
                 }
             }
 
-            return colliders.ToArray();
+            Collider[] array = colliders.ToArray();
+            ListPool<Collider>.Pool.Return(colliders);
+
+            return array;
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Core
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using Exiled.API.Features.Pools;
     using MEC;
 
     /// <summary>
@@ -71,7 +71,7 @@ namespace Exiled.API.Features.Core
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="Action"/> containing all the delegates to be invoked.
         /// </summary>
-        public List<Action> Instructions { get; } = new();
+        public List<Action> Instructions { get; } = ListPool<Action>.Pool.Get();
 
         /// <summary>
         /// Gets all the currently bound handles.
@@ -115,6 +115,7 @@ namespace Exiled.API.Features.Core
         {
             base.OnBeginDestroy();
 
+            ListPool<Action>.Pool.Return(Instructions);
             UnbindAllHandles();
             Timing.KillCoroutines(executeAllHandle);
         }
