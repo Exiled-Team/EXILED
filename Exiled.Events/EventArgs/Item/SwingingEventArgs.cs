@@ -24,10 +24,8 @@ namespace Exiled.Events.EventArgs.Item
         /// <param name="isAllowed">Whether the item can be swung or not.</param>
         public SwingingEventArgs(ReferenceHub player, InventorySystem.Items.ItemBase swingItem, bool isAllowed = true)
         {
-            Item item = Item.Get(swingItem);
-
             Player = Player.Get(player);
-            Item = item;
+            Item = Item.Get(swingItem);
             IsAllowed = isAllowed;
         }
 
