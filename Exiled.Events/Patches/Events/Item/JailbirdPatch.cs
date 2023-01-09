@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Item
                     // hub
                     new CodeInstruction(OpCodes.Ldarg_0),
 
-                    // JailbirdMessageType
+                    // header (JailbirdMessageType)
                     new CodeInstruction(OpCodes.Ldloc_1),
 
                     // HandleTransmitting(ReferenceHub, VoiceModule)
