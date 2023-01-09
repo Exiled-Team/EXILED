@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Item
                     // header (JailbirdMessageType)
                     new CodeInstruction(OpCodes.Ldloc_1),
 
-                    // HandleTransmitting(ReferenceHub, VoiceModule)
+                    // HandleJailbird(JailbirdItem, JailbirdMessageType)
                     new(OpCodes.Call, Method(typeof(JailbirdPatch), nameof(HandleJailbird))),
 
                     // return false if not allowed
