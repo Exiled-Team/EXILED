@@ -55,25 +55,31 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            // remove all code and save only base.OnDestroy()
+            yield return new CodeInstruction(OpCodes.Ldarg_0);
+            yield return new(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.OnDestroy)));
+            yield return new(OpCodes.Ret);
+        }
+    }
 
-            // remove first base::OnDestroy call
-            newInstructions.RemoveRange(0, 2);
+    /// <summary>
+    /// Patches <see cref="EffectGrenade.ServerFuseEnd"/> for fixing cringe NW code :).
+    /// </summary>
+    [HarmonyPatch(typeof(EffectGrenade), nameof(EffectGrenade.ServerFuseEnd))]
+    internal static class ServerFuseEndListRemove
+    {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = 0;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
+            Label skip = generator.DefineLabel();
 
-            CodeInstruction[] toInsert = new[]
+            // PlayExplosionEffects()
+            newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.OnDestroy))),
-            };
-
-            // OnDestroy call if TargetTime == 0.0f
-            newInstructions.InsertRange(index, toInsert);
-
-            // OnDestroy call at the end
-            newInstructions.InsertRange(newInstructions.Count - 1, toInsert);
+                new(OpCodes.Callvirt, Method(typeof(EffectGrenade), nameof(EffectGrenade.PlayExplosionEffects))),
+            });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -98,6 +104,7 @@ namespace Exiled.Events.Patches.Generic
             offset = -1;
             int index2 = newInstructions.FindIndex(i => i.Calls(Method(typeof(EffectGrenade), nameof(EffectGrenade.ServerFuseEnd)))) + offset;
 
+            // fix labels
             newInstructions[index].MoveLabelsFrom(newInstructions[index2]);
 
             // remove EffectGrenade::ServerFuseEnd at start
@@ -114,6 +121,21 @@ namespace Exiled.Events.Patches.Generic
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+    }
+
+    /// <summary>
+    /// Patches <see cref="CoalProjectile.FixedUpdate"/> for fixing cringe NW code :).
+    /// </summary>
+    [HarmonyPatch(typeof(CoalProjectile), nameof(CoalProjectile.FixedUpdate))]
+    internal static class CoalProjectileListRemove
+    {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            // remove all code and save only base.FixedUpdate()
+            yield return new(OpCodes.Ldarg_0);
+            yield return new(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.FixedUpdate)));
+            yield return new(OpCodes.Ret);
         }
     }
 }
