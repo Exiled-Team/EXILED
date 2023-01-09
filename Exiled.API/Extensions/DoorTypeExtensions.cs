@@ -29,8 +29,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="door">The door to be checked.</param>
         /// <returns>Returns whether the <see cref="DoorType"/> is a checkpoint or not.</returns>
-        public static bool IsCheckpoint(this DoorType door) => door is DoorType.CheckpointLczA
-            or DoorType.CheckpointLczB or DoorType.CheckpointEzHczA or DoorType.CheckpointEzHczB;
+        public static bool IsCheckpoint(this DoorType door) => door is DoorType.CheckpointLczA or DoorType.CheckpointLczB or DoorType.CheckpointEzHczA or DoorType.CheckpointEzHczB;
 
         /// <summary>
         /// Checks if a <see cref="DoorType">door type</see> is an elevator.
