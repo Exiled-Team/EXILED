@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Item
                 index,
                 new[]
                 {
-                    // hub
+                    // this (JailbirdItem)
                     new CodeInstruction(OpCodes.Ldarg_0),
 
                     // header (JailbirdMessageType)
