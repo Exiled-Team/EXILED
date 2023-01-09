@@ -68,8 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
             if (hub == null || Player.Get(hub) is not Player player || Server.Host.ReferenceHub == hub)
                 return false;
 
-            IVoiceRole voiceModule = (IVoiceRole)player.RoleManager.CurrentRole;
-            TransmittingEventArgs ev = new(player, voiceModule.VoiceModule);
+            TransmittingEventArgs ev = new(player, ((IVoiceRole)player.RoleManager.CurrentRole).VoiceModule);
 
             Handlers.Player.OnTransmitting(ev);
 
