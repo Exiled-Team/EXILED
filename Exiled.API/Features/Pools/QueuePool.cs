@@ -21,9 +21,9 @@ namespace Exiled.API.Features.Pools
         private readonly ConcurrentQueue<Queue<T>> pool = new();
 
         /// <summary>
-        /// Gets a <see cref="ListPool{T}"/> that stores lists.
+        /// Gets a <see cref="QueuePool{T}"/> that stores lists.
         /// </summary>
-        public static ListPool<T> Pool { get; } = new();
+        public static QueuePool<T> Pool { get; } = new();
 
         /// <inheritdoc/>
         public Queue<T> Get()
