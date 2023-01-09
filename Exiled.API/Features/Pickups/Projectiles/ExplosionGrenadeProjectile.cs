@@ -100,24 +100,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
         }
 
         /// <summary>
-        /// Instant explosion of the grenade.
-        /// </summary>
-        public void Explode() => ExplosionGrenade.Explode(Base.PreviousOwner, Base.transform.position, Base);
-
-        /// <summary>
-        /// Instant explosion of the grenade.
-        /// </summary>
-        /// <param name="player"><see cref="Player"/> that will be attacker.</param>
-        public void Explode(Player player) => ExplosionGrenade.Explode(player.Footprint, Base.transform.position, Base);
-
-        /// <summary>
-        /// Instant explosion of the grenade.
-        /// </summary>
-        /// <param name="player"><see cref="Player"/> that will be attacker.</param>
-        /// <param name="position">Position of explode.</param>
-        public void Explode(Player player, Vector3 position) => ExplosionGrenade.Explode(player.Footprint, position, Base);
-
-        /// <summary>
         /// Returns the ExplosionGrenadePickup in a human readable format.
         /// </summary>
         /// <returns>A string containing ExplosionGrenadePickup-related data.</returns>
