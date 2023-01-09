@@ -54,7 +54,6 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Brfalse_S, retLabel),
                 });
 
-            // -2 to return false
             newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
