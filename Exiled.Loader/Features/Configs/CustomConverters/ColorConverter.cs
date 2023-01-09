@@ -64,7 +64,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         /// <inheritdoc />
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
-            Dictionary<string, float> coordinates = DictPool<string, float>.Pool.Get();
+            Dictionary<string, float> coordinates = DictionaryPool<string, float>.Pool.Get();
 
             if (value is Color color)
             {
@@ -82,7 +82,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
                 emitter.Emit(new Scalar(coordinate.Value.ToString(CultureInfo.GetCultureInfo("en-US"))));
             }
 
-            DictPool<string, float>.Pool.Return(coordinates);
+            DictionaryPool<string, float>.Pool.Return(coordinates);
             emitter.Emit(new MappingEnd());
         }
     }

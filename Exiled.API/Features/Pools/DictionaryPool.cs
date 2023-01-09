@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="DictPool.cs" company="Exiled Team">
+// <copyright file="DictionaryPool.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -17,14 +17,14 @@ namespace Exiled.API.Features.Pools
     /// <typeparam name="TValue">The type of the value in the dictionary.</typeparam>
     /// <seealso cref="ListPool{T}"/>
     /// <seealso cref="HashSetPool{T}"/>
-    public class DictPool<TKey, TValue> : IPool<Dictionary<TKey, TValue>>
+    public class DictionaryPool<TKey, TValue> : IPool<Dictionary<TKey, TValue>>
     {
         private readonly ConcurrentQueue<Dictionary<TKey, TValue>> pool = new();
 
         /// <summary>
-        /// Gets a <see cref="DictPool{TKey, TValue}"/> that stores dictionaries.
+        /// Gets a <see cref="DictionaryPool{TKey, TValue}"/> that stores dictionaries.
         /// </summary>
-        public static DictPool<TKey, TValue> Pool { get; } = new();
+        public static DictionaryPool<TKey, TValue> Pool { get; } = new();
 
         /// <summary>
         /// Rent a <see cref="Dictionary{TKey, TValue}"/> temporarily.

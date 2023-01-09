@@ -99,7 +99,7 @@ namespace Exiled.Permissions.Extensions
 
             try
             {
-                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? DictPool<string, object>.Pool.Get();
+                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? DictionaryPool<string, object>.Pool.Get();
                 Dictionary<string, Group> deserializedPerms = new();
                 foreach (KeyValuePair<string, object> group in rawDeserializedPerms)
                 {
@@ -121,7 +121,7 @@ namespace Exiled.Permissions.Extensions
                     }
                 }
 
-                DictPool<string, object>.Pool.Return(rawDeserializedPerms);
+                DictionaryPool<string, object>.Pool.Return(rawDeserializedPerms);
 
                 Groups = deserializedPerms;
             }

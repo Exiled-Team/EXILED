@@ -131,9 +131,9 @@ namespace Exiled.API.Features
         /// </summary>
         ~Player()
         {
-            DictPool<string, object>.Pool.Return(SessionVariables);
-            DictPool<RoleTypeId, float>.Pool.Return(FriendlyFireMultiplier);
-            DictPool<string, Dictionary<RoleTypeId, float>>.Pool.Return(CustomRoleFriendlyFireMultiplier);
+            DictionaryPool<string, object>.Pool.Return(SessionVariables);
+            DictionaryPool<RoleTypeId, float>.Pool.Return(FriendlyFireMultiplier);
+            DictionaryPool<string, Dictionary<RoleTypeId, float>>.Pool.Return(CustomRoleFriendlyFireMultiplier);
         }
 
         /// <summary>
@@ -162,13 +162,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleTypeId"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
-        public Dictionary<RoleTypeId, float> FriendlyFireMultiplier { get; set; } = DictPool<RoleTypeId, float>.Pool.Get();
+        public Dictionary<RoleTypeId, float> FriendlyFireMultiplier { get; set; } = DictionaryPool<RoleTypeId, float>.Pool.Get();
 
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier. This is for unique custom roles.
         /// </summary>
         /// <remarks> Consider adding this as object, Dict so that CustomRoles, and Strings can be parsed. </remarks>
-        public Dictionary<string, Dictionary<RoleTypeId, float>> CustomRoleFriendlyFireMultiplier { get; set; } = DictPool<string, Dictionary<RoleTypeId, float>>.Pool.Get();
+        public Dictionary<string, Dictionary<RoleTypeId, float>> CustomRoleFriendlyFireMultiplier { get; set; } = DictionaryPool<string, Dictionary<RoleTypeId, float>>.Pool.Get();
 
         /// <summary>
         /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
@@ -368,7 +368,7 @@ namespace Exiled.API.Features
         /// Data saved with session variables is not being saved on player disconnect. If the data must be saved after the player's disconnects, a database must be used instead.
         /// </para>
         /// </summary>
-        public Dictionary<string, object> SessionVariables { get; } = DictPool<string, object>.Pool.Get();
+        public Dictionary<string, object> SessionVariables { get; } = DictionaryPool<string, object>.Pool.Get();
 
         /// <summary>
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
@@ -1390,7 +1390,7 @@ namespace Exiled.API.Features
         /// <returns> Whether or not the item was able to be added. </returns>
         public bool TryAddFriendlyFire(Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictPool<RoleTypeId, float>.Pool.Get();
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictionaryPool<RoleTypeId, float>.Pool.Get();
             foreach (KeyValuePair<RoleTypeId, float> roleFF in ffRules)
             {
                 if (overwrite)
@@ -1412,7 +1412,7 @@ namespace Exiled.API.Features
                     TryAddFriendlyFire(roleFF);
             }
 
-            DictPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
+            DictionaryPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
             return true;
         }
 
@@ -1487,7 +1487,7 @@ namespace Exiled.API.Features
         /// <returns> Whether or not the item was able to be added. </returns>
         public bool TryAddCustomRoleFriendlyFire(string customRoleName, Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictPool<RoleTypeId, float>.Pool.Get();
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictionaryPool<RoleTypeId, float>.Pool.Get();
 
             if (CustomRoleFriendlyFireMultiplier.TryGetValue(customRoleName, out Dictionary<RoleTypeId, float> pairedRoleFF))
             {
@@ -1518,7 +1518,7 @@ namespace Exiled.API.Features
                     SetCustomRoleFriendlyFire(customRoleName, roleFF);
             }
 
-            DictPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
+            DictionaryPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
             return true;
         }
 

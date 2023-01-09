@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Pools
     /// Defines a system used to store and retrieve <see cref="HashSet{T}"/> objects.
     /// </summary>
     /// <typeparam name="T">The type of the objects in the hash set.</typeparam>
-    /// <seealso cref="DictPool{TKey, TValue}"/>
+    /// <seealso cref="DictionaryPool{TKey, TValue}"/>
     /// <seealso cref="ListPool{T}"/>
     public class HashSetPool<T> : IPool<HashSet<T>>
     {
