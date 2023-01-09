@@ -35,8 +35,7 @@ namespace Exiled.Events.Patches.Events.Item
             Label retLabel = generator.DefineLabel();
 
             const int offset = 2;
-            int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(Method(typeof(NetworkReader), nameof(NetworkReader.ReadByte)))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkReader), nameof(NetworkReader.ReadByte)))) + offset;
 
             newInstructions.InsertRange(
                 index,
