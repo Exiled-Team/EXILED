@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs.Server
 {
     using Interfaces;
+
     using Respawning.NamingRules;
 
     /// <summary>

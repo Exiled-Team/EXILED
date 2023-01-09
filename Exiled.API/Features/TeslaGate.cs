@@ -12,8 +12,11 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Hazards;
+
     using MEC;
+
     using PlayerRoles;
+
     using UnityEngine;
 
     using BaseTeslaGate = global::TeslaGate;

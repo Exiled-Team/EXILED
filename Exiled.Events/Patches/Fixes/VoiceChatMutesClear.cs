@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Fixes
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using VoiceChat;
 
     using static HarmonyLib.AccessTools;

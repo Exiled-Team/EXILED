@@ -12,12 +12,15 @@ namespace Exiled.Events.Patches.Events.Player
 
     using API.Features;
     using API.Features.Roles;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles;
+
     using PlayerStatsSystem;
 
     using static HarmonyLib.AccessTools;

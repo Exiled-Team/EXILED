@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.Roles;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
@@ -18,7 +17,6 @@ namespace Exiled.Events.Patches.Events.Map
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
-    using PlayerRoles;
 
     using static HarmonyLib.AccessTools;
 

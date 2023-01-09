@@ -12,12 +12,15 @@ namespace Exiled.API.Features.Pickups
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
+
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables.Scp244;
+
     using Mirror;
+
     using UnityEngine;
 
     using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
@@ -51,10 +54,6 @@ namespace Exiled.API.Features.Pickups
 
             // prevent prefabs like `InventoryItemLoader.AvailableItems[ItemType.GrenadeHE].PickupDropModel` from adding to pickup list
             if (pickupBase.Info.ItemId == ItemType.None)
-                return;
-
-            // prevent exploded grenades to added in dict
-            if (!PhysicsPredictionPickup.AllPickups.Contains(pickupBase))
                 return;
 
             BaseToPickup.Add(pickupBase, this);
@@ -338,7 +337,8 @@ namespace Exiled.API.Features.Pickups
             ItemType.Ammo9x19 or ItemType.Ammo12gauge or ItemType.Ammo44cal or ItemType.Ammo556x45 or ItemType.Ammo762x39 => new AmmoPickup(type),
             ItemType.Radio => new RadioPickup(),
             ItemType.MicroHID => new MicroHIDPickup(),
-            ItemType.GrenadeHE or ItemType.SCP018 or ItemType.GrenadeFlash or ItemType.SCP2176 => new GrenadePickup(type),
+            ItemType.GrenadeHE or ItemType.SCP018 or ItemType.GrenadeFlash => new GrenadePickup(type),
+            ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
             ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new FirearmPickup(type),
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),

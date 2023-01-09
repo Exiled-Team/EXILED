@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Text.RegularExpressions;
 
     using Exiled.Events.EventArgs.Map;
+
     using Handlers;
 
     using HarmonyLib;

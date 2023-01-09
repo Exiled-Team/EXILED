@@ -11,9 +11,11 @@ namespace Exiled.Events.EventArgs.Player
 
     using API.Enums;
     using API.Features;
+
     using Interfaces;
 
     using InventorySystem.Configs;
+
     using PlayerRoles;
 
     /// <summary>
@@ -35,11 +37,15 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="reason">
         ///     <inheritdoc cref="Reason" />
         /// </param>
-        public ChangingRoleEventArgs(Player player, RoleTypeId newRole, RoleChangeReason reason)
+        /// <param name="spawnFlags">
+        ///     <inheritdoc cref="SpawnFlags" />
+        /// </param>
+        public ChangingRoleEventArgs(Player player, RoleTypeId newRole, RoleChangeReason reason, RoleSpawnFlags spawnFlags)
         {
             Player = player;
             NewRole = newRole;
             Reason = (SpawnReason)reason;
+            SpawnFlags = spawnFlags;
         }
 
         /// <summary>
@@ -84,12 +90,24 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets or sets a value indicating whether the inventory will be preserved or not.
         /// </summary>
-        public bool ShouldPreserveInventory { get; set; } = false;
+        public bool ShouldPreserveInventory
+        {
+            get => (SpawnFlags & RoleSpawnFlags.AssignInventory) != RoleSpawnFlags.AssignInventory;
+            set
+            {
+                SpawnFlags = value ? (SpawnFlags & ~RoleSpawnFlags.AssignInventory) : (SpawnFlags | RoleSpawnFlags.AssignInventory);
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the reason for their class change.
         /// </summary>
         public SpawnReason Reason { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the spawn flags for their class change.
+        /// </summary>
+        public RoleSpawnFlags SpawnFlags { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the event can continue.

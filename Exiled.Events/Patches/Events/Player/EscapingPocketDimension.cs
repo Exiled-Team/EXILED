@@ -16,8 +16,10 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp106;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;

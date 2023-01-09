@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Scp173
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
 
