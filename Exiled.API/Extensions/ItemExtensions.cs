@@ -329,12 +329,13 @@ namespace Exiled.API.Extensions
         {
             if (pickup is not FirearmPickup firearm)
                 return 0;
+
             byte ammo = GetMaxAmmo(firearm.Info.ItemId.GetFirearmType());
 
             if (firearm.Status.Flags.HasFlag(FirearmStatusFlags.Chambered))
                 ammo++;
 
-            return ammo += (byte)UnityEngine.Mathf.Clamp(GetAttachmentsValue(firearm, AttachmentParam.MagazineCapacityModifier), byte.MinValue, byte.MaxValue);
+            return ammo += (byte)UnityEngine.Mathf.Clamp(firearm.GetAttachmentsValue(AttachmentParam.MagazineCapacityModifier), byte.MinValue, byte.MaxValue);
         }
 
         /// <summary>
@@ -345,14 +346,15 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the float value.</returns>
         public static float GetAttachmentsValue(this FirearmPickup firearmPickup, AttachmentParam attachmentParam)
         {
-            IEnumerable<AttachmentIdentifier> attachements = GetAttachmentIdentifiers(firearmPickup.Info.ItemId.GetFirearmType(), firearmPickup.Status.Attachments);
+            IEnumerable<AttachmentIdentifier> attachments = GetAttachmentIdentifiers(firearmPickup.Info.ItemId.GetFirearmType(), firearmPickup.Status.Attachments);
 
             AttachmentParameterDefinition definitionOfParam = AttachmentsUtils.GetDefinitionOfParam((int)attachmentParam);
             float num = definitionOfParam.DefaultValue;
 
-            foreach (AttachmentIdentifier attachement in attachements)
+            foreach (AttachmentIdentifier attachmentIdentifier in attachments)
             {
-                Attachment attachment = AttachmentsList.FirstOrDefault(x => x.Name == attachement.Name);
+                Attachment attachment = AttachmentsList.FirstOrDefault(x => x.Name == attachmentIdentifier.Name);
+
                 if (attachment is null || !attachment.TryGetValue((int)attachmentParam, out float paraValue))
                     continue;
 
