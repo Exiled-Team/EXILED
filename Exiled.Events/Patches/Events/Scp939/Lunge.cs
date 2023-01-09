@@ -5,20 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.Events.EventArgs.Scp939;
-using Exiled.Events.Handlers;
-using PlayerRoles.PlayableScps.Scp939;
-using static PlayerList;
-
 namespace Exiled.Events.Patches.Events.Scp939
 {
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
     using Mirror;
-    using PlayerRoles.FirstPersonControl;
+
     using PlayerRoles;
+    using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp939;
     using RelativePositioning;
     using UnityEngine;

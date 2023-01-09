@@ -21,6 +21,9 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="state">
+        ///     The state of the focus.
+        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
@@ -37,7 +40,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets whether or not SCP-939 is currently focusing or un-focusing.
+        ///     Gets a value indicating whether or not SCP-939 is currently focusing or un-focusing.
         /// </summary>
         public bool State { get; }
 

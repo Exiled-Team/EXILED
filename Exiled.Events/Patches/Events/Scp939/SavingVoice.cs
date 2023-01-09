@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="PlayingVoice.cs" company="Exiled Team">
+// <copyright file="SavingVoice.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -10,8 +10,9 @@ namespace Exiled.Events.Patches.Events.Scp939
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
-    using Mirror;
+
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
     using PlayerStatsSystem;

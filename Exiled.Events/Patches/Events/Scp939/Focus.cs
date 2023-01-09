@@ -10,8 +10,10 @@ namespace Exiled.Events.Patches.Events.Scp939
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
     using Mirror;
+
     using PlayerRoles.PlayableScps.Scp939;
 
     /// <summary>
