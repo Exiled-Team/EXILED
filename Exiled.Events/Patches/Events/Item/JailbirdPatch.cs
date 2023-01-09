@@ -82,7 +82,9 @@ namespace Exiled.Events.Patches.Events.Item
                 case JailbirdMessageType.ChargeStarted:
                 {
                     ChargingJailbirdEventArgs ev = new(instance.Owner, instance);
+
                     Item.OnChargingJailbird(ev);
+
                     return ev.IsAllowed;
                 }
 
