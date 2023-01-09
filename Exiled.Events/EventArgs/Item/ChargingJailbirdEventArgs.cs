@@ -24,10 +24,8 @@ namespace Exiled.Events.EventArgs.Item
         /// <param name="isAllowed">Whether the item can be charged or not.</param>
         public ChargingJailbirdEventArgs(ReferenceHub player, InventorySystem.Items.ItemBase swingItem, bool isAllowed = true)
         {
-            Item item = Item.Get(swingItem);
-
             Player = Player.Get(player);
-            Item = (Jailbird)item;
+            Item = (Jailbird)Item.Get(swingItem);
             IsAllowed = isAllowed;
         }
 
