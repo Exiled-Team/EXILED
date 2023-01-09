@@ -208,7 +208,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="ZoneType"/> or <see langword="null"/> if not found.</returns>
-        public static IEnumerable<Room> Get(ZoneType zoneType) => Get(room => room.Zone == zoneType);
+        public static IEnumerable<Room> Get(ZoneType zoneType) => Get(room => room.Zone.HasFlag(zoneType));
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> filtered based on a predicate.
@@ -224,7 +224,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Room"/> object.</returns>
         public static Room Random(ZoneType zoneType = ZoneType.Unspecified)
         {
-            IEnumerable<Room> rooms = zoneType is not ZoneType.Unspecified ? Get(r => r.Zone == zoneType) : List;
+            IEnumerable<Room> rooms = zoneType is not ZoneType.Unspecified ? Get(r => r.Zone.HasFlag(zoneType)) : List;
 
             return rooms.ElementAtOrDefault(UnityEngine.Random.Range(0, rooms.Count()));
         }
