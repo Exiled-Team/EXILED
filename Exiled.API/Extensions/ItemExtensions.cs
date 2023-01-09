@@ -330,6 +330,7 @@ namespace Exiled.API.Extensions
             if (pickup is not FirearmPickup firearm)
                 return 0;
 
+
             byte ammo = GetMaxAmmo(firearm.Info.ItemId.GetFirearmType());
 
             if (firearm.Status.Flags.HasFlag(FirearmStatusFlags.Chambered))
