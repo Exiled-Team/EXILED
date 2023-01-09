@@ -88,13 +88,6 @@ namespace Exiled.Events.Patches.Events.Item
                     return ev.IsAllowed;
                 }
 
-                case JailbirdMessageType.AlmostDepleted:
-                case JailbirdMessageType.Broken:
-                case JailbirdMessageType.Holstered:
-                case JailbirdMessageType.AttackPerformed:
-                case JailbirdMessageType.ChargeLoadTriggered:
-                case JailbirdMessageType.ChargeFailed:
-                case JailbirdMessageType.Inspect:
                 default:
                     return true;
             }
