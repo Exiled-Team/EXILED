@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Item
 
     /// <summary>
     ///     Patches
-    ///     <see cref="AttachmentsServerHandler.ServerReceivePreference(NetworkConnection, AttachmentsSetupPreference)" />.
+    ///     <see cref="JailbirdItem.ServerProcessCmd(NetworkReader)" />.
     ///     Adds the <see cref="Item.Swinging" /> event.
     /// </summary>
     [HarmonyPatch(typeof(JailbirdItem), nameof(JailbirdItem.ServerProcessCmd))]
