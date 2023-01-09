@@ -9,7 +9,7 @@ namespace Exiled.API.Enums
 {
     using System;
 
-    using Exiled.API.Features;
+    using Features;
 
     /// <summary>
     /// Facility zone types.
@@ -26,28 +26,33 @@ namespace Exiled.API.Enums
     public enum ZoneType
     {
         /// <summary>
-        /// The Surface Zone.
+        /// An unspecified zone.
         /// </summary>
-        Surface,
-
-        /// <summary>
-        /// The Entrance Zone.
-        /// </summary>
-        Entrance,
-
-        /// <summary>
-        /// The Heavy Containment Zone.
-        /// </summary>
-        HeavyContainment,
+        Unspecified = 0,
 
         /// <summary>
         /// The Light Containment Zone.
         /// </summary>
-        LightContainment,
+        LightContainment = 1,
 
         /// <summary>
-        /// An unspecified zone.
+        /// The Heavy Containment Zone.
         /// </summary>
-        Unspecified,
+        HeavyContainment = 2,
+
+        /// <summary>
+        /// The Entrance Zone.
+        /// </summary>
+        Entrance = 4,
+
+        /// <summary>
+        /// The Surface Zone.
+        /// </summary>
+        Surface = 8,
+
+        /// <summary>
+        /// An unknown type of zone.
+        /// </summary>
+        Other = 16,
     }
 }

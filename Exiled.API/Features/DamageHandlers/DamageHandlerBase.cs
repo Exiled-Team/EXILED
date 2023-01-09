@@ -12,8 +12,11 @@ namespace Exiled.API.Features.DamageHandlers
     using System.ComponentModel;
     using System.Linq;
 
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
+    using Enums;
+
+    using Extensions;
+
+    using PlayerRoles.PlayableScps.Scp939;
 
     using PlayerStatsSystem;
 
@@ -38,7 +41,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// Initializes a new instance of the <see cref="DamageHandlerBase"/> class.
         /// </summary>
         /// <param name="baseHandler">The base <see cref="BaseHandler"/>.</param>
-        protected DamageHandlerBase(BaseHandler baseHandler) => Base = baseHandler;
+        protected DamageHandlerBase(BaseHandler baseHandler)
+        {
+            Base = baseHandler;
+        }
 
         /// <summary>
         /// All available <see cref="DamageHandler"/> actions.
@@ -106,6 +112,10 @@ namespace Exiled.API.Features.DamageHandlers
                         return DamageType.MicroHid;
                     case DisruptorDamageHandler:
                         return DamageType.ParticleDisruptor;
+                    case Scp939DamageHandler:
+                        return DamageType.Scp939;
+                    case JailbirdDamageHandler:
+                        return DamageType.Jailbird;
                     case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
@@ -217,7 +227,10 @@ namespace Exiled.API.Features.DamageHandlers
             /// Initializes a new instance of the <see cref="CassieAnnouncement"/> class.
             /// </summary>
             /// <param name="announcement">The announcement to be set.</param>
-            public CassieAnnouncement(string announcement) => Announcement = announcement;
+            public CassieAnnouncement(string announcement)
+            {
+                Announcement = announcement;
+            }
 
             /// <summary>
             /// Initializes a new instance of the <see cref="CassieAnnouncement"/> class.
@@ -225,7 +238,10 @@ namespace Exiled.API.Features.DamageHandlers
             /// <param name="announcement">The announcement to be set.</param>
             /// <param name="subtitleParts">The subtitles to be set.</param>
             public CassieAnnouncement(string announcement, IEnumerable<Subtitles.SubtitlePart> subtitleParts)
-                : this(announcement) => SubtitleParts = subtitleParts;
+                : this(announcement)
+            {
+                SubtitleParts = subtitleParts;
+            }
 
             /// <summary>
             /// Gets the default announcement.

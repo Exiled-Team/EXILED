@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features
 {
-#pragma warning disable 1584
     using global::Scp914;
 
     using UnityEngine;
@@ -22,7 +21,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="global::Scp914.Scp914Controller"/>.
         /// </summary>
-        public static Scp914Controller Scp914Controller { get; internal set; }
+        public static Scp914Controller Scp914Controller => Scp914Controller.Singleton;
 
         /// <summary>
         /// Gets or sets SCP-914's <see cref="Scp914KnobSetting"/>.
@@ -36,10 +35,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets SCP-914's config mode.
         /// </summary>
-        public static ConfigEntry<Scp914Mode> ConfigMode
+        public static Scp914Mode ConfigMode
         {
-            get => Scp914Controller._configMode;
-            set => Scp914Controller._configMode = value;
+            get => Scp914Controller._configMode.Value;
+            set => Scp914Controller._configMode.Value = value;
         }
 
         /// <summary>
@@ -55,12 +54,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the position of SCP-914's intake chamber.
         /// </summary>
-        public static Vector3 IntakePosition => Scp914Controller._intakeChamber.localPosition;
+        public static Vector3 IntakePosition => Scp914Controller.IntakeChamber.localPosition;
 
         /// <summary>
         /// Gets the position of SCP-914's output chamber.
         /// </summary>
-        public static Vector3 OutputPosition => Scp914Controller._outputChamber.localPosition;
+        public static Vector3 OutputPosition => Scp914Controller.OutputChamber.localPosition;
 
         /// <summary>
         /// Gets a value indicating whether SCP-914 is active and currently processing items.
@@ -70,12 +69,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the intake booth <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform IntakeBooth => Scp914Controller._intakeChamber;
+        public static Transform IntakeBooth => Scp914Controller.IntakeChamber;
 
         /// <summary>
         ///  Gets the output booth <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform OutputBooth => Scp914Controller._outputChamber;
+        public static Transform OutputBooth => Scp914Controller.OutputChamber;
 
         /// <summary>
         /// Plays the SCP-914's sound.

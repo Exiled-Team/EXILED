@@ -13,7 +13,7 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.API.Features.Attributes;
+    using Attributes;
 
     using HarmonyLib;
 
@@ -77,7 +77,7 @@ namespace Exiled.API.Features
                     if (PatchedGroupMethods.TryGetValue(methodBase, out HashSet<string> ids))
                         ids.Add(groupId);
                     else
-                        PatchedGroupMethodsValue.Add(methodBase, new() { groupId });
+                        PatchedGroupMethodsValue.Add(methodBase, new HashSet<string> { groupId });
 
 #if DEBUG
                     Log.Debug($"Target method ({methodBase.Name}) has been successfully patched.");
@@ -130,27 +130,31 @@ namespace Exiled.API.Features
                 bool hasMethodBody = methodBase.HasMethodBody();
                 if (hasMethodBody)
                 {
-                    patchInfo.Postfixes.Do(delegate(Patch patchInfo)
-                    {
-                        harmony.Unpatch(methodBase, patchInfo.PatchMethod);
-                    });
-                    patchInfo.Prefixes.Do(delegate(Patch patchInfo)
-                    {
-                        harmony.Unpatch(methodBase, patchInfo.PatchMethod);
-                    });
+                    patchInfo.Postfixes.Do(
+                        delegate(Patch patchInfo)
+                        {
+                            harmony.Unpatch(methodBase, patchInfo.PatchMethod);
+                        });
+                    patchInfo.Prefixes.Do(
+                        delegate(Patch patchInfo)
+                        {
+                            harmony.Unpatch(methodBase, patchInfo.PatchMethod);
+                        });
                 }
 
-                patchInfo.Transpilers.Do(delegate(Patch patchInfo)
-                {
-                    harmony.Unpatch(methodBase, patchInfo.PatchMethod);
-                });
+                patchInfo.Transpilers.Do(
+                    delegate(Patch patchInfo)
+                    {
+                        harmony.Unpatch(methodBase, patchInfo.PatchMethod);
+                    });
 
                 if (hasMethodBody)
                 {
-                    patchInfo.Finalizers.Do(delegate(Patch patchInfo)
-                    {
-                        harmony.Unpatch(methodBase, patchInfo.PatchMethod);
-                    });
+                    patchInfo.Finalizers.Do(
+                        delegate(Patch patchInfo)
+                        {
+                            harmony.Unpatch(methodBase, patchInfo.PatchMethod);
+                        });
                 }
 
                 PatchedGroupMethodsValue.Remove(methodBase);

@@ -16,8 +16,10 @@ namespace Exiled.CreditTags
     public sealed class Config : IConfig
     {
         /// <inheritdoc/>
-        [Description("Is the plugin enabled?")]
         public bool IsEnabled { get; set; } = true;
+
+        /// <inheritdoc/>
+        public bool Debug { get; set; }
 
         [Description("Info side - Badge, CustomPlayerInfo, FirstAvailable")]
         public InfoSide Mode { get; private set; } = InfoSide.FirstAvailable;

@@ -9,9 +9,11 @@ namespace Exiled.CustomItems.API.EventArgs
 {
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using InventorySystem.Items;
+
+    using PlayerRoles;
 
     /// <summary>
     /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> changes roles.
@@ -24,7 +26,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
         public OwnerChangingRoleEventArgs(ItemBase item, ChangingRoleEventArgs ev)
-            : this(item, ev.Player, ev.NewRole, ev.Lite, (CharacterClassManager.SpawnReason)ev.Reason)
+            : this(item, ev.Player, ev.NewRole, ev.ShouldPreserveInventory, (RoleChangeReason)ev.Reason)
         {
         }
 
@@ -34,12 +36,13 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="player"><inheritdoc cref="ChangingRoleEventArgs.Player"/></param>
         /// <param name="newRole"><inheritdoc cref="ChangingRoleEventArgs.NewRole"/></param>
-        /// <param name="shouldPreservePosition"><inheritdoc cref="ChangingRoleEventArgs.Lite"/></param>
+        /// <param name="shouldPreserveInventory"><inheritdoc cref="ChangingRoleEventArgs.ShouldPreserveInventory"/></param>
         /// <param name="reason"><inheritdoc cref="ChangingRoleEventArgs.Reason"/></param>
-        public OwnerChangingRoleEventArgs(ItemBase item, Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)
-            : base(player, newRole, shouldPreservePosition, reason)
+        public OwnerChangingRoleEventArgs(ItemBase item, Player player, RoleTypeId newRole, bool shouldPreserveInventory, RoleChangeReason reason)
+            : base(player, newRole, reason, RoleSpawnFlags.All)
         {
             Item = item;
+            ShouldPreserveInventory = shouldPreserveInventory;
         }
 
         /// <summary>

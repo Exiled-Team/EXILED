@@ -43,7 +43,7 @@ namespace Exiled.CustomItems.API
                 }
                 else if (!CustomItem.TryGive(player, item, displayMessage))
                 {
-                    Log.Debug($"\"{item}\" is not a valid item name, nor a custom item name.", CustomItems.Instance.Config.Debug);
+                    Log.Debug($"\"{item}\" is not a valid item name, nor a custom item name.");
                 }
             }
         }

@@ -7,8 +7,12 @@
 
 namespace Exiled.API.Features
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
-    /// Represents the in-game badge.
+    /// Represents an in-game badge.
     /// </summary>
     public struct Badge
     {
@@ -46,6 +50,34 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the badge is global or not.
         /// </summary>
         public bool IsGlobal { get; }
+
+        /// <summary>
+        /// Gets whether or not the provided hex color code can be used in badges.
+        /// </summary>
+        /// <param name="hex">The hex color code, including the <c>#</c>.</param>
+        /// <param name="colorType">If the method returns <see langword="true"/>, this will be an enum representing the hex code. If the method returns <see langword="false"/>, this will be <see langword="null"/>.</param>
+        /// <returns>Whether or not the provided hex color code can be used in badges.</returns>
+        public static bool IsValidColor(string hex, out Misc.PlayerInfoColorTypes? colorType)
+        {
+            foreach (KeyValuePair<Misc.PlayerInfoColorTypes, string> option in Misc.AllowedColors)
+            {
+                if (option.Value.Equals(hex, StringComparison.OrdinalIgnoreCase))
+                {
+                    colorType = option.Key;
+                    return true;
+                }
+            }
+
+            colorType = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the hex color code of the provided <see cref="Misc.PlayerInfoColorTypes"/>.
+        /// </summary>
+        /// <param name="colorType">The <see cref="Misc.PlayerInfoColorTypes"/> to get the hex color code of.</param>
+        /// <returns>The hex color code, including the <c>#</c>.</returns>
+        public static string GetHexColor(Misc.PlayerInfoColorTypes colorType) => Misc.AllowedColors[colorType];
 
         /// <summary>
         /// Returns the Badge in a human-readable format.

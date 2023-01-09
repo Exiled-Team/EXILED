@@ -12,11 +12,18 @@ namespace Exiled.Events
     using System.Diagnostics;
     using System.Reflection;
 
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using Exiled.Loader;
+    using API.Enums;
+    using API.Features;
+
+    using EventArgs.Interfaces;
 
     using HarmonyLib;
+
+    using PlayerRoles;
+    using PlayerRoles.FirstPersonControl.Thirdperson;
+    using PlayerRoles.Ragdolls;
+
+    using PluginAPI.Events;
 
     using UnityEngine.SceneManagement;
 
@@ -35,10 +42,10 @@ namespace Exiled.Events
         /// <summary>
         /// The custom <see cref="EventHandler"/> delegate.
         /// </summary>
-        /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
-        /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
-        public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev)
-            where TEventArgs : System.EventArgs;
+        /// <typeparam name="TInterface">The <see cref="EventHandler{TInterface}"/> type.</typeparam>
+        /// <param name="ev">The <see cref="EventHandler{TInterface}"/> instance.</param>
+        public delegate void CustomEventHandler<TInterface>(TInterface ev)
+            where TInterface : IExiledEvent;
 
         /// <summary>
         /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
@@ -70,10 +77,13 @@ namespace Exiled.Events
             base.OnEnabled();
 
             Stopwatch watch = Stopwatch.StartNew();
+
             Patch();
 
             watch.Stop();
+
             Log.Info($"Patching completed in {watch.Elapsed}");
+
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
@@ -81,10 +91,22 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
-            PlayerMovementSync.OnPlayerSpawned += Handlers.Player.OnSpawned;
+
+            CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
+
+            PlayerRoleManager.OnRoleChanged += Handlers.Player.OnSpawned;
+
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
+            AnimatedCharacterModel.OnFootstepPlayed += Handlers.Player.OnMakingNoise;
+
+            RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
+            RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
+
             ServerConsole.ReloadServerName();
+
+            EventManager.RegisterEvents<Handlers.Warhead>(this);
+            EventManager.RegisterEvents<Handlers.Player>(this);
         }
 
         /// <inheritdoc/>
@@ -97,16 +119,26 @@ namespace Exiled.Events
             DisabledPatchesHashSet.Clear();
 
             SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
+            MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
 
             Handlers.Server.WaitingForPlayers -= Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
-            PlayerMovementSync.OnPlayerSpawned -= Handlers.Player.OnSpawned;
-            InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
-            Handlers.Map.Generated -= Handlers.Internal.MapGenerated.OnMapGenerated;
 
-            MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
+            CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
+
+            PlayerRoleManager.OnRoleChanged -= Handlers.Player.OnSpawned;
+
+            InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
+
+            AnimatedCharacterModel.OnFootstepPlayed -= Handlers.Player.OnMakingNoise;
+
+            RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
+            RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
+
+            EventManager.UnregisterEvents<Handlers.Warhead>(this);
+            EventManager.UnregisterEvents<Handlers.Player>(this);
         }
 
         /// <summary>
@@ -122,13 +154,9 @@ namespace Exiled.Events
                 Harmony.DEBUG = true;
 #endif
                 if (PatchByAttributes())
-                {
-                    Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
-                }
+                    Log.Debug("Events patched successfully!");
                 else
-                {
                     Log.Error($"Patching failed!");
-                }
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
@@ -157,10 +185,10 @@ namespace Exiled.Events
         /// </summary>
         public void Unpatch()
         {
-            Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
+            Log.Debug("Unpatching events...");
             Harmony.UnpatchAll();
 
-            Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
+            Log.Debug("All events have been unpatched complete. Goodbye!");
         }
 
         private bool PatchByAttributes()
@@ -169,7 +197,7 @@ namespace Exiled.Events
             {
                 Harmony.PatchAll();
 
-                Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
+                Log.Debug("Events patched by attributes successfully!");
                 return true;
             }
             catch (Exception exception)

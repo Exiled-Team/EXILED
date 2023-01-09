@@ -10,39 +10,53 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
 
+    using PlayerRoles.FirstPersonControl.Thirdperson;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FootstepSync.RpcPlayLandingFootstep(bool)"/>
-    /// Adds the <see cref="Player.Landing"/> event.
+    ///     Patches <see cref="AnimatedCharacterModel.OnGrounded" />
+    ///     Adds the <see cref="Player.Landing" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(FootstepSync), nameof(FootstepSync.RpcPlayLandingFootstep))]
+    [HarmonyPatch(typeof(AnimatedCharacterModel), nameof(AnimatedCharacterModel.OnGrounded))]
     internal static class Landing
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(FootstepSync), nameof(FootstepSync._ccm))),
-                new(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LandingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnLanding))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(LandingEventArgs), nameof(LandingEventArgs.Player))),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.IsJumping))),
-            });
+            const int offset = -1;
+            int index = newInstructions.FindIndex(
+                instruction => instruction.Calls(Method(typeof(AnimatedCharacterModel), nameof(AnimatedCharacterModel.PlayFootstep)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(base.OwnerHub)
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, PropertyGetter(typeof(CharacterModel), nameof(CharacterModel.OwnerHub))),
+                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // LandingEventArgs ev = new(Player)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LandingEventArgs))[0]),
+                    new(OpCodes.Dup),
+
+                    // Player.OnLanding(ev)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnLanding))),
+
+                    // player.IsJumping = false
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(LandingEventArgs), nameof(LandingEventArgs.Player))),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.IsJumping))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

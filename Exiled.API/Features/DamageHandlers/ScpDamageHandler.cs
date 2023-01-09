@@ -7,13 +7,13 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
+    using Enums;
+
+    using Extensions;
 
     using PlayerStatsSystem;
 
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
-
     using BaseScpHandler = PlayerStatsSystem.ScpDamageHandler;
 
     /// <summary>

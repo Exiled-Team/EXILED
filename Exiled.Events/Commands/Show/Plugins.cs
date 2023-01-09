@@ -12,9 +12,10 @@ namespace Exiled.Events.Commands.Show
     using System.Linq;
     using System.Text;
 
+    using API.Interfaces;
+
     using CommandSystem;
 
-    using Exiled.API.Interfaces;
     using Exiled.Permissions.Extensions;
 
     using NorthwoodLib.Pools;
@@ -39,7 +40,8 @@ namespace Exiled.Events.Commands.Show
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             const string perm = "ee.showplugins";
-            if (!sender.CheckPermission(perm) && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor._roles.RaEverywhere))
+
+            if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.ServerRoles.RaEverywhere)
             {
                 response = $"You can't get a list of all plugins, you don't have \"{perm}\" permissions.";
                 return false;

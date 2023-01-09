@@ -7,22 +7,24 @@
 
 namespace Exiled.API.Features
 {
-#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
+    using Enums;
+
     using Exiled.API.Extensions;
-    using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups;
 
     using Interactables.Interobjects.DoorUtils;
 
-    using InventorySystem.Items.Pickups;
-
     using MapGeneration;
 
+    using MEC;
+
     using Mirror;
+
+    using PlayerRoles.PlayableScps.Scp079;
 
     using UnityEngine;
 
@@ -32,14 +34,14 @@ namespace Exiled.API.Features
     public class Room : MonoBehaviour
     {
         /// <summary>
-        /// A <see cref="List{T}"/> of <see cref="Room"/>s on the map.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
         /// </summary>
-        internal static readonly List<Room> RoomsValue = new(250);
+        internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
         /// </summary>
-        public static IEnumerable<Room> List => RoomsValue;
+        public static IEnumerable<Room> List => RoomIdentifierToRoom.Values;
 
         /// <summary>
         /// Gets the <see cref="Room"/> name.
@@ -64,17 +66,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
         /// </summary>
-        public ZoneType Zone { get; private set; }
+        public ZoneType Zone { get; private set; } = ZoneType.Unspecified;
 
         /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
-        public RoomType Type { get; private set; }
+        public RoomType Type { get; private set; } = RoomType.Unknown;
 
         /// <summary>
-        /// Gets a reference to the room's <see cref="MapGeneration.RoomIdentifier"/>.
+        /// Gets a reference to the room's <see cref="RoomIdentifier"/>.
         /// </summary>
-        public RoomIdentifier RoomIdentifier { get; private set; }
+        public RoomIdentifier Identifier { get; private set; }
 
         /// <summary>
         /// Gets a reference to the <see cref="global::TeslaGate"/> in the room, or <see langword="null"/> if this room does not contain one.
@@ -84,12 +86,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && !(player.CurrentRoom is null) && player.CurrentRoom.Transform == Transform);
+        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom is not null && (player.CurrentRoom.Transform == Transform));
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Door> Doors { get; private set; }
+        public IEnumerable<Door> Doors { get; private set; } = Enumerable.Empty<Door>();
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Scp079Speaker"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IEnumerable<Scp079Speaker> Speaker { get; private set; } = Enumerable.Empty<Scp079Speaker>();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
@@ -99,7 +106,7 @@ namespace Exiled.API.Features
             get
             {
                 List<Pickup> pickups = new();
-                foreach (Pickup pickup in Map.Pickups)
+                foreach (Pickup pickup in Pickup.List)
                 {
                     if (Map.FindParentRoom(pickup.GameObject) == this)
                         pickups.Add(pickup);
@@ -141,18 +148,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Camera> Cameras { get; private set; }
+        public IEnumerable<Camera> Cameras { get; private set; } = Enumerable.Empty<Camera>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the lights in this room are currently flickered on.
+        /// Gets or sets a value indicating whether or not the lights in this room are currently off.
         /// </summary>
-        public bool LightsOn
+        public bool AreLightsOff
         {
-            get => FlickerableLightController && FlickerableLightController.NetworkLightsEnabled;
+            get => FlickerableLightController && !FlickerableLightController.NetworkLightsEnabled;
             set
             {
                 if (FlickerableLightController)
-                    FlickerableLightController.NetworkLightsEnabled = value;
+                    FlickerableLightController.NetworkLightsEnabled = !value;
             }
         }
 
@@ -174,19 +181,34 @@ namespace Exiled.API.Features
         public static Room Get(RoomType roomType) => Get(room => room.Type == roomType).FirstOrDefault();
 
         /// <summary>
+        /// Gets a <see cref="Room"/> from a given <see cref="Identifier"/>.
+        /// </summary>
+        /// <param name="roomIdentifier">The <see cref="Identifier"/> to search with.</param>
+        /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
+        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentifierToRoom.TryGetValue(roomIdentifier, out Room room)
+            ? room
+            : null;
+
+        /// <summary>
+        /// Gets a <see cref="Room"/> from a given <see cref="RoomIdentifier"/>.
+        /// </summary>
+        /// <param name="flickerableLightController">The <see cref="FlickerableLightController"/> to search with.</param>
+        /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
+        public static Room Get(FlickerableLightController flickerableLightController) => flickerableLightController.GetComponentInParent<Room>();
+
+        /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="Vector3"/>.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="Vector3"/> or <see langword="null"/> if not found.</returns>
-        public static Room Get(Vector3 position) => List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPosition(position).UniqueId)
-            ?? List.FirstOrDefault(x => x.RoomIdentifier.UniqueId == RoomIdUtils.RoomAtPositionRaycasts(position).UniqueId);
+        public static Room Get(Vector3 position) => RoomIdUtils.RoomAtPositionRaycasts(position, false) is RoomIdentifier identifier ? Get(identifier) : null;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to search for.</param>
         /// <returns>The <see cref="Room"/> with the given <see cref="ZoneType"/> or <see langword="null"/> if not found.</returns>
-        public static IEnumerable<Room> Get(ZoneType zoneType) => Get(room => room.Zone == zoneType);
+        public static IEnumerable<Room> Get(ZoneType zoneType) => Get(room => room.Zone.HasFlag(zoneType));
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> filtered based on a predicate.
@@ -202,8 +224,9 @@ namespace Exiled.API.Features
         /// <returns><see cref="Room"/> object.</returns>
         public static Room Random(ZoneType zoneType = ZoneType.Unspecified)
         {
-            List<Room> rooms = zoneType is not ZoneType.Unspecified ? Get(r => r.Zone == zoneType).ToList() : RoomsValue;
-            return rooms[UnityEngine.Random.Range(0, rooms.Count)];
+            IEnumerable<Room> rooms = zoneType is not ZoneType.Unspecified ? Get(r => r.Zone.HasFlag(zoneType)) : List;
+
+            return rooms.ElementAtOrDefault(UnityEngine.Random.Range(0, rooms.Count()));
         }
 
         /// <summary>
@@ -229,7 +252,8 @@ namespace Exiled.API.Features
 
             if (duration < 0)
                 return;
-            MEC.Timing.CallDelayed(duration, UnlockAll);
+
+            Timing.CallDelayed(duration, UnlockAll);
         }
 
         /// <summary>
@@ -263,6 +287,9 @@ namespace Exiled.API.Features
         /// </summary>
         public void ResetColor()
         {
+            if (!FlickerableLightController)
+                return;
+
             FlickerableLightController.WarheadLightColor = FlickerableLightController.DefaultWarheadColor;
             FlickerableLightController.WarheadLightOverride = false;
         }
@@ -271,7 +298,7 @@ namespace Exiled.API.Features
         /// Returns the Room in a human-readable format.
         /// </summary>
         /// <returns>A string containing Room-related data.</returns>
-        public override string ToString() => $"{Type} ({Zone}) [{Doors?.Count()}] *{Cameras}* |{TeslaGate}|";
+        public override string ToString() => $"{Type} ({Zone}) [{Doors?.Count()}] *{Cameras?.Count()}* |{TeslaGate}|";
 
         /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
@@ -281,11 +308,10 @@ namespace Exiled.API.Features
         /// <returns>The Room component that was instantiated onto the Game Object.</returns>
         internal static Room CreateComponent(GameObject roomGameObject) => roomGameObject.AddComponent<Room>();
 
-        private static RoomType FindType(string rawName)
+        private static RoomType FindType(GameObject gameObject)
         {
             // Try to remove brackets if they exist.
-            rawName = rawName.RemoveBracketsOnEndOfName();
-            return rawName switch
+            return gameObject.name.RemoveBracketsOnEndOfName() switch
             {
                 "LCZ_Armory" => RoomType.LczArmory,
                 "LCZ_Curve" => RoomType.LczCurve,
@@ -304,9 +330,8 @@ namespace Exiled.API.Features
                 "LCZ_372" => RoomType.LczGlassBox,
                 "LCZ_ChkpA" => RoomType.LczChkpA,
                 "HCZ_079" => RoomType.Hcz079,
-                "HCZ_EZ_Checkpoint" => RoomType.HczEzCheckpoint,
                 "HCZ_Room3ar" => RoomType.HczArmory,
-                "HCZ_Testroom" => RoomType.Hcz939,
+                "HCZ_Testroom" => RoomType.HczTestRoom,
                 "HCZ_Hid" => RoomType.HczHid,
                 "HCZ_049" => RoomType.Hcz049,
                 "HCZ_ChkpA" => RoomType.HczChkpA,
@@ -337,6 +362,14 @@ namespace Exiled.API.Features
                 "EZ_ThreeWay" => RoomType.EzTCross,
                 "PocketWorld" => RoomType.Pocket,
                 "Outside" => RoomType.Surface,
+                "HCZ_939" => RoomType.Hcz939,
+                "EZ Part" => RoomType.EzCheckpointHallway,
+                "HCZ Part" => gameObject.transform.parent.name switch
+                {
+                    "HCZ_EZ_Checkpoint (A)" => RoomType.HczEzCheckpointA,
+                    "HCZ_EZ_Checkpoint (B)" => RoomType.HczEzCheckpointB,
+                    _ => RoomType.Unknown
+                },
                 _ => RoomType.Unknown,
             };
         }
@@ -345,81 +378,30 @@ namespace Exiled.API.Features
         {
             Transform transform = gameObject.transform;
 
-            return transform.parent?.name switch
+            return transform.parent?.name.RemoveBracketsOnEndOfName() switch
             {
                 "HeavyRooms" => ZoneType.HeavyContainment,
                 "LightRooms" => ZoneType.LightContainment,
                 "EntranceRooms" => ZoneType.Entrance,
+                "HCZ_EZ_Checkpoint" => ZoneType.HeavyContainment | ZoneType.Entrance,
                 _ => transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified,
             };
-        }
-
-        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController)
-        {
-            cameraList = new List<Camera079>();
-            doors = new List<Door>();
-            teslaGate = null;
-            flickerableLightController = null;
-
-            if (Scp079Interactable.InteractablesByRoomId.ContainsKey(RoomIdentifier.UniqueId))
-            {
-                foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[RoomIdentifier.UniqueId])
-                {
-                    try
-                    {
-                        if (scp079Interactable is null)
-                            continue;
-                        switch (scp079Interactable.type)
-                        {
-                            case Scp079Interactable.InteractableType.Door:
-                                if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                    doors.Add(Door.Get(doorVariant, this));
-                                break;
-                            case Scp079Interactable.InteractableType.Camera:
-                                if (scp079Interactable.TryGetComponent(out Camera079 camera))
-                                    cameraList.Add(camera);
-                                break;
-                            case Scp079Interactable.InteractableType.LightController:
-                                if (scp079Interactable.TryGetComponent(
-                                        out FlickerableLightController lightController))
-                                    flickerableLightController = lightController;
-                                break;
-                            case Scp079Interactable.InteractableType.Tesla:
-                                if (scp079Interactable.TryGetComponent(out global::TeslaGate tesla))
-                                    teslaGate = TeslaGate.Get(tesla);
-                                break;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error($"{nameof(FindObjectsInRoom)}: Exception cause {e.Message}\n{scp079Interactable is null} {scp079Interactable?.type is null}");
-                    }
-                }
-            }
-
-            if (flickerableLightController is null && gameObject.transform.position.y > 900)
-            {
-                flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
-            }
         }
 
         private void Awake()
         {
             Zone = FindZone(gameObject);
-            Type = FindType(gameObject.name);
-            RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
+            Type = FindType(gameObject);
 
-            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
-            Doors = doors;
-            Cameras = Camera.Get(cameras);
-            TeslaGate = teslagate;
-            if (flickerableLightController is null)
-            {
-                if (!gameObject.TryGetComponent(out flickerableLightController))
-                    flickerableLightController = gameObject.AddComponent<FlickerableLightController>();
-            }
+            Identifier = gameObject.GetComponent<RoomIdentifier>();
+            FlickerableLightController = gameObject.GetComponentInChildren<FlickerableLightController>();
 
-            FlickerableLightController = flickerableLightController;
+            Doors = DoorVariant.DoorsByRoom.ContainsKey(Identifier) ? DoorVariant.DoorsByRoom[Identifier].Select(x => Door.Get(x, this)).ToList() : new();
+            Cameras = Camera.List.Where(x => x.Base.Room == Identifier).ToList();
+            Speaker = Scp079Speaker.SpeakersInRooms.ContainsKey(Identifier) ? Scp079Speaker.SpeakersInRooms[Identifier] : new();
+
+            if (Type is RoomType.HczTesla)
+                TeslaGate = TeslaGate.List.Single(x => this == x.Room);
         }
     }
 }

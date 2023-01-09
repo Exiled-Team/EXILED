@@ -14,9 +14,11 @@ namespace Exiled.API.Features
 
     using CommandSystem;
 
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Interfaces;
+    using Enums;
+
+    using Extensions;
+
+    using Interfaces;
 
     using RemoteAdmin;
 

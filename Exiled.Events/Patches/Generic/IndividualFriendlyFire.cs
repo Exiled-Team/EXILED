@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
+    using API.Features;
 
     using Footprinting;
 
@@ -23,9 +23,9 @@ namespace Exiled.Events.Patches.Generic
 
     using NorthwoodLib.Pools;
 
-    using PlayerStatsSystem;
+    using PlayerRoles;
 
-    using UnityEngine;
+    using PlayerStatsSystem;
 
     using static HarmonyLib.AccessTools;
 
@@ -40,10 +40,7 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub)
-        {
-            return CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
-        }
+        public static bool CheckFriendlyFirePlayer(ReferenceHub attackerHub, ReferenceHub victimHub) => CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
 
         /// <summary>
         /// Checks if there can be damage between two players, according to the FF rules.
@@ -51,10 +48,7 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="attackerHub">The person attacking.</param>
         /// <param name="victimHub">The person being attacked.</param>
         /// <returns>True if the attacker can damage the victim.</returns>
-        public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub)
-        {
-            return Server.FriendlyFire || CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
-        }
+        public static bool CheckFriendlyFirePlayerHitbox(ReferenceHub attackerHub, ReferenceHub victimHub) => Server.FriendlyFire || CheckFriendlyFirePlayerRules(attackerHub, victimHub, out _);
 
         /// <summary>
         /// Checks if there can be damage between two players, according to the FF rules.
@@ -74,7 +68,7 @@ namespace Exiled.Events.Patches.Generic
 
             if (attackerHub is null || victimHub is null)
             {
-                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerHub is null}, Victim hub null: {victimHub is null}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker hub null: {attackerHub is null}, Victim hub null: {victimHub is null}");
                 return true;
             }
 
@@ -84,24 +78,24 @@ namespace Exiled.Events.Patches.Generic
                 Player victim = Player.Get(victimHub);
                 if (attacker is null || victim is null)
                 {
-                    Log.Debug($"CheckFriendlyFirePlayerRules, Attacker null: {attacker is null}, Victim null: {victim is null}", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug($"CheckFriendlyFirePlayerRules, Attacker null: {attacker is null}, Victim null: {victim is null}");
                     return true;
                 }
 
                 if (attacker == victim)
                 {
-                    Log.Debug("CheckFriendlyFirePlayerRules, Attacker player was equal to Victim, likely suicide", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug("CheckFriendlyFirePlayerRules, Attacker player was equal to Victim, likely suicide");
                     return true;
                 }
 
-                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role} and Victim {victim.Role}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules, Attacker role {attacker.Role} and Victim {victim.Role}");
 
                 if (!string.IsNullOrEmpty(victim.UniqueRole))
                 {
                     // If 035 is being shot, then we need to check if we are an 035, then check if the attacker is allowed to attack us
                     if (victim.CustomRoleFriendlyFireMultiplier.Count > 0)
                     {
-                        if (victim.CustomRoleFriendlyFireMultiplier.TryGetValue(victim.UniqueRole, out Dictionary<RoleType, float> pairedData))
+                        if (victim.CustomRoleFriendlyFireMultiplier.TryGetValue(victim.UniqueRole, out Dictionary<RoleTypeId, float> pairedData))
                         {
                             if (pairedData.ContainsKey(attacker.Role))
                             {
@@ -111,12 +105,12 @@ namespace Exiled.Events.Patches.Generic
                         }
                     }
                 }
-                else if(!string.IsNullOrEmpty(attacker.UniqueRole))
+                else if (!string.IsNullOrEmpty(attacker.UniqueRole))
                 {
                     // If 035 is attacking, whether to allow or disallow based on victim role.
                     if (attacker.CustomRoleFriendlyFireMultiplier.Count > 0)
                     {
-                        if (attacker.CustomRoleFriendlyFireMultiplier.TryGetValue(attacker.UniqueRole, out Dictionary<RoleType, float> pairedData))
+                        if (attacker.CustomRoleFriendlyFireMultiplier.TryGetValue(attacker.UniqueRole, out Dictionary<RoleTypeId, float> pairedData))
                         {
                             if (pairedData.ContainsKey(victim.Role))
                             {
@@ -139,7 +133,7 @@ namespace Exiled.Events.Patches.Generic
             }
             catch (Exception ex)
             {
-                Log.Debug($"CheckFriendlyFirePlayerRules failed to handle friendly fire because: {ex}", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug($"CheckFriendlyFirePlayerRules failed to handle friendly fire because: {ex}");
             }
 
             return false;
@@ -157,17 +151,16 @@ namespace Exiled.Events.Patches.Generic
             try
             {
                 bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
-                if(!currentResult)
-                {
+
+                if (!currentResult)
                     return true;
-                }
 
                 __result = currentResult;
                 return false;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Log.Error($"{e}");
+                Log.Error($"{exception}");
                 return true;
             }
         }
@@ -184,36 +177,40 @@ namespace Exiled.Events.Patches.Generic
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = -1;
-            int index = newInstructions.FindLastIndex(instruction => instruction.Calls(PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker)))) + offset;
+            int index = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker)))) + offset;
+
             LocalBuilder ffMulti = generator.DeclareLocal(typeof(float));
+
             Label uniqueFFMulti = generator.DefineLabel();
             Label normalProcessing = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Load Attacker (this.Attacker.Hub)
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
+                    new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
-                new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
+                    // Load Target (ply)
+                    new(OpCodes.Ldarg_1),
 
-                // Load Attacker
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
+                    // Set default FF to 1.
+                    new(OpCodes.Ldc_I4_1),
 
-                // Load Target
-                new(OpCodes.Ldarg_1),
+                    // ffMulti
+                    new(OpCodes.Stloc, ffMulti.LocalIndex),
+                    new(OpCodes.Ldloca, ffMulti.LocalIndex),
 
-                // Set default FF to 1.
-                new(OpCodes.Ldc_I4_1),
+                    // Pass over Player hubs, and FF multiplier.
+                    // CheckFriendlyFirePlayerRules(this.Attacker.Hub, ply, ffMulti)
+                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerRules), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
 
-                new(OpCodes.Stloc, ffMulti.LocalIndex),
-
-                new(OpCodes.Ldloca, ffMulti.LocalIndex),
-
-                // Pass over Player hubs, and FF multiplier.
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerRules), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(float).MakeByRefType() })),
-
-                // If we have rules, we branch to custom logic, otherwise, default to NW logic.
-                new (OpCodes.Brtrue_S, uniqueFFMulti),
-            });
+                    // If we have rules, we branch to custom logic, otherwise, default to NW logic.
+                    new(OpCodes.Brtrue_S, uniqueFFMulti),
+                });
 
             int ffMultiplierIndexOffset = 0;
 
@@ -223,23 +220,27 @@ namespace Exiled.Events.Patches.Generic
             newInstructions[ffMultiplierIndex].WithLabels(normalProcessing);
 
             // int ffMultiplierIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ret) + ffMultiplierIndexOffset;
-            newInstructions.InsertRange(ffMultiplierIndex, new CodeInstruction[]
-            {
-                // Do not run our custom logic, skip over.
-                new (OpCodes.Br, normalProcessing),
+            newInstructions.InsertRange(
+                ffMultiplierIndex,
+                new CodeInstruction[]
+                {
+                    // Do not run our custom logic, skip over.
+                    new(OpCodes.Br, normalProcessing),
 
-                // AttackerDamageHandler.Damage = AttackerDamageHandler.Damage * ffMulti
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti),
-                new (OpCodes.Ldloc, ffMulti.LocalIndex),
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
-                new (OpCodes.Mul),
-                new (OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
-                new (OpCodes.Ldarg_0),
-                new (OpCodes.Ldarg_1),
+                    // AttackerDamageHandler.Damage = AttackerDamageHandler.Damage * ffMulti
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti),
+                    new(OpCodes.Ldloc, ffMulti.LocalIndex),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
+                    new(OpCodes.Mul),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Damage))),
 
-                // Next line is ProcessDamage, which uses AttackerDamageHandler information.
-            });
+                    // Game code, the two instructions before ProcessDamage
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_1),
+
+                    // Next line is ProcessDamage, which uses AttackerDamageHandler information.
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -258,26 +259,30 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int offset = 1;
-            const int instructionsToRemove = 9;
-            int index = newInstructions.FindLastIndex(code => code.opcode == OpCodes.Brtrue_S) + offset;
+            // Replace the original friendly fire check with the Exiled one
+            const int offset = -7;
+            const int instructionsToRemove = 7;
+            int index = newInstructions.FindLastIndex(code => code.opcode == OpCodes.Brfalse_S) + offset;
 
+            // HitboxIdentity.CheckFriendlyFire(RoleTypeId, RoleTypeId, false)
             newInstructions.RemoveRange(index, instructionsToRemove);
 
-            // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // this.PreviousOwner.Hub
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldflda, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
-                new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
+            // CheckFriendlyFirePlayer(this.PreviousOwner.Hub, referenceHub)
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // this.PreviousOwner.Hub
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldflda, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
+                    new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
-                // KeyValuePair<GameObject, ReferenceHub>.Value (target ReferenceHub)
-                new(OpCodes.Ldloca_S, 2),
-                new(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
+                    // referenceHub
+                    new(OpCodes.Ldloc_2),
 
-                new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
-            });
+                    // CheckFriendlyFirePlayer(this.PreviousOwner.Hub, referenceHub)
+                    new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

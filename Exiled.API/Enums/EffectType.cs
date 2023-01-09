@@ -15,7 +15,12 @@ namespace Exiled.API.Enums
         /// <summary>
         /// The player isn't able to open their inventory or reload a weapon.
         /// </summary>
-        Amnesia,
+        AmnesiaItems,
+
+        /// <summary>
+        /// The player isn't able to see properly.
+        /// </summary>
+        AmnesiaVision,
 
         /// <summary>
         /// Drains the player's stamina and then health.
@@ -113,11 +118,6 @@ namespace Exiled.API.Enums
         SinkHole,
 
         /// <summary>
-        /// Gives the player the SCP-939 sound vision.
-        /// </summary>
-        Visuals939,
-
-        /// <summary>
         /// Reduces overall damage taken.
         /// </summary>
         DamageReduction,
@@ -145,7 +145,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Causes the player to blink.
         /// </summary>
-        Visual173Blink,
+        Visuals173Blink,
 
         /// <summary>
         /// Causes the player to slowly regenerate health.
@@ -161,5 +161,15 @@ namespace Exiled.API.Enums
         /// Cause the player more effective for fight.
         /// </summary>
         Scp1853,
+
+        /// <summary>
+        /// Player will be followed by Scp956 the Pinata.
+        /// </summary>
+        Scp956,
+
+        /// <summary>
+        /// Effect give to player after eating SCP-559 cake.
+        /// </summary>
+        Scp559,
     }
 }
