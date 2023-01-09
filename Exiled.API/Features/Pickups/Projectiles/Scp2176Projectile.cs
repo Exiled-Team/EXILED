@@ -58,6 +58,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// Returns the Scp2176Pickup in a human readable format.
         /// </summary>
         /// <returns>A string containing Scp2176Pickup related data.</returns>
-        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}| -{TargetTime}- ={IsAlreadyDetonated}=";
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}| ={IsAlreadyDetonated}=";
     }
 }
