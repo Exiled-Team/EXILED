@@ -16,17 +16,17 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     ///     Contains all information before zombie consumes ragdoll.
     /// </summary>
-    public class ZombieStartConsumeEventArgs : IPlayerEvent, IDeniableEvent
+    public class ConsumingBodyEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ZombieStartConsumeEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ConsumingBodyEventArgs"/> class.
         /// </summary>
-        /// <param name="scp049"> <inheritdoc cref="ZombieStartConsumeEventArgs.Player"/></param>
-        /// <param name="target"> <inheritdoc cref="ZombieStartConsumeEventArgs.TargetRagdoll"/> </param>
-        /// <param name="consumedRagdolls"> <inheritdoc cref="ZombieStartConsumeEventArgs.ConsomedRagdolls"/> </param>
-        /// <param name="errorCode"><inheritdoc cref="ZombieStartConsumeEventArgs.ErrorCode"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="ZombieStartConsumeEventArgs.IsAllowed"/></param>
-        public ZombieStartConsumeEventArgs(Player scp049, BasicRagdoll target, HashSet<BasicRagdoll> consumedRagdolls, byte errorCode, bool isAllowed = true)
+        /// <param name="scp049"> <inheritdoc cref="ConsumingBodyEventArgs.Player"/></param>
+        /// <param name="target"> <inheritdoc cref="ConsumingBodyEventArgs.TargetRagdoll"/> </param>
+        /// <param name="consumedRagdolls"> <inheritdoc cref="ConsumingBodyEventArgs.ConsomedRagdolls"/> </param>
+        /// <param name="errorCode"><inheritdoc cref="ConsumingBodyEventArgs.ErrorCode"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="ConsumingBodyEventArgs.IsAllowed"/></param>
+        public ConsumingBodyEventArgs(Player scp049, BasicRagdoll target, HashSet<BasicRagdoll> consumedRagdolls, byte errorCode, bool isAllowed = true)
         {
             Player = scp049;
             TargetRagdoll = target;
