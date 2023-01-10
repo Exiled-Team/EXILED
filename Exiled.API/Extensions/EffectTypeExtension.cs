@@ -59,6 +59,7 @@ namespace Exiled.API.Extensions
             EffectType.Hypothermia => typeof(Hypothermia),
             EffectType.Scp1853 => typeof(Scp1853),
             EffectType.Scp956 => typeof(Scp956Target),
+            EffectType.Scp559 => typeof(Scp559Effect),
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect enum provided"),
