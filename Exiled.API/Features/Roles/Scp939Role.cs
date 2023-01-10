@@ -8,7 +8,9 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
+
     using Exiled.API.Features.Pools;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp939;
