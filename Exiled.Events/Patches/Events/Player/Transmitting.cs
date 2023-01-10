@@ -43,10 +43,10 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new[]
                 {
-                    // hub
+                    // this
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
 
-                    // HandleTransmitting(ReferenceHub, VoiceModule)
+                    // HandleTransmitting(PersonalRadioPlayback)
                     new(OpCodes.Call, Method(typeof(Transmitting), nameof(HandleTransmitting))),
 
                     // return false if not allowed
