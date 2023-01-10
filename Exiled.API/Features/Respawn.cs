@@ -122,7 +122,7 @@ namespace Exiled.API.Features
         public static void GrantTickets(SpawnableTeamType team, float amount) => RespawnTokensManager.GrantTokens(team, amount);
 
         /// <summary>
-        /// Grants tickets from a <see cref="SpawnableTeamType"/>.
+        /// Removes tickets from a <see cref="SpawnableTeamType"/>.
         /// </summary>
         /// <param name="team">The <see cref="SpawnableTeamType"/> to remove tickets from.</param>
         /// <param name="amount">The amount of tickets to remove.</param>
