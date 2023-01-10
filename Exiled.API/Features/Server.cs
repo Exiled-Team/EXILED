@@ -48,7 +48,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="global::Broadcast"/> component.
         /// </summary>
-        public static global::Broadcast Broadcast { get; internal set; }
+        public static global::Broadcast Broadcast => global::Broadcast.Singleton;
 
         /// <summary>
         /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
