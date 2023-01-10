@@ -36,7 +36,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before Server code for SCP-106 changes stalk status
         /// </summary>
-        public static event CustomEventHandler<ServerChangingStalk> ServerChangingStalk;
+        public static event CustomEventHandler<ServerChangingStalkEventArgs> ServerChangingStalk;
 
         /// <summary>
         ///     Called before SCP-106 teleports through the minimap.
@@ -60,6 +60,6 @@ namespace Exiled.Events.Handlers
         ///     Called before SCP-106 teleports through the minimap.
         /// </summary>
         /// <param name="ev">The <see cref="ServerChangingStalk" /> instance.</param>
-        public static void OnServerChangingStalk(ServerChangingStalk ev) => ServerChangingStalk.InvokeSafely(ev);
+        public static void OnServerChangingStalk(ServerChangingStalkEventArgs ev) => ServerChangingStalk.InvokeSafely(ev);
     }
 }

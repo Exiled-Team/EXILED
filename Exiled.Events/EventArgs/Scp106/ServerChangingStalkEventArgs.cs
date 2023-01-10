@@ -17,17 +17,17 @@ namespace Exiled.Events.EventArgs.Scp106
     /// <summary>
     ///     Contains all information before SCP-106 server changes stalk.
     /// </summary>
-    public class ServerChangingStalk : IPlayerEvent, IDeniableEvent
+    public class ServerChangingStalkEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServerChangingStalk"/> class.
+        /// Initializes a new instance of the <see cref="ServerChangingStalkEventArgs"/> class.
         /// </summary>
-        /// <param name="player"><inheritdoc cref="ServerChangingStalk.Player" /></param>
-        /// <param name="stalkAbilityInstance"><inheritdoc cref="ServerChangingStalk.Scp106StalkAbility" /></param>
-        /// <param name="cooldownAbility"><inheritdoc cref="ServerChangingStalk.CooldownAbility" /></param>
-        /// <param name="isActive"><inheritdoc cref="ServerChangingStalk.IsActive" /></param>
-        /// <param name="isAllowed"> <inheritdoc cref="ServerChangingStalk.IsAllowed" /></param>
-        public ServerChangingStalk(Player player, Scp106StalkAbility stalkAbilityInstance, AbilityCooldown cooldownAbility, bool isActive, bool isAllowed = true)
+        /// <param name="player"><inheritdoc cref="ServerChangingStalkEventArgs.Player" /></param>
+        /// <param name="stalkAbilityInstance"><inheritdoc cref="ServerChangingStalkEventArgs.Scp106StalkAbility" /></param>
+        /// <param name="cooldownAbility"><inheritdoc cref="ServerChangingStalkEventArgs.CooldownAbility" /></param>
+        /// <param name="isActive"><inheritdoc cref="ServerChangingStalkEventArgs.IsActive" /></param>
+        /// <param name="isAllowed"> <inheritdoc cref="ServerChangingStalkEventArgs.IsAllowed" /></param>
+        public ServerChangingStalkEventArgs(Player player, Scp106StalkAbility stalkAbilityInstance, AbilityCooldown cooldownAbility, bool isActive, bool isAllowed = true)
         {
             Player = player;
             Scp106StalkAbility = stalkAbilityInstance;

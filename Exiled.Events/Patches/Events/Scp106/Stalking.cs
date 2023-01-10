@@ -115,18 +115,18 @@ namespace Exiled.Events.Patches.Events.Scp106
         private static bool Scp106ChangingIsActive(Scp106StalkAbility instance, bool isActiveValue)
         {
             Player currentPlayer = Player.Get(instance.Owner);
-            ServerChangingStalk playerChangingStalkStatus = new ServerChangingStalk(currentPlayer, instance, instance._sinkhole.Cooldown, instance._isActive);
-            Scp106.OnServerChangingStalk(playerChangingStalkStatus);
+            ServerChangingStalkEventArgs playerChangingStalkEventArgsStatus = new ServerChangingStalkEventArgs(currentPlayer, instance, instance._sinkhole.Cooldown, instance._isActive);
+            Scp106.OnServerChangingStalk(playerChangingStalkEventArgsStatus);
 
             // FYI, if you get to 0 vigor, and keep denying event, it will keep calling this function, you'll need to actually change time/value
             // to slow down spam of 60 per minute
-            if (!playerChangingStalkStatus.IsAllowed)
+            if (!playerChangingStalkEventArgsStatus.IsAllowed)
             {
                 // If NW handler is true, continue, otherwise, instant return
-                return playerChangingStalkStatus.AllowNwEventHandler;
+                return playerChangingStalkEventArgsStatus.AllowNwEventHandler;
             }
 
-            if (playerChangingStalkStatus.BypassChecks)
+            if (playerChangingStalkEventArgsStatus.BypassChecks)
             {
                 return false;
             }
@@ -136,13 +136,13 @@ namespace Exiled.Events.Patches.Events.Scp106
             instance.Owner.interCoordinator.AddBlocker(instance);
             if (isActiveValue)
             {
-                instance.ScpRole.Sinkhole.TargetDuration = playerChangingStalkStatus.TargetDuration;
+                instance.ScpRole.Sinkhole.TargetDuration = playerChangingStalkEventArgsStatus.TargetDuration;
                 return false;
             }
 
             if (NetworkServer.active)
             {
-                instance._sinkhole.Cooldown.Trigger(playerChangingStalkStatus.Cooldown);
+                instance._sinkhole.Cooldown.Trigger(playerChangingStalkEventArgsStatus.Cooldown);
             }
 
             return false;
