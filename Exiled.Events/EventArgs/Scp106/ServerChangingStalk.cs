@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Scp106
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before SCP-106 teleports using a portal.
+    ///     Contains all information before SCP-106 server changes stalk.
     /// </summary>
     public class ServerChangingStalk : IPlayerEvent, IDeniableEvent
     {
