@@ -41,7 +41,9 @@ namespace Exiled.Events.Patches.Generic
                 if (query.StartsWith("$", StringComparison.Ordinal))
                     return;
 
-                Player player = sender is PlayerCommandSender playerCommandSender ? Player.Get(playerCommandSender) : Server.Host;
+                Player player = sender is PlayerCommandSender playerCommandSender && sender != Server.Host.Sender
+                    ? Player.Get(playerCommandSender)
+                    : Server.Host;
 
                 string logMessage = string.Empty;
 
