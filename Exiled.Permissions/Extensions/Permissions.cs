@@ -183,7 +183,7 @@ namespace Exiled.Permissions.Extensions
 
                 return player.CheckPermission(permission);
             }
-            
+
             return false;
         }
 
