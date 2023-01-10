@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Pools
         /// <returns>The <see cref="Dictionary{TKey, TValue}"/>.</returns>
         public Dictionary<TKey, TValue> Get()
         {
-            if (pool.TryPeek(out Dictionary<TKey, TValue> result))
+            if (pool.TryDequeue(out Dictionary<TKey, TValue> result))
                 return result;
 
             return new();
