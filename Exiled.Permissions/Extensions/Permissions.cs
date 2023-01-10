@@ -176,7 +176,7 @@ namespace Exiled.Permissions.Extensions
             {
                 return true;
             }
-            else if (sender is PlayerCommandSender)
+            else if (sender is PlayerCommandSender || sender is UserPrint)
             {
                 if (Player.Get(sender.SenderId) is not Player player)
                     return false;
