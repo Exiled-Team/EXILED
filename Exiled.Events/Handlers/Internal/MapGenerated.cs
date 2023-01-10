@@ -138,8 +138,8 @@ namespace Exiled.Events.Handlers.Internal
 
                 Firearm.ItemTypeToFirearmInstance.Add(firearmType, firearm);
 
-                List<AttachmentIdentifier> attachmentIdentifiers = new();
-                HashSet<AttachmentSlot> attachmentsSlots = new();
+                List<AttachmentIdentifier> attachmentIdentifiers = ListPool<AttachmentIdentifier>.Pool.Get();
+                HashSet<AttachmentSlot> attachmentsSlots = HashSetPool<AttachmentSlot>.Pool.Get();
 
                 uint code = 1;
 
@@ -159,6 +159,9 @@ namespace Exiled.Events.Handlers.Internal
 
                 Firearm.BaseCodesValue.Add(firearmType, baseCode);
                 Firearm.AvailableAttachmentsValue.Add(firearmType, attachmentIdentifiers.ToArray());
+
+                ListPool<AttachmentIdentifier>.Pool.Return(attachmentIdentifiers);
+                HashSetPool<AttachmentSlot>.Pool.Return(attachmentsSlots);
             }
         }
     }
