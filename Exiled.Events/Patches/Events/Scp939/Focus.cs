@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp939
         private static bool Prefix(Scp939FocusKeySync __instance, NetworkReader reader)
         {
             bool state = reader.ReadBoolean();
-            ChangingFocusEventArgs ev = new(API.Features.Player.Get(__instance.Owner), state);
+            ChangingFocusEventArgs ev = new(__instance.Owner, state);
             Scp939.OnChangingFocus(ev);
 
             return ev.IsAllowed;
