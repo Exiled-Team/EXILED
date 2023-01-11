@@ -70,10 +70,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Finalizes an instance of the <see cref="Scp939Role"/> class.
         /// </summary>
-        ~Scp939Role()
-        {
-            ListPool<Player>.Pool.Return(VisiblePlayers);
-        }
+        ~Scp939Role() => ListPool<Player>.Pool.Return(VisiblePlayers);
 
         /// <inheritdoc/>
         public override RoleTypeId Type { get; } = RoleTypeId.Scp939;
