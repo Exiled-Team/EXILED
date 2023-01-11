@@ -145,7 +145,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Detonate()
         {
-            AlphaWarheadController.Singleton.ForceTime(0f);
+            Controller.ForceTime(0f);
         }
 
         /// <summary>
