@@ -26,7 +26,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadNukesitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadNukesitePanel SitePanel { get; internal set; }
+        public static AlphaWarheadNukesitePanel SitePanel => AlphaWarheadOutsitePanel.nukeside;
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
@@ -145,8 +145,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Detonate()
         {
-            Controller.InstantPrepare();
-            Controller.Detonate();
+            Controller.ForceTime(0f);
         }
 
         /// <summary>
