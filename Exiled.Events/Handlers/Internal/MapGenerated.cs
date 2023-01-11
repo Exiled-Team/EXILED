@@ -62,10 +62,7 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateCache()
         {
-            Warhead.SitePanel = Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
             Warhead.OutsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
-
-            Server.Broadcast = ReferenceHub.HostHub.GetComponent<Broadcast>();
 
             GenerateCamera();
             GenerateTeslaGates();
