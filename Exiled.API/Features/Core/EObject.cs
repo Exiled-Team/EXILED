@@ -547,10 +547,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            T[] array = objects.ToArray();
-            ListPool<T>.Pool.Return(objects);
-
-            return array;
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -568,10 +565,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            T[] array = objects.ToArray();
-            ListPool<T>.Pool.Return(objects);
-
-            return array;
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -590,10 +584,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            T[] array = objects.ToArray();
-            ListPool<T>.Pool.Return(objects);
-
-            return array;
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -612,10 +603,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            T[] array = objects.ToArray();
-            ListPool<T>.Pool.Return(objects);
-
-            return array;
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -637,10 +625,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            T[] array = objects.ToArray();
-            ListPool<T>.Pool.Return(objects);
-
-            return array;
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -659,10 +644,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            T[] array = objects.ToArray();
-            ListPool<T>.Pool.Return(objects);
-
-            return array;
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -681,10 +663,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            T[] array = objects.ToArray();
-            ListPool<T>.Pool.Return(objects);
-
-            return array;
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -706,10 +685,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            T[] array = objects.ToArray();
-            ListPool<T>.Pool.Return(objects);
-
-            return array;
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>

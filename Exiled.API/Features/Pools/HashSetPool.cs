@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Pools
 {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Defines a system used to store and retrieve <see cref="HashSet{T}"/> objects.
@@ -56,6 +57,20 @@ namespace Exiled.API.Features.Pools
         {
             obj.Clear();
             pool.Enqueue(obj);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="HashSet{T}"/> to the pool and returns its contents as an array.
+        /// </summary>
+        /// <param name="obj">The <see cref="HashSet{T}"/> to return.</param>
+        /// <returns>The contents of the returned hashset as an array.</returns>
+        public T[] ToArrayReturn(HashSet<T> obj)
+        {
+            T[] array = obj.ToArray();
+
+            Return(obj);
+
+            return array;
         }
     }
 }
