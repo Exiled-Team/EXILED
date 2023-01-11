@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Pools
 {
     using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Linq;
 
     /// <summary>
     /// Defines a system used to store and retrieve <see cref="Dictionary{TKey, TValue}"/> objects.
@@ -62,6 +63,20 @@ namespace Exiled.API.Features.Pools
         {
             obj.Clear();
             pool.Enqueue(obj);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="Dictionary{TKey, TValue}"/> to the pool and returns its contents as an array.
+        /// </summary>
+        /// <param name="obj">The <see cref="Dictionary{TKey, TValue}"/> to return.</param>
+        /// <returns>The contents of the returned dictionary as an array.</returns>
+        public KeyValuePair<TKey, TValue>[] ToArrayReturn(Dictionary<TKey, TValue> obj)
+        {
+            KeyValuePair<TKey, TValue>[] array = obj.ToArray();
+
+            Return(obj);
+
+            return array;
         }
     }
 }
