@@ -41,8 +41,8 @@ namespace Exiled.API.Features.Pools
         /// <summary>
         /// Rent a <see cref="Dictionary{TKey, TValue}"/> temporarily. Fills it with the provided <see cref="IEnumerable{T}"/> of <see cref="KeyValuePair{TKey, TValue}"/>.
         /// </summary>
-        /// <param name="pairs"></param>
-        /// <returns></returns>
+        /// <param name="pairs">The items to fill the dictionary with.</param>
+        /// <returns>The <see cref="Dictionary{TKey, TValue}"/>.</returns>
         public Dictionary<TKey, TValue> Get(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
         {
             if (!pool.TryDequeue(out Dictionary<TKey, TValue> dict))
