@@ -62,7 +62,9 @@ namespace Exiled.API.Features.Pools
         public string ToStringReturn(StringBuilder obj)
         {
             string s = obj.ToString();
+            
             Return(obj);
+            
             return s;
         }
     }
