@@ -153,19 +153,19 @@ namespace Exiled.Events.Patches.Events.Scp106
             API.Features.Player currentPlayer = API.Features.Player.Get(instance.Owner);
             if (!instance.IsActive)
             {
-                PlayerTryEnterStalkEventArgs playerTryEnterStalkEventArgs = new PlayerTryEnterStalkEventArgs(currentPlayer, instance, instance._sinkhole.Cooldown);
-                Handlers.Scp106.OnStalking(playerTryEnterStalkEventArgs);
-                return Scp106OnStalkingHandler(instance, playerTryEnterStalkEventArgs);
+                RequestingStalkEventArgs requestingStalkEventArgs = new RequestingStalkEventArgs(currentPlayer, instance, instance._sinkhole.Cooldown);
+                Handlers.Scp106.OnStalking(requestingStalkEventArgs);
+                return Scp106OnStalkingHandler(instance, requestingStalkEventArgs);
             }
 
-            PlayerTryLeaveStalkEventArgs playerTryLeaveStalkEventArgs = new PlayerTryLeaveStalkEventArgs(currentPlayer, instance, instance._sinkhole.Cooldown);
-            Handlers.Scp106.OnLeavingStalk(playerTryLeaveStalkEventArgs);
-            return Scp106OnLeavingStalkingHandler(instance, playerTryLeaveStalkEventArgs);
+            RequestingEndStalkEventArgs requestingEndStalkEventArgs = new RequestingEndStalkEventArgs(currentPlayer, instance, instance._sinkhole.Cooldown);
+            Handlers.Scp106.OnLeavingStalk(requestingEndStalkEventArgs);
+            return Scp106OnLeavingStalkingHandler(instance, requestingEndStalkEventArgs);
         }
 
-        private static bool Scp106OnStalkingHandler(Scp106StalkAbility instance, PlayerTryEnterStalkEventArgs playerTryEnterStalkEventArgs)
+        private static bool Scp106OnStalkingHandler(Scp106StalkAbility instance, RequestingStalkEventArgs requestingStalkEventArgs)
         {
-            if (!playerTryEnterStalkEventArgs.IsAllowed)
+            if (!requestingStalkEventArgs.IsAllowed)
             {
                 if (instance.Role.IsLocalPlayer)
                 {
@@ -179,15 +179,15 @@ namespace Exiled.Events.Patches.Events.Scp106
 
             // I would advise for this to exist due to how annoying it is to get property protected field.
             // Also, I would suggest diving by 120 because of the multiple by 120. int num = Mathf.FloorToInt(this.VigorAmount * 120f); lmao
-            instance.Vigor.VigorAmount = Mathf.FloorToInt(playerTryEnterStalkEventArgs.Vigor * 120f);
+            instance.Vigor.VigorAmount = Mathf.FloorToInt(requestingStalkEventArgs.Vigor * 120f);
 
-            if (playerTryEnterStalkEventArgs.BypassChecks)
+            if (requestingStalkEventArgs.BypassChecks)
             {
                 instance.IsActive = true;
                 return false;
             }
 
-            if (playerTryEnterStalkEventArgs.ValidateNewVigor && playerTryEnterStalkEventArgs.MinimumVigor > instance.Vigor.VigorAmount)
+            if (requestingStalkEventArgs.ValidateNewVigor && requestingStalkEventArgs.MinimumVigor > instance.Vigor.VigorAmount)
             {
                 if (instance.Role.IsLocalPlayer)
                 {
@@ -202,9 +202,9 @@ namespace Exiled.Events.Patches.Events.Scp106
             return true;
         }
 
-        private static bool Scp106OnLeavingStalkingHandler(Scp106StalkAbility instance, PlayerTryLeaveStalkEventArgs playerTryLeaveStalkEventArgs)
+        private static bool Scp106OnLeavingStalkingHandler(Scp106StalkAbility instance, RequestingEndStalkEventArgs requestingEndStalkEventArgs)
         {
-            if (!playerTryLeaveStalkEventArgs.IsAllowed || (playerTryLeaveStalkEventArgs.MustUseAllVigor && instance.Vigor.VigorAmount > 0.0f))
+            if (!requestingEndStalkEventArgs.IsAllowed || (requestingEndStalkEventArgs.MustUseAllVigor && instance.Vigor.VigorAmount > 0.0f))
             {
                 // Force sinkhole/submerged
                 instance.IsActive = true;
@@ -219,9 +219,9 @@ namespace Exiled.Events.Patches.Events.Scp106
 
             // I would advise for this to exist due to how annoying it is to get property protected field.
             // Also, I would suggest diving by 120 because of the multiple by 120. int num = Mathf.FloorToInt(this.VigorAmount * 120f); lmao
-            instance.Vigor.VigorAmount = Mathf.FloorToInt(playerTryLeaveStalkEventArgs.Vigor * 120f);
+            instance.Vigor.VigorAmount = Mathf.FloorToInt(requestingEndStalkEventArgs.Vigor * 120f);
 
-            if (playerTryLeaveStalkEventArgs.BypassChecks)
+            if (requestingEndStalkEventArgs.BypassChecks)
             {
                 instance.IsActive = false;
                 return false;

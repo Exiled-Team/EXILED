@@ -17,16 +17,16 @@ namespace Exiled.Events.EventArgs.Scp106
     /// <summary>
     ///     Contains all information before SCP-106 client tries to leave stalk.
     /// </summary>
-    public class PlayerTryLeaveStalkEventArgs : IPlayerEvent, IDeniableEvent
+    public class RequestingEndStalkEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerTryLeaveStalkEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="RequestingEndStalkEventArgs"/> class.
         /// </summary>
-        /// <param name="player"> <inheritdoc cref="PlayerTryLeaveStalkEventArgs.Player" /></param>
-        /// <param name="stalkAbilityInstance"> <inheritdoc cref="PlayerTryLeaveStalkEventArgs.Scp106StalkAbility" /></param>
-        /// <param name="cooldown"> <inheritdoc cref="PlayerTryLeaveStalkEventArgs.Cooldown" /></param>
-        /// <param name="isAllowed"> <inheritdoc cref="PlayerTryLeaveStalkEventArgs.IsAllowed" /></param>
-        public PlayerTryLeaveStalkEventArgs(Player player, Scp106StalkAbility stalkAbilityInstance, AbilityCooldown cooldown, bool isAllowed = true)
+        /// <param name="player"> <inheritdoc cref="RequestingEndStalkEventArgs.Player" /></param>
+        /// <param name="stalkAbilityInstance"> <inheritdoc cref="RequestingEndStalkEventArgs.Scp106StalkAbility" /></param>
+        /// <param name="cooldown"> <inheritdoc cref="RequestingEndStalkEventArgs.Cooldown" /></param>
+        /// <param name="isAllowed"> <inheritdoc cref="RequestingEndStalkEventArgs.IsAllowed" /></param>
+        public RequestingEndStalkEventArgs(Player player, Scp106StalkAbility stalkAbilityInstance, AbilityCooldown cooldown, bool isAllowed = true)
         {
             Player = player;
             Scp106StalkAbility = stalkAbilityInstance;

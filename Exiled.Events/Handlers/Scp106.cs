@@ -26,12 +26,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-106 stalks
         /// </summary>
-        public static event CustomEventHandler<PlayerTryEnterStalkEventArgs> Stalking;
+        public static event CustomEventHandler<RequestingStalkEventArgs> Stalking;
 
         /// <summary>
         ///     Invoked before SCP-106 leaves stalks
         /// </summary>
-        public static event CustomEventHandler<PlayerTryLeaveStalkEventArgs> LeaveStalk;
+        public static event CustomEventHandler<RequestingEndStalkEventArgs> LeaveStalk;
 
         /// <summary>
         ///     Invoked before Server code for SCP-106 changes stalk status
@@ -47,14 +47,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Called before SCP-106 teleports through the minimap.
         /// </summary>
-        /// <param name="ev">The <see cref="PlayerTryEnterStalkEventArgs" /> instance.</param>
-        public static void OnStalking(PlayerTryEnterStalkEventArgs ev) => Stalking.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="RequestingStalkEventArgs" /> instance.</param>
+        public static void OnStalking(RequestingStalkEventArgs ev) => Stalking.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before SCP-106 teleports through the minimap.
         /// </summary>
-        /// <param name="ev">The <see cref="PlayerTryEnterStalkEventArgs" /> instance.</param>
-        public static void OnLeavingStalk(PlayerTryLeaveStalkEventArgs ev) => LeaveStalk.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="RequestingStalkEventArgs" /> instance.</param>
+        public static void OnLeavingStalk(RequestingEndStalkEventArgs ev) => LeaveStalk.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before SCP-106 teleports through the minimap.
