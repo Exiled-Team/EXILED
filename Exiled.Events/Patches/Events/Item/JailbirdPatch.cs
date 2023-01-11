@@ -75,7 +75,9 @@ namespace Exiled.Events.Patches.Events.Item
                 case JailbirdMessageType.AttackTriggered:
                 {
                     SwingingEventArgs ev = new(instance.Owner, instance);
+
                     Item.OnSwinging(ev);
+
                     return ev.IsAllowed;
                 }
 
