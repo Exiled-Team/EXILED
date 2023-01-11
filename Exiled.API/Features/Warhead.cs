@@ -145,8 +145,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Detonate()
         {
-            Controller.InstantPrepare();
-            Controller.Detonate();
+            Controller.ForceTime(0f);
         }
 
         /// <summary>
