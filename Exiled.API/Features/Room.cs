@@ -69,6 +69,13 @@ namespace Exiled.API.Features
         public ZoneType Zone { get; private set; } = ZoneType.Unspecified;
 
         /// <summary>
+        /// Gets the <see cref="MapGeneration.RoomName"/> enum representing this room.
+        /// </summary>
+        /// <remarks>This property is the internal <see cref="MapGeneration.RoomName"/> of the room. For the actual string of the Room's name, see <see cref="Name"/>.</remarks>
+        /// <seealso cref="Name"/>
+        public RoomName RoomName => Identifier.Name;
+
+        /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
         public RoomType Type { get; private set; } = RoomType.Unknown;
