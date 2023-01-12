@@ -12,9 +12,9 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
     using CommandSystem;
 
-    using Extensions;
+    using Exiled.API.Features.Pools;
 
-    using NorthwoodLib.Pools;
+    using Extensions;
 
     /// <summary>
     /// Handles commands about permissions groups.
@@ -68,7 +68,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
             Permissions.Groups.TryGetValue(arguments.At(0), out Features.Group group);
 
-            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
+            StringBuilder stringBuilder = StringBuilderPool.Pool.Get();
 
             stringBuilder.AppendLine($"Group: {arguments.At(0)}");
 
@@ -97,7 +97,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
                     stringBuilder.AppendLine($"- {permission}");
             }
 
-            response = StringBuilderPool.Shared.ToStringReturn(stringBuilder);
+            response = StringBuilderPool.Pool.ToStringReturn(stringBuilder);
             return true;
         }
     }

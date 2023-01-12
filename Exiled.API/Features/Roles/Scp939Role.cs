@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Features.Pools;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp939;
@@ -64,6 +66,11 @@ namespace Exiled.API.Features.Roles
 
             MimicryRecorder = mimicryRecorder;
         }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="Scp939Role"/> class.
+        /// </summary>
+        ~Scp939Role() => ListPool<Player>.Pool.Return(VisiblePlayers);
 
         /// <inheritdoc/>
         public override RoleTypeId Type { get; } = RoleTypeId.Scp939;
@@ -176,7 +183,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a list of players this SCP-939 instance can see regardless of their movement.
         /// </summary>
-        public List<Player> VisiblePlayers { get; } = new();
+        public List<Player> VisiblePlayers { get; } = ListPool<Player>.Pool.Get();
 
         /// <summary>
         /// Removes all recordings of player voices. Provide an optional target to remove all the recordings of a single player.
