@@ -58,5 +58,19 @@ namespace Exiled.API.Features.Pools
             obj.Clear();
             pool.Enqueue(obj);
         }
+
+        /// <summary>
+        /// Returns the <see cref="Queue{T}"/> to the pool and returns its contents as an array.
+        /// </summary>
+        /// <param name="obj">The <see cref="Queue{T}"/> to return.</param>
+        /// <returns>The contents of the returned queue as an array.</returns>
+        public T[] ToArrayReturn(Queue<T> obj)
+        {
+            T[] array = obj.ToArray();
+
+            Return(obj);
+
+            return array;
+        }
     }
 }
