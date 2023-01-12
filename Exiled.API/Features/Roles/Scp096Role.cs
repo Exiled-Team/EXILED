@@ -174,6 +174,12 @@ namespace Exiled.API.Features.Roles
         public void Enrage(float time) => RageManager.ServerEnrage(time);
 
         /// <summary>
+        /// Ends SCP-096's enrage cycle.
+        /// </summary>
+        /// <param name="clearTime">Whether or not to clear the remaining enrage time.</param>
+        public void Calm(bool clearTime) => RageManager.ServerEndEnrage(clearTime);
+
+        /// <summary>
         /// Returns whether or not the provided <paramref name="player"/> is a target of SCP-096.
         /// </summary>
         /// <param name="player">The player to check.</param>
