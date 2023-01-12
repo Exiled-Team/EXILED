@@ -16,12 +16,11 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
+    using Features.Pools;
 
     using InventorySystem.Items.Firearms;
 
     using Mirror;
-
-    using NorthwoodLib.Pools;
 
     using PlayerRoles;
 
@@ -214,7 +213,7 @@ namespace Exiled.API.Extensions
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
-            StringBuilder announcement = StringBuilderPool.Shared.Rent();
+            StringBuilder announcement = StringBuilderPool.Pool.Get();
 
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
@@ -222,7 +221,7 @@ namespace Exiled.API.Extensions
             for (int i = 0; i < cassies.Length; i++)
                 announcement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
 
-            string message = StringBuilderPool.Shared.ToStringReturn(announcement);
+            string message = StringBuilderPool.Pool.ToStringReturn(announcement);
 
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {

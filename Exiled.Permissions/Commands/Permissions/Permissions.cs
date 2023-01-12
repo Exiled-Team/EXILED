@@ -12,7 +12,7 @@ namespace Exiled.Permissions.Commands.Permissions
 
     using CommandSystem;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     /// <summary>
     /// Handles commands about permissions.
@@ -46,7 +46,7 @@ namespace Exiled.Permissions.Commands.Permissions
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
+            StringBuilder stringBuilder = StringBuilderPool.Pool.Get();
 
             stringBuilder.AppendLine("Available commands: ");
             stringBuilder.AppendLine("- EP RELOAD - Reloads permissions.");
@@ -55,7 +55,7 @@ namespace Exiled.Permissions.Commands.Permissions
             stringBuilder.AppendLine("- EP REMOVE <PERMISSION> <GROUP> - Adds a permission to a group.");
             stringBuilder.AppendLine("- EP ADD <PERMISSION> <GROUP> - Removes a permission from a group.");
 
-            response = StringBuilderPool.Shared.ToStringReturn(stringBuilder);
+            response = StringBuilderPool.Pool.ToStringReturn(stringBuilder);
             return false;
         }
     }

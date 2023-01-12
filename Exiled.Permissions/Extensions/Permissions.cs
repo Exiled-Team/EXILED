@@ -17,10 +17,8 @@ namespace Exiled.Permissions.Extensions
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-
+    using Exiled.API.Features.Pools;
     using Features;
-
-    using NorthwoodLib.Pools;
 
     using Properties;
 
@@ -101,7 +99,7 @@ namespace Exiled.Permissions.Extensions
 
             try
             {
-                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
+                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? DictionaryPool<string, object>.Pool.Get();
                 Dictionary<string, Group> deserializedPerms = new();
                 foreach (KeyValuePair<string, object> group in rawDeserializedPerms)
                 {
@@ -122,6 +120,8 @@ namespace Exiled.Permissions.Extensions
                         Log.Debug($"{exception.Message}\n{exception.StackTrace}");
                     }
                 }
+
+                DictionaryPool<string, object>.Pool.Return(rawDeserializedPerms);
 
                 Groups = deserializedPerms;
             }
@@ -230,7 +230,7 @@ namespace Exiled.Permissions.Extensions
 
             if (permission.Contains(permSeparator))
             {
-                StringBuilder strBuilder = StringBuilderPool.Shared.Rent();
+                StringBuilder strBuilder = StringBuilderPool.Pool.Get();
                 string[] seraratedPermissions = permission.Split(permSeparator);
 
                 bool Check(string source) => group.CombinedPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
@@ -266,7 +266,7 @@ namespace Exiled.Permissions.Extensions
                     }
                 }
 
-                StringBuilderPool.Shared.Return(strBuilder);
+                StringBuilderPool.Pool.Return(strBuilder);
 
                 Log.Debug($"Result in the block: {result}");
                 return result;
