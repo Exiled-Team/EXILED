@@ -10,11 +10,11 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label isAllowed = generator.DefineLabel();
             Label ret = generator.DefineLabel();
@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Player
             foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

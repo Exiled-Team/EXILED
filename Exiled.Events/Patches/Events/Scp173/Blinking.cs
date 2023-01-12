@@ -11,12 +11,11 @@ namespace Exiled.Events.Patches.Events.Scp173
     using System.Linq;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
+    using API.Features;
+    using API.Features.Pools;
     using Exiled.Events.EventArgs.Scp173;
 
     using HarmonyLib;
-
-    using NorthwoodLib.Pools;
 
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -34,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp173
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(BlinkingEventArgs));
 
@@ -89,7 +88,7 @@ namespace Exiled.Events.Patches.Events.Scp173
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
         private static List<Player> GetObservingPlayers(HashSet<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
