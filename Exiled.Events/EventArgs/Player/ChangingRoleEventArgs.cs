@@ -92,12 +92,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets base items that the player will receive.
         /// </summary>
-        public List<ItemType> Items { get; } = new();
+        public List<ItemType> Items { get; }
 
         /// <summary>
         ///     Gets the base ammo values for the new role.
         /// </summary>
-        public Dictionary<ItemType, ushort> Ammo { get; } = new();
+        public Dictionary<ItemType, ushort> Ammo { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the inventory will be preserved or not.
