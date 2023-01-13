@@ -198,8 +198,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">The position to look for a room.</param>
         /// <returns>The <see cref="Room"/> that the <see cref="RelativePosition"/> is located inside. Can be <see langword="null"/>.</returns>
-        public static Room FindParentRoom(RelativePosition position)
-            => Room.Get(position.Position);
+        public static Room FindParentRoom(RelativePosition position) => Room.Get(position.Position);
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
