@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -22,7 +23,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="FlashbangGrenade"/>.
     /// </summary>
-    public class FlashGrenade : Throwable
+    public class FlashGrenade : Throwable, IWrapper<ThrowableItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FlashGrenade"/> class.
