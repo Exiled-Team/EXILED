@@ -191,8 +191,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">The position to look for a room.</param>
         /// <returns>The <see cref="Room"/> that the <see cref="Vector3"/> is located inside. Can be <see langword="null"/>.</returns>
-        public static Room FindParentRoom(Vector3 position)
-            => Room.Get(position);
+        public static Room FindParentRoom(Vector3 position) => Room.Get(position);
 
         /// <summary>
         /// Tries to find a room at the given <see cref="RelativePosition">position</see> using raycasting.
