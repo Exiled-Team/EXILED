@@ -5,22 +5,20 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.Events.EventArgs.Scp939;
+using Exiled.Events.Handlers;
+using HarmonyLib;
+using Mirror;
+using PlayerRoles;
+using PlayerRoles.FirstPersonControl;
+using PlayerRoles.PlayableScps.Scp939;
+using RelativePositioning;
+using UnityEngine;
+using Utils.Networking;
+
 namespace Exiled.Events.Patches.Events.Scp939
 {
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
-    using Exiled.Events.EventArgs.Scp939;
-    using Exiled.Events.Handlers;
-
-    using HarmonyLib;
-    using Mirror;
-
-    using PlayerRoles;
-    using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.PlayableScps.Scp939;
-    using RelativePositioning;
-    using UnityEngine;
-    using Utils.Networking;
-
     /// <summary>
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939.Lunging" /> event.
@@ -30,18 +28,17 @@ namespace Exiled.Events.Patches.Events.Scp939
     {
         private static bool Prefix(Scp939LungeAbility __instance, NetworkReader reader)
         {
-            __instance.ServerProcessCmd(reader);
             Vector3 vector = reader.ReadRelativePosition().Position;
             ReferenceHub referenceHub = reader.ReadReferenceHub();
             RelativePosition relativePosition = reader.ReadRelativePosition();
             if (__instance.State != Scp939LungeState.Triggered)
             {
-                if (__instance.State != Scp939LungeState.Triggered && !__instance.IsReady)
+                if (!__instance.IsReady)
                     return false;
 
                 LungingEventArgs ev = new(__instance.Owner, __instance.IsReady);
-                Scp939.OnLunging(ev);
-                if (ev.IsAllowed)
+                Handlers.Scp939.OnLunging(ev);
+                if (!ev.IsAllowed)
                     return false;
 
                 __instance.TriggerLunge();
@@ -54,9 +51,9 @@ namespace Exiled.Events.Patches.Events.Scp939
             }
 
             FirstPersonMovementModule fpcModule = humanRole.FpcModule;
-            using (new FpcBacktracker(referenceHub, relativePosition.Position, 0.4f))
+            using (new FpcBacktracker(referenceHub, relativePosition.Position))
             {
-                using (new FpcBacktracker(__instance.Owner, fpcModule.Position, Quaternion.identity, 0.1f, 0.15f))
+                using (new FpcBacktracker(__instance.Owner, fpcModule.Position, Quaternion.identity))
                 {
                     Vector3 vector2 = fpcModule.Position - __instance.ScpRole.FpcModule.Position;
                     if (vector2.SqrMagnitudeIgnoreY() > __instance._overallTolerance * __instance._overallTolerance)
@@ -71,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Scp939
                 }
             }
 
-            using (new FpcBacktracker(__instance.Owner, vector, Quaternion.identity, 0.1f, 0.15f))
+            using (new FpcBacktracker(__instance.Owner, vector, Quaternion.identity))
             {
                 vector = __instance.ScpRole.FpcModule.Position;
             }
@@ -93,7 +90,9 @@ namespace Exiled.Events.Patches.Events.Scp939
             foreach (ReferenceHub referenceHub2 in ReferenceHub.AllHubs)
             {
                 HumanRole humanRole2;
-                if (!(referenceHub2 == referenceHub) && (humanRole2 = referenceHub2.roleManager.CurrentRole as HumanRole) != null && (humanRole2.FpcModule.Position - vector3).sqrMagnitude <= __instance._secondaryRangeSqr && referenceHub2.playerStats.DealDamage(new Scp939DamageHandler(__instance.ScpRole, Scp939DamageType.LungeSecondary)))
+                if (!(referenceHub2 == referenceHub) && (humanRole2 = referenceHub2.roleManager.CurrentRole as HumanRole) != null
+                                                     && (humanRole2.FpcModule.Position - vector3).sqrMagnitude <= __instance._secondaryRangeSqr
+                                                     && referenceHub2.playerStats.DealDamage(new Scp939DamageHandler(__instance.ScpRole, Scp939DamageType.LungeSecondary)))
                 {
                     flag = true;
                     num = Mathf.Max(num, 0.6f);
