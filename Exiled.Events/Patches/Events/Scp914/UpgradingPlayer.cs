@@ -11,14 +11,13 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Reflection.Emit;
 
     using API.Features;
+    using API.Features.Pools;
 
     using Exiled.Events.EventArgs.Scp914;
 
     using global::Scp914;
 
     using HarmonyLib;
-
-    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -35,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             const int offset = 1;
             const int labelOffset = -1;
@@ -164,7 +163,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

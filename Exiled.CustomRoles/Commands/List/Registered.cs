@@ -13,10 +13,9 @@ namespace Exiled.CustomRoles.Commands.List
 
     using CommandSystem;
 
+    using Exiled.API.Features.Pools;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Permissions.Extensions;
-
-    using NorthwoodLib.Pools;
 
     /// <inheritdoc />
     internal sealed class Registered : ICommand
@@ -54,14 +53,14 @@ namespace Exiled.CustomRoles.Commands.List
                 return false;
             }
 
-            StringBuilder builder = StringBuilderPool.Shared.Rent().AppendLine();
+            StringBuilder builder = StringBuilderPool.Pool.Get().AppendLine();
 
             builder.Append("[Registered custom roles (").Append(CustomRole.Registered.Count).AppendLine(")]");
 
             foreach (CustomRole role in CustomRole.Registered.OrderBy(r => r.Id))
                 builder.Append('[').Append(role.Id).Append(". ").Append(role.Name).Append(" (").Append(role.Role).Append(')').AppendLine("]");
 
-            response = StringBuilderPool.Shared.ToStringReturn(builder);
+            response = StringBuilderPool.Pool.ToStringReturn(builder);
             return true;
         }
     }

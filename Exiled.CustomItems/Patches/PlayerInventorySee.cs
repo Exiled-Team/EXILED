@@ -14,13 +14,12 @@ namespace Exiled.CustomItems.Patches
     using CommandSystem.Commands.RemoteAdmin;
 
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pools;
     using Exiled.CustomItems.API.Features;
 
     using HarmonyLib;
 
     using InventorySystem.Items;
-
-    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -33,7 +32,7 @@ namespace Exiled.CustomItems.Patches
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstruction = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstruction = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder item = generator.DeclareLocal(typeof(Item));
             LocalBuilder customItem = generator.DeclareLocal(typeof(CustomItem));
@@ -73,7 +72,7 @@ namespace Exiled.CustomItems.Patches
             for (int z = 0; z < newInstruction.Count; z++)
                 yield return newInstruction[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstruction);
+            ListPool<CodeInstruction>.Pool.Return(newInstruction);
         }
     }
 }

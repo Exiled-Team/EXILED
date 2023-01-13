@@ -12,11 +12,10 @@ namespace Exiled.CustomItems.Commands
 
     using CommandSystem;
 
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
-
-    using NorthwoodLib.Pools;
 
     /// <summary>
     /// The command to view info about a specific item.
@@ -63,7 +62,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            StringBuilder message = StringBuilderPool.Shared.Rent().AppendLine();
+            StringBuilder message = StringBuilderPool.Pool.Get().AppendLine();
 
             message.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(item.Name).Append("</color> <color=#05C4EB>(").Append(item.Id).AppendLine(")</color>")
                 .Append("- ").AppendLine(item.Description)
@@ -77,7 +76,7 @@ namespace Exiled.CustomItems.Commands
             foreach (StaticSpawnPoint spawnPoint in item.SpawnProperties.StaticSpawnPoints)
                 message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append(" Chance: ").Append(spawnPoint.Chance).AppendLine("%");
 
-            response = StringBuilderPool.Shared.ToStringReturn(message);
+            response = StringBuilderPool.Pool.ToStringReturn(message);
             return true;
         }
     }
