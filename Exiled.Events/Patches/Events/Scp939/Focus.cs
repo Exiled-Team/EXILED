@@ -29,7 +29,12 @@ namespace Exiled.Events.Patches.Events.Scp939
             ChangingFocusEventArgs ev = new(__instance.Owner, state);
             Scp939.OnChangingFocus(ev);
 
-            return ev.IsAllowed;
+            if (ev.IsAllowed)
+            {
+                __instance.FocusKeyHeld = state;
+            }
+
+            return false;
         }
     }
 }
