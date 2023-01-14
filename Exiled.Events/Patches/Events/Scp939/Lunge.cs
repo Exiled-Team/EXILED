@@ -5,23 +5,23 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.Events.EventArgs.Scp939;
-using Exiled.Events.Handlers;
-using HarmonyLib;
-using Mirror;
-using PlayerRoles;
-using PlayerRoles.FirstPersonControl;
-using PlayerRoles.PlayableScps.Scp939;
-using RelativePositioning;
-using UnityEngine;
-using Utils.Networking;
-
 namespace Exiled.Events.Patches.Events.Scp939
 {
+    using Exiled.Events.EventArgs.Scp939;
+    using Exiled.Events.Handlers;
+    using HarmonyLib;
+    using Mirror;
+    using PlayerRoles;
+    using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.PlayableScps.Scp939;
+    using RelativePositioning;
+    using UnityEngine;
+    using Utils.Networking;
+
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     /// <summary>
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
-    ///     to add the <see cref="Scp939.Lunging" /> event.
+    ///     to add the <see cref="Scp939" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
     internal static class Lunge
