@@ -7,9 +7,10 @@
 
 namespace Exiled.API.Features.Pools
 {
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+
+    using BasePools = NorthwoodLib.Pools;
 
     /// <summary>
     /// Defines a system used to store and retrieve <see cref="HashSet{T}"/> objects.
@@ -19,8 +20,6 @@ namespace Exiled.API.Features.Pools
     /// <seealso cref="ListPool{T}"/>
     public class HashSetPool<T> : IPool<HashSet<T>>
     {
-        private readonly ConcurrentQueue<HashSet<T>> pool = new();
-
         /// <summary>
         /// Gets a <see cref="HashSetPool{T}"/> that stores hash sets.
         /// </summary>
@@ -28,12 +27,7 @@ namespace Exiled.API.Features.Pools
 
         /// <inheritdoc/>
         public HashSet<T> Get()
-        {
-            if (pool.TryDequeue(out HashSet<T> set))
-                return set;
-
-            return new();
-        }
+            => BasePools.HashSetPool<T>.Shared.Rent();
 
         /// <summary>
         /// Retrieves a stored object of type <see cref="HashSet{T}"/>, or creates it if it does not exist. The hashset will be filled with all the provided <paramref name="items"/>.
@@ -41,23 +35,11 @@ namespace Exiled.API.Features.Pools
         /// <param name="items">The items to fill the hashset with.</param>
         /// <returns>The stored object, or a new object, of type <see cref="HashSet{T}"/>.</returns>
         public HashSet<T> Get(IEnumerable<T> items)
-        {
-            if (pool.TryDequeue(out HashSet<T> set))
-            {
-                foreach (T item in items)
-                    set.Add(item);
-                return set;
-            }
-
-            return new(items);
-        }
+            => BasePools.HashSetPool<T>.Shared.Rent(items);
 
         /// <inheritdoc/>
         public void Return(HashSet<T> obj)
-        {
-            obj.Clear();
-            pool.Enqueue(obj);
-        }
+            => BasePools.HashSetPool<T>.Shared.Return(obj);
 
         /// <summary>
         /// Returns the <see cref="HashSet{T}"/> to the pool and returns its contents as an array.

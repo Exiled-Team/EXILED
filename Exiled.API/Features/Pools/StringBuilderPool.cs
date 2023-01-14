@@ -7,16 +7,15 @@
 
 namespace Exiled.API.Features.Pools
 {
-    using System.Collections.Concurrent;
     using System.Text;
+
+    using BasePools = NorthwoodLib.Pools;
 
     /// <summary>
     /// Defines a system used to store and retrieve <see cref="StringBuilder"/> objects.
     /// </summary>
     public class StringBuilderPool : IPool<StringBuilder>
     {
-        private readonly ConcurrentQueue<StringBuilder> pool = new();
-
         /// <summary>
         /// Gets a <see cref="StringBuilderPool"/> that stores <see cref="StringBuilder"/>.
         /// </summary>
@@ -24,12 +23,7 @@ namespace Exiled.API.Features.Pools
 
         /// <inheritdoc/>
         public StringBuilder Get()
-        {
-            if (pool.TryDequeue(out StringBuilder sb))
-                return sb;
-
-            return new();
-        }
+            => BasePools.StringBuilderPool.Shared.Rent();
 
         /// <summary>
         /// Retrieves a stored object of type <see cref="StringBuilder"/>, or creates it if it does not exist. The capacity of the StringBuilder will be equal to or greater than <paramref name="capacity"/>.
@@ -37,22 +31,11 @@ namespace Exiled.API.Features.Pools
         /// <param name="capacity">The capacity of content in the <see cref="StringBuilder"/>.</param>
         /// <returns>The stored object, or a new object, of type <see cref="StringBuilder"/>.</returns>
         public StringBuilder Get(int capacity)
-        {
-            if (pool.TryDequeue(out StringBuilder sb))
-            {
-                sb.EnsureCapacity(capacity);
-                return sb;
-            }
-
-            return new(capacity);
-        }
+            => BasePools.StringBuilderPool.Shared.Rent(capacity);
 
         /// <inheritdoc/>
         public void Return(StringBuilder obj)
-        {
-            obj.Clear();
-            pool.Enqueue(obj);
-        }
+            => BasePools.StringBuilderPool.Shared.Return(obj);
 
         /// <summary>
         /// Returns the contents of the <see cref="StringBuilder"/> and returns it to the pool.
