@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Core
 
     using Exiled.API.Features.Core.Attributes;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using UnityEngine;
 
@@ -487,12 +487,12 @@ namespace Exiled.API.Features.Core
         /// </summary>
         public static void DestroyAllObjects()
         {
-            List<EObject> objects = ListPool<EObject>.Shared.Rent(InternalObjects);
+            List<EObject> objects = ListPool<EObject>.Pool.Get(InternalObjects);
             foreach (EObject @object in objects)
                 @object.Destroy();
 
             objects.Clear();
-            ListPool<EObject>.Shared.Return(objects);
+            ListPool<EObject>.Pool.Return(objects);
         }
 
         /// <summary>
@@ -502,7 +502,7 @@ namespace Exiled.API.Features.Core
         public static void DestroyAllObjectsOfType<T>()
             where T : EObject
         {
-            List<EObject> objects = ListPool<EObject>.Shared.Rent(InternalObjects);
+            List<EObject> objects = ListPool<EObject>.Pool.Get(InternalObjects);
             foreach (EObject @object in objects)
             {
                 if (@object.Cast(out T obj))
@@ -510,7 +510,7 @@ namespace Exiled.API.Features.Core
             }
 
             objects.Clear();
-            ListPool<EObject>.Shared.Return(objects);
+            ListPool<EObject>.Pool.Return(objects);
         }
 
         /// <summary>
@@ -540,14 +540,14 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>(Func<EObject, bool> predicate)
             where T : EObject
         {
-            List<T> objects = new();
+            List<T> objects = ListPool<T>.Pool.Get();
             foreach (EObject @object in InternalObjects.Where(predicate))
             {
                 if (@object.Cast(out T obj))
                     objects.Add(obj);
             }
 
-            return objects.ToArray();
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -558,14 +558,14 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>()
             where T : EObject
         {
-            List<T> objects = new();
+            List<T> objects = ListPool<T>.Pool.Get();
             foreach (EObject @object in InternalObjects)
             {
                 if (@object.Cast(out T obj))
                     objects.Add(obj);
             }
 
-            return objects.ToArray();
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -577,14 +577,14 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>(string name)
             where T : EObject
         {
-            List<T> objects = new();
+            List<T> objects = ListPool<T>.Pool.Get();
             foreach (EObject @object in InternalObjects)
             {
                 if (@object.Cast(out T obj) && (obj.Name == name))
                     objects.Add(obj);
             }
 
-            return objects.ToArray();
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -596,14 +596,14 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>(Type type)
             where T : EObject
         {
-            List<T> objects = new();
+            List<T> objects = ListPool<T>.Pool.Get();
             foreach (EObject @object in InternalObjects.Where(obj => obj.GetType() == type))
             {
                 if (@object.Cast(out T obj))
                     objects.Add(obj);
             }
 
-            return objects.ToArray();
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -616,7 +616,7 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>(Type type, Func<EObject, bool> predicate)
             where T : EObject
         {
-            List<T> objects = new();
+            List<T> objects = ListPool<T>.Pool.Get();
             foreach (EObject @object in InternalObjects
                 .Where(obj => obj.GetType() == type)
                 .Where(predicate))
@@ -625,7 +625,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            return objects.ToArray();
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -637,14 +637,14 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsWithTagOfType<T>(string tag)
             where T : EObject
         {
-            List<T> objects = new();
+            List<T> objects = ListPool<T>.Pool.Get();
             foreach (EObject @object in InternalObjects)
             {
                 if (@object.Cast(out T obj) && obj.Tag.ToLower().Contains(tag))
                     objects.Add(obj);
             }
 
-            return objects.ToArray();
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -656,14 +656,14 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>(Func<object, bool> predicate)
             where T : EObject
         {
-            List<T> objects = new();
+            List<T> objects = ListPool<T>.Pool.Get();
             foreach (EObject @object in InternalObjects.Where(predicate).Cast<EObject>())
             {
                 if (@object.Cast(out T obj))
                     objects.Add(obj);
             }
 
-            return objects.ToArray();
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>
@@ -675,7 +675,7 @@ namespace Exiled.API.Features.Core
         public static T[] FindActiveObjectsOfType<T>(Func<T, bool> predicate)
             where T : EObject
         {
-            List<T> objects = new();
+            List<T> objects = ListPool<T>.Pool.Get();
             foreach (EObject @object in InternalObjects
                 .Where(obj => obj.Cast(out T _))
                 .Select(obj => obj.Cast<T>())
@@ -685,7 +685,7 @@ namespace Exiled.API.Features.Core
                     objects.Add(obj);
             }
 
-            return objects.ToArray();
+            return ListPool<T>.Pool.ToArrayReturn(objects);
         }
 
         /// <summary>

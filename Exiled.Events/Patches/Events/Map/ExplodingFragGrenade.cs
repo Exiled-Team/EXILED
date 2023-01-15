@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using API.Features;
+    using API.Features.Pools;
 
     using Exiled.Events.EventArgs.Map;
 
@@ -19,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Map
     using HarmonyLib;
 
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -41,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Map
         /// <returns>An array of colliders.</returns>
         public static Collider[] TrimColliders(ExplodingGrenadeEventArgs ev, Collider[] colliderArray)
         {
-            List<Collider> colliders = new();
+            List<Collider> colliders = ListPool<Collider>.Pool.Get();
 
             foreach (Collider collider in colliderArray)
             {
@@ -53,12 +52,15 @@ namespace Exiled.Events.Patches.Events.Map
                 }
             }
 
-            return colliders.ToArray();
+            Collider[] array = colliders.ToArray();
+            ListPool<Collider>.Pool.Return(colliders);
+
+            return array;
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_3) + offset;
@@ -111,7 +113,7 @@ namespace Exiled.Events.Patches.Events.Map
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

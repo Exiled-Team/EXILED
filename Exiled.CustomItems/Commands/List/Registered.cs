@@ -13,10 +13,9 @@ namespace Exiled.CustomItems.Commands.List
 
     using CommandSystem;
 
+    using Exiled.API.Features.Pools;
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
-
-    using NorthwoodLib.Pools;
 
     /// <inheritdoc/>
     internal sealed class Registered : ICommand
@@ -60,14 +59,14 @@ namespace Exiled.CustomItems.Commands.List
                 return false;
             }
 
-            StringBuilder message = StringBuilderPool.Shared.Rent().AppendLine();
+            StringBuilder message = StringBuilderPool.Pool.Get().AppendLine();
 
             message.Append("[Registered custom items (").Append(CustomItem.Registered.Count).AppendLine(")]");
 
             foreach (CustomItem customItem in CustomItem.Registered.OrderBy(item => item.Id))
                 message.Append('[').Append(customItem.Id).Append(". ").Append(customItem.Name).Append(" (").Append(customItem.Type).Append(')').AppendLine("]");
 
-            response = StringBuilderPool.Shared.ToStringReturn(message);
+            response = StringBuilderPool.Pool.ToStringReturn(message);
             return true;
         }
     }

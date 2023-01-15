@@ -18,6 +18,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
@@ -31,8 +32,6 @@ namespace Exiled.CustomItems.API.Features
     using MapGeneration.Distributors;
 
     using MEC;
-
-    using NorthwoodLib.Pools;
 
     using PlayerRoles;
 
@@ -320,7 +319,7 @@ namespace Exiled.CustomItems.API.Features
                             {
                                 if (property.GetValue(overrideClass ?? plugin.Config) is IEnumerable enumerable)
                                 {
-                                    List<CustomItem> list = ListPool<CustomItem>.Shared.Rent();
+                                    List<CustomItem> list = ListPool<CustomItem>.Pool.Get();
                                     foreach (object item in enumerable)
                                     {
                                         if (item is CustomItem ci)
@@ -342,7 +341,7 @@ namespace Exiled.CustomItems.API.Features
                                         items.Add(item);
                                     }
 
-                                    ListPool<CustomItem>.Shared.Return(list);
+                                    ListPool<CustomItem>.Pool.Return(list);
                                 }
 
                                 continue;
