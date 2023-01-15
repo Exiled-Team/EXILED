@@ -159,10 +159,7 @@ namespace Exiled.API.Features
         /// <param name="open">Whether to open or close all doors on the map.</param>
         public static void TriggerDoors(bool open)
         {
-            if (open)
-                DoorEventOpenerExtension.TriggerAction(DoorEventOpenerExtension.OpenerEventType.WarheadStart);
-            else
-                DoorEventOpenerExtension.TriggerAction(DoorEventOpenerExtension.OpenerEventType.WarheadCancel);
+            DoorEventOpenerExtension.TriggerAction(open ? DoorEventOpenerExtension.OpenerEventType.WarheadStart : DoorEventOpenerExtension.OpenerEventType.WarheadCancel);
         }
 
         /// <summary>
