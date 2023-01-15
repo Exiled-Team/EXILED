@@ -118,8 +118,6 @@ namespace Exiled.API.Features.DamageHandlers
                         return DamageType.Jailbird;
                     case Scp049DamageHandler:
                         return DamageType.Scp049;
-                    case Scp956DamageHandler:
-                        return DamageType.Scp956;
                     case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
