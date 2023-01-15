@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Roles
 
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
+    using PlayerRoles.PlayableScps.Scp079.Rewards;
     using PlayerRoles.PlayableScps.Subroutines;
 
     using Mathf = UnityEngine.Mathf;
@@ -50,6 +51,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079TierManager subroutine not found in Scp079Role::ctor");
 
             TierManager = scp079TierManager;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079RewardManager scp079RewardManager))
+                Log.Error("Scp079RewardManager subroutine not found in Scp079Role::ctor");
+
+            RewardManager = scp079RewardManager;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079LockdownRoomAbility scp079LockdownRoomAbility))
                 Log.Error("Scp079LockdownRoomAbility subroutine not found in Scp079Role::ctor");
@@ -99,6 +105,11 @@ namespace Exiled.API.Features.Roles
         public Scp079TierManager TierManager { get; }
 
         /// <summary>
+        /// Gets SCP-079's <see cref="Scp079RewardManager"/>.
+        /// </summary>
+        public Scp079RewardManager RewardManager { get; }
+
+        /// <summary>
         /// Gets SCP-079's <see cref="Scp079LockdownRoomAbility"/>.
         /// </summary>
         public Scp079LockdownRoomAbility LockdownRoomAbility { get; }
@@ -131,6 +142,11 @@ namespace Exiled.API.Features.Roles
         /// Gets a value indicating whether or not SCP-079 can transmit its voice to a speaker.
         /// </summary>
         public bool CanTransmit => SpeakerAbility.CanTransmit;
+
+        /// <summary>
+        /// Gets a list of rooms that have been marked by SCP-079. Marked rooms grant SCP-079 experience if a kill occurs in them.
+        /// </summary>
+        public IReadOnlyCollection<Room> MarkedRooms => RewardManager._markedRooms.Select(kvp => Room.Get(kvp.Key)).ToList();
 
         /// <summary>
         /// Gets the speaker SCP-079 is currently using. Can be <see langword="null"/>.
@@ -282,5 +298,26 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="door">The door to unlock.</param>
         public void UnlockDoor(Door door) => DoorLockChanger.SetDoorLock(door.Base, false);
+
+        /// <summary>
+        /// Marks a room as being modified by SCP-079 (granting experience if a kill happens in the room).
+        /// </summary>
+        /// <param name="room">The room to mark.</param>
+        public void MarkRoom(Room room) => RewardManager.MarkRoom(room.Identifier);
+
+        /// <summary>
+        /// Removes a marked room.
+        /// </summary>
+        /// <param name="room">The room to remove.</param>
+        public void UnmarkRoom(Room room)
+        {
+            if (RewardManager._markedRooms.ContainsKey(room.Identifier))
+                RewardManager._markedRooms.Remove(room.Identifier);
+        }
+
+        /// <summary>
+        /// Clears the list of marked SCP-079 rooms.
+        /// </summary>
+        public void ClearMarkedRooms() => RewardManager._markedRooms.Clear();
     }
 }
