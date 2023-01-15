@@ -146,7 +146,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a list of rooms that have been marked by SCP-079. Marked rooms grant SCP-079 experience if a kill occurs in them.
         /// </summary>
-        public IReadOnlyCollection<Room> MarkedRooms => RewardManager._markedRooms.Select(kvp => Room.Get(kvp.Key)).ToList();
+        public IEnumerable<Room> MarkedRooms => RewardManager._markedRooms.Select(kvp => Room.Get(kvp.Key));
 
         /// <summary>
         /// Gets the speaker SCP-079 is currently using. Can be <see langword="null"/>.
