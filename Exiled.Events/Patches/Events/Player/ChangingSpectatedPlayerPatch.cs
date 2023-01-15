@@ -36,21 +36,21 @@ namespace Exiled.Events.Patches.Events.Player
                 0,
                 new[]
                 {
-                    // _ = this.TryGetOwner(out Player owner)
+                    // _ = this.TryGetOwner(out ReferenceHub owner)
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldloca_S, owner.LocalIndex),
-                    new CodeInstruction(OpCodes.Call, Method(typeof(PlayerRoleBase), nameof(PlayerRoleBase.TryGetOwner))),
+                    new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerRoleBase), nameof(PlayerRoleBase.TryGetOwner), new[] { typeof(ReferenceHub).MakeByRefType() })),
                     new CodeInstruction(OpCodes.Pop),
 
                     // owner
-                    new CodeInstruction(OpCodes.Ldloca_S, owner.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldloc_S, owner.LocalIndex),
 
                     // this.SyncedSpectatedNetId
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(SpectatorRole), nameof(SpectatorRole.SyncedSpectatedNetId))),
 
                     // value
-                    new(OpCodes.Ldarga_S, 1),
+                    new(OpCodes.Ldarg_1),
 
                     // Handlers.Player.OnChangingSpectatedPlayer(new(owner, this.SyncedSpectatedNetId, value));
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingSpectatedPlayerEventArgs))[0]),
