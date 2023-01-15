@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="RadioItem.Update" />.
     ///     Adds the <see cref="Handlers.Player.UsingRadioBattery" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(RadioItem), nameof(RadioItem.Update))]
+    // [HarmonyPatch(typeof(RadioItem), nameof(RadioItem.Update))]
     internal static class UsingRadioBattery
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
