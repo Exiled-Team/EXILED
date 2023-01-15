@@ -195,7 +195,6 @@ namespace Exiled.API.Features
         /// <param name="pos">The position to check.</param>
         /// <param name="includeOnlyLifts">If <see langword="true"/>, only lifts will be checked.</param>
         /// <returns>Whether or not the given position is prone to being detonated.</returns>
-        public static bool CanBeDetonated(Vector3 pos, bool includeOnlyLifts = false)
-            => AlphaWarheadController.CanBeDetonated(pos, includeOnlyLifts);
+        public static bool CanBeDetonated(Vector3 pos, bool includeOnlyLifts = false) => AlphaWarheadController.CanBeDetonated(pos, includeOnlyLifts);
     }
 }
