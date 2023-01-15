@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using System.Collections.Generic;
+
     using Enums;
     using Interactables.Interobjects.DoorUtils;
     using Mirror;
@@ -18,6 +20,11 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Warhead
     {
+        /// <summary>
+        /// A <see cref="List{T}"/> containing all <see cref="BlastDoor"/>.
+        /// </summary>
+        internal static readonly List<BlastDoor> InternalBlastDoors = new();
+
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
@@ -54,6 +61,20 @@ namespace Exiled.API.Features
         {
             get => Controller._openDoors;
             set => Controller._openDoors = value;
+        }
+
+        /// <summary>
+        /// Gets all of the warhead blast doors.
+        /// </summary>
+        public static IReadOnlyCollection<BlastDoor> BlastDoors
+        {
+            get
+            {
+                if (InternalBlastDoors.Count == 0)
+                    InternalBlastDoors.AddRange(Object.FindObjectsOfType<BlastDoor>());
+
+                return InternalBlastDoors.AsReadOnly();
+            }
         }
 
         /// <summary>
@@ -149,7 +170,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void CloseBlastDoors()
         {
-            foreach (BlastDoor door in Object.FindObjectsOfType<BlastDoor>())
+            foreach (BlastDoor door in BlastDoors)
                 door.SetClosed(false, true);
         }
 
@@ -157,10 +178,7 @@ namespace Exiled.API.Features
         /// Opens or closes all doors on the map, based on the provided <paramref name="open"/>.
         /// </summary>
         /// <param name="open">Whether to open or close all doors on the map.</param>
-        public static void TriggerDoors(bool open)
-        {
-            DoorEventOpenerExtension.TriggerAction(open ? DoorEventOpenerExtension.OpenerEventType.WarheadStart : DoorEventOpenerExtension.OpenerEventType.WarheadCancel);
-        }
+        public static void TriggerDoors(bool open) => DoorEventOpenerExtension.TriggerAction(open ? DoorEventOpenerExtension.OpenerEventType.WarheadStart : DoorEventOpenerExtension.OpenerEventType.WarheadCancel);
 
         /// <summary>
         /// Starts the warhead countdown.
@@ -179,10 +197,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Detonates the warhead.
         /// </summary>
-        public static void Detonate()
-        {
-            Controller.ForceTime(0f);
-        }
+        public static void Detonate() => Controller.ForceTime(0f);
 
         /// <summary>
         /// Shake all players, like if the warhead has been detonated.
