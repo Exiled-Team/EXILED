@@ -156,6 +156,7 @@ namespace Exiled.API.Features
         /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
         /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside. Can be <see langword="null"/>.</returns>
         /// <seealso cref="Room.Get(Vector3)"/>
+        /// <seealso cref="FindRoom(Vector3)"/>
         public static Room FindParentRoom(GameObject objectInRoom)
         {
             if (objectInRoom == null)
@@ -191,14 +192,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">The position to look for a room.</param>
         /// <returns>The <see cref="Room"/> that the <see cref="Vector3"/> is located inside. Can be <see langword="null"/>.</returns>
-        public static Room FindParentRoom(Vector3 position) => Room.Get(position);
+        public static Room FindRoom(Vector3 position) => Room.Get(position);
 
         /// <summary>
         /// Tries to find a room at the given <see cref="RelativePosition">position</see> using raycasting.
         /// </summary>
         /// <param name="position">The position to look for a room.</param>
         /// <returns>The <see cref="Room"/> that the <see cref="RelativePosition"/> is located inside. Can be <see langword="null"/>.</returns>
-        public static Room FindParentRoom(RelativePosition position) => Room.Get(position.Position);
+        public static Room FindRoom(RelativePosition position) => Room.Get(position.Position);
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
