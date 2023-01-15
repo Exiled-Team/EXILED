@@ -25,28 +25,24 @@ namespace Exiled.API.Features.Pools
         public static ListPool<T> Pool { get; } = new();
 
         /// <inheritdoc/>
-        public List<T> Get()
-            => BasePools.ListPool<T>.Shared.Rent();
+        public List<T> Get() => BasePools.ListPool<T>.Shared.Rent();
 
         /// <summary>
         /// Retrieves a stored object of type <see cref="List{T}"/>, or creates it if it does not exist. The capacity of the list will be equal to or greater than <paramref name="capacity"/>.
         /// </summary>
         /// <param name="capacity">The capacity of content in the <see cref="List{T}"/>.</param>
         /// <returns>The stored object, or a new object, of type <see cref="List{T}"/>.</returns>
-        public List<T> Get(int capacity)
-            => BasePools.ListPool<T>.Shared.Rent(capacity);
+        public List<T> Get(int capacity) => BasePools.ListPool<T>.Shared.Rent(capacity);
 
         /// <summary>
         /// Retrieves a stored object of type <see cref="List{T}"/>, or creates it if it does not exist. The list will be filled with all the provided <paramref name="items"/>.
         /// </summary>
         /// <param name="items">The items to fill the list with.</param>
         /// <returns>The stored object, or a new object, of type <see cref="List{T}"/>.</returns>
-        public List<T> Get(IEnumerable<T> items)
-            => BasePools.ListPool<T>.Shared.Rent(items);
+        public List<T> Get(IEnumerable<T> items) => BasePools.ListPool<T>.Shared.Rent(items);
 
         /// <inheritdoc/>
-        public void Return(List<T> obj)
-            => BasePools.ListPool<T>.Shared.Return(obj);
+        public void Return(List<T> obj) => BasePools.ListPool<T>.Shared.Return(obj);
 
         /// <summary>
         /// Returns the <see cref="List{T}"/> to the pool and returns its contents as an array.

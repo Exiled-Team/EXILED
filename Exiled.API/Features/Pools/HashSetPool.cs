@@ -26,20 +26,17 @@ namespace Exiled.API.Features.Pools
         public static HashSetPool<T> Pool { get; } = new();
 
         /// <inheritdoc/>
-        public HashSet<T> Get()
-            => BasePools.HashSetPool<T>.Shared.Rent();
+        public HashSet<T> Get() => BasePools.HashSetPool<T>.Shared.Rent();
 
         /// <summary>
         /// Retrieves a stored object of type <see cref="HashSet{T}"/>, or creates it if it does not exist. The hashset will be filled with all the provided <paramref name="items"/>.
         /// </summary>
         /// <param name="items">The items to fill the hashset with.</param>
         /// <returns>The stored object, or a new object, of type <see cref="HashSet{T}"/>.</returns>
-        public HashSet<T> Get(IEnumerable<T> items)
-            => BasePools.HashSetPool<T>.Shared.Rent(items);
+        public HashSet<T> Get(IEnumerable<T> items) => BasePools.HashSetPool<T>.Shared.Rent(items);
 
         /// <inheritdoc/>
-        public void Return(HashSet<T> obj)
-            => BasePools.HashSetPool<T>.Shared.Return(obj);
+        public void Return(HashSet<T> obj) => BasePools.HashSetPool<T>.Shared.Return(obj);
 
         /// <summary>
         /// Returns the <see cref="HashSet{T}"/> to the pool and returns its contents as an array.

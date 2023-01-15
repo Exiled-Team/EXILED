@@ -22,20 +22,17 @@ namespace Exiled.API.Features.Pools
         public static StringBuilderPool Pool { get; } = new();
 
         /// <inheritdoc/>
-        public StringBuilder Get()
-            => BasePools.StringBuilderPool.Shared.Rent();
+        public StringBuilder Get() => BasePools.StringBuilderPool.Shared.Rent();
 
         /// <summary>
         /// Retrieves a stored object of type <see cref="StringBuilder"/>, or creates it if it does not exist. The capacity of the StringBuilder will be equal to or greater than <paramref name="capacity"/>.
         /// </summary>
         /// <param name="capacity">The capacity of content in the <see cref="StringBuilder"/>.</param>
         /// <returns>The stored object, or a new object, of type <see cref="StringBuilder"/>.</returns>
-        public StringBuilder Get(int capacity)
-            => BasePools.StringBuilderPool.Shared.Rent(capacity);
+        public StringBuilder Get(int capacity) => BasePools.StringBuilderPool.Shared.Rent(capacity);
 
         /// <inheritdoc/>
-        public void Return(StringBuilder obj)
-            => BasePools.StringBuilderPool.Shared.Return(obj);
+        public void Return(StringBuilder obj) => BasePools.StringBuilderPool.Shared.Return(obj);
 
         /// <summary>
         /// Returns the contents of the <see cref="StringBuilder"/> and returns it to the pool.
