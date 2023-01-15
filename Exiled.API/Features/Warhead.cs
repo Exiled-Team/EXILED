@@ -8,7 +8,7 @@
 namespace Exiled.API.Features
 {
     using Enums;
-
+    using Interactables.Interobjects.DoorUtils;
     using Mirror;
 
     using UnityEngine;
@@ -37,6 +37,24 @@ namespace Exiled.API.Features
         /// Gets the <see cref="GameObject"/> of the warhead lever.
         /// </summary>
         public static GameObject Lever => SitePanel.lever.gameObject;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not automatic detonation is enabled.
+        /// </summary>
+        public static bool AutoDetonate
+        {
+            get => Controller._autoDetonate;
+            set => Controller._autoDetonate = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not doors will be opened when the warhead activates.
+        /// </summary>
+        public static bool OpenDoors
+        {
+            get => Controller._openDoors;
+            set => Controller._openDoors = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the warhead lever is enabled.
@@ -127,6 +145,27 @@ namespace Exiled.API.Features
         public static bool CanBeStarted => !IsInProgress && !IsDetonated && Controller.CooldownEndTime <= NetworkTime.time;
 
         /// <summary>
+        /// Closes the surface blast doors.
+        /// </summary>
+        public static void CloseBlastDoors()
+        {
+            foreach (BlastDoor door in Object.FindObjectsOfType<BlastDoor>())
+                door.SetClosed(false, true);
+        }
+
+        /// <summary>
+        /// Opens or closes all doors on the map, based on the provided <paramref name="open"/>.
+        /// </summary>
+        /// <param name="open">Whether to open or close all doors on the map.</param>
+        public static void TriggerDoors(bool open)
+        {
+            if (open)
+                DoorEventOpenerExtension.TriggerAction(DoorEventOpenerExtension.OpenerEventType.WarheadStart);
+            else
+                DoorEventOpenerExtension.TriggerAction(DoorEventOpenerExtension.OpenerEventType.WarheadCancel);
+        }
+
+        /// <summary>
         /// Starts the warhead countdown.
         /// </summary>
         public static void Start()
@@ -152,5 +191,14 @@ namespace Exiled.API.Features
         /// Shake all players, like if the warhead has been detonated.
         /// </summary>
         public static void Shake() => Controller.RpcShake(false);
+
+        /// <summary>
+        /// Gets whether or not the provided position will be detonated by the alpha warhead.
+        /// </summary>
+        /// <param name="pos">The position to check.</param>
+        /// <param name="includeOnlyLifts">If <see langword="true"/>, only lifts will be checked.</param>
+        /// <returns>Whether or not the given position is prone to being detonated.</returns>
+        public static bool CanBeDetonated(Vector3 pos, bool includeOnlyLifts = false)
+            => AlphaWarheadController.CanBeDetonated(pos, includeOnlyLifts);
     }
 }
