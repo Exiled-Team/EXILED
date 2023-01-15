@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // this.SyncedSpectatedNetId
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(SpectatorRole),nameof(SpectatorRole.SyncedSpectatedNetId))),
+                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(SpectatorRole), nameof(SpectatorRole.SyncedSpectatedNetId))),
 
                     // value
                     new(OpCodes.Ldarga_S, 1),
