@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs.Item
         public ChargingJailbirdEventArgs(ReferenceHub player, InventorySystem.Items.ItemBase swingItem, bool isAllowed = true)
         {
             Player = Player.Get(player);
-            Item = (Jailbird)Item.Get(swingItem);
+            Item = Item.Get(swingItem);
             IsAllowed = isAllowed;
         }
 
