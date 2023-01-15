@@ -67,7 +67,7 @@ namespace Exiled.Events.EventArgs.Player
         public Vector3 Position { get; }
 
         /// <summary>
-        ///     Gets the shot Raycast.
+        ///     Gets the raycast result.
         /// </summary>
         public RaycastHit RaycastHit { get; }
 
