@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
-
+    using Exiled.API.Features.Pools;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
 
@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Internal list that contains all ElevatorDoor for current group.
         /// </summary>
-        private readonly List<ElevatorDoor> internalDoorsList = new();
+        private readonly List<ElevatorDoor> internalDoorsList = ListPool<ElevatorDoor>.Pool.Get();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Lift"/> class.
@@ -47,6 +47,14 @@ namespace Exiled.API.Features
 
             foreach (ElevatorDoor door in ElevatorDoor.AllElevatorDoors.First(elevator => elevator.Key == Base.AssignedGroup).Value)
                 internalDoorsList.Add(door);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="Lift"/> class.
+        /// </summary>
+        ~Lift()
+        {
+            ListPool<ElevatorDoor>.Pool.Return(internalDoorsList);
         }
 
         /// <summary>
@@ -111,6 +119,11 @@ namespace Exiled.API.Features
             get => Base._curSequence;
             set => Base._curSequence = value;
         }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.Bounds"/> representing the space inside the lift.
+        /// </summary>
+        public Bounds Bounds => Base.WorldspaceBounds;
 
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
@@ -274,6 +287,13 @@ namespace Exiled.API.Features
                 Base.RefreshLocks(Group, door);
             }
         }
+
+        /// <summary>
+        /// Returns whether or not the provided <see cref="Vector3">position</see> is inside the lift.
+        /// </summary>
+        /// <param name="point">The position.</param>
+        /// <returns><see langword="true"/> if the point is inside the elevator. Otherwise, <see langword="false"/>.</returns>
+        public bool IsInElevator(Vector3 point) => Bounds.Contains(point);
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => Base.Equals(obj);
