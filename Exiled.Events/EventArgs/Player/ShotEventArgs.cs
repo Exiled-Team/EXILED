@@ -38,6 +38,7 @@ namespace Exiled.Events.EventArgs.Player
             Distance = hit.distance;
             Position = hit.point;
             RaycastHit = hit;
+
             if (destructible is HitboxIdentity identity)
             {
                 Hitbox = identity;
