@@ -60,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction[]
                 {
                     // list = ListPool<ReferenceHub>.Pool.Get();
-                    new(OpCodes.Ldsfld, Field(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool))),
+                    new(OpCodes.Call, PropertyGetter(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool))),
                     new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool.Get))),
                     new(OpCodes.Stloc, list.LocalIndex),
                 });
@@ -113,7 +113,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessPlayers))),
 
                     // ListPool<ReferenceHub>.Pool.Return(list);
-                    new(OpCodes.Ldsfld, Field(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool))),
+                    new(OpCodes.Call, PropertyGetter(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool))),
                     new(OpCodes.Ldloc, list.LocalIndex),
                     new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool.Return))),
 

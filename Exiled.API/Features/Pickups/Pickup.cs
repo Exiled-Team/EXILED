@@ -228,10 +228,10 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
         public Vector3 Position
         {
-            get => Base.Rb.position;
+            get => Base.transform.position;
             set
             {
-                Base.Rb.position = value;
+                Base.transform.position = value;
                 Base.RefreshPositionAndRotation();
             }
         }
@@ -242,10 +242,10 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
         public Quaternion Rotation
         {
-            get => Base.Rb.rotation;
+            get => Base.transform.rotation;
             set
             {
-                Base.Rb.rotation = value;
+                Base.transform.rotation = value;
                 Base.RefreshPositionAndRotation();
             }
         }
