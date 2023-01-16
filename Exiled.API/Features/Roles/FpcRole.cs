@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Roles
         public FpcStandardRoleBase FirstPersonController { get; }
 
         /// <summary>
-        /// Gets or sets the player's position.
+        /// Gets or sets the player's relative position.
         /// </summary>
         public RelativePosition RelativePosition
         {
