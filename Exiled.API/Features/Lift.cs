@@ -52,10 +52,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Finalizes an instance of the <see cref="Lift"/> class.
         /// </summary>
-        ~Lift()
-        {
-            ListPool<ElevatorDoor>.Pool.Return(internalDoorsList);
-        }
+        ~Lift() => ListPool<ElevatorDoor>.Pool.Return(internalDoorsList);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances.
