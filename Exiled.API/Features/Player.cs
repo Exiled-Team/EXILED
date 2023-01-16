@@ -876,19 +876,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current <see cref="API.Features.Lift"/> the player is in. Can be <see langword="null"/>.
         /// </summary>
-        public Lift Lift
-        {
-            get
-            {
-                foreach (var lift in Lift.List)
-                {
-                    if (lift.Base.WorldspaceBounds.Contains(Position))
-                        return lift;
-                }
-
-                return null;
-            }
-        }
+        public Lift Lift => Lift.Get(Position);
 
         /// <summary>
         /// Gets the current zone the player is in.

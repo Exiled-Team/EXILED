@@ -172,8 +172,6 @@ namespace Exiled.API.Extensions
                     return DamageType.MicroHid;
                 case DisruptorDamageHandler:
                     return DamageType.ParticleDisruptor;
-                case Scp956DamageHandler:
-                    return DamageType.Scp956;
                 case FirearmDamageHandler firearmDamageHandler:
                     return ItemConversion.ContainsKey(firearmDamageHandler.WeaponType) ? ItemConversion[firearmDamageHandler.WeaponType] : DamageType.Firearm;
 

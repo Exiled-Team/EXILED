@@ -230,6 +230,13 @@ namespace Exiled.API.Features
         public static Lift Get(GameObject gameObject) => Get(lift => lift.GameObject == gameObject).FirstOrDefault();
 
         /// <summary>
+        /// Gets the <see cref="Lift"/> belonging to the <see cref="Vector3"/>, if any.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/>.</param>
+        /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
+        public static Lift Get(Vector3 position) => Get(lift => lift.Bounds.Contains(position)).FirstOrDefault();
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> filtered based on a predicate.
         /// </summary>
         /// <param name="predicate">The condition to satify.</param>
