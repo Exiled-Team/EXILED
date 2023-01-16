@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(UsingRadioBatteryEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
-            const int offset = -4;
+            const int offset = -1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
 
             newInstructions[index].WithLabels(continueLabel);

@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp096TargetsTracker.AddTarget(ReferenceHub)" />.
+    ///     Patches <see cref="Scp096TargetsTracker.AddTarget(ReferenceHub, bool)" />.
     ///     Adds the <see cref="Handlers.Scp096.AddingTarget" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp096TargetsTracker), nameof(Scp096TargetsTracker.AddTarget))]
@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Scp096
             const int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
-            // AddingTargetEventArgs ev = new(Player.Get(base.Owner), Player.Get(target), true);
+            // AddingTargetEventArgs ev = new(Player.Get(base.Owner), Player.Get(target), isForLook, true);
             //
             // Handlers.Scp096.OnAddingTarget(ev);
             //
@@ -57,10 +57,13 @@ namespace Exiled.Events.Patches.Events.Scp096
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // isForLook
+                    new(OpCodes.Ldarg_2),
+
                     // true
                     new(OpCodes.Ldc_I4_1),
 
-                    // AddingTargetEventArgs ev = new(Player, Player, bool)
+                    // AddingTargetEventArgs ev = new(Player, Player, bool, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AddingTargetEventArgs))[0]),
                     new(OpCodes.Dup),
 
