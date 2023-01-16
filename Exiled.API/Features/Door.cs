@@ -21,7 +21,6 @@ namespace Exiled.API.Features
     using MEC;
 
     using Mirror;
-
     using UnityEngine;
 
     using static Interactables.Interobjects.ElevatorManager;
@@ -427,7 +426,14 @@ namespace Exiled.API.Features
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate();
+        public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate(null);
+
+        /// <summary>
+        /// Tries to pry the door open. No effect if the door cannot be pried.
+        /// </summary>
+        /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
+        /// <param name="player">The amount of damage to deal.</param>
+        public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
 
         /// <summary>
         /// Makes the door play a beep sound.
