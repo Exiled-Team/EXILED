@@ -224,5 +224,10 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.Jailbird"/>.
         /// </summary>
         Jailbird,
+
+        /// <summary>
+        /// Damage caused by <see cref="EffectType.CardiacArrest"/>.
+        /// </summary>
+        CardiacArrest,
     }
 }
