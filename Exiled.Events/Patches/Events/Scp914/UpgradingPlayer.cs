@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     ///     Patches <see cref="Scp914Upgrader.ProcessPlayer(ReferenceHub, bool, bool, Vector3, Scp914KnobSetting)" />
     ///     to add the <see cref="Scp914.UpgradingPlayer" /> event.
     /// </summary>
-    // [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
+    [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
     internal static class UpgradingPlayer
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
