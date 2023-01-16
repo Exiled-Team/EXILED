@@ -143,7 +143,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by status effect.</returns>
         public static bool IsStatusEffect(this DamageType type) => type switch
         {
-            DamageType.Asphyxiation or DamageType.Poison or DamageType.Bleeding or DamageType.Scp207 or DamageType.Hypothermia or DamageType.Scp956 => true,
+            DamageType.Asphyxiation or DamageType.Poison or DamageType.Bleeding or DamageType.Scp207 or DamageType.Hypothermia => true,
             _ => false,
         };
 
@@ -172,6 +172,14 @@ namespace Exiled.API.Extensions
                     return DamageType.MicroHid;
                 case DisruptorDamageHandler:
                     return DamageType.ParticleDisruptor;
+                case Scp049DamageHandler scp049DamageHandler:
+                    return scp049DamageHandler.DamageSubType switch
+                    {
+                        Scp049DamageHandler.AttackType.CardiacArrest => DamageType.CardiacArrest,
+                        Scp049DamageHandler.AttackType.Instakill => DamageType.Scp049,
+                        Scp049DamageHandler.AttackType.Scp0492 => DamageType.Scp0492,
+                        _ => DamageType.Unknown,
+                    };
                 case FirearmDamageHandler firearmDamageHandler:
                     return ItemConversion.ContainsKey(firearmDamageHandler.WeaponType) ? ItemConversion[firearmDamageHandler.WeaponType] : DamageType.Firearm;
 

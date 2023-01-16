@@ -25,13 +25,17 @@ namespace Exiled.Events.EventArgs.Scp096
         /// <param name="target">
         ///     <inheritdoc cref="Target" />
         /// </param>
+        /// <param name="isForLook">
+        ///     <inheritdoc cref="IsLooking" />
+        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public AddingTargetEventArgs(Player scp096, Player target, bool isAllowed = true)
+        public AddingTargetEventArgs(Player scp096, Player target, bool isForLook, bool isAllowed = true)
         {
             Player = scp096;
             Target = target;
+            IsLooking = isForLook;
             IsAllowed = isAllowed;
         }
 
@@ -44,6 +48,11 @@ namespace Exiled.Events.EventArgs.Scp096
         ///     Gets the <see cref="Player" /> being added as a target.
         /// </summary>
         public Player Target { get; }
+
+        /// <summary>
+        ///     Gets a value indicating whether or not the target was being target cause of looking it's face.
+        /// </summary>
+        public bool IsLooking { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the target is allowed to be added.
