@@ -15,6 +15,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.FirstPersonControl;
 
     using PlayerStatsSystem;
+    using RelativePositioning;
 
     /// <summary>
     /// Defines a role that represents an fpc class.
@@ -40,6 +41,15 @@ namespace Exiled.API.Features.Roles
         /// Gets the <see cref="FirstPersonController"/>.
         /// </summary>
         public FpcStandardRoleBase FirstPersonController { get; }
+
+        /// <summary>
+        /// Gets or sets the player's position.
+        /// </summary>
+        public RelativePosition RelativePosition
+        {
+            get => FirstPersonController.FpcModule.Motor.ReceivedPosition;
+            set => FirstPersonController.FpcModule.Motor.ReceivedPosition = value;
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="Role"/> walking speed.
