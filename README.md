@@ -24,9 +24,9 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
 
 # Installation
-Installation of EXILED is quite simple. It loads itself through NW Plugin API. That's why there are two folder inside the ``Exiled.tar.gz`` in release file. ``SCP Secret Laboratory`` contains the necessary files to load EXILED features in ``EXILED`` folder. With that being said, all you have to do is move these two folders into the appropriate path, and you are done! 
+Installation of EXILED is quite simple. It loads itself through NW Plugin API. That's why there are two folder inside the ``Exiled.tar.gz`` in release files. ``SCP Secret Laboratory`` contains the necessary files to load EXILED features in ``EXILED`` folder. With that being said, all you have to do is move these two folders into the appropriate path, which are explained below, and you are done! 
 
-If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installed.
+If you choose to use the installer it will, if run correctly, take care of installing all EXILED features.
 
 # Windows
 ### Automatic installation ([more information](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
