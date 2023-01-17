@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs.Map
             Role = scp.Role;
             DamageHandler = new CustomDamageHandler(scp, damageHandlerBase);
             Attacker = DamageHandler.BaseIs(out CustomAttackerHandler customAttackerHandler) ? customAttackerHandler.Attacker : null;
-            TerminationCause = damageHandlerBase is Scp956DamageHandler ? string.Empty : damageHandlerBase.CassieDeathAnnouncement.Announcement;
+            TerminationCause = damageHandlerBase.CassieDeathAnnouncement.Announcement;
             IsAllowed = isAllowed;
         }
 

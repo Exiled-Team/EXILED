@@ -36,6 +36,8 @@ namespace Exiled.Events.EventArgs.Player
             Player = shooter;
             Damage = damage;
             Distance = hit.distance;
+            Position = hit.point;
+            RaycastHit = hit;
 
             if (destructible is HitboxIdentity identity)
             {
@@ -58,6 +60,16 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the shot distance.
         /// </summary>
         public float Distance { get; }
+
+        /// <summary>
+        ///     Gets the shot position.
+        /// </summary>
+        public Vector3 Position { get; }
+
+        /// <summary>
+        ///     Gets the raycast result.
+        /// </summary>
+        public RaycastHit RaycastHit { get; }
 
         /// <summary>
         ///     Gets or sets the inflicted damage.
