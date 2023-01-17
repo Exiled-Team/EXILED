@@ -115,7 +115,7 @@ namespace Exiled.API.Features
                 List<Pickup> pickups = new();
                 foreach (Pickup pickup in Pickup.List)
                 {
-                    if (Map.FindParentRoom(pickup.GameObject) == this)
+                    if (Room.FindParentRoom(pickup.GameObject) == this)
                         pickups.Add(pickup);
                 }
 
