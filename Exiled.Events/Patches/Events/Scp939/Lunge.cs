@@ -5,15 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features;
-using Exiled.API.Features.Pools;
-using PlayerRoles.PlayableScps.Subroutines;
-
 namespace Exiled.Events.Patches.Events.Scp939
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -21,6 +19,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.PlayableScps.Subroutines;
     using RelativePositioning;
     using UnityEngine;
     using Utils.Networking;
@@ -35,44 +34,6 @@ namespace Exiled.Events.Patches.Events.Scp939
     [HarmonyPatch]
     internal static class Lunge
     {
-
-        // [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.OnGrounded))]
-        // [HarmonyTranspiler]
-        // private static IEnumerable<CodeInstruction> OnLungeMiss(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        // {
-        //     List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-        //
-        //     Label returnLabel = generator.DefineLabel();
-        //
-        //     newInstructions.InsertRange(
-        //         0,
-        //         new[]
-        //         {
-        //             // Scp939ProcessLunge, NetworkReader
-        //             new CodeInstruction(OpCodes.Ldarg_0),
-        //             new(OpCodes.Call, Method(typeof(Lunge), nameof(ProcessLungeMiss))),
-        //             new(OpCodes.Br, returnLabel),
-        //         });
-        //
-        //     newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
-        //
-        //     for (int z = 0; z < newInstructions.Count; z++)
-        //         yield return newInstructions[z];
-        //
-        //     ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        // }
-        //
-        // private static void ProcessLungeMiss(Scp939LungeAbility instance)
-        // {
-        //     Log.Info($"Processing lunge miss {instance.State}");
-        //     if (!instance.HasAuthority || instance.State != Scp939LungeState.Triggered)
-        //     {
-        //         return;
-        //     }
-        //     // instance.ServerSendRpc(false);
-        //     instance.State = ((instance.CurPos.Position.y < instance.TriggerPos.Position.y - instance._harshLandingHeight) ? Scp939LungeState.LandHarsh : Scp939LungeState.LandRegular);
-        // }
-
         [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> OnLungeHit(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -107,7 +68,6 @@ namespace Exiled.Events.Patches.Events.Scp939
             Vector3 vector = reader.ReadRelativePosition().Position;
             ReferenceHub referenceHub = reader.ReadReferenceHub();
             RelativePosition relativePosition = reader.ReadRelativePosition();
-            Log.Info($"What is current state {instance.State}");
             if (instance.State != Scp939LungeState.Triggered)
             {
                 if (!instance.IsReady)
@@ -115,17 +75,16 @@ namespace Exiled.Events.Patches.Events.Scp939
                     return;
                 }
 
+                instance.TriggerLunge();
             }
 
             LungingEventArgs ev = new(instance.Owner, instance.State);
             Handlers.Scp939.OnLunging(ev);
-            if (ev.IsAllowed)
+            if (!ev.IsAllowed)
             {
                 instance.State = ev.State;
                 return;
             }
-
-            instance.TriggerLunge();
 
             HumanRole humanRole;
             if (referenceHub == null || (humanRole = referenceHub.roleManager.CurrentRole as HumanRole) == null)
@@ -188,7 +147,6 @@ namespace Exiled.Events.Patches.Events.Scp939
             }
 
             instance.State = Scp939LungeState.LandHit;
-            return;
         }
     }
 }

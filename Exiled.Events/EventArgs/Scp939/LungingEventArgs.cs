@@ -5,12 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using PlayerRoles.PlayableScps.Scp939;
-
 namespace Exiled.Events.EventArgs.Scp939
 {
     using API.Features;
     using Interfaces;
+    using PlayerRoles.PlayableScps.Scp939;
 
     /// <summary>
     ///     Contains all information before SCP-939 uses its lunge ability.
@@ -22,6 +21,9 @@ namespace Exiled.Events.EventArgs.Scp939
         /// </summary>
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
+        /// </param>
+        /// <param name="state">
+        ///     <inheritdoc cref="State" />
         /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
@@ -44,7 +46,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public Player Player { get; }
 
         /// <summary>
-        /// Gets Scp939's lunge state. If you deny event, lunge state changes to this.
+        /// Gets or sets scp939's lunge state. If you deny event, lunge state changes to this.
         /// </summary>
         public Scp939LungeState State { get; set; }
     }
