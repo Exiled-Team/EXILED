@@ -157,7 +157,7 @@ namespace Exiled.Events
                 if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
-                    Log.Error($"Patching failed! There are {failedPatch} patch broken.");
+                    Log.Error($"Patching failed! There are {failedPatch} broken patches.");
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
