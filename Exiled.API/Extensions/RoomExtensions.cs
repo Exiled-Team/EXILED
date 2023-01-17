@@ -43,7 +43,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a Hcz checkpoint or not.</returns>
-        public static bool IsHczCheckpoint(this RoomType room) => room is RoomType.HczChkpA or RoomType.HczChkpB;
+        public static bool IsHczCheckpoint(this RoomType room) => room is RoomType.HczEzCheckpointA or RoomType.HczEzCheckpointB;
 
         /// <summary>
         ///  Checks if a <see cref="RoomType">room type</see> contains any SCP.
