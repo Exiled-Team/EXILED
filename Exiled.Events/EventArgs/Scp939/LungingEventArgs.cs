@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Exiled.Events.EventArgs.Scp939
 {
+    using System.Collections.Generic;
+
     using API.Features;
     using Interfaces;
     using PlayerRoles.PlayableScps.Scp939;
@@ -38,9 +38,14 @@ namespace Exiled.Events.EventArgs.Scp939
         }
 
         /// <summary>
-        /// Gets or sets a list of players to ignore 939 lunge damage to.
+        /// Gets or sets a list of players to ignore 939 lunge damage to (Secondary target).
         /// </summary>
-        public static HashSet<Player> LungeTargetsToIgnore { get; set; }
+        public static HashSet<Player> LungeSecondaryTargetsToIgnore { get; set; }
+
+        /// <summary>
+        /// Gets or sets a list of players to ignore 939 lunge damage to (Primary target).
+        /// </summary>
+        public static HashSet<Player> LungePrimaryTargetsToIgnore { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not SCP-939 can lunge.

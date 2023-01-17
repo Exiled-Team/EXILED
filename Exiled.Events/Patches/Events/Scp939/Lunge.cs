@@ -86,6 +86,11 @@ namespace Exiled.Events.Patches.Events.Scp939
                 return;
             }
 
+            if (LungingEventArgs.LungePrimaryTargetsToIgnore.Contains(API.Features.Player.Get(referenceHub)))
+            {
+                return;
+            }
+
             HumanRole humanRole;
             if (referenceHub == null || (humanRole = referenceHub.roleManager.CurrentRole as HumanRole) == null)
             {
@@ -132,7 +137,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             foreach (ReferenceHub playerHub in ReferenceHub.AllHubs)
             {
                 HumanRole humanRole2;
-                if (LungingEventArgs.LungeTargetsToIgnore.Contains(API.Features.Player.Get(playerHub)))
+                if (LungingEventArgs.LungeSecondaryTargetsToIgnore.Contains(API.Features.Player.Get(playerHub)))
                 {
                     return;
                 }
