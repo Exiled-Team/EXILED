@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a spectator changes the spectated player.
     /// </summary>
-    public class ChangingSpectatedPlayerEventArgs : IPlayerEvent, IDeniableEvent
+    public class ChangingSpectatedPlayerEventArgs : IPlayerEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingSpectatedPlayerEventArgs" /> class.
@@ -28,15 +28,11 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="newTarget">
         ///     <inheritdoc cref="NewTarget" />
         /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
-        /// </param>
-        public ChangingSpectatedPlayerEventArgs(Player player, Player oldTarget, Player newTarget, bool isAllowed)
+        public ChangingSpectatedPlayerEventArgs(ReferenceHub player, uint oldTarget, uint newTarget)
         {
-            Player = player;
-            OldTarget = oldTarget;
-            NewTarget = newTarget;
-            IsAllowed = isAllowed;
+            Player = Player.Get(player);
+            OldTarget = Player.Get(oldTarget);
+            NewTarget = Player.Get(newTarget);
         }
 
         /// <summary>
@@ -45,14 +41,9 @@ namespace Exiled.Events.EventArgs.Player
         public Player OldTarget { get; }
 
         /// <summary>
-        ///     Gets or sets the player who's going to be spectated.
+        ///     Gets the player who's going to be spectated.
         /// </summary>
-        public Player NewTarget { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not spectated player value can be activated.
-        /// </summary>
-        public bool IsAllowed { get; set; }
+        public Player NewTarget { get; }
 
         /// <summary>
         ///     Gets player that is changing spectated player.
