@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Ldarg_0),
 
                     // num (auxiliary power cost)
-                    new(OpCodes.Ldarga, 0),
+                    new(OpCodes.Ldloca_S, 0),
 
                     new(OpCodes.Call, Method(typeof(ChangingCamera), nameof(ChangingCamera.ChangingCameraEvent))),
 
