@@ -170,7 +170,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Features.Room"/> the ragdoll is located in.
         /// </summary>
-        public Room Room => Map.FindParentRoom(GameObject);
+        public Room Room => Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> the ragdoll is in.
