@@ -193,18 +193,24 @@ namespace Exiled.Events
 
         private bool PatchByAttributes()
         {
-            try
+            bool result = true;
+            Assembly assembly = new StackTrace().GetFrame(1).GetMethod().ReflectedType.Assembly;
+            foreach (Type type in AccessTools.GetTypesFromAssembly(assembly))
             {
-                Harmony.PatchAll();
+                try
+                {
+                    Harmony.CreateClassProcessor(type).Patch();
+                }
+                catch (Exception exception)
+                {
+                    Log.Error($"Patching by attributes failed!\n{exception}");
+                    result = false;
+                    continue;
+                }
+            }
 
-                Log.Debug("Events patched by attributes successfully!");
-                return true;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"Patching by attributes failed!\n{exception}");
-                return false;
-            }
+            Log.Debug("Events patched by attributes successfully!");
+            return result;
         }
     }
 }
