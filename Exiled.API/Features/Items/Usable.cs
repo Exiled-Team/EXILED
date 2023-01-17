@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Usables;
@@ -17,7 +18,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="UsableItem"/>.
     /// </summary>
-    public class Usable : Item
+    public class Usable : Item, IWrapper<UsableItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Usable"/> class.
