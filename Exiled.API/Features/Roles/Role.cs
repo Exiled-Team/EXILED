@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Roles
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Spawn;
-
+    using Exiled.API.Interfaces;
     using Extensions;
 
     using PlayerRoles;
@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines the class for role-related classes.
     /// </summary>
-    public abstract class Role : TypeCastObject<Role>
+    public abstract class Role : TypeCastObject<Role>, IWrapper<PlayerRoleBase>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Role"/> class.

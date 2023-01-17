@@ -11,6 +11,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Interfaces;
 
     using MapGeneration.Distributors;
 
@@ -19,7 +20,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
-    public class Generator
+    public class Generator : IWrapper<Scp079Generator>
     {
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.

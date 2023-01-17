@@ -16,6 +16,7 @@ namespace Exiled.API.Features
     using Enums;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Interfaces;
 
     using Mirror;
 
@@ -32,7 +33,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
-    public class Ragdoll
+    public class Ragdoll : IWrapper<BasicRagdoll>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BasicRagdoll"/>s and their corresponding <see cref="Ragdoll"/>.

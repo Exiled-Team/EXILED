@@ -13,6 +13,8 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Pools;
+    using Exiled.API.Interfaces;
+
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
 
@@ -24,7 +26,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game lift.
     /// </summary>
-    public class Lift
+    public class Lift : IWrapper<ElevatorChamber>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="ElevatorChamber"/>s and their corresponding <see cref="Lift"/>.
