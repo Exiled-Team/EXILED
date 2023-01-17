@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PlayerRoles.PlayableScps.Scp939;
+
 namespace Exiled.Events.EventArgs.Scp939
 {
     using API.Features;
@@ -24,9 +26,10 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public LungingEventArgs(ReferenceHub player, bool isAllowed = true)
+        public LungingEventArgs(ReferenceHub player, Scp939LungeState state, bool isAllowed = true)
         {
             Player = Player.Get(player);
+            State = state;
             IsAllowed = isAllowed;
         }
 
@@ -39,5 +42,10 @@ namespace Exiled.Events.EventArgs.Scp939
         ///     Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets Scp939's lunge state. If you deny event, lunge state changes to this.
+        /// </summary>
+        public Scp939LungeState State { get; set; }
     }
 }
