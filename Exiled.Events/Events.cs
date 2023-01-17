@@ -154,9 +154,14 @@ namespace Exiled.Events
                 Harmony.DEBUG = true;
 #endif
                 if (PatchByAttributes())
+                {
                     Log.Debug("Events patched successfully!");
+                }
                 else
+                {
                     Log.Error($"Patching failed!");
+                    Unpatch();
+                }
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
@@ -164,6 +169,7 @@ namespace Exiled.Events
             catch (Exception exception)
             {
                 Log.Error($"Patching failed!\n{exception}");
+                Unpatch();
             }
         }
 
