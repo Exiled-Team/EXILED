@@ -129,12 +129,17 @@ namespace Exiled.Events.Patches.Events.Scp939
                 transform.rotation = rotation;
             }
 
-            foreach (ReferenceHub referenceHub2 in ReferenceHub.AllHubs)
+            foreach (ReferenceHub playerHub in ReferenceHub.AllHubs)
             {
                 HumanRole humanRole2;
-                if (!(referenceHub2 == referenceHub) && (humanRole2 = referenceHub2.roleManager.CurrentRole as HumanRole) != null
+                if (LungingEventArgs.LungeTargetsToIgnore.Contains(API.Features.Player.Get(playerHub)))
+                {
+                    return;
+                }
+
+                if (!(playerHub == referenceHub) && (humanRole2 = playerHub.roleManager.CurrentRole as HumanRole) != null
                                                      && (humanRole2.FpcModule.Position - vector3).sqrMagnitude <= instance._secondaryRangeSqr
-                                                     && referenceHub2.playerStats.DealDamage(new Scp939DamageHandler(instance.ScpRole, Scp939DamageType.LungeSecondary)))
+                                                     && playerHub.playerStats.DealDamage(new Scp939DamageHandler(instance.ScpRole, Scp939DamageType.LungeSecondary)))
                 {
                     flag = true;
                     num = Mathf.Max(num, 0.6f);

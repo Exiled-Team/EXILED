@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Exiled.Events.EventArgs.Scp939
 {
     using API.Features;
@@ -34,6 +36,11 @@ namespace Exiled.Events.EventArgs.Scp939
             State = state;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets or sets a list of players to ignore 939 lunge damage to.
+        /// </summary>
+        public static HashSet<Player> LungeTargetsToIgnore { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not SCP-939 can lunge.
