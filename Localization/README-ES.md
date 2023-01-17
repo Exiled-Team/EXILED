@@ -22,7 +22,7 @@ Todos los eventos de EXILED están hechos con Harmony, lo que significa que no e
 - [English](https://github.com/Exiled-Team/EXILED/blob/master/README.md)
 
 # Instalación
-La instalación de EXILED puede parecer muy complicada al contrario de otras plataformas, pero en realidad es bastante simple. Como se menciona previamente, la mayoría de EXILED no está dentro del archivo "Assembly-CSharp.dll" del servidor, sin embargo, si hay una única y pequeña modificación a este archivo, la cual se requiere para poder *iniciar* EXILED junto al servidor, una versión del archivo con esta modificación se incluye junto al instalador.
+La instalación de EXILED es en realidad, muy simple. Se carga por sí solo por el plugin API de NW. Por este motivo hay dos carpetas en  ``Exiled.tar.gz`` en el apartado de descarga. ``SCP Secret Laboratory`` contiene los archivos necesarios para cargar los recursos de la carpeta ``EXILED``. Con eso dicho, lo único que se debe hacer es mover estas carpetas al sitio adecuado, ¡y listo!
 
 Si eliges el instalador automático (sí se ejecuta correctamente) se encargará de instalar `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` y `Exiled.Events`, al igual que se asegurará de que tu servidor tenga el archivo Assembly-CSharp.dll instalado.
 
