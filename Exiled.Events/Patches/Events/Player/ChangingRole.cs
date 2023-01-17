@@ -178,7 +178,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (ev.ShouldPreserveInventory)
+                if (ev.ShouldPreserveInventory || ev.Reason == API.Enums.SpawnReason.Destroyed)
                     return;
 
                 Inventory inventory = ev.Player.Inventory;

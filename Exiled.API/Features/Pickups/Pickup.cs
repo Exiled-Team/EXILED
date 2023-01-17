@@ -100,7 +100,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the current <see cref="Room"/> the Pickup is in.
         /// </summary>
-        public Room Room => Map.FindParentRoom(GameObject);
+        public Room Room => Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.

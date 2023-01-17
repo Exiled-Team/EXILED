@@ -154,37 +154,10 @@ namespace Exiled.API.Features
         /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
         /// </summary>
         /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
-        /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside.</returns>
+        /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside. Can be <see langword="null"/>.</returns>
         /// <seealso cref="Room.Get(Vector3)"/>
-        public static Room FindParentRoom(GameObject objectInRoom)
-        {
-            if (objectInRoom == null)
-                return default;
-
-            Room room = null;
-
-            const string playerTag = "Player";
-
-            // First try to find the room owner quickly.
-            if (!objectInRoom.CompareTag(playerTag))
-            {
-                room = objectInRoom.GetComponentInParent<Room>();
-            }
-            else
-            {
-                // Check for SCP-079 if it's a player
-                Player ply = Player.Get(objectInRoom);
-
-                // Raycasting doesn't make sense,
-                // SCP-079 position is constant,
-                // let it be 'Outside' instead
-                if (ply.Role.Is(out Scp079Role role))
-                    room = FindParentRoom(role.Camera.GameObject);
-            }
-
-            // Finally, try for objects that aren't children, like players and pickups.
-            return room ?? Room.Get(objectInRoom.transform.position) ?? default;
-        }
+        [Obsolete("Use Room.FindParentRoom(GameObject) instead.")]
+        public static Room FindParentRoom(GameObject objectInRoom) => Room.FindParentRoom(objectInRoom);
 
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
