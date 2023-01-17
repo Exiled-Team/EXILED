@@ -25,7 +25,7 @@ namespace Exiled.API.Features
     using Mirror;
 
     using PlayerRoles.PlayableScps.Scp079;
-
+    using RelativePositioning;
     using UnityEngine;
 
     /// <summary>
@@ -211,6 +211,13 @@ namespace Exiled.API.Features
         public static Room Get(Vector3 position) => RoomIdUtils.RoomAtPositionRaycasts(position, false) is RoomIdentifier identifier ? Get(identifier) : null;
 
         /// <summary>
+        /// Gets a <see cref="Room"/> given the specified <see cref="RelativePosition"/>.
+        /// </summary>
+        /// <param name="position">The <see cref="RelativePosition"/> to search for.</param>
+        /// <returns>The <see cref="Room"/> with the given <see cref="RelativePosition"/> or <see langword="null"/> if not found.</returns>
+        public static Room Get(RelativePosition position) => Get(position.Position);
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> given the specified <see cref="ZoneType"/>.
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to search for.</param>
@@ -223,6 +230,42 @@ namespace Exiled.API.Features
         /// <param name="predicate">The condition to satify.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains elements that satify the condition.</returns>
         public static IEnumerable<Room> Get(Func<Room, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
+        /// </summary>
+        /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
+        /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside. Can be <see langword="null"/>.</returns>
+        /// <seealso cref="Get(Vector3)"/>
+        public static Room FindParentRoom(GameObject objectInRoom)
+        {
+            if (objectInRoom == null)
+                return default;
+
+            Room room = null;
+
+            const string playerTag = "Player";
+
+            // First try to find the room owner quickly.
+            if (!objectInRoom.CompareTag(playerTag))
+            {
+                room = objectInRoom.GetComponentInParent<Room>();
+            }
+            else
+            {
+                // Check for SCP-079 if it's a player
+                Player ply = Player.Get(objectInRoom);
+
+                // Raycasting doesn't make sense,
+                // SCP-079 position is constant,
+                // let it be 'Outside' instead
+                if (ply.Role.Is(out Roles.Scp079Role role))
+                    room = FindParentRoom(role.Camera.GameObject);
+            }
+
+            // Finally, try for objects that aren't children, like players and pickups.
+            return room ?? Get(objectInRoom.transform.position) ?? default;
+        }
 
         /// <summary>
         /// Gets a random <see cref="Room"/>.
