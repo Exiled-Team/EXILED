@@ -12,13 +12,14 @@ namespace Exiled.API.Features
     using DamageHandlers;
 
     using Enums;
+    using Exiled.API.Interfaces;
 
     using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="BreakableWindow"/>.
     /// </summary>
-    public class Window
+    public class Window : IWrapper<BreakableWindow>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.

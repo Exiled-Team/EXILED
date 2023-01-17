@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
@@ -14,7 +16,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="Scp1576Item"/>.
     /// </summary>
-    public class Scp1576 : Usable
+    public class Scp1576 : Usable, IWrapper<Scp1576Item>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp1576"/> class.

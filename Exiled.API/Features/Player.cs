@@ -871,12 +871,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current <see cref="Room"/> the player is in.
         /// </summary>
-        public Room CurrentRoom => Map.FindParentRoom(GameObject);
+        public Room CurrentRoom => Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
         public ZoneType Zone => CurrentRoom?.Zone ?? ZoneType.Unspecified;
+
+        /// <summary>
+        /// Gets the current <see cref="Features.Lift"/> the player is in. Can be <see langword="null"/>.
+        /// </summary>
+        public Lift Lift => Lift.Get(Position);
 
         /// <summary>
         /// Gets all currently active <see cref="StatusEffectBase"> effects</see>.
@@ -959,7 +964,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => IsEffectActive<Corroding>() || Map.FindParentRoom(GameObject)?.Type == RoomType.Pocket;
+        public bool IsInPocketDimension => IsEffectActive<Corroding>() || Room.FindParentRoom(GameObject)?.Type == RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.

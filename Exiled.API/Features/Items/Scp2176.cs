@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -20,7 +21,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="Scp2176Projectile"/>.
     /// </summary>
-    public class Scp2176 : Throwable
+    public class Scp2176 : Throwable, IWrapper<ThrowableItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp2176"/> class.

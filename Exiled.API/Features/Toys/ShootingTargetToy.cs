@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Toys
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Interfaces;
 
     using Mirror;
 
@@ -25,7 +26,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="ShootingTarget"/>.
     /// </summary>
-    public class ShootingTargetToy : AdminToy
+    public class ShootingTargetToy : AdminToy, IWrapper<ShootingTarget>
     {
         private static readonly Dictionary<string, ShootingTargetType> TypeLookup = new()
         {
