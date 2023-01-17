@@ -112,7 +112,8 @@ namespace Exiled.Events.Patches.Events.Scp914
 
             Label continueLabel = generator.DefineLabel();
 
-            newInstructions[index + 13].labels.Add(continueLabel);
+            int continueIndex = newInstructions.FindIndex(index, instruction => instruction.opcode == OpCodes.Leave_S) - 3;
+            newInstructions[continueIndex].labels.Add(continueLabel);
 
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
@@ -121,7 +122,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction[]
                 {
                     // setting = curSetting
-                    new(OpCodes.Ldloc_S, curSetting.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldloc_S, curSetting.LocalIndex).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Starg_S, 4),
 
                     // Player.Get(ply)
@@ -129,7 +130,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // itemBase
-                    new(OpCodes.Ldloc_S, 6),
+                    new(OpCodes.Ldloc_S, 7),
 
                     // setting
                     new(OpCodes.Ldarg_S, 4),
