@@ -46,8 +46,8 @@ namespace Exiled.Events.EventArgs.Scp939
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets scp939's lunge state. If you deny event, lunge state changes to this.
+        /// Gets scp939's lunge state.
         /// </summary>
-        public Scp939LungeState State { get; set; }
+        public Scp939LungeState State { get; }
     }
 }
