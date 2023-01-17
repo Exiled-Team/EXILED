@@ -119,6 +119,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
             // Find iterator jump by going -3 from leave_s
             int continueIndex = newInstructions.FindIndex(index, instruction => instruction.opcode == OpCodes.Leave_S) - 3;
+
             newInstructions[continueIndex].labels.Add(continueLabel);
 
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
