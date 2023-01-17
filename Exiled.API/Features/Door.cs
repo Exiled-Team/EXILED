@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
-
+    using Exiled.API.Interfaces;
     using Extensions;
 
     using Interactables.Interobjects;
@@ -28,7 +28,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door
+    public class Door : IWrapper<DoorVariant>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.

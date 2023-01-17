@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Pickups
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Interfaces;
 
     using InventorySystem;
     using InventorySystem.Items;
@@ -37,7 +38,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
-    public class Pickup : TypeCastObject<Pickup>
+    public class Pickup : TypeCastObject<Pickup>, IWrapper<ItemPickupBase>
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
@@ -99,7 +100,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the current <see cref="Room"/> the Pickup is in.
         /// </summary>
-        public Room Room => Map.FindParentRoom(GameObject);
+        public Room Room => Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets or sets the unique serial number for the item.

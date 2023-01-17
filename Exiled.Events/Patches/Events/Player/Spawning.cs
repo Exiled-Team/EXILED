@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static bool Prefix(ReferenceHub hub, PlayerRoleBase prevRole, PlayerRoleBase newRole)
         {
-            if (Player.TryGet(hub, out Player player))
+            if (Player.TryGet(hub, out Player player) && newRole.ServerSpawnReason != RoleChangeReason.Destroyed)
             {
                 Vector3 oldPosition = hub.transform.position;
                 if (newRole is IFpcRole fpcRole)
