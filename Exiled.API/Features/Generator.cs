@@ -60,7 +60,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the generator's <see cref="Room"/>.
         /// </summary>
-        public Room Room => room ??= Map.FindParentRoom(GameObject);
+        public Room Room => room ??= Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets or sets the generator' state.
