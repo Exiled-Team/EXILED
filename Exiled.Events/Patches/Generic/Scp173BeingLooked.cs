@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Generic
     using PlayerRoles.PlayableScps.Scp173;
 
     using ExiledEvents = Exiled.Events.Events;
+    using Scp173Role = Exiled.API.Features.Roles.Scp173Role;
 
     /// <summary>
     /// Patches <see cref="Scp173ObserversTracker.UpdateObserver(ReferenceHub)"/>.
@@ -26,8 +27,9 @@ namespace Exiled.Events.Patches.Generic
         private static bool Prefix(Scp173ObserversTracker __instance, ReferenceHub targetHub, ref int __result)
         {
             if (Player.Get(targetHub) is Player player &&
-                player.Role.Type == RoleTypeId.Tutorial &&
-                !ExiledEvents.Instance.Config.CanTutorialBlockScp173 &&
+                ((player.Role.Type == RoleTypeId.Tutorial &&
+                !ExiledEvents.Instance.Config.CanTutorialBlockScp173) ||
+                Scp173Role.TurnedPlayers.Contains(player)) &&
                 __instance.IsObservedBy(targetHub, 0.2f))
             {
                 __result = __instance.Observers.Remove(targetHub) ? -1 : 0;
