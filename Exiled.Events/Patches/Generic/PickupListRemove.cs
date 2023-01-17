@@ -123,19 +123,4 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
-
-    /// <summary>
-    /// Patches <see cref="CoalProjectile.FixedUpdate"/> for fixing cringe NW code :).
-    /// </summary>
-    [HarmonyPatch(typeof(CoalProjectile), nameof(CoalProjectile.FixedUpdate))]
-    internal static class CoalProjectileListRemove
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            // remove all code and save only base.FixedUpdate()
-            yield return new(OpCodes.Ldarg_0);
-            yield return new(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.FixedUpdate)));
-            yield return new(OpCodes.Ret);
-        }
-    }
 }
