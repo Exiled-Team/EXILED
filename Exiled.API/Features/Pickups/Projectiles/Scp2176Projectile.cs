@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     using BaseScp2176Projectile = InventorySystem.Items.ThrowableProjectiles.Scp2176Projectile;
@@ -14,7 +16,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for an SCP-2176 Projectile.
     /// </summary>
-    public class Scp2176Projectile : EffectGrenadeProjectile
+    public class Scp2176Projectile : EffectGrenadeProjectile, IWrapper<BaseScp2176Projectile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp2176Projectile"/> class.

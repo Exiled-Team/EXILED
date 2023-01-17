@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items;
 
     using BaseConsumable = InventorySystem.Items.Usables.Consumable;
@@ -14,7 +16,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="BaseConsumable"/>.
     /// </summary>
-    public class Consumable : Usable
+    public class Consumable : Usable, IWrapper<BaseConsumable>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Consumable"/> class.

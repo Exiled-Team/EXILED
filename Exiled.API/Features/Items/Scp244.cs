@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Usables.Scp244;
@@ -17,7 +18,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-244.
     /// </summary>
-    public class Scp244 : Usable
+    public class Scp244 : Usable, IWrapper<Scp244Item>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244"/> class.
