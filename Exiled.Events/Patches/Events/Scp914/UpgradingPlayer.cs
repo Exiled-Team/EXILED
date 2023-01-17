@@ -12,13 +12,10 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using API.Features;
     using API.Features.Pools;
-
     using Exiled.Events.EventArgs.Scp914;
-
     using global::Scp914;
-
     using HarmonyLib;
-
+    using PlayerRoles.FirstPersonControl;
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -29,30 +26,30 @@ namespace Exiled.Events.Patches.Events.Scp914
     ///     Patches <see cref="Scp914Upgrader.ProcessPlayer(ReferenceHub, bool, bool, Vector3, Scp914KnobSetting)" />
     ///     to add the <see cref="Scp914.UpgradingPlayer" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
+    // [HarmonyPatch(typeof(Scp914Upgrader), nameof(Scp914Upgrader.ProcessPlayer))]
     internal static class UpgradingPlayer
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 1;
-            const int labelOffset = -1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            const int offset = -3;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(FpcExtensionMethods), nameof(FpcExtensionMethods.TryOverridePosition)))) + offset;
 
             Label returnLabel = generator.DefineLabel();
 
             LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
-            newInstructions.RemoveRange(index, 9);
+            List<Label> labels = newInstructions[index].labels;
+            newInstructions.RemoveRange(index, 7);
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
                     // Player.Get(ply)
-                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels((Label)newInstructions[index - offset + labelOffset].operand),
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(labels),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // upgradeInventory

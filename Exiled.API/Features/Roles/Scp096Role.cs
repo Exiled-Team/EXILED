@@ -159,7 +159,14 @@ namespace Exiled.API.Features.Roles
         /// Adds the specified <paramref name="player"/> as an SCP-096 target.
         /// </summary>
         /// <param name="player">The player to add as a target.</param>
-        public void AddTarget(Player player) => TargetsTracker.AddTarget(player.ReferenceHub);
+        public void AddTarget(Player player) => TargetsTracker.AddTarget(player.ReferenceHub, false);
+
+        /// <summary>
+        /// Adds the specified <paramref name="player"/> as an SCP-096 target.
+        /// </summary>
+        /// <param name="player">The player to add as a target.</param>
+        /// <param name="isLooking">Is because player look SCP-096.</param>
+        public void AddTarget(Player player, bool isLooking) => TargetsTracker.AddTarget(player.ReferenceHub, isLooking);
 
         /// <summary>
         /// Removes the specified <paramref name="player"/> from SCP-096's targets.
