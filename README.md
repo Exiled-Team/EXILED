@@ -42,8 +42,8 @@ If you choose to use the installer it will, if run correctly, take care of insta
 ### Manual installation
   - Download the **`Exiled.tar.gz` [from here](https://github.com/Exiled-Team/EXILED/releases)**
   - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Move **``Assembly-CSharp.dll``** to: **`(Your Server Folder)\SCPSL_Data\Managed`** and replace the file.
   - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
+  - Move **``SCP Secret Laboratory``** to **`%appdata%`**.
     - Windows 10:
       Write `%appdata%` in Cortana / the search icon, or the Windows Explorer bar
     - Any other Windows version:
@@ -70,8 +70,8 @@ That's it, EXILED should now be installed and active the next time you boot up y
   - **Ensure** you are logged in on the user that runs the SCP servers.
   - Download the **`Exiled.tar.gz` [from here](https://github.com/Exiled-Team/EXILED/releases)** (SSH: right click and to get the `Exiled.tar.gz` link, then type: **`wget (link_to_download)`**)
   - To extract it to your current folder, type **``tar -xzvf EXILED.tar.gz``**
-  - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
   - Move the **`EXILED`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
+  - Move the **`SCP Secret Laboratory`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Installing plugins
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
