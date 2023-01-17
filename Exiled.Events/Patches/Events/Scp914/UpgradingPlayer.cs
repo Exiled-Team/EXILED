@@ -122,7 +122,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction[]
                 {
                     // setting = curSetting
-                    new CodeInstruction(OpCodes.Ldloc_S, curSetting.LocalIndex).MoveLabelsFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldloc_S, curSetting.LocalIndex),
                     new(OpCodes.Starg_S, 4),
 
                     // Player.Get(ply)
