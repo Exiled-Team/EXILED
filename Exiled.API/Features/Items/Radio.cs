@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using Enums;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Radio;
@@ -17,7 +18,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
-    public class Radio : Item
+    public class Radio : Item, IWrapper<RadioItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Radio"/> class.

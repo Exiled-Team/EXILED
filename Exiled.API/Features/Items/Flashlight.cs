@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Flashlight;
 
@@ -15,7 +17,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapped class for <see cref="FlashlightItem"/>.
     /// </summary>
-    public class Flashlight : Item
+    public class Flashlight : Item, IWrapper<FlashlightItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Flashlight"/> class.

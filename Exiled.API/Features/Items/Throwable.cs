@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
@@ -18,7 +19,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for throwable items.
     /// </summary>
-    public class Throwable : Item
+    public class Throwable : Item, IWrapper<ThrowableItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Throwable"/> class.

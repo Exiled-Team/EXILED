@@ -46,9 +46,6 @@ namespace Exiled.Events.EventArgs.Player
             NewRole = newRole;
             Reason = (SpawnReason)reason;
             SpawnFlags = spawnFlags;
-
-            Items = ListPool<ItemType>.Pool.Get();
-            Ammo = DictionaryPool<ItemType, ushort>.Pool.Get();
         }
 
         /// <summary>
@@ -92,12 +89,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets base items that the player will receive.
         /// </summary>
-        public List<ItemType> Items { get; }
+        public List<ItemType> Items { get; } = ListPool<ItemType>.Pool.Get();
 
         /// <summary>
         ///     Gets the base ammo values for the new role.
         /// </summary>
-        public Dictionary<ItemType, ushort> Ammo { get; }
+        public Dictionary<ItemType, ushort> Ammo { get; } = DictionaryPool<ItemType, ushort>.Pool.Get();
 
         /// <summary>
         ///     Gets or sets a value indicating whether the inventory will be preserved or not.

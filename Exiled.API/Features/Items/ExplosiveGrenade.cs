@@ -11,6 +11,7 @@ namespace Exiled.API.Features.Items
 
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -23,7 +24,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="ExplosionGrenade"/>.
     /// </summary>
-    public class ExplosiveGrenade : Throwable
+    public class ExplosiveGrenade : Throwable, IWrapper<ThrowableItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class.
