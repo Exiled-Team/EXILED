@@ -78,19 +78,6 @@ namespace Exiled.Events.Patches.Events.Scp939
                 instance.TriggerLunge();
             }
 
-            LungingEventArgs ev = new(instance.Owner, instance.State);
-            Handlers.Scp939.OnLunging(ev);
-            if (!ev.IsAllowed)
-            {
-                instance.State = ev.State;
-                return;
-            }
-
-            if (LungingEventArgs.LungePrimaryTargetsToIgnore.Contains(API.Features.Player.Get(referenceHub)))
-            {
-                return;
-            }
-
             HumanRole humanRole;
             if (referenceHub == null || (humanRole = referenceHub.roleManager.CurrentRole as HumanRole) == null)
             {
@@ -137,10 +124,6 @@ namespace Exiled.Events.Patches.Events.Scp939
             foreach (ReferenceHub playerHub in ReferenceHub.AllHubs)
             {
                 HumanRole humanRole2;
-                if (LungingEventArgs.LungeSecondaryTargetsToIgnore.Contains(API.Features.Player.Get(playerHub)))
-                {
-                    return;
-                }
 
                 if (!(playerHub == referenceHub) && (humanRole2 = playerHub.roleManager.CurrentRole as HumanRole) != null
                                                      && (humanRole2.FpcModule.Position - vector3).sqrMagnitude <= instance._secondaryRangeSqr
@@ -157,6 +140,8 @@ namespace Exiled.Events.Patches.Events.Scp939
             }
 
             instance.State = Scp939LungeState.LandHit;
+            LungedEventArgs ev = new(instance.Owner, instance.State, referenceHub);
+            Handlers.Scp939.OnLunged(ev);
         }
     }
 }

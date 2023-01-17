@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="LungingEventArgs.cs" company="Exiled Team">
+// <copyright file="LungedEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -16,10 +16,10 @@ namespace Exiled.Events.EventArgs.Scp939
     /// <summary>
     ///     Contains all information before SCP-939 uses its lunge ability.
     /// </summary>
-    public class LungingEventArgs : IPlayerEvent, IDeniableEvent
+    public class LungedEventArgs : IPlayerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LungingEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="LungedEventArgs" /> class.
         /// </summary>
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
@@ -27,30 +27,20 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="state">
         ///     <inheritdoc cref="State" />
         /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <param name="target">
+        ///     <inheritdoc cref="Target" />
         /// </param>
-        public LungingEventArgs(ReferenceHub player, Scp939LungeState state, bool isAllowed = true)
+        public LungedEventArgs(ReferenceHub player, Scp939LungeState state, ReferenceHub target)
         {
             Player = Player.Get(player);
             State = state;
-            IsAllowed = isAllowed;
+            Target = Player.Get(target);
         }
 
         /// <summary>
-        /// Gets or sets a list of players to ignore 939 lunge damage to (Secondary target).
+        ///     Gets the player who's Scp-939 hit.
         /// </summary>
-        public static HashSet<Player> LungeSecondaryTargetsToIgnore { get; set; }
-
-        /// <summary>
-        /// Gets or sets a list of players to ignore 939 lunge damage to (Primary target).
-        /// </summary>
-        public static HashSet<Player> LungePrimaryTargetsToIgnore { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-939 can lunge.
-        /// </summary>
-        public bool IsAllowed { get; set; }
+        public Player Target { get; }
 
         /// <summary>
         ///     Gets the player who's controlling SCP-939.
