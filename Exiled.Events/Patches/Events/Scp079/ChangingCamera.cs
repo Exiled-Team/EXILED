@@ -82,14 +82,9 @@ namespace Exiled.Events.Patches.Events.Scp079
             ChangingCameraEventArgs ev = new ChangingCameraEventArgs(Player.Get(instance.Owner), instance._switchTarget, cost);
             Scp079.OnChangingCamera(ev);
 
-            if (!ev.IsAllowed)
-            {
-                instance.ServerSendRpc(true);
-                return false;
-            }
-
+            instance.ServerSendRpc(true);
             cost = ev.AuxiliaryPowerCost;
-            return true;
+            return ev.IsAllowed;
         }
     }
 }
