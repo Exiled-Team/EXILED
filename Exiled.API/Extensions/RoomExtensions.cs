@@ -28,23 +28,22 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a checkpoint or not.</returns>
-        public static bool IsCheckpoint(this RoomType room) => room is RoomType.LczChkpA
-            or RoomType.LczChkpB or RoomType.HczEzCheckpointA or RoomType.HczEzCheckpointB
-            or RoomType.HczChkpA or RoomType.HczChkpB;
+        public static bool IsCheckpoint(this RoomType room) => room is RoomType.LczCheckpointA
+            or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA or RoomType.HczEzCheckpointB;
 
         /// <summary>
         /// Checks if a <see cref="RoomType">room type</see> is a Lcz checkpoint.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a Lcz checkpoint or not.</returns>
-        public static bool IsLczCheckpoint(this RoomType room) => room is RoomType.LczChkpA or RoomType.LczChkpB;
+        public static bool IsLczCheckpoint(this RoomType room) => room is RoomType.LczCheckpointA or RoomType.LczCheckpointB;
 
         /// <summary>
         /// Checks if a <see cref="RoomType">room type</see> is a Hcz checkpoint.
         /// </summary>
         /// <param name="room">The room to be checked.</param>
         /// <returns>Returns whether the <see cref="RoomType"/> is a Hcz checkpoint or not.</returns>
-        public static bool IsHczCheckpoint(this RoomType room) => room is RoomType.HczChkpA or RoomType.HczChkpB;
+        public static bool IsHczCheckpoint(this RoomType room) => room is RoomType.HczEzCheckpointA or RoomType.HczEzCheckpointB;
 
         /// <summary>
         ///  Checks if a <see cref="RoomType">room type</see> contains any SCP.
