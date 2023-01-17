@@ -7,14 +7,12 @@
 
 namespace Exiled.Events.EventArgs.Scp939
 {
-    using System.Collections.Generic;
-
     using API.Features;
     using Interfaces;
     using PlayerRoles.PlayableScps.Scp939;
 
     /// <summary>
-    ///     Contains all information before SCP-939 uses its lunge ability.
+    ///     Contains all information after SCP-939 uses its lunge ability.
     /// </summary>
     public class LungedEventArgs : IPlayerEvent
     {
