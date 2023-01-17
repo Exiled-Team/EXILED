@@ -12,9 +12,9 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Interfaces;
 
-    using Exiled.API.Features.Pools;
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
 
