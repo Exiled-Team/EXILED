@@ -166,12 +166,13 @@ The majority of Exiled plugins contain configs. Configs allow server maintainers
 
 First create a `config.cs` class, and change your plugin inheritance from `Plugin<>` to `Plugin<Config>`
 
-Now you need to make that config inherit `IConfig`. After inheriting from `IConfig`, add a property to the class titled `IsEnabled`. Your Config class should now look like this:
+Now you need to make that config inherit `IConfig`. After inheriting from `IConfig`, add a property to the class titled `IsEnabled` and `Debug`. Your Config class should now look like this:
 
 ```csharp
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; }
+        public bool Debug { get; set; }
     }
 ```
 
@@ -182,6 +183,7 @@ You can add any config option in there and reference it like so:
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; }
+        public bool Debug { get; set; }
         public string TextThatINeed { get; set; } = "this is the default";
     }
 ```
@@ -197,7 +199,7 @@ You can add any config option in there and reference it like so:
 And then congratulations! You have made your very first Exiled Plugin! It is important to note that all plugins **must** have an IsEnabled configuration. This config allows server owners to enable and disable the plugin at their own accord. The IsEnabled config will be read by the Exiled loader (your plugin does not need to check if `IsEnabled == true` or not.).
 
 ### What now?
-If you want more information you should join our [discord!](https://discord.gg/nDQk84m)
+If you want more information you should join our [discord!](https://discord.gg/PyUkWTg)
 
 We have a #resources channel that you might find useful, as well as exiled contributors and plugin developers who would be willing to assist you in the creation of your plugin(s).
 
