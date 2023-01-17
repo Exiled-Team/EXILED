@@ -23,7 +23,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingFocusEventArgs> ChangingFocus;
 
         /// <summary>
-        ///     Invoked before SCP-939 uses its lunge ability.
+        ///     Invoked after SCP-939 uses its lunge ability.
         /// </summary>
         public static event CustomEventHandler<LungedEventArgs> Lunged;
 
