@@ -11,6 +11,8 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Interfaces;
+
     using Hazards;
 
     using MEC;
@@ -24,7 +26,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game tesla gate.
     /// </summary>
-    public class TeslaGate
+    public class TeslaGate : IWrapper<BaseTeslaGate>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
@@ -90,7 +92,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the tesla gate's <see cref="Features.Room"/> which is located in.
         /// </summary>
-        public Room Room => room ??= Map.FindParentRoom(GameObject);
+        public Room Room => room ??= Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets a value indicating whether or not the tesla gate's shock burst is in progess.
