@@ -39,8 +39,8 @@ Si eliges el instalador automático (sí se ejecuta correctamente) se encargará
 ### Instalación manual
   - Descarga **`Exiled.tar.gz` [de aquí](https://github.com/galaxy119/EXILED/releases)**
   - Extrae el contenido con [7Zip](https://www.7-zip.org/) o [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Mueve el archivo **``Assembly-CSharp.dll``** a: **`(Carpeta de tu servidor)\SCPSL_Data\Managed`** y reemplaza el archivo.
   - Mueve la carpeta **``EXILED``** a **`%appdata%`** *Nota: ¡Esta carpeta tiene que ir en ``C:\Users\(Usuario)\AppData\Roaming``, y  ***NO*** en ``C:\Users\(Usuario)\AppData\Roaming\SCP Secret Laboratory`` y **DEBE ESTAR** en (...)\AppData\Roaming, no en (...)\AppData\!*
+  - Mueve **``SCP Secret Laboratory``** a: **`%appdata%`**.
     - Windows 10/11:
       Escribe `%appdata%` en Cortana / la barra de buscar, o en la barra del Explorador de Archivos
     - Cualquier otra versión:
@@ -67,8 +67,8 @@ Si eliges el instalador automático (sí se ejecuta correctamente) se encargará
   - **Asegurate** de que estás conectado con el usuario que tiene los servidores de SCP:SL.
   - Descarga **`Exiled.tar.gz` [de aquí](https://github.com/galaxy119/EXILED/releases)** (SSH: clic derecho para conseguir el link `Exiled.tar.gz`, después escribe: **`wget (enlace_de_descarga)`**)
   - Para extraerlo, escribe **``tar -xzvf EXILED.tar.gz``** en la terminal.
-  - Mueve el archivo **``Assembly-CSharp.dll``** incluido a la carpeta **``SCPSL_Data/Managed``** de tu instalación del servidor (SSH: **`mv Assembly-CSharp.dll (instalación_del_servidor)/SCPSL_Data/Managed`**).
   - Mueve la carpeta **`EXILED`** a **``~/.config``**. *Nota: Esta carpeta tiene que ir en ``~/.config``, y ***NO*** en ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
+  - Mueve la carpeta **``SCP Secret Laboratory``** a **``~/.config``**. *Nota: Esta carpeta tiene que ir en ``~/.config``, y ***NO*** en ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
 
 ### Instalando plugins
 ¡Ya estaría! EXILED debería estar instalado y activo la próxima vez que inicies el servidor. Recuerda que EXILED por si solo no hace absolutamente nada, así que asegúrate de que instalas plugins desde **[nuestro servidor de Discord](https://discord.gg/PyUkWTg)**
