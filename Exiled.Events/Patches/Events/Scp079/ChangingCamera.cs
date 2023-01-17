@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 index,
                 new CodeInstruction[]
                 {
-                    // Player.Get(base.Owner)
+                    // this
                     new(OpCodes.Ldarg_0),
 
                     // num (auxiliary power cost)
