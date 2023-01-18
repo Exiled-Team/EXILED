@@ -26,7 +26,7 @@ Wszystkie zdarzenia EXILED'a są zaprogromowane za pomocą Harmony, co oznacza �
 Instalacja EXILED'a może wydawać się bardziej skomplikowana i wymagająca niż innych framework'ów ale tak naprawdę jest to całkiem proste.
 Jak wymieniono wyżej, większość EXILED'a jest zawarta poza plikiem Asembly-CSharp.dll serwera, aczkolwiek istnieja jedna ważna zmiana w tym pliku wymagana aby faktycznie *załadować* EXILED'a na serwer podczas uruchamiania, czysta wersja pliku Assembly z tą zmianą już wprowadzoną będzie dostarczona razem z kolejnymi wydaniami framework'a.
 
-Jeżeli zdecydujecie się na skorzystanie z instalatora, ten - jeżeli użytyw poprawnie, zajmie się instalacją EXILED'a ze wszystkimi jego funkcjami.
+Jeżeli zdecydujecie się na skorzystanie z instalatora, ten - jeżeli użyty poprawnie, zajmie się instalacją EXILED'a ze wszystkimi jego funkcjami.
 
 # Windows
 ### Automatyczna instalacja ([więcej informacji](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
