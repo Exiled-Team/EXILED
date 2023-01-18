@@ -151,7 +151,7 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                Log.Info($"Hitbox patch {Server.FriendlyFire} || {IndividualFriendlyFire.CheckFriendlyFirePlayerRules(attacker, victim, out _)}");
+                Log.Debug($"Hitbox patch {Server.FriendlyFire} || {IndividualFriendlyFire.CheckFriendlyFirePlayerRules(attacker, victim, out _)}");
                 bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
 
                 if (!currentResult)

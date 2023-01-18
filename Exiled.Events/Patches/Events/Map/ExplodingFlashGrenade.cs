@@ -65,7 +65,6 @@ namespace Exiled.Events.Patches.Events.Map
             ExplodingGrenadeEventArgs explodingGrenadeEvent = new ExplodingGrenadeEventArgs(Player.Get(instance.PreviousOwner.Hub), instance);
             Handlers.Map.OnExplodingGrenade(explodingGrenadeEvent);
 
-            Log.Info($" explodingGrenadeEvent.IsAllowed {explodingGrenadeEvent.IsAllowed} and target list length {explodingGrenadeEvent.TargetsToAffect.Count}");
             if (!explodingGrenadeEvent.IsAllowed)
             {
                 return;
@@ -73,14 +72,13 @@ namespace Exiled.Events.Patches.Events.Map
 
             foreach (Player player in explodingGrenadeEvent.TargetsToAffect)
             {
-                Log.Info($"{explodingGrenadeEvent.Player == player}, {explodingGrenadeEvent.Player}, {player}");
                 if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && (explodingGrenadeEvent.Player == player))
                 {
-                    Log.Info("$In flash bang affect thrower logic");
+                    continue;
                 }
-                else if (HitboxIdentity.CheckFriendlyFire(explodingGrenadeEvent.Player.ReferenceHub, player.ReferenceHub))
+
+                if (HitboxIdentity.CheckFriendlyFire(explodingGrenadeEvent.Player.ReferenceHub, player.ReferenceHub))
                 {
-                    Log.Info("$In HitboxIdentity.CheckFriendlyFire");
                     instance.ProcessPlayer(player.ReferenceHub);
                 }
             }
