@@ -84,7 +84,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             Scp079.OnChangingCamera(ev);
 
             instance.ServerSendRpc(true);
-            if(ev.IsAllowed)
+            if (ev.IsAllowed)
                 cost = ev.AuxiliaryPowerCost;
             return ev.IsAllowed;
         }
