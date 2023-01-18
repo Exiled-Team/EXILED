@@ -9,35 +9,50 @@ namespace Exiled.API.Enums
 {
     using System;
 
+    using Features;
+
     /// <summary>
     /// Facility zone types.
     /// </summary>
+    /// <seealso cref="Room.Zone"/>
+    /// <seealso cref="Camera.Zone"/>
+    /// <seealso cref="Player.Zone"/>
+    /// <seealso cref="Door.Zone"/>
+    /// <seealso cref="Door.Random(ZoneType, bool)"/>
+    /// <seealso cref="Room.Random(ZoneType)"/>
+    /// <seealso cref="Map.TurnOffAllLights(float, ZoneType)"/>
+    /// <seealso cref="Map.TurnOffAllLights(float, System.Collections.Generic.IEnumerable{ZoneType})"/>
     [Flags]
     public enum ZoneType
     {
         /// <summary>
-        /// The Surface Zone.
+        /// An unspecified zone.
         /// </summary>
-        Surface,
-
-        /// <summary>
-        /// The Entrance Zone.
-        /// </summary>
-        Entrance,
-
-        /// <summary>
-        /// The Heavy Containment Zone.
-        /// </summary>
-        HeavyContainment,
+        Unspecified = 0,
 
         /// <summary>
         /// The Light Containment Zone.
         /// </summary>
-        LightContainment,
+        LightContainment = 1,
 
         /// <summary>
-        /// An unspecified zone.
+        /// The Heavy Containment Zone.
         /// </summary>
-        Unspecified,
+        HeavyContainment = 2,
+
+        /// <summary>
+        /// The Entrance Zone.
+        /// </summary>
+        Entrance = 4,
+
+        /// <summary>
+        /// The Surface Zone.
+        /// </summary>
+        Surface = 8,
+
+        /// <summary>
+        /// An unknown type of zone.
+        /// </summary>
+        Other = 16,
     }
 }

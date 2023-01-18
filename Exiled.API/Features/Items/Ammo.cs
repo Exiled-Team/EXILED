@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
-    using Exiled.API.Enums;
+    using Enums;
 
     using InventorySystem.Items.Firearms.Ammo;
 
@@ -47,5 +47,11 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="AmmoItem"/> that this class is encapsulating.
         /// </summary>
         public new AmmoItem Base { get; }
+
+        /// <summary>
+        /// Clones current <see cref="Ammo"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Ammo"/> object. </returns>
+        public override Item Clone() => new(Type);
     }
 }

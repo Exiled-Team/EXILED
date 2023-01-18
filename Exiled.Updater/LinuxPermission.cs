@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-#pragma warning disable SA1600 // Elements should be documented
-
 namespace Exiled.Updater
 {
     using Mono.Unix;

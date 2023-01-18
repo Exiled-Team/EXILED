@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features
 {
-#pragma warning disable 1584
     using global::Scp914;
 
     using UnityEngine;
@@ -19,12 +18,10 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Scp914
     {
-        private static Scp914Controller scp914Controller;
-
         /// <summary>
         /// Gets the cached <see cref="global::Scp914.Scp914Controller"/>.
         /// </summary>
-        public static Scp914Controller Scp914Controller => scp914Controller ??= Object.FindObjectOfType<Scp914Controller>();
+        public static Scp914Controller Scp914Controller => Scp914Controller.Singleton;
 
         /// <summary>
         /// Gets or sets SCP-914's <see cref="Scp914KnobSetting"/>.
@@ -50,29 +47,34 @@ namespace Exiled.API.Features
         public static GameObject GameObject => Scp914Controller.gameObject;
 
         /// <summary>
+        /// Gets SCP-914's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public static Transform Transform => Scp914Controller.transform;
+
+        /// <summary>
         /// Gets the position of SCP-914's intake chamber.
         /// </summary>
-        public static Vector3 IntakePosition => Scp914Controller._intakeChamber.localPosition;
+        public static Vector3 IntakePosition => Scp914Controller.IntakeChamber.localPosition;
 
         /// <summary>
         /// Gets the position of SCP-914's output chamber.
         /// </summary>
-        public static Vector3 OutputPosition => Scp914Controller._outputChamber.localPosition;
+        public static Vector3 OutputPosition => Scp914Controller.OutputChamber.localPosition;
 
         /// <summary>
-        /// Gets a value indicating whether SCP-914 was activated and is currently processing items.
+        /// Gets a value indicating whether SCP-914 is active and currently processing items.
         /// </summary>
         public static bool IsWorking => Scp914Controller._isUpgrading;
 
         /// <summary>
-        /// Gets the intake booth <see cref="Transform"/>.
+        /// Gets the intake booth <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform IntakeBooth => Scp914Controller._intakeChamber;
+        public static Transform IntakeBooth => Scp914Controller.IntakeChamber;
 
         /// <summary>
-        ///  Gets the output booth <see cref="Transform"/>.
+        ///  Gets the output booth <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public static Transform OutputBooth => Scp914Controller._outputChamber;
+        public static Transform OutputBooth => Scp914Controller.OutputChamber;
 
         /// <summary>
         /// Plays the SCP-914's sound.
@@ -81,7 +83,7 @@ namespace Exiled.API.Features
         /// <remarks>There are two sounds only.
         /// The values to identify them are <c>0</c>, which stands for the soundId played when SCP-914 is being activated,
         /// and <c>1</c>, which stands for the soundId played when SCP-914's knob state is being changed.</remarks>
-        public static void PlaySound(byte soundId) => scp914Controller.RpcPlaySound(soundId);
+        public static void PlaySound(byte soundId) => Scp914Controller.RpcPlaySound(soundId);
 
         /// <summary>
         /// Starts SCP-914.

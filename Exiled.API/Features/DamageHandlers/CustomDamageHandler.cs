@@ -8,15 +8,12 @@
 namespace Exiled.API.Features.DamageHandlers
 {
     using CustomPlayerEffects;
-
-    using Exiled.API.Enums;
-    using Exiled.API.Features.Items;
-
+    using Enums;
+    using Exiled.API.Extensions;
+    using Items;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
-    using BaseAttackerHandler = PlayerStatsSystem.AttackerDamageHandler;
     using BaseFirearmHandler = PlayerStatsSystem.FirearmDamageHandler;
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
 
@@ -37,8 +34,7 @@ namespace Exiled.API.Features.DamageHandlers
             {
                 if (Attacker.IsScp)
                     CustomBase = new ScpDamageHandler(target, baseHandler);
-                else if (Attacker.CurrentItem is not null && Attacker.CurrentItem.IsWeapon &&
-                         baseHandler is BaseFirearmHandler)
+                else if (Attacker.CurrentItem is not null && Attacker.CurrentItem.Type.IsWeapon() && baseHandler is BaseFirearmHandler)
                     CustomBase = new FirearmDamageHandler(Attacker.CurrentItem, target, baseHandler);
                 else
                     CustomBase = new DamageHandler(target, Attacker);
@@ -63,13 +59,12 @@ namespace Exiled.API.Features.DamageHandlers
         {
             Damage = damage;
             Type = damageType;
+
             Firearm firearm = new(ItemType.GunAK)
             {
-                Base =
-                {
-                    Owner = attacker.ReferenceHub,
-                },
+                Base = { Owner = attacker.ReferenceHub },
             };
+
             CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler(firearm.Base, damage));
         }
 
@@ -82,7 +77,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="damageType">The <see cref="DamageType"/> to be set.</param>
         /// <param name="cassieAnnouncement">The <see cref="DamageHandlerBase.CassieAnnouncement"/> to be set.</param>
         public CustomDamageHandler(Player target, Player attacker, float damage, DamageType damageType, CassieAnnouncement cassieAnnouncement)
-            : this(target, attacker, damage, damageType) => CassieDeathAnnouncement = cassieAnnouncement;
+            : this(target, attacker, damage, damageType)
+        {
+            CassieDeathAnnouncement = cassieAnnouncement;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomDamageHandler"/> class.
@@ -93,7 +91,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="damageType">The <see cref="DamageType"/> to be set.</param>
         /// <param name="cassieAnnouncement">The <see cref="DamageHandlerBase.CassieAnnouncement"/> to be set.</param>
         public CustomDamageHandler(Player target, Player attacker, float damage, DamageType damageType, string cassieAnnouncement)
-            : this(target, attacker, damage, damageType) => CassieDeathAnnouncement = new CassieAnnouncement(cassieAnnouncement);
+            : this(target, attacker, damage, damageType)
+        {
+            CassieDeathAnnouncement = new CassieAnnouncement(cassieAnnouncement);
+        }
 
         /// <summary>
         /// Gets the base <see cref="DamageHandlerBase"/>.
@@ -106,7 +107,8 @@ namespace Exiled.API.Features.DamageHandlers
             if (Damage <= 0f)
                 return Action.None;
 
-            StartVelocity = player.ReferenceHub.playerMovementSync.PlayerVelocity;
+            StartVelocity = player.Velocity;
+
             As<BaseFirearmHandler>().StartVelocity.y = Mathf.Max(As<BaseFirearmHandler>().StartVelocity.y, 0f);
             AhpStat ahpModule = player.GetModule<AhpStat>();
             HealthStat healthModule = player.GetModule<HealthStat>();
@@ -116,9 +118,9 @@ namespace Exiled.API.Features.DamageHandlers
 
             ProcessDamage(player);
 
-            foreach (PlayerEffect effect in player.ActiveEffects)
+            foreach (StatusEffectBase statusEffect in player.ActiveEffects)
             {
-                if (effect is IDamageModifierEffect damageModifierEffect)
+                if (statusEffect is IDamageModifierEffect damageModifierEffect)
                     Damage *= damageModifierEffect.GetDamageModifier(Damage, CustomBase, As<BaseFirearmHandler>().Hitbox);
             }
 
@@ -130,16 +132,7 @@ namespace Exiled.API.Features.DamageHandlers
 
         private static Action KillPlayer(Player player, DamageHandlerBase damageHandlerBase)
         {
-            Ragdoll.Spawn(player, damageHandlerBase.Base);
-
-            if (damageHandlerBase.Is(out BaseAttackerHandler handler) && damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker is not null)
-                player.ReferenceHub.playerStats.TargetReceiveAttackerDeathReason(damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker.Nickname, damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker.Role);
-            else
-                player.ReferenceHub.playerStats.TargetReceiveSpecificDeathReason(handler);
-
-            player.DropItems();
-            player.SetRole(RoleType.Spectator, SpawnReason.Died);
-            player.SendConsoleMessage("You died. Reason: " + handler.ServerLogsText, "yellow");
+            player.ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
 
             return Action.Death;
         }

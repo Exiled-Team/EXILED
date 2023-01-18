@@ -7,90 +7,79 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
-
+    using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.PlayableScps.Scp106;
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="PocketDimensionTeleport.SuccessEscape"/> method.
-    /// Adds the <see cref="Exiled.Events.Handlers.Player.EscapingPocketDimension"/> event.
+    /// Patches the <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)"/> method.
+    /// Adds the <see cref="Handlers.Player.EscapingPocketDimension"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.SuccessEscape))]
+    [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
     internal static class EscapingPocketDimension
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
-            Label retLabel = generator.DefineLabel();
-            Label effectLabel = generator.DefineLabel();
-            int offset = +2;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(Vector3), nameof(Vector3.Distance))) + offset;
-            for (int i = 0; i < 28; i++)
-                newInstructions.RemoveAt(index);
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Ldloc_3),
-                new(OpCodes.Ldloc, 4),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingPocketDimensionEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, retLabel),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
-                new(OpCodes.Callvirt, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ForcePosition), new[] { typeof(Vector3) })),
-                new(OpCodes.Br, effectLabel),
-            });
 
-            offset = -1;
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))) + offset;
+            Label ret = generator.DefineLabel();
 
-            for (int i = 0; i < 15; i++)
-                newInstructions.RemoveAt(index);
+            const int offset = -5;
+            const int labelOffset = -2;
+            int index = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(FirstPersonMovementModule), nameof(FirstPersonMovementModule.ServerOverridePosition)))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_S, 11),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingPocketDimensionEventArgs))[1]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, retLabel),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
-                new(OpCodes.Callvirt, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ForcePosition), new[] { typeof(Vector3) })),
-                new(OpCodes.Br, effectLabel),
-            });
+            // Replaces "ServerOverridePosition" with our logic
+            newInstructions.RemoveRange(index, 6);
 
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == Field(typeof(ReferenceHub), nameof(ReferenceHub.playerEffectsController))) + offset;
-            newInstructions[index].labels.Add(effectLabel);
-            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(referenceHub)
+                    new CodeInstruction(OpCodes.Ldloc_1).WithLabels((Label)newInstructions[index + labelOffset].operand),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // Scp106PocketExitFinder.GetBestExitPosition(fpcRole)
+                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Call, Method(typeof(Scp106PocketExitFinder), nameof(Scp106PocketExitFinder.GetBestExitPosition), new[] { typeof(IFpcRole) })),
+
+                    // EscapingPocketDimensionEventArgs ev = new(Player, Vector3)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(EscapingPocketDimensionEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Handlers.Player.OnEscapingPocketDimension(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
+
+                    // if (ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, ret),
+
+                    // ev.Player.Teleport(ev.TeleportPosition)
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.Player))),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
+                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Teleport), new[] { typeof(Vector3) })),
+                });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

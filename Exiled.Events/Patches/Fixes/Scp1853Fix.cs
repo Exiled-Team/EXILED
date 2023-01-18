@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -23,29 +22,35 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="Scp1853.OnUpdate"/>.
+    /// Patch the <see cref="Scp1853.OnEffectUpdate"/>.
     /// Fix Spamming EnableEffect.
     /// </summary>
-    [HarmonyPatch(typeof(Scp1853), nameof(Scp1853.OnUpdate))]
+    [HarmonyPatch(typeof(Scp1853), nameof(Scp1853.OnEffectUpdate))]
     internal static class Scp1853Fix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            Label retLabel = generator.DefineLabel();
-            int offset = 1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse_S) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp1853), nameof(Scp1853.Hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldc_I4, (int)EffectType.Poisoned),
-                new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.GetEffect))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerEffect), nameof(PlayerEffect.IsEnabled))),
-                new(OpCodes.Brtrue_S, retLabel),
-            });
+            Label retLabel = generator.DefineLabel();
+
+            int offset = 1;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brfalse_S) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // if (Player.Get(this.Hub).GetEffect(EffectType.Poisoned).IsEnabled)
+                    //    return;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp1853), nameof(Scp1853.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldc_I4, (int)EffectType.Poisoned),
+                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.GetEffect))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StatusEffectBase), nameof(StatusEffectBase.IsEnabled))),
+                    new(OpCodes.Brtrue_S, retLabel),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 

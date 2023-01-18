@@ -7,84 +7,175 @@
 
 namespace Exiled.Events.Patches.Events.Scp330
 {
-#pragma warning disable SA1118
-
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using CustomPlayerEffects;
+
+    using Exiled.Events.EventArgs.Scp330;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using Interactables.Interobjects;
 
+    using InventorySystem;
+    using InventorySystem.Items.Usables.Scp330;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
+    using Player = API.Features.Player;
+
     /// <summary>
-    /// Patches the <see cref="Scp330Interobject.ServerInteract"/> method to add the <see cref="Handlers.Player.InteractingScp330"/> event.
+    ///     Patches the <see cref="Scp330Interobject.ServerInteract(ReferenceHub, byte)" /> method to add the
+    ///     <see cref="Scp330.InteractingScp330" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Interobject), nameof(Scp330Interobject.ServerInteract))]
-    internal static class InteractingScp330
+    public static class InteractingScp330
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            Label continueLabel = generator.DefineLabel();
+
+            Label shouldNotSever = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
+
             LocalBuilder ev = generator.DeclareLocal(typeof(InteractingScp330EventArgs));
 
-            // Find the only ldnull and insert our event code 2 instructions above it.
-            int offset = -1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldnull) + offset;
+            // Remove original "No scp can touch" logic.
+            newInstructions.RemoveRange(0, 4);
 
-            newInstructions.InsertRange(index, new[]
-            {
-                // var ev = new InteractingScp330EventArgs(Player.Get(ply), num);
-                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_2),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
+            // Find ServerProcessPickup, insert before it.
+            int offset = -3;
+            int index = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + offset;
 
-                // Handlers.Player.InInteractingScp330(ev);
-                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingScp330))),
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(ply)
+                    new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // if (!ev.IsAllowed)
-                //    return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
-                new(OpCodes.Brfalse, returnLabel),
-            });
+                    // num2
+                    new(OpCodes.Ldloc_2),
 
-            // if (num > 2)  ->   if (ev.ShouldSever)
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_2);
+                    // InteractingScp330EventArgs ev = new(Player, int)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
 
-            // Remove existing if check instructions
-            newInstructions.RemoveRange(index, 3);
+                    // Scp330.OnInteractingScp330(ev)
+                    new(OpCodes.Call, Method(typeof(Scp330), nameof(Scp330.OnInteractingScp330))),
 
-            // Add our new instructions.
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
-                new(OpCodes.Brfalse, continueLabel),
-            });
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse, returnLabel),
+                });
 
-            // Find the instruction the base-code if check points to when false, and add our own label.
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldarg_0);
-            newInstructions[index].labels.Add(continueLabel);
+            // Logic to find the only ServerProcessPickup and replace with our own.
+            int removeServerProcessOffset = -2;
+            int removeServerProcessIndex = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerProcessPickup)))) + removeServerProcessOffset;
 
-            // Add a return label to the end of the method.
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+            newInstructions.RemoveRange(removeServerProcessIndex, 3);
+
+            // Replace NW server process logic.
+            newInstructions.InsertRange(
+                removeServerProcessIndex,
+                new[]
+                {
+                    // ldarg.1 is already in the stack
+
+                    // ev.Candy
+                    new CodeInstruction(OpCodes.Ldloc, ev),
+                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Candy))),
+
+                    // bag
+                    new CodeInstruction(OpCodes.Ldloca_S, 3),
+
+                    // ServerProcessPickup(ReferenceHub, CandyKindID, Scp330Bag)
+                    new CodeInstruction(OpCodes.Call, Method(typeof(InteractingScp330), nameof(ServerProcessPickup), new[] { typeof(ReferenceHub), typeof(CandyKindID), typeof(Scp330Bag).MakeByRefType() })),
+                });
+
+            // This is to find the location of RpcMakeSound to remove the original code and add a new sever logic structure (Start point)
+            int addShouldSeverOffset = 1;
+            int addShouldSeverIndex = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
+
+            // This is to find the location of the next return (End point)
+            int includeSameLine = 1;
+            int nextReturn = newInstructions.FindIndex(addShouldSeverIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
+
+            // Remove original code from after RpcMakeSound to next return and then fully replace it.
+            newInstructions.RemoveRange(addShouldSeverIndex, nextReturn - addShouldSeverIndex);
+
+            addShouldSeverIndex = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(Scp330Interobject), nameof(Scp330Interobject.RpcMakeSound)))) + addShouldSeverOffset;
+
+            newInstructions.InsertRange(
+                addShouldSeverIndex,
+                new CodeInstruction[]
+                {
+                    // if (!ev.ShouldSever)
+                    //    goto shouldNotSever;
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
+                    new(OpCodes.Brfalse, shouldNotSever),
+
+                    // ev.Player.EnableEffect("SevereHands", 0f, 0)
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.Player))),
+                    new(OpCodes.Ldstr, nameof(SeveredHands)),
+                    new(OpCodes.Ldc_R4, 0f),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.EnableEffect), new[] { typeof(string), typeof(float), typeof(bool) })),
+                    new(OpCodes.Pop),
+
+                    // return;
+                    new(OpCodes.Ret),
+                });
+
+            // This will let us jump to the taken candies code and lock until ldarg_0, meaning we allow base game logic handle candy adding.
+            int addTakenCandiesOffset = -1;
+            int addTakenCandiesIndex = newInstructions.FindLastIndex(
+                instruction => instruction.LoadsField(Field(typeof(Scp330Interobject), nameof(Scp330Interobject._takenCandies)))) + addTakenCandiesOffset;
+
+            newInstructions[addTakenCandiesIndex].WithLabels(shouldNotSever);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static bool ServerProcessPickup(ReferenceHub player, CandyKindID candy, out Scp330Bag bag)
+        {
+            if (!Scp330Bag.TryGetBag(player, out bag))
+            {
+                player.inventory.ServerAddItem(ItemType.SCP330);
+
+                if (!Scp330Bag.TryGetBag(player, out bag))
+                    return false;
+
+                bag.Candies = new List<CandyKindID> { candy };
+                bag.ServerRefreshBag();
+
+                return true;
+            }
+
+            bool result = bag.TryAddSpecific(candy);
+
+            if (bag.AcquisitionAlreadyReceived)
+                bag.ServerRefreshBag();
+
+            return result;
         }
     }
 }

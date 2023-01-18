@@ -7,62 +7,65 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
+    using InventorySystem;
 
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem"/>.
-    /// Adds the <see cref="DroppingAmmo"/> event.
+    ///     Patches <see cref="Inventory.UserCode_CmdDropAmmo" />.
+    ///     Adds the <see cref="DroppingAmmo" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdDropAmmo))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdDropAmmo))]
     internal static class DroppingAmmo
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = -6;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
-
             Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(ReferenceHub);
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    // Player.Get(ReferenceHub);
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // ammoType
-                new(OpCodes.Ldarg_1),
+                    // ammoType
+                    new(OpCodes.Ldarg_1),
 
-                // amount
-                new(OpCodes.Ldarg_2),
+                    // amount
+                    new(OpCodes.Ldarg_2),
 
-                // var ev = DroppingAmmoEventArgs(...)
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingAmmoEventArgs))[0]),
-                new(OpCodes.Dup),
+                    // true
+                    new(OpCodes.Ldc_I4_1),
 
-                // Player.OnDroppingAmmo(ev);
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingAmmo))),
+                    // DroppingAmmoEventArgs ev = new(Player, AmmoType, ushort, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingAmmoEventArgs))[0]),
+                    new(OpCodes.Dup),
 
-                // if (!ev.IsAllowed) return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingAmmoEventArgs), nameof(DroppingAmmoEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+                    // Player.OnDroppingAmmo(ev);
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDroppingAmmo))),
 
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DroppingAmmoEventArgs), nameof(DroppingAmmoEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -16,24 +15,28 @@ namespace Exiled.Events.Patches.Generic
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+    using PlayerRoles.PlayableScps.Scp079;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Recontainer079.OnDestroy"/>.
+    /// Patches <see cref="Scp079Recontainer.OnDestroy"/>.
     /// </summary>
-    [HarmonyPatch(typeof(Recontainer079), nameof(Recontainer079.OnDestroy))]
+    [HarmonyPatch(typeof(Scp079Recontainer), nameof(Scp079Recontainer.OnDestroy))]
     internal class DestroyRecontainerInstance
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldnull),
-                new(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
-            });
+            // Recontainer.Base = null;
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldnull),
+                    new(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

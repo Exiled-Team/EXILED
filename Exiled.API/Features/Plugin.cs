@@ -14,9 +14,9 @@ namespace Exiled.API.Features
 
     using CommandSystem;
 
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Interfaces;
+    using Enums;
+    using Extensions;
+    using Interfaces;
 
     using RemoteAdmin;
 
@@ -59,6 +59,9 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public virtual Version RequiredExiledVersion { get; } = typeof(IPlugin<>).Assembly.GetName().Version;
+
+        /// <inheritdoc/>
+        public virtual bool IgnoreRequiredVersionCheck { get; } = false;
 
         /// <inheritdoc/>
         public Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; } = new()

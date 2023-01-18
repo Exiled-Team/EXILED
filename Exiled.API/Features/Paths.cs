@@ -28,6 +28,11 @@ namespace Exiled.API.Features
         public static string ManagedAssemblies { get; } = Path.Combine(Path.Combine(Environment.CurrentDirectory, "SCPSL_Data"), "Managed");
 
         /// <summary>
+        /// Gets the server's config path.
+        /// </summary>
+        public static string ServerConfig { get; } = FileManager.GetAppFolder(serverConfig: true);
+
+        /// <summary>
         /// Gets or sets exiled directory path.
         /// </summary>
         public static string Exiled { get; set; }
@@ -90,10 +95,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Reloads all paths.
         /// </summary>
-        /// <param name="rootDirectoryName">The new root directory name.</param>
-        public static void Reload(string rootDirectoryName = "EXILED")
+        /// <param name="rootDirectory">The new root directory.</param>
+        public static void Reload(string rootDirectory = null)
         {
-            Exiled = Path.Combine(AppData, rootDirectoryName);
+            rootDirectory ??= Path.Combine(AppData, "EXILED");
+
+            Exiled = rootDirectory;
             Plugins = Path.Combine(Exiled, "Plugins");
             Dependencies = Path.Combine(Plugins, "dependencies");
             Configs = Path.Combine(Exiled, "Configs");

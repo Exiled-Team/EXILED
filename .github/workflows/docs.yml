@@ -1,4 +1,3 @@
-# Uses code from https://github.com/Exiled-Team/EXILED/blob/master/.github/workflows/main.yml
 name: Build and Publish Docs
 
 on:
@@ -53,4 +52,3 @@ jobs:
           jekyll: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      

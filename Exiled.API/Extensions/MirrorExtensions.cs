@@ -15,12 +15,15 @@ namespace Exiled.API.Extensions
     using System.Reflection.Emit;
     using System.Text;
 
-    using Exiled.API.Features;
+    using Features;
 
     using InventorySystem.Items.Firearms;
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+    using PlayerRoles;
+    using RelativePositioning;
     using Respawning;
 
     using UnityEngine;
@@ -34,8 +37,8 @@ namespace Exiled.API.Extensions
         private static readonly Dictionary<string, ulong> SyncVarDirtyBitsValue = new();
         private static readonly ReadOnlyDictionary<Type, MethodInfo> ReadOnlyWriterExtensionsValue = new(WriterExtensionsValue);
         private static readonly ReadOnlyDictionary<string, ulong> ReadOnlySyncVarDirtyBitsValue = new(SyncVarDirtyBitsValue);
-        private static MethodInfo setDirtyBitsMethodInfoValue = null;
-        private static MethodInfo sendSpawnMessageMethodInfoValue = null;
+        private static MethodInfo setDirtyBitsMethodInfoValue;
+        private static MethodInfo sendSpawnMessageMethodInfoValue;
 
         /// <summary>
         /// Gets <see cref="MethodInfo"/> corresponding to <see cref="Type"/>.
@@ -46,15 +49,15 @@ namespace Exiled.API.Extensions
             {
                 if (WriterExtensionsValue.Count == 0)
                 {
-                    foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && x.GetParameters()?.Length == 2))
+                    foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2)))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
-                    foreach (MethodInfo method in typeof(GeneratedNetworkCode).GetMethods().Where(x => !x.IsGenericMethod && x.GetParameters()?.Length == 2 && x.ReturnType == typeof(void)))
+                    foreach (MethodInfo method in typeof(GeneratedNetworkCode).GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2) && (x.ReturnType == typeof(void))))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
                     foreach (Type serializer in typeof(ServerConsole).Assembly.GetTypes().Where(x => x.Name.EndsWith("Serializer")))
                     {
-                        foreach (MethodInfo method in serializer.GetMethods().Where(x => x.ReturnType == typeof(void) && x.Name.StartsWith("Write")))
+                        foreach (MethodInfo method in serializer.GetMethods().Where(x => (x.ReturnType == typeof(void)) && x.Name.StartsWith("Write")))
                             WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
                     }
                 }
@@ -77,12 +80,17 @@ namespace Exiled.API.Extensions
                         .Where(m => m.Name.StartsWith("Network")))
                     {
                         MethodInfo setMethod = property.GetSetMethod();
+
                         if (setMethod is null)
                             continue;
+
                         MethodBody methodBody = setMethod.GetMethodBody();
+
                         if (methodBody is null)
                             continue;
+
                         byte[] bytecodes = methodBody.GetILAsByteArray();
+
                         if (!SyncVarDirtyBitsValue.ContainsKey($"{property.Name}"))
                             SyncVarDirtyBitsValue.Add($"{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
@@ -95,49 +103,21 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets a <see cref="NetworkBehaviour.SetDirtyBit(ulong)"/>'s <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SetDirtyBitsMethodInfo
-        {
-            get
-            {
-                if (setDirtyBitsMethodInfoValue is null)
-                {
-                    setDirtyBitsMethodInfoValue = typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
-                }
-
-                return setDirtyBitsMethodInfoValue;
-            }
-        }
+        public static MethodInfo SetDirtyBitsMethodInfo => setDirtyBitsMethodInfoValue ??= typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
 
         /// <summary>
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SendSpawnMessageMethodInfo
-        {
-            get
-            {
-                if (sendSpawnMessageMethodInfoValue is null)
-                {
-                    sendSpawnMessageMethodInfoValue = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
-                }
-
-                return sendSpawnMessageMethodInfoValue;
-            }
-        }
+        public static MethodInfo SendSpawnMessageMethodInfo => sendSpawnMessageMethodInfoValue ??= typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
 
         /// <summary>
-        /// Shaking target <see cref="Player"/> window.
+        /// Plays a beep sound that only the target <paramref name="player"/> can hear.
         /// </summary>
-        /// <param name="player">Target to shake.</param>
-        public static void Shake(this Player player) => SendFakeTargetRpc(player, AlphaWarheadController.Host.netIdentity, typeof(AlphaWarheadController), nameof(AlphaWarheadController.TargetRpcShake), false);
-
-        /// <summary>
-        /// Play beep sound to <see cref="Player"/>.
-        /// </summary>
-        /// <param name="player">Target to play.</param>
+        /// <param name="player">Target to play sound to.</param>
         public static void PlayBeepSound(this Player player) => SendFakeTargetRpc(player, ReferenceHub.HostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);
 
         /// <summary>
-        /// Set <see cref="NicknameSync.Network_customPlayerInfoString"/> that only <see cref="Player"/> can see.
+        /// Set <see cref="Player.CustomInfo"/> on the <paramref name="target"/> player that only the <paramref name="player"/> can see.
         /// </summary>
         /// <param name="player">Only this player can see info.</param>
         /// <param name="target">Target to set info.</param>
@@ -145,7 +125,7 @@ namespace Exiled.API.Extensions
         public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => player.SendFakeSyncVar(target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
 
         /// <summary>
-        /// Plays gun sound.
+        /// Plays a gun sound that only the <paramref name="player"/> can hear.
         /// </summary>
         /// <param name="player">Target to play.</param>
         /// <param name="position">Position to play on.</param>
@@ -159,21 +139,15 @@ namespace Exiled.API.Extensions
                 Weapon = itemType,
                 AudioClipId = audioClipId,
                 MaxDistance = volume,
-                ShooterNetId = 0U,
+                ShooterHub = player.ReferenceHub,
+                ShooterPosition = new RelativePosition(position),
             };
-
-            Vector3 to = position - player.Position;
-            float angle = Vector3.Angle(Vector3.forward, to);
-            if (Vector3.Dot(to.normalized, Vector3.left) > 0f)
-                angle = 360f - angle;
-            message.ShooterDirection = (byte)Mathf.RoundToInt(angle / 1.44f);
-            message.ShooterRealDistance = (byte)Mathf.RoundToInt(Mathf.Min(to.magnitude, 255f));
 
             player.Connection.Send(message);
         }
 
         /// <summary>
-        /// Set <see cref="FlickerableLightController.Network_warheadLightColor"/> that only <see cref="Player"/> can see.
+        /// Sets <see cref="Room.Color"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
@@ -185,7 +159,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Set <see cref="FlickerableLightController.Network_lightIntensityMultiplier"/> that only <see cref="Player"/> can see.
+        /// Sets <see cref="Room.LightIntensity"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
@@ -197,30 +171,37 @@ namespace Exiled.API.Extensions
 
         /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleType"/> changes.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
-        public static void ChangeAppearance(this Player player, RoleType type)
+        public static void ChangeAppearance(this Player player, RoleTypeId type)
         {
             foreach (Player target in Player.List.Where(x => x != player))
-                SendFakeSyncVar(target, player.ReferenceHub.networkIdentity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurClass), (sbyte)type);
+                target.Connection.Send(new RoleSyncInfo(player.ReferenceHub, type, target.ReferenceHub));
         }
 
         /// <summary>
         /// Send CASSIE announcement that only <see cref="Player"/> can hear.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleType"/> changes.
         /// </summary>
         /// <param name="player">Target to send.</param>
         /// <param name="words">Announcement words.</param>
         /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
         /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
         /// <param name="isSubtitles">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isSubtitles.</param>
-        public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+        public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false)
+        {
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+                }
+            }
+        }
 
         /// <summary>
         /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
-        /// It will continue until <see cref="Player"/>'s <see cref="RoleType"/> changes.
         /// </summary>
         /// <param name="player">Target to send.</param>
         /// <param name="words">The message to be reproduced.</param>
@@ -230,41 +211,21 @@ namespace Exiled.API.Extensions
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = new();
+            StringBuilder annoucement = StringBuilderPool.Shared.Rent();
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
-            for (int i = 0; i < cassies.Count(); i++)
-                annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
+            for (int i = 0; i < cassies.Length; i++)
+                annoucement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
 
-            SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
-        }
+            foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
+            {
+                if (controller != null)
+                {
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+                }
+            }
 
-        /// <summary>
-        /// Changes the <see cref="Player"/>'s walking speed. Negative values will invert the player's controls.
-        /// </summary>
-        /// <param name="player">Player to change.</param>
-        /// <param name="multiplier">Speed multiplier.</param>
-        /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
-        public static void ChangeWalkingSpeed(this Player player, float multiplier, bool useCap = true)
-        {
-            if (useCap)
-                multiplier = Mathf.Clamp(multiplier, -2f, 2f);
-
-            SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
-        }
-
-        /// <summary>
-        /// Changes the <see cref="Player"/>'s running speed. Negative values will invert the player's controls.
-        /// </summary>
-        /// <param name="player">Player to change.</param>
-        /// <param name="multiplier">Speed multiplier.</param>
-        /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
-        public static void ChangeRunningSpeed(this Player player, float multiplier, bool useCap = true)
-        {
-            if (useCap)
-                multiplier = Mathf.Clamp(multiplier, -1.4f, 1.4f);
-
-            SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), multiplier);
+            StringBuilderPool.Shared.Return(annoucement);
         }
 
         /// <summary>
@@ -279,14 +240,16 @@ namespace Exiled.API.Extensions
         {
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
-                targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
+                targetWriter.WriteUInt64(SyncVarDirtyBits[propertyName]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
             }
 
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
+
             MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
             target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+
             NetworkWriterPool.Recycle(writer);
             NetworkWriterPool.Recycle(writer2);
         }
@@ -321,7 +284,9 @@ namespace Exiled.API.Extensions
                 functionHash = (targetType.FullName.GetStableHashCode() * 503) + rpcName.GetStableHashCode(),
                 payload = writer.ToArraySegment(),
             };
+
             target.Connection.Send(msg, 0);
+
             NetworkWriterPool.Recycle(writer);
         }
 
@@ -367,10 +332,11 @@ namespace Exiled.API.Extensions
             {
                 netId = identity.netId,
             };
-            foreach (Player ply in Player.List)
+
+            foreach (Player player in Player.List)
             {
-                ply.Connection.Send(objectDestroyMessage, 0);
-                SendSpawnMessageMethodInfo.Invoke(null, new object[] { identity, ply.Connection });
+                player.Connection.Send(objectDestroyMessage, 0);
+                SendSpawnMessageMethodInfo.Invoke(null, new object[] { identity, player.Connection });
             }
         }
 

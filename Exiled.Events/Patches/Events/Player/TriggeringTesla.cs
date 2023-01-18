@@ -7,10 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System;
 #pragma warning disable SA1313
+
+    using System;
+
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
@@ -19,8 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
     using BaseTeslaGate = TeslaGate;
 
     /// <summary>
-    /// Patches <see cref="TeslaGateController.FixedUpdate"/>.
-    /// Adds the <see cref="Handlers.Player.TriggeringTesla"/> event.
+    ///     Patches <see cref="TeslaGateController.FixedUpdate" />.
+    ///     Adds the <see cref="Handlers.Player.TriggeringTesla" /> event.
     /// </summary>
     [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
     internal static class TriggeringTesla
@@ -32,8 +34,9 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!Round.IsStarted)
                     return false;
 
-                if (TeslaGate.TeslasValue.Count == 0)
+                if (TeslaGate.BaseTeslaGateToTeslaGate.Count == 0)
                     return true;
+
                 foreach (BaseTeslaGate baseTeslaGate in __instance.TeslaGates)
                 {
                     if (!baseTeslaGate.isActiveAndEnabled || baseTeslaGate.InProgress)
@@ -57,20 +60,21 @@ namespace Exiled.Events.Patches.Events.Player
                                 continue;
 
                             TriggeringTeslaEventArgs ev = new(player, teslaGate);
+
                             Handlers.Player.OnTriggeringTesla(ev);
 
-                            if (ev.IsTriggerable && !isTriggerable)
-                                isTriggerable = ev.IsTriggerable;
+                            if (ev.IsAllowed && !isTriggerable)
+                                isTriggerable = ev.IsAllowed;
 
                             if (ev.IsInIdleRange && !inIdleRange)
                                 inIdleRange = ev.IsInIdleRange;
                         }
 #pragma warning disable CS0168
-                        catch (Exception e)
+                        catch (Exception exception)
 #pragma warning restore CS0168
                         {
 #if DEBUG
-                            Log.Error($"{nameof(TriggeringTesla)}.Prefix: {e}");
+                            Log.Error($"{nameof(TriggeringTesla)}.Prefix: {exception}");
 #endif
                         }
                     }
@@ -84,9 +88,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                 return false;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {exception}\n{exception.StackTrace}");
                 return true;
             }
         }

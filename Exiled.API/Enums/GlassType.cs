@@ -7,11 +7,12 @@
 
 namespace Exiled.API.Enums
 {
-    using Exiled.API.Features;
+    using Features;
 
     /// <summary>
     /// Unique identifier for the different types of Window.
     /// </summary>
+    /// <seealso cref="Window.Type"/>
     public enum GlassType
     {
         /// <summary>
@@ -53,5 +54,20 @@ namespace Exiled.API.Enums
         /// Represents all the Window in <see cref="RoomType.LczPlants"/>.
         /// </summary>
         Plants,
+
+        /// <summary>
+        /// Represents all the Window in <see cref="RoomType.HczEzCheckpointA"/>.
+        /// </summary>
+        HczEzCheckpointA,
+
+        /// <summary>
+        /// Represents all the Window in <see cref="RoomType.HczEzCheckpointB"/>.
+        /// </summary>
+        HczEzCheckpointB,
+
+        /// <summary>
+        /// Represents all the Window in <see cref="RoomType.HczTestRoom"/>.
+        /// </summary>
+        TestRoom,
     }
 }

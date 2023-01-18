@@ -13,13 +13,14 @@ namespace Exiled.API.Features
 
     using MEC;
 
+    using NorthwoodLib.Pools;
+    using PlayerRoles;
     using PlayerStatsSystem;
 
     using Respawning;
 
-    using CustomFirearmHandler = Exiled.API.Features.DamageHandlers.FirearmDamageHandler;
-
-    using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
+    using CustomFirearmHandler = DamageHandlers.FirearmDamageHandler;
+    using CustomHandlerBase = DamageHandlers.DamageHandlerBase;
 
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E.
@@ -61,13 +62,14 @@ namespace Exiled.API.Features
         /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
         public static void MessageTranslated(string message, string translation, bool isHeld = false, bool isNoisy = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = new();
+            StringBuilder announcement = StringBuilderPool.Shared.Rent();
             string[] cassies = message.Split('\n');
             string[] translations = translation.Split('\n');
-            for (int i = 0; i < cassies.Count(); i++)
-                annoucement.Append($"{translations[i].Replace(' ', ' ')}<alpha=#00> {cassies[i]} </alpha><split>");
+            for (int i = 0; i < cassies.Length; i++)
+                announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
 
-            RespawnEffectsController.PlayCassieAnnouncement(annoucement.ToString(), isHeld, isNoisy, isSubtitles);
+            RespawnEffectsController.PlayCassieAnnouncement(announcement.ToString(), isHeld, isNoisy, isSubtitles);
+            StringBuilderPool.Shared.Return(announcement);
         }
 
         /// <summary>
@@ -101,7 +103,7 @@ namespace Exiled.API.Features
             Timing.CallDelayed(delay, () => Announcer.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance));
 
         /// <summary>
-        /// Calculates duration of a C.A.S.S.I.E message.
+        /// Calculates the duration of a C.A.S.S.I.E message.
         /// </summary>
         /// <param name="message">The message, which duration will be calculated.</param>
         /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
@@ -110,7 +112,7 @@ namespace Exiled.API.Features
             => Announcer.CalculateDuration(message, rawNumber);
 
         /// <summary>
-        /// Converts a Team into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
+        /// Converts a <see cref="Team"/> into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
         /// </summary>
         /// <param name="team"><see cref="Team"/>.</param>
         /// <param name="unitName">Unit Name.</param>
@@ -119,7 +121,7 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.ConvertTeam(team, unitName);
 
         /// <summary>
-        /// Converts Number into Cassie-Readable String.
+        /// Converts a number into a Cassie-Readable String.
         /// </summary>
         /// <param name="num">Number to convert.</param>
         /// <returns>A CASSIE-readable <see cref="string"/> representing the number.</returns>
@@ -150,10 +152,12 @@ namespace Exiled.API.Features
                 result += " LOST IN DECONTAMINATION SEQUENCE";
             else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
+
+                // result += "To be changed";
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
 
-            float num = (AlphaWarheadController.Host.timeToDetonation <= 0f) ? 3.5f : 1f;
+            float num = AlphaWarheadController.TimeUntilDetonation <= 0f ? 3.5f : 1f;
             GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
         }
 
@@ -168,5 +172,12 @@ namespace Exiled.API.Features
         /// <param name="word">The word to check.</param>
         /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
         public static bool IsValid(string word) => Announcer.voiceLines.Any(line => line.apiName.ToUpper() == word.ToUpper());
+
+        /// <summary>
+        /// Gets a value indicating whether or not the given sentence is all valid C.A.S.S.I.E word.
+        /// </summary>
+        /// <param name="sentence">The sentence to check.</param>
+        /// <returns><see langword="true"/> if the sentence is valid; otherwise, <see langword="false"/>.</returns>
+        public static bool IsValidSentence(string sentence) => sentence.Split(' ').All(word => string.IsNullOrWhiteSpace(word) || IsValid(word));
     }
 }

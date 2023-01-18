@@ -92,6 +92,7 @@ namespace Exiled.CustomRoles.Commands
                         role.AddRole(player);
 
                     response = $"Custom role {role.Name} given to all players.";
+                    ListPool<Player>.Shared.Return(players);
                     return true;
                 default:
                     if (Player.Get(identifier) is not Player ply)

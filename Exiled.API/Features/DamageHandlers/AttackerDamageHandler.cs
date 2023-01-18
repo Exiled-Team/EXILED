@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.DamageHandlers
 {
+    using CustomPlayerEffects;
+
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
@@ -87,15 +89,15 @@ namespace Exiled.API.Features.DamageHandlers
             if (!Is(out PlayerStatsSystem.AttackerDamageHandler _))
                 return;
 
-            if ((player.IsSpawnProtected && player != Attacker) ||
-                (!PlayerStatsSystem.AttackerDamageHandler._allowSpawnProtectedDamage &&
+            if ((player.IsSpawnProtected && (player != Attacker)) ||
+                (!SpawnProtected.PreventAllDamage &&
                  Attacker is not null && Attacker.IsSpawnProtected))
             {
                 Damage = 0f;
                 return;
             }
 
-            if (player != Attacker && !ForceFullFriendlyFire)
+            if ((player != Attacker) && !ForceFullFriendlyFire)
             {
                 if (HitboxIdentity.CheckFriendlyFire(Attacker.Role, player.Role, true))
                     return;

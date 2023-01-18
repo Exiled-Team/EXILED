@@ -8,11 +8,14 @@
 namespace Exiled.Events.Commands.Config
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+
+    using API.Enums;
+    using API.Features;
+    using API.Interfaces;
     using CommandSystem;
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
-    using Exiled.Loader;
+    using Loader;
 
     /// <summary>
     /// The config merge command.
@@ -36,16 +39,16 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (Loader.Config.ConfigType == ConfigType.Default)
+            if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
             {
-                response = "Configs are actually merged.";
+                response = "Configs are already merged.";
                 return false;
             }
 
-            var configs = ConfigManager.LoadSorted(ConfigManager.Read());
-            Loader.Config.ConfigType = ConfigType.Default;
-            var haveBeenSaved = ConfigManager.Save(configs);
-            File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(Loader.Config));
+            SortedDictionary<string, IConfig> configs = ConfigManager.LoadSorted(ConfigManager.Read());
+            LoaderPlugin.Config.ConfigType = ConfigType.Default;
+            bool haveBeenSaved = ConfigManager.Save(configs);
+            File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(LoaderPlugin.Config));
 
             response = $"Configs have been merged successfully! Feel free to remove the directory in the following path:\n\"{Paths.IndividualConfigs}\"";
             return haveBeenSaved;

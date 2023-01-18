@@ -10,9 +10,11 @@ namespace Exiled.API.Interfaces
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using CommandSystem;
-    using Exiled.API.Enums;
-    using Exiled.API.Features;
+
+    using Enums;
+    using Features;
 
     /// <summary>
     /// Defines the contract for basic plugin features.
@@ -61,6 +63,12 @@ namespace Exiled.API.Interfaces
         /// Gets the required version of Exiled to run the plugin without bugs or incompatibilities.
         /// </summary>
         Version RequiredExiledVersion { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether a plugin should bypass the required EXILED version check.
+        /// This should only be used by plugins which do not need to be updated across major version updates.
+        /// </summary>
+        bool IgnoreRequiredVersionCheck { get; }
 
         /// <summary>
         /// Gets the plugin config.

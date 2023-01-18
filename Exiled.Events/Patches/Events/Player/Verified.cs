@@ -7,79 +7,65 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1600
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Utils;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
-    using PlayerAPI = Exiled.API.Features.Player;
-    using PlayerEvents = Exiled.Events.Handlers.Player;
+    using NorthwoodLib.Pools;
 
+    using static HarmonyLib.AccessTools;
+
+    /// <summary>
+    ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete" />.
+    ///     Adds the <see cref="Handlers.Player.Verified" /> event.
+    /// </summary>
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
     internal static class Verified
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            MethodInfo targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
-            bool did = false;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            using (NextEnumerator<CodeInstruction> nextEnumerator = new(instructions.GetEnumerator()))
-            {
-                while (nextEnumerator.MoveNext())
+            Label callJoined = generator.DefineLabel();
+
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+
+            const int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
                 {
-                    if (!did
-                        && nextEnumerator.Current.opcode == OpCodes.Ldc_I4_0
-                        && nextEnumerator.NextCurrent is not null && nextEnumerator.NextCurrent.opcode == OpCodes.Call && (MethodInfo)nextEnumerator.NextCurrent.operand == targetMethod)
-                    {
-                        did = true;
+                    new(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Call, Method(typeof(Verified), nameof(Verified.HandleCmdServerSignature))),
+                });
 
-                        // Think I wanna have a deal with IL?
-                        yield return new(OpCodes.Call, AccessTools.Method(typeof(Verified), nameof(CallEvent)));
-                        yield return new(OpCodes.Ldarg_0);
-                    }
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                    yield return nextEnumerator.Current;
-                    if (nextEnumerator.NextCurrent is not null)
-                        yield return nextEnumerator.NextCurrent;
-                }
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void CallEvent(ServerRoles instance)
+        private static void HandleCmdServerSignature(ServerRoles instance)
         {
-            try
-            {
-                PlayerAPI.UnverifiedPlayers.TryGetValue(instance._hub, out PlayerAPI player);
+            if (!Player.UnverifiedPlayers.TryGetValue(instance._hub, out Player player))
+                Joined.CallEvent(instance._hub, out player);
 
-                // Means the player connected before WaitingForPlayers event is fired
-                // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
-                // Blame NorthWood
-                if (player is null)
-                    Joined.CallEvent(instance._hub, out player);
+            Player.Dictionary.Add(instance._hub.gameObject, player);
 
-#if DEBUG
-                Log.Debug($"{player.Nickname} has verified!", true);
-#endif
-                PlayerAPI.Dictionary.Add(instance._hub.gameObject, player);
-                player.IsVerified = true;
-                player.RawUserId = player.UserId.GetRawUserId();
+            player.IsVerified = true;
+            player.RawUserId = player.UserId.GetRawUserId();
 
-                Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
+            Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
 
-                PlayerEvents.OnVerified(new VerifiedEventArgs(player));
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"{typeof(Verified).FullName}.{nameof(CallEvent)}:\n{ex}");
-            }
+            Handlers.Player.OnVerified(new VerifiedEventArgs(player));
         }
     }
 }

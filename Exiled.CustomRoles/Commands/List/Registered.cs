@@ -42,7 +42,7 @@ namespace Exiled.CustomRoles.Commands.List
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("customrols.list.registered"))
+            if (!sender.CheckPermission("customroles.list.registered"))
             {
                 response = "Permission Denied, required: customroles.list.registered";
                 return false;

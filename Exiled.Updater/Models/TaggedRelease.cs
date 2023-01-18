@@ -8,8 +8,7 @@
 namespace Exiled.Updater.Models
 {
     using Exiled.Updater.GHApi.Models;
-
-    using SemVer;
+    using SemanticVersioning;
 
     public readonly struct TaggedRelease
     {

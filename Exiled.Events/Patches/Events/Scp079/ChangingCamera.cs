@@ -7,45 +7,43 @@
 
 namespace Exiled.Events.Patches.Events.Scp079
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
+    using Exiled.Events.EventArgs.Scp079;
+    using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
+    using Mirror;
     using NorthwoodLib.Pools;
-
-    using UnityEngine;
+    using PlayerRoles.PlayableScps.Scp079;
+    using PlayerRoles.PlayableScps.Scp079.Cameras;
+    using PlayerRoles.PlayableScps.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
+    using Player = API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)"/>.
-    /// Adds the <see cref="ChangingCamera"/> event.
+    ///     Patches <see cref="Scp079CurrentCameraSync.ServerProcessCmd(NetworkReader)" />.
+    ///     Adds the <see cref="ChangingCamera" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_CmdSwitchCamera))]
+    [HarmonyPatch(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync.ServerProcessCmd))]
     internal static class ChangingCamera
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // The index offset.
-            const int offset = 0;
-
-            // Search for the first "ldloc.1".
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+            const int offset = 2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Conv_R4) + offset;
 
             // Define the first label of the last "ret" and retrieve it.
             Label returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
 
-            // Declare a local variable of the type "ChangingCameraEventArgs"
-            LocalBuilder changingCameraEv = generator.DeclareLocal(typeof(ChangingCameraEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingCameraEventArgs));
 
-            // var ev = new ChangingCameraEventArgs(Player.Get(this.gameObject), camera, num,  num <= this.curMana)
+            // ChangingCameraEventArgs ev = new(Player.Get(this.gameObject), camera, num)
             //
             // Handlers.Scp079.OnChangingCamera(ev)
             //
@@ -53,46 +51,43 @@ namespace Exiled.Events.Patches.Events.Scp079
             //   return;
             //
             // num = ev.AuxiliaryPowerCost
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(this.gameObject)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(base.Owner)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp079Role>), nameof(ScpStandardSubroutine<Scp079Role>.Owner))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // camera
-                new(OpCodes.Ldloc_0),
+                    // camera
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079CurrentCameraSync), nameof(Scp079CurrentCameraSync._switchTarget))),
 
-                // num (auxiliary power cost)
-                new(OpCodes.Ldloc_1),
+                    // num (auxiliary power cost)
+                    new(OpCodes.Ldloc_0),
 
-                // !(num > this.curMana) --> num <= this.curMana
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
-                new(OpCodes.Cgt),
-                new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Ceq),
+                    // ChangingCameraEventArgs ev = new(Player, Scp079Camera, float)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // var ev = new ChangingCameraEventArgs(...)
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, changingCameraEv.LocalIndex),
+                    // Handlers.Scp079.OnChangingCamera(ev)
+                    new(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnChangingCamera))),
 
-                // Handlers.Scp079.OnChangingCamera(ev)
-                new(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnChangingCamera))),
+                    // if (!ev.IsAllowed)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
 
-                // if (!ev.IsAllowed)
-                //   return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
+                    // num = ev.AuxiliaryPowerCost
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.AuxiliaryPowerCost))),
+                    new(OpCodes.Stloc_0),
 
-                // num = ev.AuxiliaryPowerCost
-                new(OpCodes.Ldloc_S, changingCameraEv.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.AuxiliaryPowerCost))),
-                new(OpCodes.Stloc_1),
-            });
+                    // TODO: Set ev.Camera to _switchTarget
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

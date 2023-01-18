@@ -10,6 +10,8 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of rooms.
     /// </summary>
+    /// <seealso cref="Features.Room.Type"/>
+    /// <seealso cref="Features.Room.Get(RoomType)"/>
     public enum RoomType
     {
         /// <summary>
@@ -103,9 +105,14 @@ namespace Exiled.API.Enums
         Hcz079,
 
         /// <summary>
-        /// Heavy Containment Entrance Checkpoint Room.
+        /// Heavy Containment Entrance Checkpoint A Room.
         /// </summary>
-        HczEzCheckpoint,
+        HczEzCheckpointA,
+
+        /// <summary>
+        /// Heavy Containment Entrance Checkpoint B Room.
+        /// </summary>
+        HczEzCheckpointB,
 
         /// <summary>
         /// Heavy Containment T-Shaped Armory Room.
@@ -271,5 +278,15 @@ namespace Exiled.API.Enums
         /// Lower Containment SCP-330 Room.
         /// </summary>
         Lcz330,
+
+        /// <summary>
+        /// Entrance Room before Checkpoint.
+        /// </summary>
+        EzCheckpointHallway,
+
+        /// <summary>
+        /// Heavy Containment Test Room.
+        /// </summary>
+        HczTestRoom,
     }
 }

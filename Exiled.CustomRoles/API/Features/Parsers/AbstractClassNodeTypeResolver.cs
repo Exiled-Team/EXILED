@@ -40,13 +40,13 @@ namespace Exiled.CustomRoles.API.Features.Parsers
         /// <inheritdoc />
         public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
         {
-            if (!reader.Accept<MappingStart>(out var mapping))
+            if (!reader.Accept(out MappingStart mapping))
             {
                 value = null;
                 return false;
             }
 
-            var supportedTypes = typeDiscriminators.Where(t => t.BaseType == expectedType).ToList();
+            IEnumerable<ITypeDiscriminator> supportedTypes = typeDiscriminators.Where(t => t.BaseType == expectedType);
             if (!supportedTypes.Any())
             {
                 if (original.Deserialize(reader, expectedType, nestedObjectDeserializer, out value))
@@ -59,7 +59,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
                 return false;
             }
 
-            var start = reader.Current.Start;
+            Mark start = reader.Current.Start;
             Type actualType;
             ParsingEventBuffer buffer;
             try
@@ -86,10 +86,10 @@ namespace Exiled.CustomRoles.API.Features.Parsers
 
         private static Type CheckWithDiscriminators(Type expectedType, IEnumerable<ITypeDiscriminator> supportedTypes, ParsingEventBuffer buffer)
         {
-            foreach (var discriminator in supportedTypes)
+            foreach (ITypeDiscriminator discriminator in supportedTypes)
             {
                 buffer.Reset();
-                if (!discriminator.TryResolve(buffer, out var actualType))
+                if (!discriminator.TryResolve(buffer, out Type actualType))
                     continue;
 
                 return actualType;
@@ -101,12 +101,12 @@ namespace Exiled.CustomRoles.API.Features.Parsers
 
         private static LinkedList<ParsingEvent> ReadNestedMapping(IParser reader)
         {
-            var result = new LinkedList<ParsingEvent>();
+            LinkedList<ParsingEvent> result = new();
             result.AddLast(reader.Consume<MappingStart>());
-            var depth = 0;
+            int depth = 0;
             do
             {
-                var next = reader.Consume<ParsingEvent>();
+                ParsingEvent next = reader.Consume<ParsingEvent>();
                 depth += next.NestingIncrease;
                 result.AddLast(next);
             }

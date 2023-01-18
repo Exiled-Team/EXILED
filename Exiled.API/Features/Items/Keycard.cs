@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.Keycards;
 
     /// <summary>
@@ -39,21 +41,27 @@ namespace Exiled.API.Features.Items
         public new KeycardItem Base { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Enums.KeycardPermissions"/> of the keycard.
+        /// Gets or sets the <see cref="KeycardPermissions"/> of the keycard.
         /// </summary>
-        public Enums.KeycardPermissions Permissions
+        public KeycardPermissions Permissions
         {
-            get => (Enums.KeycardPermissions)Base.Permissions;
+            get => (KeycardPermissions)Base.Permissions;
             set => Base.Permissions = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
         }
+
+        /// <summary>
+        /// Clones current <see cref="Keycard"/> object.
+        /// </summary>
+        /// <returns> New <see cref="Keycard"/> object. </returns>
+        public override Item Clone() => new Keycard(Type)
+        {
+            Permissions = Permissions,
+        };
 
         /// <summary>
         /// Returns the Keycard in a human readable format.
         /// </summary>
         /// <returns>A string containing Keycard-related data.</returns>
-        public override string ToString()
-        {
-            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
-        }
+        public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
     }
 }

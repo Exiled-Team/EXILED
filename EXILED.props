@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(BuildProperties) == '' OR $(BuildProperties) == 'true'">
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net48</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <PlatformTarget>x64</PlatformTarget>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -15,19 +15,19 @@
 
   <PropertyGroup>
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version Condition="$(Version) == ''">5.2.2</Version>
+    <Version Condition="$(Version) == ''">6.0.0-beta.18</Version>
     <!-- Enables public beta warning via the PUBLIC_BETA constant -->
-    <PublicBeta>false</PublicBeta>
+    <PublicBeta>true</PublicBeta>
 
-    <HarmonyVersion>2.0.4</HarmonyVersion>
-    <YamlDotNetVersion>9.1.4</YamlDotNetVersion>
+    <HarmonyVersion>2.2.2</HarmonyVersion>
+    <YamlDotNetVersion>12.0.2</YamlDotNetVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
-    <SemanticVersioningVersion>1.3.0</SemanticVersioningVersion>
+    <SemanticVersioningVersion>2.0.2</SemanticVersioningVersion>
 
     <Copyright>Copyright © $(Authors) 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <RepositoryType>Git</RepositoryType>
-    <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/galaxy119/EXILED</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Exiled-Team/EXILED</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Exiled-Team/EXILED</PackageProjectUrl>
     <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
 
     <DefineConstants Condition="$(PublicBeta) == 'true'">$(DefineConstants);PUBLIC_BETA</DefineConstants>

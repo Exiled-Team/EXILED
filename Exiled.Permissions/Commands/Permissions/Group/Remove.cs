@@ -11,7 +11,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
     using CommandSystem;
 
-    using Exiled.Permissions.Extensions;
+    using Extensions;
 
     /// <summary>
     /// Removes a group to permissions.

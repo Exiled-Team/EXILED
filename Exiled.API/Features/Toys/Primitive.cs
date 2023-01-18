@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Toys
 
     using AdminToys;
 
-    using Exiled.API.Enums;
+    using Enums;
 
     using UnityEngine;
 
@@ -34,8 +34,8 @@ namespace Exiled.API.Features.Toys
         {
             Base = toyAdminToyBase;
 
-            Vector3 actualScale = Base.transform.localScale;
-            Collidable = actualScale.x > 0f || actualScale.y > 0f || actualScale.z > 0f;
+            Vector3 scale = Base.transform.localScale;
+            collidable = scale.x > 0f || scale.y > 0f || scale.z > 0f;
         }
 
         /// <summary>
@@ -80,47 +80,67 @@ namespace Exiled.API.Features.Toys
         /// <param name="position">The position of the <see cref="Primitive"/>.</param>
         /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
         /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
-        /// <param name="spawn">Whether the <see cref="Primitive"/> should be initially spawned.</param>
+        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
         /// <returns>The new <see cref="Primitive"/>.</returns>
         public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
-            Primitive primitve = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
-            primitve.AdminToyBase.transform.position = position ?? Vector3.zero;
-            primitve.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
-            primitve.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
+            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
 
             if (spawn)
-                primitve.Spawn();
+                primitive.Spawn();
 
-            return primitve;
+            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+
+            return primitive;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Primitive"/>.
+        /// </summary>
+        /// <param name="primitiveType">The type of primitive to spawn.</param>
+        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
+        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
+        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
+        /// <param name="spawn">Whether or not the <see cref="Primitive"/> should be initially spawned.</param>
+        /// <returns>The new <see cref="Primitive"/>.</returns>
+        public static Primitive Create(PrimitiveType primitiveType = PrimitiveType.Sphere, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
+        {
+            Primitive primitive = new(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+
+            primitive.AdminToyBase.transform.position = position ?? Vector3.zero;
+            primitive.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            primitive.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+
+            if (spawn)
+                primitive.Spawn();
+
+            primitive.AdminToyBase.NetworkScale = primitive.AdminToyBase.transform.localScale;
+            primitive.Base.NetworkPrimitiveType = primitiveType;
+
+            return primitive;
         }
 
         /// <summary>
         /// Gets the <see cref="Primitive"/> belonging to the <see cref="PrimitiveObjectToy"/>.
         /// </summary>
-        /// <param name="primitveObjectToy">The <see cref="PrimitiveObjectToy"/> instance.</param>
+        /// <param name="primitiveObjectToy">The <see cref="PrimitiveObjectToy"/> instance.</param>
         /// <returns>The corresponding <see cref="Primitive"/> instance.</returns>
-        public static Primitive Get(PrimitiveObjectToy primitveObjectToy)
+        public static Primitive Get(PrimitiveObjectToy primitiveObjectToy)
         {
-            AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == primitveObjectToy);
-            return adminToy is not null ? adminToy as Primitive : new Primitive(primitveObjectToy);
+            AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == primitiveObjectToy);
+            return adminToy is not null ? adminToy as Primitive : new Primitive(primitiveObjectToy);
         }
 
         private void RefreshCollidable()
         {
             UnSpawn();
 
-            Vector3 actualScale = Scale;
-
-            if (Collidable)
-            {
-                Base.transform.localScale = new Vector3(Math.Abs(actualScale.x), Math.Abs(actualScale.y), Math.Abs(actualScale.z));
-            }
-            else
-            {
-                Base.transform.localScale = new Vector3(-Math.Abs(actualScale.x), -Math.Abs(actualScale.y), -Math.Abs(actualScale.z));
-            }
+            Vector3 scale = Scale;
+            Base.transform.localScale = Collidable ? new Vector3(Math.Abs(scale.x), Math.Abs(scale.y), Math.Abs(scale.z)) : new Vector3(-Math.Abs(scale.x), -Math.Abs(scale.y), -Math.Abs(scale.z));
 
             Spawn();
         }

@@ -8,7 +8,8 @@
 namespace Exiled.API.Extensions
 {
     using System.Linq;
-    using Exiled.API.Features;
+
+    using Features;
 
     /// <summary>
     /// Contains a useful extension to compare two <see cref="UserGroup"/>'s.
@@ -22,14 +23,14 @@ namespace Exiled.API.Extensions
         /// <param name="other">The second <see cref="UserGroup"/>.</param>
         /// <returns><see langword="true"/> if they are equal; otherwise, <see langword="false"/>.</returns>
         public static bool EqualsTo(this UserGroup @this, UserGroup other)
-            => @this.BadgeColor == other.BadgeColor
-               && @this.BadgeText == other.BadgeText
-               && @this.Permissions == other.Permissions
-               && @this.Cover == other.Cover
-               && @this.HiddenByDefault == other.HiddenByDefault
-               && @this.Shared == other.Shared
-               && @this.KickPower == other.KickPower
-               && @this.RequiredKickPower == other.RequiredKickPower;
+            => (@this.BadgeColor == other.BadgeColor)
+               && (@this.BadgeText == other.BadgeText)
+               && (@this.Permissions == other.Permissions)
+               && (@this.Cover == other.Cover)
+               && (@this.HiddenByDefault == other.HiddenByDefault)
+               && (@this.Shared == other.Shared)
+               && (@this.KickPower == other.KickPower)
+               && (@this.RequiredKickPower == other.RequiredKickPower);
 
         /// <summary>
         /// Searches for a key of a group in the <see cref="PermissionsHandler">RemoteAdmin</see> config.

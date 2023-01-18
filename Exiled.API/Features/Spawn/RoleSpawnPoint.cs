@@ -9,8 +9,8 @@ namespace Exiled.API.Features.Spawn
 {
     using System;
 
-    using Exiled.API.Extensions;
-
+    using Extensions;
+    using PlayerRoles;
     using UnityEngine;
 
     using YamlDotNet.Serialization;
@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Spawn
         /// <summary>
         /// Gets or sets the role type used for this spawn.
         /// </summary>
-        public RoleType Role { get; set; }
+        public RoleTypeId Role { get; set; }
 
         /// <inheritdoc/>
         public override float Chance { get; set; }
@@ -33,15 +33,15 @@ namespace Exiled.API.Features.Spawn
         public override string Name
         {
             get => Role.ToString();
-            set => throw new InvalidOperationException("You cannot change the name of this type of SpawnPoint.");
+            set => throw new InvalidOperationException("The name of this type of SpawnPoint cannot be changed.");
         }
 
         /// <inheritdoc/>
         [YamlIgnore]
         public override Vector3 Position
         {
-            get => Role.GetRandomSpawnProperties().Item1;
-            set => throw new InvalidOperationException("You cannot change the position of this type of SpawnPoint.");
+            get => Role.GetRandomSpawnLocation().Position;
+            set => throw new InvalidOperationException("The position of this type of SpawnPoint cannot be changed.");
         }
     }
 }

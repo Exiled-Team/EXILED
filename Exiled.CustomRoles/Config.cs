@@ -8,6 +8,7 @@
 namespace Exiled.CustomRoles
 {
     using System.ComponentModel;
+
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.CustomRoles.API.Features;

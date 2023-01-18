@@ -11,14 +11,14 @@
 </a>
 
 
-EXILED is a low-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook in order to manipulate or change game code, or implement their own functions.
+EXILED is a high-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook in order to manipulate or change game code, or implement their own functions.
 All EXILED events are coded with Harmony, meaning they require no direct editing of server Assemblies to function, which allows for two unique benefits.
 
  - Firstly, the entirety of the frameworks code can be freely published and shared, allowing developers to better understand *how* it works, as well as offer suggestions for adding to or changing it's features.
  - Secondly, since all of the code related to the framework are done outside of the server assembly, things like small game updates will have little, if any, effect on the framework. Making it most likely to be compatible with future game updates, as well as making it easier to update when it *is* necessary to do so.
 
 # Localized READMEs
-- [Русский](https://github.com/Exiled-Team/EXILED/blob/dev/Localization/README-Русский.md)
+- [Русский](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-Русский.md)
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
@@ -88,7 +88,7 @@ However, some plugins might get their config settings from other locations on th
 
 # For Developers
 
-If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
+If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/Exiled-Team/EXILED/blob/master/GettingStarted.md).
 
 For more comprehensive and actively updated tutorials, see [the EXILED website](https://exiled-team.github.io/EXILED/articles/install.html).
 

@@ -16,7 +16,10 @@ namespace Exiled.CustomRoles.Commands.List
     /// </summary>
     internal sealed class List : ParentCommand
     {
-        private List() => LoadGeneratedCommands();
+        private List()
+        {
+            LoadGeneratedCommands();
+        }
 
         /// <summary>
         /// Gets the <see cref="List"/> command instance.
@@ -41,7 +44,7 @@ namespace Exiled.CustomRoles.Commands.List
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Invalid subcommand! Available: registered, tracked.";
+            response = "Invalid subcommand! Available: registered.";
             return false;
         }
     }

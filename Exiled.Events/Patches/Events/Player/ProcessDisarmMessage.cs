@@ -7,107 +7,105 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-#pragma warning disable SA1600 // Elements should be documented
-    using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
-    using Achievements;
-
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
-
-    using global::Utils.Networking;
+    using API.Features;
+    using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using InventorySystem.Disarming;
-    using InventorySystem.Items;
 
-    using Mirror;
+    using NorthwoodLib.Pools;
 
-    using UnityEngine;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage"/>.
-    /// Adds the <see cref="Player.Handcuffing"/> and <see cref="Player.RemovingHandcuffs"/> events.
+    ///     Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage" />.
+    ///     Adds the <see cref="Handlers.Player.Handcuffing" /> and <see cref="Handlers.Player.RemovingHandcuffs" /> events.
     /// </summary>
     [HarmonyPatch(typeof(DisarmingHandlers), nameof(DisarmingHandlers.ServerProcessDisarmMessage))]
     internal static class ProcessDisarmMessage
     {
-        public static bool Prefix(NetworkConnection conn, DisarmMessage msg)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
-            {
-                if (!DisarmingHandlers.ServerCheckCooldown(conn) || !ReferenceHub.TryGetHub(conn.identity.gameObject, out ReferenceHub hub))
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            Label returnLabel = generator.DefineLabel();
+
+            int offset = -4;
+            int index = newInstructions.FindIndex(
+                instruction => instruction.Calls(Method(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
                 {
-                    return false;
-                }
+                    // Player.Get(referenceHub)
+                    new CodeInstruction(OpCodes.Ldloc_0),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                if (!msg.PlayerIsNull)
+                    // Player.Get(msg.PlayerToDisarm)
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(DisarmMessage), nameof(DisarmMessage.PlayerToDisarm))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // RemovingHandcuffsEventArgs ev = new(Player, Player, true)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(RemovingHandcuffsEventArgs))[0]),
+                    new(OpCodes.Dup),
+
+                    // Handlers.Player.OnRemovingHandcuffs(ev)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnRemovingHandcuffs))),
+
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(RemovingHandcuffsEventArgs), nameof(RemovingHandcuffsEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            offset = -5;
+            index = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
                 {
-                    Vector3 vector3 = msg.PlayerToDisarm.transform.position - hub.transform.position;
-                    if (vector3.sqrMagnitude > 20.0 || (msg.PlayerToDisarm.inventory.CurInstance is not null && msg.PlayerToDisarm.inventory.CurInstance.TierFlags != ItemTierFlags.Common))
-                    {
-                        return false;
-                    }
-                }
+                    // Player.Get(referenceHub)
+                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                bool flag1 = !msg.PlayerIsNull && msg.PlayerToDisarm.inventory.IsDisarmed();
-                bool flag2 = !msg.PlayerIsNull && hub.CanDisarm(msg.PlayerToDisarm);
+                    // Player.Get(msg.PlayerToDisarm)
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldfld, Field(typeof(DisarmMessage), nameof(DisarmMessage.PlayerToDisarm))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                if (flag1 && !msg.Disarm)
-                {
-                    if (!hub.inventory.IsDisarmed())
-                    {
-                        var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(hub), API.Features.Player.Get(msg.PlayerToDisarm));
+                    // true
+                    new(OpCodes.Ldc_I4_1),
 
-                        Player.OnRemovingHandcuffs(ev);
+                    // HandcuffingEventArgs evHandcuffing = new(Player, Player, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(HandcuffingEventArgs))[0]),
+                    new(OpCodes.Dup),
 
-                        if (!ev.IsAllowed)
-                        {
-                            return false;
-                        }
+                    // Handlers.Player.OnHandcuffing(evHandcuffing)
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHandcuffing))),
 
-                        msg.PlayerToDisarm.inventory.SetDisarmedStatus(null);
-                    }
-                }
-                else if (!flag1 & flag2 && msg.Disarm)
-                {
-                    if (msg.PlayerToDisarm.inventory.CurInstance is null || msg.PlayerToDisarm.inventory.CurInstance.CanHolster())
-                    {
-                        if (msg.PlayerToDisarm.characterClassManager.CurRole.team == Team.MTF && hub.characterClassManager.CurClass == RoleType.ClassD)
-                        {
-                            AchievementHandlerBase.ServerAchieve(hub.networkIdentity.connectionToClient, AchievementName.TablesHaveTurned);
-                        }
+                    // if (!evHandcuffing.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(HandcuffingEventArgs), nameof(HandcuffingEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
 
-                        var ev = new HandcuffingEventArgs(API.Features.Player.Get(hub), API.Features.Player.Get(msg.PlayerToDisarm));
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                        Player.OnHandcuffing(ev);
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                        if (!ev.IsAllowed)
-                        {
-                            return false;
-                        }
-
-                        msg.PlayerToDisarm.inventory.SetDisarmedStatus(hub.inventory);
-                    }
-                }
-                else
-                {
-                    hub.networkIdentity.connectionToClient.Send<DisarmedPlayersListMessage>(DisarmingHandlers.NewDisarmedList, 0);
-                    return false;
-                }
-
-                DisarmingHandlers.NewDisarmedList.SendToAuthenticated<DisarmedPlayersListMessage>();
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.RemovingHandcuffs: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

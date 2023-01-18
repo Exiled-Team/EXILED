@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Toys
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
+    using Enums;
 
     using Mirror;
 
@@ -68,18 +68,12 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets the bullseye location of the target.
         /// </summary>
-        public Vector3 BullseyePosition
-        {
-            get => Base._bullsEye.position;
-        }
+        public Vector3 BullseyePosition => Base._bullsEye.position;
 
         /// <summary>
         /// Gets the bullseye radius of the target.
         /// </summary>
-        public float BullseyeRadius
-        {
-            get => Base._bullsEyeRadius;
-        }
+        public float BullseyeRadius => Base._bullsEyeRadius;
 
         /// <summary>
         /// Gets or sets the max health of the target.

@@ -7,11 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Warhead
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
+    using API.Features;
+    using Exiled.Events.EventArgs.Warhead;
 
     using HarmonyLib;
 
@@ -19,9 +19,11 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using static HarmonyLib.AccessTools;
 
+    using Warhead = Handlers.Warhead;
+
     /// <summary>
-    /// Patches <see cref="PlayerInteract.UserCode_CmdUsePanel"/>.
-    /// Adds the <see cref="Handlers.Warhead.ChangingLeverStatus"/> event.
+    ///     Patches <see cref="PlayerInteract.UserCode_CmdUsePanel" />.
+    ///     Adds the <see cref="Warhead.ChangingLeverStatus" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUsePanel))]
     internal static class ChangingLeverStatus
@@ -33,32 +35,37 @@ namespace Exiled.Events.Patches.Events.Warhead
             Label returnLabel = generator.DefineLabel();
 
             int offset = 2;
-
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldloc_0),
-                new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldloc_1),
-                new(OpCodes.Call, PropertyGetter(typeof(AlphaWarheadNukesitePanel), nameof(AlphaWarheadNukesitePanel.Networkenabled))),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingLeverStatusEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnChangingLeverStatus))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingLeverStatusEventArgs), nameof(ChangingLeverStatusEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(component)
+                    new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-            offset = 10;
+                    // nukeside.Networkenabled
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Call, PropertyGetter(typeof(AlphaWarheadNukesitePanel), nameof(AlphaWarheadNukesitePanel.Networkenabled))),
 
-            index += offset;
+                    // true
+                    new(OpCodes.Ldc_I4_1),
 
-            int moveIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + 2;
+                    // ChangingLeverStatusEventArgs ev = new(Player, bool, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingLeverStatusEventArgs))[0]),
+                    new(OpCodes.Dup),
 
-            newInstructions[index].MoveLabelsTo(newInstructions[moveIndex]);
+                    // Warhead.OnChangingLeverStatus(ev)
+                    new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnChangingLeverStatus))),
 
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingLeverStatusEventArgs), nameof(ChangingLeverStatusEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

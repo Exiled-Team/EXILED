@@ -7,13 +7,18 @@
 
 namespace Exiled.API.Enums
 {
+    using Features;
+    using PlayerRoles;
+
     /// <summary>
     /// Layers game respawn effects.
     /// </summary>
+    /// <seealso cref="Respawn.PlayEffect(RespawnEffectType)"/>
+    /// <seealso cref="Respawn.PlayEffects(RespawnEffectType[])"/>
     public enum RespawnEffectType : byte
     {
         /// <summary>
-        /// Plays the <see cref="Side.ChaosInsurgency"/> music to alive <see cref="RoleType.ClassD"/> and <see cref="Side.ChaosInsurgency"/>.
+        /// Plays the <see cref="Side.ChaosInsurgency"/> music to alive <see cref="RoleTypeId.ClassD"/> and <see cref="Side.ChaosInsurgency"/>.
         /// </summary>
         PlayChaosInsurgencyMusic = 0,
 

@@ -55,10 +55,11 @@ namespace Exiled.Events.Commands.Reload
                 success = false;
             sender.Respond(responsetemp);
 
-            if (success)
-                response = "Reloaded all configs and plugins successfully!";
-            else
-                response = "Failed to reload all configs and plugins. Read above.";
+            if (!Permissions.Instance.Execute(arguments, sender, out responsetemp))
+                success = false;
+            sender.Respond(responsetemp);
+
+            response = success ? "Reloaded all configs and plugins successfully!" : "Failed to reload all configs and plugins. Read above.";
 
             return success;
         }

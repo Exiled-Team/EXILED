@@ -7,21 +7,20 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118
 #pragma warning disable SA1402
 #pragma warning disable SA1649
-
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
-    using Exiled.API.Features.Items;
+    using API.Features;
+    using API.Features.Items;
 
     using HarmonyLib;
 
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
 
     using MEC;
 
@@ -42,24 +41,32 @@ namespace Exiled.Events.Patches.Generic
             ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
             const int offset = -2;
-            int index = newInstructions.FindIndex(i =>
-                i.opcode == OpCodes.Callvirt &&
-                (MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded))) + offset;
+            int index = newInstructions.FindIndex(
+                i =>
+                    (i.opcode == OpCodes.Callvirt) &&
+                    ((MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded)))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                // Player.Get(inv._hub)
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+            // AddItem(Player.Get(inv._hub), itemInstance)
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // Player.Get(inv._hub)
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // itemInstance
-                new(OpCodes.Ldloc_1),
+                    // itemInstance
+                    new(OpCodes.Ldloc_1),
 
-                // AddItem(player, itemInstance)
-                new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
-            });
+                    // pickup
+                    new(OpCodes.Ldarg_3),
+
+                    // AddItem(player, itemInstance, pickup)
+                    new(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -67,7 +74,15 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void AddItem(Player player, ItemBase item) => player?.ItemsValue.Add(Item.Get(item));
+        private static void AddItem(Player player, ItemBase itemBase, ItemPickupBase itemPickupBase)
+        {
+            Item item = Item.Get(itemBase);
+
+            if (itemPickupBase != null)
+                item.Scale = itemPickupBase.transform.localScale;
+
+            player?.ItemsValue.Add(item);
+        }
     }
 
     /// <summary>
@@ -84,14 +99,22 @@ namespace Exiled.Events.Patches.Generic
             const int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Throw) + offset;
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Ldarg_1),
-                new(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
-            });
+            // RemoveItem(Player.Get(inv._hub), itemSerial)
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // Player.Get(inv._hub)
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // itemSerial
+                    new(OpCodes.Ldarg_1),
+
+                    // RemoveItem(Player.Get(inv._hub), itemSerial)
+                    new(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -121,30 +144,26 @@ namespace Exiled.Events.Patches.Generic
             }
 #if DEBUG
             Log.Debug(
-                    $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
             foreach (Item item in player.Items)
-                    Log.Debug($"{item.Type} ({item.Serial})");
+                    Log.Debug($"{item})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
+
             player.ItemsValue.Remove(Item.Get(itemBase));
+
+            Item.BaseToItem.Remove(itemBase);
+
             Timing.CallDelayed(0.15f, () =>
             {
-                if (player.Inventory.UserInventory.Items.ContainsKey(serial))
-                {
-                    player.Inventory.UserInventory.Items.Remove(serial);
-                    player.Inventory.SendItemsNextFrame = true;
-#if DEBUG
-                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
-#endif
-                }
 #if DEBUG
                 Log.Debug($"Item ({serial}) removed from {player.Nickname}");
-                Log.Debug(
-                        $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+
                 foreach (Item item in player.Items)
-                        Log.Debug($"{item.Type} ({item.Serial})");
+                        Log.Debug($"{item})");
 #endif
-            });
+                });
         }
     }
 }

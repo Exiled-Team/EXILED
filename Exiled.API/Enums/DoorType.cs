@@ -7,11 +7,13 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
+    using static Interactables.Interobjects.ElevatorManager;
 
     /// <summary>
     /// Unique identifier for the different types of doors.
     /// </summary>
+    /// <seealso cref="Features.Door.Type"/>
+    /// <seealso cref="Features.Door.Get(DoorType)"/>
     public enum DoorType
     {
         /// <summary>
@@ -94,23 +96,15 @@ namespace Exiled.API.Enums
         /// </summary>
         GR18Gate,
 
-        /// <inheritdoc cref="GR18Gate"/>
-        [Obsolete("Use DoorType.GR18Gate instead.", true)]
-        GR18 = GR18Gate,
-
         /// <summary>
         /// Represents the 914 gate.
         /// </summary>
         Scp914Gate,
 
-        /// <inheritdoc cref="Scp914Gate"/>
-        [Obsolete("Use DoorType.Scp914Gate instead.", true)]
-        Scp914 = Scp914Gate,
-
         /// <summary>
-        /// Represents the CHECKPOINT_ENT door.
+        /// Represents the 939_CRYO door.
         /// </summary>
-        CheckpointEntrance,
+        Scp939Cryo,
 
         /// <summary>
         /// Represents the CHECKPOINT_LCZ_A door.
@@ -233,15 +227,73 @@ namespace Exiled.API.Enums
         Scp330Chamber,
 
         /// <summary>
-        /// Represents the 012 door.
+        /// Represents the Gate in the Checkpoint between EZ and HCZ.
         /// </summary>
-        [Obsolete("Removed from the game.", true)]
-        Scp012,
+        CheckpointGate,
 
         /// <summary>
-        /// Represents the 012_BOTTOM door.
+        /// Represents the Gate in the Checkpoint between EZ and HCZ.
         /// </summary>
-        [Obsolete("Removed from the game.", true)]
-        Scp012Bottom,
+        SurfaceDoor,
+
+        /// <summary>
+        /// Represents the CHECKPOINT_EZ_HCZ_A door.
+        /// </summary>
+        CheckpointEzHczA,
+
+        /// <summary>
+        /// Represents the CHECKPOINT_EZ_HCZ_B door.
+        /// </summary>
+        CheckpointEzHczB,
+
+        /// <summary>
+        /// Represents an unknown Gate.
+        /// </summary>
+        UnknownGate,
+
+        /// <summary>
+        /// Represents an unknown Elevator.
+        /// </summary>
+        UnknownElevator,
+
+        /// <summary>
+        /// Represents the Elevator door for <see cref="ElevatorGroup.GateA"/>.
+        /// </summary>
+        ElevatorGateA,
+
+        /// <summary>
+        /// Represents the Elevator door for <see cref="ElevatorGroup.GateB"/>.
+        /// </summary>
+        ElevatorGateB,
+
+        /// <summary>
+        /// Represents the Elevator door for <see cref="ElevatorGroup.Nuke"/>.
+        /// </summary>
+        ElevatorNuke,
+
+        /// <summary>
+        /// Represents the Elevator door for <see cref="ElevatorGroup.Scp049"/>.
+        /// </summary>
+        ElevatorScp049,
+
+        /// <summary>
+        /// Represents the Elevator door for <see cref="ElevatorGroup.LczA01"/> and <see cref="ElevatorGroup.LczA02"/>.
+        /// </summary>
+        ElevatorLczA,
+
+        /// <summary>
+        /// Represents the Elevator door for <see cref="ElevatorGroup.LczB01"/> and <see cref="ElevatorGroup.LczB02"/>.
+        /// </summary>
+        ElevatorLczB,
+
+        /// <summary>
+        /// Represents the Armory door in <see cref="RoomType.HczEzCheckpointA"/>.
+        /// </summary>
+        CheckpointArmoryA,
+
+        /// <summary>
+        /// Represents the Armory door in <see cref="RoomType.HczEzCheckpointB"/>.
+        /// </summary>
+        CheckpointArmoryB,
     }
 }

@@ -7,22 +7,41 @@
 
 namespace Exiled.Events.Handlers
 {
-    using System;
+    using API.Extensions;
+    using API.Features;
+    using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Scp079;
+    using Extensions;
+    using Interactables.Interobjects.DoorUtils;
+    using InventorySystem.Items.Radio;
+    using MapGeneration.Distributors;
+    using PlayerRoles;
+    using PlayerRoles.FirstPersonControl.Thirdperson;
+    using PlayerStatsSystem;
+    using PluginAPI.Core.Attributes;
+    using PluginAPI.Enums;
+    using PluginAPI.Events;
 
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
+    using static Events;
 
-    using static Exiled.Events.Events;
+#pragma warning disable IDE0079
+#pragma warning disable IDE0060
 
     /// <summary>
     /// Player related events.
     /// </summary>
-    public static class Player
+    public class Player
+#pragma warning restore IDE0079 // Retirer la suppression inutile
     {
         /// <summary>
         /// Invoked before authenticating a <see cref="API.Features.Player"/>.
         /// </summary>
         public static event CustomEventHandler<PreAuthenticatingEventArgs> PreAuthenticating;
+
+        /// <summary>
+        /// Invoked before reserved slot is finalized for a <see cref="API.Features.Player"/>.
+        /// </summary>
+        public static event CustomEventHandler<ReservedSlotsCheckEventArgs> ReservedSlot;
 
         /// <summary>
         /// Invoked before kicking a <see cref="API.Features.Player"/> from the server.
@@ -126,13 +145,18 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before changing a <see cref="API.Features.Player"/> role.
         /// </summary>
-        /// <remarks>If you set IsAllowed to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
+        /// <remarks>If <see cref="ChangingRoleEventArgs.IsAllowed"/> is set to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
-        /// Invoked before throwing an <see cref="API.Features.Items.Item"/>.
+        /// Invoked afer throwing an <see cref="API.Features.Items.Throwable"/>.
         /// </summary>
-        public static event CustomEventHandler<ThrowingItemEventArgs> ThrowingItem;
+        public static event CustomEventHandler<ThrownItemEventArgs> ThrownItem;
+
+        /// <summary>
+        /// Invoked before receving a throwing request an <see cref="API.Features.Items.Throwable"/>.
+        /// </summary>
+        public static event CustomEventHandler<ThrowingRequestEventArgs> ThrowingRequest;
 
         /// <summary>
         /// Invoked before dropping an <see cref="API.Features.Items.Item"/>.
@@ -142,17 +166,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before dropping a null <see cref="API.Features.Items.Item"/>.
         /// </summary>
-        public static event CustomEventHandler<DroppingNullEventArgs> DroppingNull;
-
-        /// <summary>
-        /// Invoked before picking up ammo.
-        /// </summary>
-        public static event CustomEventHandler<PickingUpAmmoEventArgs> PickingUpAmmo;
-
-        /// <summary>
-        /// Invoked before picking up armor.
-        /// </summary>
-        public static event CustomEventHandler<PickingUpArmorEventArgs> PickingUpArmor;
+        public static event CustomEventHandler<DroppingNothingEventArgs> DroppingNothing;
 
         /// <summary>
         /// Invoked before picking up an <see cref="API.Features.Items.Item"/>.
@@ -205,12 +219,18 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> enters killer collision.
+        /// </summary>
+        public static event CustomEventHandler<EnteringKillerCollisionEventArgs> EnteringKillerCollision;
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> reloads a weapon.
         /// </summary>
         public static event CustomEventHandler<ReloadingWeaponEventArgs> ReloadingWeapon;
 
         /// <summary>
-        /// Invoked before spawning a <see cref="API.Features.Player"/>.
+        /// Invoked before spawning a <see cref="API.Features.Player"/>(called only when possibly to change position).
+        /// use <see cref="Spawned"/> or <see cref="ChangingRole"/>for all class changes.
         /// </summary>
         public static event CustomEventHandler<SpawningEventArgs> Spawning;
 
@@ -218,11 +238,6 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="API.Features.Player"/> has spawned.
         /// </summary>
         public static event CustomEventHandler<SpawnedEventArgs> Spawned;
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> enters the femur breaker.
-        /// </summary>
-        public static event CustomEventHandler<EnteringFemurBreakerEventArgs> EnteringFemurBreaker;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> held <see cref="API.Features.Items.Item"/> changes.
@@ -285,14 +300,14 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReceivingEffectEventArgs> ReceivingEffect;
 
         /// <summary>
-        /// Invoked before an user's mute status is changed.
+        /// Invoked before muting a user.
         /// </summary>
-        public static event CustomEventHandler<ChangingMuteStatusEventArgs> ChangingMuteStatus;
+        public static event CustomEventHandler<IssuingMuteEventArgs> IssuingMute;
 
         /// <summary>
-        /// Invoked before an user's intercom mute status is changed.
+        /// Invoked before unmuting a user.
         /// </summary>
-        public static event CustomEventHandler<ChangingIntercomMuteStatusEventArgs> ChangingIntercomMuteStatus;
+        public static event CustomEventHandler<RevokingMuteEventArgs> RevokingMute;
 
         /// <summary>
         /// Invoked before a user's radio battery charge is changed.
@@ -323,11 +338,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before dropping ammo.
         /// </summary>
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
-        /// </summary>
-        public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> interacts with a shooting target.
@@ -370,11 +380,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DryfiringWeaponEventArgs> DryfiringWeapon;
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
-        /// </summary>
-        public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
-
-        /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
         /// </summary>
         public static event CustomEventHandler<VoiceChattingEventArgs> VoiceChatting;
@@ -415,14 +420,9 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
 
         /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
+        /// Invoked before a <see cref="API.Features.Player"/> toggles overwatch.
         /// </summary>
-        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
-
-        /// <summary>
-        /// Invoked before a <see cref="API.Features.Player"/> interacts with SCP-330.
-        /// </summary>
-        public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
+        public static event CustomEventHandler<TogglingOverwatchEventArgs> TogglingOverwatch;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> searches a Pickup.
@@ -435,10 +435,35 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DamagingWindowEventArgs> PlayerDamageWindow;
 
         /// <summary>
-        /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
+        /// Invoked after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
         /// </summary>
-        /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
-        public static void OnPreAuthenticating(PreAuthenticatingEventArgs ev) => PreAuthenticating.InvokeSafely(ev);
+        public static event CustomEventHandler<ItemAddedEventArgs> ItemAdded;
+
+        /// <summary>
+        /// Invoked before KillPlayer is called.
+        /// </summary>
+        public static event CustomEventHandler<KillingPlayerEventArgs> KillingPlayer;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/> enters in an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<EnteringEnvironmentalHazardEventArgs> EnteringEnvironmentalHazard;
+
+        /// <summary>
+        /// Invoked when a <see cref="API.Features.Player"/> stays on an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<StayingOnEnvironmentalHazardEventArgs> StayingOnEnvironmentalHazard;
+
+        /// <summary>
+        /// Invoked when a <see cref="API.Features.Player"/> exists from an environmental hazard.
+        /// </summary>
+        public static event CustomEventHandler<ExitingEnvironmentalHazardEventArgs> ExitingEnvironmentalHazard;
+
+        /// <summary>
+        /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
+        /// </summary>
+        /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
+        public static void OnReservedSlot(ReservedSlotsCheckEventArgs ev) => ReservedSlot.InvokeSafely(ev);
 
         /// <summary>
         /// Called before kicking a <see cref="API.Features.Player"/> from the server.
@@ -513,40 +538,10 @@ namespace Exiled.Events.Handlers
         public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="API.Features.Player"/> has joined the server.
-        /// </summary>
-        /// <param name="ev">The <see cref="JoinedEventArgs"/> instance.</param>
-        public static void OnJoined(JoinedEventArgs ev) => Joined.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after a <see cref="API.Features.Player"/> has been verified.
-        /// </summary>
-        /// <param name="ev">The <see cref="VerifiedEventArgs"/> instance.</param>
-        public static void OnVerified(VerifiedEventArgs ev) => Verified.InvokeSafely(ev);
-
-        /// <summary>
         /// Called after a <see cref="API.Features.Player"/> has left the server.
         /// </summary>
         /// <param name="ev">The <see cref="LeftEventArgs"/> instance.</param>
         public static void OnLeft(LeftEventArgs ev) => Left.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before destroying a <see cref="API.Features.Player"/>.
-        /// </summary>
-        /// <param name="ev">The <see cref="DestroyingEventArgs"/> instance.</param>
-        public static void OnDestroying(DestroyingEventArgs ev) => Destroying.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before hurting a player.
-        /// </summary>
-        /// <param name="ev">The <see cref="HurtingEventArgs"/> instance.</param>
-        public static void OnHurting(HurtingEventArgs ev) => Hurting.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> dies.
-        /// </summary>
-        /// <param name="ev"><see cref="DyingEventArgs"/> instance.</param>
-        public static void OnDying(DyingEventArgs ev) => Dying.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> died.
@@ -558,14 +553,20 @@ namespace Exiled.Events.Handlers
         /// Called before changing a <see cref="API.Features.Player"/> role.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
-        /// <remarks>If you set IsAllowed to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
+        /// <remarks>If <see cref="ChangingRoleEventArgs.IsAllowed"/> is set to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrowingItemEventArgs"/> instance.</param>
-        public static void OnThrowingItem(ThrowingItemEventArgs ev) => ThrowingItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ThrownItemEventArgs"/> instance.</param>
+        public static void OnThrowingItem(ThrownItemEventArgs ev) => ThrownItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before receving a throwing request.
+        /// </summary>
+        /// <param name="ev">The <see cref="ThrowingRequestEventArgs"/> instance.</param>
+        public static void OnThrowingRequest(ThrowingRequestEventArgs ev) => ThrowingRequest.InvokeSafely(ev);
 
         /// <summary>
         /// Called before dropping an item.
@@ -576,20 +577,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before dropping a null item.
         /// </summary>
-        /// <param name="ev">The <see cref="DroppingNullEventArgs"/> instance.</param>
-        public static void OnDroppingNull(DroppingNullEventArgs ev) => DroppingNull.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> picks up ammo.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpAmmoEventArgs"/> instance.</param>
-        public static void OnPickingUpAmmo(PickingUpAmmoEventArgs ev) => PickingUpAmmo.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> picks up armor.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpArmorEventArgs"/> instance.</param>
-        public static void OnPickingUpArmor(PickingUpArmorEventArgs ev) => PickingUpArmor.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="DroppingNothingEventArgs"/> instance.</param>
+        public static void OnDroppingNothing(DroppingNothingEventArgs ev) => DroppingNothing.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> picks up an item.
@@ -652,6 +641,12 @@ namespace Exiled.Events.Handlers
         public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev) => FailingEscapePocketDimension.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> enters killer collision.
+        /// </summary>
+        /// <param name="ev">The <see cref="EnteringKillerCollisionEventArgs"/> instance.</param>
+        public static void OnEnteringKillerCollision(EnteringKillerCollisionEventArgs ev) => EnteringKillerCollision.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> reloads a weapon.
         /// </summary>
         /// <param name="ev">The <see cref="ReloadingWeaponEventArgs"/> instance.</param>
@@ -666,14 +661,10 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> has spawned.
         /// </summary>
-        /// <param name="referenceHub">The <see cref="ReferenceHub"/> instance.</param>
-        public static void OnSpawned(ReferenceHub referenceHub) => Spawned.InvokeSafely(new SpawnedEventArgs(referenceHub));
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> enters the femur breaker.
-        /// </summary>
-        /// <param name="ev">The <see cref="EnteringFemurBreakerEventArgs"/> instance.</param>
-        public static void OnEnteringFemurBreaker(EnteringFemurBreakerEventArgs ev) => EnteringFemurBreaker.InvokeSafely(ev);
+        /// <param name="hub">The <see cref="ReferenceHub"/> instance.</param>
+        /// <param name="oldRole">The player's old <see cref="PlayerRoleBase"/> instance.</param>
+        /// <param name="newRole">The player's new <see cref="PlayerRoleBase"/> instance.</param>
+        public static void OnSpawned(ReferenceHub hub, PlayerRoleBase oldRole, PlayerRoleBase newRole) => Spawned.InvokeSafely(new SpawnedEventArgs(hub, oldRole));
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> held item changes.
@@ -686,12 +677,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingGroupEventArgs"/> instance.</param>
         public static void OnChangingGroup(ChangingGroupEventArgs ev) => ChangingGroup.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> interacts with a door.
-        /// </summary>
-        /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
-        public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with an elevator.
@@ -712,52 +697,10 @@ namespace Exiled.Events.Handlers
         public static void OnTriggeringTesla(TriggeringTeslaEventArgs ev) => TriggeringTesla.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> unlocks a generator.
-        /// </summary>
-        /// <param name="ev">The <see cref="UnlockingGeneratorEventArgs"/> instance.</param>
-        public static void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev) => UnlockingGenerator.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> opens a generator.
-        /// </summary>
-        /// <param name="ev">The <see cref="OpeningGeneratorEventArgs"/> instance.</param>
-        public static void OnOpeningGenerator(OpeningGeneratorEventArgs ev) => OpeningGenerator.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> closes a generator.
-        /// </summary>
-        /// <param name="ev">The <see cref="ClosingGeneratorEventArgs"/> instance.</param>
-        public static void OnClosingGenerator(ClosingGeneratorEventArgs ev) => ClosingGenerator.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> turns on the generator by switching lever.
-        /// </summary>
-        /// <param name="ev">The <see cref="ActivatingGeneratorEventArgs"/> instance.</param>
-        public static void OnActivatingGenerator(ActivatingGeneratorEventArgs ev) => ActivatingGenerator.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> turns off the generator by switching lever.
-        /// </summary>
-        /// <param name="ev">The <see cref="StoppingGeneratorEventArgs"/> instance.</param>
-        public static void OnStoppingGenerator(StoppingGeneratorEventArgs ev) => StoppingGenerator.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> receives a status effect.
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingEffectEventArgs"/> instance.</param>
         public static void OnReceivingEffect(ReceivingEffectEventArgs ev) => ReceivingEffect.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before an user's mute status is changed.
-        /// </summary>
-        /// <param name="ev">The <see cref="ChangingMuteStatusEventArgs"/> instance.</param>
-        public static void OnChangingMuteStatus(ChangingMuteStatusEventArgs ev) => ChangingMuteStatus.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before an user's intercom mute status is changed.
-        /// </summary>
-        /// <param name="ev">The <see cref="ChangingIntercomMuteStatusEventArgs"/> instance.</param>
-        public static void OnChangingIntercomMuteStatus(ChangingIntercomMuteStatusEventArgs ev) => ChangingIntercomMuteStatus.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a user's radio battery charge is changed.
@@ -766,15 +709,9 @@ namespace Exiled.Events.Handlers
         public static void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev) => UsingRadioBattery.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a user's radio preset is changed.
-        /// </summary>
-        /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
-        public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> MicroHID state is changed.
         /// </summary>
-        /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="ChangingMicroHIDStateEventArgs"/> instance.</param>
         public static void OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
 
         /// <summary>
@@ -788,18 +725,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
         public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before dropping ammo.
-        /// </summary>
-        /// <param name="ev">The <see cref="DroppingAmmoEventArgs"/> instance.</param>
-        public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a sinkhole.
-        /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
-        public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a shooting target.
@@ -850,12 +775,6 @@ namespace Exiled.Events.Handlers
         public static void OnDryfiringWeapon(DryfiringWeaponEventArgs ev) => DryfiringWeapon.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> walks on a tantrum.
-        /// </summary>
-        /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
-        public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
-
-        /// <summary>
         /// Invoked after a <see cref="API.Features.Player"/> presses the voicechat key.
         /// </summary>
         /// <param name="ev">The <see cref="VoiceChattingEventArgs"/> instance.</param>
@@ -864,8 +783,10 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> makes noise.
         /// </summary>
-        /// <param name="ev">The <see cref="MakingNoiseEventArgs"/> instance.</param>
-        public static void OnMakingNoise(MakingNoiseEventArgs ev) => MakingNoise.InvokeSafely(ev);
+        /// <param name="animatedCharacterModel"> The <see cref="AnimatedCharacterModel"/> instance.</param>
+        /// <param name="distance">The footsteps distance.</param>
+        public static void OnMakingNoise(AnimatedCharacterModel animatedCharacterModel, float distance)
+            => MakingNoise.InvokeSafely(new MakingNoiseEventArgs(animatedCharacterModel, distance));
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> jumps.
@@ -904,16 +825,10 @@ namespace Exiled.Events.Handlers
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> picks up a SCP-330 candy.
+        /// Called before a <see cref="API.Features.Player"/> toggles overwatch.
         /// </summary>
-        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
-        public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="API.Features.Player"/> interacts with SCP-330.
-        /// </summary>
-        /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
-        public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="TogglingOverwatchEventArgs"/> instance.</param>
+        public static void OnTogglingOverwatch(TogglingOverwatchEventArgs ev) => TogglingOverwatch.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> searches a Pickup.
@@ -922,9 +837,161 @@ namespace Exiled.Events.Handlers
         public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
 
         /// <summary>
+        ///  Called before KillPlayer is called.
+        /// </summary>
+        /// <param name="ev">The <see cref="KillingPlayerEventArgs"/> event handler. </param>
+        public static void OnKillPlayer(KillingPlayerEventArgs ev) => KillingPlayer.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="T:Exiled.API.Features.Player" /> has an item added to their inventory.
+        /// </summary>
+        /// <param name="referenceHub">The <see cref="ReferenceHub"/> the item was added to.</param>
+        /// <param name="itemBase">The added <see cref="InventorySystem.Items.ItemBase"/>.</param>
+        /// <param name="pickupBase">The <see cref="InventorySystem.Items.Pickups.ItemPickupBase"/> the <see cref="InventorySystem.Items.ItemBase"/> originated from, or <see langword="null"/> if the item was not picked up.</param>
+        public static void OnItemAdded(ReferenceHub referenceHub, InventorySystem.Items.ItemBase itemBase, InventorySystem.Items.Pickups.ItemPickupBase pickupBase)
+            => ItemAdded.InvokeSafely(new ItemAddedEventArgs(referenceHub, itemBase, pickupBase));
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> enters in an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="EnteringEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnEnteringEnvironmentalHazard(EnteringEnvironmentalHazardEventArgs ev) => EnteringEnvironmentalHazard.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called when a <see cref="API.Features.Player"/> stays on an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="StayingOnEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnStayingOnEnvironmentalHazard(StayingOnEnvironmentalHazardEventArgs ev) => StayingOnEnvironmentalHazard.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> exits from an environmental hazard.
+        /// </summary>
+        /// <param name="ev">The <see cref="ExitingEnvironmentalHazardEventArgs"/> instance. </param>
+        public static void OnExitingEnvironmentalHazard(ExitingEnvironmentalHazardEventArgs ev) => ExitingEnvironmentalHazard.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a <see cref="API.Features.Player"/> damage a window.
         /// </summary>
-        /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance. </param>
         public static void OnPlayerDamageWindow(DamagingWindowEventArgs ev) => PlayerDamageWindow.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> unlocks a generator.
+        /// </summary>
+        /// <param name="ev">The <see cref="UnlockingGeneratorEventArgs"/> instance. </param>
+        public static void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev) => UnlockingGenerator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> opens a generator.
+        /// </summary>
+        /// <param name="ev">The <see cref="OpeningGeneratorEventArgs"/> instance. </param>
+        public static void OnOpeningGenerator(OpeningGeneratorEventArgs ev) => OpeningGenerator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> closes a generator.
+        /// </summary>
+        /// <param name="ev">The <see cref="ClosingGeneratorEventArgs"/> instance. </param>
+        public static void OnClosingGenerator(ClosingGeneratorEventArgs ev) => ClosingGenerator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> turns on the generator by switching lever.
+        /// </summary>
+        /// <param name="ev">The <see cref="ActivatingGeneratorEventArgs"/> instance. </param>
+        public static void OnActivatingGenerator(ActivatingGeneratorEventArgs ev) => ActivatingGenerator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> turns off the generator by switching lever.
+        /// </summary>
+        /// <param name="ev">The <see cref="StoppingGeneratorEventArgs"/> instance. </param>
+        public static void OnStoppingGenerator(StoppingGeneratorEventArgs ev) => StoppingGenerator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> interacts with a door.
+        /// </summary>
+        /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance. </param>
+        public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before dropping ammo.
+        /// </summary>
+        /// <param name="ev">The <see cref="DroppingAmmoEventArgs"/> instance. </param>
+        public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before muting a user.
+        /// </summary>
+        /// <param name="ev">The <see cref="IssuingMuteEventArgs"/> instance. </param>
+        public static void OnIssuingMute(IssuingMuteEventArgs ev) => IssuingMute.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before unmuting a user.
+        /// </summary>
+        /// <param name="ev">The <see cref="RevokingMuteEventArgs"/> instance. </param>
+        public static void OnRevokingMute(RevokingMuteEventArgs ev) => RevokingMute.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a user's radio preset is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance. </param>
+        public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before hurting a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="HurtingEventArgs"/> instance. </param>
+        public static void OnHurting(HurtingEventArgs ev) => Hurting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Player"/> dies.
+        /// </summary>
+        /// <param name="ev">The <see cref="DyingEventArgs"/> instance. </param>
+        public static void OnDying(DyingEventArgs ev) => Dying.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> has joined the server.
+        /// </summary>
+        /// <param name="ev">The <see cref="JoinedEventArgs"/> instance. </param>
+        public static void OnJoined(JoinedEventArgs ev) => Joined.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> has been verified.
+        /// </summary>
+        /// <param name="ev">The <see cref="VerifiedEventArgs"/> instance. </param>
+        public static void OnVerified(VerifiedEventArgs ev) => Verified.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before destroying a <see cref="API.Features.Player"/>.
+        /// </summary>
+        /// <param name="ev">The <see cref="DestroyingEventArgs"/> instance. </param>
+        public static void OnDestroying(DestroyingEventArgs ev) => Destroying.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
+        /// </summary>
+        /// <param name="userId"><inheritdoc cref="PreAuthenticatingEventArgs.UserId"/></param>
+        /// <param name="ipAddress"><inheritdoc cref="PreAuthenticatingEventArgs.IpAddress"/></param>
+        /// <param name="expiration"><inheritdoc cref="PreAuthenticatingEventArgs.Expiration"/></param>
+        /// <param name="flags"><inheritdoc cref="PreAuthenticatingEventArgs.Flags"/></param>
+        /// <param name="country"><inheritdoc cref="PreAuthenticatingEventArgs.Country"/></param>
+        /// <param name="signature"><inheritdoc cref="PreAuthenticatingEventArgs.Signature"/></param>
+        /// <param name="request"><inheritdoc cref="PreAuthenticatingEventArgs.Request"/></param>
+        /// <param name="readerStartPosition"><inheritdoc cref="PreAuthenticatingEventArgs.ReaderStartPosition"/></param>
+        /// <returns>Returns the <see cref="PreauthCancellationData"/> instance.</returns>
+        [PluginEvent(ServerEventType.PlayerPreauth)]
+        public PreauthCancellationData OnPreAuthenticating(
+            string userId,
+            string ipAddress,
+            long expiration,
+            CentralAuthPreauthFlags flags,
+            string country,
+            byte[] signature,
+            LiteNetLib.ConnectionRequest request,
+            int readerStartPosition)
+        {
+            PreAuthenticatingEventArgs ev = new(userId, ipAddress, expiration, flags, country, signature, request, readerStartPosition);
+            PreAuthenticating.InvokeSafely(ev);
+
+            return ev.CachedPreauthData;
+        }
     }
 }

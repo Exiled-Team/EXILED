@@ -7,13 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Reflection.Emit;
 
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using Exiled.Events.EventArgs.Map;
+    using Handlers;
 
     using HarmonyLib;
 
@@ -24,8 +23,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp079Generator.Engaged"/>.
-    /// Adds the <see cref="Map.GeneratorActivated"/> event.
+    ///     Patches <see cref="Scp079Generator.Engaged" />.
+    ///     Adds the <see cref="Map.GeneratorActivated" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.Engaged), MethodType.Setter)]
     internal static class GeneratorActivated
@@ -34,40 +33,59 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Search for the third "ldarg.0".
             const int index = 0;
+
             Label retModLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
+
             LocalBuilder ev = generator.DeclareLocal(typeof(GeneratorActivatedEventArgs));
 
-            // var ev = new GeneratorActivatedEventArgs(this, true);
+            // GeneratorActivatedEventArgs ev = new(this, true);
             //
             // Map.OnGeneratorActivated(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
-            newInstructions.InsertRange(index, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldc_I4_1),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GeneratorActivatedEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc, ev.LocalIndex),
-                new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnGeneratorActivated))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, retModLabel),
-            });
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // this
+                    new(OpCodes.Ldarg_0),
 
-            newInstructions.InsertRange(newInstructions.Count - 1, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(retModLabel),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue, returnLabel),
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldfld, Field(typeof(Scp079Generator), nameof(Scp079Generator._leverStopwatch))),
-                new(OpCodes.Callvirt, Method(typeof(Stopwatch), nameof(Stopwatch.Restart))),
-            });
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // GeneratorActivatedEventArgs ev = new(Scp079Generator, bool)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(GeneratorActivatedEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
+
+                    // Map.OnGeneratorActivated(ev)
+                    new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnGeneratorActivated))),
+
+                    // if (!ev.IsAllowed)
+                    //    return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                    new(OpCodes.Brfalse_S, retModLabel),
+                });
+
+            newInstructions.InsertRange(
+                newInstructions.Count - 1,
+                new[]
+                {
+                    // if (ev.IsAllowed)
+                    //    return;
+                    new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(retModLabel),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue, returnLabel),
+
+                    // this._leverStopwatch.Restart
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp079Generator), nameof(Scp079Generator._leverStopwatch))),
+                    new(OpCodes.Callvirt, Method(typeof(Stopwatch), nameof(Stopwatch.Restart))),
+                });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

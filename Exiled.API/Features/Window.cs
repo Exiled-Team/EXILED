@@ -9,10 +9,8 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-    using Exiled.API.Features.DamageHandlers;
-
+    using DamageHandlers;
+    using Enums;
     using UnityEngine;
 
     /// <summary>
@@ -21,10 +19,9 @@ namespace Exiled.API.Features
     public class Window
     {
         /// <summary>
-        /// A <see cref="List{T}"/> of <see cref="Window"/> on the map.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.
         /// </summary>
-        internal static readonly List<Window> WindowValue = new(30);
-        private static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
+        internal static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Window"/> class.
@@ -41,11 +38,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IEnumerable<Window> List => WindowValue.AsReadOnly();
+        public static IEnumerable<Window> List => BreakableWindowToWindow.Values;
 
-        /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
-        /// </summary>
         /// <summary>
         /// Gets the base-game <see cref="BreakableWindow"/> for this window.
         /// </summary>
@@ -57,14 +51,24 @@ namespace Exiled.API.Features
         public GameObject GameObject => Base.gameObject;
 
         /// <summary>
-        /// Gets the <see cref="Room"/>.
+        /// Gets the window's <see cref="UnityEngine.Transform"/>.
+        /// </summary>
+        public Transform Transform => Base._transform;
+
+        /// <summary>
+        /// Gets the <see cref="Features.Room"/> the window is in.
         /// </summary>
         public Room Room { get; }
 
         /// <summary>
-        /// Gets the window <see cref="GlassType"/>.
+        /// Gets the window's <see cref="GlassType"/>.
         /// </summary>
         public GlassType Type { get; }
+
+        /// <summary>
+        /// Gets the window's <see cref="ZoneType"/>.
+        /// </summary>
+        public ZoneType Zone => Room.Zone;
 
         /// <summary>
         /// Gets or sets the window's position.
@@ -74,11 +78,6 @@ namespace Exiled.API.Features
             get => GameObject.transform.position;
             set => GameObject.transform.position = value;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether or not this window is breakable.
-        /// </summary>
-        public bool Is079Trigger => Recontainer.ActivatorWindow == this;
 
         /// <summary>
         /// Gets a value indicating whether or not this window is breakable.
@@ -144,9 +143,9 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="breakableWindow">The base-game <see cref="Window"/>.</param>
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
-        public static Window Get(BreakableWindow breakableWindow) => BreakableWindowToWindow.ContainsKey(breakableWindow)
-            ? BreakableWindowToWindow[breakableWindow]
-            : new Window(breakableWindow);
+        public static Window Get(BreakableWindow breakableWindow) => BreakableWindowToWindow.TryGetValue(breakableWindow, out Window window)
+            ? window
+            : new(breakableWindow);
 
         /// <summary>
         /// Break the window.
@@ -173,22 +172,20 @@ namespace Exiled.API.Features
         /// Returns the Window in a human-readable format.
         /// </summary>
         /// <returns>A string containing Window-related data.</returns>
-        public override string ToString() => $"{Type} {Health} {IsBroken} {DisableScpDamage}";
+        public override string ToString() => $"{Type} ({Health}) [{IsBroken}] *{DisableScpDamage}*";
 
-        private GlassType GetGlassType()
+        private GlassType GetGlassType() => Room?.Type switch
         {
-            if (Recontainer.ActivatorWindow.Base == Base)
-                return GlassType.Scp079Trigger;
-            return Room.gameObject.name.RemoveBracketsOnEndOfName() switch
-            {
-                "LCZ_330" => GlassType.Scp330,
-                "LCZ_372" => GlassType.GR18,
-                "LCZ_Plants" => GlassType.Plants,
-                "HCZ_049" => GlassType.Scp049,
-                "HCZ_079" => GlassType.Scp079,
-                "HCZ_Hid" => GlassType.MicroHid,
-                _ => GlassType.Unknown,
-            };
-        }
+            RoomType.Lcz330 => GlassType.Scp330,
+            RoomType.LczGlassBox => GlassType.GR18,
+            RoomType.LczPlants => GlassType.Plants,
+            RoomType.Hcz049 => GlassType.Scp049,
+            RoomType.Hcz079 => Recontainer.Base._activatorGlass == Base ? GlassType.Scp079Trigger : GlassType.Scp079,
+            RoomType.HczHid => GlassType.MicroHid,
+            RoomType.HczTestRoom => GlassType.TestRoom,
+            RoomType.HczEzCheckpointA => GlassType.HczEzCheckpointA,
+            RoomType.HczEzCheckpointB => GlassType.HczEzCheckpointB,
+            _ => GlassType.Unknown,
+        };
     }
 }
