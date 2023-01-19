@@ -1853,13 +1853,13 @@ namespace Exiled.API.Features
         /// Gets a user's SCP preference.
         /// </summary>
         /// <param name="roleType">The SCP RoleType.</param>
-        /// <returns>A value from <c>-5</c> to <c>5</c>, representing a player's preference to play as the provided SCP. Will return <see cref="int.MinValue"/> for invalid SCPs.</returns>
+        /// <returns>A value from <c>-5</c> to <c>5</c>, representing a player's preference to play as the provided SCP. Will return <c>0</c> for invalid SCPs.</returns>
         public int GetScpPreference(RoleTypeId roleType)
         {
             if (ScpPreferences.Preferences.TryGetValue(roleType, out int value))
                 return value;
 
-            return int.MinValue;
+            return 0;
         }
 
         /// <summary>
