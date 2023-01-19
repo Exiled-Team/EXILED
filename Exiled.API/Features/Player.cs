@@ -531,9 +531,7 @@ namespace Exiled.API.Features
             get
             {
                 if (ScpSpawnPreferences.Preferences.TryGetValue(Connection.connectionId, out ScpSpawnPreferences.SpawnPreferences value))
-                {
                     return value;
-                }
 
                 return default;
             }
@@ -1959,10 +1957,7 @@ namespace Exiled.API.Features
         /// Kills the player.
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/>.</param>
-        public void Kill(DamageHandlerBase damageHandlerBase)
-        {
-            ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
-        }
+        public void Kill(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
 
         /// <summary>
         /// Kills the player.
@@ -2018,8 +2013,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The length of time to ban.</param>
         /// <param name="reason">The ban reason.</param>
         /// <param name="issuer">The ban issuer.</param>
-        public void Ban(TimeSpan duration, string reason, Player issuer = null)
-            => Ban((int)duration.TotalSeconds, reason, issuer);
+        public void Ban(TimeSpan duration, string reason, Player issuer = null) => Ban((int)duration.TotalSeconds, reason, issuer);
 
         /// <summary>
         /// Kicks the player.
