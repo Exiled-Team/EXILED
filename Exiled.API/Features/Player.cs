@@ -1969,7 +1969,7 @@ namespace Exiled.API.Features
             if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, -1, cassieAnnouncement));
         }
 
         /// <summary>
@@ -1982,7 +1982,7 @@ namespace Exiled.API.Features
             if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, -1, cassieAnnouncement));
         }
 
         /// <summary>
