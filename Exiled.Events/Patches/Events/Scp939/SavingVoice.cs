@@ -41,8 +41,10 @@ namespace Exiled.Events.Patches.Events.Scp939
             SavingVoiceEventArgs ev = new(__instance.Owner, ply);
             Scp939.OnSavingVoice(ev);
 
-            if (ev.IsAllowed)
+            if (!ev.IsAllowed)
+            {
                 return false;
+            }
 
             __instance._syncPlayer = ply;
             __instance._syncMute = __instance;
