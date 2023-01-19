@@ -21,7 +21,7 @@ EXILED是一个用于SCP: 秘密实验室服务器的低级别插件框架。 �
 EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会在发行版（Releases）中的``Exiled.tar.gz``解压后看到两个文件夹。``SCP Secret Laboratory``文件夹中包含了加载EXILED的``EXILED``文件夹所需的文件。
 综上所述，你所需要做的也就是把这两个文件夹放到该放的地方，具体步骤将会在下面阐述。
 
-如果你选择使用一键安装器，在运行正常的情况下会帮你安装好所有EXILED的功能。
+如果你选择使用一键安装器，在运行正常的情况下它会帮你安装好所有EXILED的功能。
 
 # Windows
 ### 全自动安装 ([更多消息](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
