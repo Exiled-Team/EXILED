@@ -18,9 +18,10 @@ EXILED是一个用于SCP: 秘密实验室服务器的低级别插件框架。 �
 
 
 # 安装方法
-EXILED的安装可能看起来比别的框架更加复杂，但其实并不复杂。
-如同上面所述，EXILED的主要部分并不是在服务器的Assembly-CSharp.dll文件中， 但是， 由于需要在服务器启动时加载EXILED，Assembly-CSharp.dll文件中会有一处需要修改。一个纯净的程序集和这个改动在Releases中会被提供。
-如果你使用的是安装包，并正确运行，它会帮你搞定安装`Exiled.Loader`， `Exiled.Updater`， `Exiled.Permissions`， `Exiled.API`和`Exiled.Events`， 并保证你的服务器使用的是正确的Assembly-CSharp.dll文件。
+EXILED的安装十分简单。因为是用NW插件API来将自身载入，你会在发行版（Releases）中的``Exiled.tar.gz``解压后看到两个文件夹。``SCP Secret Laboratory``文件夹中包含了加载EXILED的``EXILED``文件夹所需的文件。
+综上所述，你所需要做的也就是把这两个文件夹放到该放的地方，具体步骤将会在下面阐述。
+
+如果你选择使用一键安装器，在运行正常的情况下会帮你安装好所有EXILED的功能。
 
 # Windows
 ### 全自动安装 ([更多消息](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
@@ -35,8 +36,8 @@ EXILED的安装可能看起来比别的框架更加复杂，但其实并不复�
 ### 手动安装
   - 下载 **`Exiled.tar.gz` [从这里](https://github.com/galaxy119/EXILED/releases)**
   - 使用 [7Zip](https://www.7-zip.org/) 或 [WinRar](https://www.win-rar.com/download.html?&L=6) 解压里面的内容
-  - 移动 **``Assembly-CSharp.dll``** 到: **`(服务器文件夹)\SCPSL_Data\Managed`** 并更换文件
   - 移动 **``EXILED``** 文件夹到 **`%appdata%`** *备注: 这个文件夹需要放在 ``C:\用户\(你的用户)\AppData\Roaming``， 而 ***不是*** ``C:\用户\(你的用户)\AppData\Roaming\SCP Secret Laboratory``， 而且它 **必须** 在 (...)\AppData\Roaming， 而不是 (...)\AppData\!*
+  - 移动 **``SCP Secret Laboratory``** 文件夹到 **`%appdata%`**
     - Windows 10 & 11:
       输入 `%appdata%` 在底部的 Cortana / 搜索图标
     - 其他Windows版本:
@@ -63,8 +64,8 @@ EXILED的安装可能看起来比别的框架更加复杂，但其实并不复�
   - **确保** 你登录的是用于运行SCP服务器的用户。
   - 下载 **`Exiled.tar.gz` [从这里](https://github.com/galaxy119/EXILED/releases)** (SSH: 右键获取 `Exiled.tar.gz` 链接， 然后输入: **`wget (下载链接)`**)
   - 解压到你目前的文件夹，输入 **``tar -xzvf EXILED.tar.gz``**
-  - 移动 **``Assembly-CSharp.dll``** 文件到 **``SCPSL_Data/Managed``** （在游戏文件夹内） (SSH: **`mv Assembly-CSharp.dll (服务器文件的位置)/SCPSL_Data/Managed`**).
   - 移动 **`EXILED`** 文件夹到 **``~/.config``**. *备注: 这个文件夹应该放到 ``~/.config``， 而 ***不是*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
+  - 移动 **``SCP Secret Laboratory``** 文件到 **``~/.config``** (SSH: **`mv SCP Secret Laboratory ~/.config/`**).
 
 ### 安装插件
 现在EXILED已经安装好了，并会在下次你启动你的服务器时随之启动。请注意EXILED本身基本不会做出任何事情，所以来 **[我们的Discord服务器](https://discord.gg/PyUkWTg)** 获取最新的插件吧。
@@ -85,9 +86,9 @@ EXILED自身提供一些配置选项。
 
 制作插件时应遵守以下规则：
 
- - 你的插件必须有一个类继承Exiled.API.Features.Plugin<>，如果没有， EXILED将不会在服务器启动时载入你的插件。
- - 当一个插件载入后， ``OnEnabled()`` 方法中的代码将会在之前提到的类中会被首先叫到， 它不会等待其他插件的加载，也不会等待服务器的启动完成。 ***它不会等待任何事物。*** 当你在设置你的OnEnable()方法时，务必确保你没有在使用任何未初始化的事物，如ServerConsole.Port， PlayerManager.localPlayer。
- - 如果在你需要使用任何可能未初始化的东西，建议你等到WaitingForPlayers事件，如果基于某些原因你需要执行一些东西在更早的时候，把代码放入一个``` while(!x)``` 循环来检查你所使用的变量不为null。
+ - 你的插件必须有一个类继承``Exiled.API.Features.Plugin<>``，如果没有， EXILED将不会在服务器启动时载入你的插件。
+ - 当一个插件载入后， ``OnEnabled()`` 方法中的代码将会在之前提到的类中会被首先叫到， 它不会等待其他插件的加载，也不会等待服务器的启动完成。 ***它不会等待任何事物。*** 当你在设置你的OnEnable()方法时，务必确保你没有在使用任何未初始化的事物，如``ServerConsole.Port``， ``PlayerManager.localPlayer``。
+ - 如果在你需要使用任何可能未初始化的东西，建议你等到``WaitingForPlayers``事件，如果基于某些原因你需要执行一些东西在更早的时候，把代码放入一个``` while(!x)``` 循环来检查你所使用的变量不为null。
  - EXILED支持动态重新载入正在运行的插件程序集。也就是说，更新一个插件不需要重新启动服务器。但是，如果你要更新一个正在执行中的插件，插件本身需要支持这个功能，否则你将会非常不好过。 见 ``动态更新`` 部分以获取更多信息及规范。
  - EXILED***没有***``OnUpdate``，``OnFixedUpdate``或``OnLateUpdate``事件。如果由于某些原因你需要执行次数那么频繁的代码，你可以使用MEC协程来等待1帧，0.01秒，或``Timing.FixedUpdate``来代替。
 
