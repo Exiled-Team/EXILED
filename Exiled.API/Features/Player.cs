@@ -483,7 +483,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating the actual RA permissions.
         /// </summary>
-        public PlayerPermissions Permission
+        public PlayerPermissions RemoteAdminPermissions
         {
             get => (PlayerPermissions)ReferenceHub.serverRoles.Permissions;
             set => ReferenceHub.serverRoles.Permissions = (ulong)value;
