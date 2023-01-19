@@ -63,6 +63,7 @@ namespace Exiled.API.Features
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
 
@@ -360,6 +361,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the range at which this player's info can be viewed by others.
+        /// </summary>
+        public float InfoViewRange
+        {
+            get => ReferenceHub.nicknameSync.NetworkViewRange;
+            set => ReferenceHub.nicknameSync.NetworkViewRange = value;
+        }
+
+        /// <summary>
         /// Gets the dictionary of the player's session variables.
         /// <para>
         /// Session variables can be used to save temporary data on players. Data is stored in a <see cref="Dictionary{TKey, TValue}"/>.
@@ -383,6 +393,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has a reserved slot.
         /// </summary>
+        /// <seealso cref="GiveReservedSlot"/>
+        /// <seealso cref="AddReservedSlot(string)"/>
         public bool HasReservedSlot => ReservedSlot.HasReservedSlot(UserId, out _);
 
         /// <summary>
@@ -512,6 +524,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the player's SCP preferences.
+        /// </summary>
+        public ScpSpawnPreferences.SpawnPreferences ScpPreferences
+        {
+            get
+            {
+                if (ScpSpawnPreferences.Preferences.TryGetValue(Connection.connectionId, out ScpSpawnPreferences.SpawnPreferences value))
+                    return value;
+
+                return default;
+            }
+            set => ScpSpawnPreferences.Preferences[Connection.connectionId] = value;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not the player is cuffed.
         /// </summary>
         /// <remarks>Players can be cuffed without another player being the cuffer.</remarks>
@@ -556,6 +583,11 @@ namespace Exiled.API.Features
         /// Gets the player's <see cref="Mirror.NetworkIdentity"/>.
         /// </summary>
         public NetworkIdentity NetworkIdentity => ReferenceHub.networkIdentity;
+
+        /// <summary>
+        /// Gets the player's net ID.
+        /// </summary>
+        public uint NetId => ReferenceHub.netId;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is the host.
@@ -1818,6 +1850,19 @@ namespace Exiled.API.Features
         public void ResetStamina() => Stamina = StaminaStat.MaxValue;
 
         /// <summary>
+        /// Gets a user's SCP preference.
+        /// </summary>
+        /// <param name="roleType">The SCP RoleType.</param>
+        /// <returns>A value from <c>-5</c> to <c>5</c>, representing a player's preference to play as the provided SCP. Will return <c>0</c> for invalid SCPs.</returns>
+        public int GetScpPreference(RoleTypeId roleType)
+        {
+            if (ScpPreferences.Preferences.TryGetValue(roleType, out int value))
+                return value;
+
+            return 0;
+        }
+
+        /// <summary>
         /// Hurts the player.
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
@@ -1880,7 +1925,7 @@ namespace Exiled.API.Features
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
-                ((HealthStat)ReferenceHub.playerStats.StatModules[0]).ServerHeal(amount);
+                healthStat.ServerHeal(amount);
             else
                 Health += amount;
         }
@@ -1895,10 +1940,11 @@ namespace Exiled.API.Features
         /// Forces the player to use an item.
         /// </summary>
         /// <param name="item">The item to be used.</param>
+        /// <exception cref="ArgumentException">The provided item is not a usable item.</exception>
         public void UseItem(Item item)
         {
             if (item is not Usable usableItem)
-                throw new Exception($"The provided item [{item.Type}] is not a usable item.");
+                throw new ArgumentException($"The provided item [{item.Type}] is not a usable item.", nameof(item));
 
             usableItem.Base.Owner = referenceHub;
             usableItem.Base.ServerOnUsingCompleted();
@@ -1910,6 +1956,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/>.</param>
+        public void Kill(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
         /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
         public void Kill(DamageType damageType, string cassieAnnouncement = "")
@@ -1917,7 +1969,7 @@ namespace Exiled.API.Features
             if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, -1, cassieAnnouncement));
         }
 
         /// <summary>
@@ -1930,17 +1982,38 @@ namespace Exiled.API.Features
             if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, -1, cassieAnnouncement));
+        }
+
+        /// <summary>
+        /// Kills the player and vaporizes the body.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        public void Vaporize(Player attacker = null, string cassieAnnouncement = "")
+        {
+            if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
+                Cassie.Message(cassieAnnouncement);
+
+            Kill(new DisruptorDamageHandler(attacker?.Footprint ?? Footprint, -1));
         }
 
         /// <summary>
         /// Bans the player.
         /// </summary>
-        /// <param name="duration">The ban duration.</param>
+        /// <param name="duration">The ban duration, in seconds.</param>
         /// <param name="reason">The ban reason.</param>
         /// <param name="issuer">The ban issuer.</param>
         public void Ban(int duration, string reason, Player issuer = null)
             => BanPlayer.BanUser(ReferenceHub, issuer is null || issuer.ReferenceHub == null ? Server.Host.ReferenceHub : issuer.ReferenceHub, reason, duration);
+
+        /// <summary>
+        /// Bans the player.
+        /// </summary>
+        /// <param name="duration">The length of time to ban.</param>
+        /// <param name="reason">The ban reason.</param>
+        /// <param name="issuer">The ban issuer.</param>
+        public void Ban(TimeSpan duration, string reason, Player issuer = null) => Ban((int)duration.TotalSeconds, reason, issuer);
 
         /// <summary>
         /// Kicks the player.
