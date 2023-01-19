@@ -190,6 +190,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not idle mode is enabled.
+        /// </summary>
+        public static bool IsIdleModeEnabled
+        {
+            get => IdleMode.IdleModeEnabled;
+            set => IdleMode.IdleModeEnabled = value;
+        }
+
+        /// <summary>
         /// Gets the dictionary of the server's session variables.
         /// <para>
         /// Session variables can be used to save temporary data. Data is stored in a <see cref="Dictionary{TKey, TValue}"/>.
