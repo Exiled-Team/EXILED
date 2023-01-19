@@ -43,7 +43,7 @@ If you choose to use the installer it will, if run correctly, take care of insta
   - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
   - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
   - Move **``SCP Secret Laboratory``** to **`%appdata%`**.
-    - Windows 10:
+    - Windows 10 & 11:
       Write `%appdata%` in Cortana / the search icon, or the Windows Explorer bar
     - Any other Windows version:
       Press Win + R and type `%appdata%`
