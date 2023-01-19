@@ -143,11 +143,6 @@ namespace Exiled.API.Enums
         Stained,
 
         /// <summary>
-        /// Causes the player to blink.
-        /// </summary>
-        Visuals173Blink,
-
-        /// <summary>
         /// Causes the player to slowly regenerate health.
         /// </summary>
         Vitality,
