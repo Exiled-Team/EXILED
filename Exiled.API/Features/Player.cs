@@ -493,6 +493,15 @@ namespace Exiled.API.Features
         public LeadingTeam LeadingTeam => Role.Team.GetLeadingTeam();
 
         /// <summary>
+        /// Gets or sets a value indicating the actual RA permissions.
+        /// </summary>
+        public PlayerPermissions RemoteAdminPermissions
+        {
+            get => (PlayerPermissions)ReferenceHub.serverRoles.Permissions;
+            set => ReferenceHub.serverRoles.Permissions = (ulong)value;
+        }
+
+        /// <summary>
         /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleTypeId"/> of the player, and casting should be used to modify the role.
