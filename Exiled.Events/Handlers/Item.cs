@@ -39,6 +39,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<KeycardInteractingEventArgs> KeycardInteracting;
 
         /// <summary>
+        /// Invoked before a melee item is swung.
+        /// </summary>
+        public static event CustomEventHandler<SwingingEventArgs> Swinging;
+
+        /// <summary>
+        /// Invoked before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// </summary>
+        public static event CustomEventHandler<ChargingJailbirdEventArgs> ChargingJailbird;
+
+        /// <summary>
         /// Called before the ammo of an firearm is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAmmoEventArgs"/> instance.</param>
@@ -61,5 +71,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="KeycardInteractingEventArgs"/> instance.</param>
         public static void OnKeycardInteracting(KeycardInteractingEventArgs ev) => KeycardInteracting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a melee item is swung.
+        /// </summary>
+        /// <param name="ev">The <see cref="SwingingEventArgs"/> instance.</param>
+        public static void OnSwinging(SwingingEventArgs ev) => Swinging.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="API.Features.Items.Jailbird"/> is charged.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChargingJailbirdEventArgs"/> instance.</param>
+        public static void OnChargingJailbird(ChargingJailbirdEventArgs ev) => ChargingJailbird.InvokeSafely(ev);
     }
 }

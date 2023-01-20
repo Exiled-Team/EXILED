@@ -11,12 +11,12 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Linq;
     using System.Reflection.Emit;
 
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
-    using NorthwoodLib.Pools;
 
     using Respawning;
 
@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Server
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             const int offset = -2;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_3) + offset;
@@ -103,7 +103,7 @@ namespace Exiled.Events.Patches.Events.Server
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
         private static List<Player> GetPlayers(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();

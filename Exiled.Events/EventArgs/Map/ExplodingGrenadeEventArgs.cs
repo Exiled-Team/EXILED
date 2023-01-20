@@ -12,11 +12,10 @@ namespace Exiled.Events.EventArgs.Map
     using Exiled.API.Features;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Interfaces;
 
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -37,7 +36,7 @@ namespace Exiled.Events.EventArgs.Map
             Player = thrower ?? Server.Host;
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = position;
-            TargetsToAffect = ListPool<Player>.Shared.Rent();
+            TargetsToAffect = ListPool<Player>.Pool.Get();
 
             if (Projectile.Base is not ExplosionGrenade)
                 return;
@@ -73,7 +72,7 @@ namespace Exiled.Events.EventArgs.Map
             Player = thrower ?? Server.Host;
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = Projectile.Position;
-            TargetsToAffect = ListPool<Player>.Shared.Rent(players);
+            TargetsToAffect = ListPool<Player>.Pool.Get(players);
         }
 
         /// <summary>
@@ -81,7 +80,7 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         ~ExplodingGrenadeEventArgs()
         {
-            ListPool<Player>.Shared.Return(TargetsToAffect);
+            ListPool<Player>.Pool.Return(TargetsToAffect);
         }
 
         /// <summary>

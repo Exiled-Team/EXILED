@@ -11,13 +11,13 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
+    using API.Features;
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
     using Mirror;
-
-    using NorthwoodLib.Pools;
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static bool Prefix(ReferenceHub hub, PlayerRoleBase prevRole, PlayerRoleBase newRole)
         {
-            if (Player.TryGet(hub, out Player player))
+            if (Player.TryGet(hub, out Player player) && newRole.ServerSpawnReason != RoleChangeReason.Destroyed)
             {
                 Vector3 oldPosition = hub.transform.position;
                 if (newRole is IFpcRole fpcRole)
