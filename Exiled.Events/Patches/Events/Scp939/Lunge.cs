@@ -71,9 +71,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             if (instance.State != Scp939LungeState.Triggered)
             {
                 if (!instance.IsReady)
-                {
                     return;
-                }
 
                 instance.TriggerLunge();
             }
