@@ -144,11 +144,11 @@ namespace Exiled.API.Extensions
             {
                 // SCPs will always have exactly one RoomRoleSpawnpoint.
                 RoomRoleSpawnpoint spawn = scpRole._roomSpawnpoint;
-                if (spawn is not null && spawn._spawnpoints is not null)
+                if (spawn != null && spawn._spawnpoints != null)
                 {
                     foreach (BoundsRoleSpawnpoint bounds in spawn._spawnpoints)
                     {
-                        if (bounds is null)
+                        if (bounds == null)
                             continue;
 
                         foreach (Vector3 v3 in bounds._positions)
@@ -158,19 +158,19 @@ namespace Exiled.API.Extensions
             }
 
             // Human Roles
-            else if (baseRole is HumanRole human && human._spawnpoints is not null)
+            else if (baseRole is HumanRole human && human._spawnpoints != null)
             {
                 // Access human's RoomRoleSpawnpoint array.
                 // RoomRoleSpawnpoint is broken up by rooms - eg. scientist role has a RoomRoleSpawnpoint for each room they spawn in.
                 foreach (var spawnPoint in human._spawnpoints)
                 {
-                    if (spawnPoint is null || spawnPoint._spawnpoints is null)
+                    if (spawnPoint == null || spawnPoint._spawnpoints == null)
                         continue;
 
                     // Most roles only have one BoundsRoleSpawnpoint per RoomRoleSpawnpoint, however some have more.
                     foreach (BoundsRoleSpawnpoint bounds in spawnPoint._spawnpoints)
                     {
-                        if (bounds is null)
+                        if (bounds == null)
                             continue;
 
                         foreach (Vector3 v3 in bounds._positions)
