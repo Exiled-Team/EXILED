@@ -129,44 +129,57 @@ namespace Exiled.API.Extensions
         /// Gets all spawn locations for the provided role.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/> to get spawns of.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of spawn locations.</returns>
-        public static IEnumerable<SpawnLocation> GetSpawns(this RoleTypeId roleType)
+        /// <returns>An <see cref="List{T}"/> of spawn locations.</returns>
+        public static List<SpawnLocation> GetSpawns(this RoleTypeId roleType)
         {
+            List<SpawnLocation> returnList = new();
             PlayerRoleBase baseRole = roleType.GetRoleBase();
 
             // No spawns for non-fpc roles.
             if (baseRole is not IFpcRole)
-                yield break;
+                return returnList;
 
             // SCP roles
             if (baseRole is FpcStandardScp scpRole)
             {
                 // SCPs will always have exactly one RoomRoleSpawnpoint.
                 RoomRoleSpawnpoint spawn = scpRole._roomSpawnpoint;
-                foreach (BoundsRoleSpawnpoint bounds in spawn._spawnpoints)
+                if (spawn is not null && spawn._spawnpoints is not null)
                 {
-                    foreach (Vector3 v3 in bounds._positions)
-                        yield return new(roleType, v3, bounds._rotMin, bounds._rotMax);
+                    foreach (BoundsRoleSpawnpoint bounds in spawn._spawnpoints)
+                    {
+                        if (bounds is null)
+                            continue;
+
+                        foreach (Vector3 v3 in bounds._positions)
+                            returnList.Add(new(roleType, v3, bounds._rotMin, bounds._rotMax));
+                    }
                 }
             }
 
             // Human Roles
-            else if (baseRole is HumanRole human)
+            else if (baseRole is HumanRole human && human._spawnpoints is not null)
             {
                 // Access human's RoomRoleSpawnpoint array.
                 // RoomRoleSpawnpoint is broken up by rooms - eg. scientist role has a RoomRoleSpawnpoint for each room they spawn in.
                 foreach (var spawnPoint in human._spawnpoints)
                 {
+                    if (spawnPoint is null || spawnPoint._spawnpoints is null)
+                        continue;
+
                     // Most roles only have one BoundsRoleSpawnpoint per RoomRoleSpawnpoint, however some have more.
                     foreach (BoundsRoleSpawnpoint bounds in spawnPoint._spawnpoints)
                     {
+                        if (bounds is null)
+                            continue;
+
                         foreach (Vector3 v3 in bounds._positions)
-                            yield return new(roleType, v3, bounds._rotMin, bounds._rotMax);
+                            returnList.Add(new(roleType, v3, bounds._rotMin, bounds._rotMax));
                     }
                 }
             }
 
-            yield break;
+            return returnList;
         }
 
         /// <summary>
