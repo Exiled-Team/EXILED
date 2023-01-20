@@ -109,6 +109,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             fpcModule.Position = vector3;
             bool flag = referenceHub.playerStats.DealDamage(new Scp939DamageHandler(instance.ScpRole, Scp939DamageType.LungeTarget));
             float num = flag ? 1f : 0f;
+
             if (!flag || referenceHub.IsAlive())
             {
                 fpcModule.Position = position;
