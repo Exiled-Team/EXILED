@@ -89,7 +89,6 @@ namespace Exiled.Events.Patches.Events.Scp939
 
                     if (vector2.SqrMagnitudeIgnoreY() > instance._overallTolerance * instance._overallTolerance)
                         return;
-                    }
 
                     if (vector2.y > instance._overallTolerance || vector2.y < -instance._bottomTolerance)
                     {
