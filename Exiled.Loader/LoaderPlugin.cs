@@ -52,7 +52,7 @@ namespace Exiled.Loader
                     GameCore.Version.BackwardCompatibility,
                     GameCore.Version.BackwardRevision))
             {
-                ServerConsole.AddLog("Exiled is actually outdated please reinstall new version or wait for new release", ConsoleColor.DarkRed);
+                ServerConsole.AddLog("Exiled is outdated, please update to the latest version. Wait for release if still shows after update.", ConsoleColor.DarkRed);
                 return;
             }
 
