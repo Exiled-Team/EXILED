@@ -41,7 +41,16 @@ namespace Exiled.Loader
                 return;
             }
 
-            if (!Config.ShouldLoadOutdatedExiled && GameCore.Version.CompatibilityCheck((byte)AutoUpdateFiles.RequiredSCPSLVersion.Major, (byte)AutoUpdateFiles.RequiredSCPSLVersion.Minor, (byte)AutoUpdateFiles.RequiredSCPSLVersion.Revision, GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision, GameCore.Version.BackwardCompatibility, GameCore.Version.BackwardRevision))
+            if (!Config.ShouldLoadOutdatedExiled &&
+                GameCore.Version.CompatibilityCheck(
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Major,
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Minor,
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Revision,
+                    GameCore.Version.Major,
+                    GameCore.Version.Minor,
+                    GameCore.Version.Revision,
+                    GameCore.Version.BackwardCompatibility,
+                    GameCore.Version.BackwardRevision))
             {
                 ServerConsole.AddLog("Exiled is actually outdated please reinstall new version or wait for new release", ConsoleColor.DarkRed);
                 return;
