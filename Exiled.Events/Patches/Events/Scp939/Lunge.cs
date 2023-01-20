@@ -31,11 +31,9 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939" /> event.
     /// </summary>
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
     internal static class Lunge
     {
-        [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
-        [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> OnLungeHit(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
