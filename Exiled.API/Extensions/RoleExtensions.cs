@@ -122,6 +122,10 @@ namespace Exiled.API.Extensions
         public static SpawnLocation GetRandomSpawnLocation(this RoleTypeId roleType)
         {
             IEnumerable<SpawnLocation> spawns = roleType.GetSpawns();
+
+            if (spawns.Count() == 0)
+                return null;
+
             return spawns.ElementAt(UnityEngine.Random.Range(0, spawns.Count()));
         }
 
@@ -134,10 +138,6 @@ namespace Exiled.API.Extensions
         {
             List<SpawnLocation> returnList = new();
             PlayerRoleBase baseRole = roleType.GetRoleBase();
-
-            // No spawns for non-fpc roles.
-            if (baseRole is not IFpcRole)
-                return returnList;
 
             // SCP roles
             if (baseRole is FpcStandardScp scpRole)
