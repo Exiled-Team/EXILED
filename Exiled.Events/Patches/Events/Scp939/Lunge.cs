@@ -78,7 +78,6 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             HumanRole humanRole;
             if (referenceHub == null || (humanRole = referenceHub.roleManager.CurrentRole as HumanRole) == null)
-            {
                 return;
             }
 
