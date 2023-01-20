@@ -67,6 +67,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             Vector3 vector = reader.ReadRelativePosition().Position;
             ReferenceHub referenceHub = reader.ReadReferenceHub();
             RelativePosition relativePosition = reader.ReadRelativePosition();
+
             if (instance.State != Scp939LungeState.Triggered)
             {
                 if (!instance.IsReady)
