@@ -143,11 +143,6 @@ namespace Exiled.API.Enums
         Stained,
 
         /// <summary>
-        /// Causes the player to blink.
-        /// </summary>
-        Visuals173Blink,
-
-        /// <summary>
         /// Causes the player to slowly regenerate health.
         /// </summary>
         Vitality,
@@ -163,13 +158,8 @@ namespace Exiled.API.Enums
         Scp1853,
 
         /// <summary>
-        /// Player will be followed by Scp956 the Pinata.
+        /// Effect give to player after being hurt by SCP-049.
         /// </summary>
-        Scp956,
-
-        /// <summary>
-        /// Effect give to player after eating SCP-559 cake.
-        /// </summary>
-        Scp559,
+        CardiacArrest,
     }
 }

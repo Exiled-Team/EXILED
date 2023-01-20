@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs.Player
 
     using API.Enums;
     using API.Features;
-
+    using Exiled.API.Features.Pools;
     using Interfaces;
 
     using InventorySystem.Configs;
@@ -49,6 +49,15 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="ChangingRoleEventArgs"/> class.
+        /// </summary>
+        ~ChangingRoleEventArgs()
+        {
+            ListPool<ItemType>.Pool.Return(Items);
+            DictionaryPool<ItemType, ushort>.Pool.Return(Ammo);
+        }
+
+        /// <summary>
         ///     Gets the player whose <see cref="RoleTypeId" /> is changing.
         /// </summary>
         public Player Player { get; }
@@ -80,12 +89,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets base items that the player will receive.
         /// </summary>
-        public List<ItemType> Items { get; } = new();
+        public List<ItemType> Items { get; } = ListPool<ItemType>.Pool.Get();
 
         /// <summary>
         ///     Gets the base ammo values for the new role.
         /// </summary>
-        public Dictionary<ItemType, ushort> Ammo { get; } = new();
+        public Dictionary<ItemType, ushort> Ammo { get; } = DictionaryPool<ItemType, ushort>.Pool.Get();
 
         /// <summary>
         ///     Gets or sets a value indicating whether the inventory will be preserved or not.

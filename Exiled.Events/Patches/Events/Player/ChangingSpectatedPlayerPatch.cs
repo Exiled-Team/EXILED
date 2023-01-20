@@ -10,12 +10,12 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Pools;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
-
-    using NorthwoodLib.Pools;
-
+    using PlayerRoles;
     using PlayerRoles.Spectating;
 
     using static HarmonyLib.AccessTools;
@@ -29,43 +29,38 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            LocalBuilder owner = generator.DeclareLocal(typeof(ReferenceHub));
 
             newInstructions.InsertRange(
                 0,
                 new[]
                 {
+                    // _ = this.TryGetOwner(out ReferenceHub owner)
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldarga_S, 1),
-                    new(OpCodes.Call, Method(typeof(ChangingSpectatedPlayerPatch), nameof(ProcessNewPlayer), new[] { typeof(SpectatorRole), typeof(uint).MakeByRefType() })),
+                    new CodeInstruction(OpCodes.Ldloca_S, owner.LocalIndex),
+                    new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerRoleBase), nameof(PlayerRoleBase.TryGetOwner), new[] { typeof(ReferenceHub).MakeByRefType() })),
+                    new CodeInstruction(OpCodes.Pop),
+
+                    // owner
+                    new CodeInstruction(OpCodes.Ldloc_S, owner.LocalIndex),
+
+                    // this.SyncedSpectatedNetId
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(SpectatorRole), nameof(SpectatorRole.SyncedSpectatedNetId))),
+
+                    // value
+                    new(OpCodes.Ldarg_1),
+
+                    // Handlers.Player.OnChangingSpectatedPlayer(new(owner, this.SyncedSpectatedNetId, value));
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingSpectatedPlayerEventArgs))[0]),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingSpectatedPlayer))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-
-        private static void ProcessNewPlayer(SpectatorRole spectator, ref int newNetId)
-        {
-            if (newNetId == 0)
-                return;
-
-            if (!spectator.TryGetOwner(out ReferenceHub owner))
-                return;
-
-            API.Features.Player player = API.Features.Player.Get(owner);
-            API.Features.Player previousSpectatedPlayer = API.Features.Player.Get(spectator.SyncedSpectatedNetId);
-            API.Features.Player getFuturePlayer = API.Features.Player.Get(newNetId);
-
-            ChangingSpectatedPlayerEventArgs ev = new(player, previousSpectatedPlayer, getFuturePlayer, true);
-            Handlers.Player.OnChangingSpectatedPlayer(ev);
-
-            // NOT RECOMMENDED PER IRACLE AND I BELIEVING CLIENT SIDE PICKS TARGET.
-            if (!ev.IsAllowed)
-                return;
-
-            newNetId = (int)(ev.NewTarget != null ? ev.NewTarget.NetworkIdentity.netId : ev.Player.NetworkIdentity.netId);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

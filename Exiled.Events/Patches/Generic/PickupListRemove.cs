@@ -11,14 +11,13 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Pickups;
+    using API.Features.Pickups;
+    using API.Features.Pools;
 
     using HarmonyLib;
 
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -30,7 +29,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             newInstructions.InsertRange(0, new[]
             {
@@ -44,7 +43,7 @@ namespace Exiled.Events.Patches.Generic
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 
@@ -71,7 +70,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label skip = generator.DefineLabel();
 
@@ -84,6 +83,8 @@ namespace Exiled.Events.Patches.Generic
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 
@@ -95,7 +96,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int offset = -1;
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Scp2176Projectile), nameof(Scp2176Projectile.ServerShatter)))) + offset;
@@ -119,22 +120,7 @@ namespace Exiled.Events.Patches.Generic
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
-    }
-
-    /// <summary>
-    /// Patches <see cref="CoalProjectile.FixedUpdate"/> for fixing cringe NW code :).
-    /// </summary>
-    [HarmonyPatch(typeof(CoalProjectile), nameof(CoalProjectile.FixedUpdate))]
-    internal static class CoalProjectileListRemove
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            // remove all code and save only base.FixedUpdate()
-            yield return new(OpCodes.Ldarg_0);
-            yield return new(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.FixedUpdate)));
-            yield return new(OpCodes.Ret);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

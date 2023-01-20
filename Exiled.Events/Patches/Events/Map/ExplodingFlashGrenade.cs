@@ -11,7 +11,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Linq;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
+    using API.Features;
+    using API.Features.Pools;
     using Exiled.Events.EventArgs.Map;
 
     using Footprinting;
@@ -19,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Map
     using HarmonyLib;
 
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -35,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label returnLabel = generator.DefineLabel();
 
@@ -60,9 +59,9 @@ namespace Exiled.Events.Patches.Events.Map
                 0,
                 new CodeInstruction[]
                 {
-                    // list = ListPool<ReferenceHub>.Shared.Rent();
-                    new(OpCodes.Ldsfld, Field(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared))),
-                    new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared.Rent))),
+                    // list = ListPool<ReferenceHub>.Pool.Get();
+                    new(OpCodes.Call, PropertyGetter(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool))),
+                    new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool.Get))),
                     new(OpCodes.Stloc, list.LocalIndex),
                 });
 
@@ -113,10 +112,10 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.TargetsToAffect))),
                     new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessPlayers))),
 
-                    // ListPool<ReferenceHub>.Shared.Return(list);
-                    new(OpCodes.Ldsfld, Field(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared))),
+                    // ListPool<ReferenceHub>.Pool.Return(list);
+                    new(OpCodes.Call, PropertyGetter(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool))),
                     new(OpCodes.Ldloc, list.LocalIndex),
-                    new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Shared.Return))),
+                    new(OpCodes.Callvirt, Method(typeof(ListPool<ReferenceHub>), nameof(ListPool<ReferenceHub>.Pool.Return))),
 
                     // return;
                     new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
@@ -125,7 +124,7 @@ namespace Exiled.Events.Patches.Events.Map
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
         private static List<Player> ConvertHubs(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();

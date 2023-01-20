@@ -16,6 +16,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Spawn;
     using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.Features;
@@ -25,8 +26,6 @@ namespace Exiled.CustomRoles.API.Features
     using MEC;
 
     using Mirror;
-
-    using NorthwoodLib.Pools;
 
     using PlayerRoles;
 
@@ -339,11 +338,11 @@ namespace Exiled.CustomRoles.API.Features
             if (player is null)
                 throw new ArgumentNullException(nameof(player));
 
-            List<CustomRole> tempList = ListPool<CustomRole>.Shared.Rent();
+            List<CustomRole> tempList = ListPool<CustomRole>.Pool.Get();
             tempList.AddRange(Registered?.Where(customRole => customRole.Check(player)) ?? Array.Empty<CustomRole>());
 
             customRoles = tempList.AsReadOnly();
-            ListPool<CustomRole>.Shared.Return(tempList);
+            ListPool<CustomRole>.Pool.Return(tempList);
 
             return customRoles?.Count > 0;
         }
@@ -544,7 +543,8 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns> Whether the item was able to be added. </returns>
         public bool TryAddFriendlyFire(Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = new();
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictionaryPool<RoleTypeId, float>.Pool.Get();
+
             foreach (KeyValuePair<RoleTypeId, float> roleFF in ffRules)
             {
                 if (overwrite)
@@ -573,6 +573,7 @@ namespace Exiled.CustomRoles.API.Features
                 }
             }
 
+            DictionaryPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
             return true;
         }
 

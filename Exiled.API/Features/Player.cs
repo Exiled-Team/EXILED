@@ -24,6 +24,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.API.Structs;
 
@@ -55,7 +56,6 @@ namespace Exiled.API.Features
     using Mirror.LiteNetLib4Mirror;
 
     using NorthwoodLib;
-    using NorthwoodLib.Pools;
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
@@ -127,6 +127,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="Player"/> class.
+        /// </summary>
+        ~Player()
+        {
+            DictionaryPool<string, object>.Pool.Return(SessionVariables);
+            DictionaryPool<RoleTypeId, float>.Pool.Return(FriendlyFireMultiplier);
+            DictionaryPool<string, Dictionary<RoleTypeId, float>>.Pool.Return(CustomRoleFriendlyFireMultiplier);
+        }
+
+        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
         public static Dictionary<GameObject, Player> Dictionary { get; } = new(Server.MaxPlayerCount, new ReferenceHub.GameObjectComparer());
@@ -152,13 +162,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleTypeId"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
-        public Dictionary<RoleTypeId, float> FriendlyFireMultiplier { get; set; } = new();
+        public Dictionary<RoleTypeId, float> FriendlyFireMultiplier { get; set; } = DictionaryPool<RoleTypeId, float>.Pool.Get();
 
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier. This is for unique custom roles.
         /// </summary>
         /// <remarks> Consider adding this as object, Dict so that CustomRoles, and Strings can be parsed. </remarks>
-        public Dictionary<string, Dictionary<RoleTypeId, float>> CustomRoleFriendlyFireMultiplier { get; set; } = new();
+        public Dictionary<string, Dictionary<RoleTypeId, float>> CustomRoleFriendlyFireMultiplier { get; set; } = DictionaryPool<string, Dictionary<RoleTypeId, float>>.Pool.Get();
 
         /// <summary>
         /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
@@ -358,7 +368,7 @@ namespace Exiled.API.Features
         /// Data saved with session variables is not being saved on player disconnect. If the data must be saved after the player's disconnects, a database must be used instead.
         /// </para>
         /// </summary>
-        public Dictionary<string, object> SessionVariables { get; } = new();
+        public Dictionary<string, object> SessionVariables { get; } = DictionaryPool<string, object>.Pool.Get();
 
         /// <summary>
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
@@ -861,12 +871,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current <see cref="Room"/> the player is in.
         /// </summary>
-        public Room CurrentRoom => Map.FindParentRoom(GameObject);
+        public Room CurrentRoom => Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
         public ZoneType Zone => CurrentRoom?.Zone ?? ZoneType.Unspecified;
+
+        /// <summary>
+        /// Gets the current <see cref="Features.Lift"/> the player is in. Can be <see langword="null"/>.
+        /// </summary>
+        public Lift Lift => Lift.Get(Position);
 
         /// <summary>
         /// Gets all currently active <see cref="StatusEffectBase"> effects</see>.
@@ -949,7 +964,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => IsEffectActive<Corroding>() || Map.FindParentRoom(GameObject)?.Type == RoomType.Pocket;
+        public bool IsInPocketDimension => CurrentRoom?.Type == RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.
@@ -1380,7 +1395,7 @@ namespace Exiled.API.Features
         /// <returns> Whether or not the item was able to be added. </returns>
         public bool TryAddFriendlyFire(Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = new();
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictionaryPool<RoleTypeId, float>.Pool.Get();
             foreach (KeyValuePair<RoleTypeId, float> roleFF in ffRules)
             {
                 if (overwrite)
@@ -1402,6 +1417,7 @@ namespace Exiled.API.Features
                     TryAddFriendlyFire(roleFF);
             }
 
+            DictionaryPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
             return true;
         }
 
@@ -1476,7 +1492,7 @@ namespace Exiled.API.Features
         /// <returns> Whether or not the item was able to be added. </returns>
         public bool TryAddCustomRoleFriendlyFire(string customRoleName, Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = new();
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictionaryPool<RoleTypeId, float>.Pool.Get();
 
             if (CustomRoleFriendlyFireMultiplier.TryGetValue(customRoleName, out Dictionary<RoleTypeId, float> pairedRoleFF))
             {
@@ -1507,6 +1523,7 @@ namespace Exiled.API.Features
                     SetCustomRoleFriendlyFire(customRoleName, roleFF);
             }
 
+            DictionaryPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
             return true;
         }
 
@@ -1761,7 +1778,7 @@ namespace Exiled.API.Features
         /// <returns>Count of a successfully removed <see cref="Item"/>'s.</returns>
         public int RemoveItem(Func<Item, bool> predicate, bool destroy = true)
         {
-            List<Item> enumeratedItems = ListPool<Item>.Shared.Rent(ItemsValue);
+            List<Item> enumeratedItems = ListPool<Item>.Pool.Get(ItemsValue);
             int count = 0;
 
             foreach (Item item in enumeratedItems)
@@ -1770,7 +1787,7 @@ namespace Exiled.API.Features
                     ++count;
             }
 
-            ListPool<Item>.Shared.Return(enumeratedItems);
+            ListPool<Item>.Pool.Return(enumeratedItems);
             return count;
         }
 
@@ -2123,13 +2140,13 @@ namespace Exiled.API.Features
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
         public IEnumerable<Item> AddItem(IEnumerable<ItemType> items)
         {
-            List<ItemType> enumeratedItems = ListPool<ItemType>.Shared.Rent(items);
+            List<ItemType> enumeratedItems = ListPool<ItemType>.Pool.Get(items);
             List<Item> returnedItems = new(enumeratedItems.Count);
 
             foreach (ItemType type in enumeratedItems)
                 returnedItems.Add(AddItem(type));
 
-            ListPool<ItemType>.Shared.Return(enumeratedItems);
+            ListPool<ItemType>.Pool.Return(enumeratedItems);
             return returnedItems;
         }
 

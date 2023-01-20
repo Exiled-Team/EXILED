@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
-
+    using Exiled.API.Interfaces;
     using Extensions;
 
     using Interactables.Interobjects;
@@ -21,7 +21,6 @@ namespace Exiled.API.Features
     using MEC;
 
     using Mirror;
-
     using UnityEngine;
 
     using static Interactables.Interobjects.ElevatorManager;
@@ -29,7 +28,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door
+    public class Door : IWrapper<DoorVariant>
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
@@ -427,7 +426,14 @@ namespace Exiled.API.Features
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate();
+        public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate(null);
+
+        /// <summary>
+        /// Tries to pry the door open. No effect if the door cannot be pried.
+        /// </summary>
+        /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
+        /// <param name="player">The amount of damage to deal.</param>
+        public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
 
         /// <summary>
         /// Makes the door play a beep sound.
@@ -517,7 +523,7 @@ namespace Exiled.API.Features
                 string doorName = GameObject.name.GetBefore(' ');
                 return doorName switch
                 {
-                    "LCZ" => DoorType.LightContainmentDoor,
+                    "LCZ" => Room?.Type.IsCheckpoint() ?? false ? Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor : DoorType.LightContainmentDoor,
                     "HCZ" => DoorType.HeavyContainmentDoor,
                     "EZ" => DoorType.EntranceDoor,
                     "Prison" => DoorType.PrisonDoor,

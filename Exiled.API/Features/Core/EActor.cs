@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Core
     using System.Linq;
 
     using Exiled.API.Features.Core.Interfaces;
-
+    using Exiled.API.Features.Pools;
     using MEC;
 
     using UnityEngine;
@@ -27,7 +27,7 @@ namespace Exiled.API.Features.Core
         /// </summary>
         public const float DefaultFixedTickRate = TickComponent.DefaultFixedTickRate;
 
-        private readonly HashSet<EActor> componentsInChildren = new();
+        private readonly HashSet<EActor> componentsInChildren = HashSetPool<EActor>.Pool.Get();
         private CoroutineHandle serverTick;
         private bool canEverTick;
         private float fixedTickRate;
@@ -281,7 +281,9 @@ namespace Exiled.API.Features.Core
         {
             base.OnBeginDestroy();
 
+            HashSetPool<EActor>.Pool.Return(componentsInChildren);
             Timing.KillCoroutines(serverTick);
+
             OnEndPlay();
         }
 

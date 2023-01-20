@@ -9,12 +9,13 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
-    using NorthwoodLib.Pools;
+    using Exiled.API.Features.Pools;
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
 
     using PlayerStatsSystem;
+    using RelativePositioning;
 
     /// <summary>
     /// Defines a role that represents an fpc class.
@@ -34,12 +35,21 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Finalizes an instance of the <see cref="FpcRole"/> class.
         /// </summary>
-        ~FpcRole() => HashSetPool<Player>.Shared.Return(IsInvisibleFor);
+        ~FpcRole() => HashSetPool<Player>.Pool.Return(IsInvisibleFor);
 
         /// <summary>
         /// Gets the <see cref="FirstPersonController"/>.
         /// </summary>
         public FpcStandardRoleBase FirstPersonController { get; }
+
+        /// <summary>
+        /// Gets or sets the player's relative position.
+        /// </summary>
+        public RelativePosition RelativePosition
+        {
+            get => FirstPersonController.FpcModule.Motor.ReceivedPosition;
+            set => FirstPersonController.FpcModule.Motor.ReceivedPosition = value;
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="Role"/> walking speed.
@@ -90,7 +100,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a list of players who can't see the player.
         /// </summary>
-        public HashSet<Player> IsInvisibleFor { get; } = HashSetPool<Player>.Shared.Rent();
+        public HashSet<Player> IsInvisibleFor { get; } = HashSetPool<Player>.Pool.Get();
 
         /// <summary>
         /// Gets or sets the player's current <see cref="PlayerMovementState"/>.
