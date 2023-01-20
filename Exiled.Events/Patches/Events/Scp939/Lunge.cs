@@ -42,6 +42,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             // Right after base call.
             int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(ScpSubroutineBase), nameof(ScpSubroutineBase.ServerProcessCmd)))) + 1;
+
             newInstructions.InsertRange(
                 index,
                 new[]
