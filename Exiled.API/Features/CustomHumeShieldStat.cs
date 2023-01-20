@@ -10,7 +10,7 @@ namespace Exiled.API.Features
     using PlayerStatsSystem;
 
     /// <summary>
-    /// A custom version of <see cref="HealthStat"/> which allows the player's max amount of Hume shield to be changed.
+    /// A custom version of <see cref="HumeShieldStat"/> which allows the player's max amount of Hume shield to be changed.
     /// </summary>
     public class CustomHumeShieldStat : HumeShieldStat
     {

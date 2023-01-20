@@ -192,6 +192,7 @@ namespace Exiled.API.Features
                 CameraTransform = value.PlayerCameraReference;
 
                 value.playerStats._dictionarizedTypes[typeof(HealthStat)] = value.playerStats.StatModules[0] = healthStat = new CustomHealthStat { Hub = value };
+                value.playerStats._dictionarizedTypes[typeof(HumeShieldStat)] = value.playerStats.StatModules[0] = humeshieldStat = new CustomHumeShieldStat { Hub = value };
             }
         }
 
@@ -840,8 +841,8 @@ namespace Exiled.API.Features
         /// <remarks>This value can bypass the role's hume shield maximum. However, this value will only be visible to the end-player as Hume Shield if <see cref="FpcRole.IsHumeShieldedRole"/> is <see langword="true"/>. Otherwise, the game will treat the player as though they have the amount of Hume Shield specified, even though they cannot see it.</remarks>
         public float HumeShield
         {
-            get => HumeShieldStat.CurValue;
-            set => HumeShieldStat.CurValue = value;
+            get => humeshieldStat.CurValue;
+            set => humeshieldStat.CurValue = value;
         }
 
         /// <summary>
@@ -850,8 +851,8 @@ namespace Exiled.API.Features
         /// <remarks>This value can bypass the role's hume shield maximum. However, this value will only be visible to the end-player as Hume Shield if <see cref="FpcRole.IsHumeShieldedRole"/> is <see langword="true"/>. Otherwise, the game will treat the player as though they have the amount of Hume Shield specified, even though they cannot see it.</remarks>
         public float MaxHumeShield
         {
-            get => HumeShieldStat.CurValue;
-            set => HumeShieldStat.CurValue = value;
+            get => humeshieldStat.CurValue;
+            set => humeshieldStat.CurValue = value;
         }
 
         /// <summary>
