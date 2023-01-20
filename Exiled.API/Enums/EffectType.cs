@@ -143,11 +143,6 @@ namespace Exiled.API.Enums
         Stained,
 
         /// <summary>
-        /// Causes the player to blink.
-        /// </summary>
-        Visuals173Blink,
-
-        /// <summary>
         /// Causes the player to slowly regenerate health.
         /// </summary>
         Vitality,
@@ -163,8 +158,13 @@ namespace Exiled.API.Enums
         Scp1853,
 
         /// <summary>
-        /// Effect give to player after being hurt by SCP-049.
+        /// Effect given to player after being hurt by SCP-049.
         /// </summary>
         CardiacArrest,
+
+        /// <summary>
+        /// Cause the lighting in the facility to dim heavily for the player.
+        /// </summary>
+        InsufficientLighting,
     }
 }
