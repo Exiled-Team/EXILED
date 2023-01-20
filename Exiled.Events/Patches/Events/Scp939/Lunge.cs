@@ -129,7 +129,6 @@ namespace Exiled.Events.Patches.Events.Scp939
             }
 
             if (flag)
-            {
                 Hitmarker.SendHitmarker(instance.Owner, num);
             }
 
