@@ -88,7 +88,6 @@ namespace Exiled.Events.Patches.Events.Scp939
                     Vector3 vector2 = fpcModule.Position - instance.ScpRole.FpcModule.Position;
 
                     if (vector2.SqrMagnitudeIgnoreY() > instance._overallTolerance * instance._overallTolerance)
-                    {
                         return;
                     }
 
