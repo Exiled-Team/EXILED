@@ -130,7 +130,6 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             if (flag)
                 Hitmarker.SendHitmarker(instance.Owner, num);
-            }
 
             instance.State = Scp939LungeState.LandHit;
             LungedEventArgs ev = new(instance.Owner, instance.State, referenceHub);
