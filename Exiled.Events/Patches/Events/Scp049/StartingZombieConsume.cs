@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             API.Features.Player currentPlayer = API.Features.Player.Get(zombieAbilityBase.Owner);
             if (currentPlayer.Role.Type is not RoleTypeId.Scp049)
             {
-                ConsumingBodyEventArgs ev = new ConsumingBodyEventArgs(currentPlayer, curRagdoll, ZombieConsumeAbility.ConsumedRagdolls, zombieAbilityBase._errorCode);
+                ConsumingBodyEventArgs ev = new ConsumingBodyEventArgs(currentPlayer, curRagdoll, zombieAbilityBase._errorCode);
                 Handlers.Scp049.OnStartingConsume(ev);
 
                 if (!ev.IsAllowed)

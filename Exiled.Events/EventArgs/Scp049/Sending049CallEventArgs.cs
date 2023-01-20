@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using Mirror;
 
     /// <summary>
-    ///     Contains all information before SCP-049 finishes recalling a player.
+    ///     Contains all information before SCP-049 is trying to recall a player.
     /// </summary>
     public class Sending049CallEventArgs : IPlayerEvent, IDeniableEvent
     {
@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public bool BypassChecks { get; set; }
 
         /// <summary>
-        ///  Gets or sets /Sets how long 049 duration during a revive should be.
+        ///  Gets or sets how long 049 duration during a revive should be.
         /// </summary>
         public float Duration { get; set; }
 
@@ -44,11 +44,6 @@ namespace Exiled.Events.EventArgs.Scp049
         ///     Gets the player who is controlling SCP-049.
         /// </summary>
         public Player Player { get; }
-
-        /// <summary>
-        ///     Gets the player who's getting recalled.
-        /// </summary>
-        public NetworkReader Reader { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the server will send 049 information on the recall.

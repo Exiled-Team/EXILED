@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ZombieStartConsumeEventArgs.cs" company="Exiled Team">
+// <copyright file="ConsumingBodyEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,6 +12,7 @@ namespace Exiled.Events.EventArgs.Scp049
     using API.Features;
     using Interfaces;
     using Mirror;
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
 
     /// <summary>
     ///     Contains all information before zombie consumes ragdoll.
@@ -23,14 +24,13 @@ namespace Exiled.Events.EventArgs.Scp049
         /// </summary>
         /// <param name="scp049"> <inheritdoc cref="ConsumingBodyEventArgs.Player"/></param>
         /// <param name="target"> <inheritdoc cref="ConsumingBodyEventArgs.TargetRagdoll"/> </param>
-        /// <param name="consumedRagdolls"> <inheritdoc cref="ConsumingBodyEventArgs.ConsomedRagdolls"/> </param>
         /// <param name="errorCode"><inheritdoc cref="ConsumingBodyEventArgs.ErrorCode"/></param>
         /// <param name="isAllowed"><inheritdoc cref="ConsumingBodyEventArgs.IsAllowed"/></param>
-        public ConsumingBodyEventArgs(Player scp049, BasicRagdoll target, HashSet<BasicRagdoll> consumedRagdolls, byte errorCode, bool isAllowed = true)
+        /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all ragdolls consumed. </remarks>
+        public ConsumingBodyEventArgs(Player scp049, BasicRagdoll target, byte errorCode, bool isAllowed = true)
         {
             Player = scp049;
             TargetRagdoll = target;
-            ConsomedRagdolls = consumedRagdolls;
             ErrorCode = errorCode;
             IsAllowed = isAllowed;
         }
@@ -41,17 +41,12 @@ namespace Exiled.Events.EventArgs.Scp049
         public byte ErrorCode { get; set; }
 
         /// <summary>
-        /// Gets or sets scp0492 ragdolls consumed thus far.
-        /// </summary>
-        public HashSet<BasicRagdoll> ConsomedRagdolls { get; set; }
-
-        /// <summary>
         ///     Gets the Ragdoll to be consumed.
         /// </summary>
         public BasicRagdoll TargetRagdoll { get; }
 
         /// <summary>
-        ///     Gets the player who is controlling SCP-049.
+        ///     Gets the player who is controlling SCP-049-2.
         /// </summary>
         public Player Player { get; }
 
