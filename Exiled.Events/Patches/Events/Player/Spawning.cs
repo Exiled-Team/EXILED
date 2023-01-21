@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
                     Handlers.Player.OnSpawning(ev);
 
                     hub.transform.position = ev.Position;
-                    fpcRole.FpcModule.MouseLook.CurrentHorizontal = ev.Rotation;
+                    fpcRole.FpcModule.MouseLook.CurrentHorizontal = ev.HorizontalRotation;
                 }
                 else
                 {
