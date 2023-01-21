@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Scp939
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
 
     /// <summary>
-    ///     Contains all information before SCP-939 plays a stolen player's voice.
+    ///     Contains all information before SCP-939 plays a sound effect.
     /// </summary>
     public class PlayingSoundEventArgs : IPlayerEvent, IDeniableEvent
     {
