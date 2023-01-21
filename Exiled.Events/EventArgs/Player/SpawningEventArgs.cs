@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Player
         ///     <inheritdoc cref="Position" />
         /// </param>
         /// <param name="rotation">
-        ///     <inheritdoc cref="Rotation" />
+        ///     <inheritdoc cref="HorizontalRotation" />
         /// </param>
         /// <param name="oldRole">
         ///     the spawned player's old <see cref="PlayerRoleBase">role</see>.
@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = Player.Get(hub);
             Position = position;
-            Rotation = rotation;
+            HorizontalRotation = rotation;
             OldRole = Role.Create(oldRole);
         }
 
@@ -61,7 +61,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <remarks>
         ///     Rotation will apply only for <see cref="FpcRole"/>.
         /// </remarks>
-        public float Rotation { get; set; }
+        public float HorizontalRotation { get; set; }
 
         /// <summary>
         ///     Gets the player's old <see cref="PlayerRoleBase">role</see>.
