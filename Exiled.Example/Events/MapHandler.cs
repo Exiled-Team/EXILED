@@ -20,6 +20,8 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnExplodingGrenade(ExplodingGrenadeEventArgs)"/>
         public void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
+            Log.Info($"ev targets was null {ev.TargetsToAffect is null} ");
+
             Log.Info($"A grenade thrown by {ev.Player.Nickname} is exploding: {ev.Projectile.Type}\n[Targets]\n\n{string.Join("\n", ev.TargetsToAffect.Select(player => $"[{player.Nickname}]"))}");
         }
 

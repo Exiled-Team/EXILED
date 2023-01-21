@@ -36,6 +36,7 @@ namespace Exiled.Events.EventArgs.Map
             Player = thrower ?? Server.Host;
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = position;
+            TargetsToAffect = HashSetPool<Player>.Pool.Get();
 
             if (Projectile.Base is not ExplosionGrenade)
                 return;
@@ -80,7 +81,10 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         ~ExplodingGrenadeEventArgs()
         {
-            HashSetPool<Player>.Pool.Return(TargetsToAffect);
+            if (TargetsToAffect != null)
+            {
+                HashSetPool<Player>.Pool.Return(TargetsToAffect);
+            }
         }
 
         /// <summary>

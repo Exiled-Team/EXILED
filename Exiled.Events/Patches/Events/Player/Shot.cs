@@ -28,10 +28,12 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Patches <see cref="SingleBulletHitreg.ServerProcessRaycastHit(Ray, RaycastHit)" />.
     ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
     /// </summary>
-    [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerProcessRaycastHit))]
+    [HarmonyPatch]
     internal static class Shot
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        [HarmonyPatch(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.ServerProcessRaycastHit))]
+        [HarmonyTranspiler]
+        private static IEnumerable<CodeInstruction> ShotBullet(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
@@ -50,7 +52,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // Player.Get(this.Hub)
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Hub))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // hit
                     new(OpCodes.Ldarg_2),
@@ -59,26 +60,13 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldloc_0),
 
                     // damage
-                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Ldloca_S, 1),
 
-                    // ShotEventArgs ev = new(Player, RaycastHit, IDestructible, float)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShotEventArgs))[0]),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc, ev.LocalIndex),
-
-                    // Handlers.Player.OnShot(ev)
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot))),
 
                     // if (!ev.CanHurt)
                     //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.CanHurt))),
                     new(OpCodes.Brfalse, returnLabel),
-
-                    // damage = ev.Damage
-                    new(OpCodes.Ldloc, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.Damage))),
-                    new(OpCodes.Stloc_1),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -94,64 +82,58 @@ namespace Exiled.Events.Patches.Events.Player
         ///     Adds the <see cref="Handlers.Player.Shooting" /> and <see cref="Handlers.Player.Shot" /> events.
         /// </summary>
         [HarmonyPatch(typeof(BuckshotHitreg), nameof(BuckshotHitreg.ShootPellet))]
-        internal static class ShotPellets
+        [HarmonyTranspiler]
+        private static IEnumerable<CodeInstruction> ShotPellet(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            Label returnLabel = generator.DefineLabel();
+
+            const int offset = 0;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // this.Hub
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BuckshotHitreg), nameof(BuckshotHitreg.Hub))),
+
+                    // hit
+                    new(OpCodes.Ldloc_2),
+
+                    // destructible
+                    new(OpCodes.Ldloc_3),
+
+                    // damage
+                    new(OpCodes.Ldloca_S, 4),
+
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot))),
+
+                    // if (!ev.CanHurt)
+                    //    return;
+                    new(OpCodes.Brfalse, returnLabel),
+                });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static bool ProcessShot(ReferenceHub player, RaycastHit hit, IDestructible destructible,  ref float damage)
+        {
+            ShotEventArgs shotEvent = new ShotEventArgs(Player.Get(player), hit, destructible, damage);
+            Handlers.Player.OnShot(shotEvent);
+            if (shotEvent.CanHurt)
             {
-                List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
-                Label returnLabel = generator.DefineLabel();
-
-                LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
-
-                const int offset = 0;
-                int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
-
-                newInstructions.InsertRange(
-                    index,
-                    new[]
-                    {
-                        // Player player = Player.Get(this.Hub)
-                        new CodeInstruction(OpCodes.Ldarg_0),
-                        new(OpCodes.Callvirt, PropertyGetter(typeof(BuckshotHitreg), nameof(BuckshotHitreg.Hub))),
-                        new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
-                        // hit
-                        new(OpCodes.Ldloc_2),
-
-                        // destructible
-                        new(OpCodes.Ldloc_3),
-
-                        // damage
-                        new(OpCodes.Ldloc, 4),
-
-                        // ShotEventArgs ev = new(Player, RaycastHit, IDestructible, float)
-                        new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShotEventArgs))[0]),
-                        new(OpCodes.Dup),
-                        new(OpCodes.Dup),
-                        new(OpCodes.Stloc, ev.LocalIndex),
-
-                        // Handlers.Player.OnShot(ev)
-                        new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
-
-                        // if (!ev.CanHurt)
-                        //    return;
-                        new(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.CanHurt))),
-                        new(OpCodes.Brfalse, returnLabel),
-
-                        // damage = ev.Damage
-                        new(OpCodes.Ldloc, ev.LocalIndex),
-                        new(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.Damage))),
-                        new(OpCodes.Stloc, 4),
-                    });
-
-                newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
-
-                for (int z = 0; z < newInstructions.Count; z++)
-                    yield return newInstructions[z];
-
-                ListPool<CodeInstruction>.Pool.Return(newInstructions);
+                damage = shotEvent.Damage;
             }
+
+            return shotEvent.CanHurt;
         }
     }
 }
