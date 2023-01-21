@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Item
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 2;
+            const int offset = 3;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse_S) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingAmmoEventArgs));
@@ -58,11 +58,6 @@ namespace Exiled.Events.Patches.Events.Item
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm._status))),
                     new(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Ammo))),
-
-                    // if (value.Ammo == this._status.Ammo)
-                    //   goto cdc;
-                    new(OpCodes.Ceq),
-                    new(OpCodes.Brtrue_S, cdc),
 
                     // Player.Get(this.Owner)
                     new(OpCodes.Ldarg_0),
