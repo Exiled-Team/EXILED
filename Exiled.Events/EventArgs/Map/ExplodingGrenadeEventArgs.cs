@@ -81,10 +81,7 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         ~ExplodingGrenadeEventArgs()
         {
-            if (TargetsToAffect != null)
-            {
-                HashSetPool<Player>.Pool.Return(TargetsToAffect);
-            }
+            HashSetPool<Player>.Pool.Return(TargetsToAffect);
         }
 
         /// <summary>
