@@ -8,10 +8,11 @@
 namespace Exiled.API.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using CustomPlayerEffects;
     using Enums;
-
+    using PlayerRoles;
     using Respawning;
 
     /// <summary>
@@ -85,6 +86,11 @@ namespace Exiled.API.Features
             get => SpawnProtected.CanShoot;
             set => SpawnProtected.CanShoot = value;
         }
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of <see cref="Team"/> that have spawn protection.
+        /// </summary>
+        public static List<Team> SpawnProtectTeams => SpawnProtected.ProtectedTeams;
 
         /// <summary>
         /// Play an effect when a certain class spawns.
