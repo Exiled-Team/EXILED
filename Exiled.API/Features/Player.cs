@@ -98,6 +98,11 @@ namespace Exiled.API.Features
         /// A list of the player's items.
         /// </summary>
         internal readonly List<Item> ItemsValue = new(8);
+
+        /// <summary>
+        /// An overide for <see cref="MaxHumeShield"/>.
+        /// </summary>
+        internal float MaxHS;
 #pragma warning restore SA1401
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
@@ -841,8 +846,8 @@ namespace Exiled.API.Features
         /// <remarks>This value can bypass the role's hume shield maximum. However, this value will only be visible to the end-player as Hume Shield if <see cref="FpcRole.IsHumeShieldedRole"/> is <see langword="true"/>. Otherwise, the game will treat the player as though they have the amount of Hume Shield specified, even though they cannot see it.</remarks>
         public float HumeShield
         {
-            get => humeshieldStat.CurValue;
-            set => humeshieldStat.CurValue = value;
+            get => HumeShieldStat.CurValue;
+            set => HumeShieldStat.CurValue = value;
         }
 
         /// <summary>
@@ -851,8 +856,8 @@ namespace Exiled.API.Features
         /// <remarks>This value can bypass the role's hume shield maximum. However, this value will only be visible to the end-player as Hume Shield if <see cref="FpcRole.IsHumeShieldedRole"/> is <see langword="true"/>. Otherwise, the game will treat the player as though they have the amount of Hume Shield specified, even though they cannot see it.</remarks>
         public float MaxHumeShield
         {
-            get => humeshieldStat.MaxValue;
-            set => humeshieldStat.CustomMaxValue = value;
+            get => MaxHS is 0 ? HumeShieldStat.MaxValue : MaxHS;
+            set => MaxHS = value;
         }
 
         /// <summary>

@@ -21,5 +21,13 @@ namespace Exiled.API.Features
         /// Gets or sets the maximum amount of health the player will have.
         /// </summary>
         public float CustomMaxValue { get; set; }
+
+        /// <inheritdoc/>
+        public override void ClassChanged()
+        {
+            base.ClassChanged();
+
+            CustomMaxValue = 0f;
+        }
     }
 }

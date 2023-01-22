@@ -10,16 +10,16 @@ namespace Exiled.API.Features
     using PlayerStatsSystem;
 
     /// <summary>
-    /// A custom version of <see cref="HumeShieldStat"/> which allows the player's max amount of Hume shield to be changed.
+    /// A custom version of <see cref="HumeShieldStat"/> will permit to reset MaxHS when the player class change.
     /// </summary>
     public class CustomHumeShieldStat : HumeShieldStat
     {
         /// <inheritdoc/>
-        public override float MaxValue => CustomMaxValue == default ? base.MaxValue : CustomMaxValue;
+        public override void ClassChanged()
+        {
+            base.ClassChanged();
 
-        /// <summary>
-        /// Gets or sets the maximum amount of health the player will have.
-        /// </summary>
-        public float CustomMaxValue { get; set; }
+            Player.Get(Hub).MaxHS = default;
+        }
     }
 }
