@@ -11,16 +11,13 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
     using Exiled.Events.EventArgs.Scp079;
-
     using HarmonyLib;
-
     using Mirror;
-
     using PlayerRoles.PlayableScps.Scp079.Pinging;
-
+    using PluginAPI.Core;
     using RelativePositioning;
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -43,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction[]
                 {
                     // Load Scp079PingAbility , NetworkReader into ProcessPinging
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveBlocksFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Pinging), nameof(Pinging.ProcessPinging))),
                     new(OpCodes.Ret),
@@ -57,17 +54,15 @@ namespace Exiled.Events.Patches.Events.Scp079
         private static void ProcessPinging(Scp079PingAbility instance, NetworkReader reader)
         {
             RelativePosition curRelativePos = reader.ReadRelativePosition();
-
-            PingingEventArgs ev = new PingingEventArgs(instance.Owner, curRelativePos, instance._cost, instance._syncProcessorIndex);
-
+            Vector3 syncNormal = reader.ReadVector3();
+            PingingEventArgs ev = new PingingEventArgs(instance.Owner, curRelativePos, instance._cost, instance._syncProcessorIndex, syncNormal);
             Handlers.Scp079.OnPinging(ev);
-
             if (ev.IsAllowed)
             {
-                instance._syncNormal = ev.Position;
+                instance._syncNormal = ev.SyncNormal;
                 instance._syncPos = curRelativePos;
                 instance.ServerSendRpc(hub => instance.ServerCheckReceiver(hub, ev.Position, (int)ev.Type));
-                instance.AuxManager.CurrentAux = ev.AuxiliaryPowerCost;
+                instance.AuxManager.CurrentAux -= ev.AuxiliaryPowerCost;
                 instance._rateLimiter.RegisterInput();
             }
         }
