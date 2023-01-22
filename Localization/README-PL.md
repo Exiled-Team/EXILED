@@ -51,7 +51,7 @@ Jeżeli zdecydujecie się na skorzystanie z instalatora, ten - jeżeli użyty po
 To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego uruchomienia serwera. Pamiętajcie, że sam EXILED nie będzie robił prawie nic, aby zdobyć pluginy udajcie się na **[nasz serwer Discord](https://discord.gg/PyUkWTg)**
 - Aby zainstalować plugin wystarczy:
   - Pobrać go z [*jego* strony wydań](https://i.imgur.com/u34wgPD.jpg) (**MUSI być to plik `.dll`!**)
-  - Przenieść go do folderu: ``C:\Users\(Wasz_użytkownik)\AppData\Roaming\EXILED\Plugins`` (aby się tutaj dosta wystarczy wcisnąć Win + R i wpisać `%appdata%`)
+  - Przenieść go do folderu: ``C:\Users\(Wasz_użytkownik)\AppData\Roaming\EXILED\Plugins`` (aby się tutaj dostać wystarczy wcisnąć Win + R i wpisać `%appdata%`)
 
 # Linux
 ### Automatyczna instalacja ([więcej informacji](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
@@ -69,7 +69,7 @@ To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego
   - Pobierzcie **`Exiled.tar.gz` kilkając [tutaj](https://github.com/Exiled-Team/EXILED/releases)** (SSH: naciśnijcie prawym przyciskiem myszy na `Exiled.tar.gz` aby skopiować link, a następnie wpiszcie: **`wget (link_do_pobrania)`**)
   - Aby wypakować pliki do obecnego folderu **``tar -xzvf EXILED.tar.gz``**
   - Przenieście folder **`EXILED`** do ścieżki **``~/.config``**. *UWAGA: Folder EXILED musi znaleźć się w folderze ``~/.config``, ***A NIE*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
-  - Przenieście folder **`SCP Secret Laboratory`** do ścieżki **``~/.config``**. *UWAGA: The folder musi znaleźć się w ``~/.config``, **A *NIE*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
+  - Przenieście folder **`SCP Secret Laboratory`** do ścieżki **``~/.config``**. *UWAGA: Folder musi znaleźć się w ``~/.config``, **A *NIE*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Instalowanie pluginów
 To tyle, EXILED powinien być juz zainstalowany i aktywowany podczas następnego uruchomienia serwera. Pamiętajcie, że sam EXILED nie będzie robił prawie nic, aby zdobyć nowe pluginy udajcie się na **[nasz serwer Discord](https://discord.gg/PyUkWTg)**
@@ -93,7 +93,7 @@ Aby uzyskać dokładniejsze i bardziej aktualne poradniki odwiedźcie [stronę E
 Podczas publikowania swoich pluginów pamiętajcie o tych zasadach:
 
  - Wasz plugin musi zawierać klasę która dziedziczy od ``Exiled.API.Features.Plugin<>``, jeżeli tak nie jest EXILED nie załaduje waszego pluginu podczas startu serwera!
- - Gdy plugin jest załadowany kod zawarty w metodzie ``OnEnabled()`` nie czeka aż pozostałe pluginy zostaną załadowane, nie czeka aż proces uruchamiania serwera się zakończy. ***Nie czeka na nic.*** Podczas konfigurowania waszej metody ``OnEnabled()``, upewnijcie się że ***nie*** próbujecie korzystać z rzeczy, które nie zostały jeszcze zainicjalizowane przez serwer, takich jak: ``S`erverConsole.Port``, albo ``PlayerManager.localPlayer``.
+ - Gdy plugin jest załadowany kod zawarty w metodzie ``OnEnabled()`` nie czeka aż pozostałe pluginy zostaną załadowane, nie czeka aż proces uruchamiania serwera się zakończy. ***Nie czeka na nic.*** Podczas konfigurowania waszej metody ``OnEnabled()``, upewnijcie się że ***nie*** próbujecie korzystać z rzeczy, które nie zostały jeszcze zainicjalizowane przez serwer, takich jak: ``ServerConsole.Port``, albo ``PlayerManager.localPlayer``.
  - Jeżeli musicie wcześnie skorzystać z rzeczy, które nie zostały jeszcze zainicjalizowane przez serwer, zalecane jest aby poczekać na zdarzenie ``WaitingForPlayers``, jeżeli z jakiegoś powodu musicie zrobić coś jeszcze wcześniej, po prostu owińcie wasz kod w pętli ``` while(!x)``` która czeka aż objekt/zmienna której potrzebujecie nie będzie miała już wartości null, a potem kontynuuje.
  - EXILED wspiera dynamiczne ładowanie assembly pluginów podczas egzekucji kodu. To oznacza, że jeżeli musicie zaktualizować plugin, może się to wydarzyć bez restartowania serwera, jednakże żeby zaktualizować plugin podczas egzekucji kodu, plugin musi być opdowiednio przygotowany aby wspierać takie działanie. Odnoście się do sekcji ``Dynamiczne aktualizacje`` po więcej informacji i wytycznych.
  - ***NIE MA*** zdarzeń takich jak: OnUpdate, OnFixedUpdate albo OnLateUpdate zawartych w EXILED'zie. Jeżeli z jakiegoś powodu musicie wykonywać kod *aż tak* często, możecie skorzystać z korutyny MEC, która czeka jedną klatkę, 0.01f, albo używa warstwy Timing takiej jak Timing.FixedUpdate.
@@ -119,7 +119,7 @@ public void JakasMetoda()
 
 public IEnumerator<float> MojaKorutyna()
 {
-    for (;;) //powtórz następujący w nieskończoność
+    for (;;) //powtórz następujący kod w nieskończoność
     {
         Log.Info("Hej, jestem nieskończoną pętlą!"); //Ta część wzywa funkcję Log.Info(), aby wypisać tą samą, ustaloną linijkę do konsoli serwera/logów serwera
         yield return Timing.WaitForSeconds(5f); //Ta część mówi korutynie aby zaczekała 5 sekund przed wykonaniem reszty kodu, ponieważ znajduje się to na końcu pętli przeciąga to korutynę o 5 sekund.
