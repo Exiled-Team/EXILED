@@ -24,7 +24,7 @@ namespace Exiled.Example
         public bool IsEnabled { get; set; } = true;
 
         /// <inheritdoc />
-        public bool Debug { get; set; }
+        public bool Debug { get; set; } = false;
 
         /// <summary>
         /// Gets the string config.

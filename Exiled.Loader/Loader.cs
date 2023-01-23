@@ -60,7 +60,9 @@ namespace Exiled.Loader
 
             CustomNetworkManager.Modded = true;
 
-            if (LoaderPlugin.Config.ConfigType == ConfigType.Separated)
+            ConfigManager.LoadLoaderConfigs();
+
+            if (Config.ConfigType is ConfigType.Separated)
                 Directory.CreateDirectory(Paths.IndividualConfigs);
         }
 
@@ -83,6 +85,11 @@ namespace Exiled.Loader
         /// Gets the version of the assembly.
         /// </summary>
         public static Version Version { get; } = Assembly.GetExecutingAssembly().GetName().Version;
+
+        /// <summary>
+        /// Gets the configs of the plugin manager.
+        /// </summary>
+        public static Config Config { get; } = new();
 
         /// <summary>
         /// Gets plugin dependencies.
@@ -353,7 +360,7 @@ namespace Exiled.Loader
         /// Runs the plugin manager, by loading all dependencies, plugins, configs and then enables all plugins.
         /// </summary>
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
-        public void Run(Assembly[] dependencies = null)
+        public static void Run(Assembly[] dependencies = null)
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? CheckUAC() : geteuid() == 0)
             {
@@ -426,7 +433,7 @@ namespace Exiled.Loader
 
                     return true;
                 }
-                else if ((requiredVersion.Major < actualVersion.Major) && !LoaderPlugin.Config.ShouldLoadOutdatedPlugins)
+                else if ((requiredVersion.Major < actualVersion.Major) && !Config.ShouldLoadOutdatedPlugins)
                 {
                     Log.Error(
                         $"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
@@ -580,7 +587,7 @@ namespace Exiled.Loader
                 Marshal.FreeHGlobal(tetPtr);
             }
 
-            return tet == TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
+            return tet is TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
         }
 
         /// <summary>

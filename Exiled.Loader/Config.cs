@@ -35,12 +35,6 @@ namespace Exiled.Loader
         public bool ShouldLoadOutdatedPlugins { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets the Exiled directory path from which plugins will be loaded.
-        /// </summary>
-        [Description("The Exiled directory path from which plugins will be loaded")]
-        public string ExiledDirectoryPath { get; set; } = Path.Combine(Paths.AppData, "EXILED");
-
-        /// <summary>
         /// Gets or sets the environment type.
         /// </summary>
         [Description("The working environment type (Development, Testing, Production, Ptb, ProductionDebug)")]
@@ -50,6 +44,6 @@ namespace Exiled.Loader
         /// Gets or sets the config files distribution type.
         /// </summary>
         [Description("The config files distribution type (Default, Separated)")]
-        public ConfigType ConfigType { get; set; } = ConfigType.Default;
+        public ConfigType ConfigType { get; set; } = ConfigType.Separated;
     }
 }

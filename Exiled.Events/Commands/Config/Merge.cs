@@ -41,16 +41,16 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (LoaderPlugin.Config.ConfigType == ConfigType.Default)
+            if (Loader.Config.ConfigType is ConfigType.Default)
             {
                 response = "Configs are already merged.";
                 return false;
             }
 
             SortedDictionary<string, IConfig> configs = ConfigManager.LoadSorted(ConfigManager.Read());
-            LoaderPlugin.Config.ConfigType = ConfigType.Default;
+            Loader.Config.ConfigType = ConfigType.Default;
             bool haveBeenSaved = ConfigManager.Save(configs);
-            File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(LoaderPlugin.Config));
+            File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(Loader.Config));
 
             response = $"Configs have been merged successfully! Feel free to remove the directory in the following path:\n\"{Paths.IndividualConfigs}\"";
             return haveBeenSaved;
