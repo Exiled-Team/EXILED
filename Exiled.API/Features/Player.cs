@@ -2694,6 +2694,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Enables a <see cref="Effect">status effect</see> on the player.
+        /// </summary>
+        /// <param name="Effect">The <see cref="Effect"/> to enable.</param>
+        private void EnableEffect(Effect effect)
+        {
+            if (effect.Enable)
+            {
+                EnableEffect(effect.Type, effect.Duration, effect.AddDurationIfActive);
+
+                if (effect.Intensity > 0)
+                    ChangeEffectIntensity(effect.Type, effect.Intensity, effect.Duration);
+            }
+        }
+
+        /// <summary>
         /// Enables a random <see cref="EffectType"/> on the player.
         /// </summary>
         /// <param name="category">An optional category to filter the applied effect. Set to <see cref="EffectCategory.None"/> for any effect.</param>
@@ -2723,6 +2738,18 @@ namespace Exiled.API.Features
             {
                 if (TryGetEffect(type, out StatusEffectBase statusEffect))
                     EnableEffect(statusEffect, duration, addDurationIfActive);
+            }
+        }
+
+        /// <summary>
+        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
+        /// </summary>
+        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="Effect"/> to enable.</param>
+        public void EnableEffects(IEnumerable<Effect> effects)
+        {
+            foreach (Effect effect in effects)
+            {
+                EnableEffect(effect);
             }
         }
 
