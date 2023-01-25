@@ -1857,14 +1857,10 @@ namespace Exiled.API.Features
             else
             {
                 if (keepPosition)
-                {
                     roleSpawnFlags = RoleSpawnFlags.AssignInventory;
-                }
 
                 if (keepInventory)
-                {
                     roleSpawnFlags = RoleSpawnFlags.UseSpawnpoint;
-                }
             }
 
             RoleManager.ServerSetRole(newRole, roleChangeReason, roleSpawnFlags);
