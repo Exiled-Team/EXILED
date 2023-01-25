@@ -310,6 +310,13 @@ namespace Exiled.API.Features.Pickups
         public static Pickup Get(ushort serial) => List.SingleOrDefault(x => x.Serial == serial);
 
         /// <summary>
+        /// Gets the <see cref="Pickup"/> with the given <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject"> The serial of the Pickup you search.</param>
+        /// <returns>return the Pickup with gameObject choose.</returns>
+        public static Pickup Get(GameObject gameObject) => Get(gameObject?.GetComponent<ItemPickupBase>());
+
+        /// <summary>
         /// Creates and returns a new <see cref="Pickup"/> with the proper inherited subclass.
         /// <para>
         /// Based on the <paramref name="type"/>, the returned <see cref="Pickup"/> can be casted into a subclass to gain more control over the object.
