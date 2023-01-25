@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!Round.IsStarted)
                     return false;
 
-                if (TeslaGate.BaseTeslaGateToTeslaGate.Count == 0)
+                if (TeslaGate.BaseTeslaGateToTeslaGate.Count == 0 || Round.IsEnded)
                     return true;
 
                 foreach (BaseTeslaGate baseTeslaGate in __instance.TeslaGates)
