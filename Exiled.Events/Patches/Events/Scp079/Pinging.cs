@@ -58,6 +58,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             PingingEventArgs ev = new PingingEventArgs(instance.Owner, curRelativePos, instance._cost, instance._syncProcessorIndex, syncNormal);
 
             Handlers.Scp079.OnPinging(ev);
+
             if (ev.IsAllowed)
             {
                 instance._syncNormal = ev.SyncNormal;
