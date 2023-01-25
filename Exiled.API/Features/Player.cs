@@ -2895,17 +2895,14 @@ namespace Exiled.API.Features
                             ? new Vector3(3, 0, 0)
                             : new Vector3(0, 0, 3)));
                     break;
-                case IWorldSpace worldspaceObject:
-                    Teleport(worldspaceObject.Position + Vector3.up);
+                case IPosition positionObject:
+                    Teleport(positionObject.Position + Vector3.up);
                     break;
                 case DoorType doorType:
                     Teleport(Door.Get(doorType).Position + Vector3.up);
                     break;
                 case SpawnLocationType sp:
                     Teleport(sp.GetPosition());
-                    break;
-                case Spawn.SpawnPoint sp:
-                    Teleport(sp.Position);
                     break;
                 case RoomType roomType:
                     Teleport(Room.Get(roomType).Position + Vector3.up);
@@ -2918,9 +2915,6 @@ namespace Exiled.API.Features
                     break;
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up);
-                    break;
-                case Player player:
-                    Teleport(player.Position);
                     break;
                 case Role role:
                     if (role.Owner is not null)
