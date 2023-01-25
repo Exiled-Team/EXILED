@@ -2748,9 +2748,7 @@ namespace Exiled.API.Features
         public void EnableEffects(IEnumerable<Effect> effects)
         {
             foreach (Effect effect in effects)
-            {
                 EnableEffect(effect);
-            }
         }
 
         /// <summary>
