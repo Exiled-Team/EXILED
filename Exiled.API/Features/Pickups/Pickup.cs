@@ -332,6 +332,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         /// <returns>The created <see cref="Pickup"/>.</returns>
+        /// <seealso cref="Projectile.Create(Enums.ProjectileType)"/>
         public static Pickup Create(ItemType type) => type switch
         {
             ItemType.SCP244a or ItemType.SCP244b => new Scp244Pickup(type),
@@ -339,8 +340,6 @@ namespace Exiled.API.Features.Pickups
             ItemType.Radio => new RadioPickup(),
             ItemType.MicroHID => new MicroHIDPickup(),
             ItemType.GrenadeHE or ItemType.GrenadeFlash => new GrenadePickup(type),
-            ItemType.SCP018 => new Projectiles.Scp018Projectile(),
-            ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
             ItemType.GunCrossvec or ItemType.GunLogicer or ItemType.GunRevolver or ItemType.GunShotgun or ItemType.GunAK or ItemType.GunCOM15 or ItemType.GunCOM18 or ItemType.GunE11SR or ItemType.GunFSP9 or ItemType.ParticleDisruptor => new FirearmPickup(type),
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
@@ -356,6 +355,7 @@ namespace Exiled.API.Features.Pickups
         /// <param name="rotation">The rotation to spawn the <see cref="Pickup"/>.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Pickup"/>. See documentation of <see cref="Create(ItemType)"/> for more information on casting.</returns>
+        /// <seealso cref="Projectile.CreateAndSpawn(Enums.ProjectileType, Vector3, Quaternion, bool, Player)"/>
         public static Pickup CreateAndSpawn(ItemType type, Vector3 position, Quaternion rotation, Player previousOwner = null) => Spawn(Create(type), position, rotation, previousOwner);
 
         /// <summary>
@@ -366,6 +366,7 @@ namespace Exiled.API.Features.Pickups
         /// <param name="rotation">The rotation to spawn the <see cref="Pickup"/>.</param>
         /// <param name="previousOwner">An optional previous owner of the item.</param>
         /// <returns>The <see cref="Pickup"/> Spawn.</returns>
+        /// <seealso cref="Projectile.Spawn(Projectile, Vector3, Quaternion, bool, Player)"/>
         public static Pickup Spawn(Pickup pickup, Vector3 position, Quaternion rotation, Player previousOwner = null)
         {
             pickup.Position = position;
