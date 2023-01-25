@@ -1840,6 +1840,37 @@ namespace Exiled.API.Features
         public bool RemoveHeldItem(bool destroy = true) => RemoveItem(CurrentItem, destroy);
 
         /// <summary>
+        /// Sets the player's <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
+        /// <param name="roleChangeReason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
+        /// <param name="keepPosition">Indicates whether or not it should preserve the position after changing the role.</param>
+        /// <param name="keepInventory">Indicates whether or not it should preserve the inventory after changing the role.</param>
+        public void SetRole(RoleTypeId newRole, RoleChangeReason roleChangeReason = RoleChangeReason.RemoteAdmin, bool keepPosition = false, bool keepInventory = false)
+        {
+            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All;
+
+            if (keepPosition && keepInventory)
+            {
+                roleSpawnFlags = RoleSpawnFlags.None;
+            }
+            else
+            {
+                if (keepPosition)
+                {
+                    roleSpawnFlags = RoleSpawnFlags.AssignInventory;
+                }
+
+                if (keepInventory)
+                {
+                    roleSpawnFlags = RoleSpawnFlags.UseSpawnpoint;
+                }
+            }
+
+            RoleManager.ServerSetRole(newRole, roleChangeReason, roleSpawnFlags);
+        }
+
+        /// <summary>
         /// Sends a console message to the player's console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
