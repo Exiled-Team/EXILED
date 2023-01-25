@@ -72,14 +72,10 @@ namespace Exiled.Events.Patches.Events.Map
             foreach (Player player in explodingGrenadeEvent.TargetsToAffect)
             {
                 if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && (explodingGrenadeEvent.Player == player))
-                {
                     continue;
-                }
 
                 if (HitboxIdentity.CheckFriendlyFire(explodingGrenadeEvent.Player.ReferenceHub, player.ReferenceHub))
-                {
                     instance.ProcessPlayer(player.ReferenceHub);
-                }
             }
         }
 
