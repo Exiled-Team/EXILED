@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Scp939
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Lunge), nameof(ProcessLunge))),
-                    new(OpCodes.Br, returnLabel),
+                    new(OpCodes.Br_S, returnLabel),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
