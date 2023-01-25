@@ -2699,7 +2699,7 @@ namespace Exiled.API.Features
         /// <param name="Effect">The <see cref="Effect"/> to enable.</param>
         private void EnableEffect(Effect effect)
         {
-            if (effect.Enable)
+            if (effect.IsEnabled)
             {
                 EnableEffect(effect.Type, effect.Duration, effect.AddDurationIfActive);
 
