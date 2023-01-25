@@ -1843,10 +1843,10 @@ namespace Exiled.API.Features
         /// Sets the player's <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
-        /// <param name="roleChangeReason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
         /// <param name="keepPosition">Indicates whether or not it should preserve the position after changing the role.</param>
         /// <param name="keepInventory">Indicates whether or not it should preserve the inventory after changing the role.</param>
-        public void SetRole(RoleTypeId newRole, RoleChangeReason roleChangeReason = RoleChangeReason.RemoteAdmin, bool keepPosition = false, bool keepInventory = false)
+        /// <param name="roleChangeReason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
+        public void SetRole(RoleTypeId newRole, bool keepPosition = false, bool keepInventory = false, RoleChangeReason roleChangeReason = RoleChangeReason.RemoteAdmin)
         {
             RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All;
 
