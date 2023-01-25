@@ -47,7 +47,7 @@ namespace Exiled.API.Features
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
 
-            foreach (ElevatorDoor door in ElevatorDoor.AllElevatorDoors.First(elevator => elevator.Key == Base.AssignedGroup).Value)
+            foreach (ElevatorDoor door in ElevatorDoor.AllElevatorDoors.First(elevator => elevator.Key == Group).Value)
                 internalDoorsList.Add(door);
         }
 
@@ -80,7 +80,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's name.
         /// </summary>
-        public string Name => Base.AssignedGroup.ToString();
+        public string Name => Group.ToString();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.GameObject"/> of the lift.
@@ -127,7 +127,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the lift's <see cref="ElevatorType"/>.
         /// </summary>
-        public ElevatorType Type => Base.AssignedGroup switch
+        public ElevatorType Type => Group switch
         {
             ElevatorGroup.Scp049 => ElevatorType.Scp049,
             ElevatorGroup.GateA => ElevatorType.GateA,
@@ -248,7 +248,7 @@ namespace Exiled.API.Features
         /// <param name="level">The destination level.</param>
         /// <param name="isForced">Indicates whether the start will be forced or not.</param>
         /// <returns><see langword="true"/> if the lift was started successfully; otherwise, <see langword="false"/>.</returns>
-        public bool TryStart(int level, bool isForced = false) => TrySetDestination(Base.AssignedGroup, level, isForced);
+        public bool TryStart(int level, bool isForced = false) => TrySetDestination(Group, level, isForced);
 
         /// <summary>
         /// Changes lock of the lift.

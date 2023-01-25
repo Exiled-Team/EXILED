@@ -19,19 +19,18 @@ namespace Exiled.Events.EventArgs.Item
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingAmmoEventArgs"/> class.
         /// </summary>
-        /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="firearm"><inheritdoc cref="Firearm"/></param>
         /// <param name="oldAmmo"><inheritdoc cref="OldAmmo"/></param>
         /// <param name="newAmmo"><inheritdoc cref="NewAmmo"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingAmmoEventArgs(Player player, InventorySystem.Items.ItemBase firearm, byte oldAmmo, byte newAmmo, bool isAllowed = true)
+        public ChangingAmmoEventArgs(InventorySystem.Items.ItemBase firearm, byte oldAmmo, byte newAmmo, bool isAllowed = true)
         {
             Item item = Item.Get(firearm);
 
             if (item is not Firearm firearmItem)
                 return;
 
-            Player = player;
+            Player = firearmItem.Owner;
             Firearm = firearmItem;
             OldAmmo = oldAmmo;
             NewAmmo = newAmmo;
