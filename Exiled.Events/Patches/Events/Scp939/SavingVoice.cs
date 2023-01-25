@@ -38,6 +38,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             if (!__instance.IsPrivacyAccepted(ply))
                 return false;
+
             SavingVoiceEventArgs ev = new(__instance.Owner, ply);
             Scp939.OnSavingVoice(ev);
 
