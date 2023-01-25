@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Callvirt, PropertyGetter(typeof(MimicryRecorder), nameof(MimicryRecorder.Owner))),
 
                 // target
-                new(OpCodes.Ldloc_1),
+                new(OpCodes.Ldloc_0),
 
                 // PlayingVoiceEventArgs ev = new(...)
                 // if (!ev.IsAllowed)
