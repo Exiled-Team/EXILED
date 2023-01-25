@@ -203,6 +203,33 @@ namespace Exiled.API.Features.Roles
             Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)reason, spawnFlags);
 
         /// <summary>
+        /// Sets the player's <see cref="RoleTypeId"/>.
+        /// </summary>
+        /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
+        /// <param name="keepPosition">Indicates whether or not it should preserve the position after changing the role.</param>
+        /// <param name="keepInventory">Indicates whether or not it should preserve the inventory after changing the role.</param>
+        /// <param name="roleChangeReason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
+        public void SetRole(RoleTypeId newRole, bool keepPosition = false, bool keepInventory = false, RoleChangeReason roleChangeReason = RoleChangeReason.RemoteAdmin)
+        {
+            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All;
+
+            if (keepPosition && keepInventory)
+            {
+                roleSpawnFlags = RoleSpawnFlags.None;
+            }
+            else
+            {
+                if (keepPosition)
+                    roleSpawnFlags = RoleSpawnFlags.AssignInventory;
+
+                if (keepInventory)
+                    roleSpawnFlags = RoleSpawnFlags.UseSpawnpoint;
+            }
+
+            Owner.RoleManager.ServerSetRole(newRole, roleChangeReason, roleSpawnFlags);
+        }
+
+        /// <summary>
         /// Creates a role from <see cref="RoleTypeId"/> and <see cref="Player"/>.
         /// </summary>
         /// <param name="role">The <see cref="PlayerRoleBase"/>.</param>
