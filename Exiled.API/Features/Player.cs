@@ -2888,11 +2888,15 @@ namespace Exiled.API.Features
         {
             switch (obj)
             {
-                case Camera camera:
-                    Teleport(camera.Position + Vector3.down);
+                case TeslaGate teslaGate:
+                    Teleport(
+                        teslaGate.Position + Vector3.up +
+                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
+                            ? new Vector3(3, 0, 0)
+                            : new Vector3(0, 0, 3)));
                     break;
-                case Door door:
-                    Teleport(door.Position + Vector3.up);
+                case IWorldSpace worldspaceObject:
+                    Teleport(worldspaceObject.Position + Vector3.up);
                     break;
                 case DoorType doorType:
                     Teleport(Door.Get(doorType).Position + Vector3.up);
@@ -2912,16 +2916,6 @@ namespace Exiled.API.Features
                 case ElevatorType elevatorType:
                     Teleport(Lift.Get(elevatorType).Position + Vector3.up);
                     break;
-                case Room room:
-                    Teleport(room.Position + Vector3.up);
-                    break;
-                case TeslaGate teslaGate:
-                    Teleport(
-                        teslaGate.Position + Vector3.up +
-                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
-                            ? new Vector3(3, 0, 0)
-                            : new Vector3(0, 0, 3)));
-                    break;
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up);
                     break;
@@ -2934,32 +2928,14 @@ namespace Exiled.API.Features
                     else
                         Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
                     break;
-                case Pickup pickup:
-                    Teleport(pickup.Position + Vector3.up);
-                    break;
-                case Ragdoll ragdoll:
-                    Teleport(ragdoll.Position + Vector3.up);
-                    break;
                 case Locker locker:
                     Teleport(locker.transform.position + Vector3.up);
                     break;
                 case LockerChamber chamber:
                     Teleport(chamber._spawnpoint.position + Vector3.up);
                     break;
-                case Generator generator:
-                    Teleport(generator.Position + Vector3.up);
-                    break;
-                case Window window:
-                    Teleport(window.Position + Vector3.up);
-                    break;
-                case Toys.AdminToy toy:
-                    Teleport(toy.Position + Vector3.up);
-                    break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up);
-                    break;
-                case EActor ea:
-                    Teleport(ea.Position + Vector3.up);
                     break;
                 case Item item:
                     if (item.Owner is not null)
