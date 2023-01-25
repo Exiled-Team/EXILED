@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // damage
                     new(OpCodes.Ldloca_S, 1),
 
-                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot))),
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible),  typeof(float).MakeByRefType()})),
 
                     // if (!ev.CanHurt)
                     //    return;
