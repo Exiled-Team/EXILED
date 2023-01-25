@@ -124,14 +124,14 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        private static bool ProcessShot(ReferenceHub player, RaycastHit hit, IDestructible destructible,  ref float damage)
+        private static bool ProcessShot(ReferenceHub player, RaycastHit hit, IDestructible destructible, ref float damage)
         {
             ShotEventArgs shotEvent = new ShotEventArgs(Player.Get(player), hit, destructible, damage);
+            
             Handlers.Player.OnShot(shotEvent);
+            
             if (shotEvent.CanHurt)
-            {
                 damage = shotEvent.Damage;
-            }
 
             return shotEvent.CanHurt;
         }
