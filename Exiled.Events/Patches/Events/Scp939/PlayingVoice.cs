@@ -7,15 +7,20 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Scp939;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
     using Mirror;
 
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
-    using Utils.Networking;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="MimicryRecorder.ServerProcessCmd(NetworkReader)" />
@@ -24,22 +29,40 @@ namespace Exiled.Events.Patches.Events.Scp939
     [HarmonyPatch(typeof(MimicryRecorder), nameof(MimicryRecorder.ServerProcessCmd))]
     internal static class PlayingVoice
     {
-        private static bool Prefix(MimicryRecorder __instance, NetworkReader reader)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            __instance.ServerProcessCmd(reader);
-            ReferenceHub rh = reader.ReadReferenceHub();
-            if (!__instance._serverSentVoices.Contains(rh))
-                return false;
-            if (!__instance._serverSentConfirmations.Add(rh))
-                return false;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            PlayingVoiceEventArgs ev = new(__instance.Owner, rh);
-            Scp939.OnPlayingVoice(ev);
-            if (!ev.IsAllowed)
-                return false;
+            Label ret = generator.DefineLabel();
 
-            __instance.ServerSendRpc((ReferenceHub x) => x == rh);
-            return false;
+            int offset = 0;
+            int index = newInstructions.FindLastIndex(i => i.IsLdarg(0)) + offset;
+
+            newInstructions.InsertRange(index, new[]
+            {
+                // this.Owner
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(MimicryRecorder), nameof(MimicryRecorder.Owner))),
+
+                // target
+                new(OpCodes.Ldloc_1),
+
+                // PlayingVoiceEventArgs ev = new(...)
+                // if (!ev.IsAllowed)
+                //     return;
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlayingVoiceEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnPlayingVoice))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(PlayingVoiceEventArgs), nameof(PlayingVoiceEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, ret),
+            });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }
