@@ -68,7 +68,7 @@ namespace Exiled.API.Features
         /// Gets or sets a value indicating whether the effect should be enabled or not.
         /// </summary>
         [Description("Indicates whether the effect should be enabled or not")]
-        public bool Enable { get; set; }
+        public bool IsEnabled { get; set; }
 
         /// <summary>
         /// Returns the effect in a human-readable format.
