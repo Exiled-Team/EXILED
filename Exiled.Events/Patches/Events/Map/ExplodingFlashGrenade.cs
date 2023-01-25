@@ -66,9 +66,7 @@ namespace Exiled.Events.Patches.Events.Map
             Handlers.Map.OnExplodingGrenade(explodingGrenadeEvent);
 
             if (!explodingGrenadeEvent.IsAllowed)
-            {
                 return;
-            }
 
             foreach (Player player in explodingGrenadeEvent.TargetsToAffect)
             {
