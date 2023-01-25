@@ -15,7 +15,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
-
+    using Exiled.API.Interfaces;
     using Interactables.Interobjects.DoorUtils;
 
     using MapGeneration;
@@ -31,7 +31,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room : MonoBehaviour
+    public class Room : MonoBehaviour, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
@@ -62,6 +62,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Room"/> position.
         /// </summary>
         public Vector3 Position => transform.position;
+
+        /// <summary>
+        /// Gets the <see cref="Room"/> rotation.
+        /// </summary>
+        public Quaternion Rotation => transform.rotation;
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
