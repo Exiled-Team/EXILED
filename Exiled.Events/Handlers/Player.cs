@@ -654,12 +654,10 @@ namespace Exiled.Events.Handlers
         public static void OnSpawning(SpawningEventArgs ev) => Spawning.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a <see cref="API.Features.Player"/> has spawned.
+        /// Called after spawned a <see cref="API.Features.Player"/>.
         /// </summary>
-        /// <param name="hub">The <see cref="ReferenceHub"/> instance.</param>
-        /// <param name="oldRole">The player's old <see cref="PlayerRoleBase"/> instance.</param>
-        /// <param name="newRole">The player's new <see cref="PlayerRoleBase"/> instance.</param>
-        public static void OnSpawned(ReferenceHub hub, PlayerRoleBase oldRole, PlayerRoleBase newRole) => Spawned.InvokeSafely(new SpawnedEventArgs(hub, oldRole));
+        /// <param name="ev">The <see cref="SpawnedEventArgs"/> instance.</param>
+        public static void OnSpawned(SpawnedEventArgs ev) => Spawned.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> held item changes.
