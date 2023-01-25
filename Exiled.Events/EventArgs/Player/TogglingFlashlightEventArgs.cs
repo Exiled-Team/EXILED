@@ -19,10 +19,12 @@ namespace Exiled.Events.EventArgs.Player
     /// </summary>
     public class TogglingFlashlightEventArgs : IPlayerEvent, IDeniableEvent
     {
+        private readonly bool initialState;
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="TogglingFlashlightEventArgs" /> class.
         /// </summary>
-        /// <param name="player">
+        /// <param name="hub">
         ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="flashlight">
@@ -31,15 +33,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="newState">
         ///     <inheritdoc cref="NewState" />
         /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
-        /// </param>
-        public TogglingFlashlightEventArgs(Player player, FlashlightItem flashlight, bool newState, bool isAllowed = true)
+        public TogglingFlashlightEventArgs(ReferenceHub hub, FlashlightItem flashlight, bool newState)
         {
-            Player = player;
+            Player = Player.Get(hub);
             Flashlight = (Flashlight)Item.Get(flashlight);
+            initialState = newState;
             NewState = newState;
-            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -47,17 +46,19 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Flashlight Flashlight { get; }
 
-#pragma warning disable SA1623 // Property summary documentation should match accessors
         /// <summary>
-        ///     Gets or sets the new flashlight state.
+        ///     Gets or sets a value indicating whether is will be the NewState of the Light.
         /// </summary>
         public bool NewState { get; set; }
-#pragma warning restore SA1623 // Property summary documentation should match accessors
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player can toggle the flashlight.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed
+        {
+            get => NewState == initialState;
+            set => NewState = !initialState;
+        }
 
         /// <summary>
         ///     Gets the player who's toggling the flashlight.
