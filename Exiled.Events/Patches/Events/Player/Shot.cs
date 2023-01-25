@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // if (!ev.CanHurt)
                     //    return;
-                    new(OpCodes.Brfalse, returnLabel),
+                    new(OpCodes.Brfalse_S, returnLabel),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
