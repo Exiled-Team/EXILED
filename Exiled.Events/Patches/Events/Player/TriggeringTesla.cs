@@ -31,12 +31,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!Round.IsStarted)
-                    return false;
-
-                if (TeslaGate.BaseTeslaGateToTeslaGate.Count == 0)
-                    return true;
-
                 foreach (BaseTeslaGate baseTeslaGate in __instance.TeslaGates)
                 {
                     if (!baseTeslaGate.isActiveAndEnabled || baseTeslaGate.InProgress)
@@ -56,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         try
                         {
-                            if (player is null || !teslaGate.CanBeIdle(player))
+                            if (player == null || !teslaGate.CanBeIdle(player))
                                 continue;
 
                             TriggeringTeslaEventArgs ev = new(player, teslaGate);
@@ -69,13 +63,9 @@ namespace Exiled.Events.Patches.Events.Player
                             if (ev.IsInIdleRange && !inIdleRange)
                                 inIdleRange = ev.IsInIdleRange;
                         }
-#pragma warning disable CS0168
                         catch (Exception exception)
-#pragma warning restore CS0168
                         {
-#if DEBUG
-                            Log.Error($"{nameof(TriggeringTesla)}.Prefix: {exception}");
-#endif
+                            Log.Error($"{nameof(TriggeringTesla)}.Prefix isTeslaGate null {teslaGate == null}: {exception}");
                         }
                     }
 
