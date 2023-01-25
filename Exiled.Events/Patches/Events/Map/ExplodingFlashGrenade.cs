@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Map
 
                     // Returns DoctorSenseEventArgs
                     new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessEvent))),
-                    new(OpCodes.Br, returnLabel),
+                    new(OpCodes.Br_S, returnLabel),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
