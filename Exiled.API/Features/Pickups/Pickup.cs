@@ -312,7 +312,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets the <see cref="Pickup"/> with the given <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        /// <param name="gameObject"> The serial of the Pickup you search.</param>
+        /// <param name="gameObject"> The gameobject of the Pickup you search.</param>
         /// <returns>return the Pickup with gameObject choose.</returns>
         public static Pickup Get(GameObject gameObject) => gameObject == null ? null : Get(gameObject.GetComponent<ItemPickupBase>());
 
