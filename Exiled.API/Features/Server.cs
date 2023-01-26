@@ -163,8 +163,8 @@ namespace Exiled.API.Features
         [Obsolete("Use Respawn.SpawnProtectTime.")]
         public static float SpawnProtectTime
         {
-            get => Respawn.SpawnProtectTime;
-            set => Respawn.SpawnProtectTime = value;
+            get => Respawn.ProtectionTime;
+            set => Respawn.ProtectionTime = value;
         }
 
         /// <summary>
