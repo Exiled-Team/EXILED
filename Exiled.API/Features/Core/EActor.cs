@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Core
 
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Pools;
+    using Exiled.API.Interfaces;
     using MEC;
 
     using UnityEngine;
@@ -20,7 +21,7 @@ namespace Exiled.API.Features.Core
     /// <summary>
     /// Actor is the base class for a <see cref="EObject"/> that can be placed or spawned in-game.
     /// </summary>
-    public abstract class EActor : EObject, IEntity
+    public abstract class EActor : EObject, IEntity, IWorldSpace
     {
         /// <summary>
         /// The default fixed tick rate.

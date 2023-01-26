@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a MicroHID pickup.
     /// </summary>
-    public class MicroHIDPickup : Pickup, IWrapper<BaseMicroHID>
+    public class MicroHIDPickup : Pickup, IWrapper<BaseMicroHID>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MicroHIDPickup"/> class.

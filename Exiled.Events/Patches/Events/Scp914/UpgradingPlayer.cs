@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             List<Label> labels = newInstructions[index].labels;
 
             // Remove TryOverride, and !upgradeInventory
-            newInstructions.RemoveRange(index, 8);
+            newInstructions.RemoveRange(index, 5);
 
             newInstructions.InsertRange(
                 index,
