@@ -7,8 +7,9 @@
 
 namespace Exiled.Events.EventArgs.Server
 {
-    using API.Enums;
+    using System;
 
+    using API.Enums;
     using Interfaces;
 
     /// <summary>
@@ -26,13 +27,13 @@ namespace Exiled.Events.EventArgs.Server
         ///     <inheritdoc cref="LeadingTeam" />
         /// </param>
         /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        ///     <inheritdoc cref="IsRoundEnded" />
         /// </param>
         public EndingRoundEventArgs(RoundSummary.LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isAllowed)
         {
             ClassList = classList;
             LeadingTeam = (LeadingTeam)leadingTeam;
-            IsAllowed = isAllowed;
+            IsRoundEnded = isAllowed;
         }
 
         /// <summary>
@@ -48,15 +49,16 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         ///     Gets or sets a value indicating whether the round is going to finish or not.
         /// </summary>
-        public bool IsRoundEnded
-        {
-            get => IsAllowed;
-            set => IsAllowed = value;
-        }
+        public bool IsRoundEnded { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the event can be executed or not.
         /// </summary>
-        public bool IsAllowed { get; set; }
-    }
+        [Obsolete("Use IsRoundEnded instead", true)]
+        public bool IsAllowed
+        {
+            get => IsRoundEnded;
+            set => IsRoundEnded = value;
+        }
+}
 }

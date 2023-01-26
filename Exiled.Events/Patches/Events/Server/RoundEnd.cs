@@ -147,7 +147,7 @@ namespace Exiled.Events.Patches.Events.Server
                         Server.OnEndingRound(endingRoundEventArgs);
                         leadingTeam = (RoundSummary.LeadingTeam)endingRoundEventArgs.LeadingTeam;
 
-                        roundSummary._roundEnded = endingRoundEventArgs.IsAllowed;
+                        roundSummary._roundEnded = endingRoundEventArgs.IsRoundEnded;
 
                         if (roundSummary._roundEnded)
                         {
