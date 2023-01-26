@@ -22,10 +22,12 @@ namespace Exiled.Events.Patches.Generic
         private static bool Postfix(DynamicHumeShieldController __instance, ref float __result)
         {
             Player player = Player.Get(__instance.Owner);
+
             if (player.MaxHS == default)
                 __result = player.MaxHS;
             else
                 __result = __instance.ShieldOverHealth.Evaluate(__instance._hp.NormalizedValue);
+
             return false;
         }
     }
