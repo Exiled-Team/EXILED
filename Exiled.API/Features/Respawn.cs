@@ -8,10 +8,12 @@
 namespace Exiled.API.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
+    using CustomPlayerEffects;
     using Enums;
-
+    using PlayerRoles;
     using Respawning;
 
     /// <summary>
@@ -58,6 +60,38 @@ namespace Exiled.API.Features
             get => RespawnTokensManager.Counters[1].Amount;
             set => RespawnTokensManager.GrantTokens(SpawnableTeamType.NineTailedFox, value);
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not spawn protection is enabled.
+        /// </summary>
+        public static bool ProtectionEnabled
+        {
+            get => SpawnProtected.IsProtectionEnabled;
+            set => SpawnProtected.IsProtectionEnabled = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the spawn protection time, in seconds.
+        /// </summary>
+        public static float ProtectionTime
+        {
+            get => SpawnProtected.SpawnDuration;
+            set => SpawnProtected.SpawnDuration = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not spawn protected players can shoot.
+        /// </summary>
+        public static bool ProtectedCanShoot
+        {
+            get => SpawnProtected.CanShoot;
+            set => SpawnProtected.CanShoot = value;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> of <see cref="Team"/> that have spawn protection.
+        /// </summary>
+        public static List<Team> ProtectedTeams => SpawnProtected.ProtectedTeams;
 
         /// <summary>
         /// Play an effect when a certain class spawns.
