@@ -62,12 +62,15 @@ namespace Exiled.Events.Patches.Events.Player
                             TriggeringTeslaEventArgs ev = new(player, teslaGate);
 
                             Handlers.Player.OnTriggeringTesla(ev);
-                            if (!ev.IsAllowed)
+                            if (ev.DisableTesla)
                             {
                                 isTriggerable = false;
                                 inIdleRange = false;
                                 break;
                             }
+
+                            if (!ev.IsAllowed)
+                                continue;
 
                             if (ev.IsTriggerable && !isTriggerable)
                                 isTriggerable = ev.IsTriggerable;
