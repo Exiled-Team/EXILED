@@ -49,6 +49,7 @@ namespace Exiled.Events.Commands.Reload
 
             Handlers.Server.OnReloadedConfigs();
             API.Features.Log.KnownDebugValues.Clear();
+
             foreach (IPlugin<IConfig> plugin in Loader.Plugins)
             {
                 plugin.OnUnregisteringCommands();
