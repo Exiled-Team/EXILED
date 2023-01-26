@@ -157,6 +157,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // ChangingRole.ChangeInventory(changingRoleEventArgs, oldRoleType);
                     new(OpCodes.Call, Method(typeof(ChangingRoleAndSpawned), nameof(ChangeInventory))),
                 });
+
             index = newInstructions.Count - 1;
 
             newInstructions.InsertRange(

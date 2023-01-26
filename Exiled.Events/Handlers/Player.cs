@@ -654,7 +654,7 @@ namespace Exiled.Events.Handlers
         public static void OnSpawning(SpawningEventArgs ev) => Spawning.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after spawned a <see cref="API.Features.Player"/>.
+        /// Called after a <see cref="API.Features.Player"/> has spawned.
         /// </summary>
         /// <param name="ev">The <see cref="SpawnedEventArgs"/> instance.</param>
         public static void OnSpawned(SpawnedEventArgs ev) => Spawned.InvokeSafely(ev);
