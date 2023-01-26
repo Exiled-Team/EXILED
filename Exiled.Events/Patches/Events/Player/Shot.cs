@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features;
     using API.Features.Pools;
 
-    using Exiled.Events.EventArgs.Player;
+    using EventArgs.Player;
 
     using HarmonyLib;
 
@@ -35,14 +35,14 @@ namespace Exiled.Events.Patches.Events.Player
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> ShotBullet(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label returnLabel = generator.DefineLabel();
+            var returnLabel = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
+            var ev = generator.DeclareLocal(typeof(ShotEventArgs));
 
             const int offset = 2;
-            int index = newInstructions.FindLastIndex(
+            var index = newInstructions.FindLastIndex(
                 instruction => instruction.Calls(Method(typeof(FirearmBaseStats), nameof(FirearmBaseStats.DamageAtDistance)))) + offset;
 
             newInstructions.InsertRange(
@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // damage
                     new(OpCodes.Ldloca_S, 1),
 
-                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible),  typeof(float).MakeByRefType()})),
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
 
                     // if (!ev.CanHurt)
                     //    return;
@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            for (int z = 0; z < newInstructions.Count; z++)
+            for (var z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
@@ -85,12 +85,12 @@ namespace Exiled.Events.Patches.Events.Player
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> ShotPellet(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label returnLabel = generator.DefineLabel();
+            var returnLabel = generator.DefineLabel();
 
             const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -109,7 +109,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // damage
                     new(OpCodes.Ldloca_S, 4),
 
-                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible),  typeof(float).MakeByRefType()})),
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
 
                     // if (!ev.CanHurt)
                     //    return;
@@ -118,7 +118,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            for (int z = 0; z < newInstructions.Count; z++)
+            for (var z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
@@ -126,10 +126,10 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static bool ProcessShot(ReferenceHub player, RaycastHit hit, IDestructible destructible, ref float damage)
         {
-            ShotEventArgs shotEvent = new ShotEventArgs(Player.Get(player), hit, destructible, damage);
-            
+            var shotEvent = new ShotEventArgs(Player.Get(player), hit, destructible, damage);
+
             Handlers.Player.OnShot(shotEvent);
-            
+
             if (shotEvent.CanHurt)
                 damage = shotEvent.Damage;
 
