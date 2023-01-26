@@ -1,12 +1,10 @@
-<#@ template language="C#" #>
-<#@ assembly name="$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll" #>
 // -----------------------------------------------------------------------
 // <copyright file="AutoUpdateFiles.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
+<#@ assembly name="$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll" #>
 namespace Exiled.Loader
 {
     using System;
@@ -17,7 +15,7 @@ namespace Exiled.Loader
     public static class AutoUpdateFiles
     {
         /// <summary>
-        /// Gets which SCP: SL version generated Exiled
+        /// Gets which SCP: SL version generated Exiled.
         /// </summary>
         public static readonly Version RequiredSCPSLVersion = new(<#=GameCore.Version.Major#>, <#=GameCore.Version.Minor#>, <#=GameCore.Version.Revision#>, <#=GameCore.Version.BackwardRevision#>);
     }

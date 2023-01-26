@@ -10,12 +10,12 @@ namespace Exiled.Loader
     using System;
 
     /// <summary>
-    /// Class automatically update with Reference use for generate exiled.
+    /// Automatically updates with Reference used to generate Exiled.
     /// </summary>
     public static class AutoUpdateFiles
     {
         /// <summary>
-        /// Gets SCPSL Version use to generate exiled.
+        /// Gets which SCP: SL version generated Exiled.
         /// </summary>
         public static readonly Version RequiredSCPSLVersion = new(12, 0, 2, 0);
     }
