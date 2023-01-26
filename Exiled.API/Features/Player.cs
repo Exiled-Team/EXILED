@@ -2697,7 +2697,7 @@ namespace Exiled.API.Features
         /// Enables a <see cref="Effect">status effect</see> on the player.
         /// </summary>
         /// <param name="Effect">The <see cref="Effect"/> to enable.</param>
-        private void EnableEffect(Effect effect)
+        public void EnableEffect(Effect effect)
         {
             if (effect.IsEnabled)
             {
