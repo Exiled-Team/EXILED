@@ -25,17 +25,13 @@ namespace Exiled.Events.EventArgs.Server
         /// <param name="leadingTeam">
         ///     <inheritdoc cref="LeadingTeam" />
         /// </param>
-        /// <param name="isRoundEnded">
-        ///     <inheritdoc cref="IsRoundEnded" />
-        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public EndingRoundEventArgs(LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isRoundEnded, bool isAllowed = true)
+        public EndingRoundEventArgs(RoundSummary.LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isAllowed)
         {
             ClassList = classList;
-            LeadingTeam = leadingTeam;
-            IsRoundEnded = isRoundEnded;
+            LeadingTeam = (LeadingTeam)leadingTeam;
             IsAllowed = isAllowed;
         }
 
@@ -52,7 +48,11 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         ///     Gets or sets a value indicating whether the round is going to finish or not.
         /// </summary>
-        public bool IsRoundEnded { get; set; }
+        public bool IsRoundEnded
+        {
+            get => IsAllowed;
+            set => IsAllowed = value;
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the event can be executed or not.
