@@ -20,7 +20,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Wrapper class for <see cref="Scp079Generator"/>.
     /// </summary>
-    public class Generator : IWrapper<Scp079Generator>
+    public class Generator : IWrapper<Scp079Generator>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Generator"/> on the map.

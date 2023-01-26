@@ -16,7 +16,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a grenade pickup.
     /// </summary>
-    public class GrenadePickup : Pickup, IWrapper<TimedGrenadePickup>
+    public class GrenadePickup : Pickup, IWrapper<TimedGrenadePickup>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GrenadePickup"/> class.
