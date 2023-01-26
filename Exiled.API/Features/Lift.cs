@@ -26,7 +26,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game lift.
     /// </summary>
-    public class Lift : IWrapper<ElevatorChamber>
+    public class Lift : IWrapper<ElevatorChamber>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="ElevatorChamber"/>s and their corresponding <see cref="Lift"/>.
@@ -151,7 +151,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the lift is currently moving.
         /// </summary>
-        public bool IsMoving => Status == ElevatorSequence.MovingAway || Status == ElevatorSequence.Arriving;
+        public bool IsMoving => Status is ElevatorSequence.MovingAway or ElevatorSequence.Arriving;
 
         /// <summary>
         /// Gets a value indicating whether the lift is locked.
@@ -176,22 +176,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="CurrentDestination"/>.
         /// </summary>
         public ElevatorDoor CurrentDestination => Base.CurrentDestination;
-
-        /// <summary>
-        /// Compares two operands: <see cref="Lift"/> and <see cref="Lift"/>.
-        /// </summary>
-        /// <param name="left">The first <see cref="Lift"/> to compare.</param>
-        /// <param name="right">The second <see cref="Lift"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(Lift left, Lift right) => left.Base.Equals(right.Base);
-
-        /// <summary>
-        /// Compares two operands: <see cref="Lift"/> and <see cref="Lift"/>.
-        /// </summary>
-        /// <param name="left">The first <see cref="Lift"/> to compare.</param>
-        /// <param name="right">The second <see cref="Lift"/> to compare.</param>
-        /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(Lift left, Lift right) => !(left == right);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="Status"/>.
@@ -300,12 +284,6 @@ namespace Exiled.API.Features
         /// <param name="point">The position.</param>
         /// <returns><see langword="true"/> if the point is inside the elevator. Otherwise, <see langword="false"/>.</returns>
         public bool IsInElevator(Vector3 point) => Bounds.Contains(point);
-
-        /// <inheritdoc/>
-        public override bool Equals(object obj) => Base.Equals(obj);
-
-        /// <inheritdoc/>
-        public override int GetHashCode() => Base.GetHashCode();
 
         /// <summary>
         /// Returns the Lift in a human-readable format.

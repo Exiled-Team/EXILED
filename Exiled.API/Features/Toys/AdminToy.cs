@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Toys
     using AdminToys;
 
     using Enums;
-
+    using Exiled.API.Interfaces;
     using Mirror;
 
     using UnityEngine;
@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.AdminToyBase"/>.
     /// </summary>
-    public abstract class AdminToy
+    public abstract class AdminToy : IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AdminToy"/> class.
