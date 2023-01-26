@@ -26,7 +26,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game tesla gate.
     /// </summary>
-    public class TeslaGate : IWrapper<BaseTeslaGate>
+    public class TeslaGate : IWrapper<BaseTeslaGate>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
