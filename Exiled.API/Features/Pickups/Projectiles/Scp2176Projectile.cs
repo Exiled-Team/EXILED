@@ -16,7 +16,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for an SCP-2176 Projectile.
     /// </summary>
-    public class Scp2176Projectile : EffectGrenadeProjectile, IWrapper<BaseScp2176Projectile>
+    public class Scp2176Projectile : EffectGrenadeProjectile, IWrapper<BaseScp2176Projectile>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp2176Projectile"/> class.
