@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.
     /// </summary>
-    public class Pickup : TypeCastObject<Pickup>, IWrapper<ItemPickupBase>
+    public class Pickup : TypeCastObject<Pickup>, IWrapper<ItemPickupBase>, IWorldSpace
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
