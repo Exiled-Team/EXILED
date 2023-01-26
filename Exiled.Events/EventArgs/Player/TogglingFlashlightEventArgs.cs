@@ -57,7 +57,7 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsAllowed
         {
             get => NewState == initialState;
-            set => NewState = !initialState;
+            set => NewState = value ? initialState : !initialState;
         }
 
         /// <summary>
