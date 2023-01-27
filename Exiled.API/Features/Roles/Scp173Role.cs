@@ -43,19 +43,24 @@ namespace Exiled.API.Features.Roles
             ObserversTracker = scp173ObserversTracker;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp173BlinkTimer scp173BlinkTimer))
-                Log.Error("Scp173BlinkTimer not found in Scp096Role::ctor");
+                Log.Error("Scp173BlinkTimer not found in Scp173Role::ctor");
 
             BlinkTimer = scp173BlinkTimer;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp173TeleportAbility scp173TeleportAbility))
-                Log.Error("Scp173TeleportAbility not found in Scp096Role::ctor");
+                Log.Error("Scp173TeleportAbility not found in Scp173Role::ctor");
 
             TeleportAbility = scp173TeleportAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp173TantrumAbility scp173TantrumAbility))
-                Log.Error("Scp173TantrumAbility not found in Scp096Role::ctor");
+                Log.Error("Scp173TantrumAbility not found in Scp173Role::ctor");
 
             TantrumAbility = scp173TantrumAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp173AudioPlayer scp173AudioPlayer))
+                Log.Error("Scp173AudioPlayer not found in Scp173Role::ctor");
+
+            AudioPlayer = scp173AudioPlayer;
         }
 
         /// <summary>
@@ -96,6 +101,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-173's <see cref="Scp173TantrumAbility"/>.
         /// </summary>
         public Scp173TantrumAbility TantrumAbility { get; }
+
+        /// <summary>
+        /// Gets the SCP-173's <see cref="Scp173AudioPlayer"/>.
+        /// </summary>
+        public Scp173AudioPlayer AudioPlayer { get; }
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can use breakneck speed again.
@@ -192,5 +202,11 @@ namespace Exiled.API.Features.Roles
 
             return Owner.PlaceTantrum();
         }
+
+        /// <summary>
+        /// Plays a SCP-173 Audio Clip (Snap, Hit, Teleport).
+        /// </summary>
+        /// <param name="soundId">The SoundId to Play.</param>
+        public void SendAudio(Scp173AudioPlayer.Scp173SoundId soundId) => AudioPlayer.ServerSendSound(soundId);
     }
 }

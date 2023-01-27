@@ -28,7 +28,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door : IWrapper<DoorVariant>
+    public class Door : IWrapper<DoorVariant>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
