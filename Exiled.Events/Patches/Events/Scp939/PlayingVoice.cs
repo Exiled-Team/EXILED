@@ -33,10 +33,22 @@ namespace Exiled.Events.Patches.Events.Scp939
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
+            LocalBuilder refHub = generator.DeclareLocal(typeof(ReferenceHub));
+
             Label ret = generator.DefineLabel();
 
-            int offset = 0;
-            int index = newInstructions.FindLastIndex(i => i.IsLdarg(0)) + offset;
+            // base-game code compiles inside sealed hidden class for delegate, so we create own local var
+            int offset = 1;
+            int index = newInstructions.FindLastIndex(i => i.Calls(Method(typeof(global::Utils.Networking.ReferenceHubReaderWriter), nameof(global::Utils.Networking.ReferenceHubReaderWriter.ReadReferenceHub)))) + offset;
+
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Dup),
+                new(OpCodes.Stloc_S, refHub.LocalIndex),
+            });
+
+            offset = 0;
+            index = newInstructions.FindLastIndex(i => i.IsLdarg(0)) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -45,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Callvirt, PropertyGetter(typeof(MimicryRecorder), nameof(MimicryRecorder.Owner))),
 
                 // target
-                new(OpCodes.Ldloc_0),
+                new(OpCodes.Ldloc_S, refHub.LocalIndex),
 
                 // PlayingVoiceEventArgs ev = new(...)
                 // if (!ev.IsAllowed)
