@@ -37,18 +37,27 @@ namespace Exiled.Events.EventArgs.Scp079
         /// <param name="powerCost">
         ///     <inheritdoc cref="AuxiliaryPowerCost" />
         /// </param>
+        /// <param name="syncNormal">
+        ///     <inheritdoc cref="SyncNormal" />
+        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public PingingEventArgs(ReferenceHub hub, RelativePosition position, int powerCost, byte proccesorindex, bool isAllowed = true)
+        public PingingEventArgs(ReferenceHub hub, RelativePosition position, int powerCost, byte proccesorindex, Vector3 syncNormal, bool isAllowed = true)
         {
             Player = Player.Get(hub);
             Position = position.Position;
             Room = Room.Get(Position);
             AuxiliaryPowerCost = powerCost;
             Type = (PingType)proccesorindex;
+            SyncNormal = syncNormal;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets a value indicating if the sync matches.
+        /// </summary>
+        public Vector3 SyncNormal { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the event is allowed to continue.

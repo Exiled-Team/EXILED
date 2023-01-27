@@ -19,7 +19,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="BreakableWindow"/>.
     /// </summary>
-    public class Window : IWrapper<BreakableWindow>
+    public class Window : IWrapper<BreakableWindow>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BreakableWindow"/>s and their corresponding <see cref="Window"/>.
