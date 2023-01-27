@@ -7,9 +7,10 @@
 
 namespace Exiled.API.Features.Spawn
 {
+    using System;
+
     using Exiled.API.Interfaces;
     using PlayerRoles;
-
     using UnityEngine;
 
     /// <summary>
@@ -22,12 +23,14 @@ namespace Exiled.API.Features.Spawn
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/> this spawn is for.</param>
         /// <param name="position">The <see cref="Vector3"/> position of the spawn.</param>
-        /// <param name="horizontalRotation">The horizontal rotation of the spawn.</param>
-        public SpawnLocation(RoleTypeId roleType, Vector3 position, float horizontalRotation)
+        /// <param name="rotationMin">The minimum horizontal rotation of the spawn.</param>
+        /// <param name="rotationMax">The maximum horizontal rotation of the spawn.</param>
+        public SpawnLocation(RoleTypeId roleType, Vector3 position, float rotationMin, float rotationMax)
         {
             RoleType = roleType;
             Position = position;
-            HorizontalRotation = horizontalRotation;
+            MinHorizontalRotation = rotationMin;
+            MaxHorizontalRotation = rotationMax;
         }
 
         /// <summary>
@@ -41,8 +44,18 @@ namespace Exiled.API.Features.Spawn
         public Vector3 Position { get; }
 
         /// <summary>
-        /// Gets the horizontal rotation of the spawn.
+        /// Gets the aproximative horizontal rotation of this spawn.
         /// </summary>
-        public float HorizontalRotation { get; }
+        public float HorizontalRotation => MaxHorizontalRotation - MinHorizontalRotation;
+
+        /// <summary>
+        /// Gets the minimum horizontal rotation of this spawn.
+        /// </summary>
+        public float MinHorizontalRotation { get; }
+
+        /// <summary>
+        /// Gets the maximum horizontal rotation of this spawn.
+        /// </summary>
+        public float MaxHorizontalRotation { get; }
     }
 }
