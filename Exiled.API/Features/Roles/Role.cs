@@ -209,7 +209,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="keepPosition">Indicates whether or not it should preserve the position after changing the role.</param>
         /// <param name="keepInventory">Indicates whether or not it should preserve the inventory after changing the role.</param>
         /// <param name="roleChangeReason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
-        public void SetRole(RoleTypeId newRole, bool keepPosition = false, bool keepInventory = false, RoleChangeReason roleChangeReason = RoleChangeReason.RemoteAdmin)
+        public void Set(RoleTypeId newRole, bool keepPosition = false, bool keepInventory = false, RoleChangeReason roleChangeReason = RoleChangeReason.RemoteAdmin)
         {
             RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All;
 
