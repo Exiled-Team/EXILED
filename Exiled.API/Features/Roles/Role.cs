@@ -197,37 +197,18 @@ namespace Exiled.API.Features.Roles
         /// Sets the player's <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
-        /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
         /// <param name="spawnFlags">The <see cref="RoleSpawnFlags"/> defining player spawn logic.</param>
-        public virtual void Set(RoleTypeId newRole, SpawnReason reason, RoleSpawnFlags spawnFlags) =>
-            Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)reason, spawnFlags);
+        public virtual void Set(RoleTypeId newRole, RoleSpawnFlags spawnFlags) =>
+            Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)Enums.SpawnReason.ForceClass, spawnFlags);
 
         /// <summary>
         /// Sets the player's <see cref="RoleTypeId"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleTypeId"/> to be set.</param>
-        /// <param name="keepPosition">Indicates whether or not it should preserve the position after changing the role.</param>
-        /// <param name="keepInventory">Indicates whether or not it should preserve the inventory after changing the role.</param>
-        /// <param name="roleChangeReason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
-        public void Set(RoleTypeId newRole, bool keepPosition = false, bool keepInventory = false, RoleChangeReason roleChangeReason = RoleChangeReason.RemoteAdmin)
-        {
-            RoleSpawnFlags roleSpawnFlags = RoleSpawnFlags.All;
-
-            if (keepPosition && keepInventory)
-            {
-                roleSpawnFlags = RoleSpawnFlags.None;
-            }
-            else
-            {
-                if (keepPosition)
-                    roleSpawnFlags = RoleSpawnFlags.AssignInventory;
-
-                if (keepInventory)
-                    roleSpawnFlags = RoleSpawnFlags.UseSpawnpoint;
-            }
-
-            Owner.RoleManager.ServerSetRole(newRole, roleChangeReason, roleSpawnFlags);
-        }
+        /// <param name="reason">The <see cref="Enums.SpawnReason"/> defining why the player's role was changed.</param>
+        /// <param name="spawnFlags">The <see cref="RoleSpawnFlags"/> defining player spawn logic.</param>
+        public virtual void Set(RoleTypeId newRole, SpawnReason reason, RoleSpawnFlags spawnFlags) =>
+            Owner.RoleManager.ServerSetRole(newRole, (RoleChangeReason)reason, spawnFlags);
 
         /// <summary>
         /// Creates a role from <see cref="RoleTypeId"/> and <see cref="Player"/>.
