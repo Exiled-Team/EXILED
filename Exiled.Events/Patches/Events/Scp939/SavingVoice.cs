@@ -36,8 +36,10 @@ namespace Exiled.Events.Patches.Events.Scp939
             if (__instance.IsMuted(VoiceChatMutes.GetFlags(ply)))
                 return false;
 
+            // Should consider whether to allow users to have this with their own custom DNT
             if (!__instance.IsPrivacyAccepted(ply))
                 return false;
+
             SavingVoiceEventArgs ev = new(__instance.Owner, ply);
             Scp939.OnSavingVoice(ev);
 
@@ -47,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             }
 
             __instance._syncPlayer = ply;
-            __instance._syncMute = __instance;
+            __instance._syncMute = false;
 
             if (__instance.Owner.isLocalPlayer)
                 __instance.SaveRecording(ply);
