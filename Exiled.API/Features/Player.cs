@@ -1069,6 +1069,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the player's <see cref="PlayerStatsSystem.AdminFlagsStat"/>.
+        /// </summary>
+        public AdminFlagsStat AdminFlagsStat
+        {
+            get => referenceHub.playerStats.GetModule<AdminFlagsStat>();
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the player is in Noclip mode or not.
+        /// </summary>
+        public bool IsNoclipping
+        {
+            get => AdminFlagsStat.HasFlag(AdminFlags.Noclip);
+            set => AdminFlagsStat.SetFlag(AdminFlags.Noclip, value);
+        }
+
+        /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new();
