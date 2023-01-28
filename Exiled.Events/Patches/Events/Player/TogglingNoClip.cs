@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // if (!ev.IsAllowed)
                     //    return;
-                    // Note: return is called because if it's false, the if check in the method will just ret.
+                    // Note: return is not called because if it's false, the if check in the method will just ret.
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.IsAllowed))),
                 });
 
