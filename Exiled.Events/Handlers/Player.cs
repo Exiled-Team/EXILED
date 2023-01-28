@@ -63,7 +63,7 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         /// <remarks>
-        /// Invoked after <see cref="UsedItem"/>, if a player's class has
+        /// Invoked after <see cref="UsingItem"/>, if a player's class has
         /// changed during their health increase, won't fire.
         /// </remarks>
         public static event CustomEventHandler<UsedItemEventArgs> UsedItem;
