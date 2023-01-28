@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Toys
     using AdminToys;
 
     using Enums;
+    using Exiled.API.Interfaces;
 
     using UnityEngine;
 
@@ -21,7 +22,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="PrimitiveObjectToy"/>.
     /// </summary>
-    public class Primitive : AdminToy
+    public class Primitive : AdminToy, IWrapper<PrimitiveObjectToy>, IWorldSpace
     {
         private bool collidable = true;
 

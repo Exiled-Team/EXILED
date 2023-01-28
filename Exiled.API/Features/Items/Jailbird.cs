@@ -7,13 +7,15 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items.Jailbird;
     using UnityEngine;
 
     /// <summary>
     /// A wrapped class for <see cref="JailbirdItem"/>.
     /// </summary>
-    public class Jailbird : Item
+    public class Jailbird : Item, IWrapper<JailbirdItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Jailbird"/> class.

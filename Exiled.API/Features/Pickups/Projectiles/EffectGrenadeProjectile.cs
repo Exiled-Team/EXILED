@@ -7,12 +7,14 @@
 
 namespace Exiled.API.Features.Pickups.Projectiles
 {
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
     /// A wrapper class for EffectGrenade.
     /// </summary>
-    public class EffectGrenadeProjectile : TimeGrenadeProjectile
+    public class EffectGrenadeProjectile : TimeGrenadeProjectile, IWrapper<EffectGrenade>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EffectGrenadeProjectile"/> class.

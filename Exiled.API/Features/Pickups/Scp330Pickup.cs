@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Pickups
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items.Usables.Scp330;
 
     using BaseScp330 = InventorySystem.Items.Usables.Scp330.Scp330Pickup;
@@ -16,7 +18,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for dropped SCP-330 bags.
     /// </summary>
-    public class Scp330Pickup : Pickup
+    public class Scp330Pickup : Pickup, IWrapper<BaseScp330>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.

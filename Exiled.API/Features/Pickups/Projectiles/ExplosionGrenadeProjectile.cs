@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Enums;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items.ThrowableProjectiles;
 
@@ -18,7 +19,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for ExplosionGrenade.
     /// </summary>
-    public class ExplosionGrenadeProjectile : EffectGrenadeProjectile
+    public class ExplosionGrenadeProjectile : EffectGrenadeProjectile, IWrapper<ExplosionGrenade>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosionGrenadeProjectile"/> class.

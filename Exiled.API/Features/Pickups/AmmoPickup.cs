@@ -9,13 +9,14 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Interfaces;
 
     using BaseAmmo = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
 
     /// <summary>
     /// A wrapper class for an Ammo pickup.
     /// </summary>
-    public class AmmoPickup : Pickup
+    public class AmmoPickup : Pickup, IWrapper<BaseAmmo>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AmmoPickup"/> class.
