@@ -22,16 +22,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
-        /// <param name="newValue">
-        ///     <inheritdoc cref="IsEnabled" />
-        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public TogglingNoClipEventArgs(Player player, bool newValue, bool isAllowed = true)
+        public TogglingNoClipEventArgs(Player player, bool isAllowed)
         {
             Player = player;
-            IsEnabled = newValue;
             IsAllowed = isAllowed;
         }
 
@@ -39,11 +35,6 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the player who's toggling the NoClip mode.
         /// </summary>
         public Player Player { get; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the NoClip mode will be enabled or not.
-        /// </summary>
-        public bool IsEnabled { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player can toggle the NoClip mode.

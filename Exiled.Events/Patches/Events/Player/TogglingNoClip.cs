@@ -16,15 +16,15 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.FirstPersonControl.NetworkMessages;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     patches <see cref="FpcNoclip.IsActive" /> to add the
+    ///     patches <see cref="FpcNoclipToggleMessage.ProcessMessage" /> to add the
     ///     <see cref="Handlers.Player.TogglingNoClip" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(FpcNoclip), nameof(FpcNoclip.IsActive), MethodType.Setter)]
+    [HarmonyPatch(typeof(FpcNoclipToggleMessage), nameof(FpcNoclipToggleMessage.ProcessMessage))]
     internal static class TogglingNoClip
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -34,21 +34,22 @@ namespace Exiled.Events.Patches.Events.Player
             Label retLabel = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingNoClipEventArgs));
+            LocalBuilder permitted = generator.DeclareLocal(typeof(bool));
+            int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldloc_0) + 2;
 
             newInstructions.InsertRange(
-                0,
+                index,
                 new CodeInstruction[]
                 {
+                    // set FpcNoclip.IsPermitted() to local variable
+                    new (OpCodes.Stloc_S, permitted.LocalIndex),
+
                     // Player.Get(this._hub)
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldfld, Field(typeof(FpcNoclip), nameof(FpcNoclip._hub))),
+                    new(OpCodes.Ldloc_0),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                    // newValue
-                    new(OpCodes.Ldarg_1),
-
-                    // true
-                    new(OpCodes.Ldc_I4_1),
+                    // FpcNoclip.IsPermitted()
+                    new(OpCodes.Ldloc_S, permitted.LocalIndex),
 
                     // TogglingNoClipEventArgs ev = new(Player, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingNoClipEventArgs))[0]),
@@ -64,10 +65,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, retLabel),
 
-                    // value = ev.NewValue
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.IsEnabled))),
-                    new(OpCodes.Starg_S, 1),
+                    // load FpcNoclip.IsPermitted() for brtrue call
+                    new (OpCodes.Ldloc_S, permitted.LocalIndex),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
