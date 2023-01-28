@@ -31,10 +31,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label retLabel = generator.DefineLabel();
-
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingNoClipEventArgs));
             LocalBuilder permitted = generator.DeclareLocal(typeof(bool));
+
             int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldloc_0) + 2;
 
             newInstructions.InsertRange(
@@ -62,14 +61,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // if (!ev.IsAllowed)
                     //    return;
+                    // Note: return is called because if it's false, the if check in the method will just ret.
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, retLabel),
-
-                    // load FpcNoclip.IsPermitted() for brtrue call
-                    new (OpCodes.Ldloc_S, permitted.LocalIndex),
                 });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
