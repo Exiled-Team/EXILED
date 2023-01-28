@@ -39,6 +39,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             // Should consider whether to allow users to have this with their own custom DNT
             if (!__instance.IsPrivacyAccepted(ply))
                 return false;
+
             SavingVoiceEventArgs ev = new(__instance.Owner, ply);
             Scp939.OnSavingVoice(ev);
 
