@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pools
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using BasePools = NorthwoodLib.Pools;
 
@@ -56,6 +57,20 @@ namespace Exiled.API.Features.Pools
             Return(obj);
 
             return array;
+        }
+
+        /// <summary>
+        /// Returns the <see cref="List{T}"/> to the pool and returns its contents as an list.
+        /// </summary>
+        /// <param name="obj">The <see cref="List{T}"/> to return.</param>
+        /// <returns>The contents of the returned list as an list.</returns>
+        public List<T> ToListReturn(List<T> obj)
+        {
+            List<T> list = obj.ToList();
+
+            Return(obj);
+
+            return list;
         }
     }
 }

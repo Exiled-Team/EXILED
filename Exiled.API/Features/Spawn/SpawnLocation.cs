@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features.Spawn
 {
-    using System;
-
     using Exiled.API.Interfaces;
     using PlayerRoles;
     using UnityEngine;

@@ -12,6 +12,7 @@ namespace Exiled.API.Extensions
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Features;
     using Exiled.API.Features.Spawn;
     using InventorySystem;
     using InventorySystem.Configs;
@@ -28,12 +29,14 @@ namespace Exiled.API.Extensions
     /// </summary>
     public static class RoleExtensions
     {
+        private static readonly Dictionary<RoleTypeId, List<SpawnLocation>> SpawnLocationList = new(20);
+
         /// <summary>
         /// Gets a <see cref="RoleTypeId">role's</see> <see cref="Color"/>.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/> to get the color of.</param>
         /// <returns>The <see cref="Color"/> of the role.</returns>
-        public static Color GetColor(this RoleTypeId roleType) => roleType == RoleTypeId.None ? Color.white : roleType.GetRoleBase().RoleColor;
+        public static Color GetColor(this RoleTypeId roleType) => roleType.TryGetRoleBase(out PlayerRoleBase playerRoleBase) ? playerRoleBase.RoleColor : Color.white;
 
         /// <summary>
         /// Gets a <see cref="RoleTypeId">role's</see> <see cref="Side"/>.
@@ -136,50 +139,49 @@ namespace Exiled.API.Extensions
         /// <returns>An <see cref="List{T}"/> of spawn locations.</returns>
         public static List<SpawnLocation> GetSpawns(this RoleTypeId roleType)
         {
-            List<SpawnLocation> returnList = new();
-            PlayerRoleBase baseRole = roleType.GetRoleBase();
+            List<SpawnLocation> returnList = Features.Pools.ListPool<SpawnLocation>.Pool.Get();
+
+            if (SpawnLocationList.ContainsKey(roleType))
+                return SpawnLocationList[roleType];
+
+            if (roleType.TryGetRoleBase(out PlayerRoleBase baseRole))
+                return Features.Pools.ListPool<SpawnLocation>.Pool.ToListReturn(returnList);
 
             // SCP roles
             if (baseRole is FpcStandardScp scpRole)
             {
-                // SCPs will always have exactly one RoomRoleSpawnpoint.
-                RoomRoleSpawnpoint spawn = scpRole._roomSpawnpoint;
-                if (spawn != null && spawn._spawnpoints != null)
-                {
-                    foreach (BoundsRoleSpawnpoint bounds in spawn._spawnpoints)
-                    {
-                        if (bounds == null)
-                            continue;
+                _ = scpRole.SpawnpointHandler;
 
-                        foreach (Vector3 v3 in bounds._positions)
-                            returnList.Add(new(roleType, v3, bounds._rotMin, bounds._rotMax));
-                    }
+                // SCPs will always have exactly one RoomRoleSpawnpoint.
+                RoomRoleSpawnpoint spawn = scpRole._cachedSpawnpoint;
+
+                foreach (BoundsRoleSpawnpoint bounds in spawn._spawnpoints)
+                {
+                    foreach (Vector3 v3 in bounds._positions)
+                        returnList.Add(new(roleType, v3, bounds._rotMin, bounds._rotMax));
                 }
             }
 
             // Human Roles
-            else if (baseRole is HumanRole human && human._spawnpoints != null)
+            else if (baseRole is HumanRole human)
             {
+                _ = human.SpawnpointHandler;
+
                 // Access human's RoomRoleSpawnpoint array.
                 // RoomRoleSpawnpoint is broken up by rooms - eg. scientist role has a RoomRoleSpawnpoint for each room they spawn in.
-                foreach (var spawnPoint in human._spawnpoints)
+                foreach (var spawnPoint in HumanRole.SpawnpointsForRoles[roleType])
                 {
-                    if (spawnPoint == null || spawnPoint._spawnpoints == null)
-                        continue;
-
                     // Most roles only have one BoundsRoleSpawnpoint per RoomRoleSpawnpoint, however some have more.
                     foreach (BoundsRoleSpawnpoint bounds in spawnPoint._spawnpoints)
                     {
-                        if (bounds == null)
-                            continue;
-
                         foreach (Vector3 v3 in bounds._positions)
                             returnList.Add(new(roleType, v3, bounds._rotMin, bounds._rotMax));
                     }
                 }
             }
 
-            return returnList;
+            SpawnLocationList.Add(roleType, returnList);
+            return Features.Pools.ListPool<SpawnLocation>.Pool.ToListReturn(returnList);
         }
 
         /// <summary>
