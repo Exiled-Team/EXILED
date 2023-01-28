@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs.Player
 
     using Interfaces;
 
+    using PlayerStatsSystem;
+
     /// <summary>
     ///     Contains all information before a player toggles the NoClip mode.
     /// </summary>
@@ -40,5 +42,10 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets or sets a value indicating whether or not the player can toggle the NoClip mode.
         /// </summary>
         public bool IsAllowed { get; set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether or not NoClip will be enabled after use.
+        /// </summary>
+        public bool IsEnabled => !Player.AdminFlagsStat.HasFlag(AdminFlags.Noclip);
     }
 }

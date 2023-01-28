@@ -1074,16 +1074,6 @@ namespace Exiled.API.Features
         public AdminFlagsStat AdminFlagsStat => referenceHub.playerStats.GetModule<AdminFlagsStat>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is in Noclip mode or not.
-        /// </summary>
-        /// <remarks>The <see cref="Player"/> will not be able to deactivate noclip if <see cref="IsNoclipPermitted"/> is false.</remarks>
-        public bool IsNoclipping
-        {
-            get => AdminFlagsStat.HasFlag(AdminFlags.Noclip);
-            set => AdminFlagsStat.SetFlag(AdminFlags.Noclip, value);
-        }
-
-        /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new();
