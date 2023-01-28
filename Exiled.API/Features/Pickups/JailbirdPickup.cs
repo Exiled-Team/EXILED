@@ -17,7 +17,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a jailbird pickup.
     /// </summary>
-    public class JailbirdPickup : Pickup, IWrapper<BaseJailbirdPickup>
+    public class JailbirdPickup : Pickup, IWrapper<BaseJailbirdPickup>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JailbirdPickup"/> class.
