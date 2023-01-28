@@ -59,12 +59,12 @@ namespace Exiled.Events.EventArgs.Player
         public TeslaGate Tesla { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player will be detect by the tesla.
+        ///     Gets or sets a value indicating whether or not the player will be detected by the tesla.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the tesla is going to be activated.
+        ///     Gets or sets a value indicating whether or not the tesla will be deactivated.
         /// </summary>
         public bool DisableTesla { get; set; }
     }
