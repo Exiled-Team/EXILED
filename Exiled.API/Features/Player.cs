@@ -1071,14 +1071,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="PlayerStatsSystem.AdminFlagsStat"/>.
         /// </summary>
-        public AdminFlagsStat AdminFlagsStat
-        {
-            get => referenceHub.playerStats.GetModule<AdminFlagsStat>();
-        }
+        public AdminFlagsStat AdminFlagsStat => referenceHub.playerStats.GetModule<AdminFlagsStat>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is in Noclip mode or not.
         /// </summary>
+        /// <remarks>The <see cref="Player"/> will not be able to deactivate noclip if <see cref="IsNoclipPermitted"/> is false.</remarks>
         public bool IsNoclipping
         {
             get => AdminFlagsStat.HasFlag(AdminFlags.Noclip);
