@@ -32,23 +32,23 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingNoClipEventArgs));
-            LocalBuilder permitted = generator.DeclareLocal(typeof(bool));
+            LocalBuilder isPermitted = generator.DeclareLocal(typeof(bool));
 
-            int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldloc_0) + 2;
+            int index = newInstructions.FindIndex(instructions => instructions.opcode == OpCodes.Ldloc_0) + 2;
 
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
                     // set FpcNoclip.IsPermitted() to local variable
-                    new (OpCodes.Stloc_S, permitted.LocalIndex),
+                    new (OpCodes.Stloc_S, isPermitted.LocalIndex),
 
                     // Player.Get(this._hub)
                     new(OpCodes.Ldloc_0),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // FpcNoclip.IsPermitted()
-                    new(OpCodes.Ldloc_S, permitted.LocalIndex),
+                    new(OpCodes.Ldloc_S, isPermitted.LocalIndex),
 
                     // TogglingNoClipEventArgs ev = new(Player, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingNoClipEventArgs))[0]),
