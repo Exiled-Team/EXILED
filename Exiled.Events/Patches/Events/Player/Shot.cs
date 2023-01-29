@@ -35,14 +35,14 @@ namespace Exiled.Events.Patches.Events.Player
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> ShotBullet(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
-            var ev = generator.DeclareLocal(typeof(ShotEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
 
             const int offset = 2;
-            var index = newInstructions.FindLastIndex(
+            int index = newInstructions.FindLastIndex(
                 instruction => instruction.Calls(Method(typeof(FirearmBaseStats), nameof(FirearmBaseStats.DamageAtDistance)))) + offset;
 
             newInstructions.InsertRange(
