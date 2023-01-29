@@ -26,6 +26,7 @@ namespace Exiled.API.Features
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
+    using Exiled.API.Interfaces;
     using Exiled.API.Structs;
 
     using Extensions;
@@ -91,7 +92,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : IEntity
+    public class Player : IEntity, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -2694,6 +2695,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Enables a <see cref="Effect">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The <see cref="Effect"/> to enable.</param>
+        public void EnableEffect(Effect effect)
+        {
+            if (effect.IsEnabled)
+            {
+                EnableEffect(effect.Type, effect.Duration, effect.AddDurationIfActive);
+
+                if (effect.Intensity > 0)
+                    ChangeEffectIntensity(effect.Type, effect.Intensity, effect.Duration);
+            }
+        }
+
+        /// <summary>
         /// Enables a random <see cref="EffectType"/> on the player.
         /// </summary>
         /// <param name="category">An optional category to filter the applied effect. Set to <see cref="EffectCategory.None"/> for any effect.</param>
@@ -2724,6 +2740,16 @@ namespace Exiled.API.Features
                 if (TryGetEffect(type, out StatusEffectBase statusEffect))
                     EnableEffect(statusEffect, duration, addDurationIfActive);
             }
+        }
+
+        /// <summary>
+        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
+        /// </summary>
+        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="Effect"/> to enable.</param>
+        public void EnableEffects(IEnumerable<Effect> effects)
+        {
+            foreach (Effect effect in effects)
+                EnableEffect(effect);
         }
 
         /// <summary>
@@ -2887,20 +2913,21 @@ namespace Exiled.API.Features
         {
             switch (obj)
             {
-                case Camera camera:
-                    Teleport(camera.Position + Vector3.down);
+                case TeslaGate teslaGate:
+                    Teleport(
+                        teslaGate.Position + Vector3.up +
+                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
+                            ? new Vector3(3, 0, 0)
+                            : new Vector3(0, 0, 3)));
                     break;
-                case Door door:
-                    Teleport(door.Position + Vector3.up);
+                case IPosition positionObject:
+                    Teleport(positionObject.Position + Vector3.up);
                     break;
                 case DoorType doorType:
                     Teleport(Door.Get(doorType).Position + Vector3.up);
                     break;
                 case SpawnLocationType sp:
                     Teleport(sp.GetPosition());
-                    break;
-                case Spawn.SpawnPoint sp:
-                    Teleport(sp.Position);
                     break;
                 case RoomType roomType:
                     Teleport(Room.Get(roomType).Position + Vector3.up);
@@ -2911,21 +2938,8 @@ namespace Exiled.API.Features
                 case ElevatorType elevatorType:
                     Teleport(Lift.Get(elevatorType).Position + Vector3.up);
                     break;
-                case Room room:
-                    Teleport(room.Position + Vector3.up);
-                    break;
-                case TeslaGate teslaGate:
-                    Teleport(
-                        teslaGate.Position + Vector3.up +
-                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
-                            ? new Vector3(3, 0, 0)
-                            : new Vector3(0, 0, 3)));
-                    break;
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up);
-                    break;
-                case Player player:
-                    Teleport(player.Position);
                     break;
                 case Role role:
                     if (role.Owner is not null)
@@ -2933,32 +2947,14 @@ namespace Exiled.API.Features
                     else
                         Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
                     break;
-                case Pickup pickup:
-                    Teleport(pickup.Position + Vector3.up);
-                    break;
-                case Ragdoll ragdoll:
-                    Teleport(ragdoll.Position + Vector3.up);
-                    break;
                 case Locker locker:
                     Teleport(locker.transform.position + Vector3.up);
                     break;
                 case LockerChamber chamber:
                     Teleport(chamber._spawnpoint.position + Vector3.up);
                     break;
-                case Generator generator:
-                    Teleport(generator.Position + Vector3.up);
-                    break;
-                case Window window:
-                    Teleport(window.Position + Vector3.up);
-                    break;
-                case Toys.AdminToy toy:
-                    Teleport(toy.Position + Vector3.up);
-                    break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up);
-                    break;
-                case EActor ea:
-                    Teleport(ea.Position + Vector3.up);
                     break;
                 case Item item:
                     if (item.Owner is not null)

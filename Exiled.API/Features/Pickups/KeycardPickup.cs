@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a Keycard pickup.
     /// </summary>
-    public class KeycardPickup : Pickup, IWrapper<BaseKeycard>
+    public class KeycardPickup : Pickup, IWrapper<BaseKeycard>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="KeycardPickup"/> class.

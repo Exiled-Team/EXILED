@@ -19,7 +19,10 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Log
     {
-        private static readonly Dictionary<Assembly, bool> KnownDebugValues = new();
+        /// <summary>
+        /// Keep in memory the value of the Debug config.
+        /// </summary>
+        internal static readonly Dictionary<Assembly, bool> KnownDebugValues = new();
 
         /// <summary>
         /// Sends a <see cref="Discord.LogLevel.Info"/> level messages to the game console.
