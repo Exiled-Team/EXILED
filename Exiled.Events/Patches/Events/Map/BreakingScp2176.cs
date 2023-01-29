@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Map
     ///     Patches <see cref="Scp2176Projectile.ServerShatter" />.
     ///     Supplements the <see cref="Map.ExplodingGrenade" /> event.
     /// </summary>
-    // [HarmonyPatch(typeof(Scp2176Projectile), nameof(Scp2176Projectile.ServerShatter))]
+    [HarmonyPatch(typeof(Scp2176Projectile), nameof(Scp2176Projectile.ServerShatter))]
     internal static class BreakingScp2176
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
