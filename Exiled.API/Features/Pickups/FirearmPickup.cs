@@ -36,6 +36,7 @@ namespace Exiled.API.Features.Pickups
             : base(type)
         {
             Base = (BaseFirearm)((Pickup)this).Base;
+            IsDistributed = true;
         }
 
         /// <summary>

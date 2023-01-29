@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Pickups
             Base = pickupBase;
 
             // prevent prefabs like `InventoryItemLoader.AvailableItems[ItemType.GrenadeHE].PickupDropModel` from adding to pickup list
-            if (pickupBase.Info.ItemId == ItemType.None)
+            if (pickupBase.Info.ItemId is ItemType.None)
                 return;
 
             BaseToPickup.Add(pickupBase, this);
@@ -262,7 +262,7 @@ namespace Exiled.API.Features.Pickups
         /// <returns>The <see cref="Pickup"/> wrapper for the given <see cref="ItemPickupBase"/>.</returns>
         public static Pickup Get(ItemPickupBase pickupBase)
         {
-            if (pickupBase is null)
+            if (pickupBase == null)
                 return null;
 
             if (BaseToPickup.TryGetValue(pickupBase, out Pickup pickup))
@@ -308,6 +308,13 @@ namespace Exiled.API.Features.Pickups
         /// <param name="serial"> The serial of the Pickup you search.</param>
         /// <returns>return the Pickup with Serial choose.</returns>
         public static Pickup Get(ushort serial) => List.SingleOrDefault(x => x.Serial == serial);
+
+        /// <summary>
+        /// Gets the <see cref="Pickup"/> with the given <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject"> The gameobject of the Pickup you search.</param>
+        /// <returns>return the Pickup with gameObject choose.</returns>
+        public static Pickup Get(GameObject gameObject) => gameObject == null ? null : Get(gameObject.GetComponent<ItemPickupBase>());
 
         /// <summary>
         /// Creates and returns a new <see cref="Pickup"/> with the proper inherited subclass.
