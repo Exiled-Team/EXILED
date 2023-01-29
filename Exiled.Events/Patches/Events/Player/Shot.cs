@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            for (var z = 0; z < newInstructions.Count; z++)
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
@@ -85,12 +85,12 @@ namespace Exiled.Events.Patches.Events.Player
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> ShotPellet(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             const int offset = 0;
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -118,7 +118,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            for (var z = 0; z < newInstructions.Count; z++)
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
@@ -126,7 +126,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static bool ProcessShot(ReferenceHub player, RaycastHit hit, IDestructible destructible, ref float damage)
         {
-            var shotEvent = new ShotEventArgs(Player.Get(player), hit, destructible, damage);
+            ShotEventArgs shotEvent = new ShotEventArgs(Player.Get(player), hit, destructible, damage);
 
             Handlers.Player.OnShot(shotEvent);
 
