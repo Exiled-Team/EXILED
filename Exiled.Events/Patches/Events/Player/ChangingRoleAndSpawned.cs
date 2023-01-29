@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ChangingRole.cs" company="Exiled Team">
+// <copyright file="ChangingRoleAndSpawned.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Player
     ///     Adds the <see cref="Player.ChangingRole" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerRoleManager), nameof(PlayerRoleManager.InitializeNewRole))]
-    internal static class ChangingRole
+    internal static class ChangingRoleAndSpawned
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label continueLabel1 = generator.DefineLabel();
             Label continueLabel2 = generator.DefineLabel();
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
+            LocalBuilder changingRoleEventArgs = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
 
             newInstructions.InsertRange(
@@ -76,41 +76,41 @@ namespace Exiled.Events.Patches.Events.Player
                     // spawnFlags
                     new(OpCodes.Ldarg_3),
 
-                    // ChangingRoleEventArgs ev = new(Player, RoleTypeId, RoleChangeReason, SpawnFlags)
+                    // ChangingRoleEventArgs changingRoleEventArgs = new(Player, RoleTypeId, RoleChangeReason, SpawnFlags)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRoleEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Stloc_S, changingRoleEventArgs.LocalIndex),
 
-                    // Handlers.Player.OnChangingRole(ev)
+                    // Handlers.Player.OnChangingRole(changingRoleEventArgs)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingRole))),
 
-                    // if (!ev.IsAllowed)
+                    // if (!changingRoleEventArgs.IsAllowed)
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
 
-                    // newRole = ev.NewRole;
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    // newRole = changingRoleEventArgs.NewRole;
+                    new(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
                     new(OpCodes.Starg_S, 1),
 
-                    // reason = ev.Reason
+                    // reason = changingRoleEventArgs.Reason
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
                     new(OpCodes.Starg_S, 2),
 
-                    // spawnFlags = ev.SpawnFlags
+                    // spawnFlags = changingRoleEventArgs.SpawnFlags
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.SpawnFlags))),
                     new(OpCodes.Starg_S, 3),
 
-                    // UpdatePlayerRole(ev.NewRole, ev.Player)
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    // UpdatePlayerRole(changingRoleEventArgs.NewRole, changingRoleEventArgs.Player)
+                    new(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
-                    new(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
+                    new(OpCodes.Call, Method(typeof(ChangingRoleAndSpawned), nameof(UpdatePlayerRole))),
 
                     new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
@@ -151,11 +151,36 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel2),
 
-                    // ev
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    // changingRoleEventArgs
+                    new(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
 
-                    // ChangingRole.ChangeInventory(ev, oldRoleType);
-                    new(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
+                    // ChangingRole.ChangeInventory(changingRoleEventArgs, oldRoleType);
+                    new(OpCodes.Call, Method(typeof(ChangingRoleAndSpawned), nameof(ChangeInventory))),
+                });
+
+            index = newInstructions.Count - 1;
+
+            newInstructions.InsertRange(
+                index,
+                new[]
+                {
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+
+                    // OldRole
+                    new(OpCodes.Ldloc_0),
+
+                    // reason
+                    new(OpCodes.Ldarg_2),
+
+                    // spawnFlags
+                    new(OpCodes.Ldarg_3),
+
+                    // SpawnedEventArgs spawnedEventArgs = new(Player, OldRole, RoleChangeReason, SpawnFlags)
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawnedEventArgs))[0]),
+
+                    // Handlers.Player.OnSpawned(spawnedEventArgs)
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawned))),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -231,7 +256,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                Log.Error($"{nameof(ChangingRole)}.{nameof(ChangeInventory)}: {exception}");
+                Log.Error($"{nameof(ChangingRoleAndSpawned)}.{nameof(ChangeInventory)}: {exception}");
             }
         }
     }
