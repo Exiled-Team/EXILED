@@ -251,10 +251,13 @@ namespace Exiled.Events.Patches.Events.Player
                 }
 
                 foreach (ItemType item in ev.Items)
-                    InventoryItemProvider.OnItemProvided?.Invoke(ev.Player.ReferenceHub, inventory.ServerAddItem(item));
+                    inventory.ServerAddItem(item);
 
                 foreach (KeyValuePair<ItemType, ushort> keyValuePair in ev.Ammo)
                     inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
+
+                foreach (var item in inventory.UserInventory.Items)
+                    InventoryItemProvider.OnItemProvided?.Invoke(ev.Player.ReferenceHub, item.Value);
 
                 InventoryItemProvider.SpawnPreviousInventoryPickups(ev.Player.ReferenceHub);
             }
