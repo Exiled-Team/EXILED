@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs.Player
         public Flashlight Flashlight { get; }
 
         /// <summary>
-        ///     Gets or sets the new flashlight state.
+        ///     Gets or sets a value indicating whether or not the flashlight should be on.
         /// </summary>
         public bool NewState { get; set; }
 
