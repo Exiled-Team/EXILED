@@ -12,7 +12,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-
+    using Exiled.Events.EventArgs.Server;
     using GameCore;
 
     using HarmonyLib;
@@ -154,6 +154,9 @@ namespace Exiled.Events.Patches.Events.Server
                                 leadingTeam = (RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists) ? RoundSummary.LeadingTeam.ChaosInsurgency : RoundSummary.LeadingTeam.Draw;
                             }
 
+                            EndingRoundEventArgs endingRoundEventArgs = new(leadingTeam, newList, roundSummary._roundEnded);
+                            Handlers.Server.OnEndingRound(endingRoundEventArgs);
+
                             RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
                             while (roundEndCancellationData.IsCancelled)
                             {
@@ -186,7 +189,12 @@ namespace Exiled.Events.Patches.Events.Server
                             int num5 = Mathf.Clamp(ConfigFile.ServerConfig.GetInt("auto_round_restart_time", 10), 5, 1000);
 
                             if (roundSummary != null)
+                            {
                                 roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, newList, leadingTeam, RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, num5, (int)RoundStart.RoundLength.TotalSeconds);
+                                RoundEndedEventArgs roundEndedEventArgs = new(endingRoundEventArgs.LeadingTeam, newList, num5);
+
+                                Handlers.Server.OnRoundEnded(roundEndedEventArgs);
+                            }
 
                             yield return Timing.WaitForSeconds(num5 - 1);
 
