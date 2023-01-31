@@ -158,9 +158,7 @@ namespace Exiled.Events.Patches.Events.Server
                             while (roundEndCancellationData.IsCancelled)
                             {
                                 if (roundEndCancellationData.Delay <= 0f)
-                                {
-                                    yield break;
-                                }
+                                    break;
 
                                 yield return Timing.WaitForSeconds(roundEndCancellationData.Delay);
                                 roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
