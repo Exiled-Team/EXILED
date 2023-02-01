@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Map
                     // FlashbangGrenade
                     new CodeInstruction(OpCodes.Ldarg_0),
 
-                    // Returns DoctorSenseEventArgs
+                    // Processes ExplodingGrenadeEventArgs
                     new(OpCodes.Call, Method(typeof(ExplodingFlashGrenade), nameof(ProcessEvent))),
                     new(OpCodes.Br_S, returnLabel),
                 });
@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Map
 
             foreach (Player player in explodingGrenadeEvent.TargetsToAffect)
             {
-                if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && (explodingGrenadeEvent.Player == player))
+                if (!ExiledEvents.Instance.Config.CanFlashbangsAffectThrower && explodingGrenadeEvent.Player == player)
                     continue;
 
                 if (HitboxIdentity.CheckFriendlyFire(explodingGrenadeEvent.Player.ReferenceHub, player.ReferenceHub))
