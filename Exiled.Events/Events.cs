@@ -94,8 +94,6 @@ namespace Exiled.Events
 
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
 
-            PlayerRoleManager.OnRoleChanged += Handlers.Player.OnSpawned;
-
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
             AnimatedCharacterModel.OnFootstepPlayed += Handlers.Player.OnMakingNoise;
@@ -127,8 +125,6 @@ namespace Exiled.Events
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
 
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
-
-            PlayerRoleManager.OnRoleChanged -= Handlers.Player.OnSpawned;
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
 
