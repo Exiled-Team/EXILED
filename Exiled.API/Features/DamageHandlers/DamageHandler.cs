@@ -12,7 +12,6 @@ namespace Exiled.API.Features.DamageHandlers
     using Footprinting;
 
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     using BaseHandler = PlayerStatsSystem.DamageHandlerBase;
@@ -38,8 +37,8 @@ namespace Exiled.API.Features.DamageHandlers
         {
             Target = target;
             Attacker = attacker;
-            TargetFootprint = target.Footprint;
-            AttackerFootprint = attacker.Footprint;
+            TargetFootprint = target == null ? default : target.Footprint;
+            AttackerFootprint = Attacker == null ? default : Attacker.Footprint;
         }
 
         /// <summary>
@@ -52,8 +51,8 @@ namespace Exiled.API.Features.DamageHandlers
         {
             Target = target;
             Attacker = baseHandler is PlayerStatsSystem.AttackerDamageHandler handler ? Player.Get(handler.Attacker.Hub) : null;
-            TargetFootprint = target.Footprint;
-            AttackerFootprint = Attacker?.Footprint ?? default;
+            TargetFootprint = target == null ? default : target.Footprint;
+            AttackerFootprint = Attacker == null ? default : Attacker.Footprint;
         }
 
         /// <summary>
