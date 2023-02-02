@@ -32,6 +32,25 @@
         <Reference Include="System.ComponentModel.DataAnnotations" Private="false" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="AutoUpdateFiles.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AutoUpdateFiles.cs</LastGenOutput>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="AutoUpdateFiles.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>AutoUpdateFiles.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 
 
 

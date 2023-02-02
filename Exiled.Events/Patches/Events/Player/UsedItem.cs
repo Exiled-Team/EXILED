@@ -19,6 +19,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using InventorySystem.Items;
     using InventorySystem.Items.Usables;
+    using InventorySystem.Items.Usables.Scp1576;
 
     using static HarmonyLib.AccessTools;
 
@@ -68,6 +69,28 @@ namespace Exiled.Events.Patches.Events.Player
     /// </summary>
     [HarmonyPatch(typeof(Scp268), nameof(Scp268.ServerOnUsingCompleted))]
     internal static class UsedItem268
+    {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            const int index = 0;
+
+            newInstructions.InsertRange(index, UsedItem.InstructionsToInject());
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+    }
+
+    /// <summary>
+    ///     Patches <see cref="Scp1576Item.ServerOnUsingCompleted" />
+    ///     Adds the <see cref="Handlers.Player.UsedItem" /> event.
+    /// </summary>
+    [HarmonyPatch(typeof(Scp1576Item), nameof(Scp1576Item.ServerOnUsingCompleted))]
+    internal static class UsedItem1576
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
