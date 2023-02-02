@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs.Map
             Player = thrower ?? Server.Host;
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = position;
-            TargetsToAffect = HashSetPool<Player>.Pool.Get();
+            TargetsToAffect = ListPool<Player>.Pool.Get();
 
             if (Projectile.Base is not ExplosionGrenade)
                 return;
@@ -64,16 +64,15 @@ namespace Exiled.Events.EventArgs.Map
         /// <param name="grenade">
         ///     <inheritdoc cref="Projectile" />
         /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
+        /// <param name="players">
+        ///     <inheritdoc cref="TargetsToAffect" />
         /// </param>
-        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, bool isAllowed = true)
+        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
         {
             Player = thrower ?? Server.Host;
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = Projectile.Position;
-            TargetsToAffect = HashSetPool<Player>.Pool.Get(Player.List);
-            IsAllowed = isAllowed;
+            TargetsToAffect = ListPool<Player>.Pool.Get(players);
         }
 
         /// <summary>
@@ -81,7 +80,7 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         ~ExplodingGrenadeEventArgs()
         {
-            HashSetPool<Player>.Pool.Return(TargetsToAffect);
+            ListPool<Player>.Pool.Return(TargetsToAffect);
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace Exiled.Events.EventArgs.Map
         /// <summary>
         ///     Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.
         /// </summary>
-        public HashSet<Player> TargetsToAffect { get; }
+        public List<Player> TargetsToAffect { get; }
 
         /// <summary>
         /// Gets the grenade that is exploding.

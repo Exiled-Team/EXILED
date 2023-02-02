@@ -28,8 +28,6 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
-    using ExiledEvents = Exiled.Events.Events;
-
     /// <summary>
     /// Checks friendly fire rules.
     /// </summary>
@@ -151,7 +149,6 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                Log.Debug($"Hitbox patch {Server.FriendlyFire} || {IndividualFriendlyFire.CheckFriendlyFirePlayerRules(attacker, victim, out _)}");
                 bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
 
                 if (!currentResult)
