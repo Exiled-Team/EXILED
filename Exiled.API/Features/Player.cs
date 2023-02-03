@@ -328,12 +328,12 @@ namespace Exiled.API.Features
         public bool IsVerified { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether if the player has an active CustomName.
+        /// Gets a value indicating whether or not the player has an active CustomName.
         /// </summary>
         public bool HasCustomName => ReferenceHub.nicknameSync.NickSet;
 
         /// <summary>
-        /// Gets or sets the player's nickname display to other player.
+        /// Gets or sets the player's nickname displayed to other player.
         /// </summary>
         public string DisplayNickname
         {
@@ -342,7 +342,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's nickname if null it's send the original nickname.
+        /// Gets or sets the player's nickname, if null it sets the original nickname.
         /// </summary>
         public string CustomName
         {
