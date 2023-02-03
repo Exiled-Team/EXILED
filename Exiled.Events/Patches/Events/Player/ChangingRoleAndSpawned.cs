@@ -160,10 +160,16 @@ namespace Exiled.Events.Patches.Events.Player
 
             index = newInstructions.Count - 1;
 
+            newInstructions[index].WithLabels(returnLabel);
+
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
+                    // if (anySet) return;
+                    new CodeInstruction(OpCodes.Ldloc_1),
+                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+
                     // player
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
 
@@ -182,8 +188,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // Handlers.Player.OnSpawned(spawnedEventArgs)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawned))),
                 });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -246,11 +250,14 @@ namespace Exiled.Events.Patches.Events.Player
                     inventory.SendAmmoNextFrame = true;
                 }
 
+                foreach (ItemType item in ev.Items)
+                    inventory.ServerAddItem(item);
+
                 foreach (KeyValuePair<ItemType, ushort> keyValuePair in ev.Ammo)
                     inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
 
-                foreach (ItemType item in ev.Items)
-                    InventoryItemProvider.OnItemProvided?.Invoke(ev.Player.ReferenceHub, inventory.ServerAddItem(item));
+                foreach (KeyValuePair<ushort, InventorySystem.Items.ItemBase> item in inventory.UserInventory.Items)
+                    InventoryItemProvider.OnItemProvided?.Invoke(ev.Player.ReferenceHub, item.Value);
 
                 InventoryItemProvider.SpawnPreviousInventoryPickups(ev.Player.ReferenceHub);
             }

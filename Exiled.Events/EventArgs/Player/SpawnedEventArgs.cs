@@ -27,9 +27,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="oldRole">the spawned player's old <see cref="PlayerRoleBase">role</see>.</param>
         /// <param name="roleChangeReason">the player's spawned with <see cref="RoleChangeReason" />.</param>
         /// <param name="roleSpawnFlags">the player's spawned with <see cref="RoleSpawnFlags" />.</param>
-        public SpawnedEventArgs(ReferenceHub player, PlayerRoleBase oldRole, RoleChangeReason roleChangeReason, RoleSpawnFlags roleSpawnFlags)
+        public SpawnedEventArgs(Player player, PlayerRoleBase oldRole, RoleChangeReason roleChangeReason, RoleSpawnFlags roleSpawnFlags)
         {
-            Player = Player.Get(player);
+            Player = player;
             OldRole = Role.Create(oldRole);
             Reason = (SpawnReason)roleChangeReason;
             SpawnFlags = roleSpawnFlags;

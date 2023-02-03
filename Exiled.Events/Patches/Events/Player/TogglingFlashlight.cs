@@ -34,8 +34,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingFlashlightEventArgs));
 
-            Label retLabel = generator.DefineLabel();
-
             int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
 
@@ -55,7 +53,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // TogglingFlashlightEventArgs ev = new(Player, FlashlightItem, bool, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingFlashlightEventArgs))[0]),
-                    new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
@@ -99,8 +96,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingFlashlightEventArgs), nameof(TogglingFlashlightEventArgs.NewState))),
                 });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
