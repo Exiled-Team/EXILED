@@ -173,12 +173,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // OldRole
                     new(OpCodes.Ldloc_0),
 
-                    // reason
-                    new(OpCodes.Ldarg_2),
-
-                    // spawnFlags
-                    new(OpCodes.Ldarg_3),
-
                     // SpawnedEventArgs spawnedEventArgs = new(Player, OldRole, RoleChangeReason, SpawnFlags)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawnedEventArgs))[0]),
 
