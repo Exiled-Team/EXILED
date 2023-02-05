@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="roleSpawnFlags">the player's spawned with <see cref="RoleSpawnFlags" />.</param>
         public SpawnedEventArgs(Player player, PlayerRoleBase oldRole, RoleChangeReason roleChangeReason, RoleSpawnFlags roleSpawnFlags)
         {
-            Player = Player.Get(player.ReferenceHub);
+            Player = player;
             OldRole = Role.Create(oldRole);
             Reason = (SpawnReason)roleChangeReason;
             SpawnFlags = roleSpawnFlags;
