@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="Scp2176Projectile"/>.
     /// </summary>
-    public class Scp2176 : Throwable, IWrapper<ThrowableItem>
+    public class Scp2176 : Throwable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp2176"/> class.

@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a Body Armor pickup.
     /// </summary>
-    public class BodyArmorPickup : Pickup, IWrapper<BaseBodyArmor>, IWorldSpace
+    public class BodyArmorPickup : Pickup, IWrapper<BaseBodyArmor>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BodyArmorPickup"/> class.
