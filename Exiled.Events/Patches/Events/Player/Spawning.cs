@@ -67,9 +67,11 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     Handlers.Player.OnSpawning(new(player, oldPosition, oldRotation, prevRole));
                 }
+
+                return false;
             }
 
-            return false;
+            return true;
         }
     }
 }
