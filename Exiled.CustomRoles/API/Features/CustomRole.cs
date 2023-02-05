@@ -114,6 +114,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool KeepRoleOnDeath { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether players keep this Custom Role when they switch roles: Class-D -> Scientist for example.
+        /// </summary>
+        public virtual bool KeepRoleOnChangingRole { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating the <see cref="Player"/>'s size.
         /// </summary>
         public virtual Vector3 Scale { get; set; } = Vector3.one;
@@ -740,9 +745,8 @@ namespace Exiled.CustomRoles.API.Features
         {
         }
 
-        private void OnInternalChangingRole(ChangingRoleEventArgs ev)
-        {
-            if (Check(ev.Player) && (((ev.NewRole == RoleTypeId.Spectator) && !KeepRoleOnDeath) || ((ev.NewRole != RoleTypeId.Spectator) && (ev.NewRole != Role))))
+        private void OnInternalChangingRole(ChangingRoleEventArgs ev) {
+            if (Check(ev.Player) && ((ev.NewRole == RoleTypeId.Spectator && !KeepRoleOnDeath) || (ev.NewRole != RoleTypeId.Spectator && ev.NewRole != Role && !KeepRoleOnChangingRole)))
                 RemoveRole(ev.Player);
         }
 
