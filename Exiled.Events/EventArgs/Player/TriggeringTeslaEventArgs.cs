@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsInIdleRange { get; set; } = true;
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player will triggering the tesla and going to be activated.
+        ///     Gets or sets a value indicating whether or not the player will cause the tesla going to be activated.
         /// </summary>
         public bool IsTriggerable { get; set; }
 
