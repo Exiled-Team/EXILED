@@ -18,7 +18,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for dropped SCP-330 bags.
     /// </summary>
-    public class Scp330Pickup : Pickup, IWrapper<BaseScp330>, IWorldSpace
+    public class Scp330Pickup : Pickup, IWrapper<BaseScp330>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330Pickup"/> class.
