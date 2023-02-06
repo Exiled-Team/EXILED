@@ -10,13 +10,16 @@ namespace Exiled.API.Features.Pickups
     using System;
 
     using Exiled.API.Features.DamageHandlers;
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items.Usables.Scp244;
+
     using UnityEngine;
 
     /// <summary>
     /// A wrapper class for a SCP-244 pickup.
     /// </summary>
-    public class Scp244Pickup : Pickup
+    public class Scp244Pickup : Pickup, IWrapper<Scp244DeployablePickup>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244Pickup"/> class.

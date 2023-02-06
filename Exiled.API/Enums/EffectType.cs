@@ -118,11 +118,6 @@ namespace Exiled.API.Enums
         SinkHole,
 
         /// <summary>
-        /// Gives the player the SCP-939 sound vision.
-        /// </summary>
-        Visuals939,
-
-        /// <summary>
         /// Reduces overall damage taken.
         /// </summary>
         DamageReduction,
@@ -148,11 +143,6 @@ namespace Exiled.API.Enums
         Stained,
 
         /// <summary>
-        /// Causes the player to blink.
-        /// </summary>
-        Visuals173Blink,
-
-        /// <summary>
         /// Causes the player to slowly regenerate health.
         /// </summary>
         Vitality,
@@ -168,13 +158,13 @@ namespace Exiled.API.Enums
         Scp1853,
 
         /// <summary>
-        /// Player will be followed by Scp956 the Pinata.
+        /// Effect given to player after being hurt by SCP-049.
         /// </summary>
-        Scp956,
+        CardiacArrest,
 
         /// <summary>
-        /// Effect give to player after eating SCP-559 cake.
+        /// Cause the lighting in the facility to dim heavily for the player.
         /// </summary>
-        Scp559,
+        InsufficientLighting,
     }
 }

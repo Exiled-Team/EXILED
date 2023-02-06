@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Interfaces;
     using Extensions;
 
     using Interactables.Interobjects;
@@ -20,7 +21,6 @@ namespace Exiled.API.Features
     using MEC;
 
     using Mirror;
-
     using UnityEngine;
 
     using static Interactables.Interobjects.ElevatorManager;
@@ -28,7 +28,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door
+    public class Door : IWrapper<DoorVariant>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
@@ -112,15 +112,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not this door is a gate.
         /// </summary>
-        public bool IsGate => Type is DoorType.GateA or DoorType.GateB or DoorType.GR18Gate or
-                DoorType.Scp049Gate or DoorType.Scp173Gate or DoorType.Scp914Gate or
-                DoorType.SurfaceGate or DoorType.UnknownGate or DoorType.CheckpointGate;
+        public bool IsGate => Base is PryableDoor;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is a checkpoint door.
         /// </summary>
-        public bool IsCheckpoint => Type is DoorType.CheckpointEzHczA or DoorType.CheckpointEzHczB or DoorType.CheckpointLczA or
-                DoorType.CheckpointLczB;
+        public bool IsCheckpoint => Base is CheckpointDoor;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is an elevator door.
+        /// </summary>
+        public bool IsElevator => Base is ElevatorDoor;
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
@@ -318,7 +320,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door Random(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
+            List<Door> doors = onlyUnbroken || type is not ZoneType.Unspecified ? Get(x => (x.Room is null || x.Room.Zone.HasFlag(type) || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorVariantToDoor.Values.ToList();
             return doors[UnityEngine.Random.Range(0, doors.Count)];
         }
 
@@ -330,7 +332,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">The specified <see cref="Enums.DoorLockType"/>.</param>
         public static void LockAll(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && (door.Zone == zoneType)))
+            foreach (Door door in Get(door => zoneType is not ZoneType.Unspecified && door.Zone.HasFlag(zoneType)))
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
@@ -378,7 +380,7 @@ namespace Exiled.API.Features
         /// Unlocks all <see cref="Door">doors</see> in the facility.
         /// </summary>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
-        public static void UnlockAll(ZoneType zoneType) => UnlockAll(door => door.Zone == zoneType);
+        public static void UnlockAll(ZoneType zoneType) => UnlockAll(door => door.Zone.HasFlag(zoneType));
 
         /// <summary>
         /// Unlocks all <see cref="Door">doors</see> in the facility.
@@ -424,7 +426,14 @@ namespace Exiled.API.Features
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
-        public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate();
+        public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate(null);
+
+        /// <summary>
+        /// Tries to pry the door open. No effect if the door cannot be pried.
+        /// </summary>
+        /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
+        /// <param name="player">The amount of damage to deal.</param>
+        public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
 
         /// <summary>
         /// Makes the door play a beep sound.
@@ -514,7 +523,7 @@ namespace Exiled.API.Features
                 string doorName = GameObject.name.GetBefore(' ');
                 return doorName switch
                 {
-                    "LCZ" => DoorType.LightContainmentDoor,
+                    "LCZ" => Room?.Type.IsCheckpoint() ?? false ? Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor : DoorType.LightContainmentDoor,
                     "HCZ" => DoorType.HeavyContainmentDoor,
                     "EZ" => DoorType.EntranceDoor,
                     "Prison" => DoorType.PrisonDoor,

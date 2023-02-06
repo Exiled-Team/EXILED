@@ -11,14 +11,19 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Interfaces;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Armor;
+
     using PlayerRoles;
+
     using Structs;
 
     /// <summary>
     /// A wrapper class for <see cref="BodyArmor"/>.
     /// </summary>
-    public class Armor : Item
+    public class Armor : Item, IWrapper<BodyArmor>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Armor"/> class.
@@ -35,7 +40,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the armor.</param>
         internal Armor(ItemType type)
-            : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 

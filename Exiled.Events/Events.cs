@@ -14,12 +14,17 @@ namespace Exiled.Events
 
     using API.Enums;
     using API.Features;
+
     using EventArgs.Interfaces;
+
     using HarmonyLib;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
+
     using PluginAPI.Events;
+
     using UnityEngine.SceneManagement;
 
     /// <summary>
@@ -89,8 +94,6 @@ namespace Exiled.Events
 
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
 
-            PlayerRoleManager.OnRoleChanged += Handlers.Player.OnSpawned;
-
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
             AnimatedCharacterModel.OnFootstepPlayed += Handlers.Player.OnMakingNoise;
@@ -123,8 +126,6 @@ namespace Exiled.Events
 
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
-            PlayerRoleManager.OnRoleChanged -= Handlers.Player.OnSpawned;
-
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
 
             AnimatedCharacterModel.OnFootstepPlayed -= Handlers.Player.OnMakingNoise;
@@ -148,10 +149,11 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                if (PatchByAttributes())
+                PatchByAttributes(out int failedPatch);
+                if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
-                    Log.Error($"Patching failed!");
+                    Log.Error($"Patching failed! There are {failedPatch} broken patches.");
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
@@ -186,20 +188,24 @@ namespace Exiled.Events
             Log.Debug("All events have been unpatched complete. Goodbye!");
         }
 
-        private bool PatchByAttributes()
+        private void PatchByAttributes(out int failedPatch)
         {
-            try
+            failedPatch = 0;
+            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
             {
-                Harmony.PatchAll();
+                try
+                {
+                    Harmony.CreateClassProcessor(type).Patch();
+                }
+                catch (Exception exception)
+                {
+                    Log.Error($"Patching by attributes failed!\n{exception}");
+                    failedPatch++;
+                    continue;
+                }
+            }
 
-                Log.Debug("Events patched by attributes successfully!");
-                return true;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"Patching by attributes failed!\n{exception}");
-                return false;
-            }
+            Log.Debug("Events patched by attributes successfully!");
         }
     }
 }

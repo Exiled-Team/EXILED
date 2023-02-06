@@ -11,7 +11,9 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+
     using PlayerRoles.PlayableScps.Scp079;
+
     using UnityEngine;
 
     /// <summary>

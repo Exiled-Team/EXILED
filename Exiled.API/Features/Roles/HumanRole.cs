@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Roles
 {
     using PlayerRoles;
+
     using Respawning;
 
     using HumanGameRole = PlayerRoles.HumanRole;

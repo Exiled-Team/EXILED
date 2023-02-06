@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -40,7 +41,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         internal FlashGrenade(Player player = null)
-            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.GrenadeFlash, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.GrenadeFlash, true))
+            : this((ThrowableItem)(player ?? Server.Host).Inventory.CreateItemInstance(new(ItemType.GrenadeFlash, 0), true))
         {
         }
 
@@ -96,7 +97,11 @@ namespace Exiled.API.Features.Items
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
-            FlashbangProjectile grenade = (FlashbangProjectile)Pickup.Get(Object.Instantiate(Projectile.Base, position, Quaternion.identity));
+            ItemPickupBase ipb = Object.Instantiate(Projectile.Base, position, Quaternion.identity);
+
+            ipb.Info = new PickupSyncInfo(Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
+
+            FlashbangProjectile grenade = (FlashbangProjectile)Pickup.Get(ipb);
 
             grenade.Base.gameObject.SetActive(true);
 
@@ -106,8 +111,6 @@ namespace Exiled.API.Features.Items
             grenade.FuseTime = FuseTime;
 
             grenade.PreviousOwner = owner ?? Server.Host;
-
-            grenade.Info = new PickupSyncInfo(grenade.Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
 
             grenade.Spawn();
 

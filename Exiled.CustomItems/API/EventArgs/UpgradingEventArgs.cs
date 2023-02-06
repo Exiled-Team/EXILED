@@ -28,8 +28,9 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="knobSetting"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingPickupEventArgs.KnobSetting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="Exiled.Events.EventArgs.Scp914.UpgradingPickupEventArgs.IsAllowed"/></param>
         public UpgradingEventArgs(ItemPickupBase item, Vector3 newPos, Scp914KnobSetting knobSetting, bool isAllowed = true)
-            : base(item, newPos, knobSetting, isAllowed)
+            : base(item, newPos, knobSetting)
         {
+            IsAllowed = isAllowed;
             Item = item;
         }
 

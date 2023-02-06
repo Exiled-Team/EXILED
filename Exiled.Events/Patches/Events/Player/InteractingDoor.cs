@@ -14,12 +14,13 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1512
     using System;
 
-    using Exiled.API.Features;
+    using API.Features;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using Interactables.Interobjects.DoorUtils;
+
     using PlayerRoles;
 
     /// <summary>

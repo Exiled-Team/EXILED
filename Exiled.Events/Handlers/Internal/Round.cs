@@ -12,7 +12,9 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
     using Exiled.Loader.Features;
+
     using InventorySystem;
+
     using PlayerRoles;
 
     /// <summary>
@@ -53,10 +55,7 @@ namespace Exiled.Events.Handlers.Internal
         /// <inheritdoc cref="Handlers.Player.OnChangingRole(ChangingRoleEventArgs)" />
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))
-                return;
-
-            if ((ev.NewRole == RoleTypeId.Spectator) && Events.Instance.Config.ShouldDropInventory)
+            if (!ev.Player.IsHost && ev.NewRole == RoleTypeId.Spectator && ev.Reason != API.Enums.SpawnReason.Destroyed && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropEverything();
         }
     }

@@ -14,19 +14,31 @@ namespace Exiled.API.Features
     using System.Runtime.CompilerServices;
 
     using Core;
+
     using CustomPlayerEffects;
+
     using DamageHandlers;
+
     using Enums;
+
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
+    using Exiled.API.Interfaces;
     using Exiled.API.Structs;
+
     using Extensions;
+
     using Footprinting;
+
     using global::Scp914;
+
     using Hints;
+
     using Interactables.Interobjects;
+
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
@@ -36,25 +48,36 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
+
     using MapGeneration.Distributors;
+
     using MEC;
+
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
+
     using NorthwoodLib;
-    using NorthwoodLib.Pools;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
+
     using PlayerStatsSystem;
+
     using RemoteAdmin;
+
     using RoundRestarting;
+
     using UnityEngine;
+
     using Utils.Networking;
+
     using VoiceChat;
     using VoiceChat.Playbacks;
 
@@ -69,7 +92,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : IEntity
+    public class Player : IEntity, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -106,6 +129,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="Player"/> class.
+        /// </summary>
+        ~Player()
+        {
+            DictionaryPool<string, object>.Pool.Return(SessionVariables);
+            DictionaryPool<RoleTypeId, float>.Pool.Return(FriendlyFireMultiplier);
+            DictionaryPool<string, Dictionary<RoleTypeId, float>>.Pool.Return(CustomRoleFriendlyFireMultiplier);
+        }
+
+        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
         public static Dictionary<GameObject, Player> Dictionary { get; } = new(Server.MaxPlayerCount, new ReferenceHub.GameObjectComparer());
@@ -131,13 +164,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="RoleTypeId"/> and their FF multiplier. This is for non-unique roles.
         /// </summary>
-        public Dictionary<RoleTypeId, float> FriendlyFireMultiplier { get; set; } = new();
+        public Dictionary<RoleTypeId, float> FriendlyFireMultiplier { get; set; } = DictionaryPool<RoleTypeId, float>.Pool.Get();
 
         /// <summary>
         /// Gets or sets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="string"/> and their  <see cref="Dictionary{TKey, TValue}"/> which is cached Role with FF multiplier. This is for unique custom roles.
         /// </summary>
         /// <remarks> Consider adding this as object, Dict so that CustomRoles, and Strings can be parsed. </remarks>
-        public Dictionary<string, Dictionary<RoleTypeId, float>> CustomRoleFriendlyFireMultiplier { get; set; } = new();
+        public Dictionary<string, Dictionary<RoleTypeId, float>> CustomRoleFriendlyFireMultiplier { get; set; } = DictionaryPool<string, Dictionary<RoleTypeId, float>>.Pool.Get();
 
         /// <summary>
         /// Gets or sets a unique custom role that does not adbide to base game for this player. Used in conjunction with <see cref="CustomRoleFriendlyFireMultiplier"/>.
@@ -295,12 +328,25 @@ namespace Exiled.API.Features
         public bool IsVerified { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the player's display nickname.
-        /// May be <see langword="null"/>.
+        /// Gets a value indicating whether or not the player has an active CustomName.
+        /// </summary>
+        public bool HasCustomName => ReferenceHub.nicknameSync.NickSet;
+
+        /// <summary>
+        /// Gets or sets the player's nickname displayed to other player.
         /// </summary>
         public string DisplayNickname
         {
-            get => ReferenceHub.nicknameSync.Network_displayName;
+            get => ReferenceHub.nicknameSync.DisplayName;
+            set => ReferenceHub.nicknameSync.DisplayName = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's nickname, if null it sets the original nickname.
+        /// </summary>
+        public string CustomName
+        {
+            get => ReferenceHub.nicknameSync.Network_displayName ?? Nickname;
             set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
 
@@ -325,7 +371,20 @@ namespace Exiled.API.Features
         public string CustomInfo
         {
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
-            set => ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
+            set
+            {
+                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
+                ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the range at which this player's info can be viewed by others.
+        /// </summary>
+        public float InfoViewRange
+        {
+            get => ReferenceHub.nicknameSync.NetworkViewRange;
+            set => ReferenceHub.nicknameSync.NetworkViewRange = value;
         }
 
         /// <summary>
@@ -337,7 +396,7 @@ namespace Exiled.API.Features
         /// Data saved with session variables is not being saved on player disconnect. If the data must be saved after the player's disconnects, a database must be used instead.
         /// </para>
         /// </summary>
-        public Dictionary<string, object> SessionVariables { get; } = new();
+        public Dictionary<string, object> SessionVariables { get; } = DictionaryPool<string, object>.Pool.Get();
 
         /// <summary>
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
@@ -352,6 +411,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has a reserved slot.
         /// </summary>
+        /// <seealso cref="GiveReservedSlot"/>
+        /// <seealso cref="AddReservedSlot(string)"/>
         public bool HasReservedSlot => ReservedSlot.HasReservedSlot(UserId, out _);
 
         /// <summary>
@@ -369,8 +430,8 @@ namespace Exiled.API.Features
         /// </summary>
         public bool IsOverwatchEnabled
         {
-            get => ReferenceHub.serverRoles.OverwatchEnabled;
-            set => ReferenceHub.serverRoles.SetOverwatchStatus(value);
+            get => ReferenceHub.serverRoles.IsInOverwatch;
+            set => ReferenceHub.serverRoles.SetOverwatchStatus((byte)(value ? 1 : 0));
         }
 
         /// <summary>
@@ -383,9 +444,9 @@ namespace Exiled.API.Features
             get => FpcNoclip.IsPermitted(ReferenceHub);
             set
             {
-                if (value && !FpcNoclip.PermittedPlayers.Contains(ReferenceHub.netId))
+                if (value)
                     FpcNoclip.PermitPlayer(ReferenceHub);
-                else if (!value && FpcNoclip.PermittedPlayers.Contains(ReferenceHub.netId))
+                else
                     FpcNoclip.UnpermitPlayer(ReferenceHub);
             }
         }
@@ -450,6 +511,15 @@ namespace Exiled.API.Features
         public LeadingTeam LeadingTeam => Role.Team.GetLeadingTeam();
 
         /// <summary>
+        /// Gets or sets a value indicating the actual RA permissions.
+        /// </summary>
+        public PlayerPermissions RemoteAdminPermissions
+        {
+            get => (PlayerPermissions)ReferenceHub.serverRoles.Permissions;
+            set => ReferenceHub.serverRoles.Permissions = (ulong)value;
+        }
+
+        /// <summary>
         /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleTypeId"/> of the player, and casting should be used to modify the role.
@@ -470,14 +540,29 @@ namespace Exiled.API.Features
         /// This role is automatically cached until it changes, and it is recommended to use this property directly rather than storing the property yourself.
         /// </para>
         /// <para>
-        /// Roles and RoleTypeIds can be compared directly. <c>Player.Role == RoleTypeId.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Role.Set(RoleTypeId, SpawnReason)"/>.
+        /// Roles and RoleTypeIds can be compared directly. <c>Player.Role == RoleTypeId.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>.
         /// </para>
         /// </summary>
-        /// <seealso cref="Role.Set(RoleTypeId, SpawnReason)"/>
+        /// <seealso cref="Role.Set(RoleTypeId, SpawnReason, RoleSpawnFlags)"/>
         public Role Role
         {
             get => role ??= Role.Create(RoleManager.CurrentRole);
             internal set => role = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's SCP preferences.
+        /// </summary>
+        public ScpSpawnPreferences.SpawnPreferences ScpPreferences
+        {
+            get
+            {
+                if (ScpSpawnPreferences.Preferences.TryGetValue(Connection.connectionId, out ScpSpawnPreferences.SpawnPreferences value))
+                    return value;
+
+                return default;
+            }
+            set => ScpSpawnPreferences.Preferences[Connection.connectionId] = value;
         }
 
         /// <summary>
@@ -525,6 +610,11 @@ namespace Exiled.API.Features
         /// Gets the player's <see cref="Mirror.NetworkIdentity"/>.
         /// </summary>
         public NetworkIdentity NetworkIdentity => ReferenceHub.networkIdentity;
+
+        /// <summary>
+        /// Gets the player's net ID.
+        /// </summary>
+        public uint NetId => ReferenceHub.netId;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is the host.
@@ -840,12 +930,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current <see cref="Room"/> the player is in.
         /// </summary>
-        public Room CurrentRoom => Map.FindParentRoom(GameObject);
+        public Room CurrentRoom => Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
         public ZoneType Zone => CurrentRoom?.Zone ?? ZoneType.Unspecified;
+
+        /// <summary>
+        /// Gets the current <see cref="Features.Lift"/> the player is in. Can be <see langword="null"/>.
+        /// </summary>
+        public Lift Lift => Lift.Get(Position);
 
         /// <summary>
         /// Gets all currently active <see cref="StatusEffectBase"> effects</see>.
@@ -928,7 +1023,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => IsEffectActive<Corroding>() || Map.FindParentRoom(GameObject)?.Type == RoomType.Pocket;
+        public bool IsInPocketDimension => CurrentRoom?.Type == RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.
@@ -1359,7 +1454,7 @@ namespace Exiled.API.Features
         /// <returns> Whether or not the item was able to be added. </returns>
         public bool TryAddFriendlyFire(Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = new();
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictionaryPool<RoleTypeId, float>.Pool.Get();
             foreach (KeyValuePair<RoleTypeId, float> roleFF in ffRules)
             {
                 if (overwrite)
@@ -1381,6 +1476,7 @@ namespace Exiled.API.Features
                     TryAddFriendlyFire(roleFF);
             }
 
+            DictionaryPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
             return true;
         }
 
@@ -1455,7 +1551,7 @@ namespace Exiled.API.Features
         /// <returns> Whether or not the item was able to be added. </returns>
         public bool TryAddCustomRoleFriendlyFire(string customRoleName, Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
-            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = new();
+            Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictionaryPool<RoleTypeId, float>.Pool.Get();
 
             if (CustomRoleFriendlyFireMultiplier.TryGetValue(customRoleName, out Dictionary<RoleTypeId, float> pairedRoleFF))
             {
@@ -1486,6 +1582,7 @@ namespace Exiled.API.Features
                     SetCustomRoleFriendlyFire(customRoleName, roleFF);
             }
 
+            DictionaryPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
             return true;
         }
 
@@ -1740,7 +1837,7 @@ namespace Exiled.API.Features
         /// <returns>Count of a successfully removed <see cref="Item"/>'s.</returns>
         public int RemoveItem(Func<Item, bool> predicate, bool destroy = true)
         {
-            List<Item> enumeratedItems = ListPool<Item>.Shared.Rent(ItemsValue);
+            List<Item> enumeratedItems = ListPool<Item>.Pool.Get(ItemsValue);
             int count = 0;
 
             foreach (Item item in enumeratedItems)
@@ -1749,7 +1846,7 @@ namespace Exiled.API.Features
                     ++count;
             }
 
-            ListPool<Item>.Shared.Return(enumeratedItems);
+            ListPool<Item>.Pool.Return(enumeratedItems);
             return count;
         }
 
@@ -1778,6 +1875,19 @@ namespace Exiled.API.Features
         /// Resets the <see cref="Player"/>'s stamina.
         /// </summary>
         public void ResetStamina() => Stamina = StaminaStat.MaxValue;
+
+        /// <summary>
+        /// Gets a user's SCP preference.
+        /// </summary>
+        /// <param name="roleType">The SCP RoleType.</param>
+        /// <returns>A value from <c>-5</c> to <c>5</c>, representing a player's preference to play as the provided SCP. Will return <c>0</c> for invalid SCPs.</returns>
+        public int GetScpPreference(RoleTypeId roleType)
+        {
+            if (ScpPreferences.Preferences.TryGetValue(roleType, out int value))
+                return value;
+
+            return 0;
+        }
 
         /// <summary>
         /// Hurts the player.
@@ -1842,7 +1952,7 @@ namespace Exiled.API.Features
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
-                ((HealthStat)ReferenceHub.playerStats.StatModules[0]).ServerHeal(amount);
+                healthStat.ServerHeal(amount);
             else
                 Health += amount;
         }
@@ -1857,10 +1967,11 @@ namespace Exiled.API.Features
         /// Forces the player to use an item.
         /// </summary>
         /// <param name="item">The item to be used.</param>
+        /// <exception cref="ArgumentException">The provided item is not a usable item.</exception>
         public void UseItem(Item item)
         {
             if (item is not Usable usableItem)
-                throw new Exception($"The provided item [{item.Type}] is not a usable item.");
+                throw new ArgumentException($"The provided item [{item.Type}] is not a usable item.", nameof(item));
 
             usableItem.Base.Owner = referenceHub;
             usableItem.Base.ServerOnUsingCompleted();
@@ -1872,6 +1983,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/>.</param>
+        public void Kill(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.KillPlayer(damageHandlerBase);
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
         /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
         public void Kill(DamageType damageType, string cassieAnnouncement = "")
@@ -1879,7 +1996,7 @@ namespace Exiled.API.Features
             if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(DamageTypeExtensions.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, -1, cassieAnnouncement));
         }
 
         /// <summary>
@@ -1892,17 +2009,38 @@ namespace Exiled.API.Features
             if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, -1, cassieAnnouncement));
+        }
+
+        /// <summary>
+        /// Kills the player and vaporizes the body.
+        /// </summary>
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        public void Vaporize(Player attacker = null, string cassieAnnouncement = "")
+        {
+            if ((Role.Side != Side.Scp) && !string.IsNullOrEmpty(cassieAnnouncement))
+                Cassie.Message(cassieAnnouncement);
+
+            Kill(new DisruptorDamageHandler(attacker?.Footprint ?? Footprint, -1));
         }
 
         /// <summary>
         /// Bans the player.
         /// </summary>
-        /// <param name="duration">The ban duration.</param>
+        /// <param name="duration">The ban duration, in seconds.</param>
         /// <param name="reason">The ban reason.</param>
         /// <param name="issuer">The ban issuer.</param>
         public void Ban(int duration, string reason, Player issuer = null)
             => BanPlayer.BanUser(ReferenceHub, issuer is null || issuer.ReferenceHub == null ? Server.Host.ReferenceHub : issuer.ReferenceHub, reason, duration);
+
+        /// <summary>
+        /// Bans the player.
+        /// </summary>
+        /// <param name="duration">The length of time to ban.</param>
+        /// <param name="reason">The ban reason.</param>
+        /// <param name="issuer">The ban issuer.</param>
+        public void Ban(TimeSpan duration, string reason, Player issuer = null) => Ban((int)duration.TotalSeconds, reason, issuer);
 
         /// <summary>
         /// Kicks the player.
@@ -2102,13 +2240,13 @@ namespace Exiled.API.Features
         /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
         public IEnumerable<Item> AddItem(IEnumerable<ItemType> items)
         {
-            List<ItemType> enumeratedItems = ListPool<ItemType>.Shared.Rent(items);
+            List<ItemType> enumeratedItems = ListPool<ItemType>.Pool.Get(items);
             List<Item> returnedItems = new(enumeratedItems.Count);
 
             foreach (ItemType type in enumeratedItems)
                 returnedItems.Add(AddItem(type));
 
-            ListPool<ItemType>.Shared.Return(enumeratedItems);
+            ListPool<ItemType>.Pool.Return(enumeratedItems);
             return returnedItems;
         }
 
@@ -2574,6 +2712,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Enables a <see cref="Effect">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The <see cref="Effect"/> to enable.</param>
+        public void EnableEffect(Effect effect)
+        {
+            if (effect.IsEnabled)
+            {
+                EnableEffect(effect.Type, effect.Duration, effect.AddDurationIfActive);
+
+                if (effect.Intensity > 0)
+                    ChangeEffectIntensity(effect.Type, effect.Intensity, effect.Duration);
+            }
+        }
+
+        /// <summary>
         /// Enables a random <see cref="EffectType"/> on the player.
         /// </summary>
         /// <param name="category">An optional category to filter the applied effect. Set to <see cref="EffectCategory.None"/> for any effect.</param>
@@ -2604,6 +2757,16 @@ namespace Exiled.API.Features
                 if (TryGetEffect(type, out StatusEffectBase statusEffect))
                     EnableEffect(statusEffect, duration, addDurationIfActive);
             }
+        }
+
+        /// <summary>
+        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
+        /// </summary>
+        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="Effect"/> to enable.</param>
+        public void EnableEffects(IEnumerable<Effect> effects)
+        {
+            foreach (Effect effect in effects)
+                EnableEffect(effect);
         }
 
         /// <summary>
@@ -2767,20 +2930,21 @@ namespace Exiled.API.Features
         {
             switch (obj)
             {
-                case Camera camera:
-                    Teleport(camera.Position + Vector3.down);
+                case TeslaGate teslaGate:
+                    Teleport(
+                        teslaGate.Position + Vector3.up +
+                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
+                            ? new Vector3(3, 0, 0)
+                            : new Vector3(0, 0, 3)));
                     break;
-                case Door door:
-                    Teleport(door.Position + Vector3.up);
+                case IPosition positionObject:
+                    Teleport(positionObject.Position + Vector3.up);
                     break;
                 case DoorType doorType:
                     Teleport(Door.Get(doorType).Position + Vector3.up);
                     break;
                 case SpawnLocationType sp:
                     Teleport(sp.GetPosition());
-                    break;
-                case Spawn.SpawnPoint sp:
-                    Teleport(sp.Position);
                     break;
                 case RoomType roomType:
                     Teleport(Room.Get(roomType).Position + Vector3.up);
@@ -2791,21 +2955,8 @@ namespace Exiled.API.Features
                 case ElevatorType elevatorType:
                     Teleport(Lift.Get(elevatorType).Position + Vector3.up);
                     break;
-                case Room room:
-                    Teleport(room.Position + Vector3.up);
-                    break;
-                case TeslaGate teslaGate:
-                    Teleport(
-                        teslaGate.Position + Vector3.up +
-                        (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f)
-                            ? new Vector3(3, 0, 0)
-                            : new Vector3(0, 0, 3)));
-                    break;
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up);
-                    break;
-                case Player player:
-                    Teleport(player.Position);
                     break;
                 case Role role:
                     if (role.Owner is not null)
@@ -2813,32 +2964,14 @@ namespace Exiled.API.Features
                     else
                         Log.Warn($"{nameof(Teleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid role teleport (role is missing Owner).");
                     break;
-                case Pickup pickup:
-                    Teleport(pickup.Position + Vector3.up);
-                    break;
-                case Ragdoll ragdoll:
-                    Teleport(ragdoll.Position + Vector3.up);
-                    break;
                 case Locker locker:
                     Teleport(locker.transform.position + Vector3.up);
                     break;
                 case LockerChamber chamber:
                     Teleport(chamber._spawnpoint.position + Vector3.up);
                     break;
-                case Generator generator:
-                    Teleport(generator.Position + Vector3.up);
-                    break;
-                case Window window:
-                    Teleport(window.Position + Vector3.up);
-                    break;
-                case Toys.AdminToy toy:
-                    Teleport(toy.Position + Vector3.up);
-                    break;
                 case ElevatorChamber elevator:
                     Teleport(elevator.transform.position + Vector3.up);
-                    break;
-                case EActor ea:
-                    Teleport(ea.Position + Vector3.up);
                     break;
                 case Item item:
                     if (item.Owner is not null)

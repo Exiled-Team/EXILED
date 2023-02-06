@@ -11,9 +11,11 @@ namespace Exiled.Events.EventArgs.Player
 
     using API.Enums;
     using API.Features;
+    using Exiled.API.Features.Pools;
     using Interfaces;
 
     using InventorySystem.Configs;
+
     using PlayerRoles;
 
     /// <summary>
@@ -35,11 +37,24 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="reason">
         ///     <inheritdoc cref="Reason" />
         /// </param>
-        public ChangingRoleEventArgs(Player player, RoleTypeId newRole, RoleChangeReason reason)
+        /// <param name="spawnFlags">
+        ///     <inheritdoc cref="SpawnFlags" />
+        /// </param>
+        public ChangingRoleEventArgs(Player player, RoleTypeId newRole, RoleChangeReason reason, RoleSpawnFlags spawnFlags)
         {
             Player = player;
             NewRole = newRole;
             Reason = (SpawnReason)reason;
+            SpawnFlags = spawnFlags;
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ChangingRoleEventArgs"/> class.
+        /// </summary>
+        ~ChangingRoleEventArgs()
+        {
+            ListPool<ItemType>.Pool.Return(Items);
+            DictionaryPool<ItemType, ushort>.Pool.Return(Ammo);
         }
 
         /// <summary>
@@ -74,22 +89,34 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets base items that the player will receive.
         /// </summary>
-        public List<ItemType> Items { get; } = new();
+        public List<ItemType> Items { get; } = ListPool<ItemType>.Pool.Get();
 
         /// <summary>
         ///     Gets the base ammo values for the new role.
         /// </summary>
-        public Dictionary<ItemType, ushort> Ammo { get; } = new();
+        public Dictionary<ItemType, ushort> Ammo { get; } = DictionaryPool<ItemType, ushort>.Pool.Get();
 
         /// <summary>
         ///     Gets or sets a value indicating whether the inventory will be preserved or not.
         /// </summary>
-        public bool ShouldPreserveInventory { get; set; } = false;
+        public bool ShouldPreserveInventory
+        {
+            get => SpawnFlags.HasFlag(RoleSpawnFlags.AssignInventory);
+            set
+            {
+                SpawnFlags = value ? (SpawnFlags & ~RoleSpawnFlags.AssignInventory) : (SpawnFlags | RoleSpawnFlags.AssignInventory);
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the reason for their class change.
         /// </summary>
         public SpawnReason Reason { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the spawn flags for their class change.
+        /// </summary>
+        public RoleSpawnFlags SpawnFlags { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether the event can continue.
