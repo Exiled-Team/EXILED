@@ -38,6 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
             // remove the reference hub Foreach
             int index = newInstructions.FindIndex(
                 instruction => instruction.Calls(PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.AllHubs))));
+
             newInstructions.RemoveRange(index, newInstructions.FindIndex(x => x.opcode == OpCodes.Endfinally) + offset - index);
 
             newInstructions.InsertRange(
