@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsInHurtingRange { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player will idling the tesla and going to be idle.
+        ///     Gets or sets a value indicating whether or not the player will cause the tesla going to be idle.
         /// </summary>
         public bool IsInIdleRange { get; set; } = true;
 
