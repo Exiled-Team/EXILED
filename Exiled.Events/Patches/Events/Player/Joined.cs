@@ -23,10 +23,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ReferenceHub.Awake" />.
+    ///     Patches <see cref="ReferenceHub.Start" />.
     ///     Adds the <see cref="Handlers.Player.Joined" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Awake))]
+    [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Start))]
     internal static class Joined
     {
         internal static void CallEvent(ReferenceHub hub, out Player player)
@@ -59,46 +59,18 @@ namespace Exiled.Events.Patches.Events.Player
             }
         }
 
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+        private static void Postfix(ReferenceHub __instance)
+#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
-            Label ret = generator.DefineLabel();
-            Label serverNotFull = generator.DefineLabel();
-
-            LocalBuilder outPlayer = generator.DeclareLocal(typeof(Player));
-
-            newInstructions[newInstructions.Count - 1].WithLabels(ret);
-
-            newInstructions.InsertRange(
-                newInstructions.Count - 1,
-                new[]
-                {
-                    // if (ReferenceHub.AllHubs.Count - 1 < CustomNetworkManager.slots)
-                    //    goto serverNotFull;
-                    new(OpCodes.Call, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.AllHubs))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Count))),
-                    new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Sub),
-                    new(OpCodes.Ldsfld, Field(typeof(CustomNetworkManager), nameof(CustomNetworkManager.slots))),
-                    new(OpCodes.Blt_S, serverNotFull),
-
-                    // MultiAdminFeatures.CallEvent(EventType.SERVER_FULL)
-                    new(OpCodes.Ldc_I4_4),
-                    new(OpCodes.Call, Method(typeof(MultiAdminFeatures), nameof(MultiAdminFeatures.CallEvent))),
-                    new(OpCodes.Pop),
-
-                    // serverNotFull:
-                    // CallEvent(this, out Player player)
-                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(serverNotFull),
-                    new(OpCodes.Ldloca_S, outPlayer),
-                    new(OpCodes.Call, Method(typeof(Joined), nameof(CallEvent))),
-                });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+            if (ReferenceHub.AllHubs.Count - 1 < CustomNetworkManager.slots)
+            {
+                CallEvent(__instance, out _);
+            }
+            else
+            {
+                MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
+            }
         }
     }
 }
