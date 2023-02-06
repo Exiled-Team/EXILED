@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloca_S, 3),
 
                     // TriggeringTesla.TriggeringTeslaEvent(BaseTeslaGate baseTeslaGate, ref bool inIdleRange, ref bool isTriggerable)
-                    new CodeInstruction(OpCodes.Call, Method(typeof(TriggeringTesla), nameof(TriggeringTesla.TriggeringTeslaEvent))),
+                    new CodeInstruction(OpCodes.Call, Method(typeof(TriggeringTesla), nameof(TriggeringTeslaEvent), new[] { typeof(BaseTeslaGate), typeof(bool).MakeByRefType(), typeof(bool).MakeByRefType() })),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
