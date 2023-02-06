@@ -132,28 +132,28 @@ namespace Exiled.Events.Patches.Events.Server
                             }
                         }
 
-                        if (roundSummary._roundEnded)
+                        bool flag2 = facilityForces > 0;
+                        bool flag3 = chaosInsurgency > 0;
+                        bool flag4 = anomalies > 0;
+                        RoundSummary.LeadingTeam leadingTeam = RoundSummary.LeadingTeam.Draw;
+                        if (flag2)
                         {
-                            bool flag2 = facilityForces > 0;
-                            bool flag3 = chaosInsurgency > 0;
-                            bool flag4 = anomalies > 0;
-                            RoundSummary.LeadingTeam leadingTeam = RoundSummary.LeadingTeam.Draw;
-                            if (flag2)
-                            {
-                                leadingTeam = (RoundSummary.EscapedScientists >= RoundSummary.EscapedClassD) ? RoundSummary.LeadingTeam.FacilityForces : RoundSummary.LeadingTeam.Draw;
-                            }
-                            else if (flag4 || (flag4 && flag3))
-                            {
-                                leadingTeam = (RoundSummary.EscapedClassD > RoundSummary.SurvivingSCPs) ? RoundSummary.LeadingTeam.ChaosInsurgency : ((RoundSummary.SurvivingSCPs > RoundSummary.EscapedScientists) ? RoundSummary.LeadingTeam.Anomalies : RoundSummary.LeadingTeam.Draw);
-                            }
-                            else if (flag3)
-                            {
-                                leadingTeam = (RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists) ? RoundSummary.LeadingTeam.ChaosInsurgency : RoundSummary.LeadingTeam.Draw;
-                            }
+                            leadingTeam = (RoundSummary.EscapedScientists >= RoundSummary.EscapedClassD) ? RoundSummary.LeadingTeam.FacilityForces : RoundSummary.LeadingTeam.Draw;
+                        }
+                        else if (flag4 || (flag4 && flag3))
+                        {
+                            leadingTeam = (RoundSummary.EscapedClassD > RoundSummary.SurvivingSCPs) ? RoundSummary.LeadingTeam.ChaosInsurgency : ((RoundSummary.SurvivingSCPs > RoundSummary.EscapedScientists) ? RoundSummary.LeadingTeam.Anomalies : RoundSummary.LeadingTeam.Draw);
+                        }
+                        else if (flag3)
+                        {
+                            leadingTeam = (RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists) ? RoundSummary.LeadingTeam.ChaosInsurgency : RoundSummary.LeadingTeam.Draw;
+                        }
 
-                            EndingRoundEventArgs endingRoundEventArgs = new(leadingTeam, newList, roundSummary._roundEnded);
-                            Handlers.Server.OnEndingRound(endingRoundEventArgs);
+                        EndingRoundEventArgs endingRoundEventArgs = new(leadingTeam, newList, roundSummary._roundEnded);
+                        Handlers.Server.OnEndingRound(endingRoundEventArgs);
 
+                        if (endingRoundEventArgs.IsRoundEnded)
+                        {
                             RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
                             while (roundEndCancellationData.IsCancelled)
                             {
