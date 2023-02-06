@@ -20,6 +20,10 @@ namespace Exiled.API.Features.Pools
     {
         private readonly ConcurrentQueue<Queue<T>> pool = new();
 
+        private QueuePool()
+        {
+        }
+
         /// <summary>
         /// Gets a <see cref="QueuePool{T}"/> that stores lists.
         /// </summary>
