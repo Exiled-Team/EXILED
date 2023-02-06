@@ -24,7 +24,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="ExplosionGrenade"/>.
     /// </summary>
-    public class ExplosiveGrenade : Throwable, IWrapper<ThrowableItem>
+    public class ExplosiveGrenade : Throwable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class.
