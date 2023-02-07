@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Player
         private static void Postfix(ReferenceHub __instance)
 #pragma warning restore SA1313 // Parameter names should begin with lower-case letter
         {
-            if (!ReferenceHub.AllHubs.Count - 1 < CustomNetworkManager.slots)
+            if (ReferenceHub.AllHubs.Count - 1 >= CustomNetworkManager.slots)
             {
                 MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
             }
