@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
             }
-            
+
             CallEvent(__instance, out _);
         }
     }
