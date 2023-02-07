@@ -18,7 +18,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for Projectile.
     /// </summary>
-    public class Projectile : Pickup, IWrapper<ThrownProjectile>
+    public class Projectile : Pickup, IWrapper<ThrownProjectile>, IWorldSpace
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Projectile"/> class.
