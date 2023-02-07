@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static bool Prefix(ReferenceHub hub, PlayerRoleBase prevRole, PlayerRoleBase newRole)
         {
-            if (newRole.ServerSpawnReason != RoleChangeReason.Destroyed && Player.TryGet(hub, out Player player))
+            if (newRole.ServerSpawnReason != RoleChangeReason.Destroyed)
             {
                 Vector3 oldPosition = hub.transform.position;
                 float oldRotation = (prevRole as IFpcRole)?.FpcModule.MouseLook.CurrentVertical ?? 0;
@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
                         oldRotation = horizontalRot;
                     }
 
-                    SpawningEventArgs ev = new(player, oldPosition, oldRotation, prevRole);
+                    SpawningEventArgs ev = new(hub, oldPosition, oldRotation, prevRole);
 
                     Handlers.Player.OnSpawning(ev);
 
@@ -65,13 +65,11 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else
                 {
-                    Handlers.Player.OnSpawning(new(player, oldPosition, oldRotation, prevRole));
+                    Handlers.Player.OnSpawning(new(hub, oldPosition, oldRotation, prevRole));
                 }
-
-                return false;
             }
 
-            return true;
+            return false;
         }
     }
 }
