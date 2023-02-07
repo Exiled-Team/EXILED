@@ -16,10 +16,6 @@ namespace Exiled.API.Features.Pools
     /// </summary>
     public class StringBuilderPool : IPool<StringBuilder>
     {
-        private StringBuilderPool()
-        {
-        }
-
         /// <summary>
         /// Gets a <see cref="StringBuilderPool"/> that stores <see cref="StringBuilder"/>.
         /// </summary>

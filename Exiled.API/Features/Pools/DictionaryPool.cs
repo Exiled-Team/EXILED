@@ -22,10 +22,6 @@ namespace Exiled.API.Features.Pools
     {
         private readonly ConcurrentQueue<Dictionary<TKey, TValue>> pool = new();
 
-        private DictionaryPool()
-        {
-        }
-
         /// <summary>
         /// Gets a <see cref="DictionaryPool{TKey, TValue}"/> that stores dictionaries.
         /// </summary>
