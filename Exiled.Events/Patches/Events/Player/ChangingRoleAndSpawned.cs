@@ -158,14 +158,17 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(ChangingRoleAndSpawned), nameof(ChangeInventory))),
                 });
 
+            index = newInstructions.Count - 1;
+
+            newInstructions[index].WithLabels(returnLabel);
+
             newInstructions.InsertRange(
-                newInstructions.Count - 1,
+                index,
                 new[]
                 {
-                    // if (player == null)
-                    //     continue
-                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
-                    new(OpCodes.Brfalse_S, returnLabel),
+                    // if (anySet) return;
+                    new CodeInstruction(OpCodes.Ldloc_1),
+                    new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
                     // player
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
@@ -173,14 +176,18 @@ namespace Exiled.Events.Patches.Events.Player
                     // OldRole
                     new(OpCodes.Ldloc_0),
 
-                    // SpawnedEventArgs spawnedEventArgs = new(Player, OldRole)
+                    // reason
+                    new(OpCodes.Ldarg_2),
+
+                    // spawnFlags
+                    new(OpCodes.Ldarg_3),
+
+                    // SpawnedEventArgs spawnedEventArgs = new(Player, OldRole, RoleChangeReason, SpawnFlags)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawnedEventArgs))[0]),
 
                     // Handlers.Player.OnSpawned(spawnedEventArgs)
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.OnSpawned))),
                 });
-
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
