@@ -90,6 +90,7 @@ namespace Exiled.Events.Patches.Generic
                 });
                 Log.Debug("3");
             }
+            
             // hub.roleManager.ServerSetRole(HumanSpawner.NextHumanRoleToSpawn, RoleChangeReason.LateJoin);
         }
     }
