@@ -64,29 +64,29 @@ namespace Exiled.Events.Patches.Generic
 
         private static void ProcessJoin(ReferenceHub hub, ClientInstanceMode clientInstance)
         {
-            Log.Debug("1");
+            Log.Debug("ProcessJoin entry");
             if (!NetworkServer.active || !RoleAssigner.CheckPlayer(hub) || !RoleAssigner._spawned)
             {
-                Log.Debug("1.5");
+                Log.Debug($"ProcessJoin: Server not active/RoleAssigner.CheckPlayer(hub):{RoleAssigner.CheckPlayer(hub)}/RoleAssigner._spawned:{RoleAssigner._spawned}");
                 return;
             }
 
             if (RoleAssigner.LateJoinTimer.Elapsed.TotalSeconds >
                 ConfigFile.ServerConfig.GetFloat("late_join_time"))
             {
-                Log.Debug("2");
+                Log.Debug($"ProcessJoin: Elapsed.TotalSeconds > late_join_time");
                 hub.roleManager.ServerSetRole(RoleTypeId.Spectator, RoleChangeReason.RoundStart);
             }
             else
             {
                 hub.roleManager.ServerSetRole(RoleTypeId.Spectator, RoleChangeReason.RoundStart);
-                Log.Debug("2.5");
+                Log.Debug($"ProcessJoin: Elapsed.TotalSeconds < late_join_time, set player to spectator first.");
                 Timing.CallDelayed(.5f, () =>
                 {
-                    Log.Debug("Delayed spawnlate.");
+                    Log.Debug($"ProcessJoin: Elapsed.TotalSeconds < late_join_time, delayed SpawnLate call");
                     HumanSpawner.SpawnLate(hub);
                 });
-                Log.Debug("3");
+                Log.Debug($"ProcessJoin: Elapsed.TotalSeconds < late_join_time, past timing.call delayed");
             }
         }
     }
