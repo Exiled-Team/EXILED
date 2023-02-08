@@ -4,8 +4,6 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
-
 namespace Exiled.Events.Patches.Generic
 {
     using System.Collections.Generic;
@@ -90,8 +88,6 @@ namespace Exiled.Events.Patches.Generic
                 });
                 Log.Debug("3");
             }
-            
-            // hub.roleManager.ServerSetRole(HumanSpawner.NextHumanRoleToSpawn, RoleChangeReason.LateJoin);
         }
     }
 }
