@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Generic
     using GameCore;
     using HarmonyLib;
     using InventorySystem.Items.Firearms.Modules;
+    using MEC;
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.RoleAssign;
