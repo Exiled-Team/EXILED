@@ -5,7 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using MEC;
 
 namespace Exiled.Events.Patches.Generic
 {
