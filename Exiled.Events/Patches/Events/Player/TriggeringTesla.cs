@@ -7,16 +7,16 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-
-    using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using API.Features;
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
-    using UnityEngine;
+    using static HarmonyLib.AccessTools;
 
     using BaseTeslaGate = TeslaGate;
 
@@ -27,71 +27,71 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
     internal static class TriggeringTesla
     {
-        private static bool Prefix(TeslaGateController __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
-            {
-                if (!Round.IsStarted)
-                    return false;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-                if (TeslaGate.BaseTeslaGateToTeslaGate.Count == 0)
-                    return true;
+            Label retLabel = generator.DefineLabel();
 
-                foreach (BaseTeslaGate baseTeslaGate in __instance.TeslaGates)
+            const int offset = 1;
+
+            // remove the reference hub Foreach
+            int index = newInstructions.FindIndex(
+                instruction => instruction.Calls(PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.AllHubs))));
+
+            newInstructions.RemoveRange(index, newInstructions.FindIndex(x => x.opcode == OpCodes.Endfinally) + offset - index);
+
+            newInstructions.InsertRange(
+                index,
+                new[]
                 {
-                    if (!baseTeslaGate.isActiveAndEnabled || baseTeslaGate.InProgress)
-                        continue;
+                    // baseTeslaGate
+                    new CodeInstruction(OpCodes.Ldloc_1),
 
-                    if (baseTeslaGate.NetworkInactiveTime > 0f)
-                    {
-                        baseTeslaGate.NetworkInactiveTime = Mathf.Max(0f, baseTeslaGate.InactiveTime - Time.fixedDeltaTime);
-                        continue;
-                    }
+                    // inIdleRange
+                    new CodeInstruction(OpCodes.Ldloca_S, 2),
 
-                    TeslaGate teslaGate = TeslaGate.Get(baseTeslaGate);
-                    bool inIdleRange = false;
-                    bool isTriggerable = false;
+                    // isTriggerable
+                    new CodeInstruction(OpCodes.Ldloca_S, 3),
 
-                    foreach (Player player in Player.List)
-                    {
-                        try
-                        {
-                            if (player is null || !teslaGate.CanBeIdle(player))
-                                continue;
+                    // TriggeringTesla.TriggeringTeslaEvent(BaseTeslaGate baseTeslaGate, ref bool inIdleRange, ref bool isTriggerable)
+                    new CodeInstruction(OpCodes.Call, Method(typeof(TriggeringTesla), nameof(TriggeringTeslaEvent), new[] { typeof(BaseTeslaGate), typeof(bool).MakeByRefType(), typeof(bool).MakeByRefType() })),
+                });
 
-                            TriggeringTeslaEventArgs ev = new(player, teslaGate);
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                            Handlers.Player.OnTriggeringTesla(ev);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
 
-                            if (ev.IsAllowed && !isTriggerable)
-                                isTriggerable = ev.IsAllowed;
+        private static void TriggeringTeslaEvent(BaseTeslaGate baseTeslaGate, ref bool inIdleRange, ref bool isTriggerable)
+        {
+            TeslaGate teslaGate = TeslaGate.Get(baseTeslaGate);
 
-                            if (ev.IsInIdleRange && !inIdleRange)
-                                inIdleRange = ev.IsInIdleRange;
-                        }
-#pragma warning disable CS0168
-                        catch (Exception exception)
-#pragma warning restore CS0168
-                        {
-#if DEBUG
-                            Log.Error($"{nameof(TriggeringTesla)}.Prefix: {exception}");
-#endif
-                        }
-                    }
+            foreach (Player player in Player.List)
+            {
+                if (player is null || !teslaGate.CanBeIdle(player))
+                    continue;
 
-                    if (isTriggerable)
-                        teslaGate.Trigger();
+                TriggeringTeslaEventArgs ev = new(player, teslaGate);
 
-                    if (inIdleRange != teslaGate.IsIdling)
-                        teslaGate.IsIdling = inIdleRange;
+                Handlers.Player.OnTriggeringTesla(ev);
+
+                if (ev.DisableTesla)
+                {
+                    isTriggerable = false;
+                    inIdleRange = false;
+                    break;
                 }
 
-                return false;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {exception}\n{exception.StackTrace}");
-                return true;
+                if (!ev.IsAllowed)
+                    continue;
+
+                if (ev.IsTriggerable && !isTriggerable)
+                    isTriggerable = ev.IsTriggerable;
+
+                if (ev.IsInIdleRange && !inIdleRange)
+                    inIdleRange = ev.IsInIdleRange;
             }
         }
     }
