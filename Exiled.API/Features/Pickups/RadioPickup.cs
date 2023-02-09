@@ -15,7 +15,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a Radio pickup.
     /// </summary>
-    public class RadioPickup : Pickup, IWrapper<BaseRadio>, IWorldSpace
+    public class RadioPickup : Pickup, IWrapper<BaseRadio>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RadioPickup"/> class.
