@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Initializes a new instance of the <see cref="SpawningEventArgs" /> class.
         /// </summary>
-        /// <param name="hub">
+        /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="position">
@@ -34,9 +34,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="oldRole">
         ///     the spawned player's old <see cref="PlayerRoleBase">role</see>.
         /// </param>
-        public SpawningEventArgs(ReferenceHub hub, Vector3 position, float rotation, PlayerRoleBase oldRole)
+        public SpawningEventArgs(Player player, Vector3 position, float rotation, PlayerRoleBase oldRole)
         {
-            Player = Player.Get(hub);
+            Player = player;
             Position = position;
             HorizontalRotation = rotation;
             OldRole = Role.Create(oldRole);
