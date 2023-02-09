@@ -13,6 +13,8 @@ namespace Exiled.Events.EventArgs.Scp173
 
     using Interfaces;
 
+    using PlayerRoles.PlayableScps.Scp173;
+
     using UnityEngine;
 
     /// <summary>
