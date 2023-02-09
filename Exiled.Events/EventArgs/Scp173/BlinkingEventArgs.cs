@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs.Scp173
             Player = player;
             BlinkPosition = blinkPos;
             Targets = targets;
-            BlinkCooldown = Mathf.Max(3.6f, (float)(3.5999999046325684 + (0.0 * targets.Count)));
+            BlinkCooldown = 3f;
         }
 
         /// <summary>
