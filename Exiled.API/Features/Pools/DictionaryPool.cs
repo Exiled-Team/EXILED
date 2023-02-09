@@ -37,8 +37,8 @@ namespace Exiled.API.Features.Pools
         /// <returns>The <see cref="Dictionary{TKey, TValue}"/>.</returns>
         public Dictionary<TKey, TValue> Get()
         {
-            if (pool.TryDequeue(out Dictionary<TKey, TValue> result))
-                return result;
+            /*if (pool.TryDequeue(out Dictionary<TKey, TValue> result))
+                return result;*/
 
             return new();
         }
@@ -50,8 +50,8 @@ namespace Exiled.API.Features.Pools
         /// <returns>The <see cref="Dictionary{TKey, TValue}"/>.</returns>
         public Dictionary<TKey, TValue> Get(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
         {
-            if (!pool.TryDequeue(out Dictionary<TKey, TValue> dict))
-                dict = new();
+            // if (!pool.TryDequeue(out Dictionary<TKey, TValue> dict))
+            Dictionary<TKey, TValue> dict = new();
 
             foreach (KeyValuePair<TKey, TValue> pair in pairs)
                 dict.Add(pair.Key, pair.Value);
@@ -65,8 +65,8 @@ namespace Exiled.API.Features.Pools
         /// <param name="obj">The <see cref="Dictionary{TKey, TValue}"/> to return.</param>
         public void Return(Dictionary<TKey, TValue> obj)
         {
-            obj.Clear();
-            pool.Enqueue(obj);
+            // obj.Clear();
+            // pool.Enqueue(obj);
         }
 
         /// <summary>

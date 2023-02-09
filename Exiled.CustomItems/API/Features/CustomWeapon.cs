@@ -190,8 +190,6 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
         protected virtual void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.IsAllowed)
-                ev.Amount = ev.Player.Role == RoleTypeId.Scp106 ? Damage * 0.1f : Damage;
         }
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)

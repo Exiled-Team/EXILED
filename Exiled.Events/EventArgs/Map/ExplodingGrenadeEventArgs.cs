@@ -68,31 +68,11 @@ namespace Exiled.Events.EventArgs.Map
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, bool isAllowed = true)
-            : this(thrower, grenade, new List<Player>(), isAllowed)
-        {
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs" /> class.
-        /// </summary>
-        /// <param name="thrower">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
-        /// <param name="grenade">
-        ///     <inheritdoc cref="Projectile" />
-        /// </param>
-        /// <param name="players">
-        ///     <inheritdoc cref="TargetsToAffect" />
-        /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
-        /// </param>
-        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, IEnumerable<Player> players, bool isAllowed = true)
         {
             Player = thrower ?? Server.Host;
             Projectile = (EffectGrenadeProjectile)Pickup.Get(grenade);
             Position = Projectile.Position;
-            TargetsToAffect = ListPool<Player>.Pool.Get(players ?? new List<Player>());
+            TargetsToAffect = ListPool<Player>.Pool.Get(Player.List);
             IsAllowed = isAllowed;
         }
 

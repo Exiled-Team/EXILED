@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Map
 
         private static void ProcessEvent(FlashbangGrenade instance)
         {
-            ExplodingGrenadeEventArgs explodingGrenadeEvent = new ExplodingGrenadeEventArgs(Player.Get(instance.PreviousOwner.Hub), instance, Player.List);
+            ExplodingGrenadeEventArgs explodingGrenadeEvent = new ExplodingGrenadeEventArgs(Player.Get(instance.PreviousOwner.Hub), instance);
 
             Handlers.Map.OnExplodingGrenade(explodingGrenadeEvent);
 
