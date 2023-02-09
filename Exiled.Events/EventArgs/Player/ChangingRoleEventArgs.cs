@@ -101,7 +101,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public bool ShouldPreserveInventory
         {
-            get => SpawnFlags.HasFlag(RoleSpawnFlags.AssignInventory);
+            get => (SpawnFlags & RoleSpawnFlags.AssignInventory) != RoleSpawnFlags.AssignInventory;
             set
             {
                 SpawnFlags = value ? (SpawnFlags & ~RoleSpawnFlags.AssignInventory) : (SpawnFlags | RoleSpawnFlags.AssignInventory);
