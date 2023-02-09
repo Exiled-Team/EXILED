@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs.Scp173
             Player = player;
             BlinkPosition = blinkPos;
             Targets = targets;
-            BlinkCooldown = 3f;
+            BlinkCooldown = Scp173BlinkTimer.CooldownBaseline;
         }
 
         /// <summary>
