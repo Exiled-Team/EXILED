@@ -115,6 +115,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool KeepRoleOnDeath { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating the Spawn Chance of the Role.
+        /// </summary>
+        public virtual float SpawnChance { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether players keep this Custom Role when they switch roles: Class-D -> Scientist for example.
         /// </summary>
         public virtual bool KeepRoleOnChangingRole { get; set; }
@@ -710,6 +715,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             Log.Debug($"{Name}: Loading events.");
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
+            Exiled.Events.Handlers.Player.Spawning += OnInternalSpawning;
             Exiled.Events.Handlers.Player.Dying += OnInternalDying;
         }
 
@@ -723,6 +729,7 @@ namespace Exiled.CustomRoles.API.Features
 
             Log.Debug($"{Name}: Unloading events.");
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
+            Exiled.Events.Handlers.Player.Spawning -= OnInternalSpawning;
             Exiled.Events.Handlers.Player.Dying -= OnInternalDying;
         }
 
@@ -746,6 +753,16 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> the role was removed from.</param>
         protected virtual void RoleRemoved(Player player)
         {
+        }
+
+        private void OnInternalSpawning(SpawningEventArgs ev)
+        {
+            if (SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role)
+            {
+                int r = Loader.Random.Next(100);
+                if (r <= SpawnChance)
+                    AddRole(ev.Player);
+            }
         }
 
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
