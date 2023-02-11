@@ -47,7 +47,7 @@ namespace Exiled.CustomItems.Events
                     if (player == ev.Player || player.ReferenceHub.nicknameSync.Network_displayName is null)
                         continue;
 
-                    ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), player.DisplayNickname);
+                    ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), player.CustomName);
                 }
             }
         }
