@@ -35,7 +35,7 @@ namespace Exiled.CustomItems.Events
                     {
                         if (item.ShouldMessageOnGban)
                         {
-                            ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{player.Nickname} (CustomItem: {item.Name})");
+                            ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{player.CustomName} (CustomItem: {item.Name})");
                         }
                     }
                 }
