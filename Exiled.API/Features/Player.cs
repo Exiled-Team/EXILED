@@ -328,25 +328,12 @@ namespace Exiled.API.Features
         public bool IsVerified { get; internal set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has an active CustomName.
-        /// </summary>
-        public bool HasCustomName => ReferenceHub.nicknameSync.NickSet;
-
-        /// <summary>
-        /// Gets or sets the player's nickname displayed to other player.
+        /// Gets or sets the player's display nickname.
+        /// May be <see langword="null"/>.
         /// </summary>
         public string DisplayNickname
         {
-            get => ReferenceHub.nicknameSync.DisplayName;
-            set => ReferenceHub.nicknameSync.DisplayName = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the player's nickname, if null it sets the original nickname.
-        /// </summary>
-        public string CustomName
-        {
-            get => ReferenceHub.nicknameSync.Network_displayName ?? Nickname;
+            get => ReferenceHub.nicknameSync.Network_displayName;
             set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
 
@@ -371,11 +358,7 @@ namespace Exiled.API.Features
         public string CustomInfo
         {
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
-            set
-            {
-                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
-                ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
-            }
+            set => ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
         }
 
         /// <summary>
