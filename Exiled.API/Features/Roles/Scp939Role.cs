@@ -9,13 +9,17 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features.Pools;
 
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
+    using PlayerRoles.PlayableScps.Scp939.Ripples;
     using PlayerRoles.PlayableScps.Subroutines;
+
+    using RelativePositioning;
 
     using UnityEngine;
 
@@ -205,6 +209,30 @@ namespace Exiled.API.Features.Roles
             MimicryRecorder.SavedVoices.Clear();
             MimicryRecorder._serverSentVoices.Clear();
             MimicryRecorder.SavedVoicesModified = true;
+        }
+
+        /// <summary>
+        /// Plays a Ripple Sound (Usable RippleType: Footstep, FireArm).
+        /// </summary>
+        /// <param name="ripple">The RippleType to play to 939.</param>
+        /// <param name="position">The Sync Position to play.</param>
+        /// <param name="playerToSend">The Player to send the Ripple Sound.</param>
+        public void PlayRippleSound(UsableRippleType ripple, Vector3 position, Player playerToSend)
+        {
+            switch (ripple)
+            {
+                case UsableRippleType.Footstep:
+                    SubroutineModule.TryGetSubroutine(out FootstepRippleTrigger footstepRippleTrigger);
+                    footstepRippleTrigger._syncPos = new RelativePosition(position);
+                    footstepRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
+                    break;
+                case UsableRippleType.FireArm:
+                    SubroutineModule.TryGetSubroutine(out FirearmRippleTrigger firearmRippleTrigger);
+                    firearmRippleTrigger._syncRoleColor = RoleTypeId.ClassD;
+                    firearmRippleTrigger._syncRipplePos = new RelativePosition(position);
+                    firearmRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
+                    break;
+            }
         }
     }
 }
