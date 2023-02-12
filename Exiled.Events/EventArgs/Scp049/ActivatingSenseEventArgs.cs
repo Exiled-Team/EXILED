@@ -27,8 +27,8 @@ namespace Exiled.Events.EventArgs.Scp049
             Player = player;
             Target = target;
             IsAllowed = isAllowed;
-            Cooldown = 5f;
-            Duration = 20f;
+            Cooldown = Scp049SenseAbility.AttemptFailCooldown;
+            Duration = Scp049SenseAbility.EffectDuration;
         }
 
         /// <summary>
