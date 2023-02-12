@@ -8,7 +8,7 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// All RippleTriggers available in the game.
+    /// All RippleTriggers usable in the game.
     /// </summary>
     ///
     public enum UsableRippleType
