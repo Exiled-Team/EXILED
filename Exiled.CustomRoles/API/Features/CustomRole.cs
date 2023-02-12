@@ -759,8 +759,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             if (SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role)
             {
-                int r = Loader.Random.Next(100);
-                if (r <= SpawnChance)
+                if (Loader.Random.Next(100) <= SpawnChance)
                     AddRole(ev.Player);
             }
         }
