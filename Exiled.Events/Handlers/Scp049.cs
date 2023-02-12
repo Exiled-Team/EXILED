@@ -34,6 +34,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ConsumingCorpseEventArgs> ConsumingCorpse;
 
         /// <summary>
+        ///     Invoked before SCP-049 uses sense.
+        /// </summary>
+        public static event CustomEventHandler<ActivatingSenseEventArgs> ActivatingSense;
+
+        /// <summary>
         ///     Called before SCP-049 finishes recalling a player.
         /// </summary>
         /// <param name="ev">The <see cref="FinishingRecallEventArgs" /> instance.</param>
@@ -50,5 +55,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ConsumingCorpseEventArgs" /> instance.</param>
         public static void OnConsumingCorpse(ConsumingCorpseEventArgs ev) => ConsumingCorpse.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before SCP-049 starts doctor sense.
+        /// </summary>
+        /// <param name="ev">The <see cref="ActivatingSenseEventArgs" /> instance.</param>
+        public static void OnActivatingSense(ActivatingSenseEventArgs ev) => ActivatingSense.InvokeSafely(ev);
     }
 }
