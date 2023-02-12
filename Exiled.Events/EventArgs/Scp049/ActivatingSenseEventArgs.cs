@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs.Scp049
 
     using Interfaces;
 
+    using PlayerRoles.PlayableScps.Scp049;
+
     /// <summary>
     ///     Contains all information before SCP-049 sense is activated.
     /// </summary>
