@@ -29,14 +29,19 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<StartingRecallEventArgs> StartingRecall;
 
         /// <summary>
-        ///     Invoked before SCP-049-2 Consumes a corpse.
+        ///     Invoked before SCP-049-2 consumes a corpse.
         /// </summary>
         public static event CustomEventHandler<ConsumingCorpseEventArgs> ConsumingCorpse;
 
         /// <summary>
-        ///     Invoked before SCP-049 uses sense.
+        ///     Invoked before SCP-049 uses the sense ability.
         /// </summary>
         public static event CustomEventHandler<ActivatingSenseEventArgs> ActivatingSense;
+
+        /// <summary>
+        ///     Invoked before SCP-049 uses the call ability.
+        /// </summary>
+        public static event CustomEventHandler<SendingCallEventArgs> SendingCall;
 
         /// <summary>
         ///     Called before SCP-049 finishes recalling a player.
@@ -51,15 +56,21 @@ namespace Exiled.Events.Handlers
         public static void OnStartingRecall(StartingRecallEventArgs ev) => StartingRecall.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before SCP-049-2 Consumes a corpse.
+        ///     Called before SCP-049-2 consumes a corpse.
         /// </summary>
         /// <param name="ev">The <see cref="ConsumingCorpseEventArgs" /> instance.</param>
         public static void OnConsumingCorpse(ConsumingCorpseEventArgs ev) => ConsumingCorpse.InvokeSafely(ev);
 
         /// <summary>
-        ///     Called before SCP-049 starts doctor sense.
+        ///     Called before SCP-049 starts the sense ability.
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingSenseEventArgs" /> instance.</param>
         public static void OnActivatingSense(ActivatingSenseEventArgs ev) => ActivatingSense.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before SCP-049 starts the call ability.
+        /// </summary>
+        /// <param name="ev">The <see cref="SendingCallEventArgs" /> instance.</param>
+        public static void OnSendingCall(SendingCallEventArgs ev) => SendingCall.InvokeSafely(ev);
     }
 }
