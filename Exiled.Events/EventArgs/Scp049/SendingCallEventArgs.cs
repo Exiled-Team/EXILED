@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="duration"><inheritdoc cref="Duration"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SendingCallEventArgs(Player player, float duration = 20f, bool isAllowed = true)
+        public SendingCallEventArgs(Player player, float duration, bool isAllowed = true)
         {
             Player = player;
             Duration = duration;
@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets how the duration of the Call Ability.
+        /// Gets or sets the duration of the Call Ability.
         /// </summary>
         public float Duration { get; set; }
 
