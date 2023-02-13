@@ -57,8 +57,9 @@ namespace Exiled.Events.Patches.Events.Scp049
         private static void ProcessCall(Scp049CallAbility callAbility)
         {
             Player player = Player.Get(callAbility.Owner);
+            float duration = Scp049CallAbility.EffectDuration;
 
-            var ev = new SendingCallEventArgs(player);
+            var ev = new SendingCallEventArgs(player, duration);
             Handlers.Scp049.OnSendingCall(ev);
 
             if (!ev.IsAllowed)
