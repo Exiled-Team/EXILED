@@ -31,6 +31,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
     ///     Adds the <see cref="Handlers.Scp049.ActivatingSense" /> event.
     /// </summary>
+    // TODO: REWORK TRANSPILER
     [HarmonyPatch]
     public class ActivatingSense
     {

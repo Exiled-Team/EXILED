@@ -32,6 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     .
     ///     Adds the <see cref="Handlers.Scp049.ConsumingCorpse" /> event.
     /// </summary>
+    // TODO: REWORK TRANSPILER
     [HarmonyPatch]
     public class Consuming
     {

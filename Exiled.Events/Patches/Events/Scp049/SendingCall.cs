@@ -24,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Patches <see cref="Scp049CallAbility.ServerProcessCmd" />.
     ///     Adds the <see cref="Handlers.Scp049.SendingCall" /> event.
     /// </summary>
+    // TODO: REWORK TRANSPILER
     [HarmonyPatch]
     public class SendingCall
     {
