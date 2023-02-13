@@ -70,7 +70,7 @@ namespace Exiled.API.Features.Roles
 
             MimicryRecorder = mimicryRecorder;
 
-            if (!SubroutineModule.TryGetComponent(out FootstepRippleTrigger footstepRippleTrigger))
+            if (!SubroutineModule.TryGetSubroutine(out FootstepRippleTrigger footstepRippleTrigger))
                 Log.Error("FootstepRippleTrigger not found in Scp939Role::ctor");
 
             FootstepRippleTrigger = footstepRippleTrigger;
