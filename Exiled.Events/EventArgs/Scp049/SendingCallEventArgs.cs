@@ -35,12 +35,12 @@ namespace Exiled.Events.EventArgs.Scp049
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets how long 049 duration during a revive should be.
+        /// Gets or sets how the duration of the Call Ability.
         /// </summary>
         public float Duration { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the server will send 049 information on the recall.
+        /// Gets or sets a value indicating whether or not the server will send 049 information on the call.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
