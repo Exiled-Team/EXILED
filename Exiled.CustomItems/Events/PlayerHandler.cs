@@ -22,17 +22,18 @@ namespace Exiled.CustomItems.Events
         /// <inheritdoc cref="ChangingSpectatedPlayerEventArgs"/>
         public void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev)
         {
-            if (ev.NewTarget == null || !ev.Player.IsGlobalModerator)
+            if (!ev.Player.IsGlobalModerator)
                 return;
 
-            if (CustomItem.TryGet(ev.NewTarget, out CustomItem item))
+            if (ev.NewTarget == null && CustomItem.TryGet(ev.NewTarget, out CustomItem item))
             {
                 if (item.ShouldMessageOnGban)
                 {
                     ev.Player.SendFakeSyncVar(ev.NewTarget.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{ev.NewTarget.CustomName} (CustomItem: {item.Name})");
                 }
             }
-            else if (ev.OldTarget != null)
+
+            if (ev.OldTarget != null)
             {
                 ev.Player.SendFakeSyncVar(ev.OldTarget.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), ev.OldTarget.HasCustomName ? ev.OldTarget.CustomName : null);
             }
