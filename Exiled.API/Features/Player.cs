@@ -330,7 +330,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has an active CustomName.
         /// </summary>
-        public bool HasCustomName => ReferenceHub.nicknameSync.NickSet;
+        public bool HasCustomName => ReferenceHub.nicknameSync.HasCustomName;
 
         /// <summary>
         /// Gets or sets the player's nickname displayed to other player.
