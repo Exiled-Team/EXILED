@@ -69,6 +69,16 @@ namespace Exiled.API.Features.Roles
                 Log.Error("MimicryRecorder not found in Scp939Role::ctor");
 
             MimicryRecorder = mimicryRecorder;
+
+            if (!SubroutineModule.TryGetComponent(out FootstepRippleTrigger footstepRippleTrigger))
+                Log.Error("FootstepRippleTrigger not found in Scp939Role::ctor");
+
+            FootstepRippleTrigger = footstepRippleTrigger;
+
+            if (!SubroutineModule.TryGetSubroutine(out FirearmRippleTrigger firearmRippleTrigger))
+                Log.Error("FirearmRippleTrigger not found in Scp939Role::ctor");
+
+            FirearmRippleTrigger = firearmRippleTrigger;
         }
 
         /// <summary>
@@ -109,6 +119,16 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-939's <see cref="PlayerRoles.PlayableScps.Scp939.Mimicry.EnvironmentalMimicry"/>.
         /// </summary>
         public EnvironmentalMimicry EnvironmentalMimicry { get; }
+
+        /// <summary>
+        /// Gets SCP-939's <see cref="FootstepRippleTrigger"/>.
+        /// </summary>
+        public FootstepRippleTrigger FootstepRippleTrigger { get; }
+
+        /// <summary>
+        /// Gets SCP-939's <see cref="FirearmRippleTrigger"/>.
+        /// </summary>
+        public FirearmRippleTrigger FirearmRippleTrigger { get; }
 
         /// <summary>
         /// Gets SCP-939's <see cref="PlayerRoles.PlayableScps.Scp939.Mimicry.MimicryRecorder"/>.
@@ -222,15 +242,13 @@ namespace Exiled.API.Features.Roles
             switch (ripple)
             {
                 case UsableRippleType.Footstep:
-                    SubroutineModule.TryGetSubroutine(out FootstepRippleTrigger footstepRippleTrigger);
-                    footstepRippleTrigger._syncPos = new RelativePosition(position);
-                    footstepRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
+                    FootstepRippleTrigger._syncPos = new RelativePosition(position);
+                    FootstepRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
                     break;
                 case UsableRippleType.FireArm:
-                    SubroutineModule.TryGetSubroutine(out FirearmRippleTrigger firearmRippleTrigger);
-                    firearmRippleTrigger._syncRoleColor = RoleTypeId.ClassD;
-                    firearmRippleTrigger._syncRipplePos = new RelativePosition(position);
-                    firearmRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
+                    FirearmRippleTrigger._syncRoleColor = RoleTypeId.ClassD;
+                    FirearmRippleTrigger._syncRipplePos = new RelativePosition(position);
+                    FirearmRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
                     break;
             }
         }
