@@ -37,7 +37,7 @@ namespace Exiled.CustomItems
 
             Exiled.Events.Handlers.Server.RoundStarted += roundHandler.OnRoundStarted;
 
-            Exiled.Events.Handlers.Player.ChangingRole += playerHandler.OnChangingRole;
+            Exiled.Events.Handlers.Player.ChangingSpectatedPlayer += playerHandler.OnChangingSpectatedPlayer;
 
             harmony = new Harmony($"com.{nameof(CustomItems)}.ExiledTeam-{DateTime.Now.Ticks}");
             harmony.PatchAll();
@@ -50,7 +50,7 @@ namespace Exiled.CustomItems
         {
             Exiled.Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
 
-            Exiled.Events.Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;
+            Exiled.Events.Handlers.Player.ChangingSpectatedPlayer -= playerHandler.OnChangingSpectatedPlayer;
 
             harmony.UnpatchAll();
 

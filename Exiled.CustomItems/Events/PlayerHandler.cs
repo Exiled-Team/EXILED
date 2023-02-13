@@ -19,36 +19,22 @@ namespace Exiled.CustomItems.Events
     /// </summary>
     internal sealed class PlayerHandler
     {
-        /// <inheritdoc cref="ChangingRoleEventArgs"/>
-        public void OnChangingRole(ChangingRoleEventArgs ev)
+        /// <inheritdoc cref="ChangingSpectatedPlayerEventArgs"/>
+        public void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev)
         {
-            if (ev.NewRole == RoleTypeId.Spectator)
-            {
-                foreach (Player player in Player.List)
-                {
-                    if (player == ev.Player)
-                    {
-                        continue;
-                    }
+            if (ev.NewTarget == null || !ev.Player.IsGlobalModerator)
+                return;
 
-                    if (CustomItem.TryGet(player, out CustomItem item))
-                    {
-                        if (item.ShouldMessageOnGban)
-                        {
-                            ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{player.CustomName} (CustomItem: {item.Name})");
-                        }
-                    }
+            if (CustomItem.TryGet(ev.NewTarget, out CustomItem item))
+            {
+                if (item.ShouldMessageOnGban)
+                {
+                    ev.Player.SendFakeSyncVar(ev.NewTarget.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{ev.NewTarget.CustomName} (CustomItem: {item.Name})");
                 }
             }
-            else
+            else if (ev.OldTarget != null)
             {
-                foreach (Player player in Player.List)
-                {
-                    if (player == ev.Player || !player.HasCustomName)
-                        continue;
-
-                    ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), player.CustomName);
-                }
+                ev.Player.SendFakeSyncVar(ev.OldTarget.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), ev.OldTarget.HasCustomName ? ev.OldTarget.CustomName : null);
             }
         }
     }
