@@ -42,6 +42,7 @@ namespace Exiled.API.Features.Roles
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079DoorStateChanger scp079DoorAbility))
                 Log.Error("Scp079DoorStateChanger subroutine not found in Scp079Role::ctor");
+
             DoorStateChanger = scp079DoorAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079DoorLockChanger scp079DoorLockChanger))
@@ -360,7 +361,7 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="camera">The camera to get the cost to switch to.</param>
         /// <returns>The cost to switch from the current camera to the new camera.</returns>
-        public int GetCost(Camera camera) => CurrentCameraSync.GetSwitchCost(camera.Base);
+        public int GetSwitchCost(Camera camera) => CurrentCameraSync.GetSwitchCost(camera.Base);
 
         /// <summary>
         /// Gets the cost to modify a door.
