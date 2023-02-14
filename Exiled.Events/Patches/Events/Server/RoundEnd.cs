@@ -120,11 +120,6 @@ namespace Exiled.Events.Patches.Events.Server
                                         continue;
                                     }
                                 }
-
-                                if (shouldRoundEnd)
-                                {
-                                    shouldRoundEnd = true;
-                                }
                             }
                             else
                             {
