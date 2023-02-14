@@ -92,7 +92,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
-    public class Player : IEntity, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
+    public class Player : IWorldSpace, IEntity
     {
 #pragma warning disable SA1401
         /// <summary>
@@ -494,10 +494,10 @@ namespace Exiled.API.Features
         /// Gets or sets the player's rotation.
         /// </summary>
         /// <returns>Returns the direction the player is looking at.</returns>
-        public Vector3 Rotation
+        public Quaternion Rotation
         {
-            get => Transform.eulerAngles;
-            set => ReferenceHub.TryOverridePosition(Position, value - Rotation);
+            get => Transform.rotation;
+            set => Transform.rotation = value;
         }
 
         /// <summary>
