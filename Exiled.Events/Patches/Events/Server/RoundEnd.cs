@@ -81,10 +81,10 @@ namespace Exiled.Events.Patches.Events.Server
                         RoundSummary.SurvivingSCPs = newList.scps_except_zombies;
                         float dEscapePercentage = (roundSummary.classlistStart.class_ds == 0) ? 0 : (num / roundSummary.classlistStart.class_ds);
                         float sEscapePercentage = (roundSummary.classlistStart.scientists == 0) ? 1 : (num2 / roundSummary.classlistStart.scientists);
-                        bool flag;
+                        bool shouldRoundEnd;
                         if (newList.class_ds <= 0 && facilityForces <= 0)
                         {
-                            flag = true;
+                            shouldRoundEnd = true;
                         }
                         else
                         {
@@ -104,12 +104,12 @@ namespace Exiled.Events.Patches.Events.Server
                                 num3++;
                             }
 
-                            flag = num3 <= 1;
+                            shouldRoundEnd = num3 <= 1;
                         }
 
                         if (!roundSummary._roundEnded)
                         {
-                            RoundEndConditionsCheckCancellationData.RoundEndConditionsCheckCancellation cancellation = EventManager.ExecuteEvent<RoundEndConditionsCheckCancellationData>(ServerEventType.RoundEndConditionsCheck, new object[] { flag }).Cancellation;
+                            RoundEndConditionsCheckCancellationData.RoundEndConditionsCheckCancellation cancellation = EventManager.ExecuteEvent<RoundEndConditionsCheckCancellationData>(ServerEventType.RoundEndConditionsCheck, new object[] { shouldRoundEnd }).Cancellation;
                             int num4 = (int)cancellation;
                             if (num4 != 1)
                             {
@@ -121,14 +121,14 @@ namespace Exiled.Events.Patches.Events.Server
                                     }
                                 }
 
-                                if (flag)
+                                if (shouldRoundEnd)
                                 {
-                                    roundSummary._roundEnded = true;
+                                    shouldRoundEnd = true;
                                 }
                             }
                             else
                             {
-                                roundSummary._roundEnded = true;
+                                shouldRoundEnd = true;
                             }
                         }
 
@@ -149,11 +149,11 @@ namespace Exiled.Events.Patches.Events.Server
                             leadingTeam = (RoundSummary.EscapedClassD >= RoundSummary.EscapedScientists) ? RoundSummary.LeadingTeam.ChaosInsurgency : RoundSummary.LeadingTeam.Draw;
                         }
 
-                        EndingRoundEventArgs endingRoundEventArgs = new(leadingTeam, newList, roundSummary._roundEnded);
+                        EndingRoundEventArgs endingRoundEventArgs = new(leadingTeam, newList, shouldRoundEnd);
                         Handlers.Server.OnEndingRound(endingRoundEventArgs);
-
                         if (endingRoundEventArgs.IsRoundEnded)
                         {
+                            roundSummary._roundEnded = true;
                             RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
                             while (roundEndCancellationData.IsCancelled)
                             {
