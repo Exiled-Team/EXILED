@@ -759,7 +759,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Check(ev.Player))
             {
                 CustomRoles.Instance.StopRagdollPlayers.Add(ev.Player);
-                Ragdoll.CreateAndSpawn(new RagdollData(ev.Player.ReferenceHub, ev.DamageHandler, Role, ev.Player.Position, Quaternion.Euler(ev.Player.Rotation), ev.Player.DisplayNickname, NetworkTime.time));
+                Ragdoll.CreateAndSpawn(new RagdollData(ev.Player.ReferenceHub, ev.DamageHandler, Role, ev.Player.Position, Quaternion.Euler(ev.Player.Rotation.eulerAngles), ev.Player.DisplayNickname, NetworkTime.time));
             }
         }
     }
