@@ -36,7 +36,7 @@ namespace Exiled.CustomItems.Events
 
         private void SpectatorCustomNickname(Player player, string itemName)
         {
-            foreach (Player spetator in Player.Get(Team.Dead))
+            foreach (Player spetator in Player.List)
             {
                 spetator.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), itemName);
             }
