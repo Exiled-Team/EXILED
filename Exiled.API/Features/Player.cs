@@ -674,6 +674,9 @@ namespace Exiled.API.Features
             get => ReferenceHub.transform.localScale;
             set
             {
+                if (value == Scale)
+                    return;
+
                 try
                 {
                     ReferenceHub.transform.localScale = value;
