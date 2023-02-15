@@ -30,7 +30,7 @@ namespace Exiled.CustomItems.Events
             }
             else if (ev.Player != null && CustomItem.TryGet(ev.Player.CurrentItem, out CustomItem _))
             {
-                SpectatorCustomNickname(ev.Player, null);
+                SpectatorCustomNickname(ev.Player, ev.Player.HasCustomName ? ev.Player.CustomName : null);
             }
         }
 
