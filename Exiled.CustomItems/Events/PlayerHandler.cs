@@ -19,23 +19,26 @@ namespace Exiled.CustomItems.Events
     /// </summary>
     internal sealed class PlayerHandler
     {
-        /// <inheritdoc cref="ChangingSpectatedPlayerEventArgs"/>
-        public void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev)
+        /// <inheritdoc cref="ChangingItemEventArgs"/>
+        public void OnChangingItem(ChangingItemEventArgs ev)
         {
-            if (!ev.Player.IsGlobalModerator)
+            if (ev.IsAllowed)
                 return;
-
-            if (ev.NewTarget == null && CustomItem.TryGet(ev.NewTarget, out CustomItem item))
+            if (CustomItem.TryGet(ev.NewItem, out CustomItem newItem))
             {
-                if (item.ShouldMessageOnGban)
-                {
-                    ev.Player.SendFakeSyncVar(ev.NewTarget.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{ev.NewTarget.CustomName} (CustomItem: {item.Name})");
-                }
+                SpectatorCustomNickname(ev.Player, $"{ev.Player.CustomName} (CustomItem: {newItem.Name})");
             }
-
-            if (ev.OldTarget != null)
+            else if (ev.Player != null && CustomItem.TryGet(ev.Player.CurrentItem, out CustomItem _))
             {
-                ev.Player.SendFakeSyncVar(ev.OldTarget.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), ev.OldTarget.HasCustomName ? ev.OldTarget.CustomName : null);
+                SpectatorCustomNickname(ev.Player, null);
+            }
+        }
+
+        private void SpectatorCustomNickname(Player player, string itemName)
+        {
+            foreach (Player spetator in Player.Get(Team.Dead))
+            {
+                spetator.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), itemName);
             }
         }
     }
