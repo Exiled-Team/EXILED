@@ -194,7 +194,6 @@ namespace Exiled.CustomItems.API.Features
                 ev.Amount = Damage;
         }
 
-
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
         {
             if (!Check(ev.Firearm))
