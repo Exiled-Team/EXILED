@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Rewards;
@@ -134,7 +135,7 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public Camera Camera
         {
-            get => Camera.Get(Internal.CurrentCamera);
+            get => Camera.Get(Internal.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
             set => Internal._curCamSync.CurrentCamera = value.Base;
         }
 
