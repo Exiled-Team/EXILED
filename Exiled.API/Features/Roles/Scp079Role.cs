@@ -132,6 +132,7 @@ namespace Exiled.API.Features.Roles
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
+        /// <remarks>This value will return the Hcz079ContChamber Camera instead of null</remarks>
         /// </summary>
         public Camera Camera
         {
