@@ -68,19 +68,19 @@ namespace Exiled.Events.Patches.Events.Scp049
         {
             Transform transform = zombieAbility._ragdollTransform;
 
-            BasicRagdoll currentRagdoll = zombieAbility.CurRagdoll;
+            Ragdoll currentRagDoll = Ragdoll.Get(zombieAbility.CurRagdoll);
 
             Player zombiePlayer = Player.Get(zombieAbility.Owner);
 
             if (zombiePlayer.Role.Type != RoleTypeId.Scp049)
             {
-                ConsumingCorpseEventArgs eventArg = new(zombiePlayer, currentRagdoll, zombieAbility._errorCode);
+                ConsumingCorpseEventArgs eventArg = new(zombiePlayer, currentRagDoll, zombieAbility._errorCode);
                 Handlers.Scp049.OnConsumingCorpse(eventArg);
 
                 if (!eventArg.IsAllowed)
                     return;
 
-                currentRagdoll = eventArg.Ragdoll;
+                currentRagDoll = eventArg.Ragdoll;
                 zombieAbility._errorCode = eventArg.ErrorCode;
             }
 
@@ -89,7 +89,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             if (errorCodeFlag)
             {
                 zombieAbility._ragdollTransform = transform;
-                zombieAbility.CurRagdoll = currentRagdoll;
+                zombieAbility.CurRagdoll = currentRagDoll.Base;
                 zombieAbility.ServerSendRpc(true);
                 return;
             }
