@@ -458,7 +458,6 @@ namespace Exiled.CustomRoles.API.Features
 
             Log.Debug($"{Name}: Setting player info");
             player.CustomInfo = CustomInfo;
-            player.InfoArea &= ~PlayerInfoArea.Role;
             if (CustomAbilities is not null)
             {
                 foreach (CustomAbility ability in CustomAbilities)
@@ -481,7 +480,6 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Removing role from {player.Nickname}");
             TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
-            player.InfoArea |= PlayerInfoArea.Role;
             player.Scale = Vector3.one;
             if (RemovalKillsPlayer)
                 player.Role.Set(RoleTypeId.Spectator);
