@@ -115,6 +115,16 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool KeepRoleOnDeath { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating the Spawn Chance of the Role.
+        /// </summary>
+        public virtual float SpawnChance { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether players keep this Custom Role when they switch roles: Class-D -> Scientist for example.
+        /// </summary>
+        public virtual bool KeepRoleOnChangingRole { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating the <see cref="Player"/>'s size.
         /// </summary>
         public virtual Vector3 Scale { get; set; } = Vector3.one;
@@ -705,6 +715,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             Log.Debug($"{Name}: Loading events.");
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
+            Exiled.Events.Handlers.Player.Spawning += OnInternalSpawning;
             Exiled.Events.Handlers.Player.Dying += OnInternalDying;
         }
 
@@ -718,6 +729,7 @@ namespace Exiled.CustomRoles.API.Features
 
             Log.Debug($"{Name}: Unloading events.");
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
+            Exiled.Events.Handlers.Player.Spawning -= OnInternalSpawning;
             Exiled.Events.Handlers.Player.Dying -= OnInternalDying;
         }
 
@@ -743,9 +755,15 @@ namespace Exiled.CustomRoles.API.Features
         {
         }
 
+        private void OnInternalSpawning(SpawningEventArgs ev)
+        {
+            if (SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.Next(100) <= SpawnChance)
+                AddRole(ev.Player);
+        }
+
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
         {
-            if (Check(ev.Player) && (((ev.NewRole == RoleTypeId.Spectator) && !KeepRoleOnDeath) || ((ev.NewRole != RoleTypeId.Spectator) && (ev.NewRole != Role))))
+            if (Check(ev.Player) && ((ev.NewRole == RoleTypeId.Spectator && !KeepRoleOnDeath) || (ev.NewRole != RoleTypeId.Spectator && ev.NewRole != Role && !KeepRoleOnChangingRole)))
                 RemoveRole(ev.Player);
         }
 

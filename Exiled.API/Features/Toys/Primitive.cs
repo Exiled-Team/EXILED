@@ -22,7 +22,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="PrimitiveObjectToy"/>.
     /// </summary>
-    public class Primitive : AdminToy, IWrapper<PrimitiveObjectToy>, IWorldSpace
+    public class Primitive : AdminToy, IWrapper<PrimitiveObjectToy>
     {
         private bool collidable = true;
 

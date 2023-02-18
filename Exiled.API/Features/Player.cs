@@ -335,12 +335,25 @@ namespace Exiled.API.Features
         public bool IsVerified { get; internal set; }
 
         /// <summary>
-        /// Gets or sets the player's display nickname.
-        /// May be <see langword="null"/>.
+        /// Gets a value indicating whether or not the player has an active CustomName.
+        /// </summary>
+        public bool HasCustomName => ReferenceHub.nicknameSync.NickSet;
+
+        /// <summary>
+        /// Gets or sets the player's nickname displayed to other player.
         /// </summary>
         public string DisplayNickname
         {
-            get => ReferenceHub.nicknameSync.Network_displayName;
+            get => ReferenceHub.nicknameSync.DisplayName;
+            set => ReferenceHub.nicknameSync.DisplayName = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's nickname, if null it sets the original nickname.
+        /// </summary>
+        public string CustomName
+        {
+            get => ReferenceHub.nicknameSync.Network_displayName ?? Nickname;
             set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
 
@@ -365,7 +378,11 @@ namespace Exiled.API.Features
         public string CustomInfo
         {
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
-            set => ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
+            set
+            {
+                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
+                ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
+            }
         }
 
         /// <summary>
@@ -664,6 +681,9 @@ namespace Exiled.API.Features
             get => ReferenceHub.transform.localScale;
             set
             {
+                if (value == Scale)
+                    return;
+
                 try
                 {
                     ReferenceHub.transform.localScale = value;
@@ -2712,6 +2732,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Enables a <see cref="Effect">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The <see cref="Effect"/> to enable.</param>
+        public void EnableEffect(Effect effect)
+        {
+            if (effect.IsEnabled)
+            {
+                EnableEffect(effect.Type, effect.Duration, effect.AddDurationIfActive);
+
+                if (effect.Intensity > 0)
+                    ChangeEffectIntensity(effect.Type, effect.Intensity, effect.Duration);
+            }
+        }
+
+        /// <summary>
         /// Enables a random <see cref="EffectType"/> on the player.
         /// </summary>
         /// <param name="category">An optional category to filter the applied effect. Set to <see cref="EffectCategory.None"/> for any effect.</param>
@@ -2742,6 +2777,16 @@ namespace Exiled.API.Features
                 if (TryGetEffect(type, out StatusEffectBase statusEffect))
                     EnableEffect(statusEffect, duration, addDurationIfActive);
             }
+        }
+
+        /// <summary>
+        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="Effect"/> on the player.
+        /// </summary>
+        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="Effect"/> to enable.</param>
+        public void EnableEffects(IEnumerable<Effect> effects)
+        {
+            foreach (Effect effect in effects)
+                EnableEffect(effect);
         }
 
         /// <summary>

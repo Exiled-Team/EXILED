@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Item
     /// <summary>
     /// Contains all information before changing firearm ammo.
     /// </summary>
-    public class ChangingAmmoEventArgs : IPlayerEvent, IFirearmEvent
+    public class ChangingAmmoEventArgs : IPlayerEvent, IFirearmEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingAmmoEventArgs"/> class.
