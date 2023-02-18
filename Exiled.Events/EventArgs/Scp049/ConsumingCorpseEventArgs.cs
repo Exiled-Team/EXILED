@@ -16,17 +16,17 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     ///     Contains all information before zombie consumes RagDolls.
     /// </summary>
-    public class ConsumingCorpseEventArgs : IPlayerEvent, IDeniableEvent
+    public class ConsumingCorpseEventArgs : IPlayerEvent, IRagdollEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsumingCorpseEventArgs"/> class.
         /// </summary>
-        /// <param name="player"> <inheritdoc cref="ConsumingCorpseEventArgs.Player"/></param>
-        /// <param name="ragDoll"> <inheritdoc cref="ConsumingCorpseEventArgs.Ragdoll"/> </param>
-        /// <param name="error"> <inheritdoc cref="ConsumingCorpseEventArgs.ErrorCode"/> </param>
-        /// <param name="isAllowed"> <inheritdoc cref="ConsumingCorpseEventArgs.IsAllowed"/> </param>
+        /// <param name="player"> <inheritdoc cref="Player"/></param>
+        /// <param name="ragDoll"> <inheritdoc cref="Ragdoll"/> </param>
+        /// <param name="error"> <inheritdoc cref="ErrorCode"/> </param>
+        /// <param name="isAllowed"> <inheritdoc cref="IsAllowed"/> </param>
         /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all RagDolls consumed. </remarks>
-        public ConsumingCorpseEventArgs(Player player, BasicRagdoll ragDoll, byte error, bool isAllowed = true)
+        public ConsumingCorpseEventArgs(Player player, Ragdoll ragDoll, byte error, bool isAllowed = true)
         {
             Player = player;
             Ragdoll = ragDoll;
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <summary>
         ///     Gets the RagDoll to be consumed.
         /// </summary>
-        public BasicRagdoll Ragdoll { get; }
+        public Ragdoll Ragdoll { get; }
 
         /// <summary>
         /// Gets or sets error code to send back to client.
