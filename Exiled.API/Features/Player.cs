@@ -1197,7 +1197,8 @@ namespace Exiled.API.Features
             if (gameObject == null)
                 return null;
 
-            Dictionary.TryGetValue(gameObject, out Player player);
+            if (!Dictionary.TryGetValue(gameObject, out Player player) && Server.Host.GameObject == gameObject)
+                player = Server.Host;
 
             return player;
         }
