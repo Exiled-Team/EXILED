@@ -22,7 +22,7 @@ namespace Exiled.CustomItems.Events
         /// <inheritdoc cref="ChangingItemEventArgs"/>
         public void OnChangingItem(ChangingItemEventArgs ev)
         {
-            if (ev.IsAllowed)
+            if (!ev.IsAllowed)
                 return;
             if (CustomItem.TryGet(ev.NewItem, out CustomItem newItem))
             {
