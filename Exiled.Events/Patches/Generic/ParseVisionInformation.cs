@@ -37,6 +37,11 @@ namespace Exiled.Events.Patches.Generic
             // Return pointer
             // Used to return execution
             // if both checks fail
+            Label continueLabel = generator.DefineLabel();
+
+            // Return pointer
+            // Used to return execution
+            // if both checks fail
             Label returnLabel = generator.DefineLabel();
 
             // Second check pointer
@@ -45,12 +50,14 @@ namespace Exiled.Events.Patches.Generic
             // otherwise the second check won't be executed
             Label secondCheckPointer = generator.DefineLabel();
 
+            newInstructions[0].WithLabels(continueLabel);
+
             newInstructions.InsertRange(
                 0,
                 new[]
                 {
                     // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && !ExiledEvents.Instance.Config.CanTutorialTriggerScp096)
-                    //      continue;
+                    //      return false;
                     // START
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
@@ -64,20 +71,17 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
                     new(OpCodes.Brfalse_S, returnLabel),
 
-                    // END
                     // if (Scp096Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
-                    //      continue;
-                    // START
+                    //      return false;
                     new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096Role), nameof(Scp096Role.TurnedPlayers))).WithLabels(secondCheckPointer),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
-                    new(OpCodes.Brtrue_S, returnLabel),
+                    new(OpCodes.Brfalse_S, continueLabel),
 
-                    // END
+                    new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(returnLabel),
+                    new(OpCodes.Ret),
                 });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
