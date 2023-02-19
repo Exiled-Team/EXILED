@@ -34,14 +34,8 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            // Return pointer
-            // Used to return execution
-            // if both checks fail
             Label continueLabel = generator.DefineLabel();
 
-            // Return pointer
-            // Used to return execution
-            // if both checks fail
             Label returnLabel = generator.DefineLabel();
 
             // Second check pointer
@@ -52,13 +46,14 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions[0].WithLabels(continueLabel);
 
+            // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && !ExiledEvents.Instance.Config.CanTutorialTriggerScp096
+            // || Scp096Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
+            //      return false;
             newInstructions.InsertRange(
                 0,
                 new[]
                 {
-                    // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && !ExiledEvents.Instance.Config.CanTutorialTriggerScp096)
-                    //      return false;
-                    // START
+                    // if ((referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial &&
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
@@ -66,19 +61,20 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Ldc_I4_S, (sbyte)RoleTypeId.Tutorial),
                     new(OpCodes.Bne_Un_S, secondCheckPointer),
 
+                    // !ExiledEvents.Instance.Config.CanTutorialTriggerScp096)
                     new(OpCodes.Call, PropertyGetter(typeof(ExiledEvents), nameof(ExiledEvents.Instance))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
                     new(OpCodes.Brfalse_S, returnLabel),
 
-                    // if (Scp096Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
-                    //      return false;
+                    // || Scp096Role.TurnedPlayers.Contains(Player.Get(referenceHub))
                     new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096Role), nameof(Scp096Role.TurnedPlayers))).WithLabels(secondCheckPointer),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                     new(OpCodes.Brfalse_S, continueLabel),
 
+                    // return false;
                     new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(returnLabel),
                     new(OpCodes.Ret),
                 });
