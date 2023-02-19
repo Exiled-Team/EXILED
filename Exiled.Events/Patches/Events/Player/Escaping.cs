@@ -84,6 +84,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="Escape.ServerGetScenario(ReferenceHub)"/> for <see cref="Handlers.Player.Escaping"/>.
+    /// Replace <see cref="EscapeScenario.None"/> to make <see cref="EscapeScenario.CustomEscape"/>.
     /// </summary>
     [HarmonyPatch(typeof(Escape), nameof(Escape.ServerGetScenario))]
     internal static class GetScenario
@@ -93,7 +94,6 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int e = 0;
-
             for (int i = 0; i < newInstructions.Count; i++)
             {
                 CodeInstruction codeInstruction = newInstructions[i];
@@ -105,8 +105,6 @@ namespace Exiled.Events.Patches.Events.Player
                         newInstructions[i].opcode = OpCodes.Ldc_I4_5;
                     }
                 }
-
-                Log.Info($"{codeInstruction.opcode} : {codeInstruction.operand}");
             }
 
             for (int z = 0; z < newInstructions.Count; z++)
