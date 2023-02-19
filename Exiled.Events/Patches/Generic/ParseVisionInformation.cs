@@ -24,10 +24,10 @@ namespace Exiled.Events.Patches.Generic
     using Scp096Role = API.Features.Roles.Scp096Role;
 
     /// <summary>
-    /// Patches <see cref="Scp096VisibilityController.ValidateVisibility(ReferenceHub)"/>.
+    /// Patches <see cref="Scp096TargetsTracker.IsObservedBy(ReferenceHub)"/>.
     /// Adds the <see cref="Scp096Role.TurnedPlayers"/> support.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096VisibilityController), nameof(Scp096VisibilityController.ValidateVisibility))]
+    [HarmonyPatch(typeof(Scp096TargetsTracker), nameof(Scp096TargetsTracker.IsObservedBy))]
     internal static class ParseVisionInformation
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
