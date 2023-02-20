@@ -24,19 +24,18 @@ namespace Exiled.Events.Patches.Generic
     using Scp096Role = API.Features.Roles.Scp096Role;
 
     /// <summary>
-    /// Patches <see cref="Scp096VisibilityController.ValidateVisibility(ReferenceHub)"/>.
+    /// Patches <see cref="Scp096TargetsTracker.IsObservedBy(ReferenceHub)"/>.
     /// Adds the <see cref="Scp096Role.TurnedPlayers"/> support.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096VisibilityController), nameof(Scp096VisibilityController.ValidateVisibility))]
+    [HarmonyPatch(typeof(Scp096TargetsTracker), nameof(Scp096TargetsTracker.IsObservedBy))]
     internal static class ParseVisionInformation
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            // Return pointer
-            // Used to return execution
-            // if both checks fail
+            Label continueLabel = generator.DefineLabel();
+
             Label returnLabel = generator.DefineLabel();
 
             // Second check pointer
@@ -45,13 +44,16 @@ namespace Exiled.Events.Patches.Generic
             // otherwise the second check won't be executed
             Label secondCheckPointer = generator.DefineLabel();
 
+            newInstructions[0].WithLabels(continueLabel);
+
+            // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && !ExiledEvents.Instance.Config.CanTutorialTriggerScp096
+            // || Scp096Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
+            //      return false;
             newInstructions.InsertRange(
                 0,
                 new[]
                 {
-                    // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && !ExiledEvents.Instance.Config.CanTutorialTriggerScp096)
-                    //      continue;
-                    // START
+                    // if ((referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial &&
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.roleManager))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.CurrentRole))),
@@ -59,25 +61,23 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Ldc_I4_S, (sbyte)RoleTypeId.Tutorial),
                     new(OpCodes.Bne_Un_S, secondCheckPointer),
 
+                    // !ExiledEvents.Instance.Config.CanTutorialTriggerScp096)
                     new(OpCodes.Call, PropertyGetter(typeof(ExiledEvents), nameof(ExiledEvents.Instance))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
                     new(OpCodes.Brfalse_S, returnLabel),
 
-                    // END
-                    // if (Scp096Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
-                    //      continue;
-                    // START
+                    // || Scp096Role.TurnedPlayers.Contains(Player.Get(referenceHub))
                     new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096Role), nameof(Scp096Role.TurnedPlayers))).WithLabels(secondCheckPointer),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
-                    new(OpCodes.Brtrue_S, returnLabel),
+                    new(OpCodes.Brfalse_S, continueLabel),
 
-                    // END
+                    // return false;
+                    new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(returnLabel),
+                    new(OpCodes.Ret),
                 });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
