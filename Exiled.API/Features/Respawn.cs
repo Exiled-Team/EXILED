@@ -28,12 +28,30 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the NTF Helicopter's <see cref="GameObject"/>.
         /// </summary>
-        public static GameObject NtfHelicopter => ntfHelicopterGameObject ??= GameObject.Find("Chopper");
+        public static GameObject NtfHelicopter
+        {
+            get
+            {
+                if (ntfHelicopterGameObject == null)
+                    ntfHelicopterGameObject = GameObject.Find("Chopper");
+
+                return ntfHelicopterGameObject;
+            }
+        }
 
         /// <summary>
         /// Gets the Chaos Van's <see cref="GameObject"/>.
         /// </summary>
-        public static GameObject ChaosVan => chaosCarGameObject ??= GameObject.Find("CIVanArrive");
+        public static GameObject ChaosVan
+        {
+            get
+            {
+                if (chaosCarGameObject == null)
+                    chaosCarGameObject = GameObject.Find("CIVanArrive");
+
+                return chaosCarGameObject;
+            }
+        }
 
         /// <summary>
         /// Gets the next known <see cref="SpawnableTeamType"/> that will spawn.
