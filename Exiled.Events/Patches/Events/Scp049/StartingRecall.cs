@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
+    ///     Patches <see cref="Scp049ResurrectAbility.ServerValidateBegin" />.
     ///     Adds the <see cref="Handlers.Scp049.StartingRecall" /> event.
     /// </summary>
     // TODO: REWORK TRANSPILER
