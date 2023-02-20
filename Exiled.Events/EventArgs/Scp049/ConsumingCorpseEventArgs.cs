@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <param name="error"> <inheritdoc cref="ErrorCode"/> </param>
         /// <param name="isAllowed"> <inheritdoc cref="IsAllowed"/> </param>
         /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all RagDolls consumed. </remarks>
-        public ConsumingCorpseEventArgs(Player player, Ragdoll ragDoll, byte error, bool isAllowed = true)
+        public ConsumingCorpseEventArgs(Player player, Ragdoll ragDoll, ZombieConsumeAbility.ConsumeError error, bool isAllowed = true)
         {
             Player = player;
             Ragdoll = ragDoll;
@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <summary>
         /// Gets or sets error code to send back to client.
         /// </summary>
-        public byte ErrorCode { get; set; }
+        public ZombieConsumeAbility.ConsumeError ErrorCode { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the server will send 049 information on the recall.
