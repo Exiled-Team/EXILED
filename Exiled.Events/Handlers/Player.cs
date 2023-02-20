@@ -235,6 +235,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SpawnedEventArgs> Spawned;
 
         /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> held <see cref="API.Features.Items.Item"/> changes.
+        /// </summary>
+        public static event CustomEventHandler<ChangedItemEventArgs> ChangedItem;
+
+        /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> held <see cref="API.Features.Items.Item"/> changes.
         /// </summary>
         public static event CustomEventHandler<ChangingItemEventArgs> ChangingItem;
@@ -658,6 +663,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawnedEventArgs"/> instance.</param>
         public static void OnSpawned(SpawnedEventArgs ev) => Spawned.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> held item changes.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangedItemEventArgs"/> instance.</param>
+        public static void OnChangedItem(ChangedItemEventArgs ev) => ChangedItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> held item changes.
