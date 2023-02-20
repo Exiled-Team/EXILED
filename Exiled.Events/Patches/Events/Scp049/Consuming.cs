@@ -72,19 +72,21 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             Player zombiePlayer = Player.Get(zombieAbility.Owner);
 
+            ZombieConsumeAbility.ConsumeError errorCode = (ZombieConsumeAbility.ConsumeError)zombieAbility._errorCode;
+
             if (zombiePlayer.Role.Type != RoleTypeId.Scp049)
             {
-                ConsumingCorpseEventArgs eventArg = new(zombiePlayer, currentRagDoll, zombieAbility._errorCode);
-                Handlers.Scp049.OnConsumingCorpse(eventArg);
+                ConsumingCorpseEventArgs ev = new(zombiePlayer, currentRagDoll, errorCode);
+                Handlers.Scp049.OnConsumingCorpse(ev);
 
-                if (!eventArg.IsAllowed)
+                if (!ev.IsAllowed)
                     return;
 
-                currentRagDoll = eventArg.Ragdoll;
-                zombieAbility._errorCode = eventArg.ErrorCode;
+                currentRagDoll = ev.Ragdoll;
+                errorCode = ev.ErrorCode;
             }
 
-            bool errorCodeFlag = zombieAbility._errorCode > 0;
+            bool errorCodeFlag = errorCode != ZombieConsumeAbility.ConsumeError.None;
 
             if (errorCodeFlag)
             {
