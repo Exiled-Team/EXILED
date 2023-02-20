@@ -65,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             Scp049ResurrectAbility.ResurrectError resurrectError = resurrectAbility.CheckBeginConditions(ragdoll);
             if (resurrectError != Scp049ResurrectAbility.ResurrectError.None)
-                return false;
+                return true;
 
             return !resurrectAbility.ServerValidateAny();
         }
