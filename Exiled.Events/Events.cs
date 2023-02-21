@@ -19,7 +19,6 @@ namespace Exiled.Events
 
     using HarmonyLib;
 
-    using PlayerRoles;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
