@@ -8,14 +8,12 @@
 namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
-    using System.Linq;
+     using System.Linq;
+ 
+     using Exiled.API.Enums;
 
-
-    using Exiled.API.Enums;
-
-    using Interactables.Interobjects.DoorUtils;
-
-    using PlayerRoles;
+     using Interactables.Interobjects.DoorUtils;
+     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
     using PlayerRoles.PlayableScps.Scp079.Rewards;
