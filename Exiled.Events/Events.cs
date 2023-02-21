@@ -116,6 +116,7 @@ namespace Exiled.Events
             Unpatch();
 
             DisabledPatchesHashSet.Clear();
+
             SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
 
