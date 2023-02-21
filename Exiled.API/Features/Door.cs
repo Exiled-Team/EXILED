@@ -285,6 +285,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the door object associated with a specific <see cref="UnityEngine.GameObject"/>, or creates a new one if there isn't one.
+        /// </summary>
+        /// <param name="gameObject">The base-game <see cref="UnityEngine.GameObject"/>.</param>
+        /// <returns>The <see cref="Door"/> with the given name or <see langword="null"/> if not found.</returns>
+        public static Door Get(GameObject gameObject) => gameObject is null ? null : Get(gameObject.GetComponentInChildren<DoorVariant>());
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> filtered based on a predicate.
         /// </summary>
         /// <param name="predicate">The condition to satify.</param>
