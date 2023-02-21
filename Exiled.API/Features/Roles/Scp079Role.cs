@@ -10,9 +10,14 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
     using System.Linq;
 
+
     using Exiled.API.Enums;
+
+    using Interactables.Interobjects.DoorUtils;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
+    using PlayerRoles.PlayableScps.Scp079.Cameras;
     using PlayerRoles.PlayableScps.Scp079.Rewards;
     using PlayerRoles.PlayableScps.Subroutines;
 
@@ -38,6 +43,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079SpeakerAbility subroutine not found in Scp079Role::ctor");
 
             SpeakerAbility = scp079SpeakerAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079DoorStateChanger scp079DoorAbility))
+                Log.Error("Scp079DoorStateChanger subroutine not found in Scp079Role::ctor");
+
+            DoorStateChanger = scp079DoorAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079DoorLockChanger scp079DoorLockChanger))
                 Log.Error("Scp079DoorLockChanger subroutine not found in Scp079Role::ctor");
@@ -74,9 +84,14 @@ namespace Exiled.API.Features.Roles
             BlackoutZoneAbility = scp079BlackoutZoneAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079LostSignalHandler scp079LostSignalHandler))
-                Log.Error("Scp079BlackoutZoneAbility subroutine not found in Scp079Role::ctor");
+                Log.Error("Scp079LostSignalHandler subroutine not found in Scp079Role::ctor");
 
             LostSignalHandler = scp079LostSignalHandler;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079CurrentCameraSync scp079CameraSync))
+                Log.Error("Scp079CurrentCameraSync subroutine not found in Scp079Role::ctor");
+
+            CurrentCameraSync = scp079CameraSync;
         }
 
         /// <inheritdoc/>
@@ -89,6 +104,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079SpeakerAbility"/>.
         /// </summary>
         public Scp079SpeakerAbility SpeakerAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079DoorAbility"/>.
+        /// </summary>
+        public Scp079DoorStateChanger DoorStateChanger { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079DoorLockChanger"/>.
@@ -129,6 +149,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079LostSignalHandler"/>.
         /// </summary>
         public Scp079LostSignalHandler LostSignalHandler { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079CurrentCameraSync"/>.
+        /// </summary>
+        public Scp079CurrentCameraSync CurrentCameraSync { get; }
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
@@ -256,9 +281,23 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the amount of time that SCP-2176 will disable SCP-079 for.
+        /// </summary>
+        public float Scp2176LostTime
+        {
+            get => LostSignalHandler._ghostlightLockoutDuration;
+            set => LostSignalHandler._ghostlightLockoutDuration = value;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-079's signal is lost due to SCP-2176.
         /// </summary>
         public bool IsLost => LostSignalHandler.Lost;
+
+        /// <summary>
+        /// Gets a value indicating how much more time SCP-079 will be lost.
+        /// </summary>
+        public float LostTime => LostSignalHandler.RemainingTime;
 
         /// <summary>
         /// Gets SCP-079's energy regeneration speed.
@@ -321,5 +360,26 @@ namespace Exiled.API.Features.Roles
         /// Clears the list of marked SCP-079 rooms.
         /// </summary>
         public void ClearMarkedRooms() => RewardManager._markedRooms.Clear();
+
+        /// <summary>
+        /// Gets the cost to switch from the current <see cref="Camera"/> to the provided <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The camera to get the cost to switch to.</param>
+        /// <returns>The cost to switch from the current camera to the new camera.</returns>
+        public int GetSwitchCost(Camera camera) => CurrentCameraSync.GetSwitchCost(camera.Base);
+
+        /// <summary>
+        /// Gets the cost to modify a door.
+        /// </summary>
+        /// <param name="door">The door to get the cost to modify.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The cost to modify the door.</returns>
+        public int GetCost(Door door, DoorAction action)
+        {
+            if (action is DoorAction.Locked or DoorAction.Unlocked)
+                return DoorLockChanger.GetCostForDoor(action, door.Base);
+            else
+                return DoorStateChanger.GetCostForDoor(action, door.Base);
+        }
     }
 }
