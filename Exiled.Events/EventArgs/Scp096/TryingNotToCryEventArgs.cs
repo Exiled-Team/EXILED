@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs.Scp096
     using System.Linq;
 
     using API.Features;
-
+    using Interactables.Interobjects.DoorUtils;
     using Interfaces;
 
     using PlayerRoles.PlayableScps.Scp096;
@@ -38,7 +38,9 @@ namespace Exiled.Events.EventArgs.Scp096
         {
             Scp096 = scp096;
             Player = player;
-            Door = Door.List.OrderBy(door => Vector3.Distance(door.Position, player.Position)).FirstOrDefault();
+            Door = Physics.Raycast(player.CameraTransform.position, player.CameraTransform.forward, out RaycastHit hit, 1f) ?
+                Door.Get(hit.collider.gameObject) : null;
+            GameObject = hit.collider.gameObject;
             IsAllowed = isAllowed;
         }
 
@@ -54,8 +56,14 @@ namespace Exiled.Events.EventArgs.Scp096
 
         /// <summary>
         ///     Gets the <see cref="API.Features.Door" /> to be cried on.
+        ///     <remarks>the value can be null</remarks>
         /// </summary>
         public Door Door { get; }
+
+        /// <summary>
+        ///     Gets the <see cref="UnityEngine.GameObject" /> to be cried on.
+        /// </summary>
+        public GameObject GameObject { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not SCP-096 can try not to cry.
