@@ -54,8 +54,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // Handlers.Player.OnChangingItem(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangedItem))),
                 });
-            for (int z = 0; z < newInstructions.Count; z++)
-                Log.Info($"{newInstructions[z].opcode}:{newInstructions[z].operand}");
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
