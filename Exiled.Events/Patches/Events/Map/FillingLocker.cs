@@ -13,8 +13,6 @@ namespace Exiled.Events.Patches.Events.Map
     using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Map;
 
-    using GameCore;
-
     using HarmonyLib;
 
     using InventorySystem.Items.Pickups;
