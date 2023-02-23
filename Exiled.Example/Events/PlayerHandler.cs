@@ -71,7 +71,7 @@ namespace Exiled.Example.Events
             Log.Info($"{ev.Player.Nickname} is changing his {(ev.Player?.CurrentItem is null ? "NONE" : ev.Player?.CurrentItem?.Type.ToString())} item to {(ev.NewItem is null ? "NONE" : ev.NewItem.Type.ToString())}!");
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnUsingAtlas(UsingHunterAtlasEventArgs)"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnTeleporting(TeleportingEventArgs)"/>
         public void OnTeleporting(TeleportingEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} is teleporting to {ev.Position} as SCP-106!");
