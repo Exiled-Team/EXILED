@@ -72,7 +72,7 @@ namespace Exiled.Example.Events
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnUsingAtlas(UsingHunterAtlasEventArgs)"/>
-        public void OnTeleporting(UsingHunterAtlasEventArgs ev)
+        public void OnTeleporting(TeleportingEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} is teleporting to {ev.Position} as SCP-106!");
         }
