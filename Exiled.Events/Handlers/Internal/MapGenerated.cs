@@ -71,7 +71,6 @@ namespace Exiled.Events.Handlers.Internal
             GenerateLifts();
             GeneratePocketTeleports();
             GenerateAttachments();
-            GenerateLockers();
 
             Map.AmbientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>();
 
@@ -120,8 +119,6 @@ namespace Exiled.Events.Handlers.Internal
         }
 
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
-
-        private static void GenerateLockers() => Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>());
 
         private static void GenerateAttachments()
         {
