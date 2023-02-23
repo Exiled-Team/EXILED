@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(codeInstructions);
 
-            // new Generator(this)
+            // Map.LockersValue.Add(this);
             newInstructions.InsertRange(
                 0,
                 new CodeInstruction[]
