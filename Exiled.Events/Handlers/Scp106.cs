@@ -21,7 +21,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-106 teleports using the hunter atlas.
         /// </summary>
-        public static event CustomEventHandler<UsingHunterAtlasEventArgs> UsingAtlas;
+        public static event CustomEventHandler<TeleportingEventArgs> Teleporting;
 
         /// <summary>
         ///     Invoked before SCP-106 use the stalk ability.
@@ -31,8 +31,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Called before SCP-106 teleports using the hunter atlas.
         /// </summary>
-        /// <param name="ev">The <see cref="UsingHunterAtlasEventArgs" /> instance.</param>
-        public static void OnUsingAtlas(UsingHunterAtlasEventArgs ev) => UsingAtlas.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="TeleportingEventArgs" /> instance.</param>
+        public static void OnTeleporting(TeleportingEventArgs ev) => Teleporting.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before SCP-106 use the stalk ability.
