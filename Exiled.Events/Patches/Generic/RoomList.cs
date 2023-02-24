@@ -37,7 +37,6 @@ namespace Exiled.Events.Patches.Generic
         {
             Room.RoomIdentifierToRoom[__instance].Doors.Do(door =>
             {
-                Log.Info("Removed door");
                 Door.DoorVariantToDoor.Remove(door.Base);
             });
 
