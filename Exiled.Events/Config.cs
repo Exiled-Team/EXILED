@@ -60,7 +60,7 @@ namespace Exiled.Events
         /// Gets or sets a value indicating whether keycard throw can affect basic doors.
         /// </summary>
         [Description("Indicates whether thrown keycards can affect doors that don't require any permissions")]
-        public bool CanKeycardThrowAffectDoors { get; set; } = true;
+        public bool CanKeycardThrowAffectDoors { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.
