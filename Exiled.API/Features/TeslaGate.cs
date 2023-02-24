@@ -32,16 +32,17 @@ namespace Exiled.API.Features
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BaseTeslaGate"/>s and their corresponding <see cref="TeslaGate"/>.
         /// </summary>
         internal static readonly Dictionary<BaseTeslaGate, TeslaGate> BaseTeslaGateToTeslaGate = new(10);
-        private Room room;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
-        internal TeslaGate(BaseTeslaGate baseTeslaGate)
+        /// <param name="room">The <see cref="Exiled.API.Features.Room"/> for this tesla.</param>
+        internal TeslaGate(BaseTeslaGate baseTeslaGate, Room room)
         {
             Base = baseTeslaGate;
             BaseTeslaGateToTeslaGate.Add(baseTeslaGate, this);
+            Room = room;
         }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the tesla gate's <see cref="Features.Room"/> which is located in.
         /// </summary>
-        public Room Room => room ??= Room.FindParentRoom(GameObject);
+        public Room Room { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the tesla gate's shock burst is in progess.
@@ -205,7 +206,7 @@ namespace Exiled.API.Features
         /// <returns>The corresponding <see cref="TeslaGate"/> instance.</returns>
         public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => BaseTeslaGateToTeslaGate.TryGetValue(baseTeslaGate, out TeslaGate teslagate) ?
             teslagate :
-            new(baseTeslaGate);
+            new(baseTeslaGate, Room.FindParentRoom(baseTeslaGate.gameObject));
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.

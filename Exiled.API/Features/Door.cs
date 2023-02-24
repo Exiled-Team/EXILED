@@ -7,8 +7,11 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable SA1201
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.Linq;
 
     using Enums;
@@ -31,22 +34,30 @@ namespace Exiled.API.Features
     public class Door : IWrapper<DoorVariant>, IWorldSpace
     {
         /// <summary>
-        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
+        /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>'s and their corresponding <see cref="Door"/>.
         /// </summary>
         internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all <see cref="Features.Room"/>'s that are connected with <see cref="Door"/>.
+        /// </summary>
+        internal List<Room> RoomsValue { get; } = new List<Room>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
         /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
-        /// <param name="room">The <see cref="Room"/> for this door.</param>
-        public Door(DoorVariant door, Room room)
+        /// <param name="rooms">The <see cref="List{T}"/> of <see cref="Features.Room"/>'s for this door.</param>
+        internal Door(DoorVariant door, List<Room> rooms)
         {
-            if (room != null)
+            if (rooms != null)
                 DoorVariantToDoor.Add(door, this);
 
             Base = door;
-            Room = room;
+
+            RoomsValue = rooms;
+            Rooms = RoomsValue.AsReadOnly();
+
             Type = GetDoorType();
         }
 
@@ -78,7 +89,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Features.Room"/> that the door is located in.
         /// </summary>
-        public Room Room { get; }
+        public Room Room => Rooms.Count == 0 ? null : Rooms[0];
+
+        /// <summary>
+        /// Gets the <see cref="Features.Room"/>'s that the door is located in.
+        /// </summary>
+        public ReadOnlyCollection<Room> Rooms { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
@@ -271,7 +287,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
         public static Door Get(DoorVariant doorVariant) => doorVariant != null ? (DoorVariantToDoor.TryGetValue(doorVariant, out Door door)
             ? door
-            : new Door(doorVariant, doorVariant.GetComponentInParent<Room>())) : null;
+            : new Door(doorVariant, new List<Room> { doorVariant.GetComponentInParent<Room>() })) : null;
 
         /// <summary>
         /// Gets a <see cref="Door"/> given the specified name.
@@ -511,17 +527,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>A string containing Door-related data.</returns>
         public override string ToString() => $"{Type} ({Zone}) [{Room}] *{DoorLockType}* |{Health}/{MaxHealth}| ={RequiredPermissions.RequiredPermissions}= -{IgnoredDamageTypes}-";
-
-        /// <summary>
-        /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
-        /// </summary>
-        /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
-        /// <param name="room">The <see cref="Room"/> this door is in.</param>
-        /// <remarks>The 'room' parameter is only used if a new door wrapper needs to be created.</remarks>
-        /// <returns>A <see cref="Door"/> wrapper object.</returns>
-        internal static Door Get(DoorVariant doorVariant, Room room) => DoorVariantToDoor.ContainsKey(doorVariant)
-            ? DoorVariantToDoor[doorVariant]
-            : new Door(doorVariant, room);
 
         private DoorType GetDoorType()
         {

@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable SA1202
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -37,6 +38,21 @@ namespace Exiled.API.Features
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
         /// </summary>
         internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250);
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Door"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<Door> DoorsValue { get; } = new List<Door>();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Scp079Speaker"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<Scp079Speaker> SpeakersValue { get; } = new List<Scp079Speaker>();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Camera"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<Camera> CamerasValue { get; } = new List<Camera>();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
@@ -93,7 +109,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a reference to the <see cref="global::TeslaGate"/> in the room, or <see langword="null"/> if this room does not contain one.
         /// </summary>
-        public TeslaGate TeslaGate { get; private set; }
+        public TeslaGate TeslaGate { get; internal set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
@@ -103,12 +119,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Door> Doors { get; private set; } = Enumerable.Empty<Door>();
+        public IReadOnlyCollection<Door> Doors { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Scp079Speaker"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Scp079Speaker> Speaker { get; private set; } = Enumerable.Empty<Scp079Speaker>();
+        public IReadOnlyCollection<Scp079Speaker> Speakers { get; private set; }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IReadOnlyCollection<Camera> Cameras { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
@@ -156,11 +177,6 @@ namespace Exiled.API.Features
                 }
             }
         }
-
-        /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
-        /// </summary>
-        public IEnumerable<Camera> Cameras { get; private set; } = Enumerable.Empty<Camera>();
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the lights in this room are currently off.
@@ -353,7 +369,7 @@ namespace Exiled.API.Features
         /// Returns the Room in a human-readable format.
         /// </summary>
         /// <returns>A string containing Room-related data.</returns>
-        public override string ToString() => $"{Type} ({Zone}) [{Doors?.Count()}] *{Cameras?.Count()}* |{TeslaGate}|";
+        public override string ToString() => $"{Type} ({Zone}) [{Doors.Count()}] *{Cameras.Count()}* |{TeslaGate != null}|";
 
         /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
@@ -443,18 +459,17 @@ namespace Exiled.API.Features
 
         private void Awake()
         {
+            Identifier = gameObject.GetComponent<RoomIdentifier>();
+            RoomIdentifierToRoom.Add(Identifier, this);
+
             Zone = FindZone(gameObject);
             Type = FindType(gameObject);
 
-            Identifier = gameObject.GetComponent<RoomIdentifier>();
             FlickerableLightController = gameObject.GetComponentInChildren<FlickerableLightController>();
 
-            Doors = DoorVariant.DoorsByRoom.ContainsKey(Identifier) ? DoorVariant.DoorsByRoom[Identifier].Select(x => Door.Get(x, this)).ToList() : new();
-            Cameras = Camera.List.Where(x => x.Base.Room == Identifier).ToList();
-            Speaker = Scp079Speaker.SpeakersInRooms.ContainsKey(Identifier) ? Scp079Speaker.SpeakersInRooms[Identifier] : new();
-
-            if (Type is RoomType.HczTesla)
-                TeslaGate = TeslaGate.List.Single(x => this == x.Room);
+            Doors = DoorsValue.AsReadOnly();
+            Speakers = SpeakersValue.AsReadOnly();
+            Cameras = CamerasValue.AsReadOnly();
         }
     }
 }

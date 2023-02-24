@@ -30,11 +30,12 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Window"/> class.
         /// </summary>
         /// <param name="window">The base <see cref="BreakableWindow"/> for this door.</param>
-        public Window(BreakableWindow window)
+        /// <param name="room">The <see cref="Room"/> for this window.</param>
+        internal Window(BreakableWindow window, Room room)
         {
             BreakableWindowToWindow.Add(window, this);
             Base = window;
-            Room = window.GetComponentInParent<Room>();
+            Room = room;
             Type = GetGlassType();
         }
 
@@ -148,7 +149,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="Door"/> wrapper object.</returns>
         public static Window Get(BreakableWindow breakableWindow) => BreakableWindowToWindow.TryGetValue(breakableWindow, out Window window)
             ? window
-            : new(breakableWindow);
+            : new(breakableWindow, breakableWindow.GetComponentInParent<Room>());
 
         /// <summary>
         /// Break the window.

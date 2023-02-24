@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="LockerListAdd.cs" company="Exiled Team">
+// <copyright file="LockerList.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="Locker.Start"/>.
     /// </summary>
     [HarmonyPatch(typeof(Locker), nameof(Locker.Start))]
-    internal class LockerListAdd
+    internal class LockerList
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
         {

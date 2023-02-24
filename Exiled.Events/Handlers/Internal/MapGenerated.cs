@@ -62,63 +62,12 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateCache()
         {
-            Warhead.OutsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
-
-            GenerateCamera();
-            GenerateTeslaGates();
-            GenerateRooms();
-            GenerateWindows();
-            GenerateLifts();
-            GeneratePocketTeleports();
             GenerateAttachments();
-
-            Map.AmbientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>();
 
             Handlers.Map.OnGenerated();
 
             Timing.CallDelayed(0.1f, Handlers.Server.OnWaitingForPlayers);
         }
-
-        private static void GenerateRooms()
-        {
-            // Get bulk of rooms with sorted.
-            List<RoomIdentifier> roomIdentifiers = ListPool<RoomIdentifier>.Pool.Get(RoomIdentifier.AllRoomIdentifiers);
-
-            // If no rooms were found, it means a plugin is trying to access this before the map is created.
-            if (roomIdentifiers.Count == 0)
-                throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
-
-            foreach (RoomIdentifier roomIdentifier in roomIdentifiers)
-                Room.RoomIdentifierToRoom.Add(roomIdentifier, Room.CreateComponent(roomIdentifier.gameObject));
-
-            ListPool<RoomIdentifier>.Pool.Return(roomIdentifiers);
-        }
-
-        private static void GenerateWindows()
-        {
-            foreach (BreakableWindow breakableWindow in Object.FindObjectsOfType<BreakableWindow>())
-                new Window(breakableWindow);
-        }
-
-        private static void GenerateLifts()
-        {
-            foreach (ElevatorChamber elevatorChamber in Object.FindObjectsOfType<ElevatorChamber>())
-                new Lift(elevatorChamber);
-        }
-
-        private static void GenerateCamera()
-        {
-            foreach (Scp079Camera camera079 in Object.FindObjectsOfType<Scp079Camera>())
-                new Camera(camera079);
-        }
-
-        private static void GenerateTeslaGates()
-        {
-            foreach (global::TeslaGate teslaGate in TeslaGateController.Singleton.TeslaGates)
-                new TeslaGate(teslaGate);
-        }
-
-        private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
 
         private static void GenerateAttachments()
         {

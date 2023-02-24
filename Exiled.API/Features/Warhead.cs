@@ -25,6 +25,8 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<BlastDoor> InternalBlastDoors = new();
 
+        private static AlphaWarheadOutsitePanel alphaWarheadOutsitePanel;
+
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
         /// </summary>
-        public static AlphaWarheadOutsitePanel OutsitePanel { get; internal set; }
+        public static AlphaWarheadOutsitePanel OutsitePanel => alphaWarheadOutsitePanel != null ? alphaWarheadOutsitePanel : (alphaWarheadOutsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>());
 
         /// <summary>
         /// Gets the <see cref="GameObject"/> of the warhead lever.

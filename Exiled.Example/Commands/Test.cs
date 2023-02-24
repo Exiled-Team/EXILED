@@ -12,7 +12,8 @@ namespace Exiled.Example.Commands
     using CommandSystem;
 
     using Exiled.API.Features;
-    using Exiled.API.Features.Pickups;
+
+    using MapGeneration.Distributors;
 
     /// <summary>
     /// This is an example of how commands should be made.
@@ -32,21 +33,21 @@ namespace Exiled.Example.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Player player = Player.Get(sender);
+            // foreach (Room room in Room.List)
+            //     Log.Warn(room);
+            foreach (Door door in Door.List)
+                Log.Warn(door);
 
-            Log.Warn($"{player.Items.Count} -- {player.Inventory.UserInventory.Items.Count}");
+            /*foreach (Camera camera in Camera.List)
+                Log.Warn(camera);
 
-            foreach (Player item in Player.List)
-                Log.Warn(item);
+            /*foreach (Locker locker in Map.Lockers)
+                Log.Warn(locker);
 
-            foreach (Pickup pickup in Pickup.List)
-                Log.Warn($"{pickup.Type} ({pickup.Serial}) -- {pickup.Position}");
+            /*foreach (TeslaGate tesla in TeslaGate.List)
+                Log.Warn(tesla);*/
 
-            foreach (PocketDimensionTeleport teleport in Map.PocketDimensionTeleports)
-                Log.Warn($"{teleport._type}");
-
-            player.ClearInventory();
-            response = $"{player.Nickname} sent the command!";
+            response = $"asasas sent the command!";
 
             // Return true if the command was executed successfully; otherwise, false.
             return true;

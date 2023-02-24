@@ -74,6 +74,8 @@ namespace Exiled.API.Features
         private static TantrumEnvironmentalHazard tantrumPrefab;
         private static Scp939AmnesticCloudInstance amnesticCloudPrefab;
 
+        private static AmbientSoundPlayer ambientSoundPlayer;
+
         /// <summary>
         /// Gets the tantrum prefab.
         /// </summary>
@@ -148,7 +150,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
-        public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
+        public static AmbientSoundPlayer AmbientSoundPlayer => ambientSoundPlayer != null ? ambientSoundPlayer : (ambientSoundPlayer = ReferenceHub.HostHub.GetComponent<AmbientSoundPlayer>());
 
         /// <summary>
         /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
@@ -317,21 +319,18 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
-            Room.RoomIdentifierToRoom.Clear();
-            Door.DoorVariantToDoor.Clear();
-            Lift.ElevatorChamberToLift.Clear();
-            Camera.Camera079ToCamera.Clear();
             Window.BreakableWindowToWindow.Clear();
-            TeslaGate.BaseTeslaGateToTeslaGate.Clear();
             Pickup.BaseToPickup.Clear();
             Item.BaseToItem.Clear();
-            TeleportsValue.Clear();
             LockersValue.Clear();
             Ragdoll.BasicRagdollToRagdoll.Clear();
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Warhead.InternalBlastDoors.Clear();
+
+            // idk about that
+            GC.Collect();
         }
     }
 }
