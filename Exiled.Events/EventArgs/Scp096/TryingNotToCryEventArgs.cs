@@ -38,9 +38,9 @@ namespace Exiled.Events.EventArgs.Scp096
         {
             Scp096 = scp096;
             Player = player;
-            Door = Physics.Raycast(player.CameraTransform.position, player.CameraTransform.forward, out RaycastHit hit, 1f) ?
-                Door.Get(hit.collider.gameObject) : null;
-            GameObject = hit.collider.gameObject;
+            GameObject = Physics.Raycast(player.CameraTransform.position, player.CameraTransform.forward, out RaycastHit hit, 1f) ?
+                        hit.collider.gameObject : null;
+            Door = Door.Get(GameObject);
             IsAllowed = isAllowed;
         }
 
