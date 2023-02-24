@@ -674,6 +674,9 @@ namespace Exiled.API.Features
             get => ReferenceHub.transform.localScale;
             set
             {
+                if (value == Scale)
+                    return;
+
                 try
                 {
                     ReferenceHub.transform.localScale = value;
@@ -889,7 +892,7 @@ namespace Exiled.API.Features
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
                     AddItem(value.Base);
 
-                Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                Inventory.ServerSelectItem(value.Serial);
             }
         }
 

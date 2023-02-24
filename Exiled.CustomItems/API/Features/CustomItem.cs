@@ -961,7 +961,7 @@ namespace Exiled.CustomItems.API.Features
 
                 TrackedSerials.Remove(item.Serial);
 
-                Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnLocation().Position, item, null));
+                Timing.CallDelayed(1.5f, () => Spawn(ev.Player.Position, item, null));
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
