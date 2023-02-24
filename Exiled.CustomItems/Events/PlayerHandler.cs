@@ -36,10 +36,8 @@ namespace Exiled.CustomItems.Events
 
         private void SpectatorCustomNickname(Player player, string itemName)
         {
-            foreach (Player spetator in Player.List)
-            {
-                spetator.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), itemName);
-            }
+            foreach (Player spectator in Player.List)
+                spectator.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), itemName);
         }
     }
 }
