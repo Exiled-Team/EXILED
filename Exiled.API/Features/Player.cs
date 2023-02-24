@@ -101,7 +101,6 @@ namespace Exiled.API.Features
         internal readonly List<Item> ItemsValue = new(8);
 #pragma warning restore SA1401
 
-        private readonly IReadOnlyCollection<Item> readOnlyItems;
         private readonly HashSet<EActor> componentsInChildren = new();
 
         private ReferenceHub referenceHub;
@@ -112,21 +111,13 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
-        public Player(ReferenceHub referenceHub)
-        {
-            readOnlyItems = ItemsValue.AsReadOnly();
-            ReferenceHub = referenceHub;
-        }
+        public Player(ReferenceHub referenceHub) => ReferenceHub = referenceHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
-        public Player(GameObject gameObject)
-        {
-            readOnlyItems = ItemsValue.AsReadOnly();
-            ReferenceHub = ReferenceHub.GetHub(gameObject);
-        }
+        public Player(GameObject gameObject) => ReferenceHub = ReferenceHub.GetHub(gameObject);
 
         /// <summary>
         /// Finalizes an instance of the <see cref="Player"/> class.
@@ -1041,7 +1032,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's items.
         /// </summary>
-        public IReadOnlyCollection<Item> Items => readOnlyItems;
+        public IReadOnlyCollection<Item> Items => ItemsValue.AsReadOnly();
 
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is empty.
