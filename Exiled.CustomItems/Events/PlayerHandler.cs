@@ -24,7 +24,7 @@ namespace Exiled.CustomItems.Events
         {
             if (!ev.IsAllowed)
                 return;
-            if (CustomItem.TryGet(ev.NewItem, out CustomItem newItem))
+            if (CustomItem.TryGet(ev.NewItem, out CustomItem newItem) && newItem.ShouldMessageOnGban)
             {
                 SpectatorCustomNickname(ev.Player, $"{ev.Player.CustomName} (CustomItem: {newItem.Name})");
             }
