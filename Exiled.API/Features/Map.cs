@@ -320,13 +320,17 @@ namespace Exiled.API.Features
         internal static void ClearCache()
         {
             Window.BreakableWindowToWindow.Clear();
-            Pickup.BaseToPickup.Clear();
+
             Item.BaseToItem.Clear();
-            LockersValue.Clear();
+
+            LockersValue.RemoveAll(locker => locker == null);
+
             Ragdoll.BasicRagdollToRagdoll.Clear();
+
             Firearm.ItemTypeToFirearmInstance.Clear();
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
+
             Warhead.InternalBlastDoors.Clear();
 
             // idk about that
