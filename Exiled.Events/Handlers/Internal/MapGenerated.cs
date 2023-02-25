@@ -18,24 +18,16 @@ namespace Exiled.Events.Handlers.Internal
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-
-    using Interactables.Interobjects;
+    using Exiled.API.Features.Pickups;
 
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
 
-    using MapGeneration;
-    using MapGeneration.Distributors;
-
     using MEC;
-
-    using PlayerRoles.PlayableScps.Scp079.Cameras;
 
     using Utils.NonAllocLINQ;
 
-    using Broadcast = Broadcast;
     using Camera = API.Features.Camera;
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// Handles <see cref="Handlers.Map.Generated"/> event.
