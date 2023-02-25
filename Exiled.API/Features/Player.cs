@@ -2470,9 +2470,6 @@ namespace Exiled.API.Features
                 0.5f,
                 () =>
                 {
-                    if (newItems.IsEmpty())
-                        return;
-
                     foreach (ItemType item in newItems)
                         AddItem(item);
                 });
@@ -2486,11 +2483,8 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            if (newItems.Any())
-            {
-                foreach (Item item in newItems)
-                    AddItem(item.Base is null ? new Item(item.Type) : item);
-            }
+            foreach (Item item in newItems)
+                AddItem(item.Base is null ? new Item(item.Type) : item);
         }
 
         /// <summary>
