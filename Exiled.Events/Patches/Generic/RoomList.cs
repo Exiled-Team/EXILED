@@ -35,10 +35,11 @@ namespace Exiled.Events.Patches.Generic
     {
         private static void Postfix(RoomIdentifier __instance)
         {
-            Room.RoomIdentifierToRoom[__instance].Doors.Do(door =>
-            {
-                Door.DoorVariantToDoor.Remove(door.Base);
-            });
+            Room room = Room.RoomIdentifierToRoom[__instance];
+
+            room.DoorsValue.Clear();
+            room.CamerasValue.Clear();
+            room.SpeakersValue.Clear();
 
             Room.RoomIdentifierToRoom.Remove(__instance);
         }

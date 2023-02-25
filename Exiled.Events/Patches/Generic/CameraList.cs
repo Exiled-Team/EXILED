@@ -39,9 +39,9 @@ namespace Exiled.Events.Patches.Generic
     {
         private static void Postfix(Scp079InteractableBase __instance)
         {
-            if (__instance is Scp079Camera camera)
+            if (__instance is Scp079Camera cameraBase)
             {
-                Camera.Camera079ToCamera.Remove(camera);
+                Camera.Camera079ToCamera.Remove(cameraBase);
             }
         }
     }
