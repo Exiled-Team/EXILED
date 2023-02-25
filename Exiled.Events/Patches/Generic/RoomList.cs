@@ -37,6 +37,10 @@ namespace Exiled.Events.Patches.Generic
         {
             Room room = Room.RoomIdentifierToRoom[__instance];
 
+            foreach (Window window in room.Windows)
+                Window.BreakableWindowToWindow.Remove(window.Base);
+
+            room.WindowsValue.Clear();
             room.DoorsValue.Clear();
             room.CamerasValue.Clear();
             room.SpeakersValue.Clear();

@@ -319,8 +319,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
-            Window.BreakableWindowToWindow.Clear();
-
             Item.BaseToItem.Clear();
 
             LockersValue.RemoveAll(locker => locker == null);

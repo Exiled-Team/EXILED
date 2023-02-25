@@ -40,6 +40,11 @@ namespace Exiled.API.Features
         internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250);
 
         /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Window"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<Window> WindowsValue { get; } = new List<Window>();
+
+        /// <summary>
         /// Gets a <see cref="List{T}"/> containing all known <see cref="Door"/>s in that <see cref="Room"/>.
         /// </summary>
         internal List<Door> DoorsValue { get; } = new List<Door>();
@@ -117,17 +122,22 @@ namespace Exiled.API.Features
         public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom is not null && (player.CurrentRoom.Transform == Transform));
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Window"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IReadOnlyCollection<Window> Windows { get; private set; }
+
+        /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
         public IReadOnlyCollection<Door> Doors { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Scp079Speaker"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Scp079Speaker"/> in the <see cref="Room"/>.
         /// </summary>
         public IReadOnlyCollection<Scp079Speaker> Speakers { get; private set; }
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
         /// </summary>
         public IReadOnlyCollection<Camera> Cameras { get; private set; }
 
@@ -141,7 +151,7 @@ namespace Exiled.API.Features
                 List<Pickup> pickups = new();
                 foreach (Pickup pickup in Pickup.List)
                 {
-                    if (Room.FindParentRoom(pickup.GameObject) == this)
+                    if (FindParentRoom(pickup.GameObject) == this)
                         pickups.Add(pickup);
                 }
 
@@ -467,6 +477,7 @@ namespace Exiled.API.Features
 
             FlickerableLightController = gameObject.GetComponentInChildren<FlickerableLightController>();
 
+            Windows = WindowsValue.AsReadOnly();
             Doors = DoorsValue.AsReadOnly();
             Speakers = SpeakersValue.AsReadOnly();
             Cameras = CamerasValue.AsReadOnly();

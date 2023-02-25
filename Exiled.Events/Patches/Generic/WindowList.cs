@@ -12,17 +12,17 @@ namespace Exiled.Events.Patches.Generic
 
     using HarmonyLib;
 
-    using MapGeneration.Distributors;
-
     /// <summary>
-    /// Patches <see cref="BreakableWindow.EnableColliders"/>.
+    /// Patches <see cref="BreakableWindow.Awake"/>.
     /// </summary>
-    [HarmonyPatch(typeof(BreakableWindow), nameof(BreakableWindow.EnableColliders))]
+    [HarmonyPatch(typeof(BreakableWindow), nameof(BreakableWindow.Awake))]
     internal class WindowList
     {
         private static void Postfix(BreakableWindow __instance)
         {
-            _ = new Window(__instance, __instance.gameObject.GetComponentInParent<Room>());
+            Log.Info(__instance.gameObject.GetComponentInParent<Room>()?.Type ?? API.Enums.RoomType.Pocket);
+            Window window = new(__instance, __instance.gameObject.GetComponentInParent<Room>());
+            window.Room.WindowsValue.Add(window);
         }
     }
 }
