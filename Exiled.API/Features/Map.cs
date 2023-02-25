@@ -67,10 +67,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<AdminToy> ToysValue = new();
 
-        private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<AdminToy> ReadOnlyToysValue = ToysValue.AsReadOnly();
-
         private static TantrumEnvironmentalHazard tantrumPrefab;
         private static Scp939AmnesticCloudInstance amnesticCloudPrefab;
 
@@ -104,7 +100,7 @@ namespace Exiled.API.Features
             {
                 if (amnesticCloudPrefab == null)
                 {
-                    Scp939GameRole scp939Role = RoleTypeId.Scp939.GetRoleBase() as Scp939GameRole;
+                    Scp939GameRole scp939Role = (Scp939GameRole)RoleTypeId.Scp939.GetRoleBase();
 
                     if (scp939Role.SubroutineModule.TryGetSubroutine(out Scp939AmnesticCloudAbility ability))
                         amnesticCloudPrefab = ability._instancePrefab;
@@ -122,17 +118,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports => ReadOnlyTeleportsValue;
+        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports { get; } = TeleportsValue.AsReadOnly();
 
         /// <summary>
         /// Gets all <see cref="Locker"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
+        public static ReadOnlyCollection<Locker> Lockers { get; } = LockersValue.AsReadOnly();
 
         /// <summary>
         /// Gets all <see cref="AdminToy"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<AdminToy> Toys => ReadOnlyToysValue;
+        public static ReadOnlyCollection<AdminToy> Toys { get; } = ToysValue.AsReadOnly();
 
         /// <summary>
         /// Gets or sets the current seed of the map.
@@ -222,10 +218,10 @@ namespace Exiled.API.Features
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
-                if (room is null)
+                if (room == null)
                     continue;
 
-                if (zoneTypes == ZoneType.Unspecified || (room is not null && (zoneTypes == room.Zone)))
+                if (zoneTypes == ZoneType.Unspecified || room.Zone.HasFlag(zoneTypes))
                     controller.ServerFlickerLights(duration);
             }
         }
