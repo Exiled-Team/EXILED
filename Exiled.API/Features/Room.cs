@@ -144,7 +144,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Pickup> Pickups
+        public IReadOnlyCollection<Pickup> Pickups
         {
             get
             {
@@ -155,7 +155,7 @@ namespace Exiled.API.Features
                         pickups.Add(pickup);
                 }
 
-                return pickups;
+                return pickups.AsReadOnly();
             }
         }
 
