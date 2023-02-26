@@ -457,7 +457,7 @@ namespace Exiled.CustomRoles.API.Features
                 });
 
             Log.Debug($"{Name}: Setting player info");
-            player.CustomInfo = $"{CustomInfo}\n{player.CustomName}";
+            player.CustomInfo = $"{player.CustomName}\n{CustomInfo}";
             player.InfoArea &= ~(PlayerInfoArea.Role | PlayerInfoArea.Nickname);
 
             if (CustomAbilities is not null)
