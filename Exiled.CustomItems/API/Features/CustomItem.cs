@@ -542,7 +542,7 @@ namespace Exiled.CustomItems.API.Features
             {
                 Log.Debug($"Attempting to spawn {Name} at {spawnPoint.Position}.");
 
-                if (UnityEngine.Random.Range(1, 101) >= spawnPoint.Chance || (limit > 0 && spawned >= limit))
+                if (Loader.Random.NextDouble() * 100 >= spawnPoint.Chance || (limit > 0 && spawned >= limit))
                     continue;
 
                 spawned++;
