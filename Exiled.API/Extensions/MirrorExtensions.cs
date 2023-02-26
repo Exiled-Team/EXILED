@@ -161,6 +161,17 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Sets <see cref="Player.DisplayNickname"/> of a <paramref name="player"/> that only the <paramref name="target"/> player can see.
+        /// </summary>
+        /// <param name="target">Only this player can see the name changed.</param>
+        /// <param name="player">Player that will desync the CustomName.</param>
+        /// <param name="name">Nickname to set.</param>
+        public static void SetName(this Player target, Player player, string name)
+        {
+            target.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
+        }
+
+        /// <summary>
         /// Sets <see cref="Room.LightIntensity"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
