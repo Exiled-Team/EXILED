@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs.Scp049
         public ZombieConsumeAbility.ConsumeError ErrorCode { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether 049-2 can consume a corpse
+        ///     Gets or sets a value indicating whether 049-2 can consume a corpse.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
