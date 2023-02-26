@@ -23,7 +23,6 @@ namespace Exiled.Events.Patches.Generic
     using PlayerRoles.PlayableScps.Scp079.Cameras;
 
     using static HarmonyLib.AccessTools;
-    using static PlayerList;
 
     /// <summary>
     /// Patches <see cref="Scp079InteractableBase.OnRegistered"/>.
