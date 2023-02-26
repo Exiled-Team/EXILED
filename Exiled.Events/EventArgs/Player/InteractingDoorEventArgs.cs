@@ -57,7 +57,7 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the access is denied or not.
+        ///     Gets or sets a value indicating whether the access is granted or not.
         /// </summary>
         public bool AccessGranted { get; set; }
     }
