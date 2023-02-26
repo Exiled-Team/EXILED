@@ -200,7 +200,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>True if the item is a custom item.</returns>
         public static bool TryGet(Item item, out CustomItem customItem)
         {
-            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(item.Serial));
+            customItem = item == null ? null : Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(item.Serial));
 
             return customItem is not null;
         }
