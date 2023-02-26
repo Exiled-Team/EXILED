@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="UsingAtlas.cs" company="Exiled Team">
+// <copyright file="Teleporting.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     ///     Adds the <see cref="Handlers.Scp106.Teleporting" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.ServerProcessCmd))]
-    internal static class UsingAtlas
+    internal static class Teleporting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
