@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features
 {
-#pragma warning disable SA1202
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -17,7 +16,6 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Interfaces;
-    using Interactables.Interobjects.DoorUtils;
 
     using MapGeneration;
 
@@ -38,26 +36,6 @@ namespace Exiled.API.Features
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
         /// </summary>
         internal static readonly Dictionary<RoomIdentifier, Room> RoomIdentifierToRoom = new(250);
-
-        /// <summary>
-        /// Gets a <see cref="List{T}"/> containing all known <see cref="Window"/>s in that <see cref="Room"/>.
-        /// </summary>
-        internal List<Window> WindowsValue { get; } = new();
-
-        /// <summary>
-        /// Gets a <see cref="List{T}"/> containing all known <see cref="Door"/>s in that <see cref="Room"/>.
-        /// </summary>
-        internal List<Door> DoorsValue { get; } = new();
-
-        /// <summary>
-        /// Gets a <see cref="List{T}"/> containing all known <see cref="Scp079Speaker"/>s in that <see cref="Room"/>.
-        /// </summary>
-        internal List<Scp079Speaker> SpeakersValue { get; } = new();
-
-        /// <summary>
-        /// Gets a <see cref="List{T}"/> containing all known <see cref="Camera"/>s in that <see cref="Room"/>.
-        /// </summary>
-        internal List<Camera> CamerasValue { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
@@ -210,6 +188,26 @@ namespace Exiled.API.Features
         /// Gets the room's FlickerableLightController.
         /// </summary>
         public FlickerableLightController FlickerableLightController { get; private set; }
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Window"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<Window> WindowsValue { get; } = new();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Door"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<Door> DoorsValue { get; } = new();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Scp079Speaker"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<Scp079Speaker> SpeakersValue { get; } = new();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="Camera"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<Camera> CamerasValue { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.

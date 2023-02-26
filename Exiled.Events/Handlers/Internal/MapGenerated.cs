@@ -49,13 +49,13 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
+
+            GenerateAttachments();
             Timing.CallDelayed(1, GenerateCache);
         }
 
         private static void GenerateCache()
         {
-            GenerateAttachments();
-
             Handlers.Map.OnGenerated();
 
             Timing.CallDelayed(0.1f, Handlers.Server.OnWaitingForPlayers);
@@ -89,8 +89,8 @@ namespace Exiled.Events.Handlers.Internal
 
                 attachmentsSlots
                     .ForEach(slot => baseCode += attachmentIdentifiers
-                    .Where(attachment => attachment.Slot == slot)
-                    .Aggregate((curMin, nextEntry) => nextEntry.Code < curMin.Code ? nextEntry : curMin));
+                        .Where(attachment => attachment.Slot == slot)
+                        .Min(slot => slot.Code));
 
                 Firearm.BaseCodesValue.Add(firearmType, baseCode);
                 Firearm.AvailableAttachmentsValue.Add(firearmType, attachmentIdentifiers.ToArray());

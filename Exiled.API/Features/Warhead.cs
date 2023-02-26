@@ -20,11 +20,6 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Warhead
     {
-        /// <summary>
-        /// A <see cref="List{T}"/> containing all <see cref="BlastDoor"/>.
-        /// </summary>
-        internal static readonly List<BlastDoor> InternalBlastDoors = new();
-
         private static AlphaWarheadOutsitePanel alphaWarheadOutsitePanel;
 
         /// <summary>
@@ -68,16 +63,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all of the warhead blast doors.
         /// </summary>
-        public static IReadOnlyCollection<BlastDoor> BlastDoors
-        {
-            get
-            {
-                if (InternalBlastDoors.Count == 0)
-                    InternalBlastDoors.AddRange(Object.FindObjectsOfType<BlastDoor>());
-
-                return InternalBlastDoors.AsReadOnly();
-            }
-        }
+        public static IReadOnlyCollection<BlastDoor> BlastDoors => BlastDoor.Instances;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the warhead lever is enabled.

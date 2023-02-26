@@ -20,7 +20,6 @@ namespace Exiled.Events.Patches.Generic
     {
         private static void Postfix(BreakableWindow __instance)
         {
-            Log.Info(__instance.gameObject.GetComponentInParent<Room>()?.Type ?? API.Enums.RoomType.Pocket);
             Window window = new(__instance, __instance.gameObject.GetComponentInParent<Room>());
             window.Room.WindowsValue.Add(window);
         }

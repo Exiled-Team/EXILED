@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features
 {
-#pragma warning disable SA1201
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -37,11 +36,6 @@ namespace Exiled.API.Features
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>'s and their corresponding <see cref="Door"/>.
         /// </summary>
         internal static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new();
-
-        /// <summary>
-        /// Gets a <see cref="List{T}"/> containing all <see cref="Features.Room"/>'s that are connected with <see cref="Door"/>.
-        /// </summary>
-        internal List<Room> RoomsValue { get; } = new List<Room>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
@@ -94,7 +88,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Features.Room"/>'s that the door is located in.
         /// </summary>
-        public ReadOnlyCollection<Room> Rooms { get; private set; }
+        public ReadOnlyCollection<Room> Rooms { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
@@ -279,6 +273,11 @@ namespace Exiled.API.Features
         /// Gets the door's <see cref="ZoneType"/>.
         /// </summary>
         public ZoneType Zone => Room?.Zone ?? ZoneType.Unspecified;
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all <see cref="Features.Room"/>'s that are connected with <see cref="Door"/>.
+        /// </summary>
+        internal List<Room> RoomsValue { get; } = new List<Room>();
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
