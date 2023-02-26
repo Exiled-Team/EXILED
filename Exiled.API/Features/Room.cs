@@ -122,18 +122,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
         /// </summary>
-        public IReadOnlyCollection<Pickup> Pickups
+        public IEnumerable<Pickup> Pickups
         {
             get
             {
-                List<Pickup> pickups = new();
-                foreach (Pickup pickup in Pickup.List)
-                {
-                    if (FindParentRoom(pickup.GameObject) == this)
-                        pickups.Add(pickup);
-                }
-
-                return pickups.AsReadOnly();
+                return Pickup.List.Where((pickup) => FindParentRoom(pickup.GameObject) == this);
             }
         }
 

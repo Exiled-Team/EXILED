@@ -55,7 +55,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A list of <see cref="Locker"/>s on the map.
         /// </summary>
-        internal static readonly List<Locker> LockersValue = new(250);
+        internal static readonly List<Locker> LockersValue = new(35);
 
         /// <summary>
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
@@ -81,7 +81,7 @@ namespace Exiled.API.Features
             {
                 if (tantrumPrefab == null)
                 {
-                    Scp173GameRole scp173Role = RoleTypeId.Scp173.GetRoleBase() as Scp173GameRole;
+                    Scp173GameRole scp173Role = (Scp173GameRole)RoleTypeId.Scp173.GetRoleBase();
 
                     if (scp173Role.SubroutineModule.TryGetSubroutine(out Scp173TantrumAbility scp173TantrumAbility))
                         tantrumPrefab = scp173TantrumAbility._tantrumPrefab;
