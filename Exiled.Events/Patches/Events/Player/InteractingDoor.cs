@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, false, true);
+                InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, true, true);
 
                 bool bypassDenied = false;
 
@@ -48,7 +48,7 @@ namespace Exiled.Events.Patches.Events.Player
                         (mode == DoorLockMode.FullLock || (__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanClose)) ||
                         (!__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanOpen))))
                     {
-                        ev.IsAllowed = false;
+                        ev.AccessGranted = false;
                         bypassDenied = true;
                     }
                 }
