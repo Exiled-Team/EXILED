@@ -36,10 +36,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, false);
+                InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, false, true);
 
                 bool bypassDenied = false;
-                bool allowInteracting = false;
 
                 if (__instance.ActiveLocks > 0 && !ply.serverRoles.BypassMode)
                 {
@@ -54,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
-                if (!bypassDenied && (allowInteracting = __instance.AllowInteracting(ply, colliderId)))
+                if (!bypassDenied && (ev.AccessGranted = __instance.AllowInteracting(ply, colliderId)))
                 {
                     if (ply.GetRoleId() == RoleTypeId.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply))
                     {
@@ -68,9 +67,14 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Handlers.Player.OnInteractingDoor(ev);
 
-                if (EventManager.ExecuteEvent(PluginAPI.Enums.ServerEventType.PlayerInteractDoor, new object[] { ply, __instance, ev.IsAllowed }))
+                if (EventManager.ExecuteEvent(PluginAPI.Enums.ServerEventType.PlayerInteractDoor, new object[] { ply, __instance, ev.IsAllowed && ev.AccessGranted }))
                 {
-                    if (ev.IsAllowed && allowInteracting)
+                    if (!ev.IsAllowed)
+                    {
+                        return false;
+                    }
+
+                    if (ev.AccessGranted)
                     {
                         __instance.NetworkTargetState = !__instance.TargetState;
                         __instance._triggerPlayer = ply;
@@ -79,11 +83,8 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         __instance.LockBypassDenied(ply, colliderId);
                     }
-                    // Don't call the RPC if the door is still moving
-                    else if (allowInteracting)
+                    else
                     {
-                        // To avoid breaking their API, call the access denied event
-                        // when our event prevents the door from opening
                         __instance.PermissionsDenied(ply, colliderId);
                         DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
                     }

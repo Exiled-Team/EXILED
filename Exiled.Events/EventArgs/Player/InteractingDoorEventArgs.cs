@@ -30,11 +30,15 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true)
+        /// <param name="accessGranted">
+        ///     <inheritdoc cref="AccessGranted" />
+        /// </param>
+        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true, bool accessGranted = true)
         {
             Player = player;
             Door = Door.Get(door);
             IsAllowed = isAllowed;
+            AccessGranted = accessGranted;
         }
 
         /// <summary>
@@ -51,5 +55,10 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the player who's interacting with the door.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the access is denied or not.
+        /// </summary>
+        public bool AccessGranted { get; set; }
     }
 }
