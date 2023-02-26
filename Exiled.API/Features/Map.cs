@@ -325,8 +325,6 @@ namespace Exiled.API.Features
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
 
-            Warhead.InternalBlastDoors.Clear();
-
             // idk about that
             GC.Collect();
         }
