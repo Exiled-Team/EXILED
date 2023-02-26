@@ -7,9 +7,9 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-    using System;
 #pragma warning disable SA1313
 #pragma warning disable SA1402
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 

@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ItemDistributor.SpawnPickup" />.
-    ///     Adds the <see cref="Map.SpawningItem" /> event.
+    ///     Patches <see cref="LockerChamber.SpawnItem" />.
+    ///     Adds the <see cref="Handlers.Map.FillingLocker" /> event.
     /// </summary>
     [HarmonyPatch(typeof(LockerChamber), nameof(LockerChamber.SpawnItem))]
     internal static class FillingLocker
