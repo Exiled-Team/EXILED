@@ -58,7 +58,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances.
         /// </summary>
-        public static IEnumerable<Lift> List => ElevatorChamberToLift.Values;
+        public static IReadOnlyCollection<Lift> List => ElevatorChamberToLift.Values;
 
         /// <summary>
         /// Gets a random <see cref="Lift"/>.
