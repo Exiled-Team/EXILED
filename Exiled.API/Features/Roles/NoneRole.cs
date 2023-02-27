@@ -25,11 +25,16 @@ namespace Exiled.API.Features.Roles
         {
         }
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => RoleTypeId.None;
+            get => Type;
             set => Set(value);
         }
+
+        /// <inheritdoc/>
+        internal override RoleTypeId Type => RoleTypeId.None;
     }
 }

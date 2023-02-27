@@ -45,10 +45,12 @@ namespace Exiled.API.Features.Roles
             SenseAbility = scp049SenseAbility;
         }
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => RoleTypeId.Scp049;
+            get => Type;
             set => Set(value);
         }
 
@@ -118,6 +120,9 @@ namespace Exiled.API.Features.Roles
                 SenseAbility.ServerSendRpc(true);
             }
         }
+
+        /// <inheritdoc/>
+        internal override RoleTypeId Type => RoleTypeId.Scp049;
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.

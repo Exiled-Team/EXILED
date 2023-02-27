@@ -91,10 +91,12 @@ namespace Exiled.API.Features.Roles
             CurrentCameraSync = scp079CameraSync;
         }
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => RoleTypeId.Scp079;
+            get => Type;
             set => Set(value);
         }
 
@@ -304,6 +306,9 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's energy regeneration speed.
         /// </summary>
         public float EnergyRegenerationSpeed => AuxManager.RegenSpeed;
+
+        /// <inheritdoc/>
+        internal override RoleTypeId Type => RoleTypeId.Scp079;
 
         /// <summary>
         /// Gets the game <see cref="Scp079GameRole"/>.

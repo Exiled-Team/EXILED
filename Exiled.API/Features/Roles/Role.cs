@@ -56,7 +56,11 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
-        public abstract RoleTypeId Type { get; set; }
+        public RoleTypeId RoleId
+        {
+            get => Type;
+            set => Set(value);
+        }
 
         /// <summary>
         /// Gets the base <see cref="PlayerRoleBase"/>.
@@ -118,6 +122,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <returns>The spawn position.</returns>
         public virtual SpawnLocation RandomSpawnLocation => Type.GetRandomSpawnLocation();
+
+        /// <summary>
+        /// Gets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        internal abstract RoleTypeId Type { get; }
 
         /// <summary>
         /// Converts a role to its appropriate <see cref="RoleTypeId"/>.

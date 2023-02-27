@@ -54,10 +54,12 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => RoleTypeId.Scp096;
+            get => Type;
             set => Set(value);
         }
 
@@ -153,6 +155,9 @@ namespace Exiled.API.Features.Roles
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of Players that are currently targeted by SCP-096.
         /// </summary>
         public IReadOnlyCollection<Player> Targets => RageCycleAbility._targetsTracker.Targets.Select(Player.Get).ToList().AsReadOnly();
+
+        /// <inheritdoc/>
+        internal override RoleTypeId Type => RoleTypeId.Scp096;
 
         /// <summary>
         /// Gets the <see cref="Scp096GameRole"/>.

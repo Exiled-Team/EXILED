@@ -30,10 +30,12 @@ namespace Exiled.API.Features.Roles
             Internal = baseRole;
         }
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => RoleTypeId.Spectator;
+            get => Type;
             set => Set(value);
         }
 
@@ -69,6 +71,9 @@ namespace Exiled.API.Features.Roles
                 return spectatedPlayer != Owner ? spectatedPlayer : null;
             }
         }
+
+        /// <inheritdoc/>
+        internal override RoleTypeId Type => RoleTypeId.Spectator;
 
         /// <summary>
         /// Gets the game <see cref="SpectatorGameRole"/>.

@@ -68,10 +68,12 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => RoleTypeId.Scp173;
+            get => Type;
             set => Set(value);
         }
 
@@ -190,6 +192,9 @@ namespace Exiled.API.Features.Roles
             get => TeleportAbility._breakneckSpeedsAbility.IsActive;
             set => TeleportAbility._breakneckSpeedsAbility.IsActive = value;
         }
+
+        /// <inheritdoc/>
+        internal override RoleTypeId Type => RoleTypeId.Scp173;
 
         /// <summary>
         /// Places a Tantrum (SCP-173's ability) under the player.

@@ -28,10 +28,12 @@ namespace Exiled.API.Features.Roles
             Internal = baseRole;
         }
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => Internal.RoleTypeId;
+            get => Type;
             set => Set(value);
         }
 
@@ -62,6 +64,9 @@ namespace Exiled.API.Features.Roles
         /// Gets a value indicating whether the <see cref="HumanRole"/> uses unit names or not.
         /// </summary>
         public bool UsesUnitNames => Internal.UsesUnitNames;
+
+        /// <inheritdoc/>
+        internal override RoleTypeId Type => Internal.RoleTypeId;
 
         /// <summary>
         /// Gets the game <see cref="HumanGameRole"/>.

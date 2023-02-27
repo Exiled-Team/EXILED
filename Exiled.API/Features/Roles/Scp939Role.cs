@@ -86,10 +86,12 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         ~Scp939Role() => ListPool<Player>.Pool.Return(VisiblePlayers);
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => RoleTypeId.Scp939;
+            get => Type;
             set => Set(value);
         }
 
@@ -212,6 +214,9 @@ namespace Exiled.API.Features.Roles
         /// Gets a list of players this SCP-939 instance can see regardless of their movement.
         /// </summary>
         public List<Player> VisiblePlayers { get; } = ListPool<Player>.Pool.Get();
+
+        /// <inheritdoc/>
+        internal override RoleTypeId Type => RoleTypeId.Scp939;
 
         /// <summary>
         /// Removes all recordings of player voices. Provide an optional target to remove all the recordings of a single player.

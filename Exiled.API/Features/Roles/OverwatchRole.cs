@@ -26,10 +26,6 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        public override RoleTypeId Type
-        {
-            get => RoleTypeId.Overwatch;
-            set => Set(value);
-        }
+        internal override RoleTypeId Type => RoleTypeId.Overwatch;
     }
 }

@@ -59,10 +59,12 @@ namespace Exiled.API.Features.Roles
             SinkholeController = scp106SinkholeController;
         }
 
-        /// <inheritdoc/>
-        public override RoleTypeId Type
+        /// <summary>
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// </summary>
+        public RoleTypeId RoleId
         {
-            get => RoleTypeId.Scp106;
+            get => Type;
             set => Set(value);
         }
 
@@ -153,6 +155,8 @@ namespace Exiled.API.Features.Roles
             get => StalkAbility.IsActive;
             set => StalkAbility.IsActive = value;
         }
+
+        internal override RoleTypeId Type => RoleTypeId.Scp106;
 
         /// <summary>
         /// Gets the <see cref="Scp106GameRole"/>.
