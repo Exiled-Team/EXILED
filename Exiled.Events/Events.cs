@@ -19,10 +19,9 @@ namespace Exiled.Events
 
     using HarmonyLib;
 
-    using PlayerRoles;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
-
+    using PlayerRoles.RoleAssign;
     using PluginAPI.Events;
 
     using UnityEngine.SceneManagement;
@@ -83,6 +82,7 @@ namespace Exiled.Events
             watch.Stop();
 
             Log.Info($"Patching completed in {watch.Elapsed}");
+            CharacterClassManager.OnInstanceModeChanged -= RoleAssigner.CheckLateJoin;
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
@@ -91,10 +91,9 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
+            Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
 
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
-
-            PlayerRoleManager.OnRoleChanged += Handlers.Player.OnSpawned;
 
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
@@ -125,10 +124,9 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
+            Handlers.Player.Verified -= Handlers.Internal.Round.OnVerified;
 
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
-
-            PlayerRoleManager.OnRoleChanged -= Handlers.Player.OnSpawned;
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
 

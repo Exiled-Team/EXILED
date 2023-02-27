@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Item
                     new CodeInstruction(OpCodes.Ldarg_0),
 
                     // header (JailbirdMessageType)
-                    new CodeInstruction(OpCodes.Ldloc_1),
+                    new CodeInstruction(OpCodes.Ldloc_0),
 
                     // HandleJailbird(JailbirdItem, JailbirdMessageType)
                     new(OpCodes.Call, Method(typeof(JailbirdPatch), nameof(HandleJailbird))),

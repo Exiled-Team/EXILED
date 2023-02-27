@@ -29,6 +29,12 @@ namespace Exiled.Loader
         public bool Debug { get; set; } = false;
 
         /// <summary>
+        /// Gets or sets a value indicating whether outdated exiled should be loaded or not.
+        /// </summary>
+        [Description("Indicates whether outdated Exiled should be loaded or not. It could cause issues when it's true")]
+        public bool ShouldLoadOutdatedExiled { get; set; } = false;
+
+        /// <summary>
         /// Gets or sets a value indicating whether outdated plugins should be loaded or not.
         /// </summary>
         [Description("Indicates whether outdated plugins should be loaded or not")]

@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for EffectGrenade.
     /// </summary>
-    public class EffectGrenadeProjectile : TimeGrenadeProjectile, IWrapper<EffectGrenade>, IWorldSpace
+    public class EffectGrenadeProjectile : TimeGrenadeProjectile, IWrapper<EffectGrenade>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EffectGrenadeProjectile"/> class.

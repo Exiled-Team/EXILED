@@ -65,7 +65,6 @@ namespace Exiled.Events.Handlers.Internal
             Warhead.OutsitePanel = Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
             GenerateCamera();
-            GenerateTeslaGates();
             GenerateRooms();
             GenerateWindows();
             GenerateLifts();
@@ -111,12 +110,6 @@ namespace Exiled.Events.Handlers.Internal
         {
             foreach (Scp079Camera camera079 in Object.FindObjectsOfType<Scp079Camera>())
                 new Camera(camera079);
-        }
-
-        private static void GenerateTeslaGates()
-        {
-            foreach (global::TeslaGate teslaGate in TeslaGateController.Singleton.TeslaGates)
-                new TeslaGate(teslaGate);
         }
 
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());

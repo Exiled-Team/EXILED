@@ -23,6 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using PlayerRoles;
 
+    using PluginAPI.Events;
+
     /// <summary>
     ///     Patches <see cref="DoorVariant.ServerInteract(ReferenceHub, byte)" />.
     ///     Adds the <see cref="Handlers.Player.InteractingDoor" /> event.
@@ -47,10 +49,8 @@ namespace Exiled.Events.Patches.Events.Player
                         (mode == DoorLockMode.FullLock || (__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanClose)) ||
                         (!__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanOpen))))
                     {
-                        //>EXILED
                         ev.IsAllowed = false;
                         bypassDenied = true;
-                        //<EXILED
                     }
                 }
 
@@ -58,40 +58,36 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     if (ply.GetRoleId() == RoleTypeId.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply))
                     {
-                        //>EXILED
                         ev.IsAllowed = true;
-                        //<EXILED
                     }
                     else
                     {
-                        //>EXILED
                         ev.IsAllowed = false;
-                        //<EXILED
                     }
                 }
 
-                //>EXILED
                 Handlers.Player.OnInteractingDoor(ev);
 
-                if (ev.IsAllowed && allowInteracting)
+                if (EventManager.ExecuteEvent(PluginAPI.Enums.ServerEventType.PlayerInteractDoor, new object[] { ply, __instance, ev.IsAllowed }))
                 {
-                    __instance.NetworkTargetState = !__instance.TargetState;
-                    __instance._triggerPlayer = ply;
+                    if (ev.IsAllowed && allowInteracting)
+                    {
+                        __instance.NetworkTargetState = !__instance.TargetState;
+                        __instance._triggerPlayer = ply;
+                    }
+                    else if (bypassDenied)
+                    {
+                        __instance.LockBypassDenied(ply, colliderId);
+                    }
+                    // Don't call the RPC if the door is still moving
+                    else if (allowInteracting)
+                    {
+                        // To avoid breaking their API, call the access denied event
+                        // when our event prevents the door from opening
+                        __instance.PermissionsDenied(ply, colliderId);
+                        DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
+                    }
                 }
-                else if (bypassDenied)
-                {
-                    __instance.LockBypassDenied(ply, colliderId);
-                }
-                // Don't call the RPC if the door is still moving
-                else if (allowInteracting)
-                {
-                    // To avoid breaking their API, call the access denied event
-                    // when our event prevents the door from opening
-                    __instance.PermissionsDenied(ply, colliderId);
-                    DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
-                }
-                //<EXILED
-
                 return false;
             }
             catch (Exception exception)

@@ -16,7 +16,7 @@ namespace Exiled.API.Features.Pickups
     /// <summary>
     /// A wrapper class for a Firearm pickup.
     /// </summary>
-    public class FirearmPickup : Pickup, IWrapper<BaseFirearm>, IWorldSpace
+    public class FirearmPickup : Pickup, IWrapper<BaseFirearm>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FirearmPickup"/> class.
@@ -36,6 +36,7 @@ namespace Exiled.API.Features.Pickups
             : base(type)
         {
             Base = (BaseFirearm)((Pickup)this).Base;
+            IsDistributed = true;
         }
 
         /// <summary>
