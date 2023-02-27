@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     /// <summary>
     ///     Patches <see cref="Scp106HuntersAtlasAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Teleporting" /> event.
+    ///     Adds the <see cref="Handlers.Scp106.Teleporting" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.ServerProcessCmd))]
     internal static class Teleporting

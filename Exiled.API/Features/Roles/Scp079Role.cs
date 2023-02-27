@@ -10,6 +10,7 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using Interactables.Interobjects.DoorUtils;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
@@ -153,10 +154,11 @@ namespace Exiled.API.Features.Roles
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
+        /// <remarks>This value will return the <c>Hcz079ContChamber</c> Camera if SCP-079's current camera cannot be detected.</remarks>
         /// </summary>
         public Camera Camera
         {
-            get => Camera.Get(Internal.CurrentCamera);
+            get => Camera.Get(Internal.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
             set => Internal._curCamSync.CurrentCamera = value.Base;
         }
 
