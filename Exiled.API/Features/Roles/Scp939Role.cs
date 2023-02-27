@@ -87,7 +87,11 @@ namespace Exiled.API.Features.Roles
         ~Scp939Role() => ListPool<Player>.Pool.Return(VisiblePlayers);
 
         /// <inheritdoc/>
-        public override RoleTypeId Type { get; } = RoleTypeId.Scp939;
+        public override RoleTypeId Type
+        {
+            get => RoleTypeId.Scp939;
+            set => Set(value);
+        }
 
         /// <inheritdoc/>
         public SubroutineManagerModule SubroutineModule { get; }

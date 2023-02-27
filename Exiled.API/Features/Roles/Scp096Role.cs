@@ -55,7 +55,11 @@ namespace Exiled.API.Features.Roles
         public static HashSet<Player> TurnedPlayers { get; } = new(20);
 
         /// <inheritdoc/>
-        public override RoleTypeId Type { get; } = RoleTypeId.Scp096;
+        public override RoleTypeId Type
+        {
+            get => RoleTypeId.Scp096;
+            set => Set(value);
+        }
 
         /// <inheritdoc/>
         public SubroutineManagerModule SubroutineModule { get; }

@@ -31,7 +31,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        public override RoleTypeId Type => RoleTypeId.Spectator;
+        public override RoleTypeId Type
+        {
+            get => RoleTypeId.Spectator;
+            set => Set(value);
+        }
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> at which the player died.

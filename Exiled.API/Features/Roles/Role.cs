@@ -56,7 +56,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
-        public abstract RoleTypeId Type { get; }
+        public abstract RoleTypeId Type { get; set; }
 
         /// <summary>
         /// Gets the base <see cref="PlayerRoleBase"/>.
