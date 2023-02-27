@@ -46,7 +46,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        public override RoleTypeId Type { get; } = RoleTypeId.Scp049;
+        public override RoleTypeId Type
+        {
+            get => RoleTypeId.Scp049;
+            set => Set(value);
+        }
 
         /// <inheritdoc/>
         public SubroutineManagerModule SubroutineModule { get; }

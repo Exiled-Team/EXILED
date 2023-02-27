@@ -26,6 +26,10 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        public override RoleTypeId Type { get; } = RoleTypeId.None;
+        public override RoleTypeId Type
+        {
+            get => RoleTypeId.None;
+            set => Set(value);
+        }
     }
 }

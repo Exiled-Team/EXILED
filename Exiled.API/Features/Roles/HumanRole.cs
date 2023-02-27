@@ -29,7 +29,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        public override RoleTypeId Type => Internal.RoleTypeId;
+        public override RoleTypeId Type
+        {
+            get => Internal.RoleTypeId;
+            set => Set(value);
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="SpawnableTeamType"/>.

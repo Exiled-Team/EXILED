@@ -9,17 +9,13 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features.Pools;
 
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
-    using PlayerRoles.PlayableScps.Scp939.Ripples;
     using PlayerRoles.PlayableScps.Subroutines;
-
-    using RelativePositioning;
 
     using UnityEngine;
 
@@ -69,16 +65,6 @@ namespace Exiled.API.Features.Roles
                 Log.Error("MimicryRecorder not found in Scp939Role::ctor");
 
             MimicryRecorder = mimicryRecorder;
-
-            if (!SubroutineModule.TryGetSubroutine(out FootstepRippleTrigger footstepRippleTrigger))
-                Log.Error("FootstepRippleTrigger not found in Scp939Role::ctor");
-
-            FootstepRippleTrigger = footstepRippleTrigger;
-
-            if (!SubroutineModule.TryGetSubroutine(out FirearmRippleTrigger firearmRippleTrigger))
-                Log.Error("FirearmRippleTrigger not found in Scp939Role::ctor");
-
-            FirearmRippleTrigger = firearmRippleTrigger;
         }
 
         /// <summary>
@@ -87,7 +73,11 @@ namespace Exiled.API.Features.Roles
         ~Scp939Role() => ListPool<Player>.Pool.Return(VisiblePlayers);
 
         /// <inheritdoc/>
-        public override RoleTypeId Type { get; } = RoleTypeId.Scp939;
+        public override RoleTypeId Type
+        {
+            get => RoleTypeId.Scp939;
+            set => Set(value);
+        }
 
         /// <inheritdoc/>
         public SubroutineManagerModule SubroutineModule { get; }
@@ -119,16 +109,6 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-939's <see cref="PlayerRoles.PlayableScps.Scp939.Mimicry.EnvironmentalMimicry"/>.
         /// </summary>
         public EnvironmentalMimicry EnvironmentalMimicry { get; }
-
-        /// <summary>
-        /// Gets SCP-939's <see cref="FootstepRippleTrigger"/>.
-        /// </summary>
-        public FootstepRippleTrigger FootstepRippleTrigger { get; }
-
-        /// <summary>
-        /// Gets SCP-939's <see cref="FirearmRippleTrigger"/>.
-        /// </summary>
-        public FirearmRippleTrigger FirearmRippleTrigger { get; }
 
         /// <summary>
         /// Gets SCP-939's <see cref="PlayerRoles.PlayableScps.Scp939.Mimicry.MimicryRecorder"/>.
@@ -229,28 +209,6 @@ namespace Exiled.API.Features.Roles
             MimicryRecorder.SavedVoices.Clear();
             MimicryRecorder._serverSentVoices.Clear();
             MimicryRecorder.SavedVoicesModified = true;
-        }
-
-        /// <summary>
-        /// Plays a Ripple Sound (Usable RippleType: Footstep, FireArm).
-        /// </summary>
-        /// <param name="ripple">The RippleType to play to 939.</param>
-        /// <param name="position">The Sync Position to play.</param>
-        /// <param name="playerToSend">The Player to send the Ripple Sound.</param>
-        public void PlayRippleSound(UsableRippleType ripple, Vector3 position, Player playerToSend)
-        {
-            switch (ripple)
-            {
-                case UsableRippleType.Footstep:
-                    FootstepRippleTrigger._syncPos = new RelativePosition(position);
-                    FootstepRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
-                    break;
-                case UsableRippleType.FireArm:
-                    FirearmRippleTrigger._syncRoleColor = RoleTypeId.ClassD;
-                    FirearmRippleTrigger._syncRipplePos = new RelativePosition(position);
-                    FirearmRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
-                    break;
-            }
         }
     }
 }
