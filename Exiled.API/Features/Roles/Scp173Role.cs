@@ -71,9 +71,9 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
-        public RoleTypeId RoleId
+        public RoleTypeId Type
         {
-            get => Type;
+            get => RoleId;
             set => Set(value);
         }
 
@@ -194,7 +194,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleTypeId Type => RoleTypeId.Scp173;
+        internal override RoleTypeId RoleId => RoleTypeId.Scp173;
 
         /// <summary>
         /// Places a Tantrum (SCP-173's ability) under the player.

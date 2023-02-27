@@ -57,9 +57,9 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
-        public RoleTypeId RoleId
+        public RoleTypeId Type
         {
-            get => Type;
+            get => RoleId;
             set => Set(value);
         }
 
@@ -157,7 +157,7 @@ namespace Exiled.API.Features.Roles
         public IReadOnlyCollection<Player> Targets => RageCycleAbility._targetsTracker.Targets.Select(Player.Get).ToList().AsReadOnly();
 
         /// <inheritdoc/>
-        internal override RoleTypeId Type => RoleTypeId.Scp096;
+        internal override RoleTypeId RoleId => RoleTypeId.Scp096;
 
         /// <summary>
         /// Gets the <see cref="Scp096GameRole"/>.

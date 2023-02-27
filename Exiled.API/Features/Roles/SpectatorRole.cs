@@ -33,9 +33,9 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
-        public RoleTypeId RoleId
+        public RoleTypeId Type
         {
-            get => Type;
+            get => RoleId;
             set => Set(value);
         }
 
@@ -73,7 +73,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleTypeId Type => RoleTypeId.Spectator;
+        internal override RoleTypeId RoleId => RoleTypeId.Spectator;
 
         /// <summary>
         /// Gets the game <see cref="SpectatorGameRole"/>.

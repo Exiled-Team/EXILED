@@ -62,9 +62,9 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
-        public RoleTypeId RoleId
+        public RoleTypeId Type
         {
-            get => Type;
+            get => RoleId;
             set => Set(value);
         }
 
@@ -156,7 +156,7 @@ namespace Exiled.API.Features.Roles
             set => StalkAbility.IsActive = value;
         }
 
-        internal override RoleTypeId Type => RoleTypeId.Scp106;
+        internal override RoleTypeId RoleId => RoleTypeId.Scp106;
 
         /// <summary>
         /// Gets the <see cref="Scp106GameRole"/>.

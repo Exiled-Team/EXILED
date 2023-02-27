@@ -89,9 +89,9 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
-        public RoleTypeId RoleId
+        public RoleTypeId Type
         {
-            get => Type;
+            get => RoleId;
             set => Set(value);
         }
 
@@ -216,7 +216,7 @@ namespace Exiled.API.Features.Roles
         public List<Player> VisiblePlayers { get; } = ListPool<Player>.Pool.Get();
 
         /// <inheritdoc/>
-        internal override RoleTypeId Type => RoleTypeId.Scp939;
+        internal override RoleTypeId RoleId => RoleTypeId.Scp939;
 
         /// <summary>
         /// Removes all recordings of player voices. Provide an optional target to remove all the recordings of a single player.

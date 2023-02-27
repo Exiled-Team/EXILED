@@ -48,9 +48,9 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
-        public RoleTypeId RoleId
+        public RoleTypeId Type
         {
-            get => Type;
+            get => RoleId;
             set => Set(value);
         }
 
@@ -122,7 +122,7 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <inheritdoc/>
-        internal override RoleTypeId Type => RoleTypeId.Scp049;
+        internal override RoleTypeId RoleId => RoleTypeId.Scp049;
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.
