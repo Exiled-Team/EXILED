@@ -362,6 +362,21 @@ namespace Exiled.Loader
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
         public static void Run(Assembly[] dependencies = null)
         {
+            if (!Config.ShouldLoadOutdatedExiled &&
+                GameCore.Version.CompatibilityCheck(
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Major,
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Minor,
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Revision,
+                    GameCore.Version.Major,
+                    GameCore.Version.Minor,
+                    GameCore.Version.Revision,
+                    GameCore.Version.BackwardCompatibility,
+                    GameCore.Version.BackwardRevision))
+            {
+                ServerConsole.AddLog("Exiled is outdated, please update to the latest version. Wait for release if still shows after update.", ConsoleColor.DarkRed);
+                return;
+            }
+
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? CheckUAC() : geteuid() == 0)
             {
                 ServerConsole.AddLog("YOU ARE RUNNING THE SERVER AS ROOT / ADMINISTRATOR. THIS IS HIGHLY UNRECOMMENDED. PLEASE INSTALL YOUR SERVER AS A NON-ROOT/ADMIN USER.", ConsoleColor.DarkRed);
