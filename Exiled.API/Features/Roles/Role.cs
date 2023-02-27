@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Roles
         public virtual Player Owner { get; }
 
         /// <summary>
-        /// Gets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
+        /// Gets or sets the <see cref="RoleTypeId"/> of this <see cref="Player"/>.
         /// </summary>
         public abstract RoleTypeId Type { get; set; }
 
