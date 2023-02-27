@@ -100,6 +100,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual SpawnProperties SpawnProperties { get; set; } = new();
 
         /// <summary>
+        /// Gets or sets a value indicating whether players keep their current position when gaining this role.
+        /// </summary>
+        public virtual bool KeepPositionOnSpawn { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether players keep their current inventory when gaining this role.
         /// </summary>
         public virtual bool KeepInventoryOnSpawn { get; set; }
@@ -409,29 +414,24 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to add the role to.</param>
         public virtual void AddRole(Player player)
         {
-            Vector3 oldPos = player.Position;
-
             Log.Debug($"{Name}: Adding role to {player.Nickname}.");
 
             if (Role != RoleTypeId.None)
-                player.Role.Set(Role, SpawnReason.ForceClass);
+            {
+                if (KeepPositionOnSpawn && KeepInventoryOnSpawn)
+                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.None);
+                else if (KeepPositionOnSpawn)
+                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.AssignInventory);
+                else if (KeepInventoryOnSpawn)
+                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.UseSpawnpoint);
+                else
+                    player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
+            }
 
             Timing.CallDelayed(
                 1.5f,
                 () =>
                 {
-                    Vector3 pos = GetSpawnPosition();
-
-                    Log.Debug($"{nameof(AddRole)}: Found {pos} to spawn {player.Nickname}");
-
-                    // If the spawn pos isn't 0,0,0, We add vector3.up * 1.5 here to ensure they do not spawn inside the ground and get stuck.
-                    player.Position = oldPos;
-                    if (pos != Vector3.zero)
-                    {
-                        Log.Debug($"{nameof(AddRole)}: Setting {player.Nickname} position..");
-                        player.Position = pos + (Vector3.up * 1.5f);
-                    }
-
                     if (!KeepInventoryOnSpawn)
                     {
                         Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
