@@ -493,7 +493,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the relative player's position.
         /// </summary>
-        /// <remarks>value will be default if the player it's not an <see cref="FpcRole"/>.</remarks>
+        /// <remarks>The value will be default if the player's role is not an <see cref="FpcRole"/>.</remarks>
         public RelativePosition RelativePosition
         {
             get => Role is FpcRole fpcRole ? fpcRole.RelativePosition : default;
