@@ -496,7 +496,7 @@ namespace Exiled.API.Features
         public RelativePosition RelativePosition
         {
             get => Role is FpcRole fpcRole ? fpcRole.RelativePosition : new(0, 0, 0, 0);
-            set => Position = RelativePosition.Position;
+            set => Position = value.Position;
         }
 
         /// <summary>
