@@ -239,7 +239,6 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets or sets the pickup position.
         /// </summary>
-        /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
         public RelativePosition RelativePosition
         {
             get => Base.Info.RelativePosition;
