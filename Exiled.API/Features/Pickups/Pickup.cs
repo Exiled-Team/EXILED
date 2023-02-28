@@ -237,7 +237,7 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the pickup position.
+        /// Gets or sets the relative position of the pickup.
         /// </summary>
         public RelativePosition RelativePosition
         {
