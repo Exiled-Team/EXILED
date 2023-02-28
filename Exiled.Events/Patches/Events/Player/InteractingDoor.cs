@@ -48,20 +48,19 @@ namespace Exiled.Events.Patches.Events.Player
                         (mode == DoorLockMode.FullLock || (__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanClose)) ||
                         (!__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanOpen))))
                     {
-                        ev.AccessGranted = false;
                         bypassDenied = true;
                     }
                 }
 
-                if (!bypassDenied && (ev.AccessGranted = __instance.AllowInteracting(ply, colliderId)))
+                if (!bypassDenied && (ev.IsAllowed = __instance.AllowInteracting(ply, colliderId)))
                 {
                     if (ply.GetRoleId() == RoleTypeId.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply))
                     {
-                        ev.IsAllowed = true;
+                        ev.AccessGranted = true;
                     }
                     else
                     {
-                        ev.IsAllowed = false;
+                        ev.AccessGranted = false;
                     }
                 }
 
