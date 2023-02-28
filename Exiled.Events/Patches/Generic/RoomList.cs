@@ -9,11 +9,21 @@ namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
 #pragma warning disable SA1402
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using API.Features;
+
+    using Exiled.API.Features.Pools;
 
     using HarmonyLib;
 
     using MapGeneration;
+    using MapGeneration.Distributors;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="RoomIdentifier.Awake"/>.
@@ -21,9 +31,25 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(RoomIdentifier), nameof(RoomIdentifier.Awake))]
     internal class RoomList
     {
-        private static void Postfix(RoomIdentifier __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
         {
-            Room.CreateComponent(__instance.gameObject);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(codeInstructions);
+
+            // Room.CreateComponent(gameObject);
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                    new(OpCodes.Call, Method(typeof(Room), nameof(Room.CreateComponent))),
+                    new(OpCodes.Pop),
+                });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 
@@ -33,12 +59,34 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(RoomIdentifier), nameof(RoomIdentifier.OnDestroy))]
     internal class RoomListRemove
     {
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(codeInstructions);
+
+            LocalBuilder room = generator.DeclareLocal(typeof(Room));
+
+            // Room.CreateComponent(gameObject);
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldsfld, Field(typeof(Room), nameof(Room.RoomIdentifierToRoom))),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, Method(typeof(Dictionary<RoomIdentifier, Room>), "get_Item")),
+                    new(OpCodes.Stloc_S, room.LocalIndex),
+                });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
         private static void Postfix(RoomIdentifier __instance)
         {
             Room room = Room.RoomIdentifierToRoom[__instance];
 
-            foreach (Window window in room.Windows)
-                Window.BreakableWindowToWindow.Remove(window.Base);
+            room.WindowsValue.ForEach(window => Window.BreakableWindowToWindow.Remove(window.Base));
 
             room.WindowsValue.Clear();
             room.DoorsValue.Clear();

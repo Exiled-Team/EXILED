@@ -12,8 +12,11 @@ namespace Exiled.Events.Patches.Generic
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection.Emit;
 
     using API.Features;
+
+    using Exiled.API.Features.Pools;
 
     using HarmonyLib;
 
@@ -21,6 +24,8 @@ namespace Exiled.Events.Patches.Generic
     using MapGeneration;
 
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="DoorVariant.RegisterRooms"/>.
@@ -71,9 +76,25 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(DoorVariant), nameof(DoorVariant.OnDestroy))]
     internal class DoorListRemove
     {
-        private static void Postfix(DoorVariant __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
         {
-            Door.DoorVariantToDoor.Remove(__instance);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(codeInstructions);
+
+            // Door.DoorVariantToDoor.Remove(this)
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldsfld, Field(typeof(Door), nameof(Door.DoorVariantToDoor))),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, Method(typeof(Dictionary<DoorVariant, Door>), nameof(Dictionary<DoorVariant, Door>.Remove), new[] { typeof(DoorVariant) })),
+                    new(OpCodes.Pop),
+                });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }
