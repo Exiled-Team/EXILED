@@ -69,7 +69,7 @@ namespace Exiled.API.Features
     using PlayerRoles.Voice;
 
     using PlayerStatsSystem;
-
+    using RelativePositioning;
     using RemoteAdmin;
 
     using RoundRestarting;
@@ -488,6 +488,15 @@ namespace Exiled.API.Features
         {
             get => Transform.position;
             set => ReferenceHub.TryOverridePosition(value, Vector3.zero);
+        }
+
+        /// <summary>
+        /// Gets or sets the relative player's position.
+        /// </summary>
+        public RelativePosition RelativePosition
+        {
+            get => Role is FpcRole fpcRole ? fpcRole.RelativePosition : default;
+            set => Position = RelativePosition.Position;
         }
 
         /// <summary>
