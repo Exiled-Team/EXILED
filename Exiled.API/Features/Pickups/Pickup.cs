@@ -107,7 +107,13 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public ushort Serial
         {
-            get => Base.Info.Serial;
+            get
+            {
+                if (Base.Info.Serial is 0)
+                    return Serial = ItemSerialGenerator.GenerateNext();
+                return Base.Info.Serial;
+            }
+
             set
             {
                 Base.Info.Serial = value;
