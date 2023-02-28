@@ -192,7 +192,7 @@ namespace Exiled.CustomRoles.API.Features
                 if (type.BaseType != typeof(CustomRole) || type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null)
                     continue;
 
-                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true))
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true).Cast<Attribute>())
                 {
                     CustomRole customRole = null;
 
@@ -246,7 +246,7 @@ namespace Exiled.CustomRoles.API.Features
                     continue;
                 }
 
-                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true))
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true).Cast<Attribute>())
                 {
                     CustomRole customRole = null;
 
@@ -415,6 +415,7 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void AddRole(Player player)
         {
             Log.Debug($"{Name}: Adding role to {player.Nickname}.");
+            TrackedPlayers.Add(player);
 
             if (Role != RoleTypeId.None)
             {
@@ -428,33 +429,28 @@ namespace Exiled.CustomRoles.API.Features
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
             }
 
-            Timing.CallDelayed(
-                1.5f,
-                () =>
-                {
-                    if (!KeepInventoryOnSpawn)
-                    {
-                        Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
-                        player.ClearInventory();
-                    }
+            if (!KeepInventoryOnSpawn)
+            {
+                Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
+                player.ClearInventory();
+            }
 
-                    foreach (string itemName in Inventory)
-                    {
-                        Log.Debug($"{Name}: Adding {itemName} to inventory.");
-                        TryAddItem(player, itemName);
-                    }
+            foreach (string itemName in Inventory)
+            {
+                Log.Debug($"{Name}: Adding {itemName} to inventory.");
+                TryAddItem(player, itemName);
+            }
 
-                    foreach (AmmoType ammo in Ammo.Keys)
-                    {
-                        Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.");
-                        player.SetAmmo(ammo, Ammo[ammo]);
-                    }
+            foreach (AmmoType ammo in Ammo.Keys)
+            {
+                Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.");
+                player.SetAmmo(ammo, Ammo[ammo]);
+            }
 
-                    Log.Debug($"{Name}: Setting health values.");
-                    player.Health = MaxHealth;
-                    player.MaxHealth = MaxHealth;
-                    player.Scale = Scale;
-                });
+            Log.Debug($"{Name}: Setting health values.");
+            player.Health = MaxHealth;
+            player.MaxHealth = MaxHealth;
+            player.Scale = Scale;
 
             Log.Debug($"{Name}: Setting player info");
             player.CustomInfo = CustomInfo;
@@ -467,7 +463,6 @@ namespace Exiled.CustomRoles.API.Features
 
             ShowMessage(player);
             RoleAdded(player);
-            TrackedPlayers.Add(player);
             player.UniqueRole = Name;
             player.TryAddCustomRoleFriendlyFire(Name, CustomRoleFFMultiplier);
         }
@@ -716,7 +711,7 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Loading events.");
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning += OnInternalSpawning;
-            Exiled.Events.Handlers.Player.Dying += OnInternalDying;
+            Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
         }
 
         /// <summary>
@@ -730,7 +725,7 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Unloading events.");
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning -= OnInternalSpawning;
-            Exiled.Events.Handlers.Player.Dying -= OnInternalDying;
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
         }
 
         /// <summary>
@@ -767,13 +762,10 @@ namespace Exiled.CustomRoles.API.Features
                 RemoveRole(ev.Player);
         }
 
-        private void OnInternalDying(DyingEventArgs ev)
+        private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
         {
             if (Check(ev.Player))
-            {
-                CustomRoles.Instance.StopRagdollPlayers.Add(ev.Player);
-                Ragdoll.CreateAndSpawn(new RagdollData(ev.Player.ReferenceHub, ev.DamageHandler, Role, ev.Player.Position, Quaternion.Euler(ev.Player.Rotation), ev.Player.DisplayNickname, NetworkTime.time));
-            }
+                ev.Role = Role;
         }
     }
 }
