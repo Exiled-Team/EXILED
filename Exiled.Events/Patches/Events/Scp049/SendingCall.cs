@@ -56,10 +56,10 @@ namespace Exiled.Events.Patches.Events.Scp049
         /// <param name="callAbility"> <see cref="Scp049CallAbility"/>. </param>
         private static void ProcessCall(Scp049CallAbility callAbility)
         {
-            Player player = Player.Get(callAbility.Owner);
+            Player currentScp = Player.Get(callAbility.Owner);
             float duration = Scp049CallAbility.EffectDuration;
 
-            var ev = new SendingCallEventArgs(currentScp, duration, !(callAbility._serverTriggered || !callAbility.Cooldown.IsReady));
+            var ev = new SendingCallEventArgs(currentScp, duration, !(callAbility._serverTriggered && !callAbility.Cooldown.IsReady));
             Handlers.Scp049.OnSendingCall(ev);
 
             if (!ev.IsAllowed)
