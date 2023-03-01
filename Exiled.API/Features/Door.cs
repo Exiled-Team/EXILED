@@ -530,7 +530,13 @@ namespace Exiled.API.Features
                 string doorName = GameObject.name.GetBefore(' ');
                 return doorName switch
                 {
-                    "LCZ" => Room?.Type.IsCheckpoint() ?? false ? Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor : DoorType.LightContainmentDoor,
+                    "LCZ" => Room?.Type switch
+                    {
+                        RoomType.LczCheckpointA or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA
+                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
+                        RoomType.LczAirlock => Base.TryGetComponent(out AirlockController _) ? DoorType.Airlock : DoorType.LightContainmentDoor,
+                        _ => DoorType.LightContainmentDoor,
+                    },
                     "HCZ" => DoorType.HeavyContainmentDoor,
                     "EZ" => DoorType.EntranceDoor,
                     "Prison" => DoorType.PrisonDoor,
