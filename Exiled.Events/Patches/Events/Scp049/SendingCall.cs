@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Scp049
             var ev = new SendingCallEventArgs(player, duration);
             Handlers.Scp049.OnSendingCall(ev);
 
-            if (!ev.IsAllowed)
+            if (!ev.IsAllowed || callAbility._serverTriggered || !callAbility.Cooldown.IsReady)
                 return;
             callAbility.Duration.Trigger(ev.Duration);
             callAbility._serverTriggered = true;
