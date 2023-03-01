@@ -59,10 +59,10 @@ namespace Exiled.Events.Patches.Events.Scp049
             Player player = Player.Get(callAbility.Owner);
             float duration = Scp049CallAbility.EffectDuration;
 
-            var ev = new SendingCallEventArgs(player, duration);
+            var ev = new SendingCallEventArgs(player, duration, callAbility._serverTriggered || !callAbility.Cooldown.IsReady);
             Handlers.Scp049.OnSendingCall(ev);
 
-            if (!ev.IsAllowed || callAbility._serverTriggered || !callAbility.Cooldown.IsReady)
+            if (!ev.IsAllowed)
                 return;
             callAbility.Duration.Trigger(ev.Duration);
             callAbility._serverTriggered = true;
