@@ -59,11 +59,12 @@ namespace Exiled.Events.Patches.Events.Scp049
             Player player = Player.Get(callAbility.Owner);
             float duration = Scp049CallAbility.EffectDuration;
 
-            var ev = new SendingCallEventArgs(player, duration, callAbility._serverTriggered || !callAbility.Cooldown.IsReady);
+            var ev = new SendingCallEventArgs(player, duration);
             Handlers.Scp049.OnSendingCall(ev);
 
-            if (!ev.IsAllowed)
+            if (!ev.IsAllowed || callAbility._serverTriggered || !callAbility.Cooldown.IsReady)
                 return;
+
             callAbility.Duration.Trigger(ev.Duration);
             callAbility._serverTriggered = true;
             callAbility.ServerSendRpc(true);
