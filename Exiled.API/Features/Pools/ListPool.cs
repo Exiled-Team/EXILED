@@ -20,6 +20,10 @@ namespace Exiled.API.Features.Pools
     /// <seealso cref="HashSetPool{T}"/>
     public class ListPool<T> : IPool<List<T>>
     {
+        private ListPool()
+        {
+        }
+
         /// <summary>
         /// Gets a <see cref="ListPool{T}"/> that stores lists.
         /// </summary>

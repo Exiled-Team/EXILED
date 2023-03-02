@@ -7,18 +7,15 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using API.Features;
     using API.Features.Pools;
-
     using Exiled.Events.EventArgs.Map;
-
     using Footprinting;
-
     using HarmonyLib;
-
     using InventorySystem.Items.ThrowableProjectiles;
 
     using static HarmonyLib.AccessTools;
@@ -52,11 +49,11 @@ namespace Exiled.Events.Patches.Events.Map
                     // this
                     new(OpCodes.Ldarg_0),
 
-                    // new List<Player>
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(List<Player>))[0]),
+                    // Is Allowed
+                    new(OpCodes.Ldc_I4_1),
 
-                    // new ExplodingGrenadeEventArgs(Player, EffectGrenade, List<Player>)
-                    new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(List<Player>), })),
+                    // new ExplodingGrenadeEventArgs(Player, EffectGrenade)
+                    new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(bool) })),
                     new(OpCodes.Dup),
 
                     // Handlers.Map.OnExplodingGrenade(ev);

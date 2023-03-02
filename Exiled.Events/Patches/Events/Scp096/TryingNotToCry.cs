@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Scp096
 
             Label returnLabel = generator.DefineLabel();
 
-            const int offset = 0;
+            const int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             // TryingNotToCryEventArgs ev = new(Scp096 scp096, Player player, door, true);

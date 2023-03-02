@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Item
     /// <summary>
     /// Contains all information before a player swings a <see cref="Jailbird"/>.
     /// </summary>
-    public class SwingingEventArgs : IPlayerEvent, IItemEvent
+    public class SwingingEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SwingingEventArgs"/> class.
