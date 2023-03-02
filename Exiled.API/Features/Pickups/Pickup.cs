@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.Usables.Scp244;
 
     using Mirror;
-
+    using RelativePositioning;
     using UnityEngine;
 
     using BaseAmmoPickup = InventorySystem.Items.Firearms.Ammo.AmmoPickup;
@@ -107,7 +107,13 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public ushort Serial
         {
-            get => Base.Info.Serial;
+            get
+            {
+                if (Base.Info.Serial is 0)
+                    return Serial = ItemSerialGenerator.GenerateNext();
+                return Base.Info.Serial;
+            }
+
             set
             {
                 Base.Info.Serial = value;
@@ -234,6 +240,15 @@ namespace Exiled.API.Features.Pickups
                 Base.transform.position = value;
                 Base.RefreshPositionAndRotation();
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the relative position of the pickup.
+        /// </summary>
+        public RelativePosition RelativePosition
+        {
+            get => Base.Info.RelativePosition;
+            set => Position = value.Position;
         }
 
         /// <summary>
