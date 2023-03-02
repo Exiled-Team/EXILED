@@ -169,6 +169,16 @@ namespace Exiled.API.Features
         public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
 
         /// <summary>
+        /// Gets a value indicating whether or not this door is ignoring lockdown.
+        /// </summary>
+        public bool IsIgnoreLockdowns => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreLockdowns;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is ignoring remoteAdmin commands.
+        /// </summary>
+        public bool IsIgnoreRemoteAdmin => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreRemoteAdmin;
+
+        /// <summary>
         /// Gets the door's Instance ID.
         /// </summary>
         public int InstanceId => Base.GetInstanceID();
