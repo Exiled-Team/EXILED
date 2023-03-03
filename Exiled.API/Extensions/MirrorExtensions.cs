@@ -16,14 +16,16 @@ namespace Exiled.API.Extensions
     using System.Text;
 
     using Features;
+    using Features.Pools;
 
     using InventorySystem.Items.Firearms;
 
     using Mirror;
 
-    using NorthwoodLib.Pools;
     using PlayerRoles;
+
     using RelativePositioning;
+
     using Respawning;
 
     using UnityEngine;
@@ -159,6 +161,17 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Sets <see cref="Player.DisplayNickname"/> of a <paramref name="player"/> that only the <paramref name="target"/> player can see.
+        /// </summary>
+        /// <param name="target">Only this player can see the name changed.</param>
+        /// <param name="player">Player that will desync the CustomName.</param>
+        /// <param name="name">Nickname to set.</param>
+        public static void SetName(this Player target, Player player, string name)
+        {
+            target.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), name);
+        }
+
+        /// <summary>
         /// Sets <see cref="Room.LightIntensity"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
@@ -211,21 +224,23 @@ namespace Exiled.API.Extensions
         /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
         {
-            StringBuilder annoucement = StringBuilderPool.Shared.Rent();
+            StringBuilder announcement = StringBuilderPool.Pool.Get();
+
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
+
             for (int i = 0; i < cassies.Length; i++)
-                annoucement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
+                announcement.Append($"{translations[i]}<size=0> {cassies[i].Replace(' ', ' ')} </size><split>");
+
+            string message = StringBuilderPool.Pool.ToStringReturn(announcement);
 
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
             {
                 if (controller != null)
                 {
-                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+                    SendFakeTargetRpc(player, controller.netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), message, makeHold, makeNoise, isSubtitles);
                 }
             }
-
-            StringBuilderPool.Shared.Return(annoucement);
         }
 
         /// <summary>

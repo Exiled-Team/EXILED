@@ -15,15 +15,14 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
-    using Exiled.Events.EventArgs;
     using Exiled.Events.EventArgs.Player;
 
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Attachments.Components;
     using InventorySystem.Items.Firearms.BasicMessages;
 
-    using MEC;
     using PlayerRoles;
+
     using UnityEngine;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
@@ -192,7 +191,7 @@ namespace Exiled.CustomItems.API.Features
         protected virtual void OnHurting(HurtingEventArgs ev)
         {
             if (ev.IsAllowed)
-                ev.Amount = ev.Player.Role == RoleTypeId.Scp106 ? Damage * 0.1f : Damage;
+                ev.Amount = Damage;
         }
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
@@ -238,6 +237,8 @@ namespace Exiled.CustomItems.API.Features
             ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
 
             ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
+            ev.Player.Inventory.SendAmmoNextFrame = true;
+
             ((Firearm)ev.Player.CurrentItem).Ammo = (byte)(((Firearm)ev.Player.CurrentItem).Ammo + amountToReload);
 
             Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({((Firearm)ev.Player.CurrentItem).Ammo}/{ClipSize})]!");

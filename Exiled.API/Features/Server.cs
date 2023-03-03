@@ -11,14 +11,18 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Reflection;
 
-    using CustomPlayerEffects;
     using GameCore;
+
     using Interfaces;
-    using MapGeneration.Distributors;
+
     using MEC;
+
     using Mirror;
+
     using PlayerRoles.RoleAssign;
+
     using RoundRestarting;
+
     using UnityEngine;
 
     /// <summary>
@@ -42,7 +46,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="global::Broadcast"/> component.
         /// </summary>
-        public static global::Broadcast Broadcast { get; internal set; }
+        public static global::Broadcast Broadcast => global::Broadcast.Singleton;
 
         /// <summary>
         /// Gets the cached <see cref="SendSpawnMessage"/> <see cref="MethodInfo"/>.
@@ -156,10 +160,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the spawn protection time, in seconds.
         /// </summary>
+        [Obsolete("Use Respawn.SpawnProtectTime.")]
         public static float SpawnProtectTime
         {
-            get => SpawnProtected.SpawnDuration;
-            set => SpawnProtected.SpawnDuration = value;
+            get => Respawn.ProtectionTime;
+            set => Respawn.ProtectionTime = value;
         }
 
         /// <summary>
@@ -181,6 +186,15 @@ namespace Exiled.API.Features
         {
             get => ServerConsole.WhiteListEnabled;
             set => ServerConsole.WhiteListEnabled = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not idle mode is enabled.
+        /// </summary>
+        public static bool IsIdleModeEnabled
+        {
+            get => IdleMode.IdleModeEnabled;
+            set => IdleMode.IdleModeEnabled = value;
         }
 
         /// <summary>

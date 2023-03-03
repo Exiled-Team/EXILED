@@ -7,17 +7,13 @@
 
 namespace Exiled.Events.Handlers
 {
-    using API.Extensions;
-    using API.Features;
     using Exiled.Events.EventArgs.Player;
-    using Exiled.Events.EventArgs.Scp079;
+
     using Extensions;
-    using Interactables.Interobjects.DoorUtils;
-    using InventorySystem.Items.Radio;
-    using MapGeneration.Distributors;
+
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl.Thirdperson;
-    using PlayerStatsSystem;
+
     using PluginAPI.Core.Attributes;
     using PluginAPI.Enums;
     using PluginAPI.Events;
@@ -67,7 +63,7 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="API.Features.Player"/> uses an <see cref="API.Features.Items.Item"/>.
         /// </summary>
         /// <remarks>
-        /// Invoked after <see cref="UsedItem"/>, if a player's class has
+        /// Invoked after <see cref="UsingItem"/>, if a player's class has
         /// changed during their health increase, won't fire.
         /// </remarks>
         public static event CustomEventHandler<UsedItemEventArgs> UsedItem;
@@ -151,7 +147,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked afer throwing an <see cref="API.Features.Items.Throwable"/>.
         /// </summary>
-        public static event CustomEventHandler<ThrownItemEventArgs> ThrownItem;
+        public static event CustomEventHandler<ThrownProjectileEventArgs> ThrownProjectile;
 
         /// <summary>
         /// Invoked before receving a throwing request an <see cref="API.Features.Items.Throwable"/>.
@@ -229,8 +225,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReloadingWeaponEventArgs> ReloadingWeapon;
 
         /// <summary>
-        /// Invoked before spawning a <see cref="API.Features.Player"/>(called only when possibly to change position).
-        /// use <see cref="Spawned"/> or <see cref="ChangingRole"/>for all class changes.
+        /// Invoked before spawning a <see cref="API.Features.Player"/>.
         /// </summary>
         public static event CustomEventHandler<SpawningEventArgs> Spawning;
 
@@ -238,6 +233,11 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="API.Features.Player"/> has spawned.
         /// </summary>
         public static event CustomEventHandler<SpawnedEventArgs> Spawned;
+
+        /// <summary>
+        /// Invoked after a <see cref="API.Features.Player"/> held <see cref="API.Features.Items.Item"/> changes.
+        /// </summary>
+        public static event CustomEventHandler<ChangedItemEventArgs> ChangedItem;
 
         /// <summary>
         /// Invoked before a <see cref="API.Features.Player"/> held <see cref="API.Features.Items.Item"/> changes.
@@ -559,8 +559,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrownItemEventArgs"/> instance.</param>
-        public static void OnThrowingItem(ThrownItemEventArgs ev) => ThrownItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ThrownProjectileEventArgs"/> instance.</param>
+        public static void OnThrowingProjectile(ThrownProjectileEventArgs ev) => ThrownProjectile.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receving a throwing request.
@@ -661,10 +661,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after a <see cref="API.Features.Player"/> has spawned.
         /// </summary>
-        /// <param name="hub">The <see cref="ReferenceHub"/> instance.</param>
-        /// <param name="oldRole">The player's old <see cref="PlayerRoleBase"/> instance.</param>
-        /// <param name="newRole">The player's new <see cref="PlayerRoleBase"/> instance.</param>
-        public static void OnSpawned(ReferenceHub hub, PlayerRoleBase oldRole, PlayerRoleBase newRole) => Spawned.InvokeSafely(new SpawnedEventArgs(hub, oldRole));
+        /// <param name="ev">The <see cref="SpawnedEventArgs"/> instance.</param>
+        public static void OnSpawned(SpawnedEventArgs ev) => Spawned.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="API.Features.Player"/> held item changes.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangedItemEventArgs"/> instance.</param>
+        public static void OnChangedItem(ChangedItemEventArgs ev) => ChangedItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> held item changes.

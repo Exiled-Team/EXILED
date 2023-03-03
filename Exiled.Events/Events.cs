@@ -14,12 +14,16 @@ namespace Exiled.Events
 
     using API.Enums;
     using API.Features;
+
     using EventArgs.Interfaces;
+
     using HarmonyLib;
-    using PlayerRoles;
+
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
+    using PlayerRoles.RoleAssign;
     using PluginAPI.Events;
+
     using UnityEngine.SceneManagement;
 
     /// <summary>
@@ -78,6 +82,7 @@ namespace Exiled.Events
             watch.Stop();
 
             Log.Info($"Patching completed in {watch.Elapsed}");
+            CharacterClassManager.OnInstanceModeChanged -= RoleAssigner.CheckLateJoin;
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
@@ -86,10 +91,9 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
+            Handlers.Player.Verified += Handlers.Internal.Round.OnVerified;
 
             CharacterClassManager.OnRoundStarted += Handlers.Server.OnRoundStarted;
-
-            PlayerRoleManager.OnRoleChanged += Handlers.Player.OnSpawned;
 
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
@@ -120,10 +124,9 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
+            Handlers.Player.Verified -= Handlers.Internal.Round.OnVerified;
 
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
-
-            PlayerRoleManager.OnRoleChanged -= Handlers.Player.OnSpawned;
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
 
@@ -148,10 +151,11 @@ namespace Exiled.Events
                 bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                if (PatchByAttributes())
+                PatchByAttributes(out int failedPatch);
+                if (failedPatch == 0)
                     Log.Debug("Events patched successfully!");
                 else
-                    Log.Error($"Patching failed!");
+                    Log.Error($"Patching failed! There are {failedPatch} broken patches.");
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
@@ -186,20 +190,24 @@ namespace Exiled.Events
             Log.Debug("All events have been unpatched complete. Goodbye!");
         }
 
-        private bool PatchByAttributes()
+        private void PatchByAttributes(out int failedPatch)
         {
-            try
+            failedPatch = 0;
+            foreach (Type type in AccessTools.GetTypesFromAssembly(Assembly.GetExecutingAssembly()))
             {
-                Harmony.PatchAll();
+                try
+                {
+                    Harmony.CreateClassProcessor(type).Patch();
+                }
+                catch (Exception exception)
+                {
+                    Log.Error($"Patching by attributes failed!\n{exception}");
+                    failedPatch++;
+                    continue;
+                }
+            }
 
-                Log.Debug("Events patched by attributes successfully!");
-                return true;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"Patching by attributes failed!\n{exception}");
-                return false;
-            }
+            Log.Debug("Events patched by attributes successfully!");
         }
     }
 }

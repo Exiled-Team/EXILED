@@ -9,7 +9,9 @@ namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pickups.Projectiles;
+    using Exiled.API.Interfaces;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
     using UnityEngine;
@@ -17,7 +19,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for throwable items.
     /// </summary>
-    public class Throwable : Item
+    public class Throwable : Item, IWrapper<ThrowableItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Throwable"/> class.
@@ -40,7 +42,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the throwable item. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this throwable is custom using Exiled.CustomItems.</remarks>
         internal Throwable(ItemType type, Player player = null)
-            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
+            : this((ThrowableItem)(player ?? Server.Host).Inventory.CreateItemInstance(new(type, 0), true))
         {
         }
 

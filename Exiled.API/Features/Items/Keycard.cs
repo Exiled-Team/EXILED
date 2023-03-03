@@ -8,13 +8,15 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Enums;
+    using Exiled.API.Interfaces;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Keycards;
 
     /// <summary>
     /// A wrapper class for <see cref="KeycardItem"/>.
     /// </summary>
-    public class Keycard : Item
+    public class Keycard : Item, IWrapper<KeycardItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Keycard"/> class.
@@ -31,7 +33,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the keycard.</param>
         internal Keycard(ItemType type)
-            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 

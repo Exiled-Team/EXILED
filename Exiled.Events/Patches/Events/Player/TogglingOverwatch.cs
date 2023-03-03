@@ -10,23 +10,23 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// patches <see cref="ServerRoles.SetOverwatchStatus(bool)"/> to add the <see cref="Handlers.Player.TogglingOverwatch"/> event.
+    /// patches <see cref="ServerRoles.SetOverwatchStatus(byte)"/> to add the <see cref="Handlers.Player.TogglingOverwatch"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetOverwatchStatus), typeof(bool))]
+    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetOverwatchStatus), typeof(byte))]
     internal static class TogglingOverwatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label isAllowed = generator.DefineLabel();
             Label ret = generator.DefineLabel();
@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Player
             foreach (CodeInstruction instruction in newInstructions)
                 yield return instruction;
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

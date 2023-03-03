@@ -12,7 +12,10 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Enums;
+    using Exiled.API.Interfaces;
+
     using PlayerRoles.PlayableScps.Scp079.Cameras;
+
     using UnityEngine;
 
     using CameraType = Enums.CameraType;
@@ -20,7 +23,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game Scp079Camera.
     /// </summary>
-    public class Camera
+    public class Camera : IWrapper<Scp079Camera>, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="Scp079Camera"/>s and their corresponding <see cref="Camera"/>.
@@ -230,7 +233,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base <see cref="Scp079Camera"/>.</param>
         /// <returns>A <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(Scp079Camera camera079) => Camera079ToCamera.TryGetValue(camera079, out Camera camera) ? camera : new(camera079);
+        public static Camera Get(Scp079Camera camera079) => camera079 != null ? Camera079ToCamera.TryGetValue(camera079, out Camera camera) ? camera : new(camera079) : null;
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified <paramref name="cameraId"/>.

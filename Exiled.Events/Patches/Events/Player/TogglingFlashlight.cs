@@ -11,13 +11,13 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using API.Features;
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using InventorySystem.Items.Flashlight;
-
-    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -30,11 +30,9 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingFlashlightEventArgs));
-
-            Label retLabel = generator.DefineLabel();
 
             int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
@@ -45,7 +43,6 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     // Player.Get(referenceHub)
                     new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // flashlightItem
                     new(OpCodes.Ldloc_1),
@@ -54,22 +51,13 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(FlashlightNetworkHandler.FlashlightMessage), nameof(FlashlightNetworkHandler.FlashlightMessage.NewState))),
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
-
                     // TogglingFlashlightEventArgs ev = new(Player, FlashlightItem, bool, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingFlashlightEventArgs))[0]),
-                    new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Player.OnTogglingFlashlight(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTogglingFlashlight))),
-
-                    // if (!ev.IsAllowed)
-                    //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingFlashlightEventArgs), nameof(TogglingFlashlightEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, retLabel),
                 });
 
             offset = -6;
@@ -109,12 +97,10 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingFlashlightEventArgs), nameof(TogglingFlashlightEventArgs.NewState))),
                 });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
-
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

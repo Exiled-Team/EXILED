@@ -7,12 +7,15 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Interfaces;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.MicroHID;
 
     /// <summary>
     /// A wrapper class for <see cref="MicroHIDItem"/>.
     /// </summary>
-    public class MicroHid : Item
+    public class MicroHid : Item, IWrapper<MicroHIDItem>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MicroHid"/> class.
@@ -28,7 +31,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="MicroHid"/> class, as well as a new Micro HID item.
         /// </summary>
         internal MicroHid()
-            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(ItemType.MicroHID, false))
+            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(new(ItemType.MicroHID, 0), false))
         {
         }
 
