@@ -424,6 +424,8 @@ namespace Exiled.API.Features
                 "Outside" => RoomType.Surface,
                 "HCZ_939" => RoomType.Hcz939,
                 "EZ Part" => RoomType.EzCheckpointHallway,
+                "HCZ_ChkpA" => RoomType.HczElevatorA,
+                "HCZ_ChkpB" => RoomType.HczElevatorB,
                 "HCZ Part" => gameObject.transform.parent.name switch
                 {
                     "HCZ_EZ_Checkpoint (A)" => RoomType.HczEzCheckpointA,
