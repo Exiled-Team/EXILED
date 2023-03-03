@@ -22,9 +22,9 @@ Todos los eventos de EXILED están hechos con Harmony, lo que significa que no e
 - [English](https://github.com/Exiled-Team/EXILED/blob/master/README.md)
 
 # Instalación
-La instalación de EXILED puede parecer muy complicada al contrario de otras plataformas, pero en realidad es bastante simple. Como se menciona previamente, la mayoría de EXILED no está dentro del archivo "Assembly-CSharp.dll" del servidor, sin embargo, si hay una única y pequeña modificación a este archivo, la cual se requiere para poder *iniciar* EXILED junto al servidor, una versión del archivo con esta modificación se incluye junto al instalador.
+La instalación de EXILED es, en realidad, muy simple. Se carga por sí solo por la API de plugins de NW. Por este motivo hay dos carpetas en ``Exiled.tar.gz`` en el apartado de descarga. ``SCP Secret Laboratory`` contiene los archivos necesarios para cargar los recursos de la carpeta ``EXILED``. Con eso dicho, lo único que se debe hacer es mover estas carpetas al sitio adecuado, que se explican debajo, ¡y listo!
 
-Si eliges el instalador automático (sí se ejecuta correctamente) se encargará de instalar `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` y `Exiled.Events`, al igual que se asegurará de que tu servidor tenga el archivo Assembly-CSharp.dll instalado.
+Si eliges el instalador automático (si se ejecuta correctamente) se encargará de instalar todas las funcionalidades de EXILED.
 
 # Windows
 ### Instalación automática ([más información](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
@@ -39,8 +39,8 @@ Si eliges el instalador automático (sí se ejecuta correctamente) se encargará
 ### Instalación manual
   - Descarga **`Exiled.tar.gz` [de aquí](https://github.com/galaxy119/EXILED/releases)**
   - Extrae el contenido con [7Zip](https://www.7-zip.org/) o [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Mueve el archivo **``Assembly-CSharp.dll``** a: **`(Carpeta de tu servidor)\SCPSL_Data\Managed`** y reemplaza el archivo.
   - Mueve la carpeta **``EXILED``** a **`%appdata%`** *Nota: ¡Esta carpeta tiene que ir en ``C:\Users\(Usuario)\AppData\Roaming``, y  ***NO*** en ``C:\Users\(Usuario)\AppData\Roaming\SCP Secret Laboratory`` y **DEBE ESTAR** en (...)\AppData\Roaming, no en (...)\AppData\!*
+  - Mueve **``SCP Secret Laboratory``** a: **`%appdata%`**.
     - Windows 10/11:
       Escribe `%appdata%` en Cortana / la barra de buscar, o en la barra del Explorador de Archivos
     - Cualquier otra versión:
@@ -67,8 +67,8 @@ Si eliges el instalador automático (sí se ejecuta correctamente) se encargará
   - **Asegurate** de que estás conectado con el usuario que tiene los servidores de SCP:SL.
   - Descarga **`Exiled.tar.gz` [de aquí](https://github.com/galaxy119/EXILED/releases)** (SSH: clic derecho para conseguir el link `Exiled.tar.gz`, después escribe: **`wget (enlace_de_descarga)`**)
   - Para extraerlo, escribe **``tar -xzvf EXILED.tar.gz``** en la terminal.
-  - Mueve el archivo **``Assembly-CSharp.dll``** incluido a la carpeta **``SCPSL_Data/Managed``** de tu instalación del servidor (SSH: **`mv Assembly-CSharp.dll (instalación_del_servidor)/SCPSL_Data/Managed`**).
   - Mueve la carpeta **`EXILED`** a **``~/.config``**. *Nota: Esta carpeta tiene que ir en ``~/.config``, y ***NO*** en ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
+  - Mueve la carpeta **``SCP Secret Laboratory``** a **``~/.config``**. *Nota: Esta carpeta tiene que ir en ``~/.config``, y ***NO*** en ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
 
 ### Instalando plugins
 ¡Ya estaría! EXILED debería estar instalado y activo la próxima vez que inicies el servidor. Recuerda que EXILED por si solo no hace absolutamente nada, así que asegúrate de que instalas plugins desde **[nuestro servidor de Discord](https://discord.gg/PyUkWTg)**
@@ -92,9 +92,9 @@ Para una guía más comprensible y tutoriales regularmente actualizados, échale
 
 Asegúrate de seguir estas normas antes de publicar un plugin:
 
- - Tu plugin debe contener una clase que herede de Exiled.API.Features.Plugin<>, si no, EXILED no podrá cargar el plugin cuando se inicie el servidor.
- - Cuando un plugin se inicia, el código del método ``OnEnabled()`` se ejecutará inmediatamente, no espera a que otros plugins se carguen. No espera a que el servidor se termine de iniciar. ***No espera por absolutamente nada.*** Cuando escribas tu método OnEnable(), asegúrate de que no intentas acceder a objetos/propiedades que puede que aún no estén disponibles en ese momento, como ServerConsole.Port, o PlayerManager.localPlayer.
- - Si tienes que acceder a objetos al principio, se recomienda que uses el evento WaitingForPlayers para hacerlo, si, por alguna razón, tienes que hacerlo incluso antes, encapsula el código en un bucle ```while(!x)``` la cual compruebe que la función/variable que intentas acceder no sea *null* antes de que continúe.
+ - Tu plugin debe contener una clase que herede de ``Exiled.API.Features.Plugin<>``, si no, EXILED no podrá cargar el plugin cuando se inicie el servidor.
+ - Cuando un plugin se inicia, el código del método ``OnEnabled()`` se ejecutará inmediatamente, no espera a que otros plugins se carguen. No espera a que el servidor se termine de iniciar. ***No espera por absolutamente nada.*** Cuando escribas tu método ``OnEnable()``, asegúrate de que no intentas acceder a objetos/propiedades que puede que aún no estén disponibles en ese momento, como ``ServerConsole.Port``, o ``PlayerManager.localPlayer``.
+ - Si tienes que acceder a objetos al principio, se recomienda que uses el evento ``WaitingForPlayers`` para hacerlo, si, por alguna razón, tienes que hacerlo incluso antes, encapsula el código en un bucle ```while(!x)``` la cual compruebe que la función/variable que intentas acceder no sea *null* antes de que continúe.
  - EXILED puede recargar plugins dinámicamente en medio de ejecución. Esto significa que, si tienes que actualizar un plugin en algún momento, puedes hacerlo sin tener que reiniciar el servidor. Sin embargo, si haces esto, el plugin debe estar correctamente configurado o tendrás un *ligero percance*. Échale un vistazo al apartado de ``Actualizaciones Dinámicas`` para más información y normas que seguir.
  - ***NO*** existe evento OnUpdate, OnFixedUpdate o OnLateUpdate en EXILED. Si tienes que (por algún motivo) ejecutar código tantas veces, puedes usar una corutina MEC que espere por un fotograma (0.01f) o usar una rutina de Timing como Timing.FixedUpdate.
 
@@ -144,9 +144,9 @@ Eso también significa que se pueden *actualizar* plugins sin reiniciar el servi
 
  - Los plugins que quieran implementar las Actualizaciones Dinámicas tienen que asegurarse de que se desubscriben de todo los eventos cuando es Deshabilitado (Disabled) o Recargado (Reloaded).
  - Los plugins que tengan parches propios de Harmony deben de usar algún tipo de variable que cambia adentro de la Instancia de Harmony, y se debe ejecutar UnPatchAll() cuando el plugin es deshabilitado o recargado.
- - Cualquier corutina que se inicie en el método OnEnabled también se tiene que deneter cuando se deshabilite o recargue el plugin.
+ - Cualquier corutina que se inicie en el método ``OnEnabled()`` también se tiene que deneter cuando se deshabilite o recargue el plugin.
 
-Todo eso te puede hacer haciendo uso de los métodos OnReloaded() y OnDisabled() en la clase Plugin. Cuando EXILED recarga plugins, llama a OnDisabled() primero, después a OnReloaded(), después carga todas las asambleas nuevas, y finalmente OnEnabled() de nuevo.
+Todo eso te puede hacer haciendo uso de los métodos ``OnReloaded()`` y ``OnDisabled()`` en la clase Plugin. Cuando EXILED recarga plugins, llama a OnDisabled() primero, después a ``OnReloaded()``, después carga todas las asambleas nuevas, y finalmente ``OnEnabled()`` de nuevo.
 
 Fíjate que son ensamblajes *nuevos*. Si reemplazas un ensamblaje con otro con el mismo nombre, ***NO*** se actualizará. Esto es debido al GAC (Global Assembly Cache o Caché de Ensamblaje Global), si intentas 'cargar' un ensamblaje que ya está en caché, cargará la del caché en vez de la nueva.
 Por esta razón, si tu plugin soporta las Actualizaciones Dinámicas, debes crear cada versión con un nombre de ensamblaje distinto en las opciones de compilación (renombrar el archivo no funcionará). Además, ya que el ensamblaje antiguo se "destruye" cuando ya no se necesita, si no te desubscribes de los eventos correctos, eliminar tu instancia de Harmony, detener corrutinas u otros... Ese código seguirá ejecutándose al igual que el código de la nueva versión. 
