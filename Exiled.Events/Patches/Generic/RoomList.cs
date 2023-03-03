@@ -59,29 +59,6 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(RoomIdentifier), nameof(RoomIdentifier.OnDestroy))]
     internal class RoomListRemove
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(codeInstructions);
-
-            LocalBuilder room = generator.DeclareLocal(typeof(Room));
-
-            // Room.CreateComponent(gameObject);
-            newInstructions.InsertRange(
-                0,
-                new CodeInstruction[]
-                {
-                    new(OpCodes.Ldsfld, Field(typeof(Room), nameof(Room.RoomIdentifierToRoom))),
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, Method(typeof(Dictionary<RoomIdentifier, Room>), "get_Item")),
-                    new(OpCodes.Stloc_S, room.LocalIndex),
-                });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-
         private static void Postfix(RoomIdentifier __instance)
         {
             Room room = Room.RoomIdentifierToRoom[__instance];
