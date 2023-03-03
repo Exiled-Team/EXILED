@@ -544,7 +544,7 @@ namespace Exiled.API.Features
                     {
                         RoomType.LczCheckpointA or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA
                         or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
-                        RoomType.LczAirlock => Base.TryGetComponent(out AirlockController _) ? DoorType.Airlock : DoorType.LightContainmentDoor,
+                        RoomType.LczAirlock => (Base.GetComponentInParent<AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
                         _ => DoorType.LightContainmentDoor,
                     },
                     "HCZ" => DoorType.HeavyContainmentDoor,
