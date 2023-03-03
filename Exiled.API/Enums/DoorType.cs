@@ -295,5 +295,10 @@ namespace Exiled.API.Enums
         /// Represents the Armory door in <see cref="RoomType.HczEzCheckpointB"/>.
         /// </summary>
         CheckpointArmoryB,
+
+        /// <summary>
+        /// Represents the door inside <see cref="RoomType.LczAirlock"/> with <see cref="Interactables.Interobjects.AirlockController"/> component.
+        /// </summary>
+        Airlock,
     }
 }
