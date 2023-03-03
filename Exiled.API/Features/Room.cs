@@ -122,13 +122,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Pickup> Pickups
-        {
-            get
-            {
-                return Pickup.List.Where((pickup) => FindParentRoom(pickup.GameObject) == this);
-            }
-        }
+        public IEnumerable<Pickup> Pickups => Pickup.List.Where(pickup => FindParentRoom(pickup.GameObject) == this);
 
         /// <summary>
         /// Gets or sets the intensity of the lights in the room.
