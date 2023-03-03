@@ -8,6 +8,7 @@
 namespace Exiled.API.Enums
 {
     using Features;
+
     using PlayerRoles;
 
     /// <summary>
@@ -210,13 +211,18 @@ namespace Exiled.API.Enums
         ParticleDisruptor,
 
         /// <summary>
-        /// Damage caused by SCP-956.
+        /// Damage caused by <see cref="EffectType.CardiacArrest"/>.
         /// </summary>
-        Scp956,
+        CardiacArrest,
 
         /// <summary>
         /// Damage caused by <see cref="ItemType.GunCom45"/>.
         /// </summary>
         Com45,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.Jailbird"/>.
+        /// </summary>
+        Jailbird,
     }
 }

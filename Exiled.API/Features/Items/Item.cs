@@ -12,18 +12,23 @@ namespace Exiled.API.Features.Items
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms.Ammo;
     using InventorySystem.Items.Flashlight;
+    using InventorySystem.Items.Jailbird;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
     using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
+
     using UnityEngine;
 
     using BaseConsumable = InventorySystem.Items.Usables.Consumable;
@@ -32,7 +37,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
     /// </summary>
-    public class Item : TypeCastObject<Item>
+    public class Item : TypeCastObject<Item>, IWrapper<ItemBase>
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
@@ -67,7 +72,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the item to create.</param>
         internal Item(ItemType type)
-            : this(Server.Host.Inventory.CreateItemInstance(type, false))
+            : this(Server.Host.Inventory.CreateItemInstance(new(type, 0), false))
         {
         }
 
@@ -81,7 +86,12 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public ushort Serial
         {
-            get => Base.ItemSerial;
+            get
+            {
+                if (Base.ItemSerial is 0)
+                    return Serial = ItemSerialGenerator.GenerateNext();
+                return Base.ItemSerial;
+            }
             set => Base.ItemSerial = value;
         }
 
@@ -190,6 +200,7 @@ namespace Exiled.API.Features.Items
                 BodyArmor armor => new Armor(armor),
                 AmmoItem ammo => new Ammo(ammo),
                 FlashlightItem flashlight => new Flashlight(flashlight),
+                JailbirdItem jailbird => new Jailbird(jailbird),
                 ThrowableItem throwable => throwable.Projectile switch
                 {
                     FlashbangGrenade => new FlashGrenade(throwable),
@@ -228,6 +239,8 @@ namespace Exiled.API.Features.Items
         /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244"/>.
         /// <br />- SCP-330 can be casted to <see cref="Scp330"/>.
         /// <br />- SCP-2176 can be casted to the <see cref="Scp2176"/> class.
+        /// <br />- SCP-1576 can be casted to the <see cref="Scp1576"/> class.
+        /// <br />- Jailbird can be casted to the <see cref="Jailbird"/> class.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Item"/> class.
@@ -253,6 +266,8 @@ namespace Exiled.API.Features.Items
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new Armor(type),
             ItemType.SCP330 => new Scp330(),
             ItemType.SCP2176 => new Scp2176(owner),
+            ItemType.SCP1576 => new Scp1576(),
+            ItemType.Jailbird => new Jailbird(),
             _ => new Item(type),
         };
 
@@ -276,10 +291,12 @@ namespace Exiled.API.Features.Items
         /// <returns>The created <see cref="Pickup"/>.</returns>
         public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default, bool spawn = true)
         {
-            Pickup pickup = Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
+            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            pickup.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Scale = Scale;
+            ipb.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
+            ipb.gameObject.transform.localScale = Scale;
+
+            Pickup pickup = Pickup.Get(ipb);
 
             if (spawn)
                 pickup.Spawn();

@@ -15,7 +15,9 @@ namespace Exiled.Loader
     using API.Enums;
     using API.Extensions;
     using API.Interfaces;
+
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using YamlDotNet.Core;
 
     /// <summary>
@@ -34,7 +36,7 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading plugin configs... ({LoaderPlugin.Config.ConfigType})");
 
-                Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
+                Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? DictionaryPool<string, object>.Pool.Get();
                 SortedDictionary<string, IConfig> deserializedConfigs = new(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
@@ -51,6 +53,7 @@ namespace Exiled.Loader
 
                 Log.Info("Plugin configs loaded successfully!");
 
+                DictionaryPool<string, object>.Pool.Return(rawDeserializedConfigs);
                 return deserializedConfigs;
             }
             catch (Exception exception)

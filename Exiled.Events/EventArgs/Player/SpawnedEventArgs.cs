@@ -8,8 +8,11 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
+    using Exiled.API.Enums;
     using Exiled.API.Features.Roles;
+
     using Interfaces;
+
     using PlayerRoles;
 
     /// <summary>
@@ -22,10 +25,12 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         /// <param name="player">the spawned player.</param>
         /// <param name="oldRole">the spawned player's old <see cref="PlayerRoleBase">role</see>.</param>
-        public SpawnedEventArgs(ReferenceHub player, PlayerRoleBase oldRole)
+        public SpawnedEventArgs(Player player, PlayerRoleBase oldRole)
         {
-            Player = Player.Get(player);
+            Player = player;
             OldRole = Role.Create(oldRole);
+            Reason = (SpawnReason)Player.Role.SpawnReason;
+            SpawnFlags = Player.Role.SpawnFlags;
         }
 
         /// <summary>
@@ -37,5 +42,15 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the player's old <see cref="PlayerRoleBase">role</see>.
         /// </summary>
         public Role OldRole { get; }
+
+        /// <summary>
+        ///     Gets the reason for their class change.
+        /// </summary>
+        public SpawnReason Reason { get; }
+
+        /// <summary>
+        ///     Gets the spawn flags for their class change.
+        /// </summary>
+        public RoleSpawnFlags SpawnFlags { get; }
     }
 }

@@ -8,7 +8,9 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Usables.Scp244;
 
     using UnityEngine;
@@ -16,7 +18,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-244.
     /// </summary>
-    public class Scp244 : Usable
+    public class Scp244 : Usable, IWrapper<Scp244Item>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244"/> class.
@@ -33,7 +35,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="scp244Type">The type of SCP-244, either <see cref="ItemType.SCP244a"/> or <see cref="ItemType.SCP244b"/>.</param>
         internal Scp244(ItemType scp244Type)
-            : this((Scp244Item)Server.Host.Inventory.CreateItemInstance(scp244Type, false))
+            : this((Scp244Item)Server.Host.Inventory.CreateItemInstance(new(scp244Type, 0), false))
         {
         }
 

@@ -8,6 +8,7 @@
 namespace Exiled.Events.Handlers.Internal
 {
     using Exiled.API.Features;
+
     using PlayerRoles.Ragdolls;
 
     /// <summary>

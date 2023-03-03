@@ -8,11 +8,17 @@
 namespace Exiled.API.Features.DamageHandlers
 {
     using Enums;
+
     using Footprinting;
+
     using Items;
+
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.PlayableScps.Scp939;
+
     using PlayerStatsSystem;
+
+    using UnityEngine;
 
     /// <summary>
     /// Allows generic damage to player.
@@ -97,7 +103,9 @@ namespace Exiled.API.Features.DamageHandlers
                 case DamageType.Recontainment:
                     Base = new RecontainmentDamageHandler(Attacker);
                     break;
-
+                case DamageType.Jailbird:
+                    Base = new JailbirdDamageHandler(Attacker.Hub, damage, Vector3.zero);
+                    break;
                 case DamageType.MicroHid:
                     InventorySystem.Items.MicroHID.MicroHIDItem microHidOwner = new();
                     microHidOwner.Owner = attacker.ReferenceHub;
@@ -142,7 +150,6 @@ namespace Exiled.API.Features.DamageHandlers
                 case DamageType.ParticleDisruptor:
                     Base = new DisruptorDamageHandler(Attacker, damage);
                     break;
-
                 case DamageType.Scp096:
                     Scp096Role curr096 = attacker.ReferenceHub.roleManager.CurrentRole as Scp096Role ?? new Scp096Role();
 

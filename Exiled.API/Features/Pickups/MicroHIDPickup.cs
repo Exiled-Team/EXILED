@@ -7,12 +7,14 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Interfaces;
+
     using BaseMicroHID = InventorySystem.Items.MicroHID.MicroHIDPickup;
 
     /// <summary>
     /// A wrapper class for a MicroHID pickup.
     /// </summary>
-    public class MicroHIDPickup : Pickup
+    public class MicroHIDPickup : Pickup, IWrapper<BaseMicroHID>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MicroHIDPickup"/> class.

@@ -11,6 +11,7 @@ namespace Exiled.CustomItems.Events
     using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs.Player;
+
     using PlayerRoles;
 
     /// <summary>
@@ -18,37 +19,25 @@ namespace Exiled.CustomItems.Events
     /// </summary>
     internal sealed class PlayerHandler
     {
-        /// <inheritdoc cref="ChangingRoleEventArgs"/>
-        public void OnChangingRole(ChangingRoleEventArgs ev)
+        /// <inheritdoc cref="ChangingItemEventArgs"/>
+        public void OnChangingItem(ChangingItemEventArgs ev)
         {
-            if (ev.NewRole == RoleTypeId.Spectator)
+            if (!ev.IsAllowed)
+                return;
+            if (CustomItem.TryGet(ev.NewItem, out CustomItem newItem) && newItem.ShouldMessageOnGban)
             {
-                foreach (Player player in Player.List)
-                {
-                    if (player == ev.Player)
-                    {
-                        continue;
-                    }
-
-                    if (CustomItem.TryGet(player, out CustomItem item))
-                    {
-                        if (item.ShouldMessageOnGban)
-                        {
-                            ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{player.Nickname} (CustomItem: {item.Name})");
-                        }
-                    }
-                }
+                SpectatorCustomNickname(ev.Player, $"{ev.Player.CustomName} (CustomItem: {newItem.Name})");
             }
-            else
+            else if (ev.Player != null && CustomItem.TryGet(ev.Player.CurrentItem, out CustomItem _))
             {
-                foreach (Player player in Player.List)
-                {
-                    if (player == ev.Player || player.ReferenceHub.nicknameSync.Network_displayName is null)
-                        continue;
-
-                    ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), player.DisplayNickname);
-                }
+                SpectatorCustomNickname(ev.Player, ev.Player.HasCustomName ? ev.Player.CustomName : null);
             }
+        }
+
+        private void SpectatorCustomNickname(Player player, string itemName)
+        {
+            foreach (Player spectator in Player.List)
+                spectator.SendFakeSyncVar(player.NetworkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), itemName);
         }
     }
 }

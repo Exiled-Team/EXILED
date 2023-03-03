@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -38,7 +39,7 @@ namespace Exiled.API.Features.Items
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
         internal Scp2176(Player player = null)
-            : this(player is null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.SCP2176, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.SCP2176, true))
+            : this((ThrowableItem)(player ?? Server.Host).Inventory.CreateItemInstance(new(ItemType.SCP2176, 0), true))
         {
         }
 
@@ -67,15 +68,17 @@ namespace Exiled.API.Features.Items
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
-            Scp2176Projectile grenade = (Scp2176Projectile)Pickup.Get(Object.Instantiate(Projectile.Base, position, Quaternion.identity));
+            ItemPickupBase ipb = Object.Instantiate(Projectile.Base, position, Quaternion.identity);
+
+            ipb.Info = new PickupSyncInfo(Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
+
+            Scp2176Projectile grenade = (Scp2176Projectile)Pickup.Get(ipb);
 
             grenade.Base.gameObject.SetActive(true);
 
             grenade.FuseTime = FuseTime;
 
             grenade.PreviousOwner = owner ?? Server.Host;
-
-            grenade.Info = new PickupSyncInfo(grenade.Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
 
             grenade.Spawn();
 

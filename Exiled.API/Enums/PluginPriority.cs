@@ -10,6 +10,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Provides simple and readable plugin priority values.
     /// </summary>
+    /// <seealso cref="Interfaces.IPlugin{TConfig}.Priority"/>
     public enum PluginPriority
     {
         /// <inheritdoc cref="Medium"/>

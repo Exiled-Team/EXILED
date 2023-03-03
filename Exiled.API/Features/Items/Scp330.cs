@@ -8,9 +8,9 @@
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -45,7 +45,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for SCP-330 bags.
     /// </summary>
-    public partial class Scp330 : Usable
+    public partial class Scp330 : Usable, IWrapper<Scp330Bag>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
@@ -61,7 +61,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Scp330"/> class, as well as a new SCP-330 bag item.
         /// </summary>
         internal Scp330()
-            : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(ItemType.SCP330, false))
+            : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(new(ItemType.SCP330, 0), false))
         {
         }
 
@@ -184,14 +184,19 @@ namespace Exiled.API.Features.Items
 
             List<Scp330Pickup> pickups = new();
 
-            if ((count > 1) && !dropIndividual)
+            if (count > 1 && !dropIndividual)
             {
-                Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, Owner.Position, default));
+                ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
+
+                ipb.Info = new(Type, Owner.Position, default, Weight, ItemSerialGenerator.GenerateNext());
+
+                Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(ipb);
+
                 if (exposedType is not CandyKindID.None)
                     pickup.ExposedCandy = exposedType;
                 for (int i = 0; i < count; i++)
-                pickup.Candies.Add(type);
-                pickup.Info = new(Type, Owner.Position, default, Weight, ItemSerialGenerator.GenerateNext());
+                    pickup.Candies.Add(type);
+
                 pickup.Base.InfoReceived(default, pickup.Info);
                 pickup.Scale = Scale;
                 pickup.Spawn();
@@ -202,13 +207,16 @@ namespace Exiled.API.Features.Items
 
             for (int i = 0; i < count; i++)
             {
-                Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, Owner.Position, default));
+                ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
+
+                ipb.Info = new(Type, Owner.Position, default, Weight, ItemSerialGenerator.GenerateNext());
+
+                Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(ipb);
 
                 if (exposedType is not CandyKindID.None)
                     pickup.ExposedCandy = exposedType;
 
                 pickup.Candies.Add(type);
-                pickup.Info = new PickupSyncInfo(Type, Owner.Position, default, Weight, ItemSerialGenerator.GenerateNext());
                 pickup.Base.InfoReceived(default, pickup.Info);
                 pickup.Scale = Scale;
                 pickup.Spawn();

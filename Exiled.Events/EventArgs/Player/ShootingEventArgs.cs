@@ -8,10 +8,13 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
+
     using Interfaces;
 
     using InventorySystem.Items.Firearms.BasicMessages;
+
     using RelativePositioning;
+
     using UnityEngine;
 
     /// <summary>
@@ -49,7 +52,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Vector3 ShotPosition
         {
-            get => ShotMessage.TargetPosition.Relative;
+            get => ShotMessage.TargetPosition.Position;
             set
             {
                 ShotMessage msg = ShotMessage;

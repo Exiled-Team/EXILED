@@ -35,10 +35,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets SCP-914's config mode.
         /// </summary>
-        public static ConfigEntry<Scp914Mode> ConfigMode
+        public static Scp914Mode ConfigMode
         {
-            get => Scp914Controller._configMode;
-            set => Scp914Controller._configMode = value;
+            get => Scp914Controller._configMode.Value;
+            set => Scp914Controller._configMode.Value = value;
         }
 
         /// <summary>

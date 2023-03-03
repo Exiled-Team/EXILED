@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs.Warhead
 {
     using API.Features;
+
     using Interfaces;
 
     /// <summary>

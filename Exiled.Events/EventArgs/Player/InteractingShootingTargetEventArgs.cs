@@ -14,6 +14,7 @@ namespace Exiled.Events.EventArgs.Player
     using API.Enums;
     using API.Features;
     using API.Features.Toys;
+
     using Interfaces;
 
     using UnityEngine;
