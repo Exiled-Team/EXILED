@@ -19,7 +19,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A wrapper class for <see cref="LightSourceToy"/>.
     /// </summary>
-    public class Light : AdminToy, IWrapper<LightSourceToy>, IWorldSpace
+    public class Light : AdminToy, IWrapper<LightSourceToy>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Light"/> class.

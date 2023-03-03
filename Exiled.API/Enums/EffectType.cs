@@ -166,5 +166,10 @@ namespace Exiled.API.Enums
         /// Cause the lighting in the facility to dim heavily for the player.
         /// </summary>
         InsufficientLighting,
+
+        /// <summary>
+        /// Disable ambiant sound.
+        /// </summary>
+        SoundtrackMute,
     }
 }
