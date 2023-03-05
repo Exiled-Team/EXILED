@@ -291,6 +291,13 @@ namespace Exiled.API.Features
         public void Blackout(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
 
         /// <summary>
+        /// Flickers the room's lights off for a duration.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
+        [Obsolete("Blackout exist", false)]
+        public void TurnOffLights(float duration) => Blackout(duration);
+
+        /// <summary>
         /// Locks all the doors in the room.
         /// </summary>
         /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent lockdown.</param>
