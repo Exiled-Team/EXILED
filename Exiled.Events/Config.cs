@@ -36,7 +36,7 @@ namespace Exiled.Events
         /// Gets or sets a value indicating whether SCP-049 can activate the sense ability on tutorials.
         /// </summary>
         [Description("Indicates whether SCP-049 can sense tutorial players or not")]
-        public bool CanScp049SenseTutorial { get; set; } = false;
+        public bool CanScp049SenseTutorial { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether flashbangs flash original thrower.
