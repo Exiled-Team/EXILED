@@ -285,10 +285,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Send you the position from world space to local space.
+        /// Returns the local space position from the world space position.
         /// </summary>
         /// <param name="position">World position.</param>
-        /// <returns>Local position based with room.</returns>
+        /// <returns>Local position, based on the room.</returns>
         public Vector3 LocalPosition(Vector3 position) => Transform.TransformPoint(position);
 
         /// <summary>
