@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -91,6 +91,13 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Lift</span></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">Interactables.Interobjects.ElevatorChamber</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -116,25 +123,56 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Lift_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Lift</code></pre>
+    <pre><code class="lang-csharp hljs">public class Lift : IWrapper&lt;ElevatorChamber&gt;, IWorldSpace, IPosition, IRotation</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_AnimationTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.AnimationTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L59">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L164">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Lift_AnimationTime_" data-uid="Exiled.API.Features.Lift.AnimationTime*"></a>
+  <h4 id="Exiled_API_Features_Lift_AnimationTime" data-uid="Exiled.API.Features.Lift.AnimationTime">AnimationTime</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Exiled.API.Features.Lift.html#Exiled_API_Features_Lift_AnimationTime">AnimationTime</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float AnimationTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L73">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Base_" data-uid="Exiled.API.Features.Lift.Base*"></a>
   <h4 id="Exiled_API_Features_Lift_Base" data-uid="Exiled.API.Features.Lift.Base">Base</h4>
-  <div class="markdown level1 summary"><p>Gets the base <span class="xref">Lift</span>.</p>
+  <div class="markdown level1 summary"><p>Gets the base <span class="xref">Interactables.Interobjects.ElevatorChamber</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Lift Base { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ElevatorChamber Base { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -146,26 +184,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Lift</span></td>
+        <td><span class="xref">Interactables.Interobjects.ElevatorChamber</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_CachedItemPositions.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.CachedItemPositions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Bounds.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Bounds%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L156">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L125">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Lift_CachedItemPositions_" data-uid="Exiled.API.Features.Lift.CachedItemPositions*"></a>
-  <h4 id="Exiled_API_Features_Lift_CachedItemPositions" data-uid="Exiled.API.Features.Lift.CachedItemPositions">CachedItemPositions</h4>
-  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <span class="xref">UnityEngine.Vector3</span> which contains all the lift&apos;s cached items&apos; position.</p>
+  <a id="Exiled_API_Features_Lift_Bounds_" data-uid="Exiled.API.Features.Lift.Bounds*"></a>
+  <h4 id="Exiled_API_Features_Lift_Bounds" data-uid="Exiled.API.Features.Lift.Bounds">Bounds</h4>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">UnityEngine.Bounds</span> representing the space inside the lift.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Vector3&gt; CachedItemPositions { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Bounds Bounds { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -177,26 +215,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">UnityEngine.Vector3</span>&gt;</td>
+        <td><span class="xref">UnityEngine.Bounds</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_CachedItemRotations.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.CachedItemRotations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_CurrentDestination.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.CurrentDestination%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L161">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L178">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Lift_CachedItemRotations_" data-uid="Exiled.API.Features.Lift.CachedItemRotations*"></a>
-  <h4 id="Exiled_API_Features_Lift_CachedItemRotations" data-uid="Exiled.API.Features.Lift.CachedItemRotations">CachedItemRotations</h4>
-  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <span class="xref">UnityEngine.Vector3</span> which contains all the lift&apos;s cached items&apos; rotation.</p>
+  <a id="Exiled_API_Features_Lift_CurrentDestination_" data-uid="Exiled.API.Features.Lift.CurrentDestination*"></a>
+  <h4 id="Exiled_API_Features_Lift_CurrentDestination" data-uid="Exiled.API.Features.Lift.CurrentDestination">CurrentDestination</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Lift.html#Exiled_API_Features_Lift_CurrentDestination">CurrentDestination</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Quaternion&gt; CachedItemRotations { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ElevatorDoor CurrentDestination { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -208,26 +246,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">UnityEngine.Quaternion</span>&gt;</td>
+        <td><span class="xref">Interactables.Interobjects.ElevatorDoor</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_CachedItemTransformss.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.CachedItemTransformss%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_CurrentLevel.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.CurrentLevel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L166">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L173">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Lift_CachedItemTransformss_" data-uid="Exiled.API.Features.Lift.CachedItemTransformss*"></a>
-  <h4 id="Exiled_API_Features_Lift_CachedItemTransformss" data-uid="Exiled.API.Features.Lift.CachedItemTransformss">CachedItemTransformss</h4>
-  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <span class="xref">UnityEngine.Vector3</span> which contains all the lift&apos;s cached items&apos; <a class="xref" href="Exiled.API.Features.Lift.html#Exiled_API_Features_Lift_Transform">Transform</a>.</p>
+  <a id="Exiled_API_Features_Lift_CurrentLevel_" data-uid="Exiled.API.Features.Lift.CurrentLevel*"></a>
+  <h4 id="Exiled_API_Features_Lift_CurrentLevel" data-uid="Exiled.API.Features.Lift.CurrentLevel">CurrentLevel</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Lift.html#Exiled_API_Features_Lift_CurrentLevel">CurrentLevel</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Transform&gt; CachedItemTransformss { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int CurrentLevel { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -239,26 +277,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">UnityEngine.Transform</span>&gt;</td>
+        <td><span class="xref">System.Int32</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Elevators.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Elevators%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Doors.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Doors%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L171">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L78">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Lift_Elevators_" data-uid="Exiled.API.Features.Lift.Elevators*"></a>
-  <h4 id="Exiled_API_Features_Lift_Elevators" data-uid="Exiled.API.Features.Lift.Elevators">Elevators</h4>
-  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Structs.Elevator.html">Elevator</a> which contains all the lift&apos;s elevators.</p>
+  <a id="Exiled_API_Features_Lift_Doors_" data-uid="Exiled.API.Features.Lift.Doors*"></a>
+  <h4 id="Exiled_API_Features_Lift_Doors" data-uid="Exiled.API.Features.Lift.Doors">Doors</h4>
+  <div class="markdown level1 summary"><p>Gets a value of the internal doors list.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Elevator&gt; Elevators { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public IReadOnlyCollection&lt;ElevatorDoor&gt; Doors { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -270,17 +308,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Structs.Elevator.html">Elevator</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyCollection</span>&lt;<span class="xref">Interactables.Interobjects.ElevatorDoor</span>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_GameObject.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.GameObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_GameObject.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.GameObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L69">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L88">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_GameObject_" data-uid="Exiled.API.Features.Lift.GameObject*"></a>
   <h4 id="Exiled_API_Features_Lift_GameObject" data-uid="Exiled.API.Features.Lift.GameObject">GameObject</h4>
@@ -308,19 +346,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_IsLockable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.IsLockable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Group.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Group%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L133">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L144">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Lift_IsLockable_" data-uid="Exiled.API.Features.Lift.IsLockable*"></a>
-  <h4 id="Exiled_API_Features_Lift_IsLockable" data-uid="Exiled.API.Features.Lift.IsLockable">IsLockable</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether the lift is lockable.</p>
+  <a id="Exiled_API_Features_Lift_Group_" data-uid="Exiled.API.Features.Lift.Group*"></a>
+  <h4 id="Exiled_API_Features_Lift_Group" data-uid="Exiled.API.Features.Lift.Group">Group</h4>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">Interactables.Interobjects.ElevatorManager.ElevatorGroup</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsLockable { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ElevatorManager.ElevatorGroup Group { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -332,26 +370,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="xref">Interactables.Interobjects.ElevatorManager.ElevatorGroup</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_IsLocked.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.IsLocked%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_IsLocked.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.IsLocked%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L124">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L159">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_IsLocked_" data-uid="Exiled.API.Features.Lift.IsLocked*"></a>
   <h4 id="Exiled_API_Features_Lift_IsLocked" data-uid="Exiled.API.Features.Lift.IsLocked">IsLocked</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the lift is locked.</p>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether the lift is locked.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsLocked { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsLocked { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -370,10 +408,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_IsMoving.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.IsMoving%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_IsMoving.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.IsMoving%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L119">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L154">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_IsMoving_" data-uid="Exiled.API.Features.Lift.IsMoving*"></a>
   <h4 id="Exiled_API_Features_Lift_IsMoving" data-uid="Exiled.API.Features.Lift.IsMoving">IsMoving</h4>
@@ -401,10 +439,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_IsOperative.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.IsOperative%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_IsOperative.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.IsOperative%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L114">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L149">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_IsOperative_" data-uid="Exiled.API.Features.Lift.IsOperative*"></a>
   <h4 id="Exiled_API_Features_Lift_IsOperative" data-uid="Exiled.API.Features.Lift.IsOperative">IsOperative</h4>
@@ -432,10 +470,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_List.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.List%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_List.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.List%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L48">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L62">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_List_" data-uid="Exiled.API.Features.Lift.List*"></a>
   <h4 id="Exiled_API_Features_Lift_List" data-uid="Exiled.API.Features.Lift.List">List</h4>
@@ -463,72 +501,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_MaxDistance.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.MaxDistance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L147">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Lift_MaxDistance_" data-uid="Exiled.API.Features.Lift.MaxDistance*"></a>
-  <h4 id="Exiled_API_Features_Lift_MaxDistance" data-uid="Exiled.API.Features.Lift.MaxDistance">MaxDistance</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the maximum distance from which an object should be considered inside the lift&apos;s range.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MaxDistance { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Single</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_MovingSpeed.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.MovingSpeed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L138">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Lift_MovingSpeed_" data-uid="Exiled.API.Features.Lift.MovingSpeed*"></a>
-  <h4 id="Exiled_API_Features_Lift_MovingSpeed" data-uid="Exiled.API.Features.Lift.MovingSpeed">MovingSpeed</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the lift&apos;s moving speed.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MovingSpeed { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Single</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L64">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L83">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Name_" data-uid="Exiled.API.Features.Lift.Name*"></a>
   <h4 id="Exiled_API_Features_Lift_Name" data-uid="Exiled.API.Features.Lift.Name">Name</h4>
@@ -556,19 +532,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Position.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Position.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L79">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L98">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Position_" data-uid="Exiled.API.Features.Lift.Position*"></a>
   <h4 id="Exiled_API_Features_Lift_Position" data-uid="Exiled.API.Features.Lift.Position">Position</h4>
-  <div class="markdown level1 summary"><p>Gets the lift&apos;s position.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the lift&apos;s position.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 Position { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Vector3 Position { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -587,10 +563,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Random.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Random%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Random.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Random%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L54">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L68">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Random_" data-uid="Exiled.API.Features.Lift.Random*"></a>
   <h4 id="Exiled_API_Features_Lift_Random" data-uid="Exiled.API.Features.Lift.Random">Random</h4>
@@ -619,19 +595,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Rotation.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Rotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Rotation.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Rotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L84">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L107">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Rotation_" data-uid="Exiled.API.Features.Lift.Rotation*"></a>
   <h4 id="Exiled_API_Features_Lift_Rotation" data-uid="Exiled.API.Features.Lift.Rotation">Rotation</h4>
-  <div class="markdown level1 summary"><p>Gets the lift&apos;s rotation.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the lift&apos;s rotation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Quaternion Rotation { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Quaternion Rotation { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -650,19 +626,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Status.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Status%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Status.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Status%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L89">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L116">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Status_" data-uid="Exiled.API.Features.Lift.Status*"></a>
   <h4 id="Exiled_API_Features_Lift_Status" data-uid="Exiled.API.Features.Lift.Status">Status</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the lift&apos;s <span class="xref">Lift.Status</span>.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the lift&apos;s <span class="xref">Interactables.Interobjects.ElevatorChamber</span> status.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Lift.Status Status { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ElevatorChamber.ElevatorSequence Status { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -674,17 +650,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Lift.Status</span></td>
+        <td><span class="xref">Interactables.Interobjects.ElevatorChamber.ElevatorSequence</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Transform.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Transform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Transform.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Transform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L74">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L93">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Transform_" data-uid="Exiled.API.Features.Lift.Transform*"></a>
   <h4 id="Exiled_API_Features_Lift_Transform" data-uid="Exiled.API.Features.Lift.Transform">Transform</h4>
@@ -712,10 +688,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L99">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L130">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Type_" data-uid="Exiled.API.Features.Lift.Type*"></a>
   <h4 id="Exiled_API_Features_Lift_Type" data-uid="Exiled.API.Features.Lift.Type">Type</h4>
@@ -745,10 +721,60 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Get_Exiled_API_Enums_ElevatorType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(Exiled.API.Enums.ElevatorType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_ChangeLock_Interactables_Interobjects_DoorUtils_DoorLockReason_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.ChangeLock(Interactables.Interobjects.DoorUtils.DoorLockReason)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L192">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L257">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Lift_ChangeLock_" data-uid="Exiled.API.Features.Lift.ChangeLock*"></a>
+  <h4 id="Exiled_API_Features_Lift_ChangeLock_Interactables_Interobjects_DoorUtils_DoorLockReason_" data-uid="Exiled.API.Features.Lift.ChangeLock(Interactables.Interobjects.DoorUtils.DoorLockReason)">ChangeLock(DoorLockReason)</h4>
+  <div class="markdown level1 summary"><p>Changes lock of the lift.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ChangeLock(DoorLockReason lockReason)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Interactables.Interobjects.DoorUtils.DoorLockReason</span></td>
+        <td><span class="parametername">lockReason</span></td>
+        <td><p>Type of lift lockdown.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Finalize.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L57">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Lift_Finalize_" data-uid="Exiled.API.Features.Lift.Finalize*"></a>
+  <h4 id="Exiled_API_Features_Lift_Finalize" data-uid="Exiled.API.Features.Lift.Finalize">Finalize()</h4>
+  <div class="markdown level1 summary"><p>Finalizes an instance of the <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected void Finalize()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Get_Exiled_API_Enums_ElevatorType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(Exiled.API.Enums.ElevatorType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L199">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Get_" data-uid="Exiled.API.Features.Lift.Get*"></a>
   <h4 id="Exiled_API_Features_Lift_Get_Exiled_API_Enums_ElevatorType_" data-uid="Exiled.API.Features.Lift.Get(Exiled.API.Enums.ElevatorType)">Get(ElevatorType)</h4>
@@ -795,19 +821,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Get_Lift_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(Lift)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Get_Interactables_Interobjects_ElevatorChamber_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(Interactables.Interobjects.ElevatorChamber)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L185">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L192">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Get_" data-uid="Exiled.API.Features.Lift.Get*"></a>
-  <h4 id="Exiled_API_Features_Lift_Get_Lift_" data-uid="Exiled.API.Features.Lift.Get(Lift)">Get(Lift)</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> belonging to the <span class="xref">Lift</span>, if any.</p>
+  <h4 id="Exiled_API_Features_Lift_Get_Interactables_Interobjects_ElevatorChamber_" data-uid="Exiled.API.Features.Lift.Get(Interactables.Interobjects.ElevatorChamber)">Get(ElevatorChamber)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> belonging to the <span class="xref">Interactables.Interobjects.ElevatorChamber</span>, if any.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Lift Get(Lift baseLift)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Lift Get(ElevatorChamber elevator)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -820,9 +846,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Lift</span></td>
-        <td><span class="parametername">baseLift</span></td>
-        <td><p>The <span class="xref">Lift</span> instance.</p>
+        <td><span class="xref">Interactables.Interobjects.ElevatorChamber</span></td>
+        <td><span class="parametername">elevator</span></td>
+        <td><p>The <span class="xref">Interactables.Interobjects.ElevatorChamber</span> instance.</p>
 </td>
       </tr>
     </tbody>
@@ -845,19 +871,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Get_Lift_Status_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(Lift.Status)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Get_Interactables_Interobjects_ElevatorChamber_ElevatorSequence_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(Interactables.Interobjects.ElevatorChamber.ElevatorSequence)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L178">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L185">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Get_" data-uid="Exiled.API.Features.Lift.Get*"></a>
-  <h4 id="Exiled_API_Features_Lift_Get_Lift_Status_" data-uid="Exiled.API.Features.Lift.Get(Lift.Status)">Get(Lift.Status)</h4>
-  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> which contains all the <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> instances from the specified <span class="xref">Lift.Status</span>.</p>
+  <h4 id="Exiled_API_Features_Lift_Get_Interactables_Interobjects_ElevatorChamber_ElevatorSequence_" data-uid="Exiled.API.Features.Lift.Get(Interactables.Interobjects.ElevatorChamber.ElevatorSequence)">Get(ElevatorChamber.ElevatorSequence)</h4>
+  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> which contains all the <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> instances from the specified <a class="xref" href="Exiled.API.Features.Lift.html#Exiled_API_Features_Lift_Status">Status</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;Lift&gt; Get(Lift.Status status)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;Lift&gt; Get(ElevatorChamber.ElevatorSequence status)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -870,9 +896,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Lift.Status</span></td>
+        <td><span class="xref">Interactables.Interobjects.ElevatorChamber.ElevatorSequence</span></td>
         <td><span class="parametername">status</span></td>
-        <td><p>The specified <span class="xref">Lift.Status</span>.</p>
+        <td><p>The specified <span class="xref">Interactables.Interobjects.ElevatorChamber</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -895,10 +921,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Get_System_Func_Exiled_API_Features_Lift_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(System.Func%7BExiled.API.Features.Lift%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Get_System_Func_Exiled_API_Features_Lift_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(System.Func%7BExiled.API.Features.Lift%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L213">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L227">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Get_" data-uid="Exiled.API.Features.Lift.Get*"></a>
   <h4 id="Exiled_API_Features_Lift_Get_System_Func_Exiled_API_Features_Lift_System_Boolean__" data-uid="Exiled.API.Features.Lift.Get(System.Func{Exiled.API.Features.Lift,System.Boolean})">Get(Func&lt;Lift, Boolean&gt;)</h4>
@@ -945,10 +971,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Get_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Get_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L199">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L206">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Get_" data-uid="Exiled.API.Features.Lift.Get*"></a>
   <h4 id="Exiled_API_Features_Lift_Get_System_String_" data-uid="Exiled.API.Features.Lift.Get(System.String)">Get(String)</h4>
@@ -995,10 +1021,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_Get_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(UnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Get_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(UnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L206">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L213">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_Get_" data-uid="Exiled.API.Features.Lift.Get*"></a>
   <h4 id="Exiled_API_Features_Lift_Get_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Lift.Get(UnityEngine.GameObject)">Get(GameObject)</h4>
@@ -1045,26 +1071,110 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_PlayMusic.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.PlayMusic%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_Get_UnityEngine_Vector3_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.Get(UnityEngine.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L234">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L220">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Lift_PlayMusic_" data-uid="Exiled.API.Features.Lift.PlayMusic*"></a>
-  <h4 id="Exiled_API_Features_Lift_PlayMusic" data-uid="Exiled.API.Features.Lift.PlayMusic">PlayMusic()</h4>
-  <div class="markdown level1 summary"><p>Plays the lift&apos;s music.</p>
+  <a id="Exiled_API_Features_Lift_Get_" data-uid="Exiled.API.Features.Lift.Get*"></a>
+  <h4 id="Exiled_API_Features_Lift_Get_UnityEngine_Vector3_" data-uid="Exiled.API.Features.Lift.Get(UnityEngine.Vector3)">Get(Vector3)</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> belonging to the <span class="xref">UnityEngine.Vector3</span>, if any.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void PlayMusic()</code></pre>
+    <pre><code class="lang-csharp hljs">public static Lift Get(Vector3 position)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>The <span class="xref">UnityEngine.Vector3</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Lift.html">Lift</a></td>
+        <td><p>A <a class="xref" href="Exiled.API.Features.Lift.html">Lift</a> or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_IsInElevator_UnityEngine_Vector3_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.IsInElevator(UnityEngine.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L246">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L286">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Lift_IsInElevator_" data-uid="Exiled.API.Features.Lift.IsInElevator*"></a>
+  <h4 id="Exiled_API_Features_Lift_IsInElevator_UnityEngine_Vector3_" data-uid="Exiled.API.Features.Lift.IsInElevator(UnityEngine.Vector3)">IsInElevator(Vector3)</h4>
+  <div class="markdown level1 summary"><p>Returns whether or not the provided <span class="xref">UnityEngine.Vector3</span> is inside the lift.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInElevator(Vector3 point)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">point</span></td>
+        <td><p>The position.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the point is inside the elevator. Otherwise, <span class="xref">false</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L292">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_ToString_" data-uid="Exiled.API.Features.Lift.ToString*"></a>
   <h4 id="Exiled_API_Features_Lift_ToString" data-uid="Exiled.API.Features.Lift.ToString">ToString()</h4>
@@ -1095,10 +1205,10 @@
   <div><span class="xref">System.Object.ToString()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_TryMeltPlayer_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.TryMeltPlayer(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_TryMeltPlayer_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.TryMeltPlayer(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L221">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L235">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_TryMeltPlayer_" data-uid="Exiled.API.Features.Lift.TryMeltPlayer*"></a>
   <h4 id="Exiled_API_Features_Lift_TryMeltPlayer_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Lift.TryMeltPlayer(Exiled.API.Features.Player)">TryMeltPlayer(Player)</h4>
@@ -1149,20 +1259,44 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift_TryStart.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.TryStart%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift_TryStart_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift.TryStart(System.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L240">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L251">View Source</a>
   </span>
   <a id="Exiled_API_Features_Lift_TryStart_" data-uid="Exiled.API.Features.Lift.TryStart*"></a>
-  <h4 id="Exiled_API_Features_Lift_TryStart" data-uid="Exiled.API.Features.Lift.TryStart">TryStart()</h4>
+  <h4 id="Exiled_API_Features_Lift_TryStart_System_Int32_System_Boolean_" data-uid="Exiled.API.Features.Lift.TryStart(System.Int32,System.Boolean)">TryStart(Int32, Boolean)</h4>
   <div class="markdown level1 summary"><p>Tries to start the lift.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool TryStart()</code></pre>
+    <pre><code class="lang-csharp hljs">public bool TryStart(int level, bool isForced = false)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">level</span></td>
+        <td><p>The destination level.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">isForced</span></td>
+        <td><p>Indicates whether the start will be forced or not.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -1179,6 +1313,19 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -1191,10 +1338,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Lift.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Lift.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Lift%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L24" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Lift.cs/#L29" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

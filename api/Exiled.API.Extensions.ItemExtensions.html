@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -125,10 +125,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetAmmoType_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetAmmoType(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetAmmoType_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetAmmoType(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L156">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L150">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetAmmoType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetAmmoType*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_GetAmmoType_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetAmmoType(ItemType)">GetAmmoType(ItemType)</h4>
@@ -175,19 +175,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetAttachmentIdentifiers_Exiled_API_Features_Items_Firearm_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetAttachmentIdentifiers(Exiled.API.Features.Items.Firearm)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetAttachmentIdentifiers_Exiled_API_Enums_FirearmType_System_UInt32_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetAttachmentIdentifiers(Exiled.API.Enums.FirearmType%2CSystem.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L257">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L258">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetAttachmentIdentifiers_" data-uid="Exiled.API.Extensions.ItemExtensions.GetAttachmentIdentifiers*"></a>
-  <h4 id="Exiled_API_Extensions_ItemExtensions_GetAttachmentIdentifiers_Exiled_API_Features_Items_Firearm_" data-uid="Exiled.API.Extensions.ItemExtensions.GetAttachmentIdentifiers(Exiled.API.Features.Items.Firearm)">GetAttachmentIdentifiers(Firearm)</h4>
-  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a> from a specified <a class="xref" href="Exiled.API.Features.Items.Firearm.html">Firearm</a>.</p>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_GetAttachmentIdentifiers_Exiled_API_Enums_FirearmType_System_UInt32_" data-uid="Exiled.API.Extensions.ItemExtensions.GetAttachmentIdentifiers(Exiled.API.Enums.FirearmType,System.UInt32)">GetAttachmentIdentifiers(FirearmType, UInt32)</h4>
+  <div class="markdown level1 summary"><p>Gets all <a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a>s present on a <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;AttachmentIdentifier&gt; GetAttachmentIdentifiers(this Firearm firearm)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;AttachmentIdentifier&gt; GetAttachmentIdentifiers(this FirearmType type, uint code)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -200,59 +200,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Features.Items.Firearm.html">Firearm</a></td>
-        <td><span class="parametername">firearm</span></td>
-        <td><p>The specified <a class="xref" href="Exiled.API.Features.Items.Firearm.html">Firearm</a>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a>&gt;</td>
-        <td><p>A <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a> which contains all the firearm&apos;s attachments.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetAttachmentIdentifiers_ItemType_System_UInt32_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetAttachmentIdentifiers(ItemType%2CSystem.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L213">View Source</a>
-  </span>
-  <a id="Exiled_API_Extensions_ItemExtensions_GetAttachmentIdentifiers_" data-uid="Exiled.API.Extensions.ItemExtensions.GetAttachmentIdentifiers*"></a>
-  <h4 id="Exiled_API_Extensions_ItemExtensions_GetAttachmentIdentifiers_ItemType_System_UInt32_" data-uid="Exiled.API.Extensions.ItemExtensions.GetAttachmentIdentifiers(ItemType,System.UInt32)">GetAttachmentIdentifiers(ItemType, UInt32)</h4>
-  <div class="markdown level1 summary"><p>Gets all <a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a>s present on an <span class="xref">ItemType</span>.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;AttachmentIdentifier&gt; GetAttachmentIdentifiers(this ItemType type, uint code)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ItemType</span></td>
+        <td><a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a></td>
         <td><span class="parametername">type</span></td>
-        <td><p>The <span class="xref">ItemType</span> to iterate over.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a> to iterate over.</p>
 </td>
       </tr>
       <tr>
@@ -281,10 +231,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetAttachmentsCode_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetAttachmentsCode(System.Collections.Generic.IEnumerable%7BExiled.API.Structs.AttachmentIdentifier%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetAttachmentsCode_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetAttachmentsCode(System.Collections.Generic.IEnumerable%7BExiled.API.Structs.AttachmentIdentifier%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L250">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L295">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetAttachmentsCode_" data-uid="Exiled.API.Extensions.ItemExtensions.GetAttachmentsCode*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_GetAttachmentsCode_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__" data-uid="Exiled.API.Extensions.ItemExtensions.GetAttachmentsCode(System.Collections.Generic.IEnumerable{Exiled.API.Structs.AttachmentIdentifier})">GetAttachmentsCode(IEnumerable&lt;AttachmentIdentifier&gt;)</h4>
@@ -331,19 +281,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetBaseCode_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetBaseCode(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetBaseCode_Exiled_API_Enums_FirearmType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetBaseCode(Exiled.API.Enums.FirearmType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L268">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L302">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetBaseCode_" data-uid="Exiled.API.Extensions.ItemExtensions.GetBaseCode*"></a>
-  <h4 id="Exiled_API_Extensions_ItemExtensions_GetBaseCode_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetBaseCode(ItemType)">GetBaseCode(ItemType)</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Enums.BaseCode.html">BaseCode</a> of the specified <span class="xref">ItemType</span>.</p>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_GetBaseCode_Exiled_API_Enums_FirearmType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetBaseCode(Exiled.API.Enums.FirearmType)">GetBaseCode(FirearmType)</h4>
+  <div class="markdown level1 summary"><p>Gets the base code of the specified <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static BaseCode GetBaseCode(this ItemType type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static uint GetBaseCode(this FirearmType type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -356,9 +306,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ItemType</span></td>
+        <td><a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a></td>
         <td><span class="parametername">type</span></td>
-        <td><p>The <span class="xref">ItemType</span> to check.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a> to check.</p>
 </td>
       </tr>
     </tbody>
@@ -373,18 +323,68 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Enums.BaseCode.html">BaseCode</a></td>
-        <td><p>The corresponding <a class="xref" href="Exiled.API.Enums.BaseCode.html">BaseCode</a>.</p>
+        <td><span class="xref">System.UInt32</span></td>
+        <td><p>The corresponding base code.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemBase_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemBase(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetFirearmType_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetFirearmType(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L100">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L165">View Source</a>
+  </span>
+  <a id="Exiled_API_Extensions_ItemExtensions_GetFirearmType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetFirearmType*"></a>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_GetFirearmType_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetFirearmType(ItemType)">GetFirearmType(ItemType)</h4>
+  <div class="markdown level1 summary"><p>Converts a valid firearm <span class="xref">ItemType</span> into a <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static FirearmType GetFirearmType(this ItemType type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ItemType</span></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <span class="xref">ItemType</span> to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a></td>
+        <td><p>The firearm type of the given item.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemBase_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemBase(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L94">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetItemBase_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemBase*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_GetItemBase_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemBase(ItemType)">GetItemBase(ItemType)</h4>
@@ -431,10 +431,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemBase__1_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemBase%60%601(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemBase__1_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemBase%60%601(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L114">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L108">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetItemBase_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemBase*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_GetItemBase__1_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemBase``1(ItemType)">GetItemBase&lt;T&gt;(ItemType)</h4>
@@ -499,10 +499,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_AmmoType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.AmmoType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_AmmoType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.AmmoType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L171">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L186">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemType*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_AmmoType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.AmmoType)">GetItemType(AmmoType)</h4>
@@ -549,19 +549,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_GrenadeType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.GrenadeType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_FirearmType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.FirearmType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L186">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L201">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemType*"></a>
-  <h4 id="Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_GrenadeType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.GrenadeType)">GetItemType(GrenadeType)</h4>
-  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="Exiled.API.Enums.GrenadeType.html">GrenadeType</a> into the corresponding <span class="xref">ItemType</span>.</p>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_FirearmType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.FirearmType)">GetItemType(FirearmType)</h4>
+  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a> into it&apos;s corresponding <span class="xref">ItemType</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static ItemType GetItemType(this GrenadeType type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ItemType GetItemType(this FirearmType type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -574,9 +574,59 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Enums.GrenadeType.html">GrenadeType</a></td>
+        <td><a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a></td>
         <td><span class="parametername">type</span></td>
-        <td><p>The <a class="xref" href="Exiled.API.Enums.GrenadeType.html">GrenadeType</a> to convert.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a> to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ItemType</span></td>
+        <td><p>The Item type of the specified firearm.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_ProjectileType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.ProjectileType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L236">View Source</a>
+  </span>
+  <a id="Exiled_API_Extensions_ItemExtensions_GetItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemType*"></a>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_GetItemType_Exiled_API_Enums_ProjectileType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemType(Exiled.API.Enums.ProjectileType)">GetItemType(ProjectileType)</h4>
+  <div class="markdown level1 summary"><p>Converts a <a class="xref" href="Exiled.API.Enums.ProjectileType.html">ProjectileType</a> into the corresponding <span class="xref">ItemType</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ItemType GetItemType(this ProjectileType type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.ProjectileType.html">ProjectileType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.ProjectileType.html">ProjectileType</a> to convert.</p>
 </td>
       </tr>
     </tbody>
@@ -599,10 +649,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemTypes_System_Collections_Generic_IEnumerable_Exiled_API_Features_Items_Item__.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemTypes(System.Collections.Generic.IEnumerable%7BExiled.API.Features.Items.Item%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetItemTypes_System_Collections_Generic_IEnumerable_Exiled_API_Features_Items_Item__.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetItemTypes(System.Collections.Generic.IEnumerable%7BExiled.API.Features.Items.Item%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L200">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L250">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetItemTypes_" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemTypes*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_GetItemTypes_System_Collections_Generic_IEnumerable_Exiled_API_Features_Items_Item__" data-uid="Exiled.API.Extensions.ItemExtensions.GetItemTypes(System.Collections.Generic.IEnumerable{Exiled.API.Features.Items.Item})">GetItemTypes(IEnumerable&lt;Item&gt;)</h4>
@@ -649,19 +699,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetMaxAmmo_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetMaxAmmo(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetMaxAmmo_Exiled_API_Enums_FirearmType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetMaxAmmo(Exiled.API.Enums.FirearmType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L128">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L122">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_GetMaxAmmo_" data-uid="Exiled.API.Extensions.ItemExtensions.GetMaxAmmo*"></a>
-  <h4 id="Exiled_API_Extensions_ItemExtensions_GetMaxAmmo_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetMaxAmmo(ItemType)">GetMaxAmmo(ItemType)</h4>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_GetMaxAmmo_Exiled_API_Enums_FirearmType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetMaxAmmo(Exiled.API.Enums.FirearmType)">GetMaxAmmo(FirearmType)</h4>
   <div class="markdown level1 summary"><p>Gets the maximum ammo of a weapon.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static byte GetMaxAmmo(this ItemType item)</code></pre>
+    <pre><code class="lang-csharp hljs">public static byte GetMaxAmmo(this FirearmType item)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -674,9 +724,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ItemType</span></td>
+        <td><a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a></td>
         <td><span class="parametername">item</span></td>
-        <td><p>The <span class="xref">ItemType</span> that you want to get maximum of.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.FirearmType.html">weapon</a> that you want to get maximum of.</p>
 </td>
       </tr>
     </tbody>
@@ -699,19 +749,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetWeaponAmmoType_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetWeaponAmmoType(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetProjectileType_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetProjectileType(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L141">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L222">View Source</a>
   </span>
-  <a id="Exiled_API_Extensions_ItemExtensions_GetWeaponAmmoType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetWeaponAmmoType*"></a>
-  <h4 id="Exiled_API_Extensions_ItemExtensions_GetWeaponAmmoType_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetWeaponAmmoType(ItemType)">GetWeaponAmmoType(ItemType)</h4>
-  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="Exiled.API.Enums.AmmoType.html">AmmoType</a> of the weapon is using.</p>
+  <a id="Exiled_API_Extensions_ItemExtensions_GetProjectileType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetProjectileType*"></a>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_GetProjectileType_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetProjectileType(ItemType)">GetProjectileType(ItemType)</h4>
+  <div class="markdown level1 summary"><p>Converts a valid projectile <span class="xref">ItemType</span> into a <a class="xref" href="Exiled.API.Enums.ProjectileType.html">ProjectileType</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static AmmoType GetWeaponAmmoType(this ItemType type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static ProjectileType GetProjectileType(this ItemType type)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -741,6 +791,56 @@
     </thead>
     <tbody>
       <tr>
+        <td><a class="xref" href="Exiled.API.Enums.ProjectileType.html">ProjectileType</a></td>
+        <td><p>The projectile type of the given item type, or <a class="xref" href="Exiled.API.Enums.ProjectileType.html#Exiled_API_Enums_ProjectileType_None">None</a> if the provided item type is not a projectile.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_GetWeaponAmmoType_Exiled_API_Enums_FirearmType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.GetWeaponAmmoType(Exiled.API.Enums.FirearmType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L135">View Source</a>
+  </span>
+  <a id="Exiled_API_Extensions_ItemExtensions_GetWeaponAmmoType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetWeaponAmmoType*"></a>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_GetWeaponAmmoType_Exiled_API_Enums_FirearmType_" data-uid="Exiled.API.Extensions.ItemExtensions.GetWeaponAmmoType(Exiled.API.Enums.FirearmType)">GetWeaponAmmoType(FirearmType)</h4>
+  <div class="markdown level1 summary"><p>Returns the <a class="xref" href="Exiled.API.Enums.AmmoType.html">AmmoType</a> of the weapon is using.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static AmmoType GetWeaponAmmoType(this FirearmType type)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a></td>
+        <td><span class="parametername">type</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a> to convert.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
         <td><a class="xref" href="Exiled.API.Enums.AmmoType.html">AmmoType</a></td>
         <td><p>The given weapon&apos;s AmmoType.</p>
 </td>
@@ -749,10 +849,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsAmmo_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsAmmo(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsAmmo_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsAmmo(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L33">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L34">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_IsAmmo_" data-uid="Exiled.API.Extensions.ItemExtensions.IsAmmo*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_IsAmmo_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.IsAmmo(ItemType)">IsAmmo(ItemType)</h4>
@@ -799,10 +899,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsArmor_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsArmor(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsArmor_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsArmor(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L83">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L77">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_IsArmor_" data-uid="Exiled.API.Extensions.ItemExtensions.IsArmor*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_IsArmor_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.IsArmor(ItemType)">IsArmor(ItemType)</h4>
@@ -842,17 +942,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <span class="xref">ItemType</span> is an armor or not.</p>
+        <td><p>Returns whether or not the <span class="xref">ItemType</span> is an armor.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsKeycard_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsKeycard(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsKeycard_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsKeycard(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L90">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L84">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_IsKeycard_" data-uid="Exiled.API.Extensions.ItemExtensions.IsKeycard*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_IsKeycard_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.IsKeycard(ItemType)">IsKeycard(ItemType)</h4>
@@ -892,17 +992,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <span class="xref">ItemType</span> is a keycard or not.</p>
+        <td><p>Returns whether or not the <span class="xref">ItemType</span> is a keycard.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsMedical_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsMedical(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsMedical_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsMedical(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L69">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L63">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_IsMedical_" data-uid="Exiled.API.Extensions.ItemExtensions.IsMedical*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_IsMedical_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.IsMedical(ItemType)">IsMedical(ItemType)</h4>
@@ -942,17 +1042,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <span class="xref">ItemType</span> is a medical item or not.</p>
+        <td><p>Returns whether or not the <span class="xref">ItemType</span> is a medical item.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsScp_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsScp(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsScp_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsScp(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L55">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L49">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_IsScp_" data-uid="Exiled.API.Extensions.ItemExtensions.IsScp*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_IsScp_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.IsScp(ItemType)">IsScp(ItemType)</h4>
@@ -992,17 +1092,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <span class="xref">ItemType</span> is an SCP or not.</p>
+        <td><p>Returns whether or not the <span class="xref">ItemType</span> is an SCP.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsThrowable_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsThrowable(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsThrowable_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsThrowable(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L62">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L56">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_IsThrowable_" data-uid="Exiled.API.Extensions.ItemExtensions.IsThrowable*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_IsThrowable_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.IsThrowable(ItemType)">IsThrowable(ItemType)</h4>
@@ -1042,17 +1142,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <span class="xref">ItemType</span> is a throwable item or not.</p>
+        <td><p>Returns whether or not the <span class="xref">ItemType</span> is a throwable item.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsUtility_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsUtility(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsUtility_ItemType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsUtility(ItemType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L76">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L70">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_IsUtility_" data-uid="Exiled.API.Extensions.ItemExtensions.IsUtility*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_IsUtility_ItemType_" data-uid="Exiled.API.Extensions.ItemExtensions.IsUtility(ItemType)">IsUtility(ItemType)</h4>
@@ -1092,17 +1192,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <span class="xref">ItemType</span> is an utilty item or not.</p>
+        <td><p>Returns whether or not the <span class="xref">ItemType</span> is an utilty item.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsWeapon_ItemType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsWeapon(ItemType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_IsWeapon_ItemType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.IsWeapon(ItemType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L42">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_IsWeapon_" data-uid="Exiled.API.Extensions.ItemExtensions.IsWeapon*"></a>
   <h4 id="Exiled_API_Extensions_ItemExtensions_IsWeapon_ItemType_System_Boolean_" data-uid="Exiled.API.Extensions.ItemExtensions.IsWeapon(ItemType,System.Boolean)">IsWeapon(ItemType, Boolean)</h4>
@@ -1155,19 +1255,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_TryGetAttachments_ItemType_System_UInt32_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier___.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.TryGetAttachments(ItemType%2CSystem.UInt32%2CSystem.Collections.Generic.IEnumerable%7BExiled.API.Structs.AttachmentIdentifier%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions_TryGetAttachments_Exiled_API_Enums_FirearmType_System_UInt32_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier___.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions.TryGetAttachments(Exiled.API.Enums.FirearmType%2CSystem.UInt32%2CSystem.Collections.Generic.IEnumerable%7BExiled.API.Structs.AttachmentIdentifier%7D%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L233">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L278">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_ItemExtensions_TryGetAttachments_" data-uid="Exiled.API.Extensions.ItemExtensions.TryGetAttachments*"></a>
-  <h4 id="Exiled_API_Extensions_ItemExtensions_TryGetAttachments_ItemType_System_UInt32_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier___" data-uid="Exiled.API.Extensions.ItemExtensions.TryGetAttachments(ItemType,System.UInt32,System.Collections.Generic.IEnumerable{Exiled.API.Structs.AttachmentIdentifier}@)">TryGetAttachments(ItemType, UInt32, out IEnumerable&lt;AttachmentIdentifier&gt;)</h4>
-  <div class="markdown level1 summary"><p>Tries to get all <a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a>s present on an <span class="xref">ItemType</span>.</p>
+  <h4 id="Exiled_API_Extensions_ItemExtensions_TryGetAttachments_Exiled_API_Enums_FirearmType_System_UInt32_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier___" data-uid="Exiled.API.Extensions.ItemExtensions.TryGetAttachments(Exiled.API.Enums.FirearmType,System.UInt32,System.Collections.Generic.IEnumerable{Exiled.API.Structs.AttachmentIdentifier}@)">TryGetAttachments(FirearmType, UInt32, out IEnumerable&lt;AttachmentIdentifier&gt;)</h4>
+  <div class="markdown level1 summary"><p>Tries to get all <a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a>s present on a <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool TryGetAttachments(this ItemType type, uint code, out IEnumerable&lt;AttachmentIdentifier&gt; identifiers)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool TryGetAttachments(this FirearmType type, uint code, out IEnumerable&lt;AttachmentIdentifier&gt; identifiers)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1180,9 +1280,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ItemType</span></td>
+        <td><a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a></td>
         <td><span class="parametername">type</span></td>
-        <td><p>The <span class="xref">ItemType</span> to iterate over.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a> to iterate over.</p>
 </td>
       </tr>
       <tr>
@@ -1194,7 +1294,7 @@
       <tr>
         <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a>&gt;</td>
         <td><span class="parametername">identifiers</span></td>
-        <td><p>The attachments present on the specified <span class="xref">ItemType</span>.</p>
+        <td><p>The attachments present on the specified <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -1210,7 +1310,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p><span class="xref">true</span> if the specified <span class="xref">ItemType</span> is a weapon.</p>
+        <td><p><span class="xref">true</span> if the specified <a class="xref" href="Exiled.API.Enums.FirearmType.html">FirearmType</a> is a weapon.</p>
 </td>
       </tr>
     </tbody>
@@ -1223,10 +1323,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_ItemExtensions.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.ItemExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L26" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/ItemExtensions.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

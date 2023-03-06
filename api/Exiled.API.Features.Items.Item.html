@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -89,19 +89,37 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">Item</span></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Ammo.html">Ammo</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Armor.html">Armor</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Firearm.html">Firearm</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Flashlight.html">Flashlight</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Keycard.html">Keycard</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.MicroHid.html">MicroHid</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Radio.html">Radio</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Throwable.html">Throwable</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Usable.html">Usable</a></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>&gt;</div>
+    <div class="level2"><span class="xref">Item</span></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Ammo.html">Ammo</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Armor.html">Armor</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Firearm.html">Firearm</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Flashlight.html">Flashlight</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Jailbird.html">Jailbird</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Keycard.html">Keycard</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.MicroHid.html">MicroHid</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Radio.html">Radio</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Throwable.html">Throwable</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Usable.html">Usable</a></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.ItemBase</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;Item&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;Item&gt;.Is&lt;TObject&gt;(TObject)</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
     </div>
@@ -125,16 +143,16 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Items_Item_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Item</code></pre>
+    <pre><code class="lang-csharp hljs">public class Item : TypeCastObject&lt;Item&gt;, IWrapper&lt;ItemBase&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item__ctor_InventorySystem_Items_ItemBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.%23ctor(InventorySystem.Items.ItemBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item__ctor_InventorySystem_Items_ItemBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.%23ctor(InventorySystem.Items.ItemBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L56">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L51">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item__ctor_" data-uid="Exiled.API.Features.Items.Item.#ctor*"></a>
   <h4 id="Exiled_API_Features_Items_Item__ctor_InventorySystem_Items_ItemBase_" data-uid="Exiled.API.Features.Items.Item.#ctor(InventorySystem.Items.ItemBase)">Item(ItemBase)</h4>
@@ -167,10 +185,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L102">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L111">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Base_" data-uid="Exiled.API.Features.Items.Item.Base*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Base" data-uid="Exiled.API.Features.Items.Item.Base">Base</h4>
@@ -198,10 +216,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Category.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Category%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Category.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Category%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L112">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L121">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Category_" data-uid="Exiled.API.Features.Items.Item.Category*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Category" data-uid="Exiled.API.Features.Items.Item.Category">Category</h4>
@@ -229,10 +247,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsAmmo.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsAmmo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsAmmo.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsAmmo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L122">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L136">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_IsAmmo_" data-uid="Exiled.API.Features.Items.Item.IsAmmo*"></a>
   <h4 id="Exiled_API_Features_Items_Item_IsAmmo" data-uid="Exiled.API.Features.Items.Item.IsAmmo">IsAmmo</h4>
@@ -260,10 +278,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsArmor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsArmor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsArmor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsArmor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L127">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L141">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_IsArmor_" data-uid="Exiled.API.Features.Items.Item.IsArmor*"></a>
   <h4 id="Exiled_API_Features_Items_Item_IsArmor" data-uid="Exiled.API.Features.Items.Item.IsArmor">IsArmor</h4>
@@ -291,10 +309,72 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsKeycard.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsKeycard%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsConsumable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsConsumable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L132">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L151">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Item_IsConsumable_" data-uid="Exiled.API.Features.Items.Item.IsConsumable*"></a>
+  <h4 id="Exiled_API_Features_Items_Item_IsConsumable" data-uid="Exiled.API.Features.Items.Item.IsConsumable">IsConsumable</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this item will be destroy when being used.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsConsumable { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsInInventory.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsInInventory%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L101">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Item_IsInInventory_" data-uid="Exiled.API.Features.Items.Item.IsInInventory*"></a>
+  <h4 id="Exiled_API_Features_Items_Item_IsInInventory" data-uid="Exiled.API.Features.Items.Item.IsInInventory">IsInInventory</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether if the item are in an inventory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsInInventory { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsKeycard.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsKeycard%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L146">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_IsKeycard_" data-uid="Exiled.API.Features.Items.Item.IsKeycard*"></a>
   <h4 id="Exiled_API_Features_Items_Item_IsKeycard" data-uid="Exiled.API.Features.Items.Item.IsKeycard">IsKeycard</h4>
@@ -322,72 +402,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsMedical.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsMedical%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsThrowable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsThrowable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L137">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Items_Item_IsMedical_" data-uid="Exiled.API.Features.Items.Item.IsMedical*"></a>
-  <h4 id="Exiled_API_Features_Items_Item_IsMedical" data-uid="Exiled.API.Features.Items.Item.IsMedical">IsMedical</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this item is a medical item.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsMedical { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsScp.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsScp%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L142">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Items_Item_IsScp_" data-uid="Exiled.API.Features.Items.Item.IsScp*"></a>
-  <h4 id="Exiled_API_Features_Items_Item_IsScp" data-uid="Exiled.API.Features.Items.Item.IsScp">IsScp</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this item is an SCP item.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsScp { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsThrowable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsThrowable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L147">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L156">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_IsThrowable_" data-uid="Exiled.API.Features.Items.Item.IsThrowable*"></a>
   <h4 id="Exiled_API_Features_Items_Item_IsThrowable" data-uid="Exiled.API.Features.Items.Item.IsThrowable">IsThrowable</h4>
@@ -415,19 +433,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsUtility.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsUtility%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsUsable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsUsable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L152">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L161">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Items_Item_IsUtility_" data-uid="Exiled.API.Features.Items.Item.IsUtility*"></a>
-  <h4 id="Exiled_API_Features_Items_Item_IsUtility" data-uid="Exiled.API.Features.Items.Item.IsUtility">IsUtility</h4>
-  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this item is a utility item.</p>
+  <a id="Exiled_API_Features_Items_Item_IsUsable_" data-uid="Exiled.API.Features.Items.Item.IsUsable*"></a>
+  <h4 id="Exiled_API_Features_Items_Item_IsUsable" data-uid="Exiled.API.Features.Items.Item.IsUsable">IsUsable</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this item can be used by player.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsUtility { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool IsUsable { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -446,10 +464,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsWeapon.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsWeapon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_IsWeapon.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.IsWeapon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L157">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L166">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_IsWeapon_" data-uid="Exiled.API.Features.Items.Item.IsWeapon*"></a>
   <h4 id="Exiled_API_Features_Items_Item_IsWeapon" data-uid="Exiled.API.Features.Items.Item.IsWeapon">IsWeapon</h4>
@@ -477,10 +495,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Owner.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Owner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_List.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.List%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L162">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L82">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Item_List_" data-uid="Exiled.API.Features.Items.Item.List*"></a>
+  <h4 id="Exiled_API_Features_Items_Item_List" data-uid="Exiled.API.Features.Items.Item.List">List</h4>
+  <div class="markdown level1 summary"><p>Gets a list of all <a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>&apos;s on the server.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;Item&gt; List { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Owner.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Owner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L171">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Owner_" data-uid="Exiled.API.Features.Items.Item.Owner*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Owner" data-uid="Exiled.API.Features.Items.Item.Owner">Owner</h4>
@@ -508,10 +557,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Scale.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Scale.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L97">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L106">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Scale_" data-uid="Exiled.API.Features.Items.Item.Scale*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Scale" data-uid="Exiled.API.Features.Items.Item.Scale">Scale</h4>
@@ -539,7 +588,7 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Serial.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Serial%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Serial.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Serial%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L87">View Source</a>
@@ -570,10 +619,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_TierFlags.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.TierFlags%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L107">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L126">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Item_TierFlags_" data-uid="Exiled.API.Features.Items.Item.TierFlags*"></a>
+  <h4 id="Exiled_API_Features_Items_Item_TierFlags" data-uid="Exiled.API.Features.Items.Item.TierFlags">TierFlags</h4>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">ItemTierFlags</span> of the item.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ItemTierFlags TierFlags { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">ItemTierFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L116">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Type_" data-uid="Exiled.API.Features.Items.Item.Type*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Type" data-uid="Exiled.API.Features.Items.Item.Type">Type</h4>
@@ -601,10 +681,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Weight.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Weight%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Weight.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Weight%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L117">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L131">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Weight_" data-uid="Exiled.API.Features.Items.Item.Weight*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Weight" data-uid="Exiled.API.Features.Items.Item.Weight">Weight</h4>
@@ -634,10 +714,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L367">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L311">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Clone_" data-uid="Exiled.API.Features.Items.Item.Clone*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Clone" data-uid="Exiled.API.Features.Items.Item.Clone">Clone()</h4>
@@ -666,10 +746,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Create_ItemType_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Create(ItemType%2CExiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Create_ItemType_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Create(ItemType%2CExiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L230">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L252">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Create_" data-uid="Exiled.API.Features.Items.Item.Create*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Create_ItemType_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Items.Item.Create(ItemType,Exiled.API.Features.Player)">Create(ItemType, Player)</h4>
@@ -692,6 +772,8 @@ Based on the <code data-dev-comment-type="paramref" class="paramref">type</code>
 <br>- SCP-244 A and B variants can be casted to <a class="xref" href="Exiled.API.Features.Items.Scp244.html">Scp244</a>.
 <br>- SCP-330 can be casted to <a class="xref" href="Exiled.API.Features.Items.Scp330.html">Scp330</a>.
 <br>- SCP-2176 can be casted to the <a class="xref" href="Exiled.API.Features.Items.Scp2176.html">Scp2176</a> class.
+<br>- SCP-1576 can be casted to the <a class="xref" href="Exiled.API.Features.Items.Scp1576.html">Scp1576</a> class.
+<br>- Jailbird can be casted to the <a class="xref" href="Exiled.API.Features.Items.Jailbird.html">Jailbird</a> class.
 </p>
 <p>
 Items that are not listed above do not have a subclass, and can only use the base <a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a> class.
@@ -744,10 +826,72 @@ Items that are not listed above do not have a subclass, and can only use the bas
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Destroy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Destroy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_CreatePickup_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.CreatePickup(UnityEngine.Vector3%2CUnityEngine.Quaternion%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L257">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L292">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Item_CreatePickup_" data-uid="Exiled.API.Features.Items.Item.CreatePickup*"></a>
+  <h4 id="Exiled_API_Features_Items_Item_CreatePickup_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_" data-uid="Exiled.API.Features.Items.Item.CreatePickup(UnityEngine.Vector3,UnityEngine.Quaternion,System.Boolean)">CreatePickup(Vector3, Quaternion, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates the <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a> that based on this <a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Pickup CreatePickup(Vector3 position, Quaternion rotation = default(Quaternion), bool spawn = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>The location to spawn the item.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td><p>The rotation of the item.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">spawn</span></td>
+        <td><p>Whether the <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a> should be initially spawned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a></td>
+        <td><p>The created <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Destroy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Destroy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L283">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Destroy_" data-uid="Exiled.API.Features.Items.Item.Destroy*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Destroy" data-uid="Exiled.API.Features.Items.Item.Destroy">Destroy()</h4>
@@ -760,10 +904,10 @@ Items that are not listed above do not have a subclass, and can only use the bas
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Get_InventorySystem_Items_ItemBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Get(InventorySystem.Items.ItemBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Get_InventorySystem_Items_ItemBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Get(InventorySystem.Items.ItemBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L169">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L178">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Get_" data-uid="Exiled.API.Features.Items.Item.Get*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Get_InventorySystem_Items_ItemBase_" data-uid="Exiled.API.Features.Items.Item.Get(InventorySystem.Items.ItemBase)">Get(ItemBase)</h4>
@@ -810,10 +954,60 @@ Items that are not listed above do not have a subclass, and can only use the bas
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Give_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Give(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Get_System_UInt16_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Get(System.UInt16)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L252">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L220">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Item_Get_" data-uid="Exiled.API.Features.Items.Item.Get*"></a>
+  <h4 id="Exiled_API_Features_Items_Item_Get_System_UInt16_" data-uid="Exiled.API.Features.Items.Item.Get(System.UInt16)">Get(UInt16)</h4>
+  <div class="markdown level1 summary"><p>Gets the Item belonging to the specified serial.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Item Get(ushort serial)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.UInt16</span></td>
+        <td><span class="parametername">serial</span></td>
+        <td><p>The Item serial.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></td>
+        <td><p>Returns the Item found or <span class="xref">null</span> if not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_Give_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Give(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L278">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_Give_" data-uid="Exiled.API.Features.Items.Item.Give*"></a>
   <h4 id="Exiled_API_Features_Items_Item_Give_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Items.Item.Give(Exiled.API.Features.Player)">Give(Player)</h4>
@@ -844,178 +1038,10 @@ Items that are not listed above do not have a subclass, and can only use the bas
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Spawn(UnityEngine.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L355">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Items_Item_Spawn_" data-uid="Exiled.API.Features.Items.Item.Spawn*"></a>
-  <h4 id="Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_" data-uid="Exiled.API.Features.Items.Item.Spawn(UnityEngine.Vector3)">Spawn(Vector3)</h4>
-  <div class="markdown level1 summary"><p>Spawns the item on the map.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Pickup Spawn(Vector3 position)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td><span class="parametername">position</span></td>
-        <td><p>The location to spawn the item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a></td>
-        <td><p>The <a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a> created by spawning this item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Spawn(UnityEngine.Vector3%2CUnityEngine.Quaternion)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L313">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Items_Item_Spawn_" data-uid="Exiled.API.Features.Items.Item.Spawn*"></a>
-  <h4 id="Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_" data-uid="Exiled.API.Features.Items.Item.Spawn(UnityEngine.Vector3,UnityEngine.Quaternion)">Spawn(Vector3, Quaternion)</h4>
-  <div class="markdown level1 summary"><p>Spawns the item on the map.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default(Quaternion))</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td><span class="parametername">position</span></td>
-        <td><p>The location to spawn the item.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.Quaternion</span></td>
-        <td><span class="parametername">rotation</span></td>
-        <td><p>The rotation of the item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a></td>
-        <td><p>The <a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a> created by spawning this item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.Spawn(UnityEngine.Vector3%2CUnityEngine.Quaternion%2CSystem.Collections.Generic.IEnumerable%7BExiled.API.Structs.AttachmentIdentifier%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L266">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Items_Item_Spawn_" data-uid="Exiled.API.Features.Items.Item.Spawn*"></a>
-  <h4 id="Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__" data-uid="Exiled.API.Features.Items.Item.Spawn(UnityEngine.Vector3,UnityEngine.Quaternion,System.Collections.Generic.IEnumerable{Exiled.API.Structs.AttachmentIdentifier})">Spawn(Vector3, Quaternion, IEnumerable&lt;AttachmentIdentifier&gt;)</h4>
-  <div class="markdown level1 summary"><p>Spawns the item on the map.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default(Quaternion), IEnumerable&lt;AttachmentIdentifier&gt; identifiers = null)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td><span class="parametername">position</span></td>
-        <td><p>The location to spawn the item.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.Quaternion</span></td>
-        <td><span class="parametername">rotation</span></td>
-        <td><p>The rotation of the item.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Structs.AttachmentIdentifier.html">AttachmentIdentifier</a>&gt;</td>
-        <td><span class="parametername">identifiers</span></td>
-        <td><p>The attachments to be added.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a></td>
-        <td><p>The <a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a> created by spawning this item.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L361">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L317">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Item_ToString_" data-uid="Exiled.API.Features.Items.Item.ToString*"></a>
   <h4 id="Exiled_API_Features_Items_Item_ToString" data-uid="Exiled.API.Features.Items.Item.ToString">ToString()</h4>
@@ -1044,6 +1070,10 @@ Items that are not listed above do not have a subclass, and can only use the bas
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Object.ToString()</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -1056,7 +1086,7 @@ Items that are not listed above do not have a subclass, and can only use the bas
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Item.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Item.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
                     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Item.cs/#L40" class="contribution-link">View Source</a>

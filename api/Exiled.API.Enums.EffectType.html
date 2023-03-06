@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -103,8 +103,13 @@
     <thead>
     <tbody>
       <tr>
-        <td id="Exiled_API_Enums_EffectType_Amnesia">Amnesia</td>
+        <td id="Exiled_API_Enums_EffectType_AmnesiaItems">AmnesiaItems</td>
         <td><p>The player isn&apos;t able to open their inventory or reload a weapon.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_EffectType_AmnesiaVision">AmnesiaVision</td>
+        <td><p>The player isn&apos;t able to see properly.</p>
 </td>
       </tr>
       <tr>
@@ -130,6 +135,11 @@
       <tr>
         <td id="Exiled_API_Enums_EffectType_Burned">Burned</td>
         <td><p>Increases damage the player receives. Does not apply any standalone damage.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="Exiled_API_Enums_EffectType_CardiacArrest">CardiacArrest</td>
+        <td><p>Effect given to player after being hurt by SCP-049.</p>
 </td>
       </tr>
       <tr>
@@ -188,6 +198,11 @@
 </td>
       </tr>
       <tr>
+        <td id="Exiled_API_Enums_EffectType_InsufficientLighting">InsufficientLighting</td>
+        <td><p>Cause the lighting in the facility to dim heavily for the player.</p>
+</td>
+      </tr>
+      <tr>
         <td id="Exiled_API_Enums_EffectType_Invigorated">Invigorated</td>
         <td><p>Reduces the player&apos;s FOV, gives infinite stamina and gives the effect of underwater sound.</p>
 </td>
@@ -233,18 +248,13 @@
 </td>
       </tr>
       <tr>
+        <td id="Exiled_API_Enums_EffectType_SoundtrackMute">SoundtrackMute</td>
+        <td><p>Disable ambiant sound.</p>
+</td>
+      </tr>
+      <tr>
         <td id="Exiled_API_Enums_EffectType_Stained">Stained</td>
         <td><p>Prevents the player from sprinting and reduces movement speed by 20%.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Exiled_API_Enums_EffectType_Visual173Blink">Visual173Blink</td>
-        <td><p>Causes the player to blink.</p>
-</td>
-      </tr>
-      <tr>
-        <td id="Exiled_API_Enums_EffectType_Visuals939">Visuals939</td>
-        <td><p>Gives the player the SCP-939 sound vision.</p>
 </td>
       </tr>
       <tr>
@@ -259,6 +269,27 @@
       <a class="xref" href="Exiled.API.Extensions.EffectTypeExtension.html#Exiled_API_Extensions_EffectTypeExtension_Type_Exiled_API_Enums_EffectType_">EffectTypeExtension.Type()</a>
   </div>
   <div>
+      <a class="xref" href="Exiled.API.Extensions.EffectTypeExtension.html#Exiled_API_Extensions_EffectTypeExtension_IsHarmful_Exiled_API_Enums_EffectType_">EffectTypeExtension.IsHarmful()</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.EffectTypeExtension.html#Exiled_API_Extensions_EffectTypeExtension_IsHealing_Exiled_API_Enums_EffectType_">EffectTypeExtension.IsHealing()</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.EffectTypeExtension.html#Exiled_API_Extensions_EffectTypeExtension_IsNegative_Exiled_API_Enums_EffectType_">EffectTypeExtension.IsNegative()</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.EffectTypeExtension.html#Exiled_API_Extensions_EffectTypeExtension_IsPositive_Exiled_API_Enums_EffectType_">EffectTypeExtension.IsPositive()</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.EffectTypeExtension.html#Exiled_API_Extensions_EffectTypeExtension_IsMovement_Exiled_API_Enums_EffectType_">EffectTypeExtension.IsMovement()</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.EffectTypeExtension.html#Exiled_API_Extensions_EffectTypeExtension_IsDisplayed_Exiled_API_Enums_EffectType_">EffectTypeExtension.IsDisplayed()</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Extensions.EffectTypeExtension.html#Exiled_API_Extensions_EffectTypeExtension_GetCategories_Exiled_API_Enums_EffectType_">EffectTypeExtension.GetCategories()</a>
+  </div>
+  <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object)</a>
   </div>
 </article>
@@ -269,7 +300,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Enums_EffectType.md&amp;value=---%0Auid%3A%20Exiled.API.Enums.EffectType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Enums_EffectType.md&amp;value=---%0Auid%3A%20Exiled.API.Enums.EffectType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
                     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Enums/EffectType.cs/#L13" class="contribution-link">View Source</a>

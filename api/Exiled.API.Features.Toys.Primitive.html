@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -92,6 +92,13 @@
     <div class="level1"><a class="xref" href="Exiled.API.Features.Toys.AdminToy.html">AdminToy</a></div>
     <div class="level2"><span class="xref">Primitive</span></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">AdminToys.PrimitiveObjectToy</span>&gt;</div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -150,16 +157,16 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Toys_Primitive_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Primitive : AdminToy</code></pre>
+    <pre><code class="lang-csharp hljs">public class Primitive : AdminToy, IWorldSpace, IPosition, IRotation, IWrapper&lt;PrimitiveObjectToy&gt;</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L44">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L45">View Source</a>
   </span>
   <a id="Exiled_API_Features_Toys_Primitive_Base_" data-uid="Exiled.API.Features.Toys.Primitive.Base*"></a>
   <h4 id="Exiled_API_Features_Toys_Primitive_Base" data-uid="Exiled.API.Features.Toys.Primitive.Base">Base</h4>
@@ -187,10 +194,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Collidable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Collidable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Collidable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Collidable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L67">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L68">View Source</a>
   </span>
   <a id="Exiled_API_Features_Toys_Primitive_Collidable_" data-uid="Exiled.API.Features.Toys.Primitive.Collidable*"></a>
   <h4 id="Exiled_API_Features_Toys_Primitive_Collidable" data-uid="Exiled.API.Features.Toys.Primitive.Collidable">Collidable</h4>
@@ -218,10 +225,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Color.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Color%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Color.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Color%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L58">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L59">View Source</a>
   </span>
   <a id="Exiled_API_Features_Toys_Primitive_Color_" data-uid="Exiled.API.Features.Toys.Primitive.Color*"></a>
   <h4 id="Exiled_API_Features_Toys_Primitive_Color" data-uid="Exiled.API.Features.Toys.Primitive.Color">Color</h4>
@@ -249,10 +256,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L49">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L50">View Source</a>
   </span>
   <a id="Exiled_API_Features_Toys_Primitive_Type_" data-uid="Exiled.API.Features.Toys.Primitive.Type*"></a>
   <h4 id="Exiled_API_Features_Toys_Primitive_Type" data-uid="Exiled.API.Features.Toys.Primitive.Type">Type</h4>
@@ -282,10 +289,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Create_System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Create(System.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Create_System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Create(System.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L85">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L86">View Source</a>
   </span>
   <a id="Exiled_API_Features_Toys_Primitive_Create_" data-uid="Exiled.API.Features.Toys.Primitive.Create*"></a>
   <h4 id="Exiled_API_Features_Toys_Primitive_Create_System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Boolean_" data-uid="Exiled.API.Features.Toys.Primitive.Create(System.Nullable{UnityEngine.Vector3},System.Nullable{UnityEngine.Vector3},System.Nullable{UnityEngine.Vector3},System.Boolean)">Create(Nullable&lt;Vector3&gt;, Nullable&lt;Vector3&gt;, Nullable&lt;Vector3&gt;, Boolean)</h4>
@@ -350,10 +357,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Create_UnityEngine_PrimitiveType_System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Create(UnityEngine.PrimitiveType%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Create_UnityEngine_PrimitiveType_System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Create(UnityEngine.PrimitiveType%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Nullable%7BUnityEngine.Vector3%7D%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L110">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L111">View Source</a>
   </span>
   <a id="Exiled_API_Features_Toys_Primitive_Create_" data-uid="Exiled.API.Features.Toys.Primitive.Create*"></a>
   <h4 id="Exiled_API_Features_Toys_Primitive_Create_UnityEngine_PrimitiveType_System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Nullable_UnityEngine_Vector3__System_Boolean_" data-uid="Exiled.API.Features.Toys.Primitive.Create(UnityEngine.PrimitiveType,System.Nullable{UnityEngine.Vector3},System.Nullable{UnityEngine.Vector3},System.Nullable{UnityEngine.Vector3},System.Boolean)">Create(PrimitiveType, Nullable&lt;Vector3&gt;, Nullable&lt;Vector3&gt;, Nullable&lt;Vector3&gt;, Boolean)</h4>
@@ -424,10 +431,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Get_AdminToys_PrimitiveObjectToy_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Get(AdminToys.PrimitiveObjectToy)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive_Get_AdminToys_PrimitiveObjectToy_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive.Get(AdminToys.PrimitiveObjectToy)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L132">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L133">View Source</a>
   </span>
   <a id="Exiled_API_Features_Toys_Primitive_Get_" data-uid="Exiled.API.Features.Toys.Primitive.Get*"></a>
   <h4 id="Exiled_API_Features_Toys_Primitive_Get_AdminToys_PrimitiveObjectToy_" data-uid="Exiled.API.Features.Toys.Primitive.Get(AdminToys.PrimitiveObjectToy)">Get(PrimitiveObjectToy)</h4>
@@ -472,6 +479,19 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -484,10 +504,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Toys_Primitive.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Toys.Primitive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L24" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Toys/Primitive.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

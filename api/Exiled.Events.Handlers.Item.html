@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -125,13 +125,47 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnChangingAttachments_Exiled_Events_EventArgs_ChangingAttachmentsEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnChangingAttachments(Exiled.Events.EventArgs.ChangingAttachmentsEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnChangingAmmo_Exiled_Events_EventArgs_Item_ChangingAmmoEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnChangingAmmo(Exiled.Events.EventArgs.Item.ChangingAmmoEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L51">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L55">View Source</a>
+  </span>
+  <a id="Exiled_Events_Handlers_Item_OnChangingAmmo_" data-uid="Exiled.Events.Handlers.Item.OnChangingAmmo*"></a>
+  <h4 id="Exiled_Events_Handlers_Item_OnChangingAmmo_Exiled_Events_EventArgs_Item_ChangingAmmoEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnChangingAmmo(Exiled.Events.EventArgs.Item.ChangingAmmoEventArgs)">OnChangingAmmo(ChangingAmmoEventArgs)</h4>
+  <div class="markdown level1 summary"><p>Called before the ammo of an firearm is changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void OnChangingAmmo(ChangingAmmoEventArgs ev)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.Events.EventArgs.Item.ChangingAmmoEventArgs.html">ChangingAmmoEventArgs</a></td>
+        <td><span class="parametername">ev</span></td>
+        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Item.ChangingAmmoEventArgs.html">ChangingAmmoEventArgs</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnChangingAttachments_Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnChangingAttachments(Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L61">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Item_OnChangingAttachments_" data-uid="Exiled.Events.Handlers.Item.OnChangingAttachments*"></a>
-  <h4 id="Exiled_Events_Handlers_Item_OnChangingAttachments_Exiled_Events_EventArgs_ChangingAttachmentsEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnChangingAttachments(Exiled.Events.EventArgs.ChangingAttachmentsEventArgs)">OnChangingAttachments(ChangingAttachmentsEventArgs)</h4>
+  <h4 id="Exiled_Events_Handlers_Item_OnChangingAttachments_Exiled_Events_EventArgs_Item_ChangingAttachmentsEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnChangingAttachments(Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs)">OnChangingAttachments(ChangingAttachmentsEventArgs)</h4>
   <div class="markdown level1 summary"><p>Called before item attachments are changed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -150,28 +184,28 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.Events.EventArgs.ChangingAttachmentsEventArgs.html">ChangingAttachmentsEventArgs</a></td>
+        <td><a class="xref" href="Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.html">ChangingAttachmentsEventArgs</a></td>
         <td><span class="parametername">ev</span></td>
-        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.ChangingAttachmentsEventArgs.html">ChangingAttachmentsEventArgs</a> instance.</p>
+        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.html">ChangingAttachmentsEventArgs</a> instance.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnChangingDurability_Exiled_Events_EventArgs_ChangingDurabilityEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnChangingDurability(Exiled.Events.EventArgs.ChangingDurabilityEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnChargingJailbird_Exiled_Events_EventArgs_Item_ChargingJailbirdEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnChargingJailbird(Exiled.Events.EventArgs.Item.ChargingJailbirdEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L45">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L85">View Source</a>
   </span>
-  <a id="Exiled_Events_Handlers_Item_OnChangingDurability_" data-uid="Exiled.Events.Handlers.Item.OnChangingDurability*"></a>
-  <h4 id="Exiled_Events_Handlers_Item_OnChangingDurability_Exiled_Events_EventArgs_ChangingDurabilityEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnChangingDurability(Exiled.Events.EventArgs.ChangingDurabilityEventArgs)">OnChangingDurability(ChangingDurabilityEventArgs)</h4>
-  <div class="markdown level1 summary"><p>Called before the durability of an item is changed.</p>
+  <a id="Exiled_Events_Handlers_Item_OnChargingJailbird_" data-uid="Exiled.Events.Handlers.Item.OnChargingJailbird*"></a>
+  <h4 id="Exiled_Events_Handlers_Item_OnChargingJailbird_Exiled_Events_EventArgs_Item_ChargingJailbirdEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnChargingJailbird(Exiled.Events.EventArgs.Item.ChargingJailbirdEventArgs)">OnChargingJailbird(ChargingJailbirdEventArgs)</h4>
+  <div class="markdown level1 summary"><p>Called before a <a class="xref" href="Exiled.API.Features.Items.Jailbird.html">Jailbird</a> is charged.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static void OnChangingDurability(ChangingDurabilityEventArgs ev)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void OnChargingJailbird(ChargingJailbirdEventArgs ev)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -184,22 +218,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.Events.EventArgs.ChangingDurabilityEventArgs.html">ChangingDurabilityEventArgs</a></td>
+        <td><a class="xref" href="Exiled.Events.EventArgs.Item.ChargingJailbirdEventArgs.html">ChargingJailbirdEventArgs</a></td>
         <td><span class="parametername">ev</span></td>
-        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.ChangingDurabilityEventArgs.html">ChangingDurabilityEventArgs</a> instance.</p>
+        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Item.ChargingJailbirdEventArgs.html">ChargingJailbirdEventArgs</a> instance.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnKeycardInteracting_Exiled_Events_EventArgs_KeycardInteractingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnKeycardInteracting(Exiled.Events.EventArgs.KeycardInteractingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnKeycardInteracting_Exiled_Events_EventArgs_Item_KeycardInteractingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnKeycardInteracting(Exiled.Events.EventArgs.Item.KeycardInteractingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L63">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L73">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Item_OnKeycardInteracting_" data-uid="Exiled.Events.Handlers.Item.OnKeycardInteracting*"></a>
-  <h4 id="Exiled_Events_Handlers_Item_OnKeycardInteracting_Exiled_Events_EventArgs_KeycardInteractingEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnKeycardInteracting(Exiled.Events.EventArgs.KeycardInteractingEventArgs)">OnKeycardInteracting(KeycardInteractingEventArgs)</h4>
+  <h4 id="Exiled_Events_Handlers_Item_OnKeycardInteracting_Exiled_Events_EventArgs_Item_KeycardInteractingEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnKeycardInteracting(Exiled.Events.EventArgs.Item.KeycardInteractingEventArgs)">OnKeycardInteracting(KeycardInteractingEventArgs)</h4>
   <div class="markdown level1 summary"><p>Called before keycard interacts with a door.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -218,22 +252,22 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.Events.EventArgs.KeycardInteractingEventArgs.html">KeycardInteractingEventArgs</a></td>
+        <td><a class="xref" href="Exiled.Events.EventArgs.Item.KeycardInteractingEventArgs.html">KeycardInteractingEventArgs</a></td>
         <td><span class="parametername">ev</span></td>
-        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.KeycardInteractingEventArgs.html">KeycardInteractingEventArgs</a> instance.</p>
+        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Item.KeycardInteractingEventArgs.html">KeycardInteractingEventArgs</a> instance.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnReceivingPreference_Exiled_Events_EventArgs_ReceivingPreferenceEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnReceivingPreference(Exiled.Events.EventArgs.ReceivingPreferenceEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnReceivingPreference_Exiled_Events_EventArgs_Item_ReceivingPreferenceEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnReceivingPreference(Exiled.Events.EventArgs.Item.ReceivingPreferenceEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L57">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L67">View Source</a>
   </span>
   <a id="Exiled_Events_Handlers_Item_OnReceivingPreference_" data-uid="Exiled.Events.Handlers.Item.OnReceivingPreference*"></a>
-  <h4 id="Exiled_Events_Handlers_Item_OnReceivingPreference_Exiled_Events_EventArgs_ReceivingPreferenceEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnReceivingPreference(Exiled.Events.EventArgs.ReceivingPreferenceEventArgs)">OnReceivingPreference(ReceivingPreferenceEventArgs)</h4>
+  <h4 id="Exiled_Events_Handlers_Item_OnReceivingPreference_Exiled_Events_EventArgs_Item_ReceivingPreferenceEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnReceivingPreference(Exiled.Events.EventArgs.Item.ReceivingPreferenceEventArgs)">OnReceivingPreference(ReceivingPreferenceEventArgs)</h4>
   <div class="markdown level1 summary"><p>Called before receiving a preference.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -252,9 +286,43 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.Events.EventArgs.ReceivingPreferenceEventArgs.html">ReceivingPreferenceEventArgs</a></td>
+        <td><a class="xref" href="Exiled.Events.EventArgs.Item.ReceivingPreferenceEventArgs.html">ReceivingPreferenceEventArgs</a></td>
         <td><span class="parametername">ev</span></td>
-        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.ReceivingPreferenceEventArgs.html">ReceivingPreferenceEventArgs</a> instance.</p>
+        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Item.ReceivingPreferenceEventArgs.html">ReceivingPreferenceEventArgs</a> instance.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_OnSwinging_Exiled_Events_EventArgs_Item_SwingingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.OnSwinging(Exiled.Events.EventArgs.Item.SwingingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L79">View Source</a>
+  </span>
+  <a id="Exiled_Events_Handlers_Item_OnSwinging_" data-uid="Exiled.Events.Handlers.Item.OnSwinging*"></a>
+  <h4 id="Exiled_Events_Handlers_Item_OnSwinging_Exiled_Events_EventArgs_Item_SwingingEventArgs_" data-uid="Exiled.Events.Handlers.Item.OnSwinging(Exiled.Events.EventArgs.Item.SwingingEventArgs)">OnSwinging(SwingingEventArgs)</h4>
+  <div class="markdown level1 summary"><p>Called before a melee item is swung.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void OnSwinging(SwingingEventArgs ev)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.Events.EventArgs.Item.SwingingEventArgs.html">SwingingEventArgs</a></td>
+        <td><span class="parametername">ev</span></td>
+        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Item.SwingingEventArgs.html">SwingingEventArgs</a> instance.</p>
 </td>
       </tr>
     </tbody>
@@ -263,7 +331,37 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item_ChangingAttachments.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.ChangingAttachments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_ChangingAmmo.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.ChangingAmmo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L24">View Source</a>
+  </span>
+  <h4 id="Exiled_Events_Handlers_Item_ChangingAmmo" data-uid="Exiled.Events.Handlers.Item.ChangingAmmo">ChangingAmmo</h4>
+  <div class="markdown level1 summary"><p>Invoked before the ammo of an firearm are changed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static event Events.CustomEventHandler&lt;ChangingAmmoEventArgs&gt; ChangingAmmo</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.Item.ChangingAmmoEventArgs.html">ChangingAmmoEventArgs</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_ChangingAttachments.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.ChangingAttachments%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L29">View Source</a>
@@ -286,25 +384,25 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.ChangingAttachmentsEventArgs.html">ChangingAttachmentsEventArgs</a>&gt;</td>
+        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.Item.ChangingAttachmentsEventArgs.html">ChangingAttachmentsEventArgs</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item_ChangingDurability.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.ChangingDurability%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_ChargingJailbird.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.ChargingJailbird%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L24">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L49">View Source</a>
   </span>
-  <h4 id="Exiled_Events_Handlers_Item_ChangingDurability" data-uid="Exiled.Events.Handlers.Item.ChangingDurability">ChangingDurability</h4>
-  <div class="markdown level1 summary"><p>Invoked before the durability of an item is changed.</p>
+  <h4 id="Exiled_Events_Handlers_Item_ChargingJailbird" data-uid="Exiled.Events.Handlers.Item.ChargingJailbird">ChargingJailbird</h4>
+  <div class="markdown level1 summary"><p>Invoked before a <a class="xref" href="Exiled.API.Features.Items.Jailbird.html">Jailbird</a> is charged.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static event Events.CustomEventHandler&lt;ChangingDurabilityEventArgs&gt; ChangingDurability</code></pre>
+    <pre><code class="lang-csharp hljs">public static event Events.CustomEventHandler&lt;ChargingJailbirdEventArgs&gt; ChargingJailbird</code></pre>
   </div>
   <h5 class="eventType">Event Type</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -316,14 +414,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.ChangingDurabilityEventArgs.html">ChangingDurabilityEventArgs</a>&gt;</td>
+        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.Item.ChargingJailbirdEventArgs.html">ChargingJailbirdEventArgs</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item_KeycardInteracting.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.KeycardInteracting%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_KeycardInteracting.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.KeycardInteracting%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L39">View Source</a>
@@ -346,14 +444,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.KeycardInteractingEventArgs.html">KeycardInteractingEventArgs</a>&gt;</td>
+        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.Item.KeycardInteractingEventArgs.html">KeycardInteractingEventArgs</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item_ReceivingPreference.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.ReceivingPreference%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_ReceivingPreference.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.ReceivingPreference%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L34">View Source</a>
@@ -376,7 +474,37 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.ReceivingPreferenceEventArgs.html">ReceivingPreferenceEventArgs</a>&gt;</td>
+        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.Item.ReceivingPreferenceEventArgs.html">ReceivingPreferenceEventArgs</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item_Swinging.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item.Swinging%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L44">View Source</a>
+  </span>
+  <h4 id="Exiled_Events_Handlers_Item_Swinging" data-uid="Exiled.Events.Handlers.Item.Swinging">Swinging</h4>
+  <div class="markdown level1 summary"><p>Invoked before a melee item is swung.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static event Events.CustomEventHandler&lt;SwingingEventArgs&gt; Swinging</code></pre>
+  </div>
+  <h5 class="eventType">Event Type</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.Events.Events.CustomEventHandler-1.html">Events.CustomEventHandler</a>&lt;<a class="xref" href="Exiled.Events.EventArgs.Item.SwingingEventArgs.html">SwingingEventArgs</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -389,7 +517,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_Events_Handlers_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_Handlers_Item.md&amp;value=---%0Auid%3A%20Exiled.Events.Handlers.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
                     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/Handlers/Item.cs/#L19" class="contribution-link">View Source</a>

@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -91,6 +91,13 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">Door</span></div>
   </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">Interactables.Interobjects.DoorUtils.DoorVariant</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a></div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a></div>
+  </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
@@ -116,51 +123,16 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Door_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Door</code></pre>
+    <pre><code class="lang-csharp hljs">public class Door : IWrapper&lt;DoorVariant&gt;, IWorldSpace, IPosition, IRotation</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door__ctor_Interactables_Interobjects_DoorUtils_DoorVariant_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.%23ctor(Interactables.Interobjects.DoorUtils.DoorVariant)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door__ctor_Interactables_Interobjects_DoorUtils_DoorVariant_Exiled_API_Features_Room_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.%23ctor(Interactables.Interobjects.DoorUtils.DoorVariant%2CExiled.API.Features.Room)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L40">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Door__ctor_" data-uid="Exiled.API.Features.Door.#ctor*"></a>
-  <h4 id="Exiled_API_Features_Door__ctor_Interactables_Interobjects_DoorUtils_DoorVariant_" data-uid="Exiled.API.Features.Door.#ctor(Interactables.Interobjects.DoorUtils.DoorVariant)">Door(DoorVariant)</h4>
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Door.html">Door</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use new Door(DoorVariant, Room) instead.&quot;, true)]
-public Door(DoorVariant door)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">Interactables.Interobjects.DoorUtils.DoorVariant</span></td>
-        <td><span class="parametername">door</span></td>
-        <td><p>The base <span class="xref">Interactables.Interobjects.DoorUtils.DoorVariant</span> for this door.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door__ctor_Interactables_Interobjects_DoorUtils_DoorVariant_Exiled_API_Features_Room_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.%23ctor(Interactables.Interobjects.DoorUtils.DoorVariant%2CExiled.API.Features.Room)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L54">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L43">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door__ctor_" data-uid="Exiled.API.Features.Door.#ctor*"></a>
   <h4 id="Exiled_API_Features_Door__ctor_Interactables_Interobjects_DoorUtils_DoorVariant_Exiled_API_Features_Room_" data-uid="Exiled.API.Features.Door.#ctor(Interactables.Interobjects.DoorUtils.DoorVariant,Exiled.API.Features.Room)">Door(DoorVariant, Room)</h4>
@@ -199,19 +171,19 @@ public Door(DoorVariant door)</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_AllowsScp106.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.AllowsScp106%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_AllowsScp106.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.AllowsScp106%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L155">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L149">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_AllowsScp106_" data-uid="Exiled.API.Features.Door.AllowsScp106*"></a>
   <h4 id="Exiled_API_Features_Door_AllowsScp106" data-uid="Exiled.API.Features.Door.AllowsScp106">AllowsScp106</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not SCP-106 can walk through the door.</p>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not SCP-106 can walk through the door.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool AllowsScp106 { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool AllowsScp106 { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -230,10 +202,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L70">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L61">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Base_" data-uid="Exiled.API.Features.Door.Base*"></a>
   <h4 id="Exiled_API_Features_Door_Base" data-uid="Exiled.API.Features.Door.Base">Base</h4>
@@ -261,10 +233,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_DoorLockType.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.DoorLockType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_DoorLockType.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.DoorLockType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L169">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L159">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_DoorLockType_" data-uid="Exiled.API.Features.Door.DoorLockType*"></a>
   <h4 id="Exiled_API_Features_Door_DoorLockType" data-uid="Exiled.API.Features.Door.DoorLockType">DoorLockType</h4>
@@ -292,10 +264,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_ExactState.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.ExactState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_ExactState.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.ExactState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L110">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L101">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_ExactState_" data-uid="Exiled.API.Features.Door.ExactState*"></a>
   <h4 id="Exiled_API_Features_Door_ExactState" data-uid="Exiled.API.Features.Door.ExactState">ExactState</h4>
@@ -323,10 +295,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_GameObject.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.GameObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_GameObject.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.GameObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L75">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L66">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_GameObject_" data-uid="Exiled.API.Features.Door.GameObject*"></a>
   <h4 id="Exiled_API_Features_Door_GameObject" data-uid="Exiled.API.Features.Door.GameObject">GameObject</h4>
@@ -354,10 +326,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Health.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Health%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Health.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Health%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L216">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L221">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Health_" data-uid="Exiled.API.Features.Door.Health*"></a>
   <h4 id="Exiled_API_Features_Door_Health" data-uid="Exiled.API.Features.Door.Health">Health</h4>
@@ -385,10 +357,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IgnoredDamageTypes.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IgnoredDamageTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IgnoredDamageTypes.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IgnoredDamageTypes%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L229">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L234">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IgnoredDamageTypes_" data-uid="Exiled.API.Features.Door.IgnoredDamageTypes*"></a>
   <h4 id="Exiled_API_Features_Door_IgnoredDamageTypes" data-uid="Exiled.API.Features.Door.IgnoredDamageTypes">IgnoredDamageTypes</h4>
@@ -416,7 +388,69 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_InstanceId.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.InstanceId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IgnoresLockdowns.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IgnoresLockdowns%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L174">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Door_IgnoresLockdowns_" data-uid="Exiled.API.Features.Door.IgnoresLockdowns*"></a>
+  <h4 id="Exiled_API_Features_Door_IgnoresLockdowns" data-uid="Exiled.API.Features.Door.IgnoresLockdowns">IgnoresLockdowns</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this door is ignoring lockdown.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IgnoresLockdowns { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IgnoresRemoteAdmin.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IgnoresRemoteAdmin%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L179">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Door_IgnoresRemoteAdmin_" data-uid="Exiled.API.Features.Door.IgnoresRemoteAdmin*"></a>
+  <h4 id="Exiled_API_Features_Door_IgnoresRemoteAdmin" data-uid="Exiled.API.Features.Door.IgnoresRemoteAdmin">IgnoresRemoteAdmin</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this door is ignoring remoteAdmin commands.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IgnoresRemoteAdmin { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_InstanceId.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.InstanceId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L184">View Source</a>
@@ -447,10 +481,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsBreakable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsBreakable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsBreakable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsBreakable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L174">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L164">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsBreakable_" data-uid="Exiled.API.Features.Door.IsBreakable*"></a>
   <h4 id="Exiled_API_Features_Door_IsBreakable" data-uid="Exiled.API.Features.Door.IsBreakable">IsBreakable</h4>
@@ -478,10 +512,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsBroken.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsBroken%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsBroken.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsBroken%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L179">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L169">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsBroken_" data-uid="Exiled.API.Features.Door.IsBroken*"></a>
   <h4 id="Exiled_API_Features_Door_IsBroken" data-uid="Exiled.API.Features.Door.IsBroken">IsBroken</h4>
@@ -509,10 +543,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsCheckpoint.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsCheckpoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsCheckpoint.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsCheckpoint%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L130">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L120">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsCheckpoint_" data-uid="Exiled.API.Features.Door.IsCheckpoint*"></a>
   <h4 id="Exiled_API_Features_Door_IsCheckpoint" data-uid="Exiled.API.Features.Door.IsCheckpoint">IsCheckpoint</h4>
@@ -540,10 +574,41 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsFullyClosed.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsFullyClosed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsElevator.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsElevator%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L95">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L125">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Door_IsElevator_" data-uid="Exiled.API.Features.Door.IsElevator*"></a>
+  <h4 id="Exiled_API_Features_Door_IsElevator" data-uid="Exiled.API.Features.Door.IsElevator">IsElevator</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this door is an elevator door.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsElevator { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsFullyClosed.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsFullyClosed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L86">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsFullyClosed_" data-uid="Exiled.API.Features.Door.IsFullyClosed*"></a>
   <h4 id="Exiled_API_Features_Door_IsFullyClosed" data-uid="Exiled.API.Features.Door.IsFullyClosed">IsFullyClosed</h4>
@@ -571,10 +636,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsFullyOpen.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsFullyOpen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsFullyOpen.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsFullyOpen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L100">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L91">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsFullyOpen_" data-uid="Exiled.API.Features.Door.IsFullyOpen*"></a>
   <h4 id="Exiled_API_Features_Door_IsFullyOpen" data-uid="Exiled.API.Features.Door.IsFullyOpen">IsFullyOpen</h4>
@@ -602,10 +667,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsGate.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsGate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsGate.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsGate%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L124">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L115">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsGate_" data-uid="Exiled.API.Features.Door.IsGate*"></a>
   <h4 id="Exiled_API_Features_Door_IsGate" data-uid="Exiled.API.Features.Door.IsGate">IsGate</h4>
@@ -633,10 +698,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsKeycardDoor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsKeycardDoor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsKeycardDoor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsKeycardDoor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L136">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L130">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsKeycardDoor_" data-uid="Exiled.API.Features.Door.IsKeycardDoor*"></a>
   <h4 id="Exiled_API_Features_Door_IsKeycardDoor" data-uid="Exiled.API.Features.Door.IsKeycardDoor">IsKeycardDoor</h4>
@@ -664,10 +729,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsLocked.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsLocked%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsLocked.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsLocked%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L164">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L154">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsLocked_" data-uid="Exiled.API.Features.Door.IsLocked*"></a>
   <h4 id="Exiled_API_Features_Door_IsLocked" data-uid="Exiled.API.Features.Door.IsLocked">IsLocked</h4>
@@ -695,10 +760,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsMoving.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsMoving%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsMoving.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsMoving%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L105">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L96">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsMoving_" data-uid="Exiled.API.Features.Door.IsMoving*"></a>
   <h4 id="Exiled_API_Features_Door_IsMoving" data-uid="Exiled.API.Features.Door.IsMoving">IsMoving</h4>
@@ -726,10 +791,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_IsOpen.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsOpen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_IsOpen.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.IsOpen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L115">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L106">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_IsOpen_" data-uid="Exiled.API.Features.Door.IsOpen*"></a>
   <h4 id="Exiled_API_Features_Door_IsOpen" data-uid="Exiled.API.Features.Door.IsOpen">IsOpen</h4>
@@ -757,10 +822,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_List.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.List%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_List.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.List%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L65">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L56">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_List_" data-uid="Exiled.API.Features.Door.List*"></a>
   <h4 id="Exiled_API_Features_Door_List" data-uid="Exiled.API.Features.Door.List">List</h4>
@@ -788,10 +853,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_MaxHealth.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.MaxHealth%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_MaxHealth.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.MaxHealth%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L203">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L208">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_MaxHealth_" data-uid="Exiled.API.Features.Door.MaxHealth*"></a>
   <h4 id="Exiled_API_Features_Door_MaxHealth" data-uid="Exiled.API.Features.Door.MaxHealth">MaxHealth</h4>
@@ -819,19 +884,19 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Nametag.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Nametag%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L189">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L194">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Door_Nametag_" data-uid="Exiled.API.Features.Door.Nametag*"></a>
-  <h4 id="Exiled_API_Features_Door_Nametag" data-uid="Exiled.API.Features.Door.Nametag">Nametag</h4>
-  <div class="markdown level1 summary"><p>Gets a nametag of a door.</p>
+  <a id="Exiled_API_Features_Door_Name_" data-uid="Exiled.API.Features.Door.Name*"></a>
+  <h4 id="Exiled_API_Features_Door_Name" data-uid="Exiled.API.Features.Door.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Gets the name of this door.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Nametag { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -850,10 +915,41 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Position.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Nametag.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Nametag%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L141">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L189">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Door_Nametag_" data-uid="Exiled.API.Features.Door.Nametag*"></a>
+  <h4 id="Exiled_API_Features_Door_Nametag" data-uid="Exiled.API.Features.Door.Nametag">Nametag</h4>
+  <div class="markdown level1 summary"><p>Gets a nametag of a door.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DoorNametagExtension Nametag { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Interactables.Interobjects.DoorUtils.DoorNametagExtension</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Position.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L135">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Position_" data-uid="Exiled.API.Features.Door.Position*"></a>
   <h4 id="Exiled_API_Features_Door_Position" data-uid="Exiled.API.Features.Door.Position">Position</h4>
@@ -881,10 +977,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_RequiredPermissions.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.RequiredPermissions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_RequiredPermissions.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.RequiredPermissions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L194">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L199">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_RequiredPermissions_" data-uid="Exiled.API.Features.Door.RequiredPermissions*"></a>
   <h4 id="Exiled_API_Features_Door_RequiredPermissions" data-uid="Exiled.API.Features.Door.RequiredPermissions">RequiredPermissions</h4>
@@ -912,10 +1008,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Room.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Room%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Room.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Room%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L90">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L81">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Room_" data-uid="Exiled.API.Features.Door.Room*"></a>
   <h4 id="Exiled_API_Features_Door_Room" data-uid="Exiled.API.Features.Door.Room">Room</h4>
@@ -943,10 +1039,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Rotation.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Rotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Rotation.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Rotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L242">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L247">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Rotation_" data-uid="Exiled.API.Features.Door.Rotation*"></a>
   <h4 id="Exiled_API_Features_Door_Rotation" data-uid="Exiled.API.Features.Door.Rotation">Rotation</h4>
@@ -974,10 +1070,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Scale.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Scale.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L256">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L261">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Scale_" data-uid="Exiled.API.Features.Door.Scale*"></a>
   <h4 id="Exiled_API_Features_Door_Scale" data-uid="Exiled.API.Features.Door.Scale">Scale</h4>
@@ -1005,10 +1101,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Transform.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Transform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Transform.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Transform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L80">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L71">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Transform_" data-uid="Exiled.API.Features.Door.Transform*"></a>
   <h4 id="Exiled_API_Features_Door_Transform" data-uid="Exiled.API.Features.Door.Transform">Transform</h4>
@@ -1036,10 +1132,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L85">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L76">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Type_" data-uid="Exiled.API.Features.Door.Type*"></a>
   <h4 id="Exiled_API_Features_Door_Type" data-uid="Exiled.API.Features.Door.Type">Type</h4>
@@ -1067,10 +1163,10 @@ public Door(DoorVariant door)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Zone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Zone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Zone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Zone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L270">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L275">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Zone_" data-uid="Exiled.API.Features.Door.Zone*"></a>
   <h4 id="Exiled_API_Features_Door_Zone" data-uid="Exiled.API.Features.Door.Zone">Zone</h4>
@@ -1100,43 +1196,10 @@ public Door(DoorVariant door)</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_BreakDoor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.BreakDoor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_BreakDoor_Interactables_Interobjects_DoorUtils_DoorDamageType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.BreakDoor(Interactables.Interobjects.DoorUtils.DoorDamageType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L396">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Door_BreakDoor_" data-uid="Exiled.API.Features.Door.BreakDoor*"></a>
-  <h4 id="Exiled_API_Features_Door_BreakDoor" data-uid="Exiled.API.Features.Door.BreakDoor">BreakDoor()</h4>
-  <div class="markdown level1 summary"><p>Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;BreakDoor() will be obsolete in future versions, please use BreakDoor(DoorDamageType)&quot;, false)]
-public bool BreakDoor()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p><span class="xref">true</span> if the door was broken, <span class="xref">false</span> if it was unable to be broken, or was already broken before.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_BreakDoor_Interactables_Interobjects_DoorUtils_DoorDamageType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.BreakDoor(Interactables.Interobjects.DoorUtils.DoorDamageType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L404">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L423">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_BreakDoor_" data-uid="Exiled.API.Features.Door.BreakDoor*"></a>
   <h4 id="Exiled_API_Features_Door_BreakDoor_Interactables_Interobjects_DoorUtils_DoorDamageType_" data-uid="Exiled.API.Features.Door.BreakDoor(Interactables.Interobjects.DoorUtils.DoorDamageType)">BreakDoor(DoorDamageType)</h4>
@@ -1183,10 +1246,10 @@ public bool BreakDoor()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_ChangeLock_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.ChangeLock(Exiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_ChangeLock_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.ChangeLock(Exiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L450">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L476">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_ChangeLock_" data-uid="Exiled.API.Features.Door.ChangeLock*"></a>
   <h4 id="Exiled_API_Features_Door_ChangeLock_Exiled_API_Enums_DoorLockType_" data-uid="Exiled.API.Features.Door.ChangeLock(Exiled.API.Enums.DoorLockType)">ChangeLock(DoorLockType)</h4>
@@ -1217,10 +1280,10 @@ public bool BreakDoor()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_DamageDoor_System_Single_Interactables_Interobjects_DoorUtils_DoorDamageType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.DamageDoor(System.Single%2CInteractables.Interobjects.DoorUtils.DoorDamageType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_DamageDoor_System_Single_Interactables_Interobjects_DoorUtils_DoorDamageType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.DamageDoor(System.Single%2CInteractables.Interobjects.DoorUtils.DoorDamageType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L421">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L440">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_DamageDoor_" data-uid="Exiled.API.Features.Door.DamageDoor*"></a>
   <h4 id="Exiled_API_Features_Door_DamageDoor_System_Single_Interactables_Interobjects_DoorUtils_DoorDamageType_" data-uid="Exiled.API.Features.Door.DamageDoor(System.Single,Interactables.Interobjects.DoorUtils.DoorDamageType)">DamageDoor(Single, DoorDamageType)</h4>
@@ -1273,10 +1336,10 @@ public bool BreakDoor()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Get_Exiled_API_Enums_DoorType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(Exiled.API.Enums.DoorType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Get_Exiled_API_Enums_DoorType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(Exiled.API.Enums.DoorType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L304">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L316">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Get_" data-uid="Exiled.API.Features.Door.Get*"></a>
   <h4 id="Exiled_API_Features_Door_Get_Exiled_API_Enums_DoorType_" data-uid="Exiled.API.Features.Door.Get(Exiled.API.Enums.DoorType)">Get(DoorType)</h4>
@@ -1323,10 +1386,10 @@ public bool BreakDoor()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Get_Interactables_Interobjects_DoorUtils_DoorVariant_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(Interactables.Interobjects.DoorUtils.DoorVariant)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Get_Interactables_Interobjects_DoorUtils_DoorVariant_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(Interactables.Interobjects.DoorUtils.DoorVariant)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L277">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L282">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Get_" data-uid="Exiled.API.Features.Door.Get*"></a>
   <h4 id="Exiled_API_Features_Door_Get_Interactables_Interobjects_DoorUtils_DoorVariant_" data-uid="Exiled.API.Features.Door.Get(Interactables.Interobjects.DoorUtils.DoorVariant)">Get(DoorVariant)</h4>
@@ -1373,10 +1436,10 @@ public bool BreakDoor()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Get_System_Func_Exiled_API_Features_Door_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(System.Func%7BExiled.API.Features.Door%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Get_System_Func_Exiled_API_Features_Door_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(System.Func%7BExiled.API.Features.Door%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L297">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L309">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Get_" data-uid="Exiled.API.Features.Door.Get*"></a>
   <h4 id="Exiled_API_Features_Door_Get_System_Func_Exiled_API_Features_Door_System_Boolean__" data-uid="Exiled.API.Features.Door.Get(System.Func{Exiled.API.Features.Door,System.Boolean})">Get(Func&lt;Door, Boolean&gt;)</h4>
@@ -1423,10 +1486,10 @@ public bool BreakDoor()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Get_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Get_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L286">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L291">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Get_" data-uid="Exiled.API.Features.Door.Get*"></a>
   <h4 id="Exiled_API_Features_Door_Get_System_String_" data-uid="Exiled.API.Features.Door.Get(System.String)">Get(String)</h4>
@@ -1473,20 +1536,19 @@ public bool BreakDoor()</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Lock_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Lock(Exiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Get_UnityEngine_GameObject_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Get(UnityEngine.GameObject)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L474">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L302">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Door_Lock_" data-uid="Exiled.API.Features.Door.Lock*"></a>
-  <h4 id="Exiled_API_Features_Door_Lock_Exiled_API_Enums_DoorLockType_" data-uid="Exiled.API.Features.Door.Lock(Exiled.API.Enums.DoorLockType)">Lock(DoorLockType)</h4>
-  <div class="markdown level1 summary"><p>Locks all active locks on the door.</p>
+  <a id="Exiled_API_Features_Door_Get_" data-uid="Exiled.API.Features.Door.Get*"></a>
+  <h4 id="Exiled_API_Features_Door_Get_UnityEngine_GameObject_" data-uid="Exiled.API.Features.Door.Get(UnityEngine.GameObject)">Get(GameObject)</h4>
+  <div class="markdown level1 summary"><p>Gets the door object associated with a specific <span class="xref">UnityEngine.GameObject</span>, or creates a new one if there isn&apos;t one.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;has been deprecated, use ChangeLock(DoorLockType) instead&quot;, true)]
-public void Lock(DoorLockType flagsToLock)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Door Get(GameObject gameObject)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1499,19 +1561,91 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Enums.DoorLockType.html">DoorLockType</a></td>
-        <td><span class="parametername">flagsToLock</span></td>
-        <td><p>The <a class="xref" href="Exiled.API.Enums.DoorLockType.html">DoorLockType</a> of the lockdown.</p>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="parametername">gameObject</span></td>
+        <td><p>The base-game <span class="xref">UnityEngine.GameObject</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Door.html">Door</a></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Door.html">Door</a> with the given name or <span class="xref">null</span> if not found.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Lock_System_Single_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Lock(System.Single%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_GetClosest_UnityEngine_Vector3_System_Single__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.GetClosest(UnityEngine.Vector3%2CSystem.Single%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L482">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L324">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Door_GetClosest_" data-uid="Exiled.API.Features.Door.GetClosest*"></a>
+  <h4 id="Exiled_API_Features_Door_GetClosest_UnityEngine_Vector3_System_Single__" data-uid="Exiled.API.Features.Door.GetClosest(UnityEngine.Vector3,System.Single@)">GetClosest(Vector3, out Single)</h4>
+  <div class="markdown level1 summary"><p>Returns the closest <a class="xref" href="Exiled.API.Features.Door.html">Door</a> to the given <code data-dev-comment-type="paramref" class="paramref">position</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Door GetClosest(Vector3 position, out float distance)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>The <span class="xref">UnityEngine.Vector3</span> to find the closest door to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">distance</span></td>
+        <td><p>The distance between the door and the point.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Door.html">Door</a></td>
+        <td><p>The door closest to the provided position.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Lock_System_Single_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Lock(System.Single%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L501">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Lock_" data-uid="Exiled.API.Features.Door.Lock*"></a>
   <h4 id="Exiled_API_Features_Door_Lock_System_Single_Exiled_API_Enums_DoorLockType_" data-uid="Exiled.API.Features.Door.Lock(System.Single,Exiled.API.Enums.DoorLockType)">Lock(Single, DoorLockType)</h4>
@@ -1548,10 +1682,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_LockAll_System_Single_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.LockAll(System.Single%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_LockAll_System_Single_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.LockAll(System.Single%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L351">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L377">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_LockAll_" data-uid="Exiled.API.Features.Door.LockAll*"></a>
   <h4 id="Exiled_API_Features_Door_LockAll_System_Single_Exiled_API_Enums_DoorLockType_" data-uid="Exiled.API.Features.Door.LockAll(System.Single,Exiled.API.Enums.DoorLockType)">LockAll(Single, DoorLockType)</h4>
@@ -1588,10 +1722,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_LockAll_System_Single_Exiled_API_Enums_ZoneType_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.LockAll(System.Single%2CExiled.API.Enums.ZoneType%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_LockAll_System_Single_Exiled_API_Enums_ZoneType_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.LockAll(System.Single%2CExiled.API.Enums.ZoneType%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L324">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L350">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_LockAll_" data-uid="Exiled.API.Features.Door.LockAll*"></a>
   <h4 id="Exiled_API_Features_Door_LockAll_System_Single_Exiled_API_Enums_ZoneType_Exiled_API_Enums_DoorLockType_" data-uid="Exiled.API.Features.Door.LockAll(System.Single,Exiled.API.Enums.ZoneType,Exiled.API.Enums.DoorLockType)">LockAll(Single, ZoneType, DoorLockType)</h4>
@@ -1634,10 +1768,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_LockAll_System_Single_System_Collections_Generic_IEnumerable_Exiled_API_Enums_ZoneType__Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.LockAll(System.Single%2CSystem.Collections.Generic.IEnumerable%7BExiled.API.Enums.ZoneType%7D%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_LockAll_System_Single_System_Collections_Generic_IEnumerable_Exiled_API_Enums_ZoneType__Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.LockAll(System.Single%2CSystem.Collections.Generic.IEnumerable%7BExiled.API.Enums.ZoneType%7D%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L340">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L366">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_LockAll_" data-uid="Exiled.API.Features.Door.LockAll*"></a>
   <h4 id="Exiled_API_Features_Door_LockAll_System_Single_System_Collections_Generic_IEnumerable_Exiled_API_Enums_ZoneType__Exiled_API_Enums_DoorLockType_" data-uid="Exiled.API.Features.Door.LockAll(System.Single,System.Collections.Generic.IEnumerable{Exiled.API.Enums.ZoneType},Exiled.API.Enums.DoorLockType)">LockAll(Single, IEnumerable&lt;ZoneType&gt;, DoorLockType)</h4>
@@ -1680,10 +1814,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_PlaySound_Exiled_API_Enums_DoorBeepType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.PlaySound(Exiled.API.Enums.DoorBeepType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_PlaySound_Exiled_API_Enums_DoorBeepType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.PlaySound(Exiled.API.Enums.DoorBeepType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L433">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L459">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_PlaySound_" data-uid="Exiled.API.Features.Door.PlaySound*"></a>
   <h4 id="Exiled_API_Features_Door_PlaySound_Exiled_API_Enums_DoorBeepType_" data-uid="Exiled.API.Features.Door.PlaySound(Exiled.API.Enums.DoorBeepType)">PlaySound(DoorBeepType)</h4>
@@ -1714,10 +1848,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Random_Exiled_API_Enums_ZoneType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Random(Exiled.API.Enums.ZoneType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Random_Exiled_API_Enums_ZoneType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Random(Exiled.API.Enums.ZoneType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L312">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L338">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Random_" data-uid="Exiled.API.Features.Door.Random*"></a>
   <h4 id="Exiled_API_Features_Door_Random_Exiled_API_Enums_ZoneType_System_Boolean_" data-uid="Exiled.API.Features.Door.Random(Exiled.API.Enums.ZoneType,System.Boolean)">Random(ZoneType, Boolean)</h4>
@@ -1770,10 +1904,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L504">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L523">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_ToString_" data-uid="Exiled.API.Features.Door.ToString*"></a>
   <h4 id="Exiled_API_Features_Door_ToString" data-uid="Exiled.API.Features.Door.ToString">ToString()</h4>
@@ -1804,10 +1938,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   <div><span class="xref">System.Object.ToString()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_TryPryOpen.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.TryPryOpen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_TryPryOpen.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.TryPryOpen%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L427">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L446">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_TryPryOpen_" data-uid="Exiled.API.Features.Door.TryPryOpen*"></a>
   <h4 id="Exiled_API_Features_Door_TryPryOpen" data-uid="Exiled.API.Features.Door.TryPryOpen">TryPryOpen()</h4>
@@ -1836,10 +1970,60 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Unlock.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Unlock%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_TryPryOpen_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.TryPryOpen(Exiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L491">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L453">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Door_TryPryOpen_" data-uid="Exiled.API.Features.Door.TryPryOpen*"></a>
+  <h4 id="Exiled_API_Features_Door_TryPryOpen_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Door.TryPryOpen(Exiled.API.Features.Player)">TryPryOpen(Player)</h4>
+  <div class="markdown level1 summary"><p>Tries to pry the door open. No effect if the door cannot be pried.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryPryOpen(Player player)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td><span class="parametername">player</span></td>
+        <td><p>The amount of damage to deal.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p><span class="xref">true</span> if the door was able to be pried open.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Unlock.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Unlock%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L510">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Unlock_" data-uid="Exiled.API.Features.Door.Unlock*"></a>
   <h4 id="Exiled_API_Features_Door_Unlock" data-uid="Exiled.API.Features.Door.Unlock">Unlock()</h4>
@@ -1852,10 +2036,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_Unlock_System_Single_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Unlock(System.Single%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_Unlock_System_Single_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.Unlock(System.Single%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L498">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L517">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_Unlock_" data-uid="Exiled.API.Features.Door.Unlock*"></a>
   <h4 id="Exiled_API_Features_Door_Unlock_System_Single_Exiled_API_Enums_DoorLockType_" data-uid="Exiled.API.Features.Door.Unlock(System.Single,Exiled.API.Enums.DoorLockType)">Unlock(Single, DoorLockType)</h4>
@@ -1892,10 +2076,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_UnlockAll.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.UnlockAll%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_UnlockAll.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.UnlockAll%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L364">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L390">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_UnlockAll_" data-uid="Exiled.API.Features.Door.UnlockAll*"></a>
   <h4 id="Exiled_API_Features_Door_UnlockAll" data-uid="Exiled.API.Features.Door.UnlockAll">UnlockAll()</h4>
@@ -1908,10 +2092,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_UnlockAll_Exiled_API_Enums_ZoneType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.UnlockAll(Exiled.API.Enums.ZoneType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_UnlockAll_Exiled_API_Enums_ZoneType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.UnlockAll(Exiled.API.Enums.ZoneType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L374">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L400">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_UnlockAll_" data-uid="Exiled.API.Features.Door.UnlockAll*"></a>
   <h4 id="Exiled_API_Features_Door_UnlockAll_Exiled_API_Enums_ZoneType_" data-uid="Exiled.API.Features.Door.UnlockAll(Exiled.API.Enums.ZoneType)">UnlockAll(ZoneType)</h4>
@@ -1942,10 +2126,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_UnlockAll_System_Collections_Generic_IEnumerable_Exiled_API_Enums_ZoneType__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.UnlockAll(System.Collections.Generic.IEnumerable%7BExiled.API.Enums.ZoneType%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_UnlockAll_System_Collections_Generic_IEnumerable_Exiled_API_Enums_ZoneType__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.UnlockAll(System.Collections.Generic.IEnumerable%7BExiled.API.Enums.ZoneType%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L380">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L406">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_UnlockAll_" data-uid="Exiled.API.Features.Door.UnlockAll*"></a>
   <h4 id="Exiled_API_Features_Door_UnlockAll_System_Collections_Generic_IEnumerable_Exiled_API_Enums_ZoneType__" data-uid="Exiled.API.Features.Door.UnlockAll(System.Collections.Generic.IEnumerable{Exiled.API.Enums.ZoneType})">UnlockAll(IEnumerable&lt;ZoneType&gt;)</h4>
@@ -1976,10 +2160,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door_UnlockAll_System_Func_Exiled_API_Features_Door_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.UnlockAll(System.Func%7BExiled.API.Features.Door%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door_UnlockAll_System_Func_Exiled_API_Features_Door_System_Boolean__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door.UnlockAll(System.Func%7BExiled.API.Features.Door%2CSystem.Boolean%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L386">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L412">View Source</a>
   </span>
   <a id="Exiled_API_Features_Door_UnlockAll_" data-uid="Exiled.API.Features.Door.UnlockAll*"></a>
   <h4 id="Exiled_API_Features_Door_UnlockAll_System_Func_Exiled_API_Features_Door_System_Boolean__" data-uid="Exiled.API.Features.Door.UnlockAll(System.Func{Exiled.API.Features.Door,System.Boolean})">UnlockAll(Func&lt;Door, Boolean&gt;)</h4>
@@ -2008,6 +2192,19 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWorldSpace.html">IWorldSpace</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IPosition.html">IPosition</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IRotation.html">IRotation</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -2020,10 +2217,10 @@ public void Lock(DoorLockType flagsToLock)</code></pre>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Door.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Door.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Door%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L29" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Door.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

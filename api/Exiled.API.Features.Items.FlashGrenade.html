@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -89,9 +89,15 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
-    <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Throwable.html">Throwable</a></div>
-    <div class="level3"><span class="xref">FlashGrenade</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
+    <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Throwable.html">Throwable</a></div>
+    <div class="level4"><span class="xref">FlashGrenade</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.ItemBase</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.ThrowableProjectiles.ThrowableItem</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -102,10 +108,19 @@
       <a class="xref" href="Exiled.API.Features.Items.Throwable.html#Exiled_API_Features_Items_Throwable_PinPullTime">Throwable.PinPullTime</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Throwable.html#Exiled_API_Features_Items_Throwable_Repickable">Throwable.Repickable</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Throwable.html#Exiled_API_Features_Items_Throwable_Throw_System_Boolean_">Throwable.Throw(Boolean)</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_List">Item.List</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Serial">Item.Serial</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsInInventory">Item.IsInInventory</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Scale">Item.Scale</a>
@@ -115,6 +130,9 @@
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Category">Item.Category</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_TierFlags">Item.TierFlags</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Weight">Item.Weight</a>
@@ -129,16 +147,13 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsKeycard">Item.IsKeycard</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsMedical">Item.IsMedical</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsScp">Item.IsScp</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsConsumable">Item.IsConsumable</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsThrowable">Item.IsThrowable</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUtility">Item.IsUtility</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUsable">Item.IsUsable</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsWeapon">Item.IsWeapon</a>
@@ -150,6 +165,9 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_InventorySystem_Items_ItemBase_">Item.Get(ItemBase)</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_System_UInt16_">Item.Get(UInt16)</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Create_ItemType_Exiled_API_Features_Player_">Item.Create(ItemType, Player)</a>
     </div>
     <div>
@@ -159,13 +177,19 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Destroy">Item.Destroy()</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Item.Spawn(Vector3, Quaternion, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_CreatePickup_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_">Item.CreatePickup(Vector3, Quaternion, Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_">Item.Spawn(Vector3, Quaternion)</a>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;()</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_">Item.Spawn(Vector3)</a>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;Item&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;Item&gt;.Is&lt;TObject&gt;(TObject)</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -190,16 +214,16 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Items_FlashGrenade_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class FlashGrenade : Throwable</code></pre>
+    <pre><code class="lang-csharp hljs">public class FlashGrenade : Throwable, IWrapper&lt;ItemBase&gt;, IWrapper&lt;ThrowableItem&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade__ctor_InventorySystem_Items_ThrowableProjectiles_ThrowableItem_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.%23ctor(InventorySystem.Items.ThrowableProjectiles.ThrowableItem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade__ctor_InventorySystem_Items_ThrowableProjectiles_ThrowableItem_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.%23ctor(InventorySystem.Items.ThrowableProjectiles.ThrowableItem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L33">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L32">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_FlashGrenade__ctor_" data-uid="Exiled.API.Features.Items.FlashGrenade.#ctor*"></a>
   <h4 id="Exiled_API_Features_Items_FlashGrenade__ctor_InventorySystem_Items_ThrowableProjectiles_ThrowableItem_" data-uid="Exiled.API.Features.Items.FlashGrenade.#ctor(InventorySystem.Items.ThrowableProjectiles.ThrowableItem)">FlashGrenade(ThrowableItem)</h4>
@@ -232,19 +256,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_BlindCurve.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.BlindCurve%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_AdditionalBlindedEffect.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.AdditionalBlindedEffect%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L56">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L65">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Items_FlashGrenade_BlindCurve_" data-uid="Exiled.API.Features.Items.FlashGrenade.BlindCurve*"></a>
-  <h4 id="Exiled_API_Features_Items_FlashGrenade_BlindCurve" data-uid="Exiled.API.Features.Items.FlashGrenade.BlindCurve">BlindCurve</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">UnityEngine.AnimationCurve</span> for determining how long the <a class="xref" href="Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Blinded">Blinded</a> effect will last.</p>
+  <a id="Exiled_API_Features_Items_FlashGrenade_AdditionalBlindedEffect_" data-uid="Exiled.API.Features.Items.FlashGrenade.AdditionalBlindedEffect*"></a>
+  <h4 id="Exiled_API_Features_Items_FlashGrenade_AdditionalBlindedEffect" data-uid="Exiled.API.Features.Items.FlashGrenade.AdditionalBlindedEffect">AdditionalBlindedEffect</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the additional duration of the <a class="xref" href="Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Blinded">Blinded</a> effect.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AnimationCurve BlindCurve { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public float AdditionalBlindedEffect { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -256,48 +280,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">UnityEngine.AnimationCurve</span></td>
+        <td><span class="xref">System.Single</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_DeafenCurve.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.DeafenCurve%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_FuseTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.FuseTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L66">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Items_FlashGrenade_DeafenCurve_" data-uid="Exiled.API.Features.Items.FlashGrenade.DeafenCurve*"></a>
-  <h4 id="Exiled_API_Features_Items_FlashGrenade_DeafenCurve" data-uid="Exiled.API.Features.Items.FlashGrenade.DeafenCurve">DeafenCurve</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">UnityEngine.AnimationCurve</span> for determining how long the <a class="xref" href="Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Deafened">Deafened</a> effect will last.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public AnimationCurve DeafenCurve { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.AnimationCurve</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_FuseTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.FuseTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L71">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L83">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_FlashGrenade_FuseTime_" data-uid="Exiled.API.Features.Items.FlashGrenade.FuseTime*"></a>
   <h4 id="Exiled_API_Features_Items_FlashGrenade_FuseTime" data-uid="Exiled.API.Features.Items.FlashGrenade.FuseTime">FuseTime</h4>
@@ -325,14 +318,76 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_SurfaceDistanceIntensifier.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.SurfaceDistanceIntensifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_MinimalDurationEffect.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.MinimalDurationEffect%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L61">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L56">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_FlashGrenade_MinimalDurationEffect_" data-uid="Exiled.API.Features.Items.FlashGrenade.MinimalDurationEffect*"></a>
+  <h4 id="Exiled_API_Features_Items_FlashGrenade_MinimalDurationEffect" data-uid="Exiled.API.Features.Items.FlashGrenade.MinimalDurationEffect">MinimalDurationEffect</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the minimum duration of player can take the effect.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float MinimalDurationEffect { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_Projectile.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.Projectile%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L51">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_FlashGrenade_Projectile_" data-uid="Exiled.API.Features.Items.FlashGrenade.Projectile*"></a>
+  <h4 id="Exiled_API_Features_Items_FlashGrenade_Projectile" data-uid="Exiled.API.Features.Items.FlashGrenade.Projectile">Projectile</h4>
+  <div class="markdown level1 summary"><p>Gets a <a class="xref" href="Exiled.API.Features.Pickups.Projectiles.FlashbangProjectile.html">FlashbangProjectile</a> to change grenade properties.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FlashbangProjectile Projectile { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Pickups.Projectiles.FlashbangProjectile.html">FlashbangProjectile</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_SurfaceDistanceIntensifier.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.SurfaceDistanceIntensifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L74">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_FlashGrenade_SurfaceDistanceIntensifier_" data-uid="Exiled.API.Features.Items.FlashGrenade.SurfaceDistanceIntensifier*"></a>
   <h4 id="Exiled_API_Features_Items_FlashGrenade_SurfaceDistanceIntensifier" data-uid="Exiled.API.Features.Items.FlashGrenade.SurfaceDistanceIntensifier">SurfaceDistanceIntensifier</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the multiplier for damage against <a class="xref" href="Exiled.API.Enums.Side.html#Exiled_API_Enums_Side_Scp">Scp</a> players.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the how mush the flash grenade going to be intensified when explode at <a class="xref" href="Exiled.API.Enums.RoomType.html#Exiled_API_Enums_RoomType_Surface">Surface</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -358,10 +413,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L108">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L126">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_FlashGrenade_Clone_" data-uid="Exiled.API.Features.Items.FlashGrenade.Clone*"></a>
   <h4 id="Exiled_API_Features_Items_FlashGrenade_Clone" data-uid="Exiled.API.Features.Items.FlashGrenade.Clone">Clone()</h4>
@@ -392,10 +447,10 @@
   <div><a class="xref" href="Exiled.API.Features.Items.Throwable.html#Exiled_API_Features_Items_Throwable_Clone">Throwable.Clone()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_SpawnActive_UnityEngine_Vector3_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.SpawnActive(UnityEngine.Vector3%2CExiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_SpawnActive_UnityEngine_Vector3_Exiled_API_Features_Player_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.SpawnActive(UnityEngine.Vector3%2CExiled.API.Features.Player)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L83">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L95">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_FlashGrenade_SpawnActive_" data-uid="Exiled.API.Features.Items.FlashGrenade.SpawnActive*"></a>
   <h4 id="Exiled_API_Features_Items_FlashGrenade_SpawnActive_UnityEngine_Vector3_Exiled_API_Features_Player_" data-uid="Exiled.API.Features.Items.FlashGrenade.SpawnActive(UnityEngine.Vector3,Exiled.API.Features.Player)">SpawnActive(Vector3, Player)</h4>
@@ -404,7 +459,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SpawnActive(Vector3 position, Player owner = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public FlashbangProjectile SpawnActive(Vector3 position, Player owner = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -430,12 +485,28 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Pickups.Projectiles.FlashbangProjectile.html">FlashbangProjectile</a></td>
+        <td><p>Spawned <a class="xref" href="Exiled.API.Features.Pickups.Projectiles.FlashbangProjectile.html">grenade</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L102">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L140">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_FlashGrenade_ToString_" data-uid="Exiled.API.Features.Items.FlashGrenade.ToString*"></a>
   <h4 id="Exiled_API_Features_Items_FlashGrenade_ToString" data-uid="Exiled.API.Features.Items.FlashGrenade.ToString">ToString()</h4>
@@ -464,6 +535,13 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Exiled.API.Features.Items.Throwable.html#Exiled_API_Features_Items_Throwable_ToString">Throwable.ToString()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -476,10 +554,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_FlashGrenade.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.FlashGrenade%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L27" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/FlashGrenade.cs/#L26" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

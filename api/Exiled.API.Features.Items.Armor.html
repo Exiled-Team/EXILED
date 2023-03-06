@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -89,13 +89,25 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
-    <div class="level2"><span class="xref">Armor</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
+    <div class="level3"><span class="xref">Armor</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.ItemBase</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.Armor.BodyArmor</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_List">Item.List</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Serial">Item.Serial</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsInInventory">Item.IsInInventory</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Scale">Item.Scale</a>
@@ -107,6 +119,9 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Category">Item.Category</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_TierFlags">Item.TierFlags</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsAmmo">Item.IsAmmo</a>
     </div>
     <div>
@@ -116,16 +131,13 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsKeycard">Item.IsKeycard</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsMedical">Item.IsMedical</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsScp">Item.IsScp</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsConsumable">Item.IsConsumable</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsThrowable">Item.IsThrowable</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUtility">Item.IsUtility</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUsable">Item.IsUsable</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsWeapon">Item.IsWeapon</a>
@@ -137,6 +149,9 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_InventorySystem_Items_ItemBase_">Item.Get(ItemBase)</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_System_UInt16_">Item.Get(UInt16)</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Create_ItemType_Exiled_API_Features_Player_">Item.Create(ItemType, Player)</a>
     </div>
     <div>
@@ -146,16 +161,22 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Destroy">Item.Destroy()</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Item.Spawn(Vector3, Quaternion, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_">Item.Spawn(Vector3, Quaternion)</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_">Item.Spawn(Vector3)</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_CreatePickup_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_">Item.CreatePickup(Vector3, Quaternion, Boolean)</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_ToString">Item.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;Item&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;Item&gt;.Is&lt;TObject&gt;(TObject)</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -180,16 +201,16 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Items_Armor_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Armor : Item</code></pre>
+    <pre><code class="lang-csharp hljs">public class Armor : Item, IWrapper&lt;ItemBase&gt;, IWrapper&lt;BodyArmor&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor__ctor_InventorySystem_Items_Armor_BodyArmor_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.%23ctor(InventorySystem.Items.Armor.BodyArmor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor__ctor_InventorySystem_Items_Armor_BodyArmor_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.%23ctor(InventorySystem.Items.Armor.BodyArmor)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L27">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L32">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor__ctor_" data-uid="Exiled.API.Features.Items.Armor.#ctor*"></a>
   <h4 id="Exiled_API_Features_Items_Armor__ctor_InventorySystem_Items_Armor_BodyArmor_" data-uid="Exiled.API.Features.Items.Armor.#ctor(InventorySystem.Items.Armor.BodyArmor)">Armor(BodyArmor)</h4>
@@ -222,10 +243,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_AmmoLimits.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.AmmoLimits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_AmmoLimits.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.AmmoLimits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L156">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L145">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_AmmoLimits_" data-uid="Exiled.API.Features.Items.Armor.AmmoLimits*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_AmmoLimits" data-uid="Exiled.API.Features.Items.Armor.AmmoLimits">AmmoLimits</h4>
@@ -253,10 +274,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L45">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L50">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_Base_" data-uid="Exiled.API.Features.Items.Armor.Base*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_Base" data-uid="Exiled.API.Features.Items.Armor.Base">Base</h4>
@@ -284,10 +305,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_CategoryLimits.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.CategoryLimits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_CategoryLimits.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.CategoryLimits%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L166">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L154">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_CategoryLimits_" data-uid="Exiled.API.Features.Items.Armor.CategoryLimits*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_CategoryLimits" data-uid="Exiled.API.Features.Items.Armor.CategoryLimits">CategoryLimits</h4>
@@ -315,25 +336,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_CivilianDownsideMultiplier.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.CivilianDownsideMultiplier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_CivilianDownsideMultiplier.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.CivilianDownsideMultiplier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L146">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L140">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_CivilianDownsideMultiplier_" data-uid="Exiled.API.Features.Items.Armor.CivilianDownsideMultiplier*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_CivilianDownsideMultiplier" data-uid="Exiled.API.Features.Items.Armor.CivilianDownsideMultiplier">CivilianDownsideMultiplier</h4>
-  <div class="markdown level1 summary"><p>Gets or sets how much worse <span class="xref">RoleType.ClassD</span> and <span class="xref">RoleType.Scientist</span>s are affected by wearing this armor.</p>
+  <div class="markdown level1 summary"><p>Gets how much worse <span class="xref">PlayerRoles.RoleTypeId.ClassD</span> and <span class="xref">PlayerRoles.RoleTypeId.Scientist</span>s are affected by wearing this armor.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float CivilianDownsideMultiplier { get;
-
-    [Obsolete(&quot;The client would be desynchronized&quot;, true)]
-
-    set;
-
-}</code></pre>
+    <pre><code class="lang-csharp hljs">public float CivilianDownsideMultiplier { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -352,10 +367,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Equippable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Equippable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Equippable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Equippable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L50">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L55">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_Equippable_" data-uid="Exiled.API.Features.Items.Armor.Equippable*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_Equippable" data-uid="Exiled.API.Features.Items.Armor.Equippable">Equippable</h4>
@@ -383,10 +398,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_HelmetEfficacy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.HelmetEfficacy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_HelmetEfficacy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.HelmetEfficacy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L84">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L89">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_HelmetEfficacy_" data-uid="Exiled.API.Features.Items.Armor.HelmetEfficacy*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_HelmetEfficacy" data-uid="Exiled.API.Features.Items.Armor.HelmetEfficacy">HelmetEfficacy</h4>
@@ -430,10 +445,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Holsterable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Holsterable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Holsterable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Holsterable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L55">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L60">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_Holsterable_" data-uid="Exiled.API.Features.Items.Armor.Holsterable*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_Holsterable" data-uid="Exiled.API.Features.Items.Armor.Holsterable">Holsterable</h4>
@@ -461,10 +476,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_IsWorn.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.IsWorn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_IsWorn.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.IsWorn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L60">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L65">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_IsWorn_" data-uid="Exiled.API.Features.Items.Armor.IsWorn*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_IsWorn" data-uid="Exiled.API.Features.Items.Armor.IsWorn">IsWorn</h4>
@@ -492,7 +507,7 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_MovementSpeedMultiplier.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.MovementSpeedMultiplier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_MovementSpeedMultiplier.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.MovementSpeedMultiplier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L131">View Source</a>
@@ -504,13 +519,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float MovementSpeedMultiplier { get;
-
-    [Obsolete(&quot;The client would be desynchronized&quot;, true)]
-
-    set;
-
-}</code></pre>
+    <pre><code class="lang-csharp hljs">public float MovementSpeedMultiplier { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -545,10 +554,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_RemoveExcessOnDrop.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.RemoveExcessOnDrop%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_RemoveExcessOnDrop.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.RemoveExcessOnDrop%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L74">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L79">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_RemoveExcessOnDrop_" data-uid="Exiled.API.Features.Items.Armor.RemoveExcessOnDrop*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_RemoveExcessOnDrop" data-uid="Exiled.API.Features.Items.Armor.RemoveExcessOnDrop">RemoveExcessOnDrop</h4>
@@ -576,10 +585,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_StaminaUseMultiplier.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.StaminaUseMultiplier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_StaminaUseMultiplier.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.StaminaUseMultiplier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L116">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L121">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_StaminaUseMultiplier_" data-uid="Exiled.API.Features.Items.Armor.StaminaUseMultiplier*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_StaminaUseMultiplier" data-uid="Exiled.API.Features.Items.Armor.StaminaUseMultiplier">StaminaUseMultiplier</h4>
@@ -623,10 +632,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_VestEfficacy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.VestEfficacy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_VestEfficacy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.VestEfficacy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L100">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L105">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_VestEfficacy_" data-uid="Exiled.API.Features.Items.Armor.VestEfficacy*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_VestEfficacy" data-uid="Exiled.API.Features.Items.Armor.VestEfficacy">VestEfficacy</h4>
@@ -670,10 +679,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Weight.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Weight%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Weight.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Weight%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L65">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L70">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_Weight_" data-uid="Exiled.API.Features.Items.Armor.Weight*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_Weight" data-uid="Exiled.API.Features.Items.Armor.Weight">Weight</h4>
@@ -703,10 +712,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L177">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L165">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Armor_Clone_" data-uid="Exiled.API.Features.Items.Armor.Clone*"></a>
   <h4 id="Exiled_API_Features_Items_Armor_Clone" data-uid="Exiled.API.Features.Items.Armor.Clone">Clone()</h4>
@@ -735,6 +744,13 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Clone">Item.Clone()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -747,10 +763,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Armor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Armor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Armor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Armor.cs/#L26" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

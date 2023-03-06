@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -89,29 +89,33 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">System.EventArgs</span></div>
-    <div class="level2"><a class="xref" href="Exiled.Events.EventArgs.DyingEventArgs.html">DyingEventArgs</a></div>
-    <div class="level3"><span class="xref">OwnerDyingEventArgs</span></div>
+    <div class="level1"><a class="xref" href="Exiled.Events.EventArgs.Player.DyingEventArgs.html">DyingEventArgs</a></div>
+    <div class="level2"><span class="xref">OwnerDyingEventArgs</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IAttackerEvent.html">IAttackerEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a></div>
+    <div><a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_Killer">DyingEventArgs.Killer</a>
+      <a class="xref" href="Exiled.Events.EventArgs.Player.DyingEventArgs.html#Exiled_Events_EventArgs_Player_DyingEventArgs_ItemsToDrop">DyingEventArgs.ItemsToDrop</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_Target">DyingEventArgs.Target</a>
+      <a class="xref" href="Exiled.Events.EventArgs.Player.DyingEventArgs.html#Exiled_Events_EventArgs_Player_DyingEventArgs_Player">DyingEventArgs.Player</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_ItemsToDrop">DyingEventArgs.ItemsToDrop</a>
+      <a class="xref" href="Exiled.Events.EventArgs.Player.DyingEventArgs.html#Exiled_Events_EventArgs_Player_DyingEventArgs_DamageHandler">DyingEventArgs.DamageHandler</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_Handler">DyingEventArgs.Handler</a>
+      <a class="xref" href="Exiled.Events.EventArgs.Player.DyingEventArgs.html#Exiled_Events_EventArgs_Player_DyingEventArgs_IsAllowed">DyingEventArgs.IsAllowed</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_IsAllowed">DyingEventArgs.IsAllowed</a>
-    </div>
-    <div>
-      <span class="xref">System.EventArgs.Empty</span>
+      <a class="xref" href="Exiled.Events.EventArgs.Player.DyingEventArgs.html#Exiled_Events_EventArgs_Player_DyingEventArgs_Attacker">DyingEventArgs.Attacker</a>
     </div>
     <div>
       <span class="xref">System.Object.ToString()</span>
@@ -139,19 +143,19 @@
   <h6><strong>Assembly</strong>: Exiled.CustomItems.dll</h6>
   <h5 id="Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class OwnerDyingEventArgs : DyingEventArgs</code></pre>
+    <pre><code class="lang-csharp hljs">public class OwnerDyingEventArgs : DyingEventArgs, IAttackerEvent, IPlayerEvent, IDeniableEvent, IItemEvent, IExiledEvent</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_Events_EventArgs_DyingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.%23ctor(Exiled.API.Features.Items.Item%2CExiled.Events.EventArgs.DyingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_Events_EventArgs_Player_DyingEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.%23ctor(Exiled.API.Features.Items.Item%2CExiled.Events.EventArgs.Player.DyingEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerDyingEventArgs.cs/#L27">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerDyingEventArgs.cs/#L28">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs__ctor_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.#ctor*"></a>
-  <h4 id="Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_Events_EventArgs_DyingEventArgs_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.Events.EventArgs.DyingEventArgs)">OwnerDyingEventArgs(Item, DyingEventArgs)</h4>
+  <h4 id="Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_Events_EventArgs_Player_DyingEventArgs_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.Events.EventArgs.Player.DyingEventArgs)">OwnerDyingEventArgs(Item, DyingEventArgs)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.html">OwnerDyingEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -175,9 +179,9 @@
         <td><inheritdoc cref="P:Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.Item"></inheritdoc></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Exiled.Events.EventArgs.DyingEventArgs.html">DyingEventArgs</a></td>
+        <td><a class="xref" href="Exiled.Events.EventArgs.Player.DyingEventArgs.html">DyingEventArgs</a></td>
         <td><span class="parametername">ev</span></td>
-        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.HandcuffingEventArgs.html">HandcuffingEventArgs</a> instance.</p>
+        <td><p>The <a class="xref" href="Exiled.Events.EventArgs.Player.HandcuffingEventArgs.html">HandcuffingEventArgs</a> instance.</p>
 </td>
       </tr>
     </tbody>
@@ -186,10 +190,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs_Item.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.Item%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerDyingEventArgs.cs/#L42">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerDyingEventArgs.cs/#L44">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs_Item_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.Item*"></a>
   <h4 id="Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs_Item" data-uid="Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.Item">Item</h4>
@@ -215,6 +219,22 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IAttackerEvent.html">IAttackerEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IPlayerEvent.html">IPlayerEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IDeniableEvent.html">IDeniableEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IItemEvent.html">IItemEvent</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.Events.EventArgs.Interfaces.IExiledEvent.html">IExiledEvent</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -227,10 +247,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerDyingEventArgs.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerDyingEventArgs.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

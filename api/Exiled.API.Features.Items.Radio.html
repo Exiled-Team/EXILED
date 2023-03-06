@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -89,13 +89,25 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
-    <div class="level2"><span class="xref">Radio</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
+    <div class="level3"><span class="xref">Radio</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.ItemBase</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.Radio.RadioItem</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_List">Item.List</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Serial">Item.Serial</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsInInventory">Item.IsInInventory</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Scale">Item.Scale</a>
@@ -105,6 +117,9 @@
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Category">Item.Category</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_TierFlags">Item.TierFlags</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Weight">Item.Weight</a>
@@ -119,16 +134,13 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsKeycard">Item.IsKeycard</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsMedical">Item.IsMedical</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsScp">Item.IsScp</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsConsumable">Item.IsConsumable</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsThrowable">Item.IsThrowable</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUtility">Item.IsUtility</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUsable">Item.IsUsable</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsWeapon">Item.IsWeapon</a>
@@ -140,6 +152,9 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_InventorySystem_Items_ItemBase_">Item.Get(ItemBase)</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_System_UInt16_">Item.Get(UInt16)</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Create_ItemType_Exiled_API_Features_Player_">Item.Create(ItemType, Player)</a>
     </div>
     <div>
@@ -149,13 +164,19 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Destroy">Item.Destroy()</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Item.Spawn(Vector3, Quaternion, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_CreatePickup_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_">Item.CreatePickup(Vector3, Quaternion, Boolean)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_">Item.Spawn(Vector3, Quaternion)</a>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;()</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_">Item.Spawn(Vector3)</a>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;Item&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;Item&gt;.Is&lt;TObject&gt;(TObject)</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -180,16 +201,16 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Items_Radio_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Radio : Item</code></pre>
+    <pre><code class="lang-csharp hljs">public class Radio : Item, IWrapper&lt;ItemBase&gt;, IWrapper&lt;RadioItem&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio__ctor_InventorySystem_Items_Radio_RadioItem_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.%23ctor(InventorySystem.Items.Radio.RadioItem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio__ctor_InventorySystem_Items_Radio_RadioItem_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.%23ctor(InventorySystem.Items.Radio.RadioItem)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L26">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L27">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Radio__ctor_" data-uid="Exiled.API.Features.Items.Radio.#ctor*"></a>
   <h4 id="Exiled_API_Features_Items_Radio__ctor_InventorySystem_Items_Radio_RadioItem_" data-uid="Exiled.API.Features.Items.Radio.#ctor(InventorySystem.Items.Radio.RadioItem)">Radio(RadioItem)</h4>
@@ -222,10 +243,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L43">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L44">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Radio_Base_" data-uid="Exiled.API.Features.Items.Radio.Base*"></a>
   <h4 id="Exiled_API_Features_Items_Radio_Base" data-uid="Exiled.API.Features.Items.Radio.Base">Base</h4>
@@ -253,14 +274,14 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio_BatteryLevel.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.BatteryLevel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio_BatteryLevel.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.BatteryLevel%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L48">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L49">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Radio_BatteryLevel_" data-uid="Exiled.API.Features.Items.Radio.BatteryLevel*"></a>
   <h4 id="Exiled_API_Features_Items_Radio_BatteryLevel" data-uid="Exiled.API.Features.Items.Radio.BatteryLevel">BatteryLevel</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the percentage of the radio&apos;s battery.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the percentage of the radio&apos;s battery, between <code>0-100</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -284,10 +305,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio_Range.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.Range%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio_IsEnabled.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.IsEnabled%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L57">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L88">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Radio_IsEnabled_" data-uid="Exiled.API.Features.Items.Radio.IsEnabled*"></a>
+  <h4 id="Exiled_API_Features_Items_Radio_IsEnabled" data-uid="Exiled.API.Features.Items.Radio.IsEnabled">IsEnabled</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the radio is enabled or not.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsEnabled { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio_Range.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.Range%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L58">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Radio_Range_" data-uid="Exiled.API.Features.Items.Radio.Range*"></a>
   <h4 id="Exiled_API_Features_Items_Radio_Range" data-uid="Exiled.API.Features.Items.Radio.Range">Range</h4>
@@ -315,10 +367,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio_RangeSettings.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.RangeSettings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio_RangeSettings.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.RangeSettings%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L66">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L67">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Radio_RangeSettings_" data-uid="Exiled.API.Features.Items.Radio.RangeSettings*"></a>
   <h4 id="Exiled_API_Features_Items_Radio_RangeSettings" data-uid="Exiled.API.Features.Items.Radio.RangeSettings">RangeSettings</h4>
@@ -348,10 +400,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L99">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L113">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Radio_Clone_" data-uid="Exiled.API.Features.Items.Radio.Clone*"></a>
   <h4 id="Exiled_API_Features_Items_Radio_Clone" data-uid="Exiled.API.Features.Items.Radio.Clone">Clone()</h4>
@@ -382,26 +434,50 @@
   <div><a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Clone">Item.Clone()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio_Disable.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.Disable%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio_SetRangeSettings_Exiled_API_Enums_RadioRange_Exiled_API_Structs_RadioRangeSettings_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.SetRangeSettings(Exiled.API.Enums.RadioRange%2CExiled.API.Structs.RadioRangeSettings)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L87">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L99">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Items_Radio_Disable_" data-uid="Exiled.API.Features.Items.Radio.Disable*"></a>
-  <h4 id="Exiled_API_Features_Items_Radio_Disable" data-uid="Exiled.API.Features.Items.Radio.Disable">Disable()</h4>
-  <div class="markdown level1 summary"><p>Turns off the radio.</p>
+  <a id="Exiled_API_Features_Items_Radio_SetRangeSettings_" data-uid="Exiled.API.Features.Items.Radio.SetRangeSettings*"></a>
+  <h4 id="Exiled_API_Features_Items_Radio_SetRangeSettings_Exiled_API_Enums_RadioRange_Exiled_API_Structs_RadioRangeSettings_" data-uid="Exiled.API.Features.Items.Radio.SetRangeSettings(Exiled.API.Enums.RadioRange,Exiled.API.Structs.RadioRangeSettings)">SetRangeSettings(RadioRange, RadioRangeSettings)</h4>
+  <div class="markdown level1 summary"><p>Sets the <a class="xref" href="Exiled.API.Structs.RadioRangeSettings.html">RadioRangeSettings</a> of the given <code data-dev-comment-type="paramref" class="paramref">range</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void Disable()</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetRangeSettings(RadioRange range, RadioRangeSettings settings)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.RadioRange.html">RadioRange</a></td>
+        <td><span class="parametername">range</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.RadioRange.html">RadioRange</a> to modify.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Structs.RadioRangeSettings.html">RadioRangeSettings</a></td>
+        <td><span class="parametername">settings</span></td>
+        <td><p>The new settings of the specified range.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L93">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L124">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Radio_ToString_" data-uid="Exiled.API.Features.Items.Radio.ToString*"></a>
   <h4 id="Exiled_API_Features_Items_Radio_ToString" data-uid="Exiled.API.Features.Items.Radio.ToString">ToString()</h4>
@@ -430,6 +506,13 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_ToString">Item.ToString()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -442,10 +525,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Radio.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Radio.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Radio%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Radio.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

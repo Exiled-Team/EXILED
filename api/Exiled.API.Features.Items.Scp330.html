@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -89,9 +89,16 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
-    <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Usable.html">Usable</a></div>
-    <div class="level3"><span class="xref">Scp330</span></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>&gt;</div>
+    <div class="level2"><a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a></div>
+    <div class="level3"><a class="xref" href="Exiled.API.Features.Items.Usable.html">Usable</a></div>
+    <div class="level4"><span class="xref">Scp330</span></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.ItemBase</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.Usables.UsableItem</span>&gt;</div>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">InventorySystem.Items.Usables.Scp330.Scp330Bag</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -117,7 +124,19 @@
       <a class="xref" href="Exiled.API.Features.Items.Usable.html#Exiled_API_Features_Items_Usable_RemainingCooldown">Usable.RemainingCooldown</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Usable.html#Exiled_API_Features_Items_Usable_PlayerGetCooldown">Usable.PlayerGetCooldown</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Usable.html#Exiled_API_Features_Items_Usable_Use">Usable.Use()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_List">Item.List</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Serial">Item.Serial</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsInInventory">Item.IsInInventory</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Scale">Item.Scale</a>
@@ -129,6 +148,9 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Category">Item.Category</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_TierFlags">Item.TierFlags</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsAmmo">Item.IsAmmo</a>
     </div>
     <div>
@@ -138,16 +160,13 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsKeycard">Item.IsKeycard</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsMedical">Item.IsMedical</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsScp">Item.IsScp</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsConsumable">Item.IsConsumable</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsThrowable">Item.IsThrowable</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUtility">Item.IsUtility</a>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsUsable">Item.IsUsable</a>
     </div>
     <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_IsWeapon">Item.IsWeapon</a>
@@ -159,6 +178,9 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_InventorySystem_Items_ItemBase_">Item.Get(ItemBase)</a>
     </div>
     <div>
+      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Get_System_UInt16_">Item.Get(UInt16)</a>
+    </div>
+    <div>
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Create_ItemType_Exiled_API_Features_Player_">Item.Create(ItemType, Player)</a>
     </div>
     <div>
@@ -168,13 +190,16 @@
       <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Destroy">Item.Destroy()</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Collections_Generic_IEnumerable_Exiled_API_Structs_AttachmentIdentifier__">Item.Spawn(Vector3, Quaternion, IEnumerable&lt;AttachmentIdentifier&gt;)</a>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;()</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_">Item.Spawn(Vector3, Quaternion)</a>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;Item&gt;.Cast&lt;TObject&gt;(TObject)</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Spawn_UnityEngine_Vector3_">Item.Spawn(Vector3)</a>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;Item&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;Item&gt;.Is&lt;TObject&gt;(TObject)</a>
     </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object)</span>
@@ -199,16 +224,16 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Items_Scp330_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Scp330 : Usable</code></pre>
+    <pre><code class="lang-csharp hljs">public class Scp330 : Usable, IWrapper&lt;ItemBase&gt;, IWrapper&lt;UsableItem&gt;, IWrapper&lt;Scp330Bag&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330__ctor_InventorySystem_Items_Usables_Scp330_Scp330Bag_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.%23ctor(InventorySystem.Items.Usables.Scp330.Scp330Bag)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330__ctor_InventorySystem_Items_Usables_Scp330_Scp330Bag_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.%23ctor(InventorySystem.Items.Usables.Scp330.Scp330Bag)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L52">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L54">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330__ctor_" data-uid="Exiled.API.Features.Items.Scp330.#ctor*"></a>
   <h4 id="Exiled_API_Features_Items_Scp330__ctor_InventorySystem_Items_Usables_Scp330_Scp330Bag_" data-uid="Exiled.API.Features.Items.Scp330.#ctor(InventorySystem.Items.Usables.Scp330.Scp330Bag)">Scp330(Scp330Bag)</h4>
@@ -241,10 +266,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L69">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L71">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_Base_" data-uid="Exiled.API.Features.Items.Scp330.Base*"></a>
   <h4 id="Exiled_API_Features_Items_Scp330_Base" data-uid="Exiled.API.Features.Items.Scp330.Base">Base</h4>
@@ -272,10 +297,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_Candies.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.Candies%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_Candies.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.Candies%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L74">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L76">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_Candies_" data-uid="Exiled.API.Features.Items.Scp330.Candies*"></a>
   <h4 id="Exiled_API_Features_Items_Scp330_Candies" data-uid="Exiled.API.Features.Items.Scp330.Candies">Candies</h4>
@@ -303,14 +328,14 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_ExposedType.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.ExposedType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_ExposedType.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.ExposedType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L79">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L81">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_ExposedType_" data-uid="Exiled.API.Features.Items.Scp330.ExposedType*"></a>
   <h4 id="Exiled_API_Features_Items_Scp330_ExposedType" data-uid="Exiled.API.Features.Items.Scp330.ExposedType">ExposedType</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the exposed type. When set to a candy color, the bag will appear as that candy when dropped with the <a class="xref" href="Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_">Spawn(Vector3, Quaternion, Boolean)</a> method. Setting it to <span class="xref">InventorySystem.Items.Usables.Scp330.CandyKindID.None</span> results in it looking like a bag.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the exposed type. When set to a candy color, the bag will appear as that candy when dropped with the <a class="xref" href="Exiled.API.Features.Spawn.html">Exiled.API.Features.Spawn</a> method. Setting it to <span class="xref">InventorySystem.Items.Usables.Scp330.CandyKindID.None</span> results in it looking like a bag.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -336,10 +361,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_AddCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_AddCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L86">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L88">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_AddCandy_" data-uid="Exiled.API.Features.Items.Scp330.AddCandy*"></a>
   <h4 id="Exiled_API_Features_Items_Scp330_AddCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_" data-uid="Exiled.API.Features.Items.Scp330.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID)">AddCandy(CandyKindID)</h4>
@@ -386,19 +411,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_AddCandy_System_Collections_Generic_IEnumerable_InventorySystem_Items_Usables_Scp330_CandyKindID__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.AddCandy(System.Collections.Generic.IEnumerable%7BInventorySystem.Items.Usables.Scp330.CandyKindID%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_AddCandy_System_Collections_Generic_IEnumerable_InventorySystem_Items_Usables_Scp330_CandyKindID__Exiled_API_Features_Items_CandyAddStatus__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.AddCandy(System.Collections.Generic.IEnumerable%7BInventorySystem.Items.Usables.Scp330.CandyKindID%7D%2CExiled.API.Features.Items.CandyAddStatus%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L102">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L105">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_AddCandy_" data-uid="Exiled.API.Features.Items.Scp330.AddCandy*"></a>
-  <h4 id="Exiled_API_Features_Items_Scp330_AddCandy_System_Collections_Generic_IEnumerable_InventorySystem_Items_Usables_Scp330_CandyKindID__" data-uid="Exiled.API.Features.Items.Scp330.AddCandy(System.Collections.Generic.IEnumerable{InventorySystem.Items.Usables.Scp330.CandyKindID})">AddCandy(IEnumerable&lt;CandyKindID&gt;)</h4>
+  <h4 id="Exiled_API_Features_Items_Scp330_AddCandy_System_Collections_Generic_IEnumerable_InventorySystem_Items_Usables_Scp330_CandyKindID__Exiled_API_Features_Items_CandyAddStatus__" data-uid="Exiled.API.Features.Items.Scp330.AddCandy(System.Collections.Generic.IEnumerable{InventorySystem.Items.Usables.Scp330.CandyKindID},Exiled.API.Features.Items.CandyAddStatus@)">AddCandy(IEnumerable&lt;CandyKindID&gt;, out CandyAddStatus)</h4>
   <div class="markdown level1 summary"><p>Adds a collection of candy&apos;s to a bag.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CandyAddStatus AddCandy(IEnumerable&lt;CandyKindID&gt; candies)</code></pre>
+    <pre><code class="lang-csharp hljs">public int AddCandy(IEnumerable&lt;CandyKindID&gt; candies, out CandyAddStatus status)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -416,6 +441,12 @@
         <td><p>The <span class="xref">InventorySystem.Items.Usables.Scp330.CandyKindID</span>&apos;s to add.</p>
 </td>
       </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Items.CandyAddStatus.html">CandyAddStatus</a></td>
+        <td><span class="parametername">status</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Items.CandyAddStatus.html">CandyAddStatus</a>&apos;s insertion status.</p>
+</td>
+      </tr>
     </tbody>
   </table>
   <h5 class="returns">Returns</h5>
@@ -428,18 +459,18 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Features.Items.CandyAddStatus.html">CandyAddStatus</a></td>
-        <td><p><a class="xref" href="Exiled.API.Features.Items.CandyAddStatus.html">CandyAddStatus</a> based on insertion status. </p>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>based on number of candy added. </p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_Clone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L230">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L255">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_Clone_" data-uid="Exiled.API.Features.Items.Scp330.Clone*"></a>
   <h4 id="Exiled_API_Features_Items_Scp330_Clone" data-uid="Exiled.API.Features.Items.Scp330.Clone">Clone()</h4>
@@ -470,19 +501,83 @@
   <div><a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_Clone">Item.Clone()</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_DropCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_System_Boolean_System_Boolean_InventorySystem_Items_Usables_Scp330_CandyKindID_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID%2CSystem.Boolean%2CSystem.Boolean%2CSystem.Boolean%2CInventorySystem.Items.Usables.Scp330.CandyKindID)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_CreatePickup_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.CreatePickup(UnityEngine.Vector3%2CUnityEngine.Quaternion%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L147">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L236">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Scp330_CreatePickup_" data-uid="Exiled.API.Features.Items.Scp330.CreatePickup*"></a>
+  <h4 id="Exiled_API_Features_Items_Scp330_CreatePickup_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_" data-uid="Exiled.API.Features.Items.Scp330.CreatePickup(UnityEngine.Vector3,UnityEngine.Quaternion,System.Boolean)">CreatePickup(Vector3, Quaternion, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates the <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a> that based on this <a class="xref" href="Exiled.API.Features.Items.Item.html">Item</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Pickup CreatePickup(Vector3 position, Quaternion rotation = default(Quaternion), bool spawn = true)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>The <span class="xref">UnityEngine.Vector3</span> location to spawn it.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td><p>The <span class="xref">UnityEngine.Quaternion</span> rotation to give the item.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">spawn</span></td>
+        <td><p>Whether the <a class="xref" href="Exiled.API.Features.Pickups.Scp330Pickup.html">Scp330Pickup</a> should be initially spawned.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a></td>
+        <td><p>The created <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="Exiled.API.Features.Items.Usable.html#Exiled_API_Features_Items_Usable_CreatePickup_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_">Usable.CreatePickup(Vector3, Quaternion, Boolean)</a></div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_DropCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_System_Boolean_InventorySystem_Items_Usables_Scp330_CandyKindID_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID%2CSystem.Boolean%2CSystem.Boolean%2CInventorySystem.Items.Usables.Scp330.CandyKindID)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L170">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_DropCandy_" data-uid="Exiled.API.Features.Items.Scp330.DropCandy*"></a>
-  <h4 id="Exiled_API_Features_Items_Scp330_DropCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_System_Boolean_System_Boolean_InventorySystem_Items_Usables_Scp330_CandyKindID_" data-uid="Exiled.API.Features.Items.Scp330.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID,System.Boolean,System.Boolean,System.Boolean,InventorySystem.Items.Usables.Scp330.CandyKindID)">DropCandy(CandyKindID, Boolean, Boolean, Boolean, CandyKindID)</h4>
+  <h4 id="Exiled_API_Features_Items_Scp330_DropCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_System_Boolean_InventorySystem_Items_Usables_Scp330_CandyKindID_" data-uid="Exiled.API.Features.Items.Scp330.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID,System.Boolean,System.Boolean,InventorySystem.Items.Usables.Scp330.CandyKindID)">DropCandy(CandyKindID, Boolean, Boolean, CandyKindID)</h4>
   <div class="markdown level1 summary"><p>Drops candies from the bag.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Pickup&gt; DropCandy(CandyKindID type, bool dropAll = false, bool dropIndividual = false, bool overrideExposedType = false, CandyKindID exposedType = CandyKindID.None)</code></pre>
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Scp330Pickup&gt; DropCandy(CandyKindID type, bool dropAll = false, bool dropIndividual = false, CandyKindID exposedType = CandyKindID.None)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -513,12 +608,6 @@
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">overrideExposedType</span></td>
-        <td><p>Whether or not to override the exposed type of the candy dropped.</p>
-</td>
-      </tr>
-      <tr>
         <td><span class="xref">InventorySystem.Items.Usables.Scp330.CandyKindID</span></td>
         <td><span class="parametername">exposedType</span></td>
         <td><p>The <a class="xref" href="Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_ExposedType">ExposedType</a> to use, if the override is set to true.</p>
@@ -536,18 +625,50 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a>&gt;</td>
-        <td><p>a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a>s generated by this method. <em>Can be empty!</em>.</p>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Pickups.Scp330Pickup.html">Scp330Pickup</a>&gt;</td>
+        <td><p>a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Pickups.Pickup.html">Pickup</a>s generated by this method. <em>Can be empty!</em>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_RemoveCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.RemoveCandy(InventorySystem.Items.Usables.Scp330.CandyKindID%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_RemoveAllCandy.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.RemoveAllCandy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L124">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L150">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Items_Scp330_RemoveAllCandy_" data-uid="Exiled.API.Features.Items.Scp330.RemoveAllCandy*"></a>
+  <h4 id="Exiled_API_Features_Items_Scp330_RemoveAllCandy" data-uid="Exiled.API.Features.Items.Scp330.RemoveAllCandy">RemoveAllCandy()</h4>
+  <div class="markdown level1 summary"><p>Removes all candy from the bag.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RemoveAllCandy()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><p>The total amount of candies that were removed from the bag.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_RemoveCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.RemoveCandy(InventorySystem.Items.Usables.Scp330.CandyKindID%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L129">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_RemoveCandy_" data-uid="Exiled.API.Features.Items.Scp330.RemoveCandy*"></a>
   <h4 id="Exiled_API_Features_Items_Scp330_RemoveCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_" data-uid="Exiled.API.Features.Items.Scp330.RemoveCandy(InventorySystem.Items.Usables.Scp330.CandyKindID,System.Boolean)">RemoveCandy(CandyKindID, Boolean)</h4>
@@ -593,79 +714,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
-        <td><p>The total amount of candies that were dropped from the bag.</p>
+        <td><p>The total amount of candies that were removed from the bag.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.Spawn(UnityEngine.Vector3%2CUnityEngine.Quaternion%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L200">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Items_Scp330_Spawn_" data-uid="Exiled.API.Features.Items.Scp330.Spawn*"></a>
-  <h4 id="Exiled_API_Features_Items_Scp330_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_" data-uid="Exiled.API.Features.Items.Scp330.Spawn(UnityEngine.Vector3,UnityEngine.Quaternion,System.Boolean)">Spawn(Vector3, Quaternion, Boolean)</h4>
-  <div class="markdown level1 summary"><p>Spawns the bag, allowing to override the exposed type.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Pickup Spawn(Vector3 position, Quaternion rotation = default(Quaternion), bool overrideExposedType = false)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td><span class="parametername">position</span></td>
-        <td><p>The <span class="xref">UnityEngine.Vector3</span> location to spawn it.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.Quaternion</span></td>
-        <td><span class="parametername">rotation</span></td>
-        <td><p>The <span class="xref">UnityEngine.Quaternion</span> rotation to give the item.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">overrideExposedType</span></td>
-        <td><p>Whether or not to use the <a class="xref" href="Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_ExposedType">ExposedType</a> value or the default value.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a></td>
-        <td><p>The <a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a> spawned.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L224">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L271">View Source</a>
   </span>
   <a id="Exiled_API_Features_Items_Scp330_ToString_" data-uid="Exiled.API.Features.Items.Scp330.ToString*"></a>
   <h4 id="Exiled_API_Features_Items_Scp330_ToString" data-uid="Exiled.API.Features.Items.Scp330.ToString">ToString()</h4>
@@ -694,6 +753,16 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Exiled.API.Features.Items.Item.html#Exiled_API_Features_Items_Item_ToString">Item.ToString()</a></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -706,10 +775,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Items_Scp330.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Items_Scp330.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Items.Scp330%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L46" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Items/Scp330.cs/#L48" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

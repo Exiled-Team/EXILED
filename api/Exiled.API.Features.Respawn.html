@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -125,10 +125,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_ChaosTickets.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ChaosTickets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_ChaosTickets.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ChaosTickets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L65">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L80">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_ChaosTickets_" data-uid="Exiled.API.Features.Respawn.ChaosTickets*"></a>
   <h4 id="Exiled_API_Features_Respawn_ChaosTickets" data-uid="Exiled.API.Features.Respawn.ChaosTickets">ChaosTickets</h4>
@@ -137,7 +137,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static uint ChaosTickets { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static float ChaosTickets { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -149,7 +149,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="xref">System.Single</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -160,20 +160,19 @@
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_Controller.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.Controller%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_ChaosVan.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ChaosVan%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L74">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L45">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Respawn_Controller_" data-uid="Exiled.API.Features.Respawn.Controller*"></a>
-  <h4 id="Exiled_API_Features_Respawn_Controller" data-uid="Exiled.API.Features.Respawn.Controller">Controller</h4>
-  <div class="markdown level1 summary"><p>Gets the actual <span class="xref">Respawning.RespawnEffectsController</span>.</p>
+  <a id="Exiled_API_Features_Respawn_ChaosVan_" data-uid="Exiled.API.Features.Respawn.ChaosVan*"></a>
+  <h4 id="Exiled_API_Features_Respawn_ChaosVan" data-uid="Exiled.API.Features.Respawn.ChaosVan">ChaosVan</h4>
+  <div class="markdown level1 summary"><p>Gets the Chaos Van&apos;s <span class="xref">UnityEngine.GameObject</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Using this will lead to indefinable errors&quot;, true)]
-public static RespawnEffectsController Controller { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static GameObject ChaosVan { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -185,17 +184,17 @@ public static RespawnEffectsController Controller { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Respawning.RespawnEffectsController</span></td>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_IsSpawning.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.IsSpawning%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_IsSpawning.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.IsSpawning%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L49">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L74">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_IsSpawning_" data-uid="Exiled.API.Features.Respawn.IsSpawning*"></a>
   <h4 id="Exiled_API_Features_Respawn_IsSpawning" data-uid="Exiled.API.Features.Respawn.IsSpawning">IsSpawning</h4>
@@ -223,10 +222,10 @@ public static RespawnEffectsController Controller { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_NextKnownTeam.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.NextKnownTeam%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_NextKnownTeam.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.NextKnownTeam%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L27">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L59">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_NextKnownTeam_" data-uid="Exiled.API.Features.Respawn.NextKnownTeam*"></a>
   <h4 id="Exiled_API_Features_Respawn_NextKnownTeam" data-uid="Exiled.API.Features.Respawn.NextKnownTeam">NextKnownTeam</h4>
@@ -254,10 +253,10 @@ public static RespawnEffectsController Controller { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_NextTeamTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.NextTeamTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_NextTeamTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.NextTeamTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L43">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L69">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_NextTeamTime_" data-uid="Exiled.API.Features.Respawn.NextTeamTime*"></a>
   <h4 id="Exiled_API_Features_Respawn_NextTeamTime" data-uid="Exiled.API.Features.Respawn.NextTeamTime">NextTeamTime</h4>
@@ -285,19 +284,19 @@ public static RespawnEffectsController Controller { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_NtfTickets.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.NtfTickets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_NtfHelicopter.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.NtfHelicopter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L55">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L31">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Respawn_NtfTickets_" data-uid="Exiled.API.Features.Respawn.NtfTickets*"></a>
-  <h4 id="Exiled_API_Features_Respawn_NtfTickets" data-uid="Exiled.API.Features.Respawn.NtfTickets">NtfTickets</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the amount of spawn tickets belonging to the NTF.</p>
+  <a id="Exiled_API_Features_Respawn_NtfHelicopter_" data-uid="Exiled.API.Features.Respawn.NtfHelicopter*"></a>
+  <h4 id="Exiled_API_Features_Respawn_NtfHelicopter" data-uid="Exiled.API.Features.Respawn.NtfHelicopter">NtfHelicopter</h4>
+  <div class="markdown level1 summary"><p>Gets the NTF Helicopter&apos;s <span class="xref">UnityEngine.GameObject</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static uint NtfTickets { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static GameObject NtfHelicopter { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -309,7 +308,38 @@ public static RespawnEffectsController Controller { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.UInt32</span></td>
+        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_NtfTickets.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.NtfTickets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L90">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Respawn_NtfTickets_" data-uid="Exiled.API.Features.Respawn.NtfTickets*"></a>
+  <h4 id="Exiled_API_Features_Respawn_NtfTickets" data-uid="Exiled.API.Features.Respawn.NtfTickets">NtfTickets</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the amount of spawn tickets belonging to the NTF.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float NtfTickets { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -320,20 +350,19 @@ public static RespawnEffectsController Controller { get; }</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_TimeUntilRespawn.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.TimeUntilRespawn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_ProtectedCanShoot.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ProtectedCanShoot%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L32">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L117">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Respawn_TimeUntilRespawn_" data-uid="Exiled.API.Features.Respawn.TimeUntilRespawn*"></a>
-  <h4 id="Exiled_API_Features_Respawn_TimeUntilRespawn" data-uid="Exiled.API.Features.Respawn.TimeUntilRespawn">TimeUntilRespawn</h4>
-  <div class="markdown level1 summary"><p>Gets the amount of seconds before the next respawn will occur.</p>
+  <a id="Exiled_API_Features_Respawn_ProtectedCanShoot_" data-uid="Exiled.API.Features.Respawn.ProtectedCanShoot*"></a>
+  <h4 id="Exiled_API_Features_Respawn_ProtectedCanShoot" data-uid="Exiled.API.Features.Respawn.ProtectedCanShoot">ProtectedCanShoot</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not spawn protected players can shoot.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use TimeUntilSpawnWave.TotalSeconds.&quot;)]
-public static int TimeUntilRespawn { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool ProtectedCanShoot { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -345,17 +374,110 @@ public static int TimeUntilRespawn { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">System.Boolean</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_TimeUntilSpawnWave.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.TimeUntilSpawnWave%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_ProtectedTeams.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ProtectedTeams%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L38">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L126">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Respawn_ProtectedTeams_" data-uid="Exiled.API.Features.Respawn.ProtectedTeams*"></a>
+  <h4 id="Exiled_API_Features_Respawn_ProtectedTeams" data-uid="Exiled.API.Features.Respawn.ProtectedTeams">ProtectedTeams</h4>
+  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.List&lt;T&gt;</span> of <span class="xref">PlayerRoles.Team</span> that have spawn protection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static List&lt;Team&gt; ProtectedTeams { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">PlayerRoles.Team</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_ProtectionEnabled.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ProtectionEnabled%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L99">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Respawn_ProtectionEnabled_" data-uid="Exiled.API.Features.Respawn.ProtectionEnabled*"></a>
+  <h4 id="Exiled_API_Features_Respawn_ProtectionEnabled" data-uid="Exiled.API.Features.Respawn.ProtectionEnabled">ProtectionEnabled</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not spawn protection is enabled.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool ProtectionEnabled { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_ProtectionTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ProtectionTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L108">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Respawn_ProtectionTime_" data-uid="Exiled.API.Features.Respawn.ProtectionTime*"></a>
+  <h4 id="Exiled_API_Features_Respawn_ProtectionTime" data-uid="Exiled.API.Features.Respawn.ProtectionTime">ProtectionTime</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the spawn protection time, in seconds.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static float ProtectionTime { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_TimeUntilSpawnWave.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.TimeUntilSpawnWave%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L64">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_TimeUntilSpawnWave_" data-uid="Exiled.API.Features.Respawn.TimeUntilSpawnWave*"></a>
   <h4 id="Exiled_API_Features_Respawn_TimeUntilSpawnWave" data-uid="Exiled.API.Features.Respawn.TimeUntilSpawnWave">TimeUntilSpawnWave</h4>
@@ -385,10 +507,10 @@ public static int TimeUntilRespawn { get; }</code></pre>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_ForceWave_Respawning_SpawnableTeamType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ForceWave(Respawning.SpawnableTeamType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_ForceWave_Respawning_SpawnableTeamType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.ForceWave(Respawning.SpawnableTeamType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L145">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L202">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_ForceWave_" data-uid="Exiled.API.Features.Respawn.ForceWave*"></a>
   <h4 id="Exiled_API_Features_Respawn_ForceWave_Respawning_SpawnableTeamType_System_Boolean_" data-uid="Exiled.API.Features.Respawn.ForceWave(Respawning.SpawnableTeamType,System.Boolean)">ForceWave(SpawnableTeamType, Boolean)</h4>
@@ -425,19 +547,19 @@ public static int TimeUntilRespawn { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_GrantTickets_Respawning_SpawnableTeamType_System_Int32_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.GrantTickets(Respawning.SpawnableTeamType%2CSystem.Int32%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_GrantTickets_Respawning_SpawnableTeamType_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.GrantTickets(Respawning.SpawnableTeamType%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L138">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L188">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_GrantTickets_" data-uid="Exiled.API.Features.Respawn.GrantTickets*"></a>
-  <h4 id="Exiled_API_Features_Respawn_GrantTickets_Respawning_SpawnableTeamType_System_Int32_System_Boolean_" data-uid="Exiled.API.Features.Respawn.GrantTickets(Respawning.SpawnableTeamType,System.Int32,System.Boolean)">GrantTickets(SpawnableTeamType, Int32, Boolean)</h4>
+  <h4 id="Exiled_API_Features_Respawn_GrantTickets_Respawning_SpawnableTeamType_System_Single_" data-uid="Exiled.API.Features.Respawn.GrantTickets(Respawning.SpawnableTeamType,System.Single)">GrantTickets(SpawnableTeamType, Single)</h4>
   <div class="markdown level1 summary"><p>Grants tickets to a <span class="xref">Respawning.SpawnableTeamType</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool GrantTickets(SpawnableTeamType team, int amount, bool overrideLocks = false)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void GrantTickets(SpawnableTeamType team, float amount)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -456,41 +578,19 @@ public static int TimeUntilRespawn { get; }</code></pre>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">System.Single</span></td>
         <td><span class="parametername">amount</span></td>
         <td><p>The amount of tickets to grant.</p>
-</td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">overrideLocks</span></td>
-        <td><p>Whether or not to override ticket locks.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>Whether or not tickets were granted successfully.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_PlayEffect_Exiled_API_Enums_RespawnEffectType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.PlayEffect(Exiled.API.Enums.RespawnEffectType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_PlayEffect_Exiled_API_Enums_RespawnEffectType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.PlayEffect(Exiled.API.Enums.RespawnEffectType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L87">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L138">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_PlayEffect_" data-uid="Exiled.API.Features.Respawn.PlayEffect*"></a>
   <h4 id="Exiled_API_Features_Respawn_PlayEffect_Exiled_API_Enums_RespawnEffectType_" data-uid="Exiled.API.Features.Respawn.PlayEffect(Exiled.API.Enums.RespawnEffectType)">PlayEffect(RespawnEffectType)</h4>
@@ -521,10 +621,10 @@ public static int TimeUntilRespawn { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_PlayEffect_System_Byte_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.PlayEffect(System.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_PlayEffect_System_Byte_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.PlayEffect(System.Byte)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L81">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L132">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_PlayEffect_" data-uid="Exiled.API.Features.Respawn.PlayEffect*"></a>
   <h4 id="Exiled_API_Features_Respawn_PlayEffect_System_Byte_" data-uid="Exiled.API.Features.Respawn.PlayEffect(System.Byte)">PlayEffect(Byte)</h4>
@@ -555,10 +655,10 @@ public static int TimeUntilRespawn { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_PlayEffects_Exiled_API_Enums_RespawnEffectType___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.PlayEffects(Exiled.API.Enums.RespawnEffectType%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_PlayEffects_Exiled_API_Enums_RespawnEffectType___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.PlayEffects(Exiled.API.Enums.RespawnEffectType%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L106">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L157">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_PlayEffects_" data-uid="Exiled.API.Features.Respawn.PlayEffects*"></a>
   <h4 id="Exiled_API_Features_Respawn_PlayEffects_Exiled_API_Enums_RespawnEffectType___" data-uid="Exiled.API.Features.Respawn.PlayEffects(Exiled.API.Enums.RespawnEffectType[])">PlayEffects(RespawnEffectType[])</h4>
@@ -589,10 +689,10 @@ public static int TimeUntilRespawn { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_PlayEffects_System_Byte___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.PlayEffects(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_PlayEffects_System_Byte___.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.PlayEffects(System.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L93">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L144">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_PlayEffects_" data-uid="Exiled.API.Features.Respawn.PlayEffects*"></a>
   <h4 id="Exiled_API_Features_Respawn_PlayEffects_System_Byte___" data-uid="Exiled.API.Features.Respawn.PlayEffects(System.Byte[])">PlayEffects(Byte[])</h4>
@@ -623,10 +723,50 @@ public static int TimeUntilRespawn { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_SummonChaosInsurgencyVan_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.SummonChaosInsurgencyVan(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_RemoveTickets_Respawning_SpawnableTeamType_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.RemoveTickets(Respawning.SpawnableTeamType%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L117">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L195">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Respawn_RemoveTickets_" data-uid="Exiled.API.Features.Respawn.RemoveTickets*"></a>
+  <h4 id="Exiled_API_Features_Respawn_RemoveTickets_Respawning_SpawnableTeamType_System_Single_" data-uid="Exiled.API.Features.Respawn.RemoveTickets(Respawning.SpawnableTeamType,System.Single)">RemoveTickets(SpawnableTeamType, Single)</h4>
+  <div class="markdown level1 summary"><p>Removes tickets from a <span class="xref">Respawning.SpawnableTeamType</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void RemoveTickets(SpawnableTeamType team, float amount)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Respawning.SpawnableTeamType</span></td>
+        <td><span class="parametername">team</span></td>
+        <td><p>The <span class="xref">Respawning.SpawnableTeamType</span> to remove tickets from.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
+        <td><span class="parametername">amount</span></td>
+        <td><p>The amount of tickets to remove.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_SummonChaosInsurgencyVan_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.SummonChaosInsurgencyVan(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L168">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_SummonChaosInsurgencyVan_" data-uid="Exiled.API.Features.Respawn.SummonChaosInsurgencyVan*"></a>
   <h4 id="Exiled_API_Features_Respawn_SummonChaosInsurgencyVan_System_Boolean_" data-uid="Exiled.API.Features.Respawn.SummonChaosInsurgencyVan(System.Boolean)">SummonChaosInsurgencyVan(Boolean)</h4>
@@ -657,10 +797,10 @@ public static int TimeUntilRespawn { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn_SummonNtfChopper.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.SummonNtfChopper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn_SummonNtfChopper.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn.SummonNtfChopper%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L111">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L162">View Source</a>
   </span>
   <a id="Exiled_API_Features_Respawn_SummonNtfChopper_" data-uid="Exiled.API.Features.Respawn.SummonNtfChopper*"></a>
   <h4 id="Exiled_API_Features_Respawn_SummonNtfChopper" data-uid="Exiled.API.Features.Respawn.SummonNtfChopper">SummonNtfChopper()</h4>
@@ -679,10 +819,10 @@ public static int TimeUntilRespawn { get; }</code></pre>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Respawn.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Respawn.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Respawn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L22" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Respawn.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

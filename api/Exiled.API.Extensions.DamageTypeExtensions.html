@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -125,10 +125,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_ItemConversion.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.ItemConversion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_ItemConversion.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.ItemConversion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L87">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L111">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_DamageTypeExtensions_ItemConversion_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.ItemConversion*"></a>
   <h4 id="Exiled_API_Extensions_DamageTypeExtensions_ItemConversion" data-uid="Exiled.API.Extensions.DamageTypeExtensions.ItemConversion">ItemConversion</h4>
@@ -137,7 +137,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Dictionary&lt;ItemType, DamageType&gt; ItemConversion { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static IReadOnlyDictionary&lt;ItemType, DamageType&gt; ItemConversion { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -149,17 +149,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">ItemType</span>, <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyDictionary</span>&lt;<span class="xref">ItemType</span>, <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_TranslationConversion.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.TranslationConversion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_TranslationConversion.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.TranslationConversion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L56">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L106">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_DamageTypeExtensions_TranslationConversion_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.TranslationConversion*"></a>
   <h4 id="Exiled_API_Extensions_DamageTypeExtensions_TranslationConversion" data-uid="Exiled.API.Extensions.DamageTypeExtensions.TranslationConversion">TranslationConversion</h4>
@@ -168,7 +168,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Dictionary&lt;DeathTranslation, DamageType&gt; TranslationConversion { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static IReadOnlyDictionary&lt;DeathTranslation, DamageType&gt; TranslationConversion { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -180,17 +180,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">PlayerStatsSystem.DeathTranslation</span>, <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyDictionary</span>&lt;<span class="xref">PlayerStatsSystem.DeathTranslation</span>, <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_TranslationIdConversion.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.TranslationIdConversion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_TranslationIdConversion.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.TranslationIdConversion%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L25">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L101">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_DamageTypeExtensions_TranslationIdConversion_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.TranslationIdConversion*"></a>
   <h4 id="Exiled_API_Extensions_DamageTypeExtensions_TranslationIdConversion" data-uid="Exiled.API.Extensions.DamageTypeExtensions.TranslationIdConversion">TranslationIdConversion</h4>
@@ -199,7 +199,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Dictionary&lt;byte, DamageType&gt; TranslationIdConversion { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public static IReadOnlyDictionary&lt;byte, DamageType&gt; TranslationIdConversion { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -211,7 +211,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">System.Byte</span>, <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a>&gt;</td>
+        <td><span class="xref">System.Collections.Generic.IReadOnlyDictionary</span>&lt;<span class="xref">System.Byte</span>, <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a>&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -220,10 +220,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_GetDamageType_PlayerStatsSystem_DamageHandlerBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.GetDamageType(PlayerStatsSystem.DamageHandlerBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_GetDamageType_PlayerStatsSystem_DamageHandlerBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.GetDamageType(PlayerStatsSystem.DamageHandlerBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L144">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L155">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_DamageTypeExtensions_GetDamageType_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.GetDamageType*"></a>
   <h4 id="Exiled_API_Extensions_DamageTypeExtensions_GetDamageType_PlayerStatsSystem_DamageHandlerBase_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.GetDamageType(PlayerStatsSystem.DamageHandlerBase)">GetDamageType(DamageHandlerBase)</h4>
@@ -247,7 +247,7 @@
       <tr>
         <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
         <td><span class="parametername">damageHandlerBase</span></td>
-        <td><p>The DamageHandler you want to get the DamageType.</p>
+        <td><p>The DamageHandler to convert.</p>
 </td>
       </tr>
     </tbody>
@@ -263,17 +263,17 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a></td>
-        <td><p>Return the <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a> of the <span class="xref">PlayerStatsSystem.DamageHandlerBase</span>.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a> of the <span class="xref">PlayerStatsSystem.DamageHandlerBase</span>.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_IsScp_Exiled_API_Enums_DamageType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.IsScp(Exiled.API.Enums.DamageType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_IsScp_Exiled_API_Enums_DamageType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.IsScp(Exiled.API.Enums.DamageType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L121">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L132">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_DamageTypeExtensions_IsScp_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.IsScp*"></a>
   <h4 id="Exiled_API_Extensions_DamageTypeExtensions_IsScp_Exiled_API_Enums_DamageType_System_Boolean_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.IsScp(Exiled.API.Enums.DamageType,System.Boolean)">IsScp(DamageType, Boolean)</h4>
@@ -303,7 +303,7 @@
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">checkItems</span></td>
-        <td><p>Indicates whether the SCP-items damage types should be taken into account or not.</p>
+        <td><p>Indicates whether or not the SCP-items damage types should be taken into account.</p>
 </td>
       </tr>
     </tbody>
@@ -319,17 +319,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a> is caused by SCP or not.</p>
+        <td><p>Returns whether or not the <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a> is caused by SCP.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_IsStatusEffect_Exiled_API_Enums_DamageType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.IsStatusEffect(Exiled.API.Enums.DamageType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_IsStatusEffect_Exiled_API_Enums_DamageType_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.IsStatusEffect(Exiled.API.Enums.DamageType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L133">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L144">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_DamageTypeExtensions_IsStatusEffect_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.IsStatusEffect*"></a>
   <h4 id="Exiled_API_Extensions_DamageTypeExtensions_IsStatusEffect_Exiled_API_Enums_DamageType_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.IsStatusEffect(Exiled.API.Enums.DamageType)">IsStatusEffect(DamageType)</h4>
@@ -369,17 +369,17 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a> is caused by status effect or not.</p>
+        <td><p>Returns whether or not the <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a> is caused by status effect.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_IsWeapon_Exiled_API_Enums_DamageType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.IsWeapon(Exiled.API.Enums.DamageType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions_IsWeapon_Exiled_API_Enums_DamageType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions.IsWeapon(Exiled.API.Enums.DamageType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L108">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L119">View Source</a>
   </span>
   <a id="Exiled_API_Extensions_DamageTypeExtensions_IsWeapon_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.IsWeapon*"></a>
   <h4 id="Exiled_API_Extensions_DamageTypeExtensions_IsWeapon_Exiled_API_Enums_DamageType_System_Boolean_" data-uid="Exiled.API.Extensions.DamageTypeExtensions.IsWeapon(Exiled.API.Enums.DamageType,System.Boolean)">IsWeapon(DamageType, Boolean)</h4>
@@ -409,7 +409,7 @@
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">checkMicro</span></td>
-        <td><p>Indicates whether the MicroHid damage type should be taken into account or not.</p>
+        <td><p>Indicates whether or not the MicroHid damage type should be taken into account.</p>
 </td>
       </tr>
     </tbody>
@@ -425,7 +425,7 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
-        <td><p>Returns whether the <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a> is caused by weapon or not.</p>
+        <td><p>Returns whether or not the <a class="xref" href="Exiled.API.Enums.DamageType.html">DamageType</a> is caused by weapon.</p>
 </td>
       </tr>
     </tbody>
@@ -438,10 +438,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Extensions_DamageTypeExtensions.md&amp;value=---%0Auid%3A%20Exiled.API.Extensions.DamageTypeExtensions%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Extensions/DamageTypeExtensions.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

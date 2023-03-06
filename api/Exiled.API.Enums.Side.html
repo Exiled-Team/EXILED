@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_API_Enums_Side" data-uid="Exiled.API.Enums.Side" class="text-break">Enum Side
   </h1>
-  <div class="markdown level0 summary"><p>In which side a certain <span class="xref">RoleType</span> belongs.</p>
+  <div class="markdown level0 summary"><p>In which side a certain <span class="xref">PlayerRoles.RoleTypeId</span> belongs.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Exiled.API.Enums.html">Exiled.API.Enums</a></h6>
@@ -105,42 +105,42 @@
       <tr>
         <td id="Exiled_API_Enums_Side_ChaosInsurgency">ChaosInsurgency</td>
         <td><p>Chaos Insurgency team.
-Contains <span class="xref">RoleType.ClassD</span>, <span class="xref">RoleType.ChaosConscript</span>, <span class="xref">RoleType.ChaosRepressor</span>, <span class="xref">RoleType.ChaosRifleman</span> and <span class="xref">RoleType.ChaosMarauder</span>.</p>
+Contains <span class="xref">PlayerRoles.RoleTypeId.ClassD</span>, <span class="xref">PlayerRoles.RoleTypeId.ChaosConscript</span>, <span class="xref">PlayerRoles.RoleTypeId.ChaosRepressor</span>, <span class="xref">PlayerRoles.RoleTypeId.ChaosRifleman</span> and <span class="xref">PlayerRoles.RoleTypeId.ChaosMarauder</span>.</p>
 </td>
       </tr>
       <tr>
         <td id="Exiled_API_Enums_Side_Mtf">Mtf</td>
         <td><p>Mobile Task Forces team.
-Contains <span class="xref">RoleType.Scientist</span>, <span class="xref">RoleType.FacilityGuard</span>, <span class="xref">RoleType.NtfPrivate</span>, <span class="xref">RoleType.NtfSergeant</span>,
-<span class="xref">RoleType.NtfCaptain</span> and <span class="xref">RoleType.NtfSpecialist</span>.</p>
+Contains <span class="xref">PlayerRoles.RoleTypeId.Scientist</span>, <span class="xref">PlayerRoles.RoleTypeId.FacilityGuard</span>, <span class="xref">PlayerRoles.RoleTypeId.NtfPrivate</span>, <span class="xref">PlayerRoles.RoleTypeId.NtfSergeant</span>,
+<span class="xref">PlayerRoles.RoleTypeId.NtfCaptain</span> and <span class="xref">PlayerRoles.RoleTypeId.NtfSpecialist</span>.</p>
 </td>
       </tr>
       <tr>
         <td id="Exiled_API_Enums_Side_None">None</td>
-        <td><p>No team. Same as <span class="xref">Team.RIP</span>.</p>
+        <td><p>No team. Same as <span class="xref">PlayerRoles.Team.Dead</span>.</p>
 </td>
       </tr>
       <tr>
         <td id="Exiled_API_Enums_Side_Scp">Scp</td>
-        <td><p>SCP team. Same as <span class="xref">Team.SCP</span>.
-Contains all SCP-related roles: <span class="xref">RoleType.Scp049</span>, <span class="xref">RoleType.Scp0492</span>, <span class="xref">RoleType.Scp079</span>, <span class="xref">RoleType.Scp096</span>,
-<span class="xref">RoleType.Scp106</span>, <span class="xref">RoleType.Scp173</span>, <span class="xref">RoleType.Scp93953</span>, and <span class="xref">RoleType.Scp93989</span>.</p>
+        <td><p>SCP team. Same as <span class="xref">PlayerRoles.Team.SCPs</span>.
+Contains all SCP-related roles: <span class="xref">PlayerRoles.RoleTypeId.Scp049</span>, <span class="xref">PlayerRoles.RoleTypeId.Scp0492</span>, <span class="xref">PlayerRoles.RoleTypeId.Scp079</span>, <span class="xref">PlayerRoles.RoleTypeId.Scp096</span>,
+<span class="xref">PlayerRoles.RoleTypeId.Scp106</span>, <span class="xref">PlayerRoles.RoleTypeId.Scp173</span>, and <span class="xref">PlayerRoles.RoleTypeId.Scp939</span>.</p>
 </td>
       </tr>
       <tr>
         <td id="Exiled_API_Enums_Side_Tutorial">Tutorial</td>
-        <td><p>Tutorial team. Contains <span class="xref">RoleType.Tutorial</span>. Same as <span class="xref">Team.TUT</span>.</p>
+        <td><p>Tutorial team. Contains <span class="xref">PlayerRoles.RoleTypeId.Tutorial</span>. Same as <span class="xref">PlayerRoles.Team.OtherAlive</span>.</p>
 </td>
       </tr>
     </tbody>
   </thead></thead></table>
   <h5 id="Exiled_API_Enums_Side_seealso">See Also</h5>
   <div class="seealso">
-      <div><a class="xref" href="Exiled.API.Extensions.RoleExtensions.html#Exiled_API_Extensions_RoleExtensions_GetSide_RoleType_">GetSide(RoleType)</a></div>
-      <div><a class="xref" href="Exiled.API.Extensions.RoleExtensions.html#Exiled_API_Extensions_RoleExtensions_GetSide_Team_">GetSide(Team)</a></div>
+      <div><a class="xref" href="Exiled.API.Extensions.RoleExtensions.html#Exiled_API_Extensions_RoleExtensions_GetSide_PlayerRoles_RoleTypeId_">GetSide(RoleTypeId)</a></div>
+      <div><a class="xref" href="Exiled.API.Extensions.RoleExtensions.html#Exiled_API_Extensions_RoleExtensions_GetSide_PlayerRoles_Team_">GetSide(Team)</a></div>
       <div><a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Get_Exiled_API_Enums_Side_">Get(Side)</a></div>
       <div><a class="xref" href="Exiled.API.Features.Round.html#Exiled_API_Features_Round_AliveSides">AliveSides</a></div>
-      <div><a class="xref" href="Exiled.API.Features.Roles.Role.html#Exiled_API_Features_Roles_Role_Side">Side</a></div>
+      <div><a class="xref" href="Exiled.API.Enums.Side.html">Side</a></div>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
@@ -154,10 +154,10 @@ Contains all SCP-related roles: <span class="xref">RoleType.Scp049</span>, <span
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Enums_Side.md&amp;value=---%0Auid%3A%20Exiled.API.Enums.Side%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Enums_Side.md&amp;value=---%0Auid%3A%20Exiled.API.Enums.Side%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Enums/Side.cs/#L22" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Enums/Side.cs/#L24" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

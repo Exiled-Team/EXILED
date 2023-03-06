@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
     <link rel="stylesheet" href="../styles/docfx.css">
     <link rel="stylesheet" href="../styles/main.css">
-    <meta property="docfx:navrel" content="">
+    <meta property="docfx:navrel" content="../toc.html">
     <meta property="docfx:tocrel" content="toc.html">
     
     <meta property="docfx:rel" content="../">
@@ -89,20 +89,31 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">Role</span></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.HumanRole.html">HumanRole</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.NoneRole.html">NoneRole</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.Scp0492Role.html">Scp0492Role</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.Scp049Role.html">Scp049Role</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.Scp079Role.html">Scp079Role</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.Scp096Role.html">Scp096Role</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.Scp106Role.html">Scp106Role</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.Scp173Role.html">Scp173Role</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.Scp939Role.html">Scp939Role</a></div>
-      <div class="level2"><a class="xref" href="Exiled.API.Features.Roles.SpectatorRole.html">SpectatorRole</a></div>
+    <div class="level1"><a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html">TypeCastObject</a>&lt;<a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a>&gt;</div>
+    <div class="level2"><span class="xref">Role</span></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Roles.FpcRole.html">FpcRole</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Roles.NoneRole.html">NoneRole</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Roles.Scp079Role.html">Scp079Role</a></div>
+      <div class="level3"><a class="xref" href="Exiled.API.Features.Roles.SpectatorRole.html">SpectatorRole</a></div>
+  </div>
+  <div class="implements">
+    <h5>Implements</h5>
+    <div><a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper</a>&lt;<span class="xref">PlayerRoles.PlayerRoleBase</span>&gt;</div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1">TypeCastObject&lt;Role&gt;.Cast&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Cast__1___0__">TypeCastObject&lt;Role&gt;.Cast&lt;TObject&gt;(TObject)</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_As__1">TypeCastObject&lt;Role&gt;.As&lt;TObject&gt;()</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.API.Features.Core.TypeCastObject-1.html#Exiled_API_Features_Core_TypeCastObject_1_Is__1___0__">TypeCastObject&lt;Role&gt;.Is&lt;TObject&gt;(TObject)</a>
+    </div>
     <div>
       <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
     </div>
@@ -120,20 +131,118 @@
   <h6><strong>Assembly</strong>: Exiled.API.dll</h6>
   <h5 id="Exiled_API_Features_Roles_Role_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class Role</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class Role : TypeCastObject&lt;Role&gt;, IWrapper&lt;PlayerRoleBase&gt;</code></pre>
   </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role__ctor_PlayerRoles_PlayerRoleBase_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.%23ctor(PlayerRoles.PlayerRoleBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L43">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role__ctor_" data-uid="Exiled.API.Features.Roles.Role.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role__ctor_PlayerRoles_PlayerRoleBase_" data-uid="Exiled.API.Features.Roles.Role.#ctor(PlayerRoles.PlayerRoleBase)">Role(PlayerRoleBase)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Role(PlayerRoleBase baseRole)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.PlayerRoleBase</span></td>
+        <td><span class="parametername">baseRole</span></td>
+        <td><p>the base <span class="xref">PlayerRoles.PlayerRoleBase</span>.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Color.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Color%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_ActiveTime.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.ActiveTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L48">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L99">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_ActiveTime_" data-uid="Exiled.API.Features.Roles.Role.ActiveTime*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_ActiveTime" data-uid="Exiled.API.Features.Roles.Role.ActiveTime">ActiveTime</h4>
+  <div class="markdown level1 summary"><p>Gets the last time the <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a> was active.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan ActiveTime { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.TimeSpan</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L64">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_Base_" data-uid="Exiled.API.Features.Roles.Role.Base*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_Base" data-uid="Exiled.API.Features.Roles.Role.Base">Base</h4>
+  <div class="markdown level1 summary"><p>Gets the base <span class="xref">PlayerRoles.PlayerRoleBase</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PlayerRoleBase Base { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.PlayerRoleBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Color.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Color%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L89">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_Color_" data-uid="Exiled.API.Features.Roles.Role.Color*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_Color" data-uid="Exiled.API.Features.Roles.Role.Color">Color</h4>
-  <div class="markdown level1 summary"><p>Gets the <span class="xref">UnityEngine.Color</span> of this role.</p>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">UnityEngine.Color</span> of this <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -157,10 +266,72 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_IsValid.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.IsValid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_IsAlive.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.IsAlive%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L53">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L109">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_IsAlive_" data-uid="Exiled.API.Features.Roles.Role.IsAlive*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_IsAlive" data-uid="Exiled.API.Features.Roles.Role.IsAlive">IsAlive</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this role represents a living role.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAlive { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_IsDead.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.IsDead%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L104">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_IsDead_" data-uid="Exiled.API.Features.Roles.Role.IsDead*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_IsDead" data-uid="Exiled.API.Features.Roles.Role.IsDead">IsDead</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not this role represents a dead role.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDead { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_IsValid.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.IsValid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L114">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_IsValid_" data-uid="Exiled.API.Features.Roles.Role.IsValid*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_IsValid" data-uid="Exiled.API.Features.Roles.Role.IsValid">IsValid</h4>
@@ -188,19 +359,50 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Owner.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Owner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L24">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L94">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Roles_Role_Owner_" data-uid="Exiled.API.Features.Roles.Role.Owner*"></a>
-  <h4 id="Exiled_API_Features_Roles_Role_Owner" data-uid="Exiled.API.Features.Roles.Role.Owner">Owner</h4>
-  <div class="markdown level1 summary"><p>Gets the player this role is referring to.</p>
+  <a id="Exiled_API_Features_Roles_Role_Name_" data-uid="Exiled.API.Features.Roles.Role.Name*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_Name" data-uid="Exiled.API.Features.Roles.Role.Name">Name</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a> full name.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Player Owner { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Owner.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Owner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L54">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_Owner_" data-uid="Exiled.API.Features.Roles.Role.Owner*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_Owner" data-uid="Exiled.API.Features.Roles.Role.Owner">Owner</h4>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Player.html">Player</a> this role is referring to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Player Owner { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -219,14 +421,46 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Side.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Side%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_RandomSpawnLocation.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.RandomSpawnLocation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L43">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L120">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_RandomSpawnLocation_" data-uid="Exiled.API.Features.Roles.Role.RandomSpawnLocation*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_RandomSpawnLocation" data-uid="Exiled.API.Features.Roles.Role.RandomSpawnLocation">RandomSpawnLocation</h4>
+  <div class="markdown level1 summary"><p>Gets a random spawn position of this role.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual SpawnLocation RandomSpawnLocation { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Spawn.SpawnLocation.html">SpawnLocation</a></td>
+        <td><p>The spawn position.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Side.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Side%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L84">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_Side_" data-uid="Exiled.API.Features.Roles.Role.Side*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_Side" data-uid="Exiled.API.Features.Roles.Role.Side">Side</h4>
-  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Enums.Side.html">Side</a> of this role.</p>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Enums.Side.html">Side</a> of this <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -250,14 +484,76 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Team.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Team%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_SpawnFlags.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.SpawnFlags%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L38">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L74">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_SpawnFlags_" data-uid="Exiled.API.Features.Roles.Role.SpawnFlags*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_SpawnFlags" data-uid="Exiled.API.Features.Roles.Role.SpawnFlags">SpawnFlags</h4>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">PlayerRoles.RoleSpawnFlags</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RoleSpawnFlags SpawnFlags { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.RoleSpawnFlags</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_SpawnReason.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.SpawnReason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L69">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_SpawnReason_" data-uid="Exiled.API.Features.Roles.Role.SpawnReason*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_SpawnReason" data-uid="Exiled.API.Features.Roles.Role.SpawnReason">SpawnReason</h4>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">PlayerRoles.RoleChangeReason</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RoleChangeReason SpawnReason { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.RoleChangeReason</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Team.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Team%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L79">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_Team_" data-uid="Exiled.API.Features.Roles.Role.Team*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_Team" data-uid="Exiled.API.Features.Roles.Role.Team">Team</h4>
-  <div class="markdown level1 summary"><p>Gets the <span class="xref">Team</span> of this role.</p>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">PlayerRoles.Team</span> of this <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -274,26 +570,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Team</span></td>
+        <td><span class="xref">PlayerRoles.Team</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L29">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L59">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_Type_" data-uid="Exiled.API.Features.Roles.Role.Type*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_Type" data-uid="Exiled.API.Features.Roles.Role.Type">Type</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the <span class="xref">Exiled.API.Features.Roles.Role.RoleType</span> of this player.</p>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">PlayerRoles.RoleTypeId</span> of this <a class="xref" href="Exiled.API.Features.Player.html">Player</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RoleType Type { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract RoleTypeId Type { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -305,7 +601,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">RoleType</span></td>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -314,60 +610,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_As__1.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.As%60%601%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L133">View Source</a>
-  </span>
-  <a id="Exiled_API_Features_Roles_Role_As_" data-uid="Exiled.API.Features.Roles.Role.As*"></a>
-  <h4 id="Exiled_API_Features_Roles_Role_As__1" data-uid="Exiled.API.Features.Roles.Role.As``1">As&lt;T&gt;()</h4>
-  <div class="markdown level1 summary"><p>Casts the role to the specified role type.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public T As&lt;T&gt;()
-
-    where T : Role</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">T</span></td>
-        <td><p>The casted class, if possible.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td><p>The type of the class.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L150">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L177">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_Equals_" data-uid="Exiled.API.Features.Roles.Role.Equals*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_Equals_System_Object_" data-uid="Exiled.API.Features.Roles.Role.Equals(System.Object)">Equals(Object)</h4>
@@ -413,10 +659,10 @@
   <div><span class="xref">System.Object.Equals(System.Object)</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_GetHashCode.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_GetHashCode.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L159">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L186">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_GetHashCode_" data-uid="Exiled.API.Features.Roles.Role.GetHashCode*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_GetHashCode" data-uid="Exiled.API.Features.Roles.Role.GetHashCode">GetHashCode()</h4>
@@ -445,21 +691,19 @@
   <div><span class="xref">System.Object.GetHashCode()</span></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Is__1___0__.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Is%60%601(%60%600%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Set_PlayerRoles_RoleTypeId_Exiled_API_Enums_SpawnReason_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Set(PlayerRoles.RoleTypeId%2CExiled.API.Enums.SpawnReason)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L142">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L193">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Roles_Role_Is_" data-uid="Exiled.API.Features.Roles.Role.Is*"></a>
-  <h4 id="Exiled_API_Features_Roles_Role_Is__1___0__" data-uid="Exiled.API.Features.Roles.Role.Is``1(``0@)">Is&lt;T&gt;(out T)</h4>
-  <div class="markdown level1 summary"><p>Safely casts the role to the specified role type.</p>
+  <a id="Exiled_API_Features_Roles_Role_Set_" data-uid="Exiled.API.Features.Roles.Role.Set*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_Set_PlayerRoles_RoleTypeId_Exiled_API_Enums_SpawnReason_" data-uid="Exiled.API.Features.Roles.Role.Set(PlayerRoles.RoleTypeId,Exiled.API.Enums.SpawnReason)">Set(RoleTypeId, SpawnReason)</h4>
+  <div class="markdown level1 summary"><p>Sets the player&apos;s <span class="xref">PlayerRoles.RoleTypeId</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Is&lt;T&gt;(out T role)
-
-    where T : Role</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual void Set(RoleTypeId newRole, SpawnReason reason = SpawnReason.ForceClass)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -472,51 +716,111 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">T</span></td>
-        <td><span class="parametername">role</span></td>
-        <td><p>The casted class, if possible.</p>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
+        <td><span class="parametername">newRole</span></td>
+        <td><p>The new <span class="xref">PlayerRoles.RoleTypeId</span> to be set.</p>
 </td>
       </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
       <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p><span class="xref">true</span> if the cast was successful; otherwise, <span class="xref">false</span>.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="typeParameters">Type Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="parametername">T</span></td>
-        <td><p>The type of the class.</p>
+        <td><a class="xref" href="Exiled.API.Enums.SpawnReason.html">SpawnReason</a></td>
+        <td><span class="parametername">reason</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.SpawnReason.html">SpawnReason</a> defining why the player&apos;s role was changed.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Set_PlayerRoles_RoleTypeId_Exiled_API_Enums_SpawnReason_PlayerRoles_RoleSpawnFlags_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Set(PlayerRoles.RoleTypeId%2CExiled.API.Enums.SpawnReason%2CPlayerRoles.RoleSpawnFlags)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L156">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L208">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_Set_" data-uid="Exiled.API.Features.Roles.Role.Set*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_Set_PlayerRoles_RoleTypeId_Exiled_API_Enums_SpawnReason_PlayerRoles_RoleSpawnFlags_" data-uid="Exiled.API.Features.Roles.Role.Set(PlayerRoles.RoleTypeId,Exiled.API.Enums.SpawnReason,PlayerRoles.RoleSpawnFlags)">Set(RoleTypeId, SpawnReason, RoleSpawnFlags)</h4>
+  <div class="markdown level1 summary"><p>Sets the player&apos;s <span class="xref">PlayerRoles.RoleTypeId</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Set(RoleTypeId newRole, SpawnReason reason, RoleSpawnFlags spawnFlags)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
+        <td><span class="parametername">newRole</span></td>
+        <td><p>The new <span class="xref">PlayerRoles.RoleTypeId</span> to be set.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.SpawnReason.html">SpawnReason</a></td>
+        <td><span class="parametername">reason</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Enums.SpawnReason.html">SpawnReason</a> defining why the player&apos;s role was changed.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">PlayerRoles.RoleSpawnFlags</span></td>
+        <td><span class="parametername">spawnFlags</span></td>
+        <td><p>The <span class="xref">PlayerRoles.RoleSpawnFlags</span> defining player spawn logic.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_Set_PlayerRoles_RoleTypeId_PlayerRoles_RoleSpawnFlags_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.Set(PlayerRoles.RoleTypeId%2CPlayerRoles.RoleSpawnFlags)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L200">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Roles_Role_Set_" data-uid="Exiled.API.Features.Roles.Role.Set*"></a>
+  <h4 id="Exiled_API_Features_Roles_Role_Set_PlayerRoles_RoleTypeId_PlayerRoles_RoleSpawnFlags_" data-uid="Exiled.API.Features.Roles.Role.Set(PlayerRoles.RoleTypeId,PlayerRoles.RoleSpawnFlags)">Set(RoleTypeId, RoleSpawnFlags)</h4>
+  <div class="markdown level1 summary"><p>Sets the player&apos;s <span class="xref">PlayerRoles.RoleTypeId</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Set(RoleTypeId newRole, RoleSpawnFlags spawnFlags)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
+        <td><span class="parametername">newRole</span></td>
+        <td><p>The new <span class="xref">PlayerRoles.RoleTypeId</span> to be set.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">PlayerRoles.RoleSpawnFlags</span></td>
+        <td><span class="parametername">spawnFlags</span></td>
+        <td><p>The <span class="xref">PlayerRoles.RoleSpawnFlags</span> defining player spawn logic.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_ToString.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L183">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_ToString_" data-uid="Exiled.API.Features.Roles.Role.ToString*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_ToString" data-uid="Exiled.API.Features.Roles.Role.ToString">ToString()</h4>
@@ -549,10 +853,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Equality_Exiled_API_Features_Roles_Role_Exiled_API_Features_Roles_Role_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Equality(Exiled.API.Features.Roles.Role%2CExiled.API.Features.Roles.Role)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Equality_Exiled_API_Features_Roles_Role_Exiled_API_Features_Roles_Role_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Equality(Exiled.API.Features.Roles.Role%2CExiled.API.Features.Roles.Role)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L72">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L134">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_op_Equality_" data-uid="Exiled.API.Features.Roles.Role.op_Equality*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_op_Equality_Exiled_API_Features_Roles_Role_Exiled_API_Features_Roles_Role_" data-uid="Exiled.API.Features.Roles.Role.op_Equality(Exiled.API.Features.Roles.Role,Exiled.API.Features.Roles.Role)">Equality(Role, Role)</h4>
@@ -561,7 +865,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(Role role1, Role role2)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Role left, Role right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -575,13 +879,13 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></td>
-        <td><span class="parametername">role1</span></td>
+        <td><span class="parametername">left</span></td>
         <td><p>The role.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></td>
-        <td><span class="parametername">role2</span></td>
+        <td><span class="parametername">right</span></td>
         <td><p>The other role.</p>
 </td>
       </tr>
@@ -605,19 +909,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Equality_Exiled_API_Features_Roles_Role_RoleType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Equality(Exiled.API.Features.Roles.Role%2CRoleType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Equality_Exiled_API_Features_Roles_Role_PlayerRoles_RoleTypeId_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Equality(Exiled.API.Features.Roles.Role%2CPlayerRoles.RoleTypeId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L98">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L150">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_op_Equality_" data-uid="Exiled.API.Features.Roles.Role.op_Equality*"></a>
-  <h4 id="Exiled_API_Features_Roles_Role_op_Equality_Exiled_API_Features_Roles_Role_RoleType_" data-uid="Exiled.API.Features.Roles.Role.op_Equality(Exiled.API.Features.Roles.Role,RoleType)">Equality(Role, RoleType)</h4>
-  <div class="markdown level1 summary"><p>Returns whether or not the role has the same RoleType as the given <code data-dev-comment-type="paramref" class="paramref">type</code>.</p>
+  <h4 id="Exiled_API_Features_Roles_Role_op_Equality_Exiled_API_Features_Roles_Role_PlayerRoles_RoleTypeId_" data-uid="Exiled.API.Features.Roles.Role.op_Equality(Exiled.API.Features.Roles.Role,PlayerRoles.RoleTypeId)">Equality(Role, RoleTypeId)</h4>
+  <div class="markdown level1 summary"><p>Returns whether or not the role has the same RoleTypeId as the given <code data-dev-comment-type="paramref" class="paramref">typeId</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(Role role, RoleType type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Role role, RoleTypeId typeId)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -632,13 +936,13 @@
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></td>
         <td><span class="parametername">role</span></td>
-        <td><p>The role.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">RoleType</span></td>
-        <td><span class="parametername">type</span></td>
-        <td><p>The <span class="xref">RoleType</span>.</p>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
+        <td><span class="parametername">typeId</span></td>
+        <td><p>The <span class="xref">PlayerRoles.RoleTypeId</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -661,19 +965,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Equality_RoleType_Exiled_API_Features_Roles_Role_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Equality(RoleType%2CExiled.API.Features.Roles.Role)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Equality_PlayerRoles_RoleTypeId_Exiled_API_Features_Roles_Role_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Equality(PlayerRoles.RoleTypeId%2CExiled.API.Features.Roles.Role)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L116">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L166">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_op_Equality_" data-uid="Exiled.API.Features.Roles.Role.op_Equality*"></a>
-  <h4 id="Exiled_API_Features_Roles_Role_op_Equality_RoleType_Exiled_API_Features_Roles_Role_" data-uid="Exiled.API.Features.Roles.Role.op_Equality(RoleType,Exiled.API.Features.Roles.Role)">Equality(RoleType, Role)</h4>
-  <div class="markdown level1 summary"><p>Returns whether or not the role has the same RoleType as the given <code data-dev-comment-type="paramref" class="paramref">type</code>.</p>
+  <h4 id="Exiled_API_Features_Roles_Role_op_Equality_PlayerRoles_RoleTypeId_Exiled_API_Features_Roles_Role_" data-uid="Exiled.API.Features.Roles.Role.op_Equality(PlayerRoles.RoleTypeId,Exiled.API.Features.Roles.Role)">Equality(RoleTypeId, Role)</h4>
+  <div class="markdown level1 summary"><p>Returns whether or not the role has the same RoleTypeId as the given <code data-dev-comment-type="paramref" class="paramref">type</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(RoleType type, Role role)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator ==(RoleTypeId type, Role role)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -686,15 +990,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">RoleType</span></td>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
         <td><span class="parametername">type</span></td>
-        <td><p>The <span class="xref">RoleType</span>.</p>
+        <td><p>The <span class="xref">PlayerRoles.RoleTypeId</span>.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></td>
         <td><span class="parametername">role</span></td>
-        <td><p>The role.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -717,19 +1021,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Implicit_Exiled_API_Features_Roles_Role__RoleType.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Implicit(Exiled.API.Features.Roles.Role)~RoleType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Implicit_Exiled_API_Features_Roles_Role__PlayerRoles_RoleTypeId.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Implicit(Exiled.API.Features.Roles.Role)~PlayerRoles.RoleTypeId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L64">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L126">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_op_Implicit_" data-uid="Exiled.API.Features.Roles.Role.op_Implicit*"></a>
-  <h4 id="Exiled_API_Features_Roles_Role_op_Implicit_Exiled_API_Features_Roles_Role__RoleType" data-uid="Exiled.API.Features.Roles.Role.op_Implicit(Exiled.API.Features.Roles.Role)~RoleType">Implicit(Role to RoleType)</h4>
-  <div class="markdown level1 summary"><p>Converts a role to its appropriate <span class="xref">RoleType</span>.</p>
+  <h4 id="Exiled_API_Features_Roles_Role_op_Implicit_Exiled_API_Features_Roles_Role__PlayerRoles_RoleTypeId" data-uid="Exiled.API.Features.Roles.Role.op_Implicit(Exiled.API.Features.Roles.Role)~PlayerRoles.RoleTypeId">Implicit(Role to RoleTypeId)</h4>
+  <div class="markdown level1 summary"><p>Converts a role to its appropriate <span class="xref">PlayerRoles.RoleTypeId</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static implicit operator RoleType(Role role)</code></pre>
+    <pre><code class="lang-csharp hljs">public static implicit operator RoleTypeId(Role role)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -759,17 +1063,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">RoleType</span></td>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Inequality_Exiled_API_Features_Roles_Role_Exiled_API_Features_Roles_Role_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Inequality(Exiled.API.Features.Roles.Role%2CExiled.API.Features.Roles.Role)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Inequality_Exiled_API_Features_Roles_Role_Exiled_API_Features_Roles_Role_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Inequality(Exiled.API.Features.Roles.Role%2CExiled.API.Features.Roles.Role)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L85">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L142">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_op_Inequality_" data-uid="Exiled.API.Features.Roles.Role.op_Inequality*"></a>
   <h4 id="Exiled_API_Features_Roles_Role_op_Inequality_Exiled_API_Features_Roles_Role_Exiled_API_Features_Roles_Role_" data-uid="Exiled.API.Features.Roles.Role.op_Inequality(Exiled.API.Features.Roles.Role,Exiled.API.Features.Roles.Role)">Inequality(Role, Role)</h4>
@@ -778,7 +1082,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(Role role1, Role role2)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Role left, Role right)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -792,13 +1096,13 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></td>
-        <td><span class="parametername">role1</span></td>
+        <td><span class="parametername">left</span></td>
         <td><p>The role.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></td>
-        <td><span class="parametername">role2</span></td>
+        <td><span class="parametername">right</span></td>
         <td><p>The other role.</p>
 </td>
       </tr>
@@ -822,19 +1126,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Inequality_Exiled_API_Features_Roles_Role_RoleType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Inequality(Exiled.API.Features.Roles.Role%2CRoleType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Inequality_Exiled_API_Features_Roles_Role_PlayerRoles_RoleTypeId_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Inequality(Exiled.API.Features.Roles.Role%2CPlayerRoles.RoleTypeId)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L107">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L158">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_op_Inequality_" data-uid="Exiled.API.Features.Roles.Role.op_Inequality*"></a>
-  <h4 id="Exiled_API_Features_Roles_Role_op_Inequality_Exiled_API_Features_Roles_Role_RoleType_" data-uid="Exiled.API.Features.Roles.Role.op_Inequality(Exiled.API.Features.Roles.Role,RoleType)">Inequality(Role, RoleType)</h4>
-  <div class="markdown level1 summary"><p>Returns whether or not the role has a different RoleType as the given <code data-dev-comment-type="paramref" class="paramref">type</code>.</p>
+  <h4 id="Exiled_API_Features_Roles_Role_op_Inequality_Exiled_API_Features_Roles_Role_PlayerRoles_RoleTypeId_" data-uid="Exiled.API.Features.Roles.Role.op_Inequality(Exiled.API.Features.Roles.Role,PlayerRoles.RoleTypeId)">Inequality(Role, RoleTypeId)</h4>
+  <div class="markdown level1 summary"><p>Returns whether or not the role has a different RoleTypeId as the given <code data-dev-comment-type="paramref" class="paramref">typeId</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(Role role, RoleType type)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Role role, RoleTypeId typeId)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -849,13 +1153,13 @@
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></td>
         <td><span class="parametername">role</span></td>
-        <td><p>The role.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a>.</p>
 </td>
       </tr>
       <tr>
-        <td><span class="xref">RoleType</span></td>
-        <td><span class="parametername">type</span></td>
-        <td><p>The <span class="xref">RoleType</span>.</p>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
+        <td><span class="parametername">typeId</span></td>
+        <td><p>The <span class="xref">PlayerRoles.RoleTypeId</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -878,19 +1182,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Inequality_RoleType_Exiled_API_Features_Roles_Role_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Inequality(RoleType%2CExiled.API.Features.Roles.Role)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role_op_Inequality_PlayerRoles_RoleTypeId_Exiled_API_Features_Roles_Role_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role.op_Inequality(PlayerRoles.RoleTypeId%2CExiled.API.Features.Roles.Role)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L125">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L174">View Source</a>
   </span>
   <a id="Exiled_API_Features_Roles_Role_op_Inequality_" data-uid="Exiled.API.Features.Roles.Role.op_Inequality*"></a>
-  <h4 id="Exiled_API_Features_Roles_Role_op_Inequality_RoleType_Exiled_API_Features_Roles_Role_" data-uid="Exiled.API.Features.Roles.Role.op_Inequality(RoleType,Exiled.API.Features.Roles.Role)">Inequality(RoleType, Role)</h4>
-  <div class="markdown level1 summary"><p>Returns whether or not the role has a different RoleType as the given <code data-dev-comment-type="paramref" class="paramref">type</code>.</p>
+  <h4 id="Exiled_API_Features_Roles_Role_op_Inequality_PlayerRoles_RoleTypeId_Exiled_API_Features_Roles_Role_" data-uid="Exiled.API.Features.Roles.Role.op_Inequality(PlayerRoles.RoleTypeId,Exiled.API.Features.Roles.Role)">Inequality(RoleTypeId, Role)</h4>
+  <div class="markdown level1 summary"><p>Returns whether or not the role has a different RoleTypeId as the given <code data-dev-comment-type="paramref" class="paramref">type</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(RoleType type, Role role)</code></pre>
+    <pre><code class="lang-csharp hljs">public static bool operator !=(RoleTypeId type, Role role)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -903,15 +1207,15 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">RoleType</span></td>
+        <td><span class="xref">PlayerRoles.RoleTypeId</span></td>
         <td><span class="parametername">type</span></td>
-        <td><p>The <span class="xref">RoleType</span>.</p>
+        <td><p>The <span class="xref">PlayerRoles.RoleTypeId</span>.</p>
 </td>
       </tr>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a></td>
         <td><span class="parametername">role</span></td>
-        <td><p>The role.</p>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Roles.Role.html">Role</a>.</p>
 </td>
       </tr>
     </tbody>
@@ -932,6 +1236,10 @@
       </tr>
     </tbody>
   </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <a class="xref" href="Exiled.API.Interfaces.IWrapper-1.html">IWrapper&lt;T&gt;</a>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -944,10 +1252,10 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/new/master/apiSpec/new?filename=Exiled_API_Features_Roles_Role.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Roles_Role.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Roles.Role%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Roles/Role.cs/#L37" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
