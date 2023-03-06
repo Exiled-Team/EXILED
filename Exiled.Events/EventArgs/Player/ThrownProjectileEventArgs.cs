@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ThrownItemEventArgs.cs" company="Exiled Team">
+// <copyright file="ThrownProjectileEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -18,15 +18,15 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information after a player throws a grenade.
     /// </summary>
-    public class ThrownItemEventArgs : IPlayerEvent
+    public class ThrownProjectileEventArgs : IPlayerEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ThrownItemEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ThrownProjectileEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Throwable"/></param>
         /// <param name="projectile"><inheritdoc cref="Projectile"/></param>
-        public ThrownItemEventArgs(Player player, ThrowableItem item, ThrownProjectile projectile)
+        public ThrownProjectileEventArgs(Player player, ThrowableItem item, ThrownProjectile projectile)
         {
             Player = player;
             Throwable = (Throwable)Item.Get(item);

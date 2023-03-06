@@ -8,12 +8,13 @@
 namespace Exiled.Events.EventArgs.Scp049
 {
     using API.Features;
+
     using Interfaces;
 
     /// <summary>
     ///     Contains all information before SCP-049 begins recalling a player.
     /// </summary>
-    public class StartingRecallEventArgs : IPlayerEvent, IDeniableEvent, IRagdollEvent
+    public class StartingRecallEventArgs : IPlayerEvent, IRagdollEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StartingRecallEventArgs" /> class.
@@ -30,11 +31,11 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public StartingRecallEventArgs(Player target, Player scp049, BasicRagdoll ragdoll, bool isAllowed = true)
+        public StartingRecallEventArgs(Player target, Player scp049, Ragdoll ragdoll, bool isAllowed = true)
         {
             Target = target;
             Player = scp049;
-            Ragdoll = Ragdoll.Get(ragdoll);
+            Ragdoll = ragdoll;
             IsAllowed = isAllowed;
         }
 

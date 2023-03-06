@@ -11,11 +11,13 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Reflection.Emit;
 
     using API.Features;
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Scp096;
 
     using HarmonyLib;
+
     using Mirror;
-    using NorthwoodLib.Pools;
 
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -31,11 +33,11 @@ namespace Exiled.Events.Patches.Events.Scp096
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label returnLabel = generator.DefineLabel();
 
-            const int offset = 0;
+            const int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             // TryingNotToCryEventArgs ev = new(Scp096 scp096, Player player, door, true);
@@ -78,7 +80,7 @@ namespace Exiled.Events.Patches.Events.Scp096
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

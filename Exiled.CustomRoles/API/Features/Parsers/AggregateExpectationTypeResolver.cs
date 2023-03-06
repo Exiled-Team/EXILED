@@ -45,7 +45,8 @@ namespace Exiled.CustomRoles.API.Features.Parsers
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Error loading types for {assembly.FullName}\n{e}");
+                    Log.Error($"Error loading types for {assembly.FullName}. It can be ignored if it's not using Exiled.CustomRoles.");
+                    Log.Debug(e);
                 }
             }
         }

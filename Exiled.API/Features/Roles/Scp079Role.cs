@@ -10,8 +10,12 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
+    using Interactables.Interobjects.DoorUtils;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
+    using PlayerRoles.PlayableScps.Scp079.Cameras;
+    using PlayerRoles.PlayableScps.Scp079.Rewards;
     using PlayerRoles.PlayableScps.Subroutines;
 
     using Mathf = UnityEngine.Mathf;
@@ -37,6 +41,11 @@ namespace Exiled.API.Features.Roles
 
             SpeakerAbility = scp079SpeakerAbility;
 
+            if (!SubroutineModule.TryGetSubroutine(out Scp079DoorStateChanger scp079DoorAbility))
+                Log.Error("Scp079DoorStateChanger subroutine not found in Scp079Role::ctor");
+
+            DoorStateChanger = scp079DoorAbility;
+
             if (!SubroutineModule.TryGetSubroutine(out Scp079DoorLockChanger scp079DoorLockChanger))
                 Log.Error("Scp079DoorLockChanger subroutine not found in Scp079Role::ctor");
             DoorLockChanger = scp079DoorLockChanger;
@@ -50,6 +59,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079TierManager subroutine not found in Scp079Role::ctor");
 
             TierManager = scp079TierManager;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079RewardManager scp079RewardManager))
+                Log.Error("Scp079RewardManager subroutine not found in Scp079Role::ctor");
+
+            RewardManager = scp079RewardManager;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079LockdownRoomAbility scp079LockdownRoomAbility))
                 Log.Error("Scp079LockdownRoomAbility subroutine not found in Scp079Role::ctor");
@@ -67,9 +81,14 @@ namespace Exiled.API.Features.Roles
             BlackoutZoneAbility = scp079BlackoutZoneAbility;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079LostSignalHandler scp079LostSignalHandler))
-                Log.Error("Scp079BlackoutZoneAbility subroutine not found in Scp079Role::ctor");
+                Log.Error("Scp079LostSignalHandler subroutine not found in Scp079Role::ctor");
 
             LostSignalHandler = scp079LostSignalHandler;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079CurrentCameraSync scp079CameraSync))
+                Log.Error("Scp079CurrentCameraSync subroutine not found in Scp079Role::ctor");
+
+            CurrentCameraSync = scp079CameraSync;
         }
 
         /// <inheritdoc/>
@@ -82,6 +101,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079SpeakerAbility"/>.
         /// </summary>
         public Scp079SpeakerAbility SpeakerAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079DoorAbility"/>.
+        /// </summary>
+        public Scp079DoorStateChanger DoorStateChanger { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079DoorLockChanger"/>.
@@ -97,6 +121,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079TierManager"/>.
         /// </summary>
         public Scp079TierManager TierManager { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079RewardManager"/>.
+        /// </summary>
+        public Scp079RewardManager RewardManager { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079LockdownRoomAbility"/>.
@@ -119,11 +148,17 @@ namespace Exiled.API.Features.Roles
         public Scp079LostSignalHandler LostSignalHandler { get; }
 
         /// <summary>
+        /// Gets SCP-079's <see cref="Scp079CurrentCameraSync"/>.
+        /// </summary>
+        public Scp079CurrentCameraSync CurrentCameraSync { get; }
+
+        /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
+        /// <remarks>This value will return the <c>Hcz079ContChamber</c> Camera if SCP-079's current camera cannot be detected.</remarks>
         /// </summary>
         public Camera Camera
         {
-            get => Camera.Get(Internal.CurrentCamera);
+            get => Camera.Get(Internal.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
             set => Internal._curCamSync.CurrentCamera = value.Base;
         }
 
@@ -131,6 +166,11 @@ namespace Exiled.API.Features.Roles
         /// Gets a value indicating whether or not SCP-079 can transmit its voice to a speaker.
         /// </summary>
         public bool CanTransmit => SpeakerAbility.CanTransmit;
+
+        /// <summary>
+        /// Gets a list of rooms that have been marked by SCP-079. Marked rooms grant SCP-079 experience if a kill occurs in them.
+        /// </summary>
+        public IEnumerable<Room> MarkedRooms => RewardManager._markedRooms.Select(kvp => Room.Get(kvp.Key));
 
         /// <summary>
         /// Gets the speaker SCP-079 is currently using. Can be <see langword="null"/>.
@@ -238,9 +278,23 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the amount of time that SCP-2176 will disable SCP-079 for.
+        /// </summary>
+        public float Scp2176LostTime
+        {
+            get => LostSignalHandler._ghostlightLockoutDuration;
+            set => LostSignalHandler._ghostlightLockoutDuration = value;
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-079's signal is lost due to SCP-2176.
         /// </summary>
         public bool IsLost => LostSignalHandler.Lost;
+
+        /// <summary>
+        /// Gets a value indicating how much more time SCP-079 will be lost.
+        /// </summary>
+        public float LostTime => LostSignalHandler.RemainingTime;
 
         /// <summary>
         /// Gets SCP-079's energy regeneration speed.
@@ -282,5 +336,47 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="door">The door to unlock.</param>
         public void UnlockDoor(Door door) => DoorLockChanger.SetDoorLock(door.Base, false);
+
+        /// <summary>
+        /// Marks a room as being modified by SCP-079 (granting experience if a kill happens in the room).
+        /// </summary>
+        /// <param name="room">The room to mark.</param>
+        public void MarkRoom(Room room) => RewardManager.MarkRoom(room.Identifier);
+
+        /// <summary>
+        /// Removes a marked room.
+        /// </summary>
+        /// <param name="room">The room to remove.</param>
+        public void UnmarkRoom(Room room)
+        {
+            if (RewardManager._markedRooms.ContainsKey(room.Identifier))
+                RewardManager._markedRooms.Remove(room.Identifier);
+        }
+
+        /// <summary>
+        /// Clears the list of marked SCP-079 rooms.
+        /// </summary>
+        public void ClearMarkedRooms() => RewardManager._markedRooms.Clear();
+
+        /// <summary>
+        /// Gets the cost to switch from the current <see cref="Camera"/> to the provided <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="camera">The camera to get the cost to switch to.</param>
+        /// <returns>The cost to switch from the current camera to the new camera.</returns>
+        public int GetSwitchCost(Camera camera) => CurrentCameraSync.GetSwitchCost(camera.Base);
+
+        /// <summary>
+        /// Gets the cost to modify a door.
+        /// </summary>
+        /// <param name="door">The door to get the cost to modify.</param>
+        /// <param name="action">The action.</param>
+        /// <returns>The cost to modify the door.</returns>
+        public int GetCost(Door door, DoorAction action)
+        {
+            if (action is DoorAction.Locked or DoorAction.Unlocked)
+                return DoorLockChanger.GetCostForDoor(action, door.Base);
+            else
+                return DoorStateChanger.GetCostForDoor(action, door.Base);
+        }
     }
 }

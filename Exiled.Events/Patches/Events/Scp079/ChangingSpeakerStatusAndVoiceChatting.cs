@@ -10,13 +10,14 @@ namespace Exiled.Events.Patches.Events.Scp079
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
     using PlayerRoles;
     using PlayerRoles.Voice;
 
@@ -33,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label continueLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
@@ -128,7 +129,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

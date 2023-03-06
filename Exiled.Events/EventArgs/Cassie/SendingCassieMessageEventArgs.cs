@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs.Cassie
     /// <summary>
     ///     Contains all the information after sending a C.A.S.S.I.E. message.
     /// </summary>
-    public class SendingCassieMessageEventArgs : IExiledEvent
+    public class SendingCassieMessageEventArgs : IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SendingCassieMessageEventArgs" /> class.

@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs.Scp244
 {
     using API.Features;
     using API.Features.Items;
+
     using Interfaces;
 
     using InventorySystem.Items.Usables.Scp244;

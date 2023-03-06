@@ -10,11 +10,15 @@ namespace Exiled.Events.Patches.Events.Scp914
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Scp914;
+
     using global::Scp914;
+
     using Handlers;
+
     using HarmonyLib;
-    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
@@ -27,10 +31,10 @@ namespace Exiled.Events.Patches.Events.Scp914
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+            const int offset = 1;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPickupEventArgs));
             Label returnLabel = generator.DefineLabel();
@@ -43,13 +47,10 @@ namespace Exiled.Events.Patches.Events.Scp914
                     new(OpCodes.Ldarg_0),
 
                     // outputPos
-                    new(OpCodes.Ldloc_0),
+                    new(OpCodes.Ldloc_1),
 
                     // knobSetting
                     new(OpCodes.Ldarg_3),
-
-                    // true
-                    new(OpCodes.Ldc_I4_1),
 
                     // UpgradingPickupEventArgs ev = new(pickup, outputPos, knobSetting)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPickupEventArgs))[0]),
@@ -70,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Dup),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPickupEventArgs), nameof(UpgradingPickupEventArgs.OutputPosition))),
-                    new(OpCodes.Stloc_0),
+                    new(OpCodes.Stloc_1),
 
                     // setting = ev.KnobSetting
                     new(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPickupEventArgs), nameof(UpgradingPickupEventArgs.KnobSetting))),
@@ -82,7 +83,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

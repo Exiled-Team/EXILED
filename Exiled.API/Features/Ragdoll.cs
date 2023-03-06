@@ -14,13 +14,16 @@ namespace Exiled.API.Features
     using DeathAnimations;
 
     using Enums;
+
     using Exiled.API.Extensions;
-    using Interactables.Interobjects.DoorUtils;
-    using MapGeneration;
+    using Exiled.API.Interfaces;
+
     using Mirror;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.Ragdolls;
+
     using PlayerStatsSystem;
 
     using UnityEngine;
@@ -30,7 +33,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
-    public class Ragdoll
+    public class Ragdoll : IWrapper<BasicRagdoll>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="BasicRagdoll"/>s and their corresponding <see cref="Ragdoll"/>.
@@ -168,7 +171,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Features.Room"/> the ragdoll is located in.
         /// </summary>
-        public Room Room => Map.FindParentRoom(GameObject);
+        public Room Room => Room.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> the ragdoll is in.

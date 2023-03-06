@@ -12,8 +12,11 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader;
     using Exiled.Loader.Features;
+
     using InventorySystem;
+
     using PlayerRoles;
+    using PlayerRoles.RoleAssign;
 
     /// <summary>
     ///     Handles some round clean-up events and some others related to players.
@@ -53,11 +56,14 @@ namespace Exiled.Events.Handlers.Internal
         /// <inheritdoc cref="Handlers.Player.OnChangingRole(ChangingRoleEventArgs)" />
         public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))
-                return;
-
-            if ((ev.NewRole == RoleTypeId.Spectator) && Events.Instance.Config.ShouldDropInventory)
+            if (!ev.Player.IsHost && ev.NewRole == RoleTypeId.Spectator && ev.Reason != API.Enums.SpawnReason.Destroyed && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropEverything();
+        }
+
+        /// <inheritdoc cref="Handlers.Player.OnVerified(VerifiedEventArgs)" />
+        public static void OnVerified(VerifiedEventArgs ev)
+        {
+            RoleAssigner.CheckLateJoin(ev.Player.ReferenceHub, ClientInstanceMode.ReadyClient);
         }
     }
 }

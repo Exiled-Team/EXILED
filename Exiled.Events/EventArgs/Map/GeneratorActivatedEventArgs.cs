@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs.Map
 {
     using API.Features;
+
     using Interfaces;
 
     using MapGeneration.Distributors;

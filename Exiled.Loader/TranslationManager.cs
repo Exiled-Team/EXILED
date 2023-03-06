@@ -15,7 +15,9 @@ namespace Exiled.Loader
     using API.Enums;
     using API.Extensions;
     using API.Interfaces;
+
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using YamlDotNet.Core;
 
     /// <summary>
@@ -34,7 +36,7 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading plugin translations... ({LoaderPlugin.Config.ConfigType})");
 
-                Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
+                Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? DictionaryPool<string, object>.Pool.Get();
                 SortedDictionary<string, ITranslation> deserializedTranslations = new(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
@@ -54,6 +56,7 @@ namespace Exiled.Loader
 
                 Log.Info("Plugin translations loaded successfully!");
 
+                DictionaryPool<string, object>.Pool.Return(rawDeserializedTranslations);
                 return deserializedTranslations;
             }
             catch (Exception exception)
@@ -210,7 +213,7 @@ namespace Exiled.Loader
         {
             if (rawTranslations is null)
             {
-                rawTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? new Dictionary<string, object>();
+                rawTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(Read()) ?? DictionaryPool<string, object>.Pool.Get();
             }
 
             if (!rawTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
@@ -232,6 +235,7 @@ namespace Exiled.Loader
                 translation = plugin.InternalTranslation;
             }
 
+            DictionaryPool<string, object>.Pool.Return(rawTranslations);
             return translation;
         }
 

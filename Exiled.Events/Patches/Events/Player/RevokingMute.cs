@@ -10,12 +10,12 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
+    using API.Features;
+    using API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
     using VoiceChat;
 
     using static HarmonyLib.AccessTools;
@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label retLabel = generator.DefineLabel();
 
@@ -77,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

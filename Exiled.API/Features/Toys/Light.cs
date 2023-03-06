@@ -12,13 +12,14 @@ namespace Exiled.API.Features.Toys
     using AdminToys;
 
     using Enums;
+    using Exiled.API.Interfaces;
 
     using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="LightSourceToy"/>.
     /// </summary>
-    public class Light : AdminToy
+    public class Light : AdminToy, IWrapper<LightSourceToy>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Light"/> class.

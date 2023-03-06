@@ -8,7 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Scp079;
-    using Exiled.Events.Patches.Events.Scp079;
+
     using Extensions;
 
     using static Events;

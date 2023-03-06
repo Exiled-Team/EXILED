@@ -11,10 +11,12 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Text;
 
+    using Exiled.API.Features.Pools;
+
     using MEC;
 
-    using NorthwoodLib.Pools;
     using PlayerRoles;
+
     using PlayerStatsSystem;
 
     using Respawning;
@@ -62,14 +64,14 @@ namespace Exiled.API.Features
         /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
         public static void MessageTranslated(string message, string translation, bool isHeld = false, bool isNoisy = true, bool isSubtitles = true)
         {
-            StringBuilder announcement = StringBuilderPool.Shared.Rent();
+            StringBuilder announcement = StringBuilderPool.Pool.Get();
             string[] cassies = message.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Length; i++)
                 announcement.Append($"{translations[i].Replace(' ', ' ')}<size=0> {cassies[i]} </size><split>");
 
             RespawnEffectsController.PlayCassieAnnouncement(announcement.ToString(), isHeld, isNoisy, isSubtitles);
-            StringBuilderPool.Shared.Return(announcement);
+            StringBuilderPool.Pool.Return(announcement);
         }
 
         /// <summary>
@@ -153,7 +155,7 @@ namespace Exiled.API.Features
             else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
 
-                // result += "To be changed";
+            // result += "To be changed";
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
 

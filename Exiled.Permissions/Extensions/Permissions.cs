@@ -14,12 +14,16 @@ namespace Exiled.Permissions.Extensions
     using System.Text;
 
     using CommandSystem;
+
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Pools;
     using Features;
-    using NorthwoodLib.Pools;
+
     using Properties;
+
     using RemoteAdmin;
+
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
@@ -95,7 +99,7 @@ namespace Exiled.Permissions.Extensions
 
             try
             {
-                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
+                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? DictionaryPool<string, object>.Pool.Get();
                 Dictionary<string, Group> deserializedPerms = new();
                 foreach (KeyValuePair<string, object> group in rawDeserializedPerms)
                 {
@@ -116,6 +120,8 @@ namespace Exiled.Permissions.Extensions
                         Log.Debug($"{exception.Message}\n{exception.StackTrace}");
                     }
                 }
+
+                DictionaryPool<string, object>.Pool.Return(rawDeserializedPerms);
 
                 Groups = deserializedPerms;
             }
@@ -166,10 +172,17 @@ namespace Exiled.Permissions.Extensions
         /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
         public static bool CheckPermission(this CommandSender sender, string permission)
         {
-            if (sender.FullPermissions || sender is ServerConsoleSender)
+            if (sender.FullPermissions || sender is ServerConsoleSender || sender == Server.Host.Sender)
+            {
                 return true;
-            else if (sender is PlayerCommandSender && Player.Get(sender.SenderId) is Player player)
-                return player == Server.Host || player.CheckPermission(permission);
+            }
+            else if (sender is PlayerCommandSender || sender is UserPrint)
+            {
+                if (Player.Get(sender.SenderId) is not Player player)
+                    return false;
+
+                return player.CheckPermission(permission);
+            }
 
             return false;
         }
@@ -217,7 +230,7 @@ namespace Exiled.Permissions.Extensions
 
             if (permission.Contains(permSeparator))
             {
-                StringBuilder strBuilder = StringBuilderPool.Shared.Rent();
+                StringBuilder strBuilder = StringBuilderPool.Pool.Get();
                 string[] seraratedPermissions = permission.Split(permSeparator);
 
                 bool Check(string source) => group.CombinedPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
@@ -253,7 +266,7 @@ namespace Exiled.Permissions.Extensions
                     }
                 }
 
-                StringBuilderPool.Shared.Return(strBuilder);
+                StringBuilderPool.Pool.Return(strBuilder);
 
                 Log.Debug($"Result in the block: {result}");
                 return result;

@@ -9,12 +9,14 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Interfaces;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
     /// A wrapper class for a grenade pickup.
     /// </summary>
-    public class GrenadePickup : Pickup
+    public class GrenadePickup : Pickup, IWrapper<TimedGrenadePickup>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GrenadePickup"/> class.

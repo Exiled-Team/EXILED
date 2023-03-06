@@ -8,6 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Scp106;
+
     using Extensions;
 
     using static Events;
@@ -18,14 +19,25 @@ namespace Exiled.Events.Handlers
     public static class Scp106
     {
         /// <summary>
-        ///     Invoked before SCP-106 teleports through the minimap.
+        ///     Invoked before SCP-106 teleports using the hunter atlas.
         /// </summary>
         public static event CustomEventHandler<TeleportingEventArgs> Teleporting;
 
         /// <summary>
-        ///     Called before SCP-106 teleports through the minimap.
+        ///     Invoked before SCP-106 use the stalk ability.
+        /// </summary>
+        public static event CustomEventHandler<StalkingEventArgs> Stalking;
+
+        /// <summary>
+        ///     Called before SCP-106 teleports using the hunter atlas.
         /// </summary>
         /// <param name="ev">The <see cref="TeleportingEventArgs" /> instance.</param>
         public static void OnTeleporting(TeleportingEventArgs ev) => Teleporting.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before SCP-106 use the stalk ability.
+        /// </summary>
+        /// <param name="ev">The <see cref="StalkingEventArgs"/> instance.</param>
+        public static void OnStalking(StalkingEventArgs ev) => Stalking.InvokeSafely(ev);
     }
 }
