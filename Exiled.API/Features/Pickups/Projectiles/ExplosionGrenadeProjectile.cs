@@ -8,15 +8,18 @@
 namespace Exiled.API.Features.Pickups.Projectiles
 {
     using Exiled.API.Enums;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items.ThrowableProjectiles;
+
     using PlayerRoles;
+
     using UnityEngine;
 
     /// <summary>
     /// A wrapper class for ExplosionGrenade.
     /// </summary>
-    public class ExplosionGrenadeProjectile : EffectGrenadeProjectile
+    public class ExplosionGrenadeProjectile : EffectGrenadeProjectile, IWrapper<ExplosionGrenade>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosionGrenadeProjectile"/> class.
@@ -96,24 +99,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
             get => Base._scpDamageMultiplier;
             set => Base._scpDamageMultiplier = value;
         }
-
-        /// <summary>
-        /// Instant explosion of the grenade.
-        /// </summary>
-        public void Explode() => ExplosionGrenade.Explode(Base.PreviousOwner, Base.transform.position, Base);
-
-        /// <summary>
-        /// Instant explosion of the grenade.
-        /// </summary>
-        /// <param name="player"><see cref="Player"/> that will be attacker.</param>
-        public void Explode(Player player) => ExplosionGrenade.Explode(player.Footprint, Base.transform.position, Base);
-
-        /// <summary>
-        /// Instant explosion of the grenade.
-        /// </summary>
-        /// <param name="player"><see cref="Player"/> that will be attacker.</param>
-        /// <param name="position">Position of explode.</param>
-        public void Explode(Player player, Vector3 position) => ExplosionGrenade.Explode(player.Footprint, position, Base);
 
         /// <summary>
         /// Returns the ExplosionGrenadePickup in a human readable format.

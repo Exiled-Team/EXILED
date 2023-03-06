@@ -10,66 +10,67 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
+    using API.Features;
+    using API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
     using Mirror;
-    using NorthwoodLib.Pools;
+
     using PlayerRoles.Voice;
+
     using VoiceChat.Playbacks;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="PersonalRadioPlayback.IsTransmitting(ReferenceHub)" />.
+    ///     Patches <see cref="PersonalRadioPlayback.Update()" />.
     ///     Adds the <see cref="Handlers.Player.Transmitting" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.IsTransmitting))]
+    [HarmonyPatch(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.Update))]
     internal static class Transmitting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label retLabel = generator.DefineLabel();
 
-            const int offset = -1;
+            const int offset = 3;
             int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(PropertyGetter(typeof(NetworkBehaviour), nameof(NetworkBehaviour.isLocalPlayer)))) + offset;
+                instruction => instruction.Calls(Method(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.IsTransmitting)))) + offset;
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
-                    // hub
+                    // this
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
 
-                    // voiceModule
-                    new(OpCodes.Ldloc_1),
-
-                    // HandleTransmitting(ReferenceHub, VoiceModule)
+                    // HandleTransmitting(PersonalRadioPlayback)
                     new(OpCodes.Call, Method(typeof(Transmitting), nameof(HandleTransmitting))),
 
                     // return false if not allowed
                     new(OpCodes.Brfalse_S, retLabel),
                 });
 
-            // -2 to return false
-            newInstructions[newInstructions.Count - 2].WithLabels(retLabel);
+            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
 
-        private static bool HandleTransmitting(ReferenceHub hub, VoiceModuleBase voiceModule)
+        private static bool HandleTransmitting(PersonalRadioPlayback radioPlayback)
         {
-            if (hub == null || Player.Get(hub) is not Player player)
+            ReferenceHub hub = radioPlayback._owner;
+
+            if (hub == null || Player.Get(hub) is not Player player || Server.Host.ReferenceHub == hub)
                 return false;
 
-            TransmittingEventArgs ev = new(player, voiceModule);
+            TransmittingEventArgs ev = new(player, ((IVoiceRole)player.RoleManager.CurrentRole).VoiceModule);
 
             Handlers.Player.OnTransmitting(ev);
 

@@ -9,6 +9,7 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
+
     using Extensions;
 
     using static Events;

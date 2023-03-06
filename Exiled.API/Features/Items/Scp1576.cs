@@ -7,13 +7,16 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Interfaces;
+
+    using InventorySystem.Items;
     using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp1576;
 
     /// <summary>
     /// A wrapper class for <see cref="Scp1576Item"/>.
     /// </summary>
-    public class Scp1576 : Usable
+    public class Scp1576 : Usable, IWrapper<Scp1576Item>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp1576"/> class.
@@ -28,9 +31,8 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp1576"/> class.
         /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> of the usable item.</param>
-        internal Scp1576(ItemType type)
-            : this((Scp1576Item)Server.Host.Inventory.CreateItemInstance(type, false))
+        internal Scp1576()
+            : this((Scp1576Item)Server.Host.Inventory.CreateItemInstance(new(ItemType.SCP1576, 0), false))
         {
         }
 

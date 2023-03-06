@@ -8,13 +8,14 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
+    using PlayerRoles;
 
     using UnityEngine;
 
     /// <summary>
-    ///     Contains all information before spawning a player(called only when possibly to change position).
-    ///     use <see cref="SpawnedEventArgs"/> or <see cref="ChangingRoleEventArgs"/>for all class changes.
+    ///     Contains all information before spawning a player.
     /// </summary>
     public class SpawningEventArgs : IPlayerEvent
     {
@@ -27,10 +28,18 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="position">
         ///     <inheritdoc cref="Position" />
         /// </param>
-        public SpawningEventArgs(Player player, Vector3 position)
+        /// <param name="rotation">
+        ///     <inheritdoc cref="HorizontalRotation" />
+        /// </param>
+        /// <param name="oldRole">
+        ///     the spawned player's old <see cref="PlayerRoleBase">role</see>.
+        /// </param>
+        public SpawningEventArgs(Player player, Vector3 position, float rotation, PlayerRoleBase oldRole)
         {
             Player = player;
             Position = position;
+            HorizontalRotation = rotation;
+            OldRole = Role.Create(oldRole);
         }
 
         /// <summary>
@@ -41,6 +50,22 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets or sets the <see cref="Player"/>'s spawning position.
         /// </summary>
+        /// <remarks>
+        ///     Position will apply only for <see cref="FpcRole"/>.
+        /// </remarks>
         public Vector3 Position { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the <see cref="Player"/>'s spawning rotation.
+        /// </summary>
+        /// <remarks>
+        ///     Rotation will apply only for <see cref="FpcRole"/>.
+        /// </remarks>
+        public float HorizontalRotation { get; set; }
+
+        /// <summary>
+        ///     Gets the player's old <see cref="PlayerRoleBase">role</see>.
+        /// </summary>
+        public Role OldRole { get; }
     }
 }

@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Reflection.Emit;
 
     using API.Features;
+    using API.Features.Pools;
 
     using Footprinting;
 
@@ -21,11 +22,13 @@ namespace Exiled.Events.Patches.Generic
 
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using NorthwoodLib.Pools;
     using PlayerRoles;
+
     using PlayerStatsSystem;
 
     using static HarmonyLib.AccessTools;
+
+    using ExiledEvents = Exiled.Events.Events;
 
     /// <summary>
     /// Checks friendly fire rules.
@@ -148,6 +151,7 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
+                Log.Debug($"Hitbox patch {Server.FriendlyFire} || {IndividualFriendlyFire.CheckFriendlyFirePlayerRules(attacker, victim, out _)}");
                 bool currentResult = IndividualFriendlyFire.CheckFriendlyFirePlayerHitbox(attacker, victim);
 
                 if (!currentResult)
@@ -172,7 +176,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int offset = -1;
             int index = newInstructions.FindLastIndex(
@@ -243,7 +247,7 @@ namespace Exiled.Events.Patches.Generic
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 
@@ -255,7 +259,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             // Replace the original friendly fire check with the Exiled one
             const int offset = -7;
@@ -285,7 +289,7 @@ namespace Exiled.Events.Patches.Generic
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

@@ -7,6 +7,7 @@
 
 namespace Exiled.Loader
 {
+    using System;
     using System.IO;
     using System.Reflection;
 
@@ -40,12 +41,20 @@ namespace Exiled.Loader
                 return;
             }
 
-            /* TODO: Implement this with a dictionary of Game versions and the exiled versions it is compatible with.
-            if (GameCore.Version.VersionString != "your mom")
+            if (!Config.ShouldLoadOutdatedExiled &&
+                GameCore.Version.CompatibilityCheck(
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Major,
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Minor,
+                    (byte)AutoUpdateFiles.RequiredSCPSLVersion.Revision,
+                    GameCore.Version.Major,
+                    GameCore.Version.Minor,
+                    GameCore.Version.Revision,
+                    GameCore.Version.BackwardCompatibility,
+                    GameCore.Version.BackwardRevision))
             {
-                Log.Error("EXILED is not compatible with this version of the game, aborting...");
+                ServerConsole.AddLog("Exiled is outdated, please update to the latest version. Wait for release if still shows after update.", ConsoleColor.DarkRed);
                 return;
-            }*/
+            }
 
             Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
 

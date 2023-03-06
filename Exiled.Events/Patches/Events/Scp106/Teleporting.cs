@@ -10,12 +10,13 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using API.Features.Pools;
+
     using Exiled.Events.EventArgs.Scp106;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Subroutines;
 
@@ -25,14 +26,14 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     /// <summary>
     ///     Patches <see cref="Scp106HuntersAtlasAbility.ServerProcessCmd" />.
-    ///     Adds the <see cref="Teleporting" /> event.
+    ///     Adds the <see cref="Handlers.Scp106.Teleporting" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.ServerProcessCmd))]
     internal static class Teleporting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             // The index offset.
             const int offset = 1;
@@ -96,7 +97,7 @@ namespace Exiled.Events.Patches.Events.Scp106
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }

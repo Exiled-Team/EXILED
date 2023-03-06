@@ -8,11 +8,9 @@
 namespace Exiled.Events.EventArgs.Scp079
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Interfaces;
 
     using MapGeneration;
-    using PlayerRoles.PlayableScps.Scp079;
 
     /// <summary>
     ///     Contains all information before SCP-079 turns off the lights in a room.
