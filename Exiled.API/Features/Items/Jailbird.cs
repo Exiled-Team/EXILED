@@ -135,12 +135,12 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a value indicating whether .
         /// </summary>
-        public bool IsDamageWarning => Base._hitreg.TotalMeleeDamageDealt >= DamageWarning;
+        public bool IsDamageWarning => TotalDamageDealt >= DamageWarning;
 
         /// <summary>
         /// Gets a value indicating whether .
         /// </summary>
-        public bool IsChargesWarning => Base.TotalChargesPerformed >= ChargesWarning;
+        public bool IsChargesWarning => TotalCharges >= ChargesWarning;
 
         /// <summary>
         /// Gets or sets the amount of charges remaining before the Jailbird breaks.

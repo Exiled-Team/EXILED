@@ -20,6 +20,26 @@ namespace Exiled.API.Features.Pickups
     public class JailbirdPickup : Pickup, IWrapper<BaseJailbirdPickup>
     {
         /// <summary>
+        /// .
+        /// </summary>
+        public const int ChargesWarning = JailbirdItem.ChargesWarning;
+
+        /// <summary>
+        /// .
+        /// </summary>
+        public const int ChargesLimit = JailbirdItem.ChargesLimit;
+
+        /// <summary>
+        /// .
+        /// </summary>
+        public const float DamageWarning = JailbirdItem.DamageWarning;
+
+        /// <summary>
+        /// .
+        /// </summary>
+        public const float DamageLimit = JailbirdItem.DamageLimit;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="JailbirdPickup"/> class.
         /// </summary>
         /// <param name="pickupBase">The base <see cref="BaseJailbirdPickup"/> class.</param>
@@ -82,6 +102,21 @@ namespace Exiled.API.Features.Pickups
             get => JailbirdItem.ChargesLimit - TotalCharges;
             set => TotalCharges = Mathf.Clamp(JailbirdItem.ChargesLimit - value, 0, JailbirdItem.ChargesLimit);
         }
+
+        /// <summary>
+        /// Gets a value indicating whether the weapon warn the player than the Item will be broken.
+        /// </summary>
+        public bool IsAlmostDepleted => IsDamageWarning || IsChargesWarning;
+
+        /// <summary>
+        /// Gets a value indicating whether .
+        /// </summary>
+        public bool IsDamageWarning => TotalDamageDealt >= DamageWarning;
+
+        /// <summary>
+        /// Gets a value indicating whether .
+        /// </summary>
+        public bool IsChargesWarning => TotalCharges >= ChargesWarning;
 
         /// <summary>
         /// Returns the jailbird in a human readable format.
