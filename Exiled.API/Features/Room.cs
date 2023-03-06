@@ -285,7 +285,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Returns the local space position from the world space position.
+        /// Returns the local space position, based on a world space position.
         /// </summary>
         /// <param name="position">World position.</param>
         /// <returns>Local position, based on the room.</returns>
