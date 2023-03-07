@@ -18,22 +18,22 @@ namespace Exiled.API.Features.Items
     public class Jailbird : Item, IWrapper<JailbirdItem>
     {
         /// <summary>
-        /// .
+        /// Number of Charges use before the weapon become AlmostDepleted.
         /// </summary>
         public const int ChargesWarning = JailbirdItem.ChargesWarning;
 
         /// <summary>
-        /// .
+        /// Number of Charges use before the weapon will being destroy.
         /// </summary>
         public const int ChargesLimit = JailbirdItem.ChargesLimit;
 
         /// <summary>
-        /// .
+        /// Number of Damage made before the weapon become AlmostDepleted.
         /// </summary>
         public const float DamageWarning = JailbirdItem.DamageWarning;
 
         /// <summary>
-        /// .
+        /// Number of Damage made before the weapon will being destroy.
         /// </summary>
         public const float DamageLimit = JailbirdItem.DamageLimit;
 
