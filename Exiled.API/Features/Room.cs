@@ -301,7 +301,7 @@ namespace Exiled.API.Features
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
-        [Obsolete("Blackout exist", false)]
+        [Obsolete("Use Blackout(float) instead of this", false)]
         public void TurnOffLights(float duration) => Blackout(duration);
 
         /// <summary>
