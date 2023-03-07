@@ -285,6 +285,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Returns the local space position, based on a world space position.
+        /// </summary>
+        /// <param name="position">World position.</param>
+        /// <returns>Local position, based on the room.</returns>
+        public Vector3 LocalPosition(Vector3 position) => Transform.TransformPoint(position);
+
+        /// <summary>
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
@@ -417,6 +424,8 @@ namespace Exiled.API.Features
                 "Outside" => RoomType.Surface,
                 "HCZ_939" => RoomType.Hcz939,
                 "EZ Part" => RoomType.EzCheckpointHallway,
+                "HCZ_ChkpA" => RoomType.HczElevatorA,
+                "HCZ_ChkpB" => RoomType.HczElevatorB,
                 "HCZ Part" => gameObject.transform.parent.name switch
                 {
                     "HCZ_EZ_Checkpoint (A)" => RoomType.HczEzCheckpointA,

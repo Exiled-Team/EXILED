@@ -37,6 +37,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Lower Containment SCP-012 Room.
         /// </summary>
+        [System.Obsolete("This room do not Exist", true)]
         Lcz012,
 
         /// <summary>
@@ -278,5 +279,15 @@ namespace Exiled.API.Enums
         /// Heavy Containment Test Room.
         /// </summary>
         HczTestRoom,
+
+        /// <summary>
+        /// Heavy Containment Elevator System A Room.
+        /// </summary>
+        HczElevatorA,
+
+        /// <summary>
+        /// Heavy Containment Elevator System B Room.
+        /// </summary>
+        HczElevatorB,
     }
 }
