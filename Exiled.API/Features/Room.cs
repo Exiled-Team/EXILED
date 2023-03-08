@@ -344,8 +344,8 @@ namespace Exiled.API.Features
         /// <param name="lockType">DoorLockType of the blackout.</param>
         /// <seealso cref="Map.TurnOffAllLights(float, ZoneType)"/>
         /// <seealso cref="Map.TurnOffAllLights(float, IEnumerable{ZoneType})"/>
-        [Obsolete("Use BlackDown(float, DoorLockType) instead of this"), false]
-        public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079) => BlackDown(duration, lockType)
+        [Obsolete("Use BlackDown(float, DoorLockType) instead of this", false)]
+        public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079) => BlackDown(duration, lockType);
         
         /// <summary>
         /// Unlocks all the doors in the room.
