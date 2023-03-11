@@ -120,6 +120,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool KeepRoleOnChangingRole { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating broadcast that will be shown to the player.
+        /// </summary>
+        public virtual Broadcast Broadcast { get; set; } = new Broadcast();
+
+        /// <summary>
         /// Gets or sets a value indicating the <see cref="Player"/>'s size.
         /// </summary>
         public virtual Vector3 Scale { get; set; } = Vector3.one;
@@ -461,6 +466,7 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             ShowMessage(player);
+            ShowBroadcast(player);
             RoleAdded(player);
             TrackedPlayers.Add(player);
             player.UniqueRole = Name;
@@ -731,6 +737,12 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to show the message to.</param>
         protected virtual void ShowMessage(Player player) => player.ShowHint(string.Format(CustomRoles.Instance.Config.GotRoleHint.Content, Name, Description), CustomRoles.Instance.Config.GotRoleHint.Duration);
+
+        /// <summary>
+        /// Shows the spawn broadcast to the player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to show the message to.</param>
+        protected virtual void ShowBroadcast(Player player) => player.Broadcast(Broadcast);
 
         /// <summary>
         /// Called after the role has been added to the player.
