@@ -179,5 +179,10 @@ namespace Exiled.API.Enums
         /// Protect player from enemy if the config is Enable.
         /// </summary>
         SpawnProtected,
+
+        /// <summary>
+        /// Make Scp106 able to see you when he are in the ground (stalking).
+        /// </summary>
+        Traumatized,
     }
 }
