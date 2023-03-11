@@ -70,19 +70,8 @@ namespace Exiled.Events.EventArgs.Player
             get => newRole;
             set
             {
-                if (StartingInventories.DefinedInventories.ContainsKey(value))
-                {
-                    Items.Clear();
-                    Ammo.Clear();
-
-                    foreach (ItemType itemType in StartingInventories.DefinedInventories[value].Items)
-                        Items.Add(itemType);
-
-                    foreach (KeyValuePair<ItemType, ushort> ammoPair in StartingInventories.DefinedInventories[value].Ammo)
-                        Ammo.Add(ammoPair.Key, ammoPair.Value);
-                }
-
-                newRole = value;
+                Player.Role.Set(value, Reason, SpawnFlags);
+                IsAllowed = false;
             }
         }
 
