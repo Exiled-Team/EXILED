@@ -71,7 +71,8 @@ namespace Exiled.API.Features.Items
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
                 firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
 
-            Base.Status = new FirearmStatus(Base.AmmoManagerModule.MaxAmmo, firearmStatusFlags, Base.Status.Attachments);
+            Base.Status = new FirearmStatus(0, firearmStatusFlags, Base.Status.Attachments);
+            Base._refillAmmo = true;
         }
 
         /// <inheritdoc cref="BaseCodesValue"/>.
