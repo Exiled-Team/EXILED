@@ -14,7 +14,6 @@ namespace Exiled.API.Features
     using Exiled.API.Interfaces;
 
     using Hazards;
-
     using MEC;
 
     using PlayerRoles;
@@ -213,6 +212,30 @@ namespace Exiled.API.Features
         /// <param name="predicate">The condition to satify.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</returns>
         public static IEnumerable<TeslaGate> Get(Func<TeslaGate, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Try-get a <see cref="TeslaGate"/> belonging to the <see cref="BaseTeslaGate"/>, if any.
+        /// </summary>
+        /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
+        /// <param name="gate">A <see cref="TeslaGate"/> or <see langword="null"/> if not found.</param>
+        /// <returns>Whether or not the tesla gate was found.</returns>
+        public static bool TryGet(BaseTeslaGate baseTeslaGate, out TeslaGate gate)
+        {
+            gate = Get(baseTeslaGate);
+            return gate is not null;
+        }
+
+        /// <summary>
+        /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="gates">A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</param>
+        /// <returns>Whether or not at least one tesla gate was found.</returns>
+        public static bool TryGet(Func<TeslaGate, bool> predicate, out IEnumerable<TeslaGate> gates)
+        {
+            gates = Get(predicate);
+            return gates.Count() > 0;
+        }
 
         /// <summary>
         /// Triggers the tesla gate.
