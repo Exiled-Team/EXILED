@@ -62,6 +62,7 @@ namespace Exiled.API.Extensions
             EffectType.Vitality => typeof(Vitality),
             EffectType.SoundtrackMute => typeof(SoundtrackMute),
             EffectType.SpawnProtected => typeof(SpawnProtected),
+            EffectType.Traumatized => typeof(Traumatized),
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect enum provided"),
