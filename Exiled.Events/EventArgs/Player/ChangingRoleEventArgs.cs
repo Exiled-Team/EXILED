@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs.Player
     /// </summary>
     public class ChangingRoleEventArgs : IPlayerEvent, IDeniableEvent
     {
-        private RoleTypeId newRole;
+        private readonly RoleTypeId newRole;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ChangingRoleEventArgs" /> class.
