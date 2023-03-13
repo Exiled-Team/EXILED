@@ -35,7 +35,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets or sets an action to override the behavior of <see cref="CanUseAbility"/>.
         /// </summary>
         [YamlIgnore]
-        public virtual Func<bool> CanUseOverride { get; set; }
+        public virtual Func<bool>? CanUseOverride { get; set; }
 
         /// <summary>
         /// Gets the last time this ability was used.

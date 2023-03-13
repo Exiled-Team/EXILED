@@ -57,7 +57,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem? item))
             {
                 response = $" {arguments.At(0)} is not a valid custom item.";
                 return false;
@@ -69,7 +69,7 @@ namespace Exiled.CustomItems.Commands
             {
                 position = location.GetPosition();
             }
-            else if (Player.Get(arguments.At(1)) is Player player)
+            else if (Player.Get(arguments.At(1)) is { } player)
             {
                 if (player.IsDead)
                 {
@@ -95,9 +95,9 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            item.Spawn(position, null);
+            item?.Spawn(position);
 
-            response = $"{item.Name} ({item.Type}) has been spawned at {position}.";
+            response = $"{item?.Name} ({item?.Type}) has been spawned at {position}.";
             return true;
         }
     }

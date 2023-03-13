@@ -19,14 +19,14 @@ namespace Exiled.CustomItems
     /// </summary>
     public class CustomItems : Plugin<Config>
     {
-        private RoundHandler roundHandler;
-        private PlayerHandler playerHandler;
-        private Harmony harmony;
+        private RoundHandler roundHandler = null!;
+        private PlayerHandler playerHandler = null!;
+        private Harmony harmony = null!;
 
         /// <summary>
         /// Gets the static reference to this <see cref="CustomItems"/> class.
         /// </summary>
-        public static CustomItems Instance { get; private set; }
+        public static CustomItems Instance { get; private set; } = null!;
 
         /// <inheritdoc />
         public override void OnEnabled()
@@ -53,9 +53,6 @@ namespace Exiled.CustomItems
             Exiled.Events.Handlers.Player.ChangingItem -= playerHandler.OnChangingItem;
 
             harmony.UnpatchAll();
-
-            harmony = null;
-            roundHandler = null;
 
             base.OnDisabled();
         }

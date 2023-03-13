@@ -49,7 +49,7 @@ namespace Exiled.CustomRoles.Commands
 
             if (arguments.Count > 1)
             {
-                CustomRole role = CustomRole.Get(arguments.At(1));
+                CustomRole? role = CustomRole.Get(arguments.At(1));
                 if (role is null)
                 {
                     response = $"The specified role {arguments.At(1)} does not exist.";
