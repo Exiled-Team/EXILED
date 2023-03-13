@@ -10,6 +10,7 @@ namespace Exiled.CustomItems
     using System;
 
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
     using Exiled.CustomItems.Events;
 
     using HarmonyLib;
@@ -19,14 +20,14 @@ namespace Exiled.CustomItems
     /// </summary>
     public class CustomItems : Plugin<Config>
     {
-        private RoundHandler roundHandler = null!;
-        private PlayerHandler playerHandler = null!;
-        private Harmony harmony = null!;
+        private RoundHandler? roundHandler;
+        private PlayerHandler? playerHandler;
+        private Harmony? harmony;
 
         /// <summary>
         /// Gets the static reference to this <see cref="CustomItems"/> class.
         /// </summary>
-        public static CustomItems Instance { get; private set; } = null!;
+        public static CustomItems? Instance { get; private set; }
 
         /// <inheritdoc />
         public override void OnEnabled()
@@ -48,11 +49,11 @@ namespace Exiled.CustomItems
         /// <inheritdoc />
         public override void OnDisabled()
         {
-            Exiled.Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
+            Exiled.Events.Handlers.Server.RoundStarted -= roundHandler!.OnRoundStarted;
 
-            Exiled.Events.Handlers.Player.ChangingItem -= playerHandler.OnChangingItem;
+            Exiled.Events.Handlers.Player.ChangingItem -= playerHandler!.OnChangingItem;
 
-            harmony.UnpatchAll();
+            harmony?.UnpatchAll();
 
             base.OnDisabled();
         }

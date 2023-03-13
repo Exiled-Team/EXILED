@@ -25,7 +25,7 @@ namespace Exiled.CustomRoles
     /// </summary>
     public class CustomRoles : Plugin<Config>
     {
-        private PlayerHandlers playerHandlers = null!;
+        private PlayerHandlers? playerHandlers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomRoles"/> class.
@@ -46,7 +46,7 @@ namespace Exiled.CustomRoles
         /// <summary>
         /// Gets a static reference to the plugin's instance.
         /// </summary>
-        public static CustomRoles Instance { get; private set; } = null!;
+        public static CustomRoles? Instance { get; private set; }
 
         /// <summary>
         /// Gets a list of players to stop spawning ragdolls for.
@@ -66,7 +66,7 @@ namespace Exiled.CustomRoles
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            Exiled.Events.Handlers.Player.SpawningRagdoll -= playerHandlers.OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= playerHandlers!.OnSpawningRagdoll;
             base.OnDisabled();
         }
     }

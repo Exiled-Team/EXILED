@@ -258,7 +258,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>True if the ability registered properly.</returns>
         internal bool TryRegister()
         {
-            if (!CustomRoles.Instance.Config.IsEnabled)
+            if (!CustomRoles.Instance!.Config.IsEnabled)
                 return false;
 
             if (!Registered.Contains(this))

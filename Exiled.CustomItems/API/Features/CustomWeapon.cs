@@ -75,8 +75,8 @@ namespace Exiled.CustomItems.API.Features
                 return null;
             }
 
-            if (Attachments is { } attachments && !Attachments.IsEmpty())
-                firearm.AddAttachment(attachments);
+            if (!Attachments.IsEmpty())
+                firearm.AddAttachment(Attachments);
 
             firearm.Ammo = ClipSize;
 

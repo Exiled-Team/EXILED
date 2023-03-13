@@ -628,7 +628,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>True if the role registered properly.</returns>
         internal bool TryRegister()
         {
-            if (!CustomRoles.Instance.Config.IsEnabled)
+            if (!CustomRoles.Instance!.Config.IsEnabled)
                 return false;
 
             if (!Registered.Contains(this))
@@ -772,7 +772,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Shows the spawn message to the player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to show the message to.</param>
-        protected virtual void ShowMessage(Player player) => player.ShowHint(string.Format(CustomRoles.Instance.Config.GotRoleHint.Content, Name, Description), CustomRoles.Instance.Config.GotRoleHint.Duration);
+        protected virtual void ShowMessage(Player player) => player.ShowHint(string.Format(CustomRoles.Instance!.Config.GotRoleHint.Content, Name, Description), CustomRoles.Instance.Config.GotRoleHint.Duration);
 
         /// <summary>
         /// Called after the role has been added to the player.

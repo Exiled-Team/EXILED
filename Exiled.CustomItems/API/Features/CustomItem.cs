@@ -845,7 +845,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was registered or not.</returns>
         internal bool TryRegister()
         {
-            if (!Instance.Config.IsEnabled)
+            if (!Instance?.Config.IsEnabled ?? false)
                 return false;
 
             Log.Debug($"Trying to register {Name} ({Id}).");
@@ -1013,7 +1013,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowPickedUpMessage(Player player)
         {
-            player.ShowHint(string.Format(Instance.Config.PickedUpHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
+            player.ShowHint(string.Format(Instance!.Config.PickedUpHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
         }
 
         /// <summary>
@@ -1022,7 +1022,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
         protected virtual void ShowSelectedMessage(Player player)
         {
-            player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.SelectedHint.Duration);
+            player.ShowHint(string.Format(Instance!.Config.SelectedHint.Content, Name, Description), Instance.Config.SelectedHint.Duration);
         }
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
