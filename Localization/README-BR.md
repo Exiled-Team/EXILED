@@ -107,8 +107,8 @@ Se você não estiver familiarizado com o MEC, este será um guia muito breve e 
 Corrotinas MEC são basicamente métodos cronometrados, que suportam períodos de espera antes de continuar a execução, sem interromper/suspender o alinhamento (thread) principal do jogo.
 As corrotinas MEC são seguras para usar com o Unity, ao contrário do alinhamento tradicional. ***NÃO tente criar novos alinhamentos para interagir com o Unity, eles VÃO travar o servidor.***
 
-To use MEC, you will need to reference ``Assembly-CSharp-firstpass.dll`` from the server files, and include ``using MEC;``.
-Example of calling a simple coroutine, that repeats itself with a delay between each loop:
+Para usar o MEC, você precisará referenciar ``Assembly-CSharp-firstpass.dll`` dos arquivos do servidor e incluir ``using MEC;``.
+Exemplo de chamada de uma corrotina simples, que se repete com um atraso entre cada ciclo:
 ```cs
 using MEC;
 using Exiled.API.Features;
@@ -120,7 +120,7 @@ public void SomeMethod()
 
 public IEnumerator<float> MyCoroutine()
 {
-    for (;;) //repeat the following infinitely
+    for (;;) //Repete o evento seguinte por tempo indefinido
     {
         Log.Info("Ei, eu sou um ciclo infinito!"); //Designar Log.Info para reproduzir uma linha nos registros do console/servidor do jogo.
         yield return Timing.WaitForSeconds(5f); //Diz à corrotina para esperar 5 segundos antes de continuar, e quando está no final do ciclo, efetivamente interrompe a repetição do ciclo por 5 segundos.
@@ -157,4 +157,4 @@ Como tal, os plug-ins que oferecem suporte a Atualizações Dinâmicas ***DEVEM*
 
 Mas nem todo plug-in tem de oferecer suporte a Atualizações Dinâmicas. Se você não pretende oferecer suporte a Atualizações Dinâmicas, tudo bem, simplesmente não altere o nome do Assembly do seu plug-in ao criar uma nova versão e não precisará se preocupar com nada disso, apenas certifique-se de que os anfitriões de servidor saibam que eles precisarão reinicializar completamente seus servidores para atualizar seu plug-in.
 
-Tradução brasileira feita por: Firething
+**Transcrição brasileira feita por**: *Firething*
