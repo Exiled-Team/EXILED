@@ -60,6 +60,9 @@ namespace Exiled.API.Extensions
             EffectType.SinkHole => typeof(Sinkhole),
             EffectType.Stained => typeof(Stained),
             EffectType.Vitality => typeof(Vitality),
+            EffectType.SoundtrackMute => typeof(SoundtrackMute),
+            EffectType.SpawnProtected => typeof(SpawnProtected),
+            EffectType.Traumatized => typeof(Traumatized),
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect enum provided"),
@@ -92,7 +95,7 @@ namespace Exiled.API.Extensions
         public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || effect is EffectType.AmnesiaItems
             or EffectType.AmnesiaVision or EffectType.Blinded or EffectType.Burned or EffectType.Concussed or EffectType.Deafened
             or EffectType.Disabled or EffectType.Ensnared or EffectType.Exhausted or EffectType.Flashed or EffectType.SinkHole
-            or EffectType.Stained or EffectType.InsufficientLighting;
+            or EffectType.Stained or EffectType.InsufficientLighting or EffectType.SoundtrackMute;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.

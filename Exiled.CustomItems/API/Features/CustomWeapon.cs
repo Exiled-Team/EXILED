@@ -190,6 +190,8 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
         protected virtual void OnHurting(HurtingEventArgs ev)
         {
+            if (ev.IsAllowed)
+                ev.Amount = Damage;
         }
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
@@ -235,6 +237,8 @@ namespace Exiled.CustomItems.API.Features
             ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
 
             ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
+            ev.Player.Inventory.SendAmmoNextFrame = true;
+
             ((Firearm)ev.Player.CurrentItem).Ammo = (byte)(((Firearm)ev.Player.CurrentItem).Ammo + amountToReload);
 
             Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({((Firearm)ev.Player.CurrentItem).Ammo}/{ClipSize})]!");

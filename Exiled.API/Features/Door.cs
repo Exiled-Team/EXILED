@@ -169,6 +169,16 @@ namespace Exiled.API.Features
         public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
 
         /// <summary>
+        /// Gets a value indicating whether or not this door is ignoring lockdown.
+        /// </summary>
+        public bool IgnoresLockdowns => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreLockdowns;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is ignoring remoteAdmin commands.
+        /// </summary>
+        public bool IgnoresRemoteAdmin => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreRemoteAdmin;
+
+        /// <summary>
         /// Gets the door's Instance ID.
         /// </summary>
         public int InstanceId => Base.GetInstanceID();
@@ -283,6 +293,13 @@ namespace Exiled.API.Features
             DoorNametagExtension.NamedDoors.TryGetValue(name, out DoorNametagExtension nameExtension);
             return nameExtension is null ? null : Get(nameExtension.TargetDoor);
         }
+
+        /// <summary>
+        /// Gets the door object associated with a specific <see cref="UnityEngine.GameObject"/>, or creates a new one if there isn't one.
+        /// </summary>
+        /// <param name="gameObject">The base-game <see cref="UnityEngine.GameObject"/>.</param>
+        /// <returns>The <see cref="Door"/> with the given name or <see langword="null"/> if not found.</returns>
+        public static Door Get(GameObject gameObject) => gameObject is null ? null : Get(gameObject.GetComponentInChildren<DoorVariant>());
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> filtered based on a predicate.
@@ -523,7 +540,13 @@ namespace Exiled.API.Features
                 string doorName = GameObject.name.GetBefore(' ');
                 return doorName switch
                 {
-                    "LCZ" => Room?.Type.IsCheckpoint() ?? false ? Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor : DoorType.LightContainmentDoor,
+                    "LCZ" => Room?.Type switch
+                    {
+                        RoomType.LczCheckpointA or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA
+                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
+                        RoomType.LczAirlock => (Base.GetComponentInParent<AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
+                        _ => DoorType.LightContainmentDoor,
+                    },
                     "HCZ" => DoorType.HeavyContainmentDoor,
                     "EZ" => DoorType.EntranceDoor,
                     "Prison" => DoorType.PrisonDoor,

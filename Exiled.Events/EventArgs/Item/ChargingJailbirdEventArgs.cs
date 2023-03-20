@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Item
     /// <summary>
     /// Contains all information before a player charges a <see cref="Jailbird"/>.
     /// </summary>
-    public class ChargingJailbirdEventArgs : IPlayerEvent, IItemEvent
+    public class ChargingJailbirdEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChargingJailbirdEventArgs"/> class.

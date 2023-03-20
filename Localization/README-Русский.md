@@ -34,8 +34,8 @@ EXILED - низкоуровневый фреймворк для серверов
 ### Установка вручную
 - Скачайте **`Exiled.tar.gz` [отсюда](https://github.com/galaxy119/EXILED/releases)**.
 - Распакуйте его содержимое с помощью [7Zip](https://www.7-zip.org/) или [WinRar](https://www.win-rar.com/download.html?&L=6).
-- Переместите **``Assembly-CSharp.dll``** в: **``(Папка вашего сервера)\SCPSL_Data\Managed``** и замените файл.
 - Переместите папку **`EXILED`** в **`%appdata%`** *Примечание: Эта папка должна находиться в ``C:\Users\(Your_User)\AppData\Roaming``, и ***НЕ*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, и **ЭТО ДОЛЖНО** быть в (. ...)\AppData\Roaming, а не (...)\AppData\!*.
+- Переместите **``SCP Secret Laboratory``** в **`%appdata%`**.
   - Windows 10:
     Напишите `%appdata%` в Cortana / значке поиска или в строке проводника Windows.
   - Любая другая версия Windows:
@@ -62,7 +62,7 @@ EXILED - низкоуровневый фреймворк для серверов
 - **Убедитесь**, что вы вошли в систему под пользователем, который запускает SCP-серверы.
 - Скачайте **`Exiled.tar.gz` [отсюда](https://github.com/galaxy119/EXILED/releases)** (SSH: щелкните правой кнопкой мыши и получите ссылку `Exiled.tar.gz`, затем введите: **`wget (link_to_download)`**)
 - Чтобы извлечь его в текущую папку, введите **``tar -xzvf EXILED.tar.gz``**.
-- Переместите включенный файл **``Assembly-CSharp.dll``** в папку **``SCPSL_Data/Managed``** вашего сервера (SSH: **``mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed``**).
+- Переместите **`SCP Secret Laboratory`** папку в **``~/.config``**. *Примечание: Эта папка должна находиться в ``~/.config``, а ***НЕ*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 - Переместите папку **`EXILED`** в **``~/.config``**. *Примечание: Эта папка должна находиться в ``~/.config``, и ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
 
 ### Устaновка плагинов Linux

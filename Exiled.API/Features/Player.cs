@@ -69,7 +69,7 @@ namespace Exiled.API.Features
     using PlayerRoles.Voice;
 
     using PlayerStatsSystem;
-
+    using RelativePositioning;
     using RemoteAdmin;
 
     using RoundRestarting;
@@ -330,7 +330,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has an active CustomName.
         /// </summary>
-        public bool HasCustomName => ReferenceHub.nicknameSync.NickSet;
+        public bool HasCustomName => ReferenceHub.nicknameSync.HasCustomName;
 
         /// <summary>
         /// Gets or sets the player's nickname displayed to other player.
@@ -488,6 +488,16 @@ namespace Exiled.API.Features
         {
             get => Transform.position;
             set => ReferenceHub.TryOverridePosition(value, Vector3.zero);
+        }
+
+        /// <summary>
+        /// Gets or sets the relative player's position.
+        /// </summary>
+        /// <remarks>The value will be default if the player's role is not an <see cref="FpcRole"/>.</remarks>
+        public RelativePosition RelativePosition
+        {
+            get => Role is FpcRole fpcRole ? fpcRole.RelativePosition : default;
+            set => Position = value.Position;
         }
 
         /// <summary>
@@ -674,6 +684,9 @@ namespace Exiled.API.Features
             get => ReferenceHub.transform.localScale;
             set
             {
+                if (value == Scale)
+                    return;
+
                 try
                 {
                     ReferenceHub.transform.localScale = value;
@@ -889,7 +902,7 @@ namespace Exiled.API.Features
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
                     AddItem(value.Base);
 
-                Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                Inventory.ServerSelectItem(value.Serial);
             }
         }
 
