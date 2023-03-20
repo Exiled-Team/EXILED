@@ -16,6 +16,7 @@ namespace Exiled.API.Features.Items
     using Enums;
 
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
     using Exiled.API.Structs;
 
     using Extensions;
@@ -37,7 +38,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
     /// </summary>
-    public class Firearm : Item
+    public class Firearm : Item, IWrapper<BaseFirearm>
     {
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Firearm"/> which contains all the existing firearms based on all the <see cref="FirearmType"/>s.
@@ -70,7 +71,7 @@ namespace Exiled.API.Features.Items
             if (Base.HasAdvantageFlag(AttachmentDescriptiveAdvantages.Flashlight))
                 firearmStatusFlags |= FirearmStatusFlags.FlashlightEnabled;
 
-            Base.Status = new FirearmStatus(MaxAmmo, firearmStatusFlags, Base.Status.Attachments);
+            Base.Status = new FirearmStatus(Base.AmmoManagerModule.MaxAmmo, firearmStatusFlags, Base.Status.Attachments);
         }
 
         /// <inheritdoc cref="BaseCodesValue"/>.

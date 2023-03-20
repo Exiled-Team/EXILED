@@ -37,6 +37,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Lower Containment SCP-012 Room.
         /// </summary>
+        [System.Obsolete("This room do not Exist", true)]
         Lcz012,
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Lower Containment Checkpoint B Room.
         /// </summary>
-        LczChkpB,
+        LczCheckpointB,
 
         /// <summary>
         /// Lower Containment Glass Box Room.
@@ -97,7 +98,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Lower Containment Checkpoint A Room.
         /// </summary>
-        LczChkpA,
+        LczCheckpointA,
 
         /// <summary>
         /// Heavy Containment SCP-079 Room.
@@ -135,11 +136,6 @@ namespace Exiled.API.Enums
         Hcz049,
 
         /// <summary>
-        /// Heavy Containment Checkpoint A Room.
-        /// </summary>
-        HczChkpA,
-
-        /// <summary>
         /// Heavy Containment X-Shaped Room.
         /// </summary>
         HczCrossing,
@@ -163,11 +159,6 @@ namespace Exiled.API.Enums
         /// Heavy Containment Servers Room.
         /// </summary>
         HczServers,
-
-        /// <summary>
-        /// Heavy Containment Checkpoint B Room.
-        /// </summary>
-        HczChkpB,
 
         /// <summary>
         /// Heavy Containment T-Shaped Room.
@@ -288,5 +279,15 @@ namespace Exiled.API.Enums
         /// Heavy Containment Test Room.
         /// </summary>
         HczTestRoom,
+
+        /// <summary>
+        /// Heavy Containment Elevator System A Room.
+        /// </summary>
+        HczElevatorA,
+
+        /// <summary>
+        /// Heavy Containment Elevator System B Room.
+        /// </summary>
+        HczElevatorB,
     }
 }

@@ -7,12 +7,13 @@
 
 namespace Exiled.API.Features.Spawn
 {
+    using Exiled.API.Interfaces;
     using UnityEngine;
 
     /// <summary>
     /// Defines item spawn properties.
     /// </summary>
-    public abstract class SpawnPoint
+    public abstract class SpawnPoint : IPosition
     {
         /// <summary>
         /// Gets or sets this spawn point name.

@@ -7,9 +7,12 @@
 
 namespace Exiled.API.Enums
 {
+    using Exiled.API.Extensions;
+
     /// <summary>
     /// Status effects as enum.
     /// </summary>
+    /// <seealso cref="EffectTypeExtension.Type(EffectType)"/>
     public enum EffectType
     {
         /// <summary>
@@ -143,11 +146,6 @@ namespace Exiled.API.Enums
         Stained,
 
         /// <summary>
-        /// Causes the player to blink.
-        /// </summary>
-        Visuals173Blink,
-
-        /// <summary>
         /// Causes the player to slowly regenerate health.
         /// </summary>
         Vitality,
@@ -163,8 +161,28 @@ namespace Exiled.API.Enums
         Scp1853,
 
         /// <summary>
-        /// Effect give to player after being hurt by SCP-049.
+        /// Effect given to player after being hurt by SCP-049.
         /// </summary>
         CardiacArrest,
+
+        /// <summary>
+        /// Cause the lighting in the facility to dim heavily for the player.
+        /// </summary>
+        InsufficientLighting,
+
+        /// <summary>
+        /// Disable ambiant sound.
+        /// </summary>
+        SoundtrackMute,
+
+        /// <summary>
+        /// Protect player from enemy if the config is Enable.
+        /// </summary>
+        SpawnProtected,
+
+        /// <summary>
+        /// Make Scp106 able to see you when he are in the ground (stalking).
+        /// </summary>
+        Traumatized,
     }
 }

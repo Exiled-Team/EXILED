@@ -7,12 +7,14 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Interfaces;
+
     using BaseKeycard = InventorySystem.Items.Keycards.KeycardPickup;
 
     /// <summary>
     /// A wrapper class for a Keycard pickup.
     /// </summary>
-    public class KeycardPickup : Pickup
+    public class KeycardPickup : Pickup, IWrapper<BaseKeycard>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="KeycardPickup"/> class.

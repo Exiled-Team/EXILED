@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Items
 
     using Exiled.API.Features.Core;
     using Exiled.API.Features.Pickups;
+    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
@@ -36,7 +37,7 @@ namespace Exiled.API.Features.Items
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
     /// </summary>
-    public class Item : TypeCastObject<Item>
+    public class Item : TypeCastObject<Item>, IWrapper<ItemBase>
     {
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
@@ -52,7 +53,7 @@ namespace Exiled.API.Features.Items
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
 
-            if (Serial is 0 && itemBase.Owner != null)
+            if (Base.ItemSerial is 0 && itemBase.Owner != null)
             {
                 ushort serial = ItemSerialGenerator.GenerateNext();
                 Serial = serial;
@@ -85,7 +86,12 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public ushort Serial
         {
-            get => Base.ItemSerial;
+            get
+            {
+                if (Base.ItemSerial is 0)
+                    return Serial = ItemSerialGenerator.GenerateNext();
+                return Base.ItemSerial;
+            }
             set => Base.ItemSerial = value;
         }
 
