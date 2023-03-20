@@ -52,7 +52,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Vector3 ShotPosition
         {
-            get => ShotMessage.TargetPosition.Relative;
+            get => ShotMessage.TargetPosition.Position;
             set
             {
                 ShotMessage msg = ShotMessage;

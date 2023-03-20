@@ -53,7 +53,7 @@ namespace Exiled.API.Features.Items
             Base = itemBase;
             BaseToItem.Add(itemBase, this);
 
-            if (Serial is 0 && itemBase.Owner != null)
+            if (Base.ItemSerial is 0 && itemBase.Owner != null)
             {
                 ushort serial = ItemSerialGenerator.GenerateNext();
                 Serial = serial;
@@ -86,7 +86,12 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public ushort Serial
         {
-            get => Base.ItemSerial;
+            get
+            {
+                if (Base.ItemSerial is 0)
+                    return Serial = ItemSerialGenerator.GenerateNext();
+                return Base.ItemSerial;
+            }
             set => Base.ItemSerial = value;
         }
 
