@@ -191,6 +191,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the last activator for the generator.
+        /// </summary>
+        public Player LastActivator
+        {
+            get => Player.Get(Base._lastActivator.Hub);
+            set => Base._lastActivator = value.Footprint;
+        }
+
+        /// <summary>
         /// Gets the generator position.
         /// </summary>
         public Vector3 Position => Base.transform.position;
