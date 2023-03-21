@@ -146,7 +146,6 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         public virtual bool DisplayCustomItemMessages { get; set; } = true;
 
-
         /// <summary>
         /// Gets or sets a value indicating the <see cref="Player"/>'s size.
         /// </summary>
@@ -537,7 +536,7 @@ namespace Exiled.CustomRoles.API.Features
                 builder.AppendLine();
                 builder.AppendLine(ConsoleMessage);
 
-                if (CustomAbilities.Count > 0)
+                if (CustomAbilities?.Count > 0)
                 {
                     builder.AppendLine(AbilityUsage);
                     builder.AppendLine("Your custom abilities are:");
