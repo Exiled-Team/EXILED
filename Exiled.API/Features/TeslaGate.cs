@@ -234,7 +234,7 @@ namespace Exiled.API.Features
         public static bool TryGet(Func<TeslaGate, bool> predicate, out IEnumerable<TeslaGate> gates)
         {
             gates = Get(predicate);
-            return gates.Count() > 0;
+            return gates.Any();
         }
 
         /// <summary>
