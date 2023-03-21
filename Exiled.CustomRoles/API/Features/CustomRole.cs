@@ -137,9 +137,15 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool KeepRoleOnChangingRole { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating broadcast that will be shown to the player.
+        /// </summary>
+        public virtual Broadcast Broadcast { get; set; } = new Broadcast();
+
+        /// <summary>
         /// Gets or sets a value indicating whether players will receive a message for getting a custom item, when gaining it through the inventory config for this role.
         /// </summary>
         public virtual bool DisplayCustomItemMessages { get; set; } = true;
+
 
         /// <summary>
         /// Gets or sets a value indicating the <see cref="Player"/>'s size.
@@ -517,6 +523,7 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             ShowMessage(player);
+            ShowBroadcast(player);
             RoleAdded(player);
             player.UniqueRole = Name;
             player.TryAddCustomRoleFriendlyFire(Name, CustomRoleFFMultiplier);
@@ -811,6 +818,12 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to show the message to.</param>
         protected virtual void ShowMessage(Player player) => player.ShowHint(string.Format(CustomRoles.Instance!.Config.GotRoleHint.Content, Name, Description), CustomRoles.Instance.Config.GotRoleHint.Duration);
+
+        /// <summary>
+        /// Shows the spawn broadcast to the player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to show the message to.</param>
+        protected virtual void ShowBroadcast(Player player) => player.Broadcast(Broadcast);
 
         /// <summary>
         /// Called after the role has been added to the player.
