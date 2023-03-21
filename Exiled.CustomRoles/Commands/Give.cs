@@ -58,7 +58,7 @@ namespace Exiled.CustomRoles.Commands
                 return false;
             }
 
-            if (!CustomRole.TryGet(arguments.At(0), out CustomRole role))
+            if (!CustomRole.TryGet(arguments.At(0), out CustomRole? role) || role is null)
             {
                 response = $"Custom role {arguments.At(0)} not found!";
                 return false;

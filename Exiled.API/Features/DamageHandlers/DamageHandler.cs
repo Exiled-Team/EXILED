@@ -52,7 +52,7 @@ namespace Exiled.API.Features.DamageHandlers
             Target = target;
             Attacker = baseHandler is PlayerStatsSystem.AttackerDamageHandler handler ? Player.Get(handler.Attacker.Hub) : null;
             TargetFootprint = target == null ? default : target.Footprint;
-            AttackerFootprint = Attacker == null ? default : Attacker.Footprint;
+            AttackerFootprint = baseHandler is PlayerStatsSystem.AttackerDamageHandler handle ? handle.Attacker : Attacker?.Footprint ?? default;
         }
 
         /// <summary>
