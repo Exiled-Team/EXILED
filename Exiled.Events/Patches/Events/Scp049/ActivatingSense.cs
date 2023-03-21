@@ -72,12 +72,11 @@ namespace Exiled.Events.Patches.Events.Scp049
             var target = reader.ReadReferenceHub();
 
             var ev = new ActivatingSenseEventArgs(scp049, Player.Get(target));
+            if (ev.Target.IsTutorial && !Exiled.Events.Events.Instance.Config.CanScp049SenseTutorial)
+                ev.IsAllowed = false;
             Handlers.Scp049.OnActivatingSense(ev);
 
             if (!ev.IsAllowed)
-                return;
-
-            if (Exiled.Events.Events.Instance.Config.CanScp049SenseTutorial && ev.Target.IsTutorial)
                 return;
 
             senseAbility._distanceThreshold = 100f;
