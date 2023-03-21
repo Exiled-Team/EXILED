@@ -303,7 +303,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.EffectType.html",
-          "hash": "wArIY6YKcRCXzVDLlcXqQ0knVyYMlhGbgpeY57xIe34="
+          "hash": "jIcgG6sPlg3p0zSl+3dcWvbuCC8t8lzPR7/ZMTzFJAA="
         }
       },
       "is_incremental": false,
@@ -639,7 +639,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.EffectTypeExtension.html",
-          "hash": "zkMTNITzmYbRobnrgq6bCBl5g8pPBzEu6eqkTY/IVQ4="
+          "hash": "Nlmjxz1MOsAa4y7d/BSSCv0thfMfbMqkPIexUY1tPik="
         }
       },
       "is_incremental": false,
@@ -1095,7 +1095,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.DamageHandlers.GenericDamageHandler.html",
-          "hash": "1tUK1/tzuhjFOIWVTvzx5we0OmI3A4fGCROTJzd0jCs="
+          "hash": "m+afjYzczwqBTL6GpsmC56V6gOFodQDp0n4TFBVUiAg="
         }
       },
       "is_incremental": false,
@@ -1155,7 +1155,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Generator.html",
-          "hash": "ur7Q3DcJ7d0nnPutk6m1W0PIDDLnimhRSnKeKQD5A+E="
+          "hash": "P8Vps9mG9WLoyV6XavrI/TX5mzV/2Mz+eSSBAn+jcQo="
         }
       },
       "is_incremental": false,
@@ -1311,7 +1311,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Jailbird.html",
-          "hash": "VPENCr6ON9FSyyexOphInG7L7ViFxx+QY4q+22Hpl08="
+          "hash": "JQ+ojpvFAr2HM8uxJT9f0hwvfkj7hp+dYKUYG6DH68A="
         }
       },
       "is_incremental": false,
@@ -1539,7 +1539,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Pickups.JailbirdPickup.html",
-          "hash": "xMbVqvvZcmcroAkdUXAgSpmOxeSLFXw3tm8tuYHl1Lo="
+          "hash": "8wbBcy8+mEcARJ7jxrd+GYEPdUVMiWmmlnBL7xKijUE="
         }
       },
       "is_incremental": false,
@@ -2223,7 +2223,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.TeslaGate.html",
-          "hash": "WQ3xmiUcii1XTj9BDJwIjx7VAkK7yBOTwoEt/eQZFVo="
+          "hash": "Znfcv+jbM/OSXx3ymrEgwjaVSpPjrAywr26MNYB0Pgc="
         }
       },
       "is_incremental": false,
@@ -2319,7 +2319,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Window.html",
-          "hash": "7Sio1juwg20iJ32loPowYsl0YloVbixdL5ZlfZwQJ7A="
+          "hash": "AmT5xnudb44M59XVbbPFO9I0vHaxchbqzwAJNTdUJEc="
         }
       },
       "is_incremental": false,
@@ -2703,7 +2703,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.CustomArmor.html",
-          "hash": "8uQpupA9ksHjasYcqdgm/Yb0dzJmDwkwTSMDV1WYWyU="
+          "hash": "UgKNGrD+EPJY6XVD4/BpwnMoThTuAiuczW2wC4z+GF0="
         }
       },
       "is_incremental": false,
@@ -2715,7 +2715,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.CustomGrenade.html",
-          "hash": "0YWj63eyWZL+XPj2smfETLgzziK5ysNtmn+wU72VJjc="
+          "hash": "CsmLIRhx/WXQm9z09NEeCu9J88/4GEyTrQ+BHgLtAck="
         }
       },
       "is_incremental": false,
@@ -2727,7 +2727,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.CustomItem.html",
-          "hash": "c7r6EyDLjyaQqfAG8WjxCRSZomv/JDRizkWhVZhximw="
+          "hash": "cKzvzrv/vWIKT8sFCxPHwNwz8W09PVvCR7QlLenGh/M="
         }
       },
       "is_incremental": false,
@@ -2739,7 +2739,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.CustomWeapon.html",
-          "hash": "9O4BQQ3NtQn1mIxV8BVirS8yPZnpQ3nBUutwzCzXNX4="
+          "hash": "xaLvFHFKukaUVEifuz1hRA8rhGBFix8/ea6/dTXn59s="
         }
       },
       "is_incremental": false,
@@ -2787,7 +2787,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.CustomItems.html",
-          "hash": "oG3ZVuEtxlivYIGBY/0Jtrkm2xjsdLApA/mdwDdrkfY="
+          "hash": "NQJY+pZIs+cnutvBST/DtdFXt80vBuXonvj+9eb7Nak="
         }
       },
       "is_incremental": false,
@@ -2871,7 +2871,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.CustomRole.html",
-          "hash": "z7MPCvAJAqJpd2G3fFtq7KVCYuPY5/OITgENT/nhVQE="
+          "hash": "B5waJ8LFUwwBInEMVwGJEpMYtZn8zdLS1rl5wCyxMYM="
         }
       },
       "is_incremental": false,
@@ -2883,7 +2883,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.Extensions.ParserExtension.html",
-          "hash": "2oVtPvh5nmISXsitJAYGOenucL9HKDkudyVTXEqvGpQ="
+          "hash": "uaKs3NYqqNc+YMaU7FzXNT4EzBDEOkQnhvkRwCydomU="
         }
       },
       "is_incremental": false,
@@ -2955,7 +2955,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer.html",
-          "hash": "oxFL9qvGyohi/SfiqQ3UwV2zlnNckNFlMjbZZSVvdag="
+          "hash": "M+ddvX/c3uUd1nxCMO2LI8GZovIBr15M9lcQ903vQEo="
         }
       },
       "is_incremental": false,
@@ -3303,7 +3303,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Config.html",
-          "hash": "8mNrVdhx3Td5jrFkrtaJUuCzqWyQ0kh4BTH6bneT7DE="
+          "hash": "OJU/gv7874tQqseFUyf5cTkgSobiAuB2FtKQPzd50tw="
         }
       },
       "is_incremental": false,
@@ -5895,7 +5895,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Patches.Events.Scp049.ActivatingSense.html",
-          "hash": "W1OdWwzt76OXynD17cGavM9wSDvB85kX0f2fFvz/m7M="
+          "hash": "CEXS22RdljDtsYmjd5Zgos+RHk831doPDKB9zLuaiMY="
         }
       },
       "is_incremental": false,
@@ -5931,7 +5931,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Patches.Events.Scp049.html",
-          "hash": "UxoPhBQ7snE6K+Dz/DVfhCAVMRryKgZmgw+wSs6Pxck="
+          "hash": "XUcV2kY282v3ZoW+MtRiHeEaDuzbzvzeyEpv9xJvzME="
         }
       },
       "is_incremental": false,

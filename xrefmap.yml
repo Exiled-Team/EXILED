@@ -1609,12 +1609,24 @@ references:
   commentId: F:Exiled.API.Enums.EffectType.SoundtrackMute
   fullName: Exiled.API.Enums.EffectType.SoundtrackMute
   nameWithType: EffectType.SoundtrackMute
+- uid: Exiled.API.Enums.EffectType.SpawnProtected
+  name: SpawnProtected
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_SpawnProtected
+  commentId: F:Exiled.API.Enums.EffectType.SpawnProtected
+  fullName: Exiled.API.Enums.EffectType.SpawnProtected
+  nameWithType: EffectType.SpawnProtected
 - uid: Exiled.API.Enums.EffectType.Stained
   name: Stained
   href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Stained
   commentId: F:Exiled.API.Enums.EffectType.Stained
   fullName: Exiled.API.Enums.EffectType.Stained
   nameWithType: EffectType.Stained
+- uid: Exiled.API.Enums.EffectType.Traumatized
+  name: Traumatized
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Traumatized
+  commentId: F:Exiled.API.Enums.EffectType.Traumatized
+  fullName: Exiled.API.Enums.EffectType.Traumatized
+  nameWithType: EffectType.Traumatized
 - uid: Exiled.API.Enums.EffectType.Vitality
   name: Vitality
   href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Vitality
@@ -8413,6 +8425,15 @@ references:
   commentId: M:Exiled.API.Features.Generator.Get(MapGeneration.Distributors.Scp079Generator)
   fullName: Exiled.API.Features.Generator.Get(MapGeneration.Distributors.Scp079Generator)
   nameWithType: Generator.Get(Scp079Generator)
+- uid: Exiled.API.Features.Generator.Get(System.Func{Exiled.API.Features.Generator,System.Boolean})
+  name: Get(Func<Generator, Boolean>)
+  href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_Get_System_Func_Exiled_API_Features_Generator_System_Boolean__
+  commentId: M:Exiled.API.Features.Generator.Get(System.Func{Exiled.API.Features.Generator,System.Boolean})
+  name.vb: Get(Func(Of Generator, Boolean))
+  fullName: Exiled.API.Features.Generator.Get(System.Func<Exiled.API.Features.Generator, System.Boolean>)
+  fullName.vb: Exiled.API.Features.Generator.Get(System.Func(Of Exiled.API.Features.Generator, System.Boolean))
+  nameWithType: Generator.Get(Func<Generator, Boolean>)
+  nameWithType.vb: Generator.Get(Func(Of Generator, Boolean))
 - uid: Exiled.API.Features.Generator.Get*
   name: Get
   href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_Get_
@@ -8511,6 +8532,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Generator.KeycardPermissions
   nameWithType: Generator.KeycardPermissions
+- uid: Exiled.API.Features.Generator.LastActivator
+  name: LastActivator
+  href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_LastActivator
+  commentId: P:Exiled.API.Features.Generator.LastActivator
+  fullName: Exiled.API.Features.Generator.LastActivator
+  nameWithType: Generator.LastActivator
+- uid: Exiled.API.Features.Generator.LastActivator*
+  name: LastActivator
+  href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_LastActivator_
+  commentId: Overload:Exiled.API.Features.Generator.LastActivator
+  isSpec: "True"
+  fullName: Exiled.API.Features.Generator.LastActivator
+  nameWithType: Generator.LastActivator
 - uid: Exiled.API.Features.Generator.LeverDelay
   name: LeverDelay
   href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_LeverDelay
@@ -8641,6 +8675,40 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Generator.Transform
   nameWithType: Generator.Transform
+- uid: Exiled.API.Features.Generator.TryGet(Exiled.API.Enums.GeneratorState,System.Collections.Generic.IEnumerable{Exiled.API.Features.Generator}@)
+  name: TryGet(GeneratorState, out IEnumerable<Generator>)
+  href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_TryGet_Exiled_API_Enums_GeneratorState_System_Collections_Generic_IEnumerable_Exiled_API_Features_Generator___
+  commentId: M:Exiled.API.Features.Generator.TryGet(Exiled.API.Enums.GeneratorState,System.Collections.Generic.IEnumerable{Exiled.API.Features.Generator}@)
+  name.vb: TryGet(GeneratorState, ByRef IEnumerable(Of Generator))
+  fullName: Exiled.API.Features.Generator.TryGet(Exiled.API.Enums.GeneratorState, out System.Collections.Generic.IEnumerable<Exiled.API.Features.Generator>)
+  fullName.vb: Exiled.API.Features.Generator.TryGet(Exiled.API.Enums.GeneratorState, ByRef System.Collections.Generic.IEnumerable(Of Exiled.API.Features.Generator))
+  nameWithType: Generator.TryGet(GeneratorState, out IEnumerable<Generator>)
+  nameWithType.vb: Generator.TryGet(GeneratorState, ByRef IEnumerable(Of Generator))
+- uid: Exiled.API.Features.Generator.TryGet(MapGeneration.Distributors.Scp079Generator,Exiled.API.Features.Generator@)
+  name: TryGet(Scp079Generator, out Generator)
+  href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_TryGet_MapGeneration_Distributors_Scp079Generator_Exiled_API_Features_Generator__
+  commentId: M:Exiled.API.Features.Generator.TryGet(MapGeneration.Distributors.Scp079Generator,Exiled.API.Features.Generator@)
+  name.vb: TryGet(Scp079Generator, ByRef Generator)
+  fullName: Exiled.API.Features.Generator.TryGet(MapGeneration.Distributors.Scp079Generator, out Exiled.API.Features.Generator)
+  fullName.vb: Exiled.API.Features.Generator.TryGet(MapGeneration.Distributors.Scp079Generator, ByRef Exiled.API.Features.Generator)
+  nameWithType: Generator.TryGet(Scp079Generator, out Generator)
+  nameWithType.vb: Generator.TryGet(Scp079Generator, ByRef Generator)
+- uid: Exiled.API.Features.Generator.TryGet(System.Func{Exiled.API.Features.Generator,System.Boolean},System.Collections.Generic.IEnumerable{Exiled.API.Features.Generator}@)
+  name: TryGet(Func<Generator, Boolean>, out IEnumerable<Generator>)
+  href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_TryGet_System_Func_Exiled_API_Features_Generator_System_Boolean__System_Collections_Generic_IEnumerable_Exiled_API_Features_Generator___
+  commentId: M:Exiled.API.Features.Generator.TryGet(System.Func{Exiled.API.Features.Generator,System.Boolean},System.Collections.Generic.IEnumerable{Exiled.API.Features.Generator}@)
+  name.vb: TryGet(Func(Of Generator, Boolean), ByRef IEnumerable(Of Generator))
+  fullName: Exiled.API.Features.Generator.TryGet(System.Func<Exiled.API.Features.Generator, System.Boolean>, out System.Collections.Generic.IEnumerable<Exiled.API.Features.Generator>)
+  fullName.vb: Exiled.API.Features.Generator.TryGet(System.Func(Of Exiled.API.Features.Generator, System.Boolean), ByRef System.Collections.Generic.IEnumerable(Of Exiled.API.Features.Generator))
+  nameWithType: Generator.TryGet(Func<Generator, Boolean>, out IEnumerable<Generator>)
+  nameWithType.vb: Generator.TryGet(Func(Of Generator, Boolean), ByRef IEnumerable(Of Generator))
+- uid: Exiled.API.Features.Generator.TryGet*
+  name: TryGet
+  href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_TryGet_
+  commentId: Overload:Exiled.API.Features.Generator.TryGet
+  isSpec: "True"
+  fullName: Exiled.API.Features.Generator.TryGet
+  nameWithType: Generator.TryGet
 - uid: Exiled.API.Features.Generator.UnlockCooldown
   name: UnlockCooldown
   href: api/Exiled.API.Features.Generator.html#Exiled_API_Features_Generator_UnlockCooldown
@@ -10551,6 +10619,18 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Items.Jailbird.ChargeDamage
   nameWithType: Jailbird.ChargeDamage
+- uid: Exiled.API.Features.Items.Jailbird.ChargesLimit
+  name: ChargesLimit
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_ChargesLimit
+  commentId: F:Exiled.API.Features.Items.Jailbird.ChargesLimit
+  fullName: Exiled.API.Features.Items.Jailbird.ChargesLimit
+  nameWithType: Jailbird.ChargesLimit
+- uid: Exiled.API.Features.Items.Jailbird.ChargesWarning
+  name: ChargesWarning
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_ChargesWarning
+  commentId: F:Exiled.API.Features.Items.Jailbird.ChargesWarning
+  fullName: Exiled.API.Features.Items.Jailbird.ChargesWarning
+  nameWithType: Jailbird.ChargesWarning
 - uid: Exiled.API.Features.Items.Jailbird.Clone
   name: Clone()
   href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_Clone
@@ -10564,6 +10644,18 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Items.Jailbird.Clone
   nameWithType: Jailbird.Clone
+- uid: Exiled.API.Features.Items.Jailbird.DamageLimit
+  name: DamageLimit
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_DamageLimit
+  commentId: F:Exiled.API.Features.Items.Jailbird.DamageLimit
+  fullName: Exiled.API.Features.Items.Jailbird.DamageLimit
+  nameWithType: Jailbird.DamageLimit
+- uid: Exiled.API.Features.Items.Jailbird.DamageWarning
+  name: DamageWarning
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_DamageWarning
+  commentId: F:Exiled.API.Features.Items.Jailbird.DamageWarning
+  fullName: Exiled.API.Features.Items.Jailbird.DamageWarning
+  nameWithType: Jailbird.DamageWarning
 - uid: Exiled.API.Features.Items.Jailbird.FlashDuration
   name: FlashDuration
   href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_FlashDuration
@@ -10577,6 +10669,45 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Items.Jailbird.FlashDuration
   nameWithType: Jailbird.FlashDuration
+- uid: Exiled.API.Features.Items.Jailbird.IsAlmostDepleted
+  name: IsAlmostDepleted
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_IsAlmostDepleted
+  commentId: P:Exiled.API.Features.Items.Jailbird.IsAlmostDepleted
+  fullName: Exiled.API.Features.Items.Jailbird.IsAlmostDepleted
+  nameWithType: Jailbird.IsAlmostDepleted
+- uid: Exiled.API.Features.Items.Jailbird.IsAlmostDepleted*
+  name: IsAlmostDepleted
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_IsAlmostDepleted_
+  commentId: Overload:Exiled.API.Features.Items.Jailbird.IsAlmostDepleted
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Jailbird.IsAlmostDepleted
+  nameWithType: Jailbird.IsAlmostDepleted
+- uid: Exiled.API.Features.Items.Jailbird.IsChargesWarning
+  name: IsChargesWarning
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_IsChargesWarning
+  commentId: P:Exiled.API.Features.Items.Jailbird.IsChargesWarning
+  fullName: Exiled.API.Features.Items.Jailbird.IsChargesWarning
+  nameWithType: Jailbird.IsChargesWarning
+- uid: Exiled.API.Features.Items.Jailbird.IsChargesWarning*
+  name: IsChargesWarning
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_IsChargesWarning_
+  commentId: Overload:Exiled.API.Features.Items.Jailbird.IsChargesWarning
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Jailbird.IsChargesWarning
+  nameWithType: Jailbird.IsChargesWarning
+- uid: Exiled.API.Features.Items.Jailbird.IsDamageWarning
+  name: IsDamageWarning
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_IsDamageWarning
+  commentId: P:Exiled.API.Features.Items.Jailbird.IsDamageWarning
+  fullName: Exiled.API.Features.Items.Jailbird.IsDamageWarning
+  nameWithType: Jailbird.IsDamageWarning
+- uid: Exiled.API.Features.Items.Jailbird.IsDamageWarning*
+  name: IsDamageWarning
+  href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_IsDamageWarning_
+  commentId: Overload:Exiled.API.Features.Items.Jailbird.IsDamageWarning
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Jailbird.IsDamageWarning
+  nameWithType: Jailbird.IsDamageWarning
 - uid: Exiled.API.Features.Items.Jailbird.MeleeDamage
   name: MeleeDamage
   href: api/Exiled.API.Features.Items.Jailbird.html#Exiled_API_Features_Items_Jailbird_MeleeDamage
@@ -12957,6 +13088,69 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Pickups.JailbirdPickup.Base
   nameWithType: JailbirdPickup.Base
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.ChargesLimit
+  name: ChargesLimit
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_ChargesLimit
+  commentId: F:Exiled.API.Features.Pickups.JailbirdPickup.ChargesLimit
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.ChargesLimit
+  nameWithType: JailbirdPickup.ChargesLimit
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.ChargesWarning
+  name: ChargesWarning
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_ChargesWarning
+  commentId: F:Exiled.API.Features.Pickups.JailbirdPickup.ChargesWarning
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.ChargesWarning
+  nameWithType: JailbirdPickup.ChargesWarning
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.DamageLimit
+  name: DamageLimit
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_DamageLimit
+  commentId: F:Exiled.API.Features.Pickups.JailbirdPickup.DamageLimit
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.DamageLimit
+  nameWithType: JailbirdPickup.DamageLimit
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.DamageWarning
+  name: DamageWarning
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_DamageWarning
+  commentId: F:Exiled.API.Features.Pickups.JailbirdPickup.DamageWarning
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.DamageWarning
+  nameWithType: JailbirdPickup.DamageWarning
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted
+  name: IsAlmostDepleted
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_IsAlmostDepleted
+  commentId: P:Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted
+  nameWithType: JailbirdPickup.IsAlmostDepleted
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted*
+  name: IsAlmostDepleted
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_IsAlmostDepleted_
+  commentId: Overload:Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted
+  isSpec: "True"
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.IsAlmostDepleted
+  nameWithType: JailbirdPickup.IsAlmostDepleted
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning
+  name: IsChargesWarning
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_IsChargesWarning
+  commentId: P:Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning
+  nameWithType: JailbirdPickup.IsChargesWarning
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning*
+  name: IsChargesWarning
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_IsChargesWarning_
+  commentId: Overload:Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning
+  isSpec: "True"
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.IsChargesWarning
+  nameWithType: JailbirdPickup.IsChargesWarning
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning
+  name: IsDamageWarning
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_IsDamageWarning
+  commentId: P:Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning
+  nameWithType: JailbirdPickup.IsDamageWarning
+- uid: Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning*
+  name: IsDamageWarning
+  href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_IsDamageWarning_
+  commentId: Overload:Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning
+  isSpec: "True"
+  fullName: Exiled.API.Features.Pickups.JailbirdPickup.IsDamageWarning
+  nameWithType: JailbirdPickup.IsDamageWarning
 - uid: Exiled.API.Features.Pickups.JailbirdPickup.RemainingCharges
   name: RemainingCharges
   href: api/Exiled.API.Features.Pickups.JailbirdPickup.html#Exiled_API_Features_Pickups_JailbirdPickup_RemainingCharges
@@ -24724,6 +24918,31 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.TeslaGate.TriggerRange
   nameWithType: TeslaGate.TriggerRange
+- uid: Exiled.API.Features.TeslaGate.TryGet(System.Func{Exiled.API.Features.TeslaGate,System.Boolean},System.Collections.Generic.IEnumerable{Exiled.API.Features.TeslaGate}@)
+  name: TryGet(Func<TeslaGate, Boolean>, out IEnumerable<TeslaGate>)
+  href: api/Exiled.API.Features.TeslaGate.html#Exiled_API_Features_TeslaGate_TryGet_System_Func_Exiled_API_Features_TeslaGate_System_Boolean__System_Collections_Generic_IEnumerable_Exiled_API_Features_TeslaGate___
+  commentId: M:Exiled.API.Features.TeslaGate.TryGet(System.Func{Exiled.API.Features.TeslaGate,System.Boolean},System.Collections.Generic.IEnumerable{Exiled.API.Features.TeslaGate}@)
+  name.vb: TryGet(Func(Of TeslaGate, Boolean), ByRef IEnumerable(Of TeslaGate))
+  fullName: Exiled.API.Features.TeslaGate.TryGet(System.Func<Exiled.API.Features.TeslaGate, System.Boolean>, out System.Collections.Generic.IEnumerable<Exiled.API.Features.TeslaGate>)
+  fullName.vb: Exiled.API.Features.TeslaGate.TryGet(System.Func(Of Exiled.API.Features.TeslaGate, System.Boolean), ByRef System.Collections.Generic.IEnumerable(Of Exiled.API.Features.TeslaGate))
+  nameWithType: TeslaGate.TryGet(Func<TeslaGate, Boolean>, out IEnumerable<TeslaGate>)
+  nameWithType.vb: TeslaGate.TryGet(Func(Of TeslaGate, Boolean), ByRef IEnumerable(Of TeslaGate))
+- uid: Exiled.API.Features.TeslaGate.TryGet(TeslaGate,Exiled.API.Features.TeslaGate@)
+  name: TryGet(TeslaGate, out TeslaGate)
+  href: api/Exiled.API.Features.TeslaGate.html#Exiled_API_Features_TeslaGate_TryGet_TeslaGate_Exiled_API_Features_TeslaGate__
+  commentId: M:Exiled.API.Features.TeslaGate.TryGet(TeslaGate,Exiled.API.Features.TeslaGate@)
+  name.vb: TryGet(TeslaGate, ByRef TeslaGate)
+  fullName: Exiled.API.Features.TeslaGate.TryGet(TeslaGate, out Exiled.API.Features.TeslaGate)
+  fullName.vb: Exiled.API.Features.TeslaGate.TryGet(TeslaGate, ByRef Exiled.API.Features.TeslaGate)
+  nameWithType: TeslaGate.TryGet(TeslaGate, out TeslaGate)
+  nameWithType.vb: TeslaGate.TryGet(TeslaGate, ByRef TeslaGate)
+- uid: Exiled.API.Features.TeslaGate.TryGet*
+  name: TryGet
+  href: api/Exiled.API.Features.TeslaGate.html#Exiled_API_Features_TeslaGate_TryGet_
+  commentId: Overload:Exiled.API.Features.TeslaGate.TryGet
+  isSpec: "True"
+  fullName: Exiled.API.Features.TeslaGate.TryGet
+  nameWithType: TeslaGate.TryGet
 - uid: Exiled.API.Features.TeslaGate.UseInstantBurst
   name: UseInstantBurst
   href: api/Exiled.API.Features.TeslaGate.html#Exiled_API_Features_TeslaGate_UseInstantBurst
@@ -25764,6 +25983,15 @@ references:
   commentId: M:Exiled.API.Features.Window.Get(BreakableWindow)
   fullName: Exiled.API.Features.Window.Get(BreakableWindow)
   nameWithType: Window.Get(BreakableWindow)
+- uid: Exiled.API.Features.Window.Get(System.Func{Exiled.API.Features.Window,System.Boolean})
+  name: Get(Func<Window, Boolean>)
+  href: api/Exiled.API.Features.Window.html#Exiled_API_Features_Window_Get_System_Func_Exiled_API_Features_Window_System_Boolean__
+  commentId: M:Exiled.API.Features.Window.Get(System.Func{Exiled.API.Features.Window,System.Boolean})
+  name.vb: Get(Func(Of Window, Boolean))
+  fullName: Exiled.API.Features.Window.Get(System.Func<Exiled.API.Features.Window, System.Boolean>)
+  fullName.vb: Exiled.API.Features.Window.Get(System.Func(Of Exiled.API.Features.Window, System.Boolean))
+  nameWithType: Window.Get(Func<Window, Boolean>)
+  nameWithType.vb: Window.Get(Func(Of Window, Boolean))
 - uid: Exiled.API.Features.Window.Get*
   name: Get
   href: api/Exiled.API.Features.Window.html#Exiled_API_Features_Window_Get_
@@ -25914,6 +26142,31 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Window.Transform
   nameWithType: Window.Transform
+- uid: Exiled.API.Features.Window.TryGet(BreakableWindow,Exiled.API.Features.Window@)
+  name: TryGet(BreakableWindow, out Window)
+  href: api/Exiled.API.Features.Window.html#Exiled_API_Features_Window_TryGet_BreakableWindow_Exiled_API_Features_Window__
+  commentId: M:Exiled.API.Features.Window.TryGet(BreakableWindow,Exiled.API.Features.Window@)
+  name.vb: TryGet(BreakableWindow, ByRef Window)
+  fullName: Exiled.API.Features.Window.TryGet(BreakableWindow, out Exiled.API.Features.Window)
+  fullName.vb: Exiled.API.Features.Window.TryGet(BreakableWindow, ByRef Exiled.API.Features.Window)
+  nameWithType: Window.TryGet(BreakableWindow, out Window)
+  nameWithType.vb: Window.TryGet(BreakableWindow, ByRef Window)
+- uid: Exiled.API.Features.Window.TryGet(System.Func{Exiled.API.Features.Window,System.Boolean},System.Collections.Generic.IEnumerable{Exiled.API.Features.Window}@)
+  name: TryGet(Func<Window, Boolean>, out IEnumerable<Window>)
+  href: api/Exiled.API.Features.Window.html#Exiled_API_Features_Window_TryGet_System_Func_Exiled_API_Features_Window_System_Boolean__System_Collections_Generic_IEnumerable_Exiled_API_Features_Window___
+  commentId: M:Exiled.API.Features.Window.TryGet(System.Func{Exiled.API.Features.Window,System.Boolean},System.Collections.Generic.IEnumerable{Exiled.API.Features.Window}@)
+  name.vb: TryGet(Func(Of Window, Boolean), ByRef IEnumerable(Of Window))
+  fullName: Exiled.API.Features.Window.TryGet(System.Func<Exiled.API.Features.Window, System.Boolean>, out System.Collections.Generic.IEnumerable<Exiled.API.Features.Window>)
+  fullName.vb: Exiled.API.Features.Window.TryGet(System.Func(Of Exiled.API.Features.Window, System.Boolean), ByRef System.Collections.Generic.IEnumerable(Of Exiled.API.Features.Window))
+  nameWithType: Window.TryGet(Func<Window, Boolean>, out IEnumerable<Window>)
+  nameWithType.vb: Window.TryGet(Func(Of Window, Boolean), ByRef IEnumerable(Of Window))
+- uid: Exiled.API.Features.Window.TryGet*
+  name: TryGet
+  href: api/Exiled.API.Features.Window.html#Exiled_API_Features_Window_TryGet_
+  commentId: Overload:Exiled.API.Features.Window.TryGet
+  isSpec: "True"
+  fullName: Exiled.API.Features.Window.TryGet
+  nameWithType: Window.TryGet
 - uid: Exiled.API.Features.Window.Type
   name: Type
   href: api/Exiled.API.Features.Window.html#Exiled_API_Features_Window_Type
@@ -27642,6 +27895,18 @@ references:
   commentId: M:Exiled.CustomItems.API.Features.CustomItem.Get(System.String)
   fullName: Exiled.CustomItems.API.Features.CustomItem.Get(System.String)
   nameWithType: CustomItem.Get(String)
+- uid: Exiled.CustomItems.API.Features.CustomItem.Get(System.Type)
+  name: Get(Type)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Get_System_Type_
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.Get(System.Type)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.Get(System.Type)
+  nameWithType: CustomItem.Get(Type)
+- uid: Exiled.CustomItems.API.Features.CustomItem.Get(System.UInt32)
+  name: Get(UInt32)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Get_System_UInt32_
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.Get(System.UInt32)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.Get(System.UInt32)
+  nameWithType: CustomItem.Get(UInt32)
 - uid: Exiled.CustomItems.API.Features.CustomItem.Get*
   name: Get
   href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_Get_
@@ -28107,6 +28372,24 @@ references:
   fullName.vb: Exiled.CustomItems.API.Features.CustomItem.TryGet(System.String, ByRef Exiled.CustomItems.API.Features.CustomItem)
   nameWithType: CustomItem.TryGet(String, out CustomItem)
   nameWithType.vb: CustomItem.TryGet(String, ByRef CustomItem)
+- uid: Exiled.CustomItems.API.Features.CustomItem.TryGet(System.Type,Exiled.CustomItems.API.Features.CustomItem@)
+  name: TryGet(Type, out CustomItem)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryGet_System_Type_Exiled_CustomItems_API_Features_CustomItem__
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.TryGet(System.Type,Exiled.CustomItems.API.Features.CustomItem@)
+  name.vb: TryGet(Type, ByRef CustomItem)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.TryGet(System.Type, out Exiled.CustomItems.API.Features.CustomItem)
+  fullName.vb: Exiled.CustomItems.API.Features.CustomItem.TryGet(System.Type, ByRef Exiled.CustomItems.API.Features.CustomItem)
+  nameWithType: CustomItem.TryGet(Type, out CustomItem)
+  nameWithType.vb: CustomItem.TryGet(Type, ByRef CustomItem)
+- uid: Exiled.CustomItems.API.Features.CustomItem.TryGet(System.UInt32,Exiled.CustomItems.API.Features.CustomItem@)
+  name: TryGet(UInt32, out CustomItem)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryGet_System_UInt32_Exiled_CustomItems_API_Features_CustomItem__
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.TryGet(System.UInt32,Exiled.CustomItems.API.Features.CustomItem@)
+  name.vb: TryGet(UInt32, ByRef CustomItem)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.TryGet(System.UInt32, out Exiled.CustomItems.API.Features.CustomItem)
+  fullName.vb: Exiled.CustomItems.API.Features.CustomItem.TryGet(System.UInt32, ByRef Exiled.CustomItems.API.Features.CustomItem)
+  nameWithType: CustomItem.TryGet(UInt32, out CustomItem)
+  nameWithType.vb: CustomItem.TryGet(UInt32, ByRef CustomItem)
 - uid: Exiled.CustomItems.API.Features.CustomItem.TryGet*
   name: TryGet
   href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryGet_
@@ -28126,6 +28409,18 @@ references:
   commentId: M:Exiled.CustomItems.API.Features.CustomItem.TryGive(Exiled.API.Features.Player,System.String,System.Boolean)
   fullName: Exiled.CustomItems.API.Features.CustomItem.TryGive(Exiled.API.Features.Player, System.String, System.Boolean)
   nameWithType: CustomItem.TryGive(Player, String, Boolean)
+- uid: Exiled.CustomItems.API.Features.CustomItem.TryGive(Exiled.API.Features.Player,System.Type,System.Boolean)
+  name: TryGive(Player, Type, Boolean)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryGive_Exiled_API_Features_Player_System_Type_System_Boolean_
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.TryGive(Exiled.API.Features.Player,System.Type,System.Boolean)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.TryGive(Exiled.API.Features.Player, System.Type, System.Boolean)
+  nameWithType: CustomItem.TryGive(Player, Type, Boolean)
+- uid: Exiled.CustomItems.API.Features.CustomItem.TryGive(Exiled.API.Features.Player,System.UInt32,System.Boolean)
+  name: TryGive(Player, UInt32, Boolean)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryGive_Exiled_API_Features_Player_System_UInt32_System_Boolean_
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.TryGive(Exiled.API.Features.Player,System.UInt32,System.Boolean)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.TryGive(Exiled.API.Features.Player, System.UInt32, System.Boolean)
+  nameWithType: CustomItem.TryGive(Player, UInt32, Boolean)
 - uid: Exiled.CustomItems.API.Features.CustomItem.TryGive*
   name: TryGive
   href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TryGive_
@@ -28151,6 +28446,15 @@ references:
   fullName.vb: Exiled.CustomItems.API.Features.CustomItem.TrySpawn(System.String, UnityEngine.Vector3, ByRef Exiled.API.Features.Pickups.Pickup)
   nameWithType: CustomItem.TrySpawn(String, Vector3, out Pickup)
   nameWithType.vb: CustomItem.TrySpawn(String, Vector3, ByRef Pickup)
+- uid: Exiled.CustomItems.API.Features.CustomItem.TrySpawn(System.UInt32,UnityEngine.Vector3,Exiled.API.Features.Pickups.Pickup@)
+  name: TrySpawn(UInt32, Vector3, out Pickup)
+  href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TrySpawn_System_UInt32_UnityEngine_Vector3_Exiled_API_Features_Pickups_Pickup__
+  commentId: M:Exiled.CustomItems.API.Features.CustomItem.TrySpawn(System.UInt32,UnityEngine.Vector3,Exiled.API.Features.Pickups.Pickup@)
+  name.vb: TrySpawn(UInt32, Vector3, ByRef Pickup)
+  fullName: Exiled.CustomItems.API.Features.CustomItem.TrySpawn(System.UInt32, UnityEngine.Vector3, out Exiled.API.Features.Pickups.Pickup)
+  fullName.vb: Exiled.CustomItems.API.Features.CustomItem.TrySpawn(System.UInt32, UnityEngine.Vector3, ByRef Exiled.API.Features.Pickups.Pickup)
+  nameWithType: CustomItem.TrySpawn(UInt32, Vector3, out Pickup)
+  nameWithType.vb: CustomItem.TrySpawn(UInt32, Vector3, ByRef Pickup)
 - uid: Exiled.CustomItems.API.Features.CustomItem.TrySpawn*
   name: TrySpawn
   href: api/Exiled.CustomItems.API.Features.CustomItem.html#Exiled_CustomItems_API_Features_CustomItem_TrySpawn_
@@ -29071,6 +29375,19 @@ references:
   commentId: T:Exiled.CustomRoles.API.Features.CustomRole
   fullName: Exiled.CustomRoles.API.Features.CustomRole
   nameWithType: CustomRole
+- uid: Exiled.CustomRoles.API.Features.CustomRole.AbilityUsage
+  name: AbilityUsage
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_AbilityUsage
+  commentId: P:Exiled.CustomRoles.API.Features.CustomRole.AbilityUsage
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.AbilityUsage
+  nameWithType: CustomRole.AbilityUsage
+- uid: Exiled.CustomRoles.API.Features.CustomRole.AbilityUsage*
+  name: AbilityUsage
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_AbilityUsage_
+  commentId: Overload:Exiled.CustomRoles.API.Features.CustomRole.AbilityUsage
+  isSpec: "True"
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.AbilityUsage
+  nameWithType: CustomRole.AbilityUsage
 - uid: Exiled.CustomRoles.API.Features.CustomRole.AddRole(Exiled.API.Features.Player)
   name: AddRole(Player)
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_AddRole_Exiled_API_Features_Player_
@@ -29097,6 +29414,19 @@ references:
   isSpec: "True"
   fullName: Exiled.CustomRoles.API.Features.CustomRole.Ammo
   nameWithType: CustomRole.Ammo
+- uid: Exiled.CustomRoles.API.Features.CustomRole.Broadcast
+  name: Broadcast
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_Broadcast
+  commentId: P:Exiled.CustomRoles.API.Features.CustomRole.Broadcast
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.Broadcast
+  nameWithType: CustomRole.Broadcast
+- uid: Exiled.CustomRoles.API.Features.CustomRole.Broadcast*
+  name: Broadcast
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_Broadcast_
+  commentId: Overload:Exiled.CustomRoles.API.Features.CustomRole.Broadcast
+  isSpec: "True"
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.Broadcast
+  nameWithType: CustomRole.Broadcast
 - uid: Exiled.CustomRoles.API.Features.CustomRole.Check(Exiled.API.Features.Player)
   name: Check(Player)
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_Check_Exiled_API_Features_Player_
@@ -29110,6 +29440,19 @@ references:
   isSpec: "True"
   fullName: Exiled.CustomRoles.API.Features.CustomRole.Check
   nameWithType: CustomRole.Check
+- uid: Exiled.CustomRoles.API.Features.CustomRole.ConsoleMessage
+  name: ConsoleMessage
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_ConsoleMessage
+  commentId: P:Exiled.CustomRoles.API.Features.CustomRole.ConsoleMessage
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.ConsoleMessage
+  nameWithType: CustomRole.ConsoleMessage
+- uid: Exiled.CustomRoles.API.Features.CustomRole.ConsoleMessage*
+  name: ConsoleMessage
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_ConsoleMessage_
+  commentId: Overload:Exiled.CustomRoles.API.Features.CustomRole.ConsoleMessage
+  isSpec: "True"
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.ConsoleMessage
+  nameWithType: CustomRole.ConsoleMessage
 - uid: Exiled.CustomRoles.API.Features.CustomRole.CustomAbilities
   name: CustomAbilities
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_CustomAbilities
@@ -29175,6 +29518,19 @@ references:
   isSpec: "True"
   fullName: Exiled.CustomRoles.API.Features.CustomRole.Destroy
   nameWithType: CustomRole.Destroy
+- uid: Exiled.CustomRoles.API.Features.CustomRole.DisplayCustomItemMessages
+  name: DisplayCustomItemMessages
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_DisplayCustomItemMessages
+  commentId: P:Exiled.CustomRoles.API.Features.CustomRole.DisplayCustomItemMessages
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.DisplayCustomItemMessages
+  nameWithType: CustomRole.DisplayCustomItemMessages
+- uid: Exiled.CustomRoles.API.Features.CustomRole.DisplayCustomItemMessages*
+  name: DisplayCustomItemMessages
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_DisplayCustomItemMessages_
+  commentId: Overload:Exiled.CustomRoles.API.Features.CustomRole.DisplayCustomItemMessages
+  isSpec: "True"
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.DisplayCustomItemMessages
+  nameWithType: CustomRole.DisplayCustomItemMessages
 - uid: Exiled.CustomRoles.API.Features.CustomRole.ForceSyncSetPlayerFriendlyFire(Exiled.CustomRoles.API.Features.CustomRole,Exiled.API.Features.Player)
   name: ForceSyncSetPlayerFriendlyFire(CustomRole, Player)
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_ForceSyncSetPlayerFriendlyFire_Exiled_CustomRoles_API_Features_CustomRole_Exiled_API_Features_Player_
@@ -29478,6 +29834,19 @@ references:
   isSpec: "True"
   fullName: Exiled.CustomRoles.API.Features.CustomRole.SetFriendlyFire
   nameWithType: CustomRole.SetFriendlyFire
+- uid: Exiled.CustomRoles.API.Features.CustomRole.ShowBroadcast(Exiled.API.Features.Player)
+  name: ShowBroadcast(Player)
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_ShowBroadcast_Exiled_API_Features_Player_
+  commentId: M:Exiled.CustomRoles.API.Features.CustomRole.ShowBroadcast(Exiled.API.Features.Player)
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.ShowBroadcast(Exiled.API.Features.Player)
+  nameWithType: CustomRole.ShowBroadcast(Player)
+- uid: Exiled.CustomRoles.API.Features.CustomRole.ShowBroadcast*
+  name: ShowBroadcast
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_ShowBroadcast_
+  commentId: Overload:Exiled.CustomRoles.API.Features.CustomRole.ShowBroadcast
+  isSpec: "True"
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.ShowBroadcast
+  nameWithType: CustomRole.ShowBroadcast
 - uid: Exiled.CustomRoles.API.Features.CustomRole.ShowMessage(Exiled.API.Features.Player)
   name: ShowMessage(Player)
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_ShowMessage_Exiled_API_Features_Player_
@@ -29627,6 +29996,15 @@ references:
   fullName.vb: Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.String, ByRef Exiled.CustomRoles.API.Features.CustomRole)
   nameWithType: CustomRole.TryGet(String, out CustomRole)
   nameWithType.vb: CustomRole.TryGet(String, ByRef CustomRole)
+- uid: Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.Type,Exiled.CustomRoles.API.Features.CustomRole@)
+  name: TryGet(Type, out CustomRole)
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_TryGet_System_Type_Exiled_CustomRoles_API_Features_CustomRole__
+  commentId: M:Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.Type,Exiled.CustomRoles.API.Features.CustomRole@)
+  name.vb: TryGet(Type, ByRef CustomRole)
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.Type, out Exiled.CustomRoles.API.Features.CustomRole)
+  fullName.vb: Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.Type, ByRef Exiled.CustomRoles.API.Features.CustomRole)
+  nameWithType: CustomRole.TryGet(Type, out CustomRole)
+  nameWithType.vb: CustomRole.TryGet(Type, ByRef CustomRole)
 - uid: Exiled.CustomRoles.API.Features.CustomRole.TryGet*
   name: TryGet
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_TryGet_
@@ -29690,15 +30068,15 @@ references:
   commentId: T:Exiled.CustomRoles.API.Features.Extensions.ParserExtension
   fullName: Exiled.CustomRoles.API.Features.Extensions.ParserExtension
   nameWithType: ParserExtension
-- uid: Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry(Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer,System.Func{Scalar,System.Boolean},Scalar@,ParsingEvent@)
-  name: TryFindMappingEntry(ParsingEventBuffer, Func<Scalar, Boolean>, out Scalar, out ParsingEvent)
-  href: api/Exiled.CustomRoles.API.Features.Extensions.ParserExtension.html#Exiled_CustomRoles_API_Features_Extensions_ParserExtension_TryFindMappingEntry_Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer_System_Func_Scalar_System_Boolean__Scalar__ParsingEvent__
-  commentId: M:Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry(Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer,System.Func{Scalar,System.Boolean},Scalar@,ParsingEvent@)
-  name.vb: TryFindMappingEntry(ParsingEventBuffer, Func(Of Scalar, Boolean), ByRef Scalar, ByRef ParsingEvent)
-  fullName: Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry(Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer, System.Func<Scalar, System.Boolean>, out Scalar, out ParsingEvent)
-  fullName.vb: Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry(Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer, System.Func(Of Scalar, System.Boolean), ByRef Scalar, ByRef ParsingEvent)
-  nameWithType: ParserExtension.TryFindMappingEntry(ParsingEventBuffer, Func<Scalar, Boolean>, out Scalar, out ParsingEvent)
-  nameWithType.vb: ParserExtension.TryFindMappingEntry(ParsingEventBuffer, Func(Of Scalar, Boolean), ByRef Scalar, ByRef ParsingEvent)
+- uid: Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry(Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer,System.Func{Scalar,System.Boolean},System.Nullable{Scalar}@,System.Nullable{ParsingEvent}@)
+  name: TryFindMappingEntry(ParsingEventBuffer, Func<Scalar, Boolean>, out Nullable<Scalar>, out Nullable<ParsingEvent>)
+  href: api/Exiled.CustomRoles.API.Features.Extensions.ParserExtension.html#Exiled_CustomRoles_API_Features_Extensions_ParserExtension_TryFindMappingEntry_Exiled_CustomRoles_API_Features_Parsers_ParsingEventBuffer_System_Func_Scalar_System_Boolean__System_Nullable_Scalar___System_Nullable_ParsingEvent___
+  commentId: M:Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry(Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer,System.Func{Scalar,System.Boolean},System.Nullable{Scalar}@,System.Nullable{ParsingEvent}@)
+  name.vb: TryFindMappingEntry(ParsingEventBuffer, Func(Of Scalar, Boolean), ByRef Nullable(Of Scalar), ByRef Nullable(Of ParsingEvent))
+  fullName: Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry(Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer, System.Func<Scalar, System.Boolean>, out System.Nullable<Scalar>, out System.Nullable<ParsingEvent>)
+  fullName.vb: Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry(Exiled.CustomRoles.API.Features.Parsers.ParsingEventBuffer, System.Func(Of Scalar, System.Boolean), ByRef System.Nullable(Of Scalar), ByRef System.Nullable(Of ParsingEvent))
+  nameWithType: ParserExtension.TryFindMappingEntry(ParsingEventBuffer, Func<Scalar, Boolean>, out Nullable<Scalar>, out Nullable<ParsingEvent>)
+  nameWithType.vb: ParserExtension.TryFindMappingEntry(ParsingEventBuffer, Func(Of Scalar, Boolean), ByRef Nullable(Of Scalar), ByRef Nullable(Of ParsingEvent))
 - uid: Exiled.CustomRoles.API.Features.Extensions.ParserExtension.TryFindMappingEntry*
   name: TryFindMappingEntry
   href: api/Exiled.CustomRoles.API.Features.Extensions.ParserExtension.html#Exiled_CustomRoles_API_Features_Extensions_ParserExtension_TryFindMappingEntry_
@@ -31258,6 +31636,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Config.CanKeycardThrowAffectDoors
   nameWithType: Config.CanKeycardThrowAffectDoors
+- uid: Exiled.Events.Config.CanScp049SenseTutorial
+  name: CanScp049SenseTutorial
+  href: api/Exiled.Events.Config.html#Exiled_Events_Config_CanScp049SenseTutorial
+  commentId: P:Exiled.Events.Config.CanScp049SenseTutorial
+  fullName: Exiled.Events.Config.CanScp049SenseTutorial
+  nameWithType: Config.CanScp049SenseTutorial
+- uid: Exiled.Events.Config.CanScp049SenseTutorial*
+  name: CanScp049SenseTutorial
+  href: api/Exiled.Events.Config.html#Exiled_Events_Config_CanScp049SenseTutorial_
+  commentId: Overload:Exiled.Events.Config.CanScp049SenseTutorial
+  isSpec: "True"
+  fullName: Exiled.Events.Config.CanScp049SenseTutorial
+  nameWithType: Config.CanScp049SenseTutorial
 - uid: Exiled.Events.Config.CanSpawnBlood
   name: CanSpawnBlood
   href: api/Exiled.Events.Config.html#Exiled_Events_Config_CanSpawnBlood
