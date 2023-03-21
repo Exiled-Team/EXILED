@@ -44,7 +44,7 @@ namespace Exiled.CustomItems.API.Features
             get => base.Type;
             set
             {
-                if (!value.IsWeapon() && value != ItemType.None)
+                if (!value.IsWeapon(false) && value != ItemType.None)
                     throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid weapon type.");
 
                 base.Type = value;
