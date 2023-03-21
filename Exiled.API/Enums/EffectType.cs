@@ -7,9 +7,12 @@
 
 namespace Exiled.API.Enums
 {
+    using Exiled.API.Extensions;
+
     /// <summary>
     /// Status effects as enum.
     /// </summary>
+    /// <seealso cref="EffectTypeExtension.Type(EffectType)"/>
     public enum EffectType
     {
         /// <summary>
@@ -171,5 +174,15 @@ namespace Exiled.API.Enums
         /// Disable ambiant sound.
         /// </summary>
         SoundtrackMute,
+
+        /// <summary>
+        /// Protect player from enemy if the config is Enable.
+        /// </summary>
+        SpawnProtected,
+
+        /// <summary>
+        /// Make Scp106 able to see you when he are in the ground (stalking).
+        /// </summary>
+        Traumatized,
     }
 }

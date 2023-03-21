@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="Scp049ResurrectAbility.ServerComplete" />.
+    ///     Patches <see cref="Scp049SenseAbility.ServerProcessCmd" />.
     ///     Adds the <see cref="Handlers.Scp049.ActivatingSense" /> event.
     /// </summary>
     // TODO: REWORK TRANSPILER
@@ -72,6 +72,8 @@ namespace Exiled.Events.Patches.Events.Scp049
             var target = reader.ReadReferenceHub();
 
             var ev = new ActivatingSenseEventArgs(scp049, Player.Get(target));
+            if (ev.Target.IsTutorial && !Exiled.Events.Events.Instance.Config.CanScp049SenseTutorial)
+                ev.IsAllowed = false;
             Handlers.Scp049.OnActivatingSense(ev);
 
             if (!ev.IsAllowed)
