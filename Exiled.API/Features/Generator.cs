@@ -268,7 +268,7 @@ namespace Exiled.API.Features
         public static bool TryGet(Func<Generator, bool> predicate, out IEnumerable<Generator> generators)
         {
             generators = Get(predicate);
-            return generators.Count() > 0;
+            return generators.Any();
         }
 
         /// <summary>
