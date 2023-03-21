@@ -7153,7 +7153,7 @@ Data saved with session variables is not being saved on player disconnect. If th
   <h4 id="Exiled_API_Features_Player_GetAmmoLimit_Exiled_API_Enums_AmmoType_" data-uid="Exiled.API.Features.Player.GetAmmoLimit(Exiled.API.Enums.AmmoType)">GetAmmoLimit(AmmoType)</h4>
   <div class="markdown level1 summary"><p>Gets the maximum amount of ammo the player can hold, given the ammo <a class="xref" href="Exiled.API.Enums.AmmoType.html">AmmoType</a>.
 This method factors in the armor the player is wearing, as well as server configuration.
-For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <a class="xref" href="Exiled.API.Features.Items.Ammo.html#Exiled_API_Features_Items_Ammo_AmmoLimit">AmmoLimit</a>.</p>
+For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <span class="xref">ServerConfigSynchronizer.AmmoLimit</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -7189,7 +7189,7 @@ For the maximum amount of ammo that can be given regardless of worn armor and se
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
-        <td><p>The maximum amount of ammo this player can carry. Guaranteed to be between <code>0</code> and <a class="xref" href="Exiled.API.Features.Items.Ammo.html#Exiled_API_Features_Items_Ammo_AmmoLimit">AmmoLimit</a>.</p>
+        <td><p>The maximum amount of ammo this player can carry. Guaranteed to be between <code>0</code> and <span class="xref">ServerConfigSynchronizer.AmmoLimit</span>.</p>
 </td>
       </tr>
     </tbody>
@@ -9402,7 +9402,7 @@ For the maximum amount of ammo that can be given regardless of worn armor and se
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetCustomRoleFriendlyFire(string roleTypeId, KeyValuePair&lt;RoleTypeId, float&gt; roleFF)</code></pre>
+    <pre><code class="lang-csharp hljs">public void SetCustomRoleFriendlyFire(string roleTypeId, KeyValuePair&lt;RoleTypeId, float&gt; roleFf)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -9422,7 +9422,7 @@ For the maximum amount of ammo that can be given regardless of worn armor and se
       </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<span class="xref">PlayerRoles.RoleTypeId</span>, <span class="xref">System.Single</span>&gt;</td>
-        <td><span class="parametername">roleFF</span></td>
+        <td><span class="parametername">roleFf</span></td>
         <td><p>Role with FF to add even if it exists. </p>
 </td>
       </tr>
@@ -10070,7 +10070,7 @@ For the maximum amount of ammo that can be given regardless of worn armor and se
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool TryAddCustomRoleFriendlyFire(string roleTypeId, KeyValuePair&lt;RoleTypeId, float&gt; roleFF)</code></pre>
+    <pre><code class="lang-csharp hljs">public bool TryAddCustomRoleFriendlyFire(string roleTypeId, KeyValuePair&lt;RoleTypeId, float&gt; roleFf)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -10090,7 +10090,7 @@ For the maximum amount of ammo that can be given regardless of worn armor and se
       </tr>
       <tr>
         <td><span class="xref">System.Collections.Generic.KeyValuePair</span>&lt;<span class="xref">PlayerRoles.RoleTypeId</span>, <span class="xref">System.Single</span>&gt;</td>
-        <td><span class="parametername">roleFF</span></td>
+        <td><span class="parametername">roleFf</span></td>
         <td><p>Role to add and FF multiplier. </p>
 </td>
       </tr>
