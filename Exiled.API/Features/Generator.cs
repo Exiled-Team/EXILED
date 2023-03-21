@@ -256,7 +256,7 @@ namespace Exiled.API.Features
         public static bool TryGet(GeneratorState state, out IEnumerable<Generator> generators)
         {
             generators = Get(state);
-            return generators.Count() > 0;
+            return generators.Any();
         }
 
         /// <summary>
