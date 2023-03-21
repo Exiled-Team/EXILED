@@ -180,7 +180,7 @@ namespace Exiled.API.Features
         public static bool TryGet(Func<Window, bool> predicate, out IEnumerable<Window> windows)
         {
             windows = Get(predicate);
-            return windows.Count() > 0;
+            return windows.Any();
         }
 
         /// <summary>
