@@ -67,7 +67,7 @@ namespace Exiled.CustomItems.API.Features
         public virtual bool FriendlyFire { get; set; }
 
         /// <inheritdoc />
-        public override Pickup Spawn(Vector3 position, Player previousOwner = null)
+        public override Pickup? Spawn(Vector3 position, Player? previousOwner = null)
         {
             if (Item.Create(Type) is not Firearm firearm)
             {
@@ -75,12 +75,12 @@ namespace Exiled.CustomItems.API.Features
                 return null;
             }
 
-            if (Attachments is not null && !Attachments.IsEmpty())
+            if (!Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
 
             firearm.Ammo = ClipSize;
 
-            Pickup pickup = firearm.CreatePickup(position);
+            Pickup? pickup = firearm.CreatePickup(position);
 
             if (pickup is null)
             {
@@ -98,7 +98,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc />
-        public override Pickup Spawn(Vector3 position, Item item, Player previousOwner = null)
+        public override Pickup? Spawn(Vector3 position, Item item, Player? previousOwner = null)
         {
             if (item is Firearm firearm)
             {
@@ -106,7 +106,7 @@ namespace Exiled.CustomItems.API.Features
                     firearm.AddAttachment(Attachments);
                 byte ammo = firearm.Ammo;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.");
-                Pickup pickup = firearm.CreatePickup(position);
+                Pickup? pickup = firearm.CreatePickup(position);
                 pickup.Scale = Scale;
 
                 if (previousOwner is not null)
