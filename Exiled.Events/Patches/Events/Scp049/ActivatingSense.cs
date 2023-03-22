@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp049
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -73,8 +74,9 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             if ((target is not null && target.RoleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && !Exiled.Events.Events.Instance.Config.CanScp049SenseTutorial) || API.Features.Roles.Scp049Role.TurnedPlayers.Contains(target))
             {
-                senseAbility.Duration.Trigger(Scp049SenseAbility.AttemptFailCooldown);
-                senseAbility.HasTarget = false;
+                senseAbility.Target = Player.List.FirstOrDefault(x => x.IsHuman)?.ReferenceHub;
+                senseAbility.Cooldown.Trigger(Scp049SenseAbility.ReducedCooldown);
+                senseAbility.HasTarget = true;
                 senseAbility.ServerSendRpc(true);
                 return;
             }
