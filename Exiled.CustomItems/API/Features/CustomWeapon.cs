@@ -190,7 +190,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
         protected virtual void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.IsAllowed && Math.Abs(Damage - -1f) > 0)
+            if (ev.IsAllowed && Damage > 0f)
                 ev.Amount = Damage;
         }
 
