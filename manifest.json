@@ -2727,7 +2727,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.CustomItem.html",
-          "hash": "cKzvzrv/vWIKT8sFCxPHwNwz8W09PVvCR7QlLenGh/M="
+          "hash": "P4H0KmQGBbBW0AMBYGF0DnFIYNz6Pu++MjDbCP6Wj9U="
         }
       },
       "is_incremental": false,
@@ -2871,7 +2871,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.CustomRole.html",
-          "hash": "B5waJ8LFUwwBInEMVwGJEpMYtZn8zdLS1rl5wCyxMYM="
+          "hash": "oauE3LmSXoZwk1qbhfxmrV7iwe0r0DMjzNyj+q9q/0w="
         }
       },
       "is_incremental": false,
@@ -6581,7 +6581,7 @@
           "can_incremental": true,
           "incrementalPhase": "build",
           "total_file_count": 531,
-          "skipped_file_count": 195
+          "skipped_file_count": 194
         },
         "ResourceDocumentProcessor": {
           "can_incremental": false,

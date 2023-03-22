@@ -29562,6 +29562,12 @@ references:
   commentId: M:Exiled.CustomRoles.API.Features.CustomRole.Get(System.Type)
   fullName: Exiled.CustomRoles.API.Features.CustomRole.Get(System.Type)
   nameWithType: CustomRole.Get(Type)
+- uid: Exiled.CustomRoles.API.Features.CustomRole.Get(System.UInt32)
+  name: Get(UInt32)
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_Get_System_UInt32_
+  commentId: M:Exiled.CustomRoles.API.Features.CustomRole.Get(System.UInt32)
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.Get(System.UInt32)
+  nameWithType: CustomRole.Get(UInt32)
 - uid: Exiled.CustomRoles.API.Features.CustomRole.Get*
   name: Get
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_Get_
@@ -30005,6 +30011,15 @@ references:
   fullName.vb: Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.Type, ByRef Exiled.CustomRoles.API.Features.CustomRole)
   nameWithType: CustomRole.TryGet(Type, out CustomRole)
   nameWithType.vb: CustomRole.TryGet(Type, ByRef CustomRole)
+- uid: Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.UInt32,Exiled.CustomRoles.API.Features.CustomRole@)
+  name: TryGet(UInt32, out CustomRole)
+  href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_TryGet_System_UInt32_Exiled_CustomRoles_API_Features_CustomRole__
+  commentId: M:Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.UInt32,Exiled.CustomRoles.API.Features.CustomRole@)
+  name.vb: TryGet(UInt32, ByRef CustomRole)
+  fullName: Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.UInt32, out Exiled.CustomRoles.API.Features.CustomRole)
+  fullName.vb: Exiled.CustomRoles.API.Features.CustomRole.TryGet(System.UInt32, ByRef Exiled.CustomRoles.API.Features.CustomRole)
+  nameWithType: CustomRole.TryGet(UInt32, out CustomRole)
+  nameWithType.vb: CustomRole.TryGet(UInt32, ByRef CustomRole)
 - uid: Exiled.CustomRoles.API.Features.CustomRole.TryGet*
   name: TryGet
   href: api/Exiled.CustomRoles.API.Features.CustomRole.html#Exiled_CustomRoles_API_Features_CustomRole_TryGet_
