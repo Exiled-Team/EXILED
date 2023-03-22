@@ -808,7 +808,7 @@ namespace Exiled.CustomItems.API.Features
             typeLookupTable.Add(GetType(), this);
             stringLookupTable.Add(Name, this);
             idLookupTable.Add(Id, this);
-            
+
             SubscribeEvents();
         }
 
