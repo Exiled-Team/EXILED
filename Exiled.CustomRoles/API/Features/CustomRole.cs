@@ -172,15 +172,15 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="id">The ID of the role to get.</param>
         /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         [Obsolete("Use Get(uint) instead", false)]
-        public static CustomRole? Get(int id)
-        {
-            if (!idLookupTable.ContainsKey((uint)id))
-                idLookupTable.Add((uint)id, Registered?.FirstOrDefault(r => r.Id == id));
-            return idLookupTable[(uint)id];
-        }
+        public static CustomRole? Get(int id) => Get((uint)id);
 
         /// <inheritdoc cref="Get(int)"/>
-        public static CustomRole? Get(uint id) => Get(id);
+        public static CustomRole? Get(uint id)
+        {
+            if (!idLookupTable.ContainsKey(id))
+                idLookupTable.Add(id, Registered?.FirstOrDefault(r => r.Id == id));
+            return idLookupTable[id];
+        }
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by type.
