@@ -36,7 +36,6 @@ namespace Exiled.Events.Patches.Fixes
             LocalBuilder throwable = generator.DeclareLocal(typeof(ThrowableItem));
             LocalBuilder projectile = generator.DeclareLocal(typeof(Projectile));
             LocalBuilder playerCamera = generator.DeclareLocal(typeof(Transform));
-            LocalBuilder scale = generator.DeclareLocal(typeof(Vector3));
 
             Label cnt = generator.DefineLabel();
 
@@ -56,7 +55,7 @@ namespace Exiled.Events.Patches.Fixes
             // baseProjectile.transform.rotation = this.Owner.PlayerCameraReference.rotation;
             // baseProjectile.gameObject.SetActive(true);
             // projectile.Spawned = true;
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 // if (Item.Get(this) is Throwable throwable) goto cnt;
                 new CodeInstruction(OpCodes.Ldarg_0),
@@ -74,9 +73,6 @@ namespace Exiled.Events.Patches.Fixes
 
                 // Projectile projectile = throwable.Projectile;
                 new CodeInstruction(OpCodes.Ldloc_S, throwable.LocalIndex).WithLabels(cnt),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Throwable), nameof(Throwable.Scale))),
-                new(OpCodes.Stloc, scale.LocalIndex),
-                new(OpCodes.Ldloc_S, throwable.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Throwable), nameof(Throwable.Projectile))),
                 new(OpCodes.Dup),
 
@@ -112,10 +108,6 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Ldloc_S, projectile.LocalIndex),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Projectile), nameof(Projectile.IsSpawned))),
-                new(OpCodes.Ldloc_S, projectile.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrownProjectile), nameof(ThrownProjectile.transform))),
-                new(OpCodes.Ldloc, scale.LocalIndex),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Transform), nameof(Transform.localScale))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
