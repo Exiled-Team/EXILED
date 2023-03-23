@@ -149,19 +149,19 @@ namespace Exiled.Events.Patches.Events.Server
                         if (endingRoundEventArgs.IsRoundEnded)
                         {
                             roundSummary._roundEnded = true;
-                            RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
+                            RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { endingRoundEventArgs.LeadingTeam });
                             while (roundEndCancellationData.IsCancelled)
                             {
                                 if (roundEndCancellationData.Delay <= 0f)
                                     break;
 
                                 yield return Timing.WaitForSeconds(roundEndCancellationData.Delay);
-                                roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
+                                roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { endingRoundEventArgs.LeadingTeam });
                             }
 
                             if (Statistics.FastestEndedRound.Duration > RoundStart.RoundLength)
                             {
-                                Statistics.FastestEndedRound = new Statistics.FastestRound(leadingTeam, RoundStart.RoundLength, DateTime.Now);
+                                Statistics.FastestEndedRound = new Statistics.FastestRound((RoundSummary.LeadingTeam)endingRoundEventArgs.LeadingTeam, RoundStart.RoundLength, DateTime.Now);
                             }
 
                             Statistics.CurrentRound.ClassDAlive = newList.class_ds;
@@ -180,7 +180,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                             if (roundSummary != null)
                             {
-                                roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, newList, leadingTeam, RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, num5, (int)RoundStart.RoundLength.TotalSeconds);
+                                roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, newList, (RoundSummary.LeadingTeam)endingRoundEventArgs.LeadingTeam, RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, num5, (int)RoundStart.RoundLength.TotalSeconds);
                                 RoundEndedEventArgs roundEndedEventArgs = new(endingRoundEventArgs.LeadingTeam, newList, num5);
 
                                 Handlers.Server.OnRoundEnded(roundEndedEventArgs);
