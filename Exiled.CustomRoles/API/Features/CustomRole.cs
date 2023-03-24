@@ -495,7 +495,6 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void AddRole(Player player)
         {
             Log.Debug($"{Name}: Adding role to {player.Nickname}.");
-            TrackedPlayers.Add(player);
 
             if (Role != RoleTypeId.None)
             {
@@ -508,6 +507,8 @@ namespace Exiled.CustomRoles.API.Features
                 else
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
             }
+
+            TrackedPlayers.Add(player);
 
             if (!KeepInventoryOnSpawn)
             {
