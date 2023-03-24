@@ -21,8 +21,8 @@
         <NoWarn>$(NoWarn);CS1591</NoWarn>
         <Configurations>Debug;Release;Installer</Configurations>
         <Platforms>AnyCPU</Platforms>
-        <AssemblyVersion>3.2.3</AssemblyVersion>
-        <FileVersion>3.2.3</FileVersion>
+        <AssemblyVersion>4.0.0</AssemblyVersion>
+        <FileVersion>4.0.0</FileVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="$(Configuration) == 'Release'">
