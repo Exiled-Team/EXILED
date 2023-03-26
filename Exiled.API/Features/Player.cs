@@ -1843,6 +1843,33 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Removes an <see cref="Pickup"/> from the player's inventory.
+        /// </summary>
+        /// <param name="pickup">The <see cref="Pickup"/> to remove.</param>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
+        /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
+        public bool RemovePickup(Pickup pickup, bool destroy = true)
+        {
+            if (pickup is null)
+                return false;
+
+            if (destroy)
+            {
+                Inventory.ServerRemoveItem(pickup.Serial, null);
+            }
+            else
+            {
+                if (CurrentItem is not null && CurrentItem.Serial == pickup.Serial)
+                    Inventory.NetworkCurItem = ItemIdentifier.None;
+
+                Inventory.UserInventory.Items.Remove(pickup.Serial);
+                Inventory.SendItemsNextFrame = true;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
