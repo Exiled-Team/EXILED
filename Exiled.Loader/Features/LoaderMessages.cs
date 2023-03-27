@@ -81,6 +81,9 @@ namespace Exiled.Loader.Features
         /// <returns>The correspondent loader message.</returns>
         public static string GetMessage()
         {
+            if (Loader.Version.Major == 6 && Loader.Version.Minor == 9)
+                return EasterEgg;
+
             if (Loader.Random.NextDouble() <= 0.069)
                 return EasterEgg;
 
