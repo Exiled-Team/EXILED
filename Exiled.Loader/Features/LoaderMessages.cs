@@ -81,7 +81,7 @@ namespace Exiled.Loader.Features
         /// <returns>The correspondent loader message.</returns>
         public static string GetMessage()
         {
-            if (Loader.Random.NextDouble() <= 0.069)
+            if (Loader.Random.NextDouble() <= 0.069 || (Loader.Version.Major is 6 && Loader.Version.Minor is 9))
                 return EasterEgg;
 
             return DateTime.Today.Month switch
