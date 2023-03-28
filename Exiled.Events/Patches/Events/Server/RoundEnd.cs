@@ -146,6 +146,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                         EndingRoundEventArgs endingRoundEventArgs = new(leadingTeam, newList, shouldRoundEnd);
                         Handlers.Server.OnEndingRound(endingRoundEventArgs);
+                        leadingTeam = (RoundSummary.LeadingTeam)endingRoundEventArgs.LeadingTeam;
                         if (endingRoundEventArgs.IsRoundEnded)
                         {
                             roundSummary._roundEnded = true;
@@ -181,7 +182,7 @@ namespace Exiled.Events.Patches.Events.Server
                             if (roundSummary != null)
                             {
                                 roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, newList, leadingTeam, RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, num5, (int)RoundStart.RoundLength.TotalSeconds);
-                                RoundEndedEventArgs roundEndedEventArgs = new(endingRoundEventArgs.LeadingTeam, newList, num5);
+                                RoundEndedEventArgs roundEndedEventArgs = new((API.Enums.LeadingTeam)leadingTeam, newList, num5);
 
                                 Handlers.Server.OnRoundEnded(roundEndedEventArgs);
                             }
