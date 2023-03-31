@@ -129,7 +129,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the number of players who have been turned into zombies.
+        /// Gets or sets the timer for waiting players in lobby.
         /// </summary>
         public static short LobbyWaitingTime
         {
