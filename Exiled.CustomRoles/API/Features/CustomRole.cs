@@ -464,7 +464,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>True if the player has this role.</returns>
-        public virtual bool Check(Player player) => TrackedPlayers.Contains(player);
+        public virtual bool Check(Player? player) => player is not null && TrackedPlayers.Contains(player);
 
         /// <summary>
         /// Initializes this role manager.
