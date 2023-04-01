@@ -69,7 +69,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="grenadeType">The <see cref="ItemType"/>of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
         /// <returns>The <see cref="Pickup"/> spawned.</returns>
-        public Pickup Throw(Vector3 position, float force, float weight, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHE, Player player = null)
+        public virtual Pickup Throw(Vector3 position, float force, float weight, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHE, Player player = null)
         {
             if (player is null)
                 player = Server.Host;
