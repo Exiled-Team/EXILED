@@ -1850,34 +1850,7 @@ namespace Exiled.API.Features
         /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
         public bool RemoveItem(ushort serial, bool destroy = true)
         {
-            Item item = Item.Get(serial);
-
-            if (!ItemsValue.Contains(item))
-                return false;
-
-            if (!Inventory.UserInventory.Items.ContainsKey(serial))
-            {
-                ItemsValue.Remove(item);
-                return false;
-            }
-
-            if (destroy)
-            {
-                Inventory.ServerRemoveItem(item.Serial, null);
-            }
-            else
-            {
-                item.ChangeOwner(this, Server.Host);
-
-                if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
-                    Inventory.NetworkCurItem = ItemIdentifier.None;
-
-                Inventory.UserInventory.Items.Remove(item.Serial);
-                ItemsValue.Remove(item);
-                Inventory.SendItemsNextFrame = true;
-            }
-
-            return true;
+            return RemoveItem(Item.Get(serial), destroy);
         }
 
         /// <summary>
