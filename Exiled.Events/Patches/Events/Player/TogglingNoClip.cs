@@ -79,6 +79,8 @@ namespace Exiled.Events.Patches.Events.Player
                     // Note: If IsEnabled = true, and the player already has noclip, or IsEnabled = false and the player already doesn't have noclip, we return, since base-game code inverts the status.
                     new(OpCodes.Ldloc_S, ev),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.IsEnabled))),
+                    new(OpCodes.Ldloc_S, ev),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingNoClipEventArgs), nameof(TogglingNoClipEventArgs.Player))),
                     new(OpCodes.Call, Method(typeof(TogglingNoClip), nameof(GetNoClipStatus))),
                     new(OpCodes.Beq_S, retLabel),
                 });
