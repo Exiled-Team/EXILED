@@ -129,6 +129,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the timer for waiting players in lobby.
+        /// </summary>
+        public static short LobbyWaitingTime
+        {
+            get => RoundStart.singleton.NetworkTimer;
+            set => RoundStart.singleton.NetworkTimer = value;
+        }
+
+        /// <summary>
         /// Gets the number of rounds since the server started.
         /// </summary>
         public static int UptimeRounds => RoundRestart.UptimeRounds;
