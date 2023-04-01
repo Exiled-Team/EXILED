@@ -1843,6 +1843,44 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Removes an <see cref="Item"/> from the player's inventory.
+        /// </summary>
+        /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
+        /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
+        public bool RemoveItem(ushort serial, bool destroy = true)
+        {
+            Item item = Item.Get(serial);
+
+            if (!ItemsValue.Contains(item))
+                return false;
+
+            if (!Inventory.UserInventory.Items.ContainsKey(serial))
+            {
+                ItemsValue.Remove(item);
+                return false;
+            }
+
+            if (destroy)
+            {
+                Inventory.ServerRemoveItem(item.Serial, null);
+            }
+            else
+            {
+                item.ChangeOwner(this, Server.Host);
+
+                if (CurrentItem is not null && CurrentItem.Serial == item.Serial)
+                    Inventory.NetworkCurItem = ItemIdentifier.None;
+
+                Inventory.UserInventory.Items.Remove(item.Serial);
+                ItemsValue.Remove(item);
+                Inventory.SendItemsNextFrame = true;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>
