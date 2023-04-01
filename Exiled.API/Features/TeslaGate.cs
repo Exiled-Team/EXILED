@@ -284,7 +284,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> can idle the tesla gate; otherwise, <see langword="false"/>.</returns>
-        public bool CanBeIdle(Player player) => player.IsAlive && !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) &&
+        public bool CanBeIdle(Player player) => player is not null && player.IsAlive && !IgnoredPlayers.Contains(player) && player.Role is not null && !IgnoredRoles.Contains(player.Role) &&
                                                 !IgnoredTeams.Contains(player.Role.Team) && IsPlayerInIdleRange(player);
 
         /// <summary>
