@@ -450,5 +450,12 @@ namespace Exiled.API.Features.Roles
             PingAbility.AuxManager.CurrentAux -= PingAbility._cost;
             PingAbility._rateLimiter.RegisterInput();
         }
+
+        /// <summary>
+        /// Gets the spawn chance of SCP-079.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
     }
 }

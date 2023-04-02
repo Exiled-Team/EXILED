@@ -37,6 +37,7 @@ namespace Exiled.API.Features.Roles
         internal Scp939Role(Scp939GameRole baseRole)
             : base(baseRole)
         {
+            Internal = baseRole;
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
 
@@ -230,6 +231,11 @@ namespace Exiled.API.Features.Roles
         public List<Player> VisiblePlayers { get; } = ListPool<Player>.Pool.Get();
 
         /// <summary>
+        /// Gets the <see cref="Scp939GameRole"/> instance.
+        /// </summary>
+        protected Scp939GameRole Internal { get; }
+
+        /// <summary>
         /// Removes all recordings of player voices. Provide an optional target to remove all the recordings of a single player.
         /// </summary>
         /// <param name="target">If provided, will only remove recordings of the targeted player.</param>
@@ -282,5 +288,12 @@ namespace Exiled.API.Features.Roles
             AmnesticCloudAbility.OnStateEnabled();
             AmnesticCloudAbility.ServerConfirmPlacement(duration);
         }
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-939.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
     }
 }

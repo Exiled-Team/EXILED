@@ -33,6 +33,7 @@ namespace Exiled.API.Features.Roles
         internal Scp173Role(Scp173GameRole baseRole)
             : base(baseRole)
         {
+            Internal = baseRole;
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
             MovementModule = FirstPersonController.FpcModule as Scp173MovementModule;
@@ -214,6 +215,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the <see cref="Scp173GameRole"/> instance.
+        /// </summary>
+        protected Scp173GameRole Internal { get; }
+
+        /// <summary>
         /// Places a Tantrum (SCP-173's ability) under the player.
         /// </summary>
         /// <param name="failIfObserved">Whether or not to place the tantrum if SCP-173 is currently being viewed.</param>
@@ -240,5 +246,12 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="targetPos">The Target Position.</param>
         public void Blink(Vector3 targetPos) => BlinkTimer.ServerBlink(targetPos);
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-173.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
     }
 }

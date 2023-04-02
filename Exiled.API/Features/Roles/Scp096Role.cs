@@ -268,5 +268,12 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="duration">The input prompt duration.</param>
         public void ShowRageInput(float duration = 10f) => RageCycleAbility.ServerTryEnableInput(duration);
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-096.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
     }
 }

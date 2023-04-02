@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using System.Collections.Generic;
+
     using Exiled.API.Enums;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -231,5 +233,12 @@ namespace Exiled.API.Features.Roles
             player.EnableEffect(EffectType.Corroding);
             player.EnableEffect(EffectType.SinkHole);
         }
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-106.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
     }
 }

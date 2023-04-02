@@ -200,7 +200,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp049GameRole"/> instance.
         /// </summary>
-        public Scp049GameRole Internal { get; }
+        protected Scp049GameRole Internal { get; }
 
         /// <summary>
         /// Lose the actual target of the SCP-049 Sense Ability.
@@ -306,9 +306,9 @@ namespace Exiled.API.Features.Roles
         public bool IsInRecallRange(Ragdoll ragdoll) => IsInRecallRange(ragdoll.Base);
 
         /// <summary>
-        /// Gets the SpawnChance of the <see cref="Scp049GameRole"/>.
+        /// Gets the Spawn Chance of SCP-049.
         /// </summary>
-        /// <param name="alreadySpawned">The List of RoleTypeIds spawned.</param>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
         public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
     }
