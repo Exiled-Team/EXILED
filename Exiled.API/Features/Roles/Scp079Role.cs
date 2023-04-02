@@ -227,6 +227,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the Current Camera Position.
+        /// </summary>
+        public Vector3 CameraPosition => Internal.CameraPosition;
+
+        /// <summary>
         /// Gets the relative experience.
         /// </summary>
         public float RelativeExperience => TierManager.RelativeExp;
@@ -462,14 +467,20 @@ namespace Exiled.API.Features.Roles
         /// Trigger the Ping Ability to ping a <see cref="RelativePosition"/>.
         /// </summary>
         /// <param name="syncedNormal">The SyncNormal Position.</param>
+        /// <param name="playersToSend">The List of players to send the ping.</param>
+        /// <param name="pingType">The PingType to return.</param>
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
-        public void Ping(Vector3 syncedNormal, bool consumeEnergy = true)
+        public void Ping(Vector3 syncedNormal, List<ReferenceHub> playersToSend = null, PingType pingType = PingType.Default, bool consumeEnergy = true)
         {
             var relativePosition = new RelativePosition(syncedNormal);
             PingAbility._syncPos = relativePosition;
             PingAbility._syncNormal = syncedNormal;
+            pingType = (PingType)PingAbility._syncProcessorIndex;
 
-            PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)PingAbility._syncProcessorIndex));
+            if (playersToSend is null)
+                PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)pingType));
+            else
+                PingAbility.ServerSendRpc(playersToSend.Contains);
 
             if (consumeEnergy)
             {
