@@ -390,6 +390,12 @@ namespace Exiled.API.Features.Roles
         public void MarkRoom(Room room) => RewardManager.MarkRoom(room.Identifier);
 
         /// <summary>
+        /// Marks a array of rooms as being modified by SCP-079 (granting experience if a kill happens in the room).
+        /// </summary>
+        /// <param name="rooms">The Array of Rooms to mark.</param>
+        public void MarkRooms(Room[] rooms) => RewardManager.MarkRooms(rooms.Select(x => x.Identifier).ToArray());
+
+        /// <summary>
         /// Removes a marked room.
         /// </summary>
         /// <param name="room">The room to remove.</param>
