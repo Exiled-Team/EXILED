@@ -423,9 +423,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Blackout the current room.
         /// </summary>
-        public void BlackoutRoom()
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
+        public void BlackoutRoom(bool consumeEnergy = true)
         {
-            BlackoutRoomAbility.AuxManager.CurrentAux -= BlackoutRoomAbility._cost;
+            if (consumeEnergy)
+                BlackoutRoomAbility.AuxManager.CurrentAux -= BlackoutRoomAbility._cost;
+
             BlackoutRoomAbility.RewardManager.MarkRoom(BlackoutRoomAbility._roomController.Room);
             BlackoutRoomAbility._blackoutCooldowns[BlackoutRoomAbility._roomController.netId] = NetworkTime.time + BlackoutRoomAbility._cooldown;
             BlackoutRoomAbility._roomController.ServerFlickerLights(BlackoutRoomAbility._blackoutDuration);
@@ -436,7 +439,8 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Blackout the current zone.
         /// </summary>
-        public void BlackoutZone()
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
+        public void BlackoutZone(bool consumeEnergy = true)
         {
             foreach (FlickerableLightController lightController in FlickerableLightController.Instances)
             {
@@ -447,7 +451,10 @@ namespace Exiled.API.Features.Roles
             }
 
             BlackoutZoneAbility._cooldownTimer.Trigger(BlackoutZoneAbility._cooldown);
-            BlackoutZoneAbility.AuxManager.CurrentAux -= BlackoutZoneAbility._cost;
+
+            if (consumeEnergy)
+                BlackoutZoneAbility.AuxManager.CurrentAux -= BlackoutZoneAbility._cost;
+
             BlackoutZoneAbility.ServerSendRpc(true);
         }
 
@@ -455,7 +462,7 @@ namespace Exiled.API.Features.Roles
         /// Trigger the Ping Ability to ping a <see cref="RelativePosition"/>.
         /// </summary>
         /// <param name="syncedNormal">The SyncNormal Position.</param>
-        /// <param name="consumeEnergy">Indicates if the energy should be consumed or not.</param>
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
         public void Ping(Vector3 syncedNormal, bool consumeEnergy = true)
         {
             var relativePosition = new RelativePosition(syncedNormal);
