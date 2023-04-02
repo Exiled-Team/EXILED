@@ -433,7 +433,8 @@ namespace Exiled.API.Features.Roles
         /// Trigger the Ping Ability to ping a <see cref="RelativePosition"/>.
         /// </summary>
         /// <param name="syncedNormal">The SyncNormal Position.</param>
-        public void Ping(Vector3 syncedNormal)
+        /// <param name="consumeEnergy">Indicates if the energy should be consumed or not.</param>
+        public void Ping(Vector3 syncedNormal, bool consumeEnergy = true)
         {
             var relativePosition = new RelativePosition(syncedNormal);
             PingAbility._syncPos = relativePosition;
@@ -441,7 +442,11 @@ namespace Exiled.API.Features.Roles
 
             PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)PingAbility._syncProcessorIndex));
 
-            PingAbility.AuxManager.CurrentAux -= PingAbility._cost;
+            if (consumeEnergy)
+            {
+                PingAbility.AuxManager.CurrentAux -= PingAbility._cost;
+            }
+
             PingAbility._rateLimiter.RegisterInput();
         }
 
