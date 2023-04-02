@@ -208,26 +208,34 @@ namespace Exiled.API.Features.Roles
         public void LoseSenseTarget() => SenseAbility.ServerLoseTarget();
 
         /// <summary>
-        /// Resurrects a player.
+        /// Resurrects a <see cref="Player"/>.
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to resurrect.</param>
-        public void Resurrect(Player player)
+        /// <returns>The Resurrected player.</returns>
+        public bool Resurrect(Player player)
         {
             player.ReferenceHub.transform.position = ResurrectAbility.ScpRole.FpcModule.Position;
 
             HumeShieldModuleBase humeShield = ResurrectAbility.ScpRole.HumeShieldModule;
             humeShield.HsCurrent = Mathf.Min(humeShield.HsCurrent + 100f, humeShield.HsMax);
-            Set(RoleTypeId.Scp0492, Enums.SpawnReason.Revived);
+
+            return Resurrect(Ragdoll.GetLast(player));
         }
 
         /// <summary>
         /// Resurrects a <see cref="Ragdoll"/> owner.
         /// </summary>
         /// <param name="ragdoll">The Ragdoll to resurrect.</param>
-        public void Resurrect(Ragdoll ragdoll)
+        /// <returns>The Resurrected Ragdoll.</returns>
+        public bool Resurrect(Ragdoll ragdoll)
         {
-            Resurrect(ragdoll.Owner);
-            ragdoll.Destroy();
+            if (ragdoll is null)
+                return false;
+
+            ResurrectAbility.CurRagdoll = ragdoll.Base;
+            ResurrectAbility.ServerComplete();
+
+            return true;
         }
 
         /// <summary>
