@@ -67,6 +67,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the Roll Rotation of the <see cref="Player"/>.
+        /// </summary>
+        public float RollRotation => Internal.RollRotation;
+
+        /// <summary>
         /// Gets the game <see cref="SpectatorGameRole"/>.
         /// </summary>
         private SpectatorGameRole Internal { get; }

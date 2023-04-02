@@ -34,6 +34,7 @@ namespace Exiled.API.Features.Roles
         internal Scp049Role(Scp049GameRole baseRole)
             : base(baseRole)
         {
+            Internal = baseRole;
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
 
@@ -197,6 +198,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the <see cref="Scp049GameRole"/> instance.
+        /// </summary>
+        public Scp049GameRole Internal { get; }
+
+        /// <summary>
         /// Lose the actual target of the SCP-049 Sense Ability.
         /// </summary>
         public void LoseSenseTarget() => SenseAbility.ServerLoseTarget();
@@ -298,5 +304,12 @@ namespace Exiled.API.Features.Roles
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
         public bool IsInRecallRange(Ragdoll ragdoll) => IsInRecallRange(ragdoll.Base);
+
+        /// <summary>
+        /// Gets the SpawnChance of the <see cref="Scp049GameRole"/>.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of RoleTypeIds spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
     }
 }
