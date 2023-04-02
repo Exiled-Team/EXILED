@@ -80,10 +80,7 @@ namespace Exiled.API.Features.Roles
 
             FirearmRippleTrigger = firearmRippleTrigger;
 
-            if (!SubroutineModule.TryGetSubroutine(out MimicPointController mimicPointController))
-                Log.Error("MimicPointController not found in Scp939Role::ctor");
-
-            MimicPointController = mimicPointController;
+            MimicPointController = EnvironmentalMimicry._mimicPoint;
         }
 
         /// <summary>
