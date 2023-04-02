@@ -162,6 +162,32 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the duration of the <see cref="Scp049CallAbility"/>.
+        /// </summary>
+        public float CallDuration
+        {
+            get => CallAbility.Duration.Remaining;
+            set
+            {
+                CallAbility.Duration.Remaining = value;
+                CallAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the duration of the <see cref="Scp049SenseAbility"/>.
+        /// </summary>
+        public float GoodSenseDuration
+        {
+            get => SenseAbility.Duration.Remaining;
+            set
+            {
+                SenseAbility.Duration.Remaining = value;
+                SenseAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the distance of the Sense Ability.
         /// </summary>
         public float SenseDistance
@@ -235,6 +261,13 @@ namespace Exiled.API.Features.Roles
         /// Refresh the <see cref="Scp049CallAbility"/> duration.
         /// </summary>
         public void RefreshCallDuration() => CallAbility.ServerRefreshDuration();
+
+        /// <summary>
+        /// Gets the amount of resurrections of a <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to check.</param>
+        /// <returns>The amount of resurrections of the checked player.</returns>
+        public int GetResurrections(Player player) => Scp049ResurrectAbility.GetResurrectionsNumber(player.ReferenceHub);
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.
