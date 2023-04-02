@@ -9,10 +9,16 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
+    using CustomPlayerEffects;
+    using Exiled.API.Enums;
+
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerStatsSystem;
+
+    using UnityEngine;
 
     using Scp049GameRole = PlayerRoles.PlayableScps.Scp049.Scp049Role;
 
@@ -45,6 +51,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp049SenseAbility subroutine not found in Scp049Role::ctor");
 
             SenseAbility = scp049SenseAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp049AttackAbility scp049AttackAbility))
+                Log.Error("Scp049AttackAbility subroutine not found in Scp049Role::ctor");
+
+            AttackAbility = scp049AttackAbility;
         }
 
         /// <summary>
@@ -65,6 +76,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-049's <see cref="Scp049ResurrectAbility"/>.
         /// </summary>
         public Scp049ResurrectAbility ResurrectAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-049's <see cref="Scp049AttackAbility"/>.
+        /// </summary>
+        public Scp049AttackAbility AttackAbility { get; }
 
         /// <summary>
         /// Gets SCP-049's <see cref="Scp049CallAbility"/>.
@@ -120,6 +136,89 @@ namespace Exiled.API.Features.Roles
                 SenseAbility.Cooldown.Remaining = value;
                 SenseAbility.ServerSendRpc(true);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of time before SCP-049 can attack again.
+        /// </summary>
+        public float AttackCooldown
+        {
+            get => AttackAbility.Cooldown.Remaining;
+            set
+            {
+                AttackAbility.Cooldown.Remaining = value;
+                AttackAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the distance of the Sense Ability.
+        /// </summary>
+        public float SenseDistance
+        {
+            get => SenseAbility._distanceThreshold;
+            set => SenseAbility._distanceThreshold = value;
+        }
+
+        /// <summary>
+        /// Lose the actual target of the SCP-049 Sense Ability.
+        /// </summary>
+        public void LoseSenseTarget() => SenseAbility.ServerLoseTarget();
+
+        /// <summary>
+        /// Resurrects a player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to resurrect.</param>
+        public void Resurrect(Player player)
+        {
+            player.ReferenceHub.transform.position = ResurrectAbility.ScpRole.FpcModule.Position;
+
+            HumeShieldModuleBase humeShield = ResurrectAbility.ScpRole.HumeShieldModule;
+            humeShield.HsCurrent = Mathf.Min(humeShield.HsCurrent + 100f, humeShield.HsMax);
+            Set(RoleTypeId.Scp0492, Enums.SpawnReason.Revived);
+        }
+
+        /// <summary>
+        /// Resurrects a <see cref="Ragdoll"/> owner.
+        /// </summary>
+        /// <param name="ragdoll">The Ragdoll to resurrect.</param>
+        public void Resurrect(Ragdoll ragdoll)
+        {
+            Resurrect(ragdoll.Owner);
+            ragdoll.Destroy();
+        }
+
+        /// <summary>
+        /// Attacks a Player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to attack.</param>
+        public void Attack(Player player)
+        {
+            AttackAbility._target = player.ReferenceHub;
+
+            if (AttackAbility._target is null || !AttackAbility.IsTargetValid(AttackAbility._target))
+                return;
+
+            AttackAbility.Cooldown.Trigger(Scp049AttackAbility.CooldownTime);
+            CardiacArrest cardiacArrest = AttackAbility._target.playerEffectsController.GetEffect<CardiacArrest>();
+
+            if (cardiacArrest.IsEnabled)
+            {
+                AttackAbility._target.playerStats.DealDamage(new Scp049DamageHandler(AttackAbility.Owner, -1f, Scp049DamageHandler.AttackType.Instakill));
+            }
+            else
+            {
+                cardiacArrest.SetAttacker(AttackAbility.Owner);
+                cardiacArrest.Intensity = 1;
+                cardiacArrest.ServerChangeDuration(AttackAbility._statusEffectDuration, false);
+            }
+
+            SenseAbility.HasTarget = false;
+            SenseAbility.Cooldown.Trigger(20f);
+            SenseAbility.ServerSendRpc(true);
+
+            AttackAbility.ServerSendRpc(true);
+            Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);
         }
 
         /// <summary>
