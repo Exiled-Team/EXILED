@@ -277,7 +277,7 @@ namespace Exiled.API.Features.Roles
         /// Created a Amnestic Cloud at the SCP-939's position.
         /// </summary>
         /// <param name="duration">The duration of the Amnestic cloud.</param>
-        public void CreateAmnesticCloud(float duration)
+        public void CreateCloud(float duration)
         {
             AmnesticCloudAbility.OnStateEnabled();
             AmnesticCloudAbility.ServerConfirmPlacement(duration);
