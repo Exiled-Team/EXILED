@@ -214,7 +214,7 @@ namespace Exiled.API.Features.Roles
         /// Send a player to the pocket dimension.
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to send.</param>
-        public void SendPlayerToPocket(Player player)
+        public void CapturePlayer(Player player)
         {
             Attack._targetHub = player.ReferenceHub;
             DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, Attack._damage, DeathTranslations.PocketDecay);
