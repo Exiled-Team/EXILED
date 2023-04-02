@@ -7,10 +7,12 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using Exiled.API.Enums;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp106;
     using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerStatsSystem;
 
     using UnityEngine;
 
@@ -119,14 +121,29 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not SCP-106 is currently in his portal.
+        /// </summary>
+        public bool CanActivateShock => Internal.CanActivateShock;
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-106 is ready for idle.
         /// </summary>
         public bool CanActivateIdle => Internal.CanActivateIdle;
 
         /// <summary>
+        /// Gets a value indicating whether if SCP-106 <see cref="Scp106StalkAbility"/> can be cleared.
+        /// </summary>
+        public bool CanBeCleared => StalkAbility.CanBeCleared;
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently slow down by a door.
         /// </summary>
         public bool IsSlowdown => MovementModule._slowndownTarget is < 1;
+
+        /// <summary>
+        /// Gets a value indicating the current time of the sinkhole.
+        /// </summary>
+        public float SinkholeCurrentTime => SinkholeController.CurTime;
 
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
@@ -138,6 +155,19 @@ namespace Exiled.API.Features.Roles
             {
                 Attack._hitCooldown = value;
                 Attack.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Sinkhole cooldown.
+        /// </summary>
+        public float SinkholeCooldown
+        {
+            get => SinkholeController.Cooldown.Remaining;
+            set
+            {
+                SinkholeController.Cooldown.Remaining = value;
+                SinkholeController.ServerSendRpc(true);
             }
         }
 
@@ -178,6 +208,28 @@ namespace Exiled.API.Features.Roles
             HuntersAtlasAbility.SetSubmerged(true);
 
             return true;
+        }
+
+        /// <summary>
+        /// Send a player to the pocket dimension.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to send.</param>
+        public void SendPlayerToPocket(Player player)
+        {
+            Attack._targetHub = player.ReferenceHub;
+            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, Attack._damage, DeathTranslations.PocketDecay);
+
+            if (!Attack._targetHub.playerStats.DealDamage(handler))
+                return;
+
+            Attack.SendCooldown(Attack._hitCooldown);
+            Attack.Vigor.VigorAmount += Scp106Attack.VigorCaptureReward;
+            Attack.ReduceSinkholeCooldown();
+            Hitmarker.SendHitmarker(Attack.Owner, 1f);
+
+            player.EnableEffect(EffectType.Traumatized, 180f);
+            player.EnableEffect(EffectType.Corroding);
+            player.EnableEffect(EffectType.SinkHole);
         }
     }
 }
