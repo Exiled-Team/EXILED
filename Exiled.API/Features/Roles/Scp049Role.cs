@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Enums;
 
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -269,6 +270,39 @@ namespace Exiled.API.Features.Roles
 
             AttackAbility.ServerSendRpc(true);
             Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);
+        }
+
+        /// <summary>
+        /// Trigger the Sense Ability on the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The Player to sense.</param>
+        public void SensePlayer(Player player)
+        {
+            if (!SenseAbility.Cooldown.IsReady || !SenseAbility.Duration.IsReady)
+                return;
+
+            SenseAbility.HasTarget = false;
+            SenseAbility.Target = player.ReferenceHub;
+
+            if (SenseAbility.Target is null)
+            {
+                SenseAbility.Cooldown.Trigger(Scp049SenseAbility.AttemptFailCooldown);
+                SenseAbility.ServerSendRpc(true);
+                return;
+            }
+            else
+            {
+                if (!(SenseAbility.Target.roleManager.CurrentRole is PlayerRoles.HumanRole humanRole))
+                    return;
+
+                var radius = humanRole.FpcModule.CharController.radius;
+                if (!VisionInformation.GetVisionInformation(SenseAbility.Owner, SenseAbility.Owner.PlayerCameraReference, humanRole.CameraPosition, radius, SenseAbility._distanceThreshold).IsLooking)
+                    return;
+
+                SenseAbility.Duration.Trigger(Scp049SenseAbility.ReducedCooldown);
+                SenseAbility.HasTarget = true;
+                SenseAbility.ServerSendRpc(true);
+            }
         }
 
         /// <summary>
