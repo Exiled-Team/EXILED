@@ -276,7 +276,7 @@ namespace Exiled.API.Features.Roles
         /// Trigger the Sense Ability on the specified <see cref="Player"/>.
         /// </summary>
         /// <param name="player">The Player to sense.</param>
-        public void SensePlayer(Player player)
+        public void Sense(Player player)
         {
             if (!SenseAbility.Cooldown.IsReady || !SenseAbility.Duration.IsReady)
                 return;
