@@ -227,6 +227,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the relative experience.
+        /// </summary>
+        public float RelativeExperience => TierManager.RelativeExp;
+
+        /// <summary>
         /// Gets or sets SCP-079's level.
         /// </summary>
         public int Level
@@ -279,6 +284,11 @@ namespace Exiled.API.Features.Roles
                 LockdownRoomAbility.ServerSendRpc(true);
             }
         }
+
+        /// <summary>
+        /// Gets the Remaining Lockdown Duration.
+        /// </summary>
+        public float RemainingLockdownDuration => LockdownRoomAbility.RemainingLockdownDuration;
 
         /// <summary>
         /// Gets the amount of rooms that SCP-079 has blacked out.
@@ -461,6 +471,16 @@ namespace Exiled.API.Features.Roles
 
             PingAbility._rateLimiter.RegisterInput();
         }
+
+        /// <summary>
+        /// Trigger the Lockdown Room Ability to lock the current room.
+        /// </summary>
+        public void LockdownRoom() => LockdownRoomAbility.ServerInitLockdown();
+
+        /// <summary>
+        /// Cancels the Actual Lockdown.
+        /// </summary>
+        public void CancelLockdown() => LockdownRoomAbility.ServerCancelLockdown();
 
         /// <summary>
         /// Trigger the SCP-079's Tesla Gate Ability.
