@@ -123,9 +123,9 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-106 is currently in his portal.
+        /// Gets a value indicating whether or not SCP-106 can activate teslas.
         /// </summary>
-        public bool CanActivateShock => Internal.CanActivateShock;
+        public bool CanActivateTesla => Internal.CanActivateShock;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is ready for idle.

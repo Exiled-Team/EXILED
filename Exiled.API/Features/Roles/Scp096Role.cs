@@ -194,6 +194,15 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the TryNotToCry ability is active.
+        /// </summary>
+        public bool TryNotToCryActive
+        {
+            get => TryNotToCryAbility.IsActive;
+            set => TryNotToCryAbility.IsActive = value;
+        }
+
+        /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of Players that are currently targeted by SCP-096.
         /// </summary>
         public IReadOnlyCollection<Player> Targets => RageCycleAbility._targetsTracker.Targets.Select(Player.Get).ToList().AsReadOnly();
@@ -257,12 +266,6 @@ namespace Exiled.API.Features.Roles
         /// Trigger the attack ability.
         /// </summary>
         public void Attack() => AttackAbility.ServerAttack();
-
-        /// <summary>
-        /// Change the state of the TryNotToCry ability.
-        /// </summary>
-        /// <param name="active">The active state to set.</param>
-        public void TryNotToCry(bool active) => TryNotToCryAbility.IsActive = active;
 
         /// <summary>
         /// Trigger the charge ability.
