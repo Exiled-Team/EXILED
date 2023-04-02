@@ -61,6 +61,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp173AudioPlayer not found in Scp173Role::ctor");
 
             AudioPlayer = scp173AudioPlayer;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp173BreakneckSpeedsAbility scp173BreakneckSpeedsAbility))
+                Log.Error("Scp173BreakneckSpeedsAbility not found in Scp173Role::ctor");
+
+            BreakneckSpeedsAbility = scp173BreakneckSpeedsAbility;
         }
 
         /// <summary>
@@ -103,6 +108,11 @@ namespace Exiled.API.Features.Roles
         public Scp173TantrumAbility TantrumAbility { get; }
 
         /// <summary>
+        /// Gets SCP-173's <see cref="Scp173BreakneckSpeedsAbility"/>.
+        /// </summary>
+        public Scp173BreakneckSpeedsAbility BreakneckSpeedsAbility { get; }
+
+        /// <summary>
         /// Gets the SCP-173's <see cref="Scp173AudioPlayer"/>.
         /// </summary>
         public Scp173AudioPlayer AudioPlayer { get; }
@@ -110,12 +120,28 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can use breakneck speed again.
         /// </summary>
-        public float BreakneckCooldown { get; set; } = 40f; // It's hardcoded //TODO
+        public float BreakneckCooldown
+        {
+            get => BreakneckSpeedsAbility.Cooldown.Remaining;
+            set
+            {
+                BreakneckSpeedsAbility.Cooldown.Remaining = value;
+                BreakneckSpeedsAbility.ServerSendRpc(true);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can place a tantrum.
         /// </summary>
-        public float TantrumCooldown { get; set; } = 30f; // It's hardcoded //TODO
+        public float TantrumCooldown
+        {
+            get => TantrumAbility.Cooldown.Remaining;
+            set
+            {
+                TantrumAbility.Cooldown.Remaining = value;
+                TantrumAbility.ServerSendRpc(true);
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-173 is currently being viewed by one or more players.
@@ -183,8 +209,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public bool BreakneckActive
         {
-            get => TeleportAbility._breakneckSpeedsAbility.IsActive;
-            set => TeleportAbility._breakneckSpeedsAbility.IsActive = value;
+            get => BreakneckSpeedsAbility.IsActive;
+            set => BreakneckSpeedsAbility.IsActive = value;
         }
 
         /// <summary>
@@ -208,5 +234,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="soundId">The SoundId to Play.</param>
         public void SendAudio(Scp173AudioPlayer.Scp173SoundId soundId) => AudioPlayer.ServerSendSound(soundId);
+
+        /// <summary>
+        /// Teleport SCP-173 using the blink ability to the Target Position.
+        /// </summary>
+        /// <param name="targetPos">The Target Position.</param>
+        public void Blink(Vector3 targetPos) => BlinkTimer.ServerBlink(targetPos);
     }
 }
