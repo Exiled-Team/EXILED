@@ -12,14 +12,18 @@ namespace Exiled.API.Features.Roles
 
     using Exiled.API.Enums;
     using Interactables.Interobjects.DoorUtils;
+    using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Scp079.Cameras;
+    using PlayerRoles.PlayableScps.Scp079.Pinging;
     using PlayerRoles.PlayableScps.Scp079.Rewards;
     using PlayerRoles.PlayableScps.Subroutines;
+    using RelativePositioning;
 
     using Mathf = UnityEngine.Mathf;
     using Scp079GameRole = PlayerRoles.PlayableScps.Scp079.Scp079Role;
+    using Vector3 = UnityEngine.Vector3;
 
     /// <summary>
     /// Defines a role that represents SCP-079.
@@ -89,6 +93,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079CurrentCameraSync subroutine not found in Scp079Role::ctor");
 
             CurrentCameraSync = scp079CameraSync;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079PingAbility scp079PingAbility))
+                Log.Error("Scp079PingAbility subroutine not found in Scp079Role::ctor");
+
+            PingAbility = scp079PingAbility;
         }
 
         /// <inheritdoc/>
@@ -126,6 +135,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079RewardManager"/>.
         /// </summary>
         public Scp079RewardManager RewardManager { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079PingAbility"/>.
+        /// </summary>
+        public Scp079PingAbility PingAbility { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079LockdownRoomAbility"/>.
@@ -287,6 +301,11 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets the Roll Rotation of SCP-079.
+        /// </summary>
+        public float RollRotation => Internal.RollRotation;
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-079's signal is lost due to SCP-2176.
         /// </summary>
         public bool IsLost => LostSignalHandler.Lost;
@@ -377,6 +396,59 @@ namespace Exiled.API.Features.Roles
                 return DoorLockChanger.GetCostForDoor(action, door.Base);
             else
                 return DoorStateChanger.GetCostForDoor(action, door.Base);
+        }
+
+        /// <summary>
+        /// Blackout the current room.
+        /// </summary>
+        public void BlackoutRoom()
+        {
+            if (BlackoutRoomAbility is null)
+                return;
+
+            BlackoutRoomAbility.AuxManager.CurrentAux -= BlackoutRoomAbility._cost;
+            BlackoutRoomAbility.RewardManager.MarkRoom(BlackoutRoomAbility._roomController.Room);
+            BlackoutRoomAbility._blackoutCooldowns[BlackoutRoomAbility._roomController.netId] = NetworkTime.time + BlackoutRoomAbility._cooldown;
+            BlackoutRoomAbility._roomController.ServerFlickerLights(BlackoutRoomAbility._blackoutDuration);
+            BlackoutRoomAbility._successfulController = BlackoutRoomAbility._roomController;
+            BlackoutRoomAbility.ServerSendRpc(true);
+        }
+
+        /// <summary>
+        /// Blackout the current zone.
+        /// </summary>
+        public void BlackoutZone()
+        {
+            if (BlackoutZoneAbility is null)
+                return;
+
+            foreach (FlickerableLightController lightController in FlickerableLightController.Instances)
+            {
+                if (lightController.Room.Zone == BlackoutZoneAbility._syncZone)
+                {
+                    lightController.ServerFlickerLights(BlackoutZoneAbility._duration);
+                }
+            }
+
+            BlackoutZoneAbility._cooldownTimer.Trigger(BlackoutZoneAbility._cooldown);
+            BlackoutZoneAbility.AuxManager.CurrentAux -= BlackoutZoneAbility._cost;
+            BlackoutZoneAbility.ServerSendRpc(true);
+        }
+
+        /// <summary>
+        /// Trigger the Ping Ability to ping a <see cref="RelativePosition"/>.
+        /// </summary>
+        /// <param name="relativePosition">The Relative Position to ping.</param>
+        /// <param name="syncedNormal">The SyncNormal Position.</param>
+        public void Ping(RelativePosition relativePosition, Vector3 syncedNormal)
+        {
+            PingAbility._syncPos = relativePosition;
+            PingAbility._syncNormal = syncedNormal;
+
+            PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)PingAbility._syncProcessorIndex));
+
+            PingAbility.AuxManager.CurrentAux -= PingAbility._cost;
+            PingAbility._rateLimiter.RegisterInput();
         }
     }
 }
