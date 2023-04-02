@@ -79,6 +79,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("FirearmRippleTrigger not found in Scp939Role::ctor");
 
             FirearmRippleTrigger = firearmRippleTrigger;
+
+            if (!SubroutineModule.TryGetSubroutine(out MimicPointController mimicPointController))
+                Log.Error("MimicPointController not found in Scp939Role::ctor");
+
+            MimicPointController = mimicPointController;
         }
 
         /// <summary>
@@ -109,6 +114,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-939's <see cref="Scp939LungeAbility"/>.
         /// </summary>
         public Scp939LungeAbility LungeAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-939's <see cref="MimicPointController"/>.
+        /// </summary>
+        public MimicPointController MimicPointController { get; }
 
         /// <summary>
         /// Gets SCP-939's <see cref="Scp939AmnesticCloudAbility"/>.
@@ -177,6 +187,19 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets the duration of the amnestic cloud.
+        /// </summary>
+        public float AmnesticCloudDuration
+        {
+            get => AmnesticCloudAbility.Duration.Remaining;
+            set
+            {
+                AmnesticCloudAbility.Duration.Remaining = value;
+                AmnesticCloudAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the amount of time before SCP-939 can use any of its mimicry abilities again.
         /// </summary>
         public float MimicryCooldown
@@ -197,12 +220,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-939 has a placed mimic point.
         /// </summary>
-        public bool MimicryPointActive => EnvironmentalMimicry._mimicPoint.Active;
+        public bool MimicryPointActive => MimicPointController.Active;
 
         /// <summary>
         /// Gets a value indicating the position of SCP-939's mimic point. May be <see langword="null"/> if <see cref="MimicryPointActive"/> is <see langword="false"/>.
         /// </summary>
-        public Vector3? MimicryPointPosition => EnvironmentalMimicry._mimicPoint.Active ? EnvironmentalMimicry._mimicPoint.MimicPointTransform.position : null;
+        public Vector3? MimicryPointPosition => MimicPointController.Active ? MimicPointController.MimicPointTransform.position : null;
 
         /// <summary>
         /// Gets a list of players this SCP-939 instance can see regardless of their movement.
@@ -251,6 +274,16 @@ namespace Exiled.API.Features.Roles
                     FirearmRippleTrigger.ServerSendRpc(playerToSend.ReferenceHub);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Created a Amnestic Cloud at the SCP-939's position.
+        /// </summary>
+        /// <param name="duration">The duration of the Amnestic cloud.</param>
+        public void CreateAmnesticCloud(float duration)
+        {
+            AmnesticCloudAbility.OnStateEnabled();
+            AmnesticCloudAbility.ServerConfirmPlacement(duration);
         }
     }
 }
