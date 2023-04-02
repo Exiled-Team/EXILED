@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Roles
 
     using Exiled.API.Enums;
     using Interactables.Interobjects.DoorUtils;
+    using MapGeneration;
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
@@ -20,6 +21,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.Scp079.Rewards;
     using PlayerRoles.PlayableScps.Subroutines;
     using RelativePositioning;
+    using Utils.NonAllocLINQ;
 
     using Mathf = UnityEngine.Mathf;
     using Scp079GameRole = PlayerRoles.PlayableScps.Scp079.Scp079Role;
@@ -98,6 +100,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp079PingAbility subroutine not found in Scp079Role::ctor");
 
             PingAbility = scp079PingAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp079TeslaAbility scp079TeslaAbility))
+                Log.Error("Scp079TeslaAbility subroutine not found in Scp079Role::ctor");
+
+            TeslaAbility = scp079TeslaAbility;
         }
 
         /// <inheritdoc/>
@@ -140,6 +147,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-079's <see cref="Scp079PingAbility"/>.
         /// </summary>
         public Scp079PingAbility PingAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-079's <see cref="Scp079TeslaAbility"/>.
+        /// </summary>
+        public Scp079TeslaAbility TeslaAbility { get; }
 
         /// <summary>
         /// Gets SCP-079's <see cref="Scp079LockdownRoomAbility"/>.
@@ -448,6 +460,28 @@ namespace Exiled.API.Features.Roles
             }
 
             PingAbility._rateLimiter.RegisterInput();
+        }
+
+        /// <summary>
+        /// Trigger the SCP-079's Tesla Gate Ability.
+        /// </summary>
+        /// <param name="consumeEnergy">Indicates if the energy cost should be consume or not.</param>
+        public void ActivateTesla(bool consumeEnergy = true)
+        {
+            Scp079Camera cam = CurrentCameraSync.CurrentCamera;
+            RewardManager.MarkRoom(cam.Room);
+
+            if (!TeslaGateController.Singleton.TeslaGates.TryGetFirst(x => RoomIdUtils.IsTheSameRoom(cam.Position, x.transform.position), out var teslaGate))
+                return;
+
+            if (consumeEnergy)
+            {
+                AuxManager.CurrentAux -= TeslaAbility._cost;
+            }
+
+            teslaGate.RpcInstantBurst();
+            TeslaAbility._nextUseTime = NetworkTime.time + TeslaAbility._cooldown;
+            TeslaAbility.ServerSendRpc(false);
         }
 
         /// <summary>
