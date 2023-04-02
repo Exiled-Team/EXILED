@@ -267,6 +267,6 @@ namespace Exiled.API.Features.Roles
         /// Shows the input prompt for the RageCycle ability.
         /// </summary>
         /// <param name="duration">The input prompt duration.</param>
-        public void TriggerRageInput(float duration = 10f) => RageCycleAbility.ServerTryEnableInput(duration);
+        public void ShowRageInput(float duration = 10f) => RageCycleAbility.ServerTryEnableInput(duration);
     }
 }
