@@ -432,10 +432,10 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Trigger the Ping Ability to ping a <see cref="RelativePosition"/>.
         /// </summary>
-        /// <param name="relativePosition">The Relative Position to ping.</param>
         /// <param name="syncedNormal">The SyncNormal Position.</param>
-        public void Ping(RelativePosition relativePosition, Vector3 syncedNormal)
+        public void Ping(Vector3 syncedNormal)
         {
+            var relativePosition = new RelativePosition(syncedNormal);
             PingAbility._syncPos = relativePosition;
             PingAbility._syncNormal = syncedNormal;
 
