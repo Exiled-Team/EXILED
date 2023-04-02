@@ -113,6 +113,16 @@ namespace Exiled.API.Features.Roles
         public Ragdoll RecallingRagdoll => Ragdoll.Get(ResurrectAbility.CurRagdoll);
 
         /// <summary>
+        /// Gets all the dead zombies.
+        /// </summary>
+        public HashSet<uint> DeadZombies => Scp049ResurrectAbility.DeadZombies;
+
+        /// <summary>
+        /// Gets all the resurrected players.
+        /// </summary>
+        public Dictionary<uint, int> ResurrectedPlayers => Scp049ResurrectAbility.ResurrectedPlayers;
+
+        /// <summary>
         /// Gets or sets the amount of time before SCP-049 can use its Doctor's Call ability again.
         /// </summary>
         public float CallCooldown
@@ -220,6 +230,11 @@ namespace Exiled.API.Features.Roles
             AttackAbility.ServerSendRpc(true);
             Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);
         }
+
+        /// <summary>
+        /// Refresh the <see cref="Scp049CallAbility"/> duration.
+        /// </summary>
+        public void RefreshCallDuration() => CallAbility.ServerRefreshDuration();
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.
