@@ -403,9 +403,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public void BlackoutRoom()
         {
-            if (BlackoutRoomAbility is null)
-                return;
-
             BlackoutRoomAbility.AuxManager.CurrentAux -= BlackoutRoomAbility._cost;
             BlackoutRoomAbility.RewardManager.MarkRoom(BlackoutRoomAbility._roomController.Room);
             BlackoutRoomAbility._blackoutCooldowns[BlackoutRoomAbility._roomController.netId] = NetworkTime.time + BlackoutRoomAbility._cooldown;
@@ -419,9 +416,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public void BlackoutZone()
         {
-            if (BlackoutZoneAbility is null)
-                return;
-
             foreach (FlickerableLightController lightController in FlickerableLightController.Instances)
             {
                 if (lightController.Room.Zone == BlackoutZoneAbility._syncZone)
