@@ -250,7 +250,7 @@ namespace Exiled.API.Features.Roles
             }
 
             SenseAbility.HasTarget = false;
-            SenseAbility.Cooldown.Trigger(20f);
+            SenseAbility.Cooldown.Trigger(Scp049SenseAbility.ReducedCooldown);
             SenseAbility.ServerSendRpc(true);
 
             AttackAbility.ServerSendRpc(true);
