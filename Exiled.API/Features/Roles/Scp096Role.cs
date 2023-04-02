@@ -129,15 +129,28 @@ namespace Exiled.API.Features.Roles
         public bool AttackPossible => AttackAbility.AttackPossible;
 
         /// <summary>
-        /// Gets or sets the amount of time in between SCP-096 charges.
+        /// Gets or sets the Charge Ability Cooldown.
         /// </summary>
         public float ChargeCooldown
         {
-            get => RageCycleAbility._timeToChangeState;
+            get => ChargeAbility.Cooldown.Remaining;
             set
             {
-                RageCycleAbility._timeToChangeState = value;
-                RageCycleAbility.ServerSendRpc(true);
+                ChargeAbility.Cooldown.Remaining = value;
+                ChargeAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Charge Ability duration.
+        /// </summary>
+        public float ChargeDuration
+        {
+            get => ChargeAbility.Duration.Remaining;
+            set
+            {
+                ChargeAbility.Duration.Remaining = value;
+                ChargeAbility.ServerSendRpc(true);
             }
         }
 
