@@ -290,6 +290,28 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Place a Mimic Point at the specified position.
+        /// </summary>
+        /// <param name="mimicPointPosition">The Position of the Mimic Point.</param>
+        public void PlaceMimicPoint(Vector3 mimicPointPosition)
+        {
+            MimicPointController._syncPos = new RelativePosition(mimicPointPosition);
+            MimicPointController._syncMessage = MimicPointController.RpcStateMsg.PlacedByUser;
+            MimicPointController.Active = true;
+            MimicPointController.ServerSendRpc(true);
+        }
+
+        /// <summary>
+        /// Destroys the Current Mimic Point.
+        /// </summary>
+        public void DestroyCurrentMimicPoint()
+        {
+            MimicPointController._syncMessage = MimicPointController.RpcStateMsg.RemovedByUser;
+            MimicPointController.Active = false;
+            MimicPointController.ServerSendRpc(true);
+        }
+
+        /// <summary>
         /// Gets the Spawn Chance of SCP-939.
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
