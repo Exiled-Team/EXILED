@@ -17,6 +17,8 @@ namespace Exiled.API.Features.Roles
     using PlayerStatsSystem;
     using RelativePositioning;
 
+    using UnityEngine;
+
     /// <summary>
     /// Defines a role that represents an fpc class.
     /// </summary>
@@ -85,6 +87,24 @@ namespace Exiled.API.Features.Roles
         {
             get => FirstPersonController.FpcModule.CrouchSpeed;
             set => FirstPersonController.FpcModule.CrouchSpeed = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Player"/> velocity.
+        /// </summary>
+        public Vector3 Velocity
+        {
+            get => FirstPersonController.FpcModule.Motor.Velocity;
+            set => FirstPersonController.FpcModule.Motor.Velocity = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether if a movement is detected on a <see cref="Player"/>.
+        /// </summary>
+        public bool MovementDetected
+        {
+            get => FirstPersonController.FpcModule.Motor.MovementDetected;
+            set => FirstPersonController.FpcModule.Motor.MovementDetected = value;
         }
 
         /// <summary>
