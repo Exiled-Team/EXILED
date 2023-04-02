@@ -54,6 +54,15 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether if a rotation is detected on the player.
+        /// </summary>
+        public bool RotationDetected
+        {
+            get => FirstPersonController.FpcModule.Motor.RotationDetected;
+            set => FirstPersonController.FpcModule.Motor.RotationDetected = value;
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="Role"/> walking speed.
         /// </summary>
         public float WalkingSpeed
@@ -150,6 +159,21 @@ namespace Exiled.API.Features.Roles
         /// Gets a value indicating whether or not the <see cref="Player"/> is in darkness.
         /// </summary>
         public bool IsInDarkness => FirstPersonController.InDarkness;
+
+        /// <summary>
+        /// Gets the <see cref="Player"/>'s vertical rotation.
+        /// </summary>
+        public float VerticalRotation => FirstPersonController.VerticalRotation;
+
+        /// <summary>
+        /// Gets the <see cref="Player"/>'s horizontal rotation.
+        /// </summary>
+        public float HorizontalRotation => FirstPersonController.HorizontalRotation;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the <see cref="Player"/> is AFK.
+        /// </summary>
+        public bool IsAfk => FirstPersonController.IsAFK;
 
         /// <summary>
         /// Gets a value indicating whether or not this role is protected by a hume shield.
