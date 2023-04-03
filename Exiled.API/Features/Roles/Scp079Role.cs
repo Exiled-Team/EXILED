@@ -393,7 +393,7 @@ namespace Exiled.API.Features.Roles
         /// Marks a array of rooms as being modified by SCP-079 (granting experience if a kill happens in the room).
         /// </summary>
         /// <param name="rooms">The Array of Rooms to mark.</param>
-        public void MarkRooms(Room[] rooms) => RewardManager.MarkRooms(rooms.Select(x => x.Identifier).ToArray());
+        public void MarkRooms(IEnumerable<Room> rooms) => RewardManager.MarkRooms(rooms.Select(x => x.Identifier).ToArray());
 
         /// <summary>
         /// Removes a marked room.
@@ -489,9 +489,7 @@ namespace Exiled.API.Features.Roles
                 PingAbility.ServerSendRpc(playersToSend.Contains);
 
             if (consumeEnergy)
-            {
                 PingAbility.AuxManager.CurrentAux -= PingAbility._cost;
-            }
 
             PingAbility._rateLimiter.RegisterInput();
         }
@@ -519,9 +517,7 @@ namespace Exiled.API.Features.Roles
                 return;
 
             if (consumeEnergy)
-            {
                 AuxManager.CurrentAux -= TeslaAbility._cost;
-            }
 
             teslaGate.RpcInstantBurst();
             TeslaAbility._nextUseTime = NetworkTime.time + TeslaAbility._cooldown;
