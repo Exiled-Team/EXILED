@@ -145,7 +145,41 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating the current time of the sinkhole.
         /// </summary>
-        public float SinkholeCurrentTime => SinkholeController.CurTime;
+        public float SinkholeCurrentTime => SinkholeController.ElapsedToggle;
+
+        /// <summary>
+        /// Gets a value indicating the normalized state of the sinkhole.
+        /// </summary>
+        public float SinkholeNormalizedState => SinkholeController.NormalizedState;
+
+        /// <summary>
+        /// Gets a value indicating whether or not SCP-106 is currently in the middle of an animation.
+        /// </summary>
+        public bool IsDuringAnimation => SinkholeController.IsDuringAnimation;
+
+        /// <summary>
+        /// Gets a value indicating whether or not SCP-106 sinkhole is hidden.
+        /// </summary>
+        public bool IsSinkholeHidden => SinkholeController.IsHidden;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the current sinkhole state.
+        /// </summary>
+        public bool SinkholeState
+        {
+            get => SinkholeController.State;
+            set => SinkholeController.State = value;
+        }
+
+        /// <summary>
+        /// Gets the sinkhole target duration.
+        /// </summary>
+        public float SinkholeTargetDuration => SinkholeController.TargetDuration;
+
+        /// <summary>
+        /// Gets the speed multiplier of the sinkhole.
+        /// </summary>
+        public float SinkholeSpeedMultiplier => SinkholeController.SpeedMultiplier;
 
         /// <summary>
         /// Gets or sets the amount of time in between player captures.
