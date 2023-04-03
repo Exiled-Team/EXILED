@@ -135,7 +135,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether if SCP-106 <see cref="Scp106StalkAbility"/> can be cleared.
         /// </summary>
-        public bool CanBeCleared => StalkAbility.CanBeCleared;
+        public bool CanStopStalk => StalkAbility.CanBeCleared;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently slow down by a door.
