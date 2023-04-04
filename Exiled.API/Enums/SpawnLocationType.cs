@@ -26,7 +26,7 @@ namespace Exiled.API.Enums
         Inside012 = 0,
 
         /// <summary>
-        /// The inside of 330's room chamber with candy.
+        /// The inside of 330's room test chamber.
         /// </summary>
         Inside330Chamber,
 
