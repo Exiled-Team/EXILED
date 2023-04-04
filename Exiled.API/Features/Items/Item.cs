@@ -86,12 +86,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public ushort Serial
         {
-            get
-            {
-                if (Base.ItemSerial is 0)
-                    return Serial = ItemSerialGenerator.GenerateNext();
-                return Base.ItemSerial;
-            }
+            get => Base.ItemSerial;
             set => Base.ItemSerial = value;
         }
 

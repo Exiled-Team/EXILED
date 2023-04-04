@@ -1843,6 +1843,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Removes an <see cref="Item"/> from the player's inventory.
+        /// </summary>
+        /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
+        /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
+        public bool RemoveItem(ushort serial, bool destroy = true)
+        {
+            return RemoveItem(Item.Get(serial), destroy);
+        }
+
+        /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
         /// </summary>
         /// <param name="predicate">The condition to satisfy.</param>

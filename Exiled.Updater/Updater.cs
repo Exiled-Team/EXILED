@@ -300,6 +300,14 @@ namespace Exiled.Updater
                     };
 
                     Process installerProcess = Process.Start(startInfo);
+
+                    if (installerProcess is null)
+                    {
+                        Log.Error("Unable to start installer.");
+                        _stage = Stage.Free;
+                        return;
+                    }
+
                     installerProcess.OutputDataReceived += (s, args) =>
                     {
                         if (!string.IsNullOrEmpty(args.Data))
@@ -316,9 +324,16 @@ namespace Exiled.Updater
                     installerProcess.WaitForExit();
 
                     Log.Info($"Installer exit code: {installerProcess.ExitCode}");
-                    Log.Info("Auto-update complete, restarting server...");
-
-                    _stage = Stage.Installed;
+                    if (installerProcess.ExitCode == 0)
+                    {
+                        Log.Info("Auto-update complete, restarting server...");
+                        _stage = Stage.Installed;
+                    }
+                    else
+                    {
+                        Log.Error($"Installer error occured.");
+                        _stage = Stage.Free;
+                    }
                 }
             }
             catch (Exception ex)

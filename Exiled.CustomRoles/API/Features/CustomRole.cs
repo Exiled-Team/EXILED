@@ -43,7 +43,7 @@ namespace Exiled.CustomRoles.API.Features
 
         private static Dictionary<string, CustomRole?> stringLookupTable = new();
 
-        private static Dictionary<int, CustomRole?> idLookupTable = new();
+        private static Dictionary<uint, CustomRole?> idLookupTable = new();
 
         /// <summary>
         /// Gets a list of all registered custom roles.
@@ -171,7 +171,11 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
         /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
-        public static CustomRole? Get(int id)
+        [Obsolete("Use Get(uint) instead", false)]
+        public static CustomRole? Get(int id) => Get((uint)id);
+
+        /// <inheritdoc cref="Get(int)"/>
+        public static CustomRole? Get(uint id)
         {
             if (!idLookupTable.ContainsKey(id))
                 idLookupTable.Add(id, Registered?.FirstOrDefault(r => r.Id == id));
@@ -208,12 +212,16 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="id">The ID of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
+        [Obsolete("Use TryGet(uint) instead", false)]
         public static bool TryGet(int id, out CustomRole? customRole)
         {
             customRole = Get(id);
 
             return customRole is not null;
         }
+
+        /// <inheritdoc cref="TryGet(int,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
+        public static bool TryGet(uint id, out CustomRole? customRole) => TryGet(id, out customRole);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
@@ -227,7 +235,7 @@ namespace Exiled.CustomRoles.API.Features
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
 
-            customRole = int.TryParse(name, out int id) ? Get(id) : Get(name);
+            customRole = uint.TryParse(name, out uint id) ? Get(id) : Get(name);
 
             return customRole is not null;
         }
@@ -456,17 +464,29 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>True if the player has this role.</returns>
-        public virtual bool Check(Player player) => TrackedPlayers.Contains(player);
+        public virtual bool Check(Player? player) => player is not null && TrackedPlayers.Contains(player);
 
         /// <summary>
         /// Initializes this role manager.
         /// </summary>
-        public virtual void Init() => SubscribeEvents();
+        public virtual void Init()
+        {
+            idLookupTable.Add(Id, this);
+            typeLookupTable.Add(GetType(), this);
+            stringLookupTable.Add(Name, this);
+            SubscribeEvents();
+        }
 
         /// <summary>
         /// Destroys this role manager.
         /// </summary>
-        public virtual void Destroy() => UnsubscribeEvents();
+        public virtual void Destroy()
+        {
+            idLookupTable.Remove(Id);
+            typeLookupTable.Remove(GetType());
+            stringLookupTable.Remove(Name);
+            UnsubscribeEvents();
+        }
 
         /// <summary>
         /// Handles setup of the role, including spawn location, inventory and registering event handlers and add FF rules.
@@ -511,6 +531,12 @@ namespace Exiled.CustomRoles.API.Features
             player.Health = MaxHealth;
             player.MaxHealth = MaxHealth;
             player.Scale = Scale;
+
+            Vector3 position = GetSpawnPosition();
+            if (position != Vector3.zero)
+            {
+                player.Position = position;
+            }
 
             Log.Debug($"{Name}: Setting player info");
             player.CustomInfo = CustomInfo;
