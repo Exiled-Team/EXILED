@@ -39,6 +39,11 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
+        /// Gets or sets how long the fuse will last.
+        /// </summary>
+        public float FuseTime { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="Enums.ProjectileType"/> of the item.
         /// </summary>
         public ProjectileType ProjectileType => Type.GetProjectileType();
