@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Enums
 {
+    using System;
+
     /// <summary>
     /// All of the valid spawn location types.
     /// </summary>
@@ -15,16 +17,19 @@ namespace Exiled.API.Enums
         /// <summary>
         /// The inside of 012's hallway door.
         /// </summary>
+        [Obsolete("Room doesn't exist in game", true)]
         Inside012,
 
         /// <summary>
         /// The inside of the locked door leaving to SCP-012's room.
         /// </summary>
+        [Obsolete("Room doesn't exist in game", true)]
         Inside012Bottom,
 
         /// <summary>
         /// The inside of the locked 012 armory door.
         /// </summary>
+        [Obsolete("Room doesn't exist in game", true)]
         Inside012Locker,
 
         /// <summary>
