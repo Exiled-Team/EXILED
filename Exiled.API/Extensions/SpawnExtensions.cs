@@ -68,7 +68,7 @@ namespace Exiled.API.Extensions
             // The vector3.up * 1.5 is added to ensure they do not spawn inside the floor and get stuck.
             // The transform.forward is added to make them actually spawn INSIDE the room instead of inside the door.
             // ReversedLocations is a list of doors which are facing the wrong way, putting transform.forward outside the room, instead of inside, which means we need to take the negative of that offset to be where we want.
-            return transform.position + (Vector3.up * 1.5f) + (transform.forward * (ReversedLocations.Contains(location) ? -3f : 3f));
+            return transform.position + (Vector3.up * 1.5f) + (transform.forward * (ReversedLocations.Contains(location) ? -1.5f : 3f));
         }
 
         /// <summary>
