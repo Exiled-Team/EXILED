@@ -1468,16 +1468,16 @@ namespace Exiled.API.Features
         public bool TryAddFriendlyFire(Dictionary<RoleTypeId, float> ffRules, bool overwrite = false)
         {
             Dictionary<RoleTypeId, float> temporaryFriendlyFireRules = DictionaryPool<RoleTypeId, float>.Pool.Get();
-            foreach (KeyValuePair<RoleTypeId, float> roleFF in ffRules)
+            foreach (KeyValuePair<RoleTypeId, float> roleFf in ffRules)
             {
                 if (overwrite)
                 {
-                    SetFriendlyFire(roleFF);
+                    SetFriendlyFire(roleFf);
                 }
                 else
                 {
-                    if (!FriendlyFireMultiplier.ContainsKey(roleFF.Key))
-                        temporaryFriendlyFireRules.Add(roleFF.Key, roleFF.Value);
+                    if (!FriendlyFireMultiplier.ContainsKey(roleFf.Key))
+                        temporaryFriendlyFireRules.Add(roleFf.Key, roleFf.Value);
                     else
                         return false; // Contained Key but overwrite set to false so we do not add any.
                 }
@@ -1520,16 +1520,16 @@ namespace Exiled.API.Features
         /// Wrapper to call <see cref="SetCustomRoleFriendlyFire(string, RoleTypeId, float)"/>.
         /// </summary>
         /// <param name="roleTypeId"> Role associated for CustomFF. </param>
-        /// <param name="roleFF"> Role with FF to add even if it exists. </param>
-        public void SetCustomRoleFriendlyFire(string roleTypeId, KeyValuePair<RoleTypeId, float> roleFF) => SetCustomRoleFriendlyFire(roleTypeId, roleFF.Key, roleFF.Value);
+        /// <param name="roleFf"> Role with FF to add even if it exists. </param>
+        public void SetCustomRoleFriendlyFire(string roleTypeId, KeyValuePair<RoleTypeId, float> roleFf) => SetCustomRoleFriendlyFire(roleTypeId, roleFf.Key, roleFf.Value);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules for CustomRole.
         /// </summary>
         /// <param name="roleTypeId"> Role associated for CustomFF. </param>
-        /// <param name="roleFF"> Role to add and FF multiplier. </param>
+        /// <param name="roleFf"> Role to add and FF multiplier. </param>
         /// <returns> Whether or not the item was able to be added. </returns>
-        public bool TryAddCustomRoleFriendlyFire(string roleTypeId, KeyValuePair<RoleTypeId, float> roleFF) => TryAddCustomRoleFriendlyFire(roleTypeId, roleFF.Key, roleFF.Value);
+        public bool TryAddCustomRoleFriendlyFire(string roleTypeId, KeyValuePair<RoleTypeId, float> roleFf) => TryAddCustomRoleFriendlyFire(roleTypeId, roleFf.Key, roleFf.Value);
 
         /// <summary>
         /// Tries to add <see cref="RoleTypeId"/> to FriendlyFire rules for CustomRole.
@@ -1585,14 +1585,14 @@ namespace Exiled.API.Features
 
                 if (!overwrite)
                 {
-                    foreach (KeyValuePair<RoleTypeId, float> roleFF in temporaryFriendlyFireRules)
-                        TryAddCustomRoleFriendlyFire(customRoleName, roleFF);
+                    foreach (KeyValuePair<RoleTypeId, float> roleFf in temporaryFriendlyFireRules)
+                        TryAddCustomRoleFriendlyFire(customRoleName, roleFf);
                 }
             }
             else
             {
-                foreach (KeyValuePair<RoleTypeId, float> roleFF in ffRules)
-                    SetCustomRoleFriendlyFire(customRoleName, roleFF);
+                foreach (KeyValuePair<RoleTypeId, float> roleFf in ffRules)
+                    SetCustomRoleFriendlyFire(customRoleName, roleFf);
             }
 
             DictionaryPool<RoleTypeId, float>.Pool.Return(temporaryFriendlyFireRules);
@@ -1605,8 +1605,8 @@ namespace Exiled.API.Features
         /// <param name="customRoleFriendlyFireMultiplier"> Custom role with FF role rules. </param>
         public void TryAddCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleTypeId, float>> customRoleFriendlyFireMultiplier)
         {
-            foreach (KeyValuePair<string, Dictionary<RoleTypeId, float>> newRolesWithFF in customRoleFriendlyFireMultiplier)
-                TryAddCustomRoleFriendlyFire(newRolesWithFF.Key, newRolesWithFF.Value);
+            foreach (KeyValuePair<string, Dictionary<RoleTypeId, float>> newRolesWithFf in customRoleFriendlyFireMultiplier)
+                TryAddCustomRoleFriendlyFire(newRolesWithFf.Key, newRolesWithFf.Value);
         }
 
         /// <summary>
@@ -1840,6 +1840,17 @@ namespace Exiled.API.Features
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Removes an <see cref="Item"/> from the player's inventory.
+        /// </summary>
+        /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
+        /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
+        public bool RemoveItem(ushort serial, bool destroy = true)
+        {
+            return RemoveItem(Item.Get(serial), destroy);
         }
 
         /// <summary>
