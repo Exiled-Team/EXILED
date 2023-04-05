@@ -55,7 +55,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (!(int.TryParse(arguments.At(0), out int id) && CustomItem.TryGet(id, out CustomItem item)) &&
+            if (!(uint.TryParse(arguments.At(0), out uint id) && CustomItem.TryGet(id, out CustomItem? item)) &&
                 !CustomItem.TryGet(arguments.At(0), out item))
             {
                 response = $"{arguments.At(0)} is not a valid custom item.";
@@ -64,13 +64,13 @@ namespace Exiled.CustomItems.Commands
 
             StringBuilder message = StringBuilderPool.Pool.Get().AppendLine();
 
-            message.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(item.Name).Append("</color> <color=#05C4EB>(").Append(item.Id).AppendLine(")</color>")
-                .Append("- ").AppendLine(item.Description)
-                .AppendLine(item.Type.ToString())
-                .Append("- Spawn Limit: ").AppendLine(item.SpawnProperties.Limit.ToString()).AppendLine()
-                .Append("[Spawn Locations (").Append(item.SpawnProperties.DynamicSpawnPoints.Count + item.SpawnProperties.StaticSpawnPoints.Count).AppendLine(")]");
+            message.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(item?.Name).Append("</color> <color=#05C4EB>(").Append(item?.Id).AppendLine(")</color>")
+                .Append("- ").AppendLine(item?.Description)
+                .AppendLine(item?.Type.ToString())
+                .Append("- Spawn Limit: ").AppendLine(item?.SpawnProperties?.Limit.ToString()).AppendLine()
+                .Append("[Spawn Locations (").Append(item?.SpawnProperties?.DynamicSpawnPoints.Count + item?.SpawnProperties?.StaticSpawnPoints.Count).AppendLine(")]");
 
-            foreach (DynamicSpawnPoint spawnPoint in item.SpawnProperties.DynamicSpawnPoints)
+            foreach (DynamicSpawnPoint spawnPoint in item?.SpawnProperties?.DynamicSpawnPoints!)
                 message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append(" Chance: ").Append(spawnPoint.Chance).AppendLine("%");
 
             foreach (StaticSpawnPoint spawnPoint in item.SpawnProperties.StaticSpawnPoints)

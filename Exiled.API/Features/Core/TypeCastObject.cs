@@ -49,7 +49,7 @@ namespace Exiled.API.Features.Core
             return true;
         }
 
-        /// <inheritdoc cref="Cast{T}"/>
+        /// <inheritdoc cref="Cast{T}()"/>
         public TObject As<TObject>()
             where TObject : class => Cast<TObject>();
 
