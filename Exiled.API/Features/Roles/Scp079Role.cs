@@ -472,7 +472,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Trigger the Ping Ability to ping a <see cref="RelativePosition"/>.
         /// </summary>
-        /// <param name="syncedNormal">The SyncNormal Position.</param>
+        /// <param name="position">The SyncNormal Position.</param>
         /// <param name="playersToSend">The List of players to send the ping.</param>
         /// <param name="pingType">The PingType to return.</param>
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
