@@ -476,11 +476,11 @@ namespace Exiled.API.Features.Roles
         /// <param name="playersToSend">The List of players to send the ping.</param>
         /// <param name="pingType">The PingType to return.</param>
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
-        public void Ping(Vector3 syncedNormal, List<ReferenceHub> playersToSend = null, PingType pingType = PingType.Default, bool consumeEnergy = true)
+        public void Ping(Vector3 position, List<ReferenceHub> playersToSend = null, PingType pingType = PingType.Default, bool consumeEnergy = true)
         {
-            var relativePosition = new RelativePosition(syncedNormal);
+            var relativePosition = new RelativePosition(position);
             PingAbility._syncPos = relativePosition;
-            PingAbility._syncNormal = syncedNormal;
+            PingAbility._syncNormal = position;
             pingType = (PingType)PingAbility._syncProcessorIndex;
 
             if (playersToSend is null)
