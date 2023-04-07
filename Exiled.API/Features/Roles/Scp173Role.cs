@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Roles
         internal Scp173Role(Scp173GameRole baseRole)
             : base(baseRole)
         {
-            Internal = baseRole;
+            Base = baseRole;
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
             MovementModule = FirstPersonController.FpcModule as Scp173MovementModule;
@@ -217,7 +217,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp173GameRole"/> instance.
         /// </summary>
-        protected Scp173GameRole Internal { get; }
+        public new Scp173GameRole Base { get; }
 
         /// <summary>
         /// Places a Tantrum (SCP-173's ability) under the player.
@@ -252,6 +252,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
-        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }
