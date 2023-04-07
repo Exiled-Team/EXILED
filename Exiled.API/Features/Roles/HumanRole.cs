@@ -25,50 +25,50 @@ namespace Exiled.API.Features.Roles
         internal HumanRole(HumanGameRole baseRole)
             : base(baseRole)
         {
-            Internal = baseRole;
+            Base = baseRole;
         }
 
         /// <inheritdoc/>
-        public override RoleTypeId Type => Internal.RoleTypeId;
+        public override RoleTypeId Type => Base.RoleTypeId;
 
         /// <summary>
         /// Gets or sets the <see cref="SpawnableTeamType"/>.
         /// </summary>
         public SpawnableTeamType SpawnableTeamType
         {
-            get => Internal.AssignedSpawnableTeam;
-            set => Internal.AssignedSpawnableTeam = value;
+            get => Base.AssignedSpawnableTeam;
+            set => Base.AssignedSpawnableTeam = value;
         }
 
         /// <summary>
         /// Gets the <see cref="UnitName"/>.
         /// </summary>
-        public string UnitName => Internal.UnitName;
+        public string UnitName => Base.UnitName;
 
         /// <summary>
         /// Gets or sets the <see cref="UnitNameId"/>.
         /// </summary>
         public byte UnitNameId
         {
-            get => Internal.UnitNameId;
-            set => Internal.UnitNameId = value;
+            get => Base.UnitNameId;
+            set => Base.UnitNameId = value;
         }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="HumanRole"/> uses unit names or not.
         /// </summary>
-        public bool UsesUnitNames => Internal.UsesUnitNames;
+        public bool UsesUnitNames => Base.UsesUnitNames;
 
         /// <summary>
         /// Gets the game <see cref="HumanGameRole"/>.
         /// </summary>
-        protected HumanGameRole Internal { get; }
+        public new HumanGameRole Base { get; }
 
         /// <summary>
         /// Gets the <see cref="HumanRole"/> armor efficacy based on a specific <see cref="HitboxType"/> and the armor the <see cref="Role.Owner"/> is wearing.
         /// </summary>
         /// <param name="hitbox">The <see cref="HitboxType"/>.</param>
         /// <returns>The armor efficacy.</returns>
-        public int GetArmorEfficacy(HitboxType hitbox) => Internal.GetArmorEfficacy(hitbox);
+        public int GetArmorEfficacy(HitboxType hitbox) => Base.GetArmorEfficacy(hitbox);
     }
 }

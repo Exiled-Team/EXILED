@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Roles
         {
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
-            Internal = baseRole;
+            Base = baseRole;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp096RageCycleAbility scp096RageCycleAbility))
                 Log.Error("RageCycleAbility subroutine not found in Scp096Role::ctor");
@@ -81,12 +81,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating SCP-096's ability state.
         /// </summary>
-        public Scp096AbilityState AbilityState => Internal.StateController.AbilityState;
+        public Scp096AbilityState AbilityState => Base.StateController.AbilityState;
 
         /// <summary>
         /// Gets a value indicating SCP-096's rage state.
         /// </summary>
-        public Scp096RageState RageState => Internal.StateController.RageState;
+        public Scp096RageState RageState => Base.StateController.RageState;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-096 can receive targets.
@@ -153,7 +153,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp096GameRole"/>.
         /// </summary>
-        protected Scp096GameRole Internal { get; }
+        public new Scp096GameRole Base { get; }
 
         /// <summary>
         /// Adds the specified <paramref name="player"/> as an SCP-096 target.

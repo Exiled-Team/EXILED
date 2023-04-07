@@ -30,7 +30,7 @@ namespace Exiled.API.Features.Roles
         {
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
-            Internal = baseRole;
+            Base = baseRole;
             MovementModule = FirstPersonController.FpcModule as Scp106MovementModule;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106Vigor scp106Vigor))
@@ -114,14 +114,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public bool IsSubmerged
         {
-            get => Internal.IsSubmerged;
+            get => Base.IsSubmerged;
             set => HuntersAtlasAbility.SetSubmerged(value);
         }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is ready for idle.
         /// </summary>
-        public bool CanActivateIdle => Internal.CanActivateIdle;
+        public bool CanActivateIdle => Base.CanActivateIdle;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently slow down by a door.
@@ -153,7 +153,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106GameRole"/>.
         /// </summary>
-        protected Scp106GameRole Internal { get; }
+        public new Scp106GameRole Base { get; }
 
         /// <summary>
         /// Forces SCP-106 to use its portal, and Teleport to position.
