@@ -153,7 +153,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-049 can attack again.
         /// </summary>
-        public float AttackCooldown
+        public float RemainingAttackCooldown
         {
             get => AttackAbility.Cooldown.Remaining;
             set
@@ -166,7 +166,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the duration of the <see cref="Scp049CallAbility"/>.
         /// </summary>
-        public float CallDuration
+        public float RemainingCallDuration
         {
             get => CallAbility.Duration.Remaining;
             set
@@ -179,7 +179,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the duration of the <see cref="Scp049SenseAbility"/>.
         /// </summary>
-        public float GoodSenseDuration
+        public float RemainingGoodSenseDuration
         {
             get => SenseAbility.Duration.Remaining;
             set
@@ -204,7 +204,7 @@ namespace Exiled.API.Features.Roles
         public new Scp049GameRole Base { get; }
 
         /// <summary>
-        /// Lose the actual target of the SCP-049 Sense Ability.
+        /// Lose the current target of the Good Sense ability.
         /// </summary>
         public void LoseSenseTarget() => SenseAbility.ServerLoseTarget();
 
@@ -315,7 +315,7 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to check.</param>
         /// <returns>The amount of resurrections of the checked player.</returns>
-        public int GetResurrections(Player player) => Scp049ResurrectAbility.GetResurrectionsNumber(player.ReferenceHub);
+        public int GetResurrectionCount(Player player) => Scp049ResurrectAbility.GetResurrectionsNumber(player.ReferenceHub);
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.

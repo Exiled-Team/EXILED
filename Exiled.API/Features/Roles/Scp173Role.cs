@@ -121,7 +121,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can use breakneck speed again.
         /// </summary>
-        public float BreakneckCooldown
+        public float RemainingBreakneckCooldown
         {
             get => BreakneckSpeedsAbility.Cooldown.Remaining;
             set
@@ -134,7 +134,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can place a tantrum.
         /// </summary>
-        public float TantrumCooldown
+        public float RemainingTantrumCooldown
         {
             get => TantrumAbility.Cooldown.Remaining;
             set

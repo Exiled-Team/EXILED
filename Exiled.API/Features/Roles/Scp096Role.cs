@@ -144,7 +144,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the Charge Ability duration.
         /// </summary>
-        public float ChargeDuration
+        public float RemainingChargeDuration
         {
             get => ChargeAbility.Duration.Remaining;
             set

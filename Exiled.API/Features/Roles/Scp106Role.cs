@@ -197,7 +197,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets the Sinkhole cooldown.
         /// </summary>
-        public float SinkholeCooldown
+        public float RemainingSinkholeCooldown
         {
             get => SinkholeController.Cooldown.Remaining;
             set
