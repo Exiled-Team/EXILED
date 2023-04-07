@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Roles
         internal Scp939Role(Scp939GameRole baseRole)
             : base(baseRole)
         {
-            Internal = baseRole;
+            Base = baseRole;
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
 
@@ -233,7 +233,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp939GameRole"/> instance.
         /// </summary>
-        protected Scp939GameRole Internal { get; }
+        public new Scp939GameRole Base { get; }
 
         /// <summary>
         /// Removes all recordings of player voices. Provide an optional target to remove all the recordings of a single player.
@@ -316,6 +316,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
-        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }
