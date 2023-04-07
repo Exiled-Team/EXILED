@@ -67,26 +67,6 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Gets the Roll Rotation of the <see cref="Player"/>.
-        /// </summary>
-        public float RollRotation => Internal.RollRotation;
-
-        /// <summary>
-        /// Gets the vertical rotation of the <see cref="Player"/>.
-        /// </summary>
-        public float VerticalRotation => Internal.VerticalRotation;
-
-        /// <summary>
-        /// Gets the horizontal rotation of the <see cref="Player"/>.
-        /// </summary>
-        public float HorizontalRotation => Internal.HorizontalRotation;
-
-        /// <summary>
-        /// Gets the camera position of the <see cref="Player"/>.
-        /// </summary>
-        public Vector3 CameraPosition => Internal.CameraPosition;
-
-        /// <summary>
         /// Gets the game <see cref="SpectatorGameRole"/>.
         /// </summary>
         public new SpectatorGameRole Base { get; }

@@ -229,7 +229,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the Current Camera Position.
         /// </summary>
-        public Vector3 CameraPosition => Internal.CameraPosition;
+        public Vector3 CameraPosition => Base.CameraPosition;
 
         /// <summary>
         /// Gets the relative experience.
@@ -330,7 +330,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the Roll Rotation of SCP-079.
         /// </summary>
-        public float RollRotation => Internal.RollRotation;
+        public float RollRotation => Base.RollRotation;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-079's signal is lost due to SCP-2176.
@@ -473,20 +473,16 @@ namespace Exiled.API.Features.Roles
         /// Trigger the Ping Ability to ping a <see cref="RelativePosition"/>.
         /// </summary>
         /// <param name="position">The SyncNormal Position.</param>
-        /// <param name="playersToSend">The List of players to send the ping.</param>
         /// <param name="pingType">The PingType to return.</param>
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
-        public void Ping(Vector3 position, List<ReferenceHub> playersToSend = null, PingType pingType = PingType.Default, bool consumeEnergy = true)
+        public void Ping(Vector3 position, PingType pingType = PingType.Default, bool consumeEnergy = true)
         {
             var relativePosition = new RelativePosition(position);
             PingAbility._syncPos = relativePosition;
             PingAbility._syncNormal = position;
             pingType = (PingType)PingAbility._syncProcessorIndex;
 
-            if (playersToSend is null)
-                PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)pingType));
-            else
-                PingAbility.ServerSendRpc(playersToSend.Contains);
+            PingAbility.ServerSendRpc(x => PingAbility.ServerCheckReceiver(x, PingAbility._syncPos.Position, (int)pingType));
 
             if (consumeEnergy)
                 PingAbility.AuxManager.CurrentAux -= PingAbility._cost;
@@ -529,6 +525,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
-        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }

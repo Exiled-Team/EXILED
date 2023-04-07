@@ -125,7 +125,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 can activate teslas.
         /// </summary>
-        public bool CanActivateTesla => Internal.CanActivateShock;
+        public bool CanActivateTesla => Base.CanActivateShock;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is ready for idle.
@@ -273,6 +273,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
-        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }
