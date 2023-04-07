@@ -35,7 +35,7 @@ namespace Exiled.API.Features.Roles
         internal Scp049Role(Scp049GameRole baseRole)
             : base(baseRole)
         {
-            Internal = baseRole;
+            Base = baseRole;
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
 
@@ -201,7 +201,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp049GameRole"/> instance.
         /// </summary>
-        protected Scp049GameRole Internal { get; }
+        public new Scp049GameRole Base { get; }
 
         /// <summary>
         /// Lose the actual target of the SCP-049 Sense Ability.
@@ -352,6 +352,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="alreadySpawned">The List of Roles already spawned.</param>
         /// <returns>The Spawn Chance.</returns>
-        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Internal.GetSpawnChance(alreadySpawned);
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }
