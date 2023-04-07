@@ -28,6 +28,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<LungedEventArgs> Lunged;
 
         /// <summary>
+        ///     Invoked before SCP-939 uses its lunge ability.
+        /// </summary>
+        [System.Obsolete("Event is not firing. Use Lunged event instead", false)]
+        public static event CustomEventHandler<LungingEventArgs> Lunging;
+
+        /// <summary>
         ///     Invoked before SCP-939 uses its amnestic cloud ability.
         /// </summary>
         public static event CustomEventHandler<PlacingAmnesticCloudEventArgs> PlacingAmnesticCloud;
@@ -58,6 +64,13 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="LungedEventArgs" /> instance.</param>
         public static void OnLunged(LungedEventArgs ev) => Lunged.InvokeSafely(ev);
+
+        /// <summary>
+        ///     Called before SCP-939 uses its lunge ability.
+        /// </summary>
+        /// <param name="ev">The <see cref="LungingEventArgs" /> instance.</param>
+        [System.Obsolete("Invoking event is not firing. Use OnLunge to invoke working event", false)]
+        public static void OnLunging(LungingEventArgs ev) => Lunging.InvokeSafely(ev);
 
         /// <summary>
         ///     Called before SCP-939 uses its amnestic cloud ability.
