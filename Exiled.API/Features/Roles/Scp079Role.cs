@@ -40,7 +40,7 @@ namespace Exiled.API.Features.Roles
             : base(baseRole)
         {
             SubroutineModule = baseRole.SubroutineModule;
-            Internal = baseRole;
+            Base = baseRole;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp079SpeakerAbility scp079SpeakerAbility))
                 Log.Error("Scp079SpeakerAbility subroutine not found in Scp079Role::ctor");
@@ -184,8 +184,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public Camera Camera
         {
-            get => Camera.Get(Internal.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
-            set => Internal._curCamSync.CurrentCamera = value.Base;
+            get => Camera.Get(Base.CurrentCamera) ?? Camera.Get(CameraType.Hcz079ContChamber);
+            set => Base._curCamSync.CurrentCamera = value.Base;
         }
 
         /// <summary>
@@ -201,7 +201,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the speaker SCP-079 is currently using. Can be <see langword="null"/>.
         /// </summary>
-        public Scp079Speaker Speaker => Scp079Speaker.TryGetSpeaker(Internal.CurrentCamera, out Scp079Speaker speaker) ? speaker : null;
+        public Scp079Speaker Speaker => Scp079Speaker.TryGetSpeaker(Base.CurrentCamera, out Scp079Speaker speaker) ? speaker : null;
 
         /// <summary>
         /// Gets the doors SCP-079 has locked. Can be <see langword="null"/>.
@@ -350,7 +350,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the game <see cref="Scp079GameRole"/>.
         /// </summary>
-        protected Scp079GameRole Internal { get; }
+        public new Scp079GameRole Base { get; }
 
         /// <summary>
         /// Unlocks all doors that SCP-079 has locked.
