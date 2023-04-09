@@ -208,15 +208,11 @@ namespace Exiled.API.Extensions
                 writer.WriteUInt32(player.NetId);
                 writer.WriteRoleType(type);
                 if (type.GetTeam() == Team.FoundationForces)
-                {
-                    Log.Warn("Writing UnitNameId");
                     writer.WriteByte(unitId);
-                }
 
                 ushort syncH;
                 if (player.Role.Base is FpcStandardRoleBase fpc)
                 {
-                    Log.Warn("Writing FPC sync info");
                     fpc.FpcModule.MouseLook.GetSyncValues(0, out syncH, out _);
                     writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
                     writer.WriteUInt16(syncH);
@@ -225,6 +221,7 @@ namespace Exiled.API.Extensions
                 target.Connection.Send(writer.ToArraySegment());
             }
 
+            // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
             player.Position += Vector3.up * 0.25f;
         }
 
