@@ -66,6 +66,7 @@ namespace Exiled.API.Features.Pickups
         /// <returns> ...</returns>
         internal override Pickup GetItemInfo(Item item)
         {
+            base.GetItemInfo(item);
             if (item is ExplosiveGrenade explosiveGrenadeitem)
             {
                 MaxRadius = explosiveGrenadeitem.MaxRadius;

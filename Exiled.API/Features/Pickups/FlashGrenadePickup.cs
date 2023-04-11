@@ -55,6 +55,7 @@ namespace Exiled.API.Features.Pickups
         /// <returns> ...</returns>
         internal override Pickup GetItemInfo(Item item)
         {
+            base.GetItemInfo(item);
             if (item is FlashGrenade flashGrenadeitem)
             {
                 MinimalDurationEffect = flashGrenadeitem.MinimalDurationEffect;
