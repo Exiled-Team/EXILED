@@ -331,11 +331,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Destroy all <see cref="Ragdoll"/> objects from the specified list.
         /// </summary>
-        /// <param name="ragdolls">The List of Ragdolls to destroy.</param>
-        public static void CleanAllRagdolls(List<Ragdoll> ragdolls)
+        /// <param name="ragDolls">The List of Ragdolls to destroy.</param>
+        public static void CleanAllRagdolls(List<Ragdoll> ragDolls)
         {
-            foreach (Ragdoll ragdoll in ragdolls)
-                ragdoll.Destroy();
+            foreach (Ragdoll ragDoll in ragDolls)
+                ragDoll.Destroy();
         }
 
         /// <summary>
