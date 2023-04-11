@@ -308,6 +308,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Destroy all the <see cref="Pickup"/> objects from the specified list.
+        /// </summary>
+        /// <param name="pickups">The List of pickups to destroy.</param>
+        public static void CleanAllItems(List<Pickup> pickups)
+        {
+            foreach (Pickup pickup in pickups)
+                pickup.Destroy();
+        }
+
+        /// <summary>
         /// Destroy all <see cref="BasicRagdoll"/> objects.
         /// </summary>
         public static void CleanAllRagdolls()
@@ -316,6 +326,16 @@ namespace Exiled.API.Features
 
             foreach (BasicRagdoll ragDoll in basicRagDolls)
                 NetworkServer.Destroy(ragDoll.gameObject);
+        }
+
+        /// <summary>
+        /// Destroy all <see cref="Ragdoll"/> objects from the specified list.
+        /// </summary>
+        /// <param name="ragdolls">The List of Ragdolls to destroy.</param>
+        public static void CleanAllRagdolls(List<Ragdoll> ragdolls)
+        {
+            foreach (Ragdoll ragdoll in ragdolls)
+                ragdoll.Destroy();
         }
 
         /// <summary>
