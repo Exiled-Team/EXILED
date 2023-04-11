@@ -53,9 +53,8 @@ namespace Exiled.Events.Patches.Generic
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(Item), nameof(Item.Get), new[] { typeof(ItemBase) })),
 
-                // pickup.Scale = item.Scale
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Item), nameof(Item.Scale))),
-                new(OpCodes.Callvirt, PropertySetter(typeof(Pickup), nameof(Pickup.Scale))),
+                // pickup.GetItemInfo(item);
+                new(OpCodes.Callvirt, Method(typeof(Pickup), nameof(Pickup.GetItemInfo))),
 
                 // pickup.IsSpawned = spawn
                 new(OpCodes.Ldarg_3),

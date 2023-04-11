@@ -118,11 +118,6 @@ namespace Exiled.API.Features.Pickups
         public float MovementSpeedMultiplier { get; set; }
 
         /// <summary>
-        /// Gets how much worse <see cref="RoleTypeId.ClassD"/> and <see cref="RoleTypeId.Scientist"/>s are affected by wearing this armor.
-        /// </summary>
-        public float CivilianDownsideMultiplier { get; private set; }
-
-        /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.
         /// </summary>
         public IEnumerable<ArmorAmmoLimit> AmmoLimits { get; set; }
@@ -138,11 +133,7 @@ namespace Exiled.API.Features.Pickups
         /// <returns>A string containing BodyArmorPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
 
-        /// <summary>
-        /// .
-        /// </summary>
-        /// <param name="item"> ..</param>
-        /// <returns> ...</returns>
+        /// <inheritdoc/>
         internal override Pickup GetItemInfo(Item item)
         {
             base.GetItemInfo(item);
@@ -153,12 +144,29 @@ namespace Exiled.API.Features.Pickups
                 RemoveExcessOnDrop = armoritem.RemoveExcessOnDrop;
                 StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
                 MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
-                CivilianDownsideMultiplier = armoritem.CivilianDownsideMultiplier;
                 AmmoLimits = armoritem.AmmoLimits;
                 CategoryLimits = armoritem.CategoryLimits;
             }
 
             return this;
+        }
+
+        /// <inheritdoc/>
+        internal override Item GetPickupInfo(Item item)
+        {
+            base.GetPickupInfo(item);
+            if (item is Armor armoritem)
+            {
+                armoritem.HelmetEfficacy = helmetEfficacy;
+                armoritem.VestEfficacy = vestEfficacy;
+                armoritem.RemoveExcessOnDrop = RemoveExcessOnDrop;
+                armoritem.StaminaUseMultiplier = StaminaUseMultiplier;
+                armoritem.MovementSpeedMultiplier = MovementSpeedMultiplier;
+                armoritem.AmmoLimits = AmmoLimits;
+                armoritem.CategoryLimits = CategoryLimits;
+            }
+
+            return item;
         }
     }
 }

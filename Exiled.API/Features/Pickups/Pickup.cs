@@ -472,8 +472,27 @@ namespace Exiled.API.Features.Pickups
         /// <returns> ...</returns>
         internal virtual Pickup GetItemInfo(Items.Item item)
         {
-            Scale = item.Scale;
+            if (item is not null)
+            {
+                Scale = item.Scale;
+            }
+
             return this;
+        }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="item"> ..</param>
+        /// <returns> ...</returns>
+        internal virtual Items.Item GetPickupInfo(Items.Item item)
+        {
+            if (item is not null)
+            {
+                item.Scale = Scale;
+            }
+
+            return item;
         }
     }
 }

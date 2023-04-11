@@ -66,5 +66,20 @@ namespace Exiled.API.Features.Pickups
 
             return this;
         }
+
+        /// <inheritdoc/>
+        internal override Item GetPickupInfo(Item item)
+        {
+            base.GetPickupInfo(item);
+            if (item is FlashGrenade flashGrenadeitem)
+            {
+                flashGrenadeitem.MinimalDurationEffect = MinimalDurationEffect;
+                flashGrenadeitem.AdditionalBlindedEffect = AdditionalBlindedEffect;
+                flashGrenadeitem.SurfaceDistanceIntensifier = SurfaceDistanceIntensifier;
+                flashGrenadeitem.FuseTime = FuseTime;
+            }
+
+            return item;
+        }
     }
 }
