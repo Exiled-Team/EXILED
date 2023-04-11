@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Pickups
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
+    using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
     using InventorySystem.Items.Armor;
@@ -135,5 +135,30 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <returns>A string containing BodyArmorPickup related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="item"> ..</param>
+        /// <returns> ...</returns>
+        internal override Pickup GetItemInfo(Item item)
+        {
+            if (item is Armor armoritem)
+            {
+                helmetEfficacy = armoritem.HelmetEfficacy;
+                vestEfficacy = armoritem.VestEfficacy;
+                Equippable = armoritem.Equippable;
+                Holsterable = armoritem.Holsterable;
+                IsWorn = armoritem.IsWorn;
+                RemoveExcessOnDrop = armoritem.RemoveExcessOnDrop;
+                StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
+                MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
+                CivilianDownsideMultiplier = armoritem.CivilianDownsideMultiplier;
+                AmmoLimits = armoritem.AmmoLimits;
+                CategoryLimits = armoritem.CategoryLimits;
+            }
+
+            return this;
+        }
     }
 }
