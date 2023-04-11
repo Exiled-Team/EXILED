@@ -45,7 +45,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// The inside of SCP-049's Armory room.
         /// </summary>
-        Inside049Armory = 4,
+        Inside049Armory = 3,
 
         /// <summary>
         /// The inside of the inner SCP-079 door.
