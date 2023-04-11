@@ -16,12 +16,12 @@ namespace Exiled.API.Features
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Roles;
     using Exiled.API.Features.Toys;
 
     using Hazards;
 
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Pickups;
 
     using Items;
 
@@ -294,6 +294,28 @@ namespace Exiled.API.Features
             NetworkServer.Spawn(tantrum.gameObject);
 
             return tantrum.gameObject;
+        }
+
+        /// <summary>
+        /// Destroy all <see cref="ItemPickupBase"/> objects.
+        /// </summary>
+        public static void CleanAllItems()
+        {
+            var pickups = Object.FindObjectsOfType<ItemPickupBase>();
+
+            foreach (ItemPickupBase pickup in pickups)
+                pickup.DestroySelf();
+        }
+
+        /// <summary>
+        /// Destroy all <see cref="BasicRagdoll"/> objects.
+        /// </summary>
+        public static void CleanAllRagdolls()
+        {
+            var basicRagDolls = Object.FindObjectsOfType<BasicRagdoll>();
+
+            foreach (BasicRagdoll ragDoll in basicRagDolls)
+                NetworkServer.Destroy(ragDoll.gameObject);
         }
 
         /// <summary>
