@@ -19,13 +19,12 @@ namespace Exiled.Events.Patches.Events.Scp939
     [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.TriggerLunge))]
     internal static class Lunge
     {
-        private static bool Prefix(Scp939LungeAbility __instance)
+        private static void Postfix(Scp939LungeAbility __instance)
         {
             __instance.TriggerPos = __instance.CurPos;
             __instance.State = Scp939LungeState.Triggered;
 
             Handlers.Scp939.OnLunged(new(__instance.Owner));
-            return false;
         }
     }
 }
