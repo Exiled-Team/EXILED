@@ -394,17 +394,6 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Clones current <see cref="Pickup"/> object.
-        /// </summary>
-        /// <returns> New <see cref="Pickup"/> object.</returns>
-        public Pickup Clone() => new(Type)
-        {
-            Scale = Scale,
-            PreviousOwner = PreviousOwner,
-            Info = Info,
-        };
-
-        /// <summary>
         /// Returns the amount of time it will take for the provided <paramref name="player"/> to pick up this item, based on <see cref="Weight"/> and active status effects.
         /// </summary>
         /// <param name="player">The player to check search time.</param>
@@ -451,6 +440,17 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <seealso cref="UnSpawn"/>
         public void Destroy() => Base.DestroySelf();
+
+        /// <summary>
+        /// Clones the current pickup with a different serial.
+        /// </summary>
+        /// <returns> Cloned pickup object. </returns>
+        public virtual Pickup Clone() => new(Type)
+        {
+            Scale = Scale,
+            PreviousOwner = PreviousOwner,
+            Info = Info,
+        };
 
         /// <summary>
         /// Returns the Pickup in a human readable format.
