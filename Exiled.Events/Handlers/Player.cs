@@ -460,6 +460,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ExitingEnvironmentalHazardEventArgs> ExitingEnvironmentalHazard;
 
         /// <summary>
+        /// Invoked before a <see cref="API.Features.Player"/>'s nickname is changed.
+        /// </summary>
+        public static event CustomEventHandler<ChangingNicknameEventArgs> ChangingNickname;
+
+        /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
@@ -968,6 +973,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DestroyingEventArgs"/> instance. </param>
         public static void OnDestroying(DestroyingEventArgs ev) => Destroying.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="Player"/>'s custom display name is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingNicknameEventArgs"/> instance.</param>
+        public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
