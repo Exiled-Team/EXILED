@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Damage
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Exiled.API.Features.Damage.Attacker;
     using PlayerStatsSystem;
 
     public class DamageBase
@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Damage
                     CustomReasonDamageHandler customReasonDamageHandler => new CustomReasonDamage(customReasonDamageHandler),
                     AttackerDamageHandler attackerDamageHandler => attackerDamageHandler switch
                     {
-                        DisruptorDamageHandler disruptorDamageHandler => new CustomReasonDamage(disruptorDamageHandler),
+                        DisruptorDamageHandler disruptorDamageHandler => new DisruptorDamage(disruptorDamageHandler),
                         ExplosionDamageHandler explosionDamageHandler => new ExplosionDamage(explosionDamageHandler),
                         FirearmDamageHandler firearmDamageHandler => new FirearmDamage(firearmDamageHandler),
                         JailbirdDamageHandler jailbirdDamageHandler => new JailbirdDamage(jailbirdDamageHandler),
@@ -47,7 +47,7 @@ namespace Exiled.API.Features.Damage
                     },
                     WarheadDamageHandler warheadDamageHandler => new WarheadDamage(warheadDamageHandler),
                     UniversalDamageHandler universalDamageHandler => new UniversalDamage(universalDamageHandler),
-                    _ => new StandardDamageHandler(standardDamage),
+                    _ => new StandardDamage(standardDamage),
                 },
                 _ => new DamageBase(damageHandler),
             };
