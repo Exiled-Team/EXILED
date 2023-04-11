@@ -45,6 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // new ChangingNicknameEventArgs(Player.Get(this._hub, value)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingNicknameEventArgs))[0]),
                 new(OpCodes.Dup),
+                new(OpCodes.Dup),
 
                 // Handlers.Player.OnChangingNickname(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingNickname))),
@@ -53,8 +54,10 @@ namespace Exiled.Events.Patches.Events.Player
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingNicknameEventArgs), nameof(ChangingNicknameEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, continueLabel),
+                new(OpCodes.Pop),
                 new(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingNicknameEventArgs), nameof(ChangingNicknameEventArgs.NewName))).WithLabels(continueLabel),
+                new(OpCodes.Starg_S, 0),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
