@@ -45,7 +45,6 @@ namespace Exiled.Events.Patches.Events.Player
                 // new ChangingNicknameEventArgs(Player.Get(this._hub, value)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingNicknameEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup),
 
                 // Handlers.Player.OnChangingNickname(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingNickname))),
