@@ -92,7 +92,6 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         public virtual RoleTypeId Role { get; set; }
 
-
         /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
