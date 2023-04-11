@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Jailbird;
@@ -143,5 +144,23 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         /// <returns>A string containing jailbird related data.</returns>
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="item"> ..</param>
+        /// <returns> ...</returns>
+        internal override Pickup GetItemInfo(Item item)
+        {
+            if (item is Jailbird jailBirditem)
+            {
+                MeleeDamage = jailBirditem.MeleeDamage;
+                ChargeDamage = jailBirditem.ChargeDamage;
+                FlashDuration = jailBirditem.FlashDuration;
+                Radius = jailBirditem.Radius;
+            }
+
+            return this;
+        }
     }
 }

@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
+    using Exiled.API.Features.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -27,9 +28,8 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="FlashGrenadePickup"/> class.
         /// </summary>
-        /// <param name="type">.</param>
-        internal FlashGrenadePickup(ItemType type)
-            : base(type)
+        internal FlashGrenadePickup()
+            : base(ItemType.GrenadeFlash)
         {
         }
 
@@ -47,5 +47,23 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets the how mush the flash grenade going to be intensified when explode at <see cref="RoomType.Surface"/>.
         /// </summary>
         public float SurfaceDistanceIntensifier { get; set; }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="item"> ..</param>
+        /// <returns> ...</returns>
+        internal override Pickup GetItemInfo(Item item)
+        {
+            if (item is FlashGrenade flashGrenadeitem)
+            {
+                MinimalDurationEffect = flashGrenadeitem.MinimalDurationEffect;
+                AdditionalBlindedEffect = flashGrenadeitem.AdditionalBlindedEffect;
+                SurfaceDistanceIntensifier = flashGrenadeitem.SurfaceDistanceIntensifier;
+                FuseTime = flashGrenadeitem.FuseTime;
+            }
+
+            return this;
+        }
     }
 }

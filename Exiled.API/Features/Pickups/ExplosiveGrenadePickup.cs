@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
+    using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups.Projectiles;
     using InventorySystem.Items.ThrowableProjectiles;
 
@@ -28,9 +29,8 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosiveGrenadePickup"/> class.
         /// </summary>
-        /// <param name="type">.</param>
-        internal ExplosiveGrenadePickup(ItemType type)
-            : base(type)
+        internal ExplosiveGrenadePickup()
+            : base(ItemType.GrenadeHE)
         {
         }
 
@@ -58,5 +58,25 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets how long the <see cref="EffectType.Concussed"/> effect will last.
         /// </summary>
         public float ConcussDuration { get; set; }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="item"> ..</param>
+        /// <returns> ...</returns>
+        internal override Pickup GetItemInfo(Item item)
+        {
+            if (item is ExplosiveGrenade explosiveGrenadeitem)
+            {
+                MaxRadius = explosiveGrenadeitem.MaxRadius;
+                ScpDamageMultiplier = explosiveGrenadeitem.ScpDamageMultiplier;
+                BurnDuration = explosiveGrenadeitem.BurnDuration;
+                DeafenDuration = explosiveGrenadeitem.DeafenDuration;
+                ConcussDuration = explosiveGrenadeitem.ConcussDuration;
+                FuseTime = explosiveGrenadeitem.FuseTime;
+            }
+
+            return this;
+        }
     }
 }

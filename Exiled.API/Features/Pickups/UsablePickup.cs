@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Pickups
 {
+    using Exiled.API.Features.Items;
     using InventorySystem.Items.Pickups;
 
     /// <summary>
@@ -41,5 +42,21 @@ namespace Exiled.API.Features.Pickups
         /// Gets or sets how long after using starts a player has to cancel using the item.
         /// </summary>
         public float MaxCancellableTime { get; set; }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="item"> ..</param>
+        /// <returns> ...</returns>
+        internal override Pickup GetItemInfo(Item item)
+        {
+            if (item is Usable usableitem)
+            {
+                UseTime = usableitem.UseTime;
+                MaxCancellableTime = usableitem.MaxCancellableTime;
+            }
+
+            return this;
+        }
     }
 }
