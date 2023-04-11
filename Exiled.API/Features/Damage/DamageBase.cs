@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features.DamageHandlers
+namespace Exiled.API.Features.Damage
 {
     using System;
     using System.Collections.Generic;
