@@ -10,9 +10,11 @@ namespace Exiled.API.Features.Pickups
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Features.Items;
     using Exiled.API.Interfaces;
     using Exiled.API.Structs;
+    using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using PlayerRoles;
 
@@ -54,17 +56,17 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Gets a value indicating whether this item is equippable.
         /// </summary>
-        public bool Equippable { get; private set; }
+        public bool Equippable { get; } = false;
 
         /// <summary>
         /// Gets a value indicating whether this item is holsterable.
         /// </summary>
-        public bool Holsterable { get; private set; }
+        public bool Holsterable { get; } = false;
 
         /// <summary>
         /// Gets a value indicating whether or not this is a worn item.
         /// </summary>
-        public bool IsWorn { get; private set; }
+        public bool IsWorn { get; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not excess ammo should be removed when the armor is dropped.
@@ -147,9 +149,6 @@ namespace Exiled.API.Features.Pickups
             {
                 helmetEfficacy = armoritem.HelmetEfficacy;
                 vestEfficacy = armoritem.VestEfficacy;
-                Equippable = armoritem.Equippable;
-                Holsterable = armoritem.Holsterable;
-                IsWorn = armoritem.IsWorn;
                 RemoveExcessOnDrop = armoritem.RemoveExcessOnDrop;
                 StaminaUseMultiplier = armoritem.StaminaUseMultiplier;
                 MovementSpeedMultiplier = armoritem.MovementSpeedMultiplier;
