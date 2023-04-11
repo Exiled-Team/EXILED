@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomItems.API.EventArgs
 {
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
@@ -25,7 +26,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
         public OwnerEscapingEventArgs(Item item, EscapingEventArgs ev)
-            : this(item, ev.Player, ev.NewRole)
+            : this(item, ev.Player, ev.NewRole, ev.EscapeScenario)
         {
         }
 
@@ -35,8 +36,9 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="player"><inheritdoc cref="EscapingEventArgs.Player"/></param>
         /// <param name="newRole"><inheritdoc cref="EscapingEventArgs.NewRole"/></param>
-        public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole)
-            : base(player, newRole)
+        /// <param name="escapeScenario"><inheritdoc cref="EscapingEventArgs.EscapeScenario"/></param>
+        public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole, EscapeScenario escapeScenario)
+            : base(player, newRole, escapeScenario)
         {
             Item = item;
         }

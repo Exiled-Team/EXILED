@@ -14,7 +14,6 @@ namespace Exiled.API.Features
     using Exiled.API.Interfaces;
 
     using Hazards;
-
     using MEC;
 
     using PlayerRoles;
@@ -215,6 +214,30 @@ namespace Exiled.API.Features
         public static IEnumerable<TeslaGate> Get(Func<TeslaGate, bool> predicate) => List.Where(predicate);
 
         /// <summary>
+        /// Try-get a <see cref="TeslaGate"/> belonging to the <see cref="BaseTeslaGate"/>, if any.
+        /// </summary>
+        /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
+        /// <param name="gate">A <see cref="TeslaGate"/> or <see langword="null"/> if not found.</param>
+        /// <returns>Whether or not the tesla gate was found.</returns>
+        public static bool TryGet(BaseTeslaGate baseTeslaGate, out TeslaGate gate)
+        {
+            gate = Get(baseTeslaGate);
+            return gate is not null;
+        }
+
+        /// <summary>
+        /// Try-get a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <param name="gates">A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</param>
+        /// <returns>Whether or not at least one tesla gate was found.</returns>
+        public static bool TryGet(Func<TeslaGate, bool> predicate, out IEnumerable<TeslaGate> gates)
+        {
+            gates = Get(predicate);
+            return gates.Any();
+        }
+
+        /// <summary>
         /// Triggers the tesla gate.
         /// </summary>
         /// <param name="isInstantBurst">A value indicating whether the shock should be treated as instant burst.</param>
@@ -261,7 +284,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> can idle the tesla gate; otherwise, <see langword="false"/>.</returns>
-        public bool CanBeIdle(Player player) => player.IsAlive && !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) &&
+        public bool CanBeIdle(Player player) => player is not null && player.IsAlive && !IgnoredPlayers.Contains(player) && player.Role is not null && !IgnoredRoles.Contains(player.Role) &&
                                                 !IgnoredTeams.Contains(player.Role.Team) && IsPlayerInIdleRange(player);
 
         /// <summary>

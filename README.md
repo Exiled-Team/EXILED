@@ -22,12 +22,12 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 - [中文](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-中文.md)
 - [Español](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-ES.md)
 - [Polski](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-PL.md)
+- [Português-BR](https://github.com/Exiled-Team/EXILED/blob/master/Localization/README-BR.md)
 
 # Installation
-Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
-As mentioned above, the vast majority of EXILED is not contained within the server's Assembly-CSharp.dll file, however, there is a single modification needed to the Assembly-CSharp.dll file that is required to actually *load* EXILED into the server during startup, a clean game Assembly with this change already made will be provided with releases.
+Installation of EXILED is quite simple. It loads itself through NW Plugin API. That's why there are two folder inside the ``Exiled.tar.gz`` in release files. ``SCP Secret Laboratory`` contains the necessary files to load EXILED features in ``EXILED`` folder. With that being said, all you have to do is move these two folders into the appropriate path, which are explained below, and you are done! 
 
-If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installed.
+If you choose to use the installer it will, if run correctly, take care of installing all EXILED features.
 
 # Windows
 ### Automatic installation ([more information](https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Installer/README.md))
@@ -42,9 +42,9 @@ If you choose to use the installer it will, if run correctly, take care of insta
 ### Manual installation
   - Download the **`Exiled.tar.gz` [from here](https://github.com/Exiled-Team/EXILED/releases)**
   - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Move **``Assembly-CSharp.dll``** to: **`(Your Server Folder)\SCPSL_Data\Managed`** and replace the file.
   - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
-    - Windows 10:
+  - Move **``SCP Secret Laboratory``** to **`%appdata%`**.
+    - Windows 10 & 11:
       Write `%appdata%` in Cortana / the search icon, or the Windows Explorer bar
     - Any other Windows version:
       Press Win + R and type `%appdata%`
@@ -70,8 +70,8 @@ That's it, EXILED should now be installed and active the next time you boot up y
   - **Ensure** you are logged in on the user that runs the SCP servers.
   - Download the **`Exiled.tar.gz` [from here](https://github.com/Exiled-Team/EXILED/releases)** (SSH: right click and to get the `Exiled.tar.gz` link, then type: **`wget (link_to_download)`**)
   - To extract it to your current folder, type **``tar -xzvf EXILED.tar.gz``**
-  - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
   - Move the **`EXILED`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
+  - Move the **`SCP Secret Laboratory`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SCP Secret Laboratory ~/.config/`**)
 
 ### Installing plugins
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
@@ -94,9 +94,9 @@ For more comprehensive and actively updated tutorials, see [the EXILED website](
 
 But make sure to follow these rules when publishing your plugins:
 
- - Your plugin must contain a class that inherits from Exiled.API.Features.Plugin<>, if it does not, EXILED will not load your plugin when the server starts.
- - When a plugin is loaded, the code within the aforementioned class' ``OnEnabled()`` method is fired immediately, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your OnEnable() method, be sure you are not accessing things which may not be initialized by the server yet, such as ServerConsole.Port, or PlayerManager.localPlayer.
- - If you need to access things early on that are not initialized before your plugin is loaded, it is recommended to simply wait for the WaitingForPlayers event to do so, if you for some reason need to do things sooner, wrap the code in a ``` while(!x)``` loop that checks for the variable/object you need to no longer be null before continuing.
+ - Your plugin must contain a class that inherits from ``Exiled.API.Features.Plugin<>``, if it does not, EXILED will not load your plugin when the server starts.
+ - When a plugin is loaded, the code within the aforementioned class' ``OnEnabled()`` method is fired immediately, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your ``OnEnable()`` method, be sure you are not accessing things which may not be initialized by the server yet, such as ``ServerConsole.Port``, or ``PlayerManager.localPlayer``.
+ - If you need to access things early on that are not initialized before your plugin is loaded, it is recommended to simply wait for the ``WaitingForPlayers`` event to do so, if you for some reason need to do things sooner, wrap the code in a ``` while(!x)``` loop that checks for the variable/object you need to no longer be null before continuing.
  - EXILED supports dynamically reloading plugin assemblies mid-execution. The means that, if you need to update a plugin, it can be done without rebooting the server, however, if you are updating a plugin mid-execution, the plugin needs to be properly setup to support it, or you will have a very bad time. Refer to the ``Dynamic Updates`` section for more information and guidelines to follow.
  - There is ***NO*** OnUpdate, OnFixedUpdate or OnLateUpdate event within EXILED. If you need to, for some reason, run code that often, you can use a MEC coroutine that waits for one frame, 0.01f, or uses a Timing layer like Timing.FixedUpdate instead.
 
@@ -146,9 +146,9 @@ This also means that you can *update* plugins without having to fully reboot the
 
  - Plugins that want to support Dynamic Updating need to be sure to unsubscribe from all events they are hooked into when they are Disabled or Reloaded.
  - Plugins that have custom Harmony patches must use some kind of changing variable within the name of the Harmony Instance, and must UnPatchAll() on their harmony instance when the plugin is disabled or reloaded.
- - Any coroutines started by the plugin in OnEnabled must also be killed when the plugin is disabled or reloaded.
+ - Any coroutines started by the plugin in ``OnEnabled()`` must also be killed when the plugin is disabled or reloaded.
 
-All of these can be achieved in either the OnReloaded() or OnDisabled() methods in the plugin class. When EXILED reloads plugins, it calls OnDisabled(), then OnReloaded(), then it will load in the new assemblies, and then executes OnEnabled().
+All of these can be achieved in either the ``OnReloaded()`` or ``OnDisabled()`` methods in the plugin class. When EXILED reloads plugins, it calls OnDisabled(), then ``OnReloaded()``, then it will load in the new assemblies, and then executes ``OnEnabled()``.
 
 Note that I said *new* assemblies. If you replace an assembly with another one of the same name, it will ***NOT*** be updated. This is due to the GAC (Global Assembly Cache), if you attempt to 'load' and assembly that is already in the cache, it will always use the cached assembly instead.
 For this reason, if your plugin will support Dynamic Updates, you must build each version with a different Assembly Name in the build options (renaming the file will not work). Also, since the old assembly is not "destroyed" when it is no longer needed, if you fail to unsubscribe from events, unpatch your harmony instance, kill coroutines, etc, that code will continue to run aswell as the new version's code.
