@@ -30,12 +30,12 @@ namespace Exiled.API.Features.Pickups
         public const int ChargesLimit = JailbirdItem.ChargesLimit;
 
         /// <summary>
-        /// Number of Create made before the weapon become AlmostDepleted.
+        /// Number of Damage made before the weapon become AlmostDepleted.
         /// </summary>
         public const float DamageWarning = JailbirdItem.DamageWarning;
 
         /// <summary>
-        /// Number of Create made before the weapon will being destroy.
+        /// Number of Damage made before the weapon will being destroy.
         /// </summary>
         public const float DamageLimit = JailbirdItem.DamageLimit;
 

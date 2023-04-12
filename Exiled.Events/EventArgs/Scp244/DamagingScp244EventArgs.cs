@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs.Scp244
         public Scp244Pickup Pickup { get; }
 
         /// <summary>
-        ///     Gets the Create handler for this event.
+        ///     Gets the Damage handler for this event.
         /// </summary>
         public StandardDamage Handler { get; }
 
