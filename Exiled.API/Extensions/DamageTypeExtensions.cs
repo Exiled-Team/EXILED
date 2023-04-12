@@ -10,9 +10,9 @@ namespace Exiled.API.Extensions
     using System.Collections.Generic;
 
     using Enums;
-
+    using Exiled.API.Features.Damage;
     using Features;
-
+    using PlayerRoles;
     using PlayerStatsSystem;
 
     /// <summary>
@@ -31,11 +31,11 @@ namespace Exiled.API.Extensions
             { DeathTranslations.Poisoned.Id, DamageType.Poison },
             { DeathTranslations.Recontained.Id, DamageType.Recontainment },
             { DeathTranslations.Scp049.Id, DamageType.Scp049 },
-            { DeathTranslations.Scp096.Id, DamageType.Scp096 },
+            { DeathTranslations.Scp096.Id, DamageType.Scp096SlapRight },
             { DeathTranslations.Scp173.Id, DamageType.Scp173 },
             { DeathTranslations.Scp207.Id, DamageType.Scp207 },
-            { DeathTranslations.Scp939Lunge.Id, DamageType.Scp939 },
-            { DeathTranslations.Scp939Other.Id, DamageType.Scp939 },
+            { DeathTranslations.Scp939Lunge.Id, DamageType.Scp939LungeTarget },
+            { DeathTranslations.Scp939Other.Id, DamageType.Scp939Claw },
             { DeathTranslations.Tesla.Id, DamageType.Tesla },
             { DeathTranslations.Unknown.Id, DamageType.Unknown },
             { DeathTranslations.Warhead.Id, DamageType.Warhead },
@@ -60,11 +60,11 @@ namespace Exiled.API.Extensions
             { DeathTranslations.Poisoned, DamageType.Poison },
             { DeathTranslations.Recontained, DamageType.Recontainment },
             { DeathTranslations.Scp049, DamageType.Scp049 },
-            { DeathTranslations.Scp096, DamageType.Scp096 },
+            { DeathTranslations.Scp096, DamageType.Scp096SlapRight },
             { DeathTranslations.Scp173, DamageType.Scp173 },
             { DeathTranslations.Scp207, DamageType.Scp207 },
-            { DeathTranslations.Scp939Lunge, DamageType.Scp939 },
-            { DeathTranslations.Scp939Other, DamageType.Scp939 },
+            { DeathTranslations.Scp939Lunge, DamageType.Scp939LungeTarget },
+            { DeathTranslations.Scp939Other, DamageType.Scp939Claw },
             { DeathTranslations.Tesla, DamageType.Tesla },
             { DeathTranslations.Unknown, DamageType.Unknown },
             { DeathTranslations.Warhead, DamageType.Warhead },
@@ -131,10 +131,24 @@ namespace Exiled.API.Extensions
         /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by SCP.</returns>
         public static bool IsScp(this DamageType type, bool checkItems = true) => type switch
         {
-            DamageType.Scp or DamageType.Scp049 or DamageType.Scp096 or DamageType.Scp106 or DamageType.Scp173 or DamageType.Scp939 or DamageType.Scp0492 => true,
+            DamageType.Scp or DamageType.Scp049 or DamageType.Scp096Charge or DamageType.Scp096SlapLeft or DamageType.Scp096SlapRight or DamageType.Scp096Gate or DamageType.Scp106 or DamageType.Scp173 or DamageType.Scp939Claw or DamageType.Scp939LungeTarget or DamageType.Scp939LungeSecondary or DamageType.Scp0492 => true,
             DamageType.Scp018 or DamageType.Scp207 when checkItems => true,
             _ => false,
         };
+
+        /// <summary>
+        /// Check if a <see cref="DamageType">damage type</see> is caused by <see cref="RoleTypeId.Scp096"/>.
+        /// </summary>
+        /// <param name="type">The damage type to be checked.</param>
+        /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by <see cref="RoleTypeId.Scp096"/>.</returns>
+        public static bool IsScp096(this DamageType type) => type is DamageType.Scp096Charge or DamageType.Scp096SlapLeft or DamageType.Scp096SlapRight or DamageType.Scp096Gate;
+
+        /// <summary>
+        /// Check if a <see cref="DamageType">damage type</see> is caused by <see cref="RoleTypeId.Scp939"/>.
+        /// </summary>
+        /// <param name="type">The damage type to be checked.</param>
+        /// <returns>Returns whether or not the <see cref="DamageType"/> is caused by <see cref="RoleTypeId.Scp939"/>.</returns>
+        public static bool IsScp939(this DamageType type) => type is DamageType.Scp939Claw or DamageType.Scp939LungeTarget or DamageType.Scp939LungeSecondary;
 
         /// <summary>
         /// Check if a <see cref="DamageType">damage type</see> is caused by status effect.
@@ -152,61 +166,6 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="damageHandlerBase">The DamageHandler to convert.</param>
         /// <returns>The <see cref="DamageType"/> of the <see cref="DamageHandlerBase"/>.</returns>
-        public static DamageType GetDamageType(DamageHandlerBase damageHandlerBase)
-        {
-            switch (damageHandlerBase)
-            {
-                case CustomReasonDamageHandler:
-                    return DamageType.Custom;
-                case WarheadDamageHandler:
-                    return DamageType.Warhead;
-                case ExplosionDamageHandler:
-                    return DamageType.Explosion;
-                case Scp018DamageHandler:
-                    return DamageType.Scp018;
-                case RecontainmentDamageHandler:
-                    return DamageType.Recontainment;
-                case Scp096DamageHandler:
-                    return DamageType.Scp096;
-                case MicroHidDamageHandler:
-                    return DamageType.MicroHid;
-                case DisruptorDamageHandler:
-                    return DamageType.ParticleDisruptor;
-                case Scp049DamageHandler scp049DamageHandler:
-                    return scp049DamageHandler.DamageSubType switch
-                    {
-                        Scp049DamageHandler.AttackType.CardiacArrest => DamageType.CardiacArrest,
-                        Scp049DamageHandler.AttackType.Instakill => DamageType.Scp049,
-                        Scp049DamageHandler.AttackType.Scp0492 => DamageType.Scp0492,
-                        _ => DamageType.Unknown,
-                    };
-                case FirearmDamageHandler firearmDamageHandler:
-                    return ItemConversion.ContainsKey(firearmDamageHandler.WeaponType) ? ItemConversion[firearmDamageHandler.WeaponType] : DamageType.Firearm;
-
-                case ScpDamageHandler scpDamageHandler:
-                    {
-                        DeathTranslation translation = DeathTranslations.TranslationsById[scpDamageHandler._translationId];
-                        if (translation.Id == DeathTranslations.PocketDecay.Id)
-                            return DamageType.Scp106;
-
-                        return TranslationIdConversion.ContainsKey(translation.Id)
-                            ? TranslationIdConversion[translation.Id]
-                            : DamageType.Scp;
-                    }
-
-                case UniversalDamageHandler universal:
-                    {
-                        DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
-
-                        if (TranslationIdConversion.ContainsKey(translation.Id))
-                            return TranslationIdConversion[translation.Id];
-
-                        Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
-                        return DamageType.Unknown;
-                    }
-            }
-
-            return DamageType.Unknown;
-        }
+        public static DamageType GetDamageType(DamageHandlerBase damageHandlerBase) => DamageBase.Get(damageHandlerBase).Type;
     }
 }

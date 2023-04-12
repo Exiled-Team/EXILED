@@ -12,7 +12,8 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using PlayerStatsSystem;
 
     public class ScpDamage : AttackerDamage
@@ -25,6 +26,12 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
+
+            DeathTranslation translation = DeathTranslations.TranslationsById[Base._translationId];
+            if (translation.Id == DeathTranslations.PocketDecay.Id)
+                Type = DamageType.Scp106;
+            Type = DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id) ? DamageTypeExtensions.TranslationIdConversion[translation.Id] : DamageType.Scp;
+
         }
 
         /// <summary>
@@ -32,5 +39,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// </summary>
         public new ScpDamageHandler Base { get; }
 
+        /// <inheritdoc/>
+        public override DamageType Type { get; internal set; }
     }
 }
