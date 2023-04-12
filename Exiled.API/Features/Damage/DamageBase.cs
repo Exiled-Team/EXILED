@@ -50,6 +50,11 @@ namespace Exiled.API.Features.Damage
         public string ServerLogsText => Base.ServerLogsText;
 
         /// <summary>
+        /// Gets the <see cref="Name"/> for the damage.
+        /// </summary>
+        public string Name => Enum.IsDefined(typeof(DamageType), Type) ? Type.ToString() : CustomDamage.customDamage.TryGetValue(Type, out CustomDamage customDamage) ? customDamage.DamageName : "Unknown";
+
+        /// <summary>
         /// Gets .
         /// </summary>
         public DamageHandlerBase.CassieAnnouncement CassieAnnouncement => Base.CassieDeathAnnouncement;
@@ -112,7 +117,7 @@ namespace Exiled.API.Features.Damage
                 DamageType.Scp018 => new Scp018Damage(),
                 DamageType.Scp or DamageType.Scp173 or DamageType.Scp106 => new ScpDamage(type),
                 DamageType.Scp049 or DamageType.Scp0492 or DamageType.CardiacArrest => new Scp049Damage(type),
-                DamageType.Scp939 => new Scp939Damage(),
+                DamageType.Scp939Claw or DamageType.Scp939LungeTarget or DamageType.Scp939LungeSecondary => new Scp939Damage(type),
                 DamageType.Custom or _ => new CustomReasonDamage(type, damage),
             };
         }
