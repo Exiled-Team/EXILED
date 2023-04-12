@@ -114,12 +114,12 @@ namespace Exiled.API.Features.Damage
                 DamageType.Firearm or DamageType.AK or DamageType.Crossvec or DamageType.Logicer or DamageType.E11Sr or DamageType.Shotgun or DamageType.Fsp9 or DamageType.Com15 or DamageType.Com18 or DamageType.Com45 or DamageType.MicroHid => new FirearmDamage(type),
                 DamageType.ParticleDisruptor => new DisruptorDamage(attacker, damage),
                 DamageType.Warhead => new WarheadDamage(),
-                DamageType.Scp018 => new Scp018Damage(),
                 DamageType.Scp or DamageType.Scp173 or DamageType.Scp106 => new ScpDamage(type),
                 DamageType.Scp096Charge or DamageType.Scp096Gate or DamageType.Scp096SlapLeft or DamageType.Scp096SlapRight => new Scp096Damage(),
                 DamageType.Scp049 or DamageType.Scp0492 or DamageType.CardiacArrest => new Scp049Damage(type),
                 DamageType.Scp939Claw or DamageType.Scp939LungeTarget or DamageType.Scp939LungeSecondary => new Scp939Damage(type),
-                DamageType.Custom or _ => new CustomReasonDamage(type, damage),
+                DamageType.Custom or _ => CustomReasonDamage.Damage(type, damage),
+                DamageType.Scp018 => new UniversalDamage(type),
             };
         }
     }
