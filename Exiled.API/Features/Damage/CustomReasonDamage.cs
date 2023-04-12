@@ -22,18 +22,32 @@ namespace Exiled.API.Features.Damage
         /// Initializes a new instance of the <see cref="CustomReasonDamage"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="CustomReasonDamageHandler"/> class.</param>
-        public CustomReasonDamage(CustomReasonDamageHandler damageHandler)
+        internal CustomReasonDamage(CustomReasonDamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CustomReasonDamage"/> class.
+        /// </summary>
+        internal CustomReasonDamage(DamageType type, float damage)
+        {
+            if (!CustomDamage.customDamage.TryGetValue(type, out CustomDamage customDamage))
+                customDamage = new();
+            CustomDamage = customDamage;
+            Base = new(customDamage, damage);
+        }
+
+
+        /// <summary>
         /// Gets the <see cref="CustomReasonDamageHandler"/> that this class is encapsulating.
         /// </summary>
         public new CustomReasonDamageHandler Base { get; }
 
+        public CustomDamage CustomDamagee { get; set; }
+
         /// <inheritdoc/>
-        public override DamageType Type { get; } = DamageType.Custom;
+        public override DamageType Type { get; internal set; }
     }
 }

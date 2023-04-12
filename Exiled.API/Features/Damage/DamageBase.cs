@@ -15,6 +15,7 @@ namespace Exiled.API.Features.Damage
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Damage.Attacker;
+    using PlayerRoles.PlayableScps.Scp939;
     using PlayerStatsSystem;
 
     public class DamageBase
@@ -36,7 +37,7 @@ namespace Exiled.API.Features.Damage
         /// <summary>
         /// Gets the <see cref="DamageType"/> for the damage.
         /// </summary>
-        public virtual DamageType Type { get; }
+        public virtual DamageType Type { get; internal set; }
 
         /// <summary>
         /// .
@@ -63,6 +64,7 @@ namespace Exiled.API.Features.Damage
                         Scp018DamageHandler scp018DamageHandler => new Scp018Damage(scp018DamageHandler),
                         Scp049DamageHandler scp049DamageHandler => new Scp049Damage(scp049DamageHandler),
                         Scp096DamageHandler scp096DamageHandler => new Scp096Damage(scp096DamageHandler),
+                        Scp939DamageHandler scp939DamageHandler => new Scp939Damage(scp939DamageHandler)
                         ScpDamageHandler scpDamageHandler => new ScpDamage(scpDamageHandler),
                         _ => new AttackerDamage(attackerDamageHandler),
                     },
@@ -71,6 +73,25 @@ namespace Exiled.API.Features.Damage
                     _ => new StandardDamage(standardDamage),
                 },
                 _ => new DamageBase(damageHandler),
+            };
+        }
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <returns>..</returns>
+        public static DamageBase Create(DamageType type, Player target, float damage = -1f, Player attacker = null)
+        {
+            return type switch
+            {
+                DamageType.Firearm or DamageType.AK or DamageType.Crossvec or DamageType.Logicer or DamageType.E11Sr or DamageType.Shotgun or DamageType.Fsp9 => new FirearmDamage(type),
+                DamageType.ParticleDisruptor => new DisruptorDamage(),
+                DamageType.Warhead => new WarheadDamage(),
+                DamageType.Scp018 => new Scp018Damage(),
+                DamageType.Scp or DamageType.Scp173 or DamageType.Scp106 => new ScpDamage(type),
+                DamageType.Scp049 or DamageType.Scp0492 or DamageType.CardiacArrest => new Scp049Damage(type),
+                DamageType.Scp939 => new Scp939Damage(),
+                DamageType.Custom or _ => new CustomReasonDamage(),
             };
         }
     }

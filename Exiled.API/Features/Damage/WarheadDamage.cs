@@ -33,6 +33,6 @@ namespace Exiled.API.Features.Damage
         public new WarheadDamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; } = DamageType.Warhead;
+        public override DamageType Type { get; internal set; } = DamageType.Warhead;
     }
 }

@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Damage
     using System.Text;
     using System.Threading.Tasks;
 
+    using Exiled.API.Enums;
     using PlayerStatsSystem;
 
     public class UniversalDamage : StandardDamage
@@ -32,5 +33,7 @@ namespace Exiled.API.Features.Damage
         /// </summary>
         public new UniversalDamageHandler Base { get; }
 
+        /// <inheritdoc/>
+        public override DamageType Type { get; internal set; }
     }
 }

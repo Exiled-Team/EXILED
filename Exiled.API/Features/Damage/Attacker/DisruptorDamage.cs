@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Damage.Attacker
         public new DisruptorDamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; } = DamageType.ParticleDisruptor;
+        public override DamageType Type { get; internal set; } = DamageType.ParticleDisruptor;
 
     }
 }

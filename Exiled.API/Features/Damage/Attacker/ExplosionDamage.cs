@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Damage.Attacker
         public new ExplosionDamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; } = DamageType.Explosion;
+        public override DamageType Type { get; internal set; } = DamageType.Explosion;
 
     }
 }

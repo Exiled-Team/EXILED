@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="JailbirdDamage.cs" company="Exiled Team">
+// <copyright file="Scp096Damage.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,27 +12,29 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
     using Exiled.API.Enums;
+    using PlayerRoles.PlayableScps.Scp939;
     using PlayerStatsSystem;
 
-    public class JailbirdDamage : AttackerDamage
+    public class Scp939Damage : AttackerDamage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="JailbirdDamage"/> class.
+        /// Initializes a new instance of the <see cref="Scp939Damage"/> class.
         /// </summary>
-        /// <param name="damageHandler">The base <see cref="JailbirdDamageHandler"/> class.</param>
-        internal JailbirdDamage(JailbirdDamageHandler damageHandler)
+        /// <param name="damageHandler">The base <see cref="Scp939DamageHandler"/> class.</param>
+        internal Scp939Damage(Scp939DamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;
         }
 
         /// <summary>
-        /// Gets the <see cref="JailbirdDamageHandler"/> that this class is encapsulating.
+        /// Gets the <see cref="Scp939DamageHandler"/> that this class is encapsulating.
         /// </summary>
-        public new JailbirdDamageHandler Base { get; }
+        public new Scp939DamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; internal set; } = DamageType.Jailbird;
+        public override DamageType Type { get; internal set; } = DamageType.Scp939;
     }
 }

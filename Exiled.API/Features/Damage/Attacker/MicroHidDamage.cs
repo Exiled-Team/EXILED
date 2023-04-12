@@ -33,6 +33,6 @@ namespace Exiled.API.Features.Damage.Attacker
         public new MicroHidDamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; } = DamageType.MicroHid;
+        public override DamageType Type { get; internal set; } = DamageType.MicroHid;
     }
 }

@@ -34,6 +34,6 @@ namespace Exiled.API.Features.Damage.Attacker
         public new Scp096DamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; } = DamageType.Scp096;
+        public override DamageType Type { get; internal set; } = DamageType.Scp096;
     }
 }
