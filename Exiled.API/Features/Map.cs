@@ -301,17 +301,15 @@ namespace Exiled.API.Features
         /// </summary>
         public static void CleanAllItems()
         {
-            var pickups = Object.FindObjectsOfType<ItemPickupBase>();
-
-            foreach (ItemPickupBase pickup in pickups)
-                pickup.DestroySelf();
+            foreach (Pickup pickup in Pickup.List)
+                pickup.Destroy();
         }
 
         /// <summary>
         /// Destroy all the <see cref="Pickup"/> objects from the specified list.
         /// </summary>
         /// <param name="pickups">The List of pickups to destroy.</param>
-        public static void CleanAllItems(List<Pickup> pickups)
+        public static void CleanAllItems(IEnumerable<Pickup> pickups)
         {
             foreach (Pickup pickup in pickups)
                 pickup.Destroy();
@@ -322,17 +320,15 @@ namespace Exiled.API.Features
         /// </summary>
         public static void CleanAllRagdolls()
         {
-            var basicRagDolls = Object.FindObjectsOfType<BasicRagdoll>();
-
-            foreach (BasicRagdoll ragDoll in basicRagDolls)
-                NetworkServer.Destroy(ragDoll.gameObject);
+            foreach (Ragdoll ragDoll in Ragdoll.List)
+                ragDoll.Destroy();
         }
 
         /// <summary>
         /// Destroy all <see cref="Ragdoll"/> objects from the specified list.
         /// </summary>
-        /// <param name="ragDolls">The List of Ragdolls to destroy.</param>
-        public static void CleanAllRagdolls(List<Ragdoll> ragDolls)
+        /// <param name="ragDolls">The List of RagDolls to destroy.</param>
+        public static void CleanAllRagdolls(IEnumerable<Ragdoll> ragDolls)
         {
             foreach (Ragdoll ragDoll in ragDolls)
                 ragDoll.Destroy();
