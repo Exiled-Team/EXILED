@@ -13,7 +13,23 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Text;
     using System.Threading.Tasks;
 
-    public class Scp018Damage
+    using PlayerStatsSystem;
+
+    public class Scp018Damage : AttackerDamage
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Scp018Damage"/> class.
+        /// </summary>
+        /// <param name="damageHandler">The base <see cref="Scp018DamageHandler"/> class.</param>
+        public Scp018Damage(Scp018DamageHandler damageHandler)
+            : base(damageHandler)
+        {
+            Base = damageHandler;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Scp018DamageHandler"/> that this class is encapsulating.
+        /// </summary>
+        public new Scp018DamageHandler Base { get; }
     }
 }

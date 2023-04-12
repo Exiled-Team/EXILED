@@ -12,11 +12,26 @@ namespace Exiled.API.Features.Damage
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
     using Exiled.API.Features.Damage.Attacker;
     using PlayerStatsSystem;
 
     public class DamageBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DamageBase"/> class.
+        /// </summary>
+        /// <param name="damageHandler">The base <see cref="DamageHandlerBase"/> class.</param>
+        internal DamageBase(DamageHandlerBase damageHandler)
+        {
+            Base = damageHandler;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="DamageHandlerBase"/> of the item.
+        /// </summary>
+        public DamageHandlerBase Base { get; }
+
         /// <summary>
         /// .
         /// </summary>

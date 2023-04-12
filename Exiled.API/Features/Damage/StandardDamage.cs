@@ -13,7 +13,24 @@ namespace Exiled.API.Features.Damage
     using System.Text;
     using System.Threading.Tasks;
 
-    public class StandardDamage
+    using PlayerStatsSystem;
+
+    public class StandardDamage : DamageBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StandardDamage"/> class.
+        /// </summary>
+        /// <param name="damageHandler">The base <see cref="StandardDamageHandler"/> class.</param>
+        public StandardDamage(StandardDamageHandler damageHandler)
+            : base(damageHandler)
+        {
+            Base = damageHandler;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="StandardDamageHandler"/> that this class is encapsulating.
+        /// </summary>
+        public new StandardDamageHandler Base { get; }
+
     }
 }

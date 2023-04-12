@@ -13,7 +13,24 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Text;
     using System.Threading.Tasks;
 
-    public class MicroHidDamage
+    using PlayerStatsSystem;
+
+    public class MicroHidDamage : AttackerDamage
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MicroHidDamage"/> class.
+        /// </summary>
+        /// <param name="damageHandler">The base <see cref="MicroHidDamageHandler"/> class.</param>
+        public MicroHidDamage(MicroHidDamageHandler damageHandler)
+            : base(damageHandler)
+        {
+            Base = damageHandler;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="MicroHidDamageHandler"/> that this class is encapsulating.
+        /// </summary>
+        public new MicroHidDamageHandler Base { get; }
+
     }
 }

@@ -13,7 +13,23 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Text;
     using System.Threading.Tasks;
 
-    public class FirearmDamage
+    using PlayerStatsSystem;
+
+    public class FirearmDamage : AttackerDamage
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FirearmDamage"/> class.
+        /// </summary>
+        /// <param name="damageHandler">The base <see cref="FirearmDamageHandler"/> class.</param>
+        public FirearmDamage(FirearmDamageHandler damageHandler)
+            : base(damageHandler)
+        {
+            Base = damageHandler;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="FirearmDamageHandler"/> that this class is encapsulating.
+        /// </summary>
+        public new FirearmDamageHandler Base { get; }
     }
 }
