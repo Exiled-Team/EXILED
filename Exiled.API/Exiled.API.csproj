@@ -11,10 +11,6 @@
     <Import Project="../EXILED.props" />
 
     <ItemGroup>
-      <None Remove="Features\Damage\kywzg24m.z5i~" />
-    </ItemGroup>
-
-    <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>Exiled.Events</_Parameter1>
         </AssemblyAttribute>
