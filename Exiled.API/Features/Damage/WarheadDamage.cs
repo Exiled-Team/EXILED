@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Damage
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Exiled.API.Enums;
     using PlayerStatsSystem;
 
     public class WarheadDamage : StandardDamage
@@ -32,5 +32,7 @@ namespace Exiled.API.Features.Damage
         /// </summary>
         public new WarheadDamageHandler Base { get; }
 
+        /// <inheritdoc/>
+        public override DamageType Type { get; } = DamageType.Warhead;
     }
 }

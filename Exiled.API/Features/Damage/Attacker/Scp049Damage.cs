@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Exiled.API.Enums;
     using PlayerStatsSystem;
 
     public class Scp049Damage : AttackerDamage
@@ -31,6 +31,9 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Gets the <see cref="Scp049DamageHandler"/> that this class is encapsulating.
         /// </summary>
         public new Scp049DamageHandler Base { get; }
+
+        /// <inheritdoc/>
+        public override DamageType Type { get; } = DamageType.Scp049;
 
     }
 }

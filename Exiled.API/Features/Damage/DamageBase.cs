@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Damage
     using System.Text;
     using System.Threading.Tasks;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features.Damage.Attacker;
     using PlayerStatsSystem;
 
@@ -31,6 +32,11 @@ namespace Exiled.API.Features.Damage
         /// Gets the <see cref="DamageHandlerBase"/> of the item.
         /// </summary>
         public DamageHandlerBase Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="DamageType"/> for the damage.
+        /// </summary>
+        public virtual DamageType Type { get; }
 
         /// <summary>
         /// .

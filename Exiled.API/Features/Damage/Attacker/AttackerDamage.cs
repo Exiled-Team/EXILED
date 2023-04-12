@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Exiled.API.Enums;
     using PlayerStatsSystem;
 
     public class AttackerDamage : StandardDamage
@@ -32,5 +32,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// </summary>
         public new AttackerDamageHandler Base { get; }
 
+        /// <inheritdoc/>
+        public override DamageType Type { get; }
     }
 }

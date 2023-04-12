@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Exiled.API.Enums;
     using PlayerStatsSystem;
 
     public class ExplosionDamage : AttackerDamage
@@ -31,5 +31,9 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Gets the <see cref="ExplosionDamageHandler"/> that this class is encapsulating.
         /// </summary>
         public new ExplosionDamageHandler Base { get; }
+
+        /// <inheritdoc/>
+        public override DamageType Type { get; } = DamageType.Explosion;
+
     }
 }

@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Damage
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-
+    using Exiled.API.Enums;
     using PlayerStatsSystem;
 
     public class CustomReasonDamage : StandardDamage
@@ -31,5 +31,8 @@ namespace Exiled.API.Features.Damage
         /// Gets the <see cref="CustomReasonDamageHandler"/> that this class is encapsulating.
         /// </summary>
         public new CustomReasonDamageHandler Base { get; }
+
+        /// <inheritdoc/>
+        public override DamageType Type { get; } = DamageType.Custom;
     }
 }
