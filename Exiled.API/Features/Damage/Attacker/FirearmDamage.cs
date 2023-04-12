@@ -46,10 +46,16 @@ namespace Exiled.API.Features.Damage.Attacker
         /// <param name="type">The <see cref="DamageType"/> to give.</param>
         /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
         /// <returns>.</returns>
-        public static new FirearmDamage Create(DamageType type, float damage, Player attacker) => new(new()
+        public static new FirearmDamage Create(DamageType type, float damage, Player attacker)
         {
-            Damage = damage,
-            Attacker = attacker.Footprint,
-        });
+            ItemType itemtype = DamageTypeExtensions.ItemConversion.FirstOrDefault(x => x.Value == type).Key;
+            return new(new()
+            {
+                Damage = damage,
+                Attacker = attacker.Footprint,
+                WeaponType = itemtype,
+                _ammoType = itemtype,
+            });
+        }
     }
 }
