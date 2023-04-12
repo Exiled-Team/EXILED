@@ -270,7 +270,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the idle range of the tesla gate; otherwise, <see langword="false"/>.</returns>
-        public bool IsPlayerInIdleRange(Player player) => Base.PlayerInIdleRange(player.ReferenceHub);
+        public bool IsPlayerInIdleRange(Player player)
+        {
+            if (player.ReferenceHub is null)
+                return false;
+            return Base.PlayerInIdleRange(player.ReferenceHub);
+        }
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="Player"/> is in the trigger range of a specific tesla gate.
