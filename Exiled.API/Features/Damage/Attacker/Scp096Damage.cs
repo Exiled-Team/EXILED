@@ -7,13 +7,8 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Enums;
+    using PlayerRoles.PlayableScps.Scp939;
     using PlayerStatsSystem;
 
     public class Scp096Damage : AttackerDamage
@@ -32,7 +27,6 @@ namespace Exiled.API.Features.Damage.Attacker
                 Scp096DamageHandler.AttackType.SlapLeft => DamageType.Scp096SlapLeft,
                 Scp096DamageHandler.AttackType.SlapRight => DamageType.Scp096SlapRight,
                 Scp096DamageHandler.AttackType.Charge => DamageType.Scp096Charge,
-
                 _ => DamageType.Unknown,
             };
         }

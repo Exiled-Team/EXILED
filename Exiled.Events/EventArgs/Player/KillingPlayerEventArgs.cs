@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs.Player
         public API.Features.Player Player { get; set; }
 
         /// <summary>
-        /// Gets or sets current Damage Handler.
+        /// Gets or sets current Create Handler.
         /// </summary>
         public DamageHandlerBase Handler { get; set; }
     }

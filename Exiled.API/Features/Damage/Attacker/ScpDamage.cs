@@ -7,14 +7,10 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using PlayerStatsSystem;
+    using System.Linq;
 
     public class ScpDamage : AttackerDamage
     {
@@ -31,7 +27,6 @@ namespace Exiled.API.Features.Damage.Attacker
             if (translation.Id == DeathTranslations.PocketDecay.Id)
                 Type = DamageType.Scp106;
             Type = DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id) ? DamageTypeExtensions.TranslationIdConversion[translation.Id] : DamageType.Scp;
-
         }
 
         /// <summary>
@@ -41,5 +36,20 @@ namespace Exiled.API.Features.Damage.Attacker
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScpDamage"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="DamageType"/> to give.</param>
+        /// <param name="damage">The ammount of damage to dealt.</param>
+        /// <param name="attacker">The player who attack.</param>
+        /// <returns>.</returns>
+        public static new ScpDamage Create(DamageType type, float damage, Player attacker)
+        {
+            attacker ??= Server.Host;
+            if (!CustomDamage.customDamage.TryGetValue(type, out CustomDamage customDamage))
+                customDamage = new();
+            return new(new(attacker.ReferenceHub, damage, DamageTypeExtensions.TranslationConversion.FirstOrDefault(x => x.Value == type).Key));
+        }
     }
 }

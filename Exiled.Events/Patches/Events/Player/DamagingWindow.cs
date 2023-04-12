@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, ret),
 
-                    // damage = ev.Handler.Damage;
+                    // damage = ev.Handler.Create;
                     new(OpCodes.Ldloc, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.Handler))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StandardDamage), nameof(StandardDamage.Damage))),

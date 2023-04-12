@@ -7,12 +7,8 @@
 
 namespace Exiled.API.Features.Damage
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using PlayerStatsSystem;
 
     public class WarheadDamage : StandardDamage
@@ -34,5 +30,20 @@ namespace Exiled.API.Features.Damage
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; } = DamageType.Warhead;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WarheadDamage"/> class.
+        /// </summary>
+        /// <param name="damage">The ammount of damage to dealt.</param>
+        /// <returns>.</returns>
+        public static new WarheadDamage Create(float damage)
+        {
+            WarheadDamage warheadDamage = new(new())
+            {
+                Damage = damage,
+            };
+            return warheadDamage;
+        }
+
     }
 }

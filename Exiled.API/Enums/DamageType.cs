@@ -58,32 +58,32 @@ namespace Exiled.API.Enums
         Bleeding,
 
         /// <summary>
-        /// Damage dealt by a <see cref="Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
+        /// Create dealt by a <see cref="Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
         /// </summary>
         Firearm,
 
         /// <summary>
-        /// Damage dealt by a <see cref="Features.Items.MicroHid"/>.
+        /// Create dealt by a <see cref="Features.Items.MicroHid"/>.
         /// </summary>
         MicroHid,
 
         /// <summary>
-        /// Damage dealt by a Tesla Gate.
+        /// Create dealt by a Tesla Gate.
         /// </summary>
         Tesla,
 
         /// <summary>
-        /// Damage is dealt by a <see cref="Side.Scp"/> when the <see cref="RoleTypeId"/> used is not available.
+        /// Create is dealt by a <see cref="Side.Scp"/> when the <see cref="RoleTypeId"/> used is not available.
         /// </summary>
         Scp,
 
         /// <summary>
-        /// Damage dealt by frag grenades.
+        /// Create dealt by frag grenades.
         /// </summary>
         Explosion,
 
         /// <summary>
-        /// Damage dealt by SCP-018.
+        /// Create dealt by SCP-018.
         /// </summary>
         Scp018,
 
@@ -93,7 +93,7 @@ namespace Exiled.API.Enums
         Scp207,
 
         /// <summary>
-        /// Damage is dealt by SCP Recontainment procedure.
+        /// Create is dealt by SCP Recontainment procedure.
         /// </summary>
         Recontainment,
 
@@ -103,127 +103,127 @@ namespace Exiled.API.Enums
         Crushed,
 
         /// <summary>
-        /// Damage caused by the femur breaker.
+        /// Create caused by the femur breaker.
         /// </summary>
         FemurBreaker,
 
         /// <summary>
-        /// Damage caused by the pocket dimension.
+        /// Create caused by the pocket dimension.
         /// </summary>
         PocketDimension,
 
         /// <summary>
-        /// Damage caused by the friendly fire detector.
+        /// Create caused by the friendly fire detector.
         /// </summary>
         FriendlyFireDetector,
 
         /// <summary>
-        /// Damage caused by severed hands.
+        /// Create caused by severed hands.
         /// </summary>
         SeveredHands,
 
         /// <summary>
-        /// Damage caused by a custom source.
+        /// Create caused by a custom source.
         /// </summary>
         Custom,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp049"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp049"/>.
         /// </summary>
         Scp049,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.GateKill"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.GateKill"/>.
         /// </summary>
         Scp096Gate,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.SlapLeft"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.SlapLeft"/>.
         /// </summary>
         Scp096SlapLeft,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.SlapRight"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.SlapRight"/>.
         /// </summary>
         Scp096SlapRight,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.Charge"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.Charge"/>.
         /// </summary>
         Scp096Charge,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp173"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp173"/>.
         /// </summary>
         Scp173,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.Claw"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.Claw"/>.
         /// </summary>
         Scp939Claw,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.LungeTarget"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.LungeTarget"/>.
         /// </summary>
         Scp939LungeTarget,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.LungeSecondary"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.LungeSecondary"/>.
         /// </summary>
         Scp939LungeSecondary,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp0492"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp0492"/>.
         /// </summary>
         Scp0492,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp106"/>.
+        /// Create caused by <see cref="RoleTypeId.Scp106"/>.
         /// </summary>
         Scp106,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunCrossvec"/>.
+        /// Create caused by <see cref="ItemType.GunCrossvec"/>.
         /// </summary>
         Crossvec,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunLogicer"/>.
+        /// Create caused by <see cref="ItemType.GunLogicer"/>.
         /// </summary>
         Logicer,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunRevolver"/>.
+        /// Create caused by <see cref="ItemType.GunRevolver"/>.
         /// </summary>
         Revolver,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunShotgun"/>.
+        /// Create caused by <see cref="ItemType.GunShotgun"/>.
         /// </summary>
         Shotgun,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunAK"/>.
+        /// Create caused by <see cref="ItemType.GunAK"/>.
         /// </summary>
         AK,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunCOM15"/>.
+        /// Create caused by <see cref="ItemType.GunCOM15"/>.
         /// </summary>
         Com15,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunCOM18"/>.
+        /// Create caused by <see cref="ItemType.GunCOM18"/>.
         /// </summary>
         Com18,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunFSP9"/>.
+        /// Create caused by <see cref="ItemType.GunFSP9"/>.
         /// </summary>
         Fsp9,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunE11SR"/>.
+        /// Create caused by <see cref="ItemType.GunE11SR"/>.
         /// </summary>
         E11Sr,
 
@@ -233,22 +233,22 @@ namespace Exiled.API.Enums
         Hypothermia,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.ParticleDisruptor"/>.
+        /// Create caused by <see cref="ItemType.ParticleDisruptor"/>.
         /// </summary>
         ParticleDisruptor,
 
         /// <summary>
-        /// Damage caused by <see cref="EffectType.CardiacArrest"/>.
+        /// Create caused by <see cref="EffectType.CardiacArrest"/>.
         /// </summary>
         CardiacArrest,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.GunCom45"/>.
+        /// Create caused by <see cref="ItemType.GunCom45"/>.
         /// </summary>
         Com45,
 
         /// <summary>
-        /// Damage caused by <see cref="ItemType.Jailbird"/>.
+        /// Create caused by <see cref="ItemType.Jailbird"/>.
         /// </summary>
         Jailbird,
     }

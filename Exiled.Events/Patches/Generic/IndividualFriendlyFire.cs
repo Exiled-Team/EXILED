@@ -229,7 +229,7 @@ namespace Exiled.Events.Patches.Generic
                     // Do not run our custom logic, skip over.
                     new(OpCodes.Br, normalProcessing),
 
-                    // AttackerDamageHandler.Damage = AttackerDamageHandler.Damage * ffMulti
+                    // AttackerDamageHandler.Create = AttackerDamageHandler.Create * ffMulti
                     new CodeInstruction(OpCodes.Ldarg_0).WithLabels(uniqueFFMulti),
                     new(OpCodes.Ldloc, ffMulti.LocalIndex),
                     new(OpCodes.Ldarg_0),

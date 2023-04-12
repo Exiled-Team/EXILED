@@ -8,10 +8,6 @@
 namespace Exiled.API.Features.Damage
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Damage.Attacker;
@@ -103,25 +99,24 @@ namespace Exiled.API.Features.Damage
             };
         }
 
-        /*
         /// <summary>
         /// .
         /// </summary>
         /// <returns>..</returns>
-        public static DamageBase Create(DamageType type, Player target, float damage = KillValue, Player attacker = null)
+        public static DamageBase Create(DamageType type, float damage = KillValue, Player attacker = null)
         {
             return type switch
             {
-                DamageType.Firearm or DamageType.AK or DamageType.Crossvec or DamageType.Logicer or DamageType.E11Sr or DamageType.Shotgun or DamageType.Fsp9 or DamageType.Com15 or DamageType.Com18 or DamageType.Com45 or DamageType.MicroHid => new FirearmDamage(type),
-                DamageType.ParticleDisruptor => new DisruptorDamage(attacker, damage),
-                DamageType.Warhead => new WarheadDamage(),
-                DamageType.Scp or DamageType.Scp173 or DamageType.Scp106 => new ScpDamage(type),
-                DamageType.Scp096Charge or DamageType.Scp096Gate or DamageType.Scp096SlapLeft or DamageType.Scp096SlapRight => new Scp096Damage(),
-                DamageType.Scp049 or DamageType.Scp0492 or DamageType.CardiacArrest => Scp049Damage.Damage(type, damage, attacker),
-                DamageType.Scp939Claw or DamageType.Scp939LungeTarget or DamageType.Scp939LungeSecondary => new Scp939Damage(type),
-                DamageType.Scp018 => new UniversalDamage(type),
-                DamageType.Custom or _ => CustomReasonDamage.Damage(type, damage),
+                DamageType.Firearm or DamageType.AK or DamageType.Crossvec or DamageType.Logicer or DamageType.E11Sr or DamageType.Shotgun or DamageType.Fsp9 or DamageType.Com15 or DamageType.Com18 or DamageType.Com45 or DamageType.MicroHid => FirearmDamage.Create(type, damage, attacker),
+                DamageType.ParticleDisruptor => DisruptorDamage.Create(damage, attacker),
+                DamageType.Warhead => WarheadDamage.Create(damage),
+                DamageType.Explosion => ExplosionDamage.Create(damage, attacker),
+                DamageType.Scp or DamageType.Scp173 or DamageType.Scp106 or DamageType.Scp096Charge or DamageType.Scp096Gate or DamageType.Scp096SlapLeft or DamageType.Scp096SlapRight => ScpDamage.Create(type, damage, attacker),
+                DamageType.Scp049 or DamageType.Scp0492 or DamageType.CardiacArrest => Scp049Damage.Create(type, damage, attacker),
+                DamageType.Scp939Claw or DamageType.Scp939LungeTarget or DamageType.Scp939LungeSecondary => Scp939Damage.Create(type, damage, attacker),
+                DamageType.Scp018 => UniversalDamage.Create(type, damage),
+                DamageType.Custom or _ => CustomReasonDamage.Create(type, damage),
             };
-        }*/
+        }
     }
 }

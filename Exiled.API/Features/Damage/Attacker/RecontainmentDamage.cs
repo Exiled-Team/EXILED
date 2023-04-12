@@ -7,11 +7,6 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
@@ -34,5 +29,20 @@ namespace Exiled.API.Features.Damage.Attacker
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; } = DamageType.Recontainment;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecontainmentDamage"/> class.
+        /// </summary>
+        /// <param name="damage">The ammount of damage to dealt.</param>
+        /// <param name="attacker">The player who attack.</param>
+        /// <returns>.</returns>
+        public static RecontainmentDamage Create(float damage, Player attacker)
+        {
+            attacker ??= Server.Host;
+            return new(new(attacker.Footprint))
+            {
+                Damage = damage,
+            };
+        }
     }
 }

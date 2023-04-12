@@ -7,11 +7,7 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -43,5 +39,17 @@ namespace Exiled.API.Features.Damage.Attacker
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UniversalDamage"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="DamageType"/> to give.</param>
+        /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
+        /// <returns>.</returns>
+        public static new FirearmDamage Create(DamageType type, float damage, Player attacker) => new(new()
+        {
+            Damage = damage,
+            Attacker = attacker.Footprint,
+        });
     }
 }

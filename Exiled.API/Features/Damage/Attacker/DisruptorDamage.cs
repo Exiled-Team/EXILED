@@ -7,12 +7,6 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
@@ -27,17 +21,6 @@ namespace Exiled.API.Features.Damage.Attacker
         {
             Base = damageHandler;
         }
-        /*
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DisruptorDamage"/> class.
-        /// </summary>
-        /// <param name="attacker">The attacker <see cref="Player"/> to give.</param>
-        /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
-        internal DisruptorDamage(Player attacker, float damage)
-        {
-            attacker ??= Server.Host;
-            Base = new(attacker.Footprint, damage);
-        }*/
 
         /// <summary>
         /// Gets the <see cref="DisruptorDamageHandler"/> that this class is encapsulating.
@@ -46,6 +29,18 @@ namespace Exiled.API.Features.Damage.Attacker
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; } = DamageType.ParticleDisruptor;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomReasonDamage"/> class.
+        /// </summary>
+        /// <param name="damage">The ammount of damage to dealt.</param>
+        /// <param name="attacker">The player who attack.</param>
+        /// <returns>.</returns>
+        public static new DisruptorDamage Create(float damage, Player attacker)
+        {
+            attacker ??= Server.Host;
+            return new(new(attacker.Footprint, damage));
+        }
 
     }
 }

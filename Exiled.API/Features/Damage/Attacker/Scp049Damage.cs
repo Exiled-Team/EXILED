@@ -8,10 +8,7 @@
 namespace Exiled.API.Features.Damage.Attacker
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
@@ -48,7 +45,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// <param name="type">The <see cref="DamageType"/> to give.</param>
         /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
         /// <returns>.</returns>
-        public static Scp049Damage Damage(DamageType type, float damage, Player attacker)
+        public static Scp049Damage Create(DamageType type, float damage, Player attacker)
         {
             attacker ??= Server.Host;
             return new(new(attacker.Footprint, damage, type switch

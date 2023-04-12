@@ -47,12 +47,14 @@ namespace Exiled.API.Features.Damage
         /// <param name="type">The <see cref="DamageType"/> to give.</param>
         /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
         /// <returns>.</returns>
-        public static CustomReasonDamage Damage(DamageType type, float damage)
+        public static CustomReasonDamage Create(DamageType type, float damage)
         {
             if (!CustomDamage.customDamage.TryGetValue(type, out CustomDamage customDamage))
                 customDamage = new();
-            CustomReasonDamage customReasonDamagene = new(new(customDamage.DeathReason, damage, customDamage.CassieAnnouncement));
-            customReasonDamagene.CustomDamage = customDamage;
+            CustomReasonDamage customReasonDamagene = new(new(customDamage.DeathReason, damage, customDamage.CassieAnnouncement))
+            {
+                CustomDamage = customDamage,
+            };
             return customReasonDamagene;
         }
     }

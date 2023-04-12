@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Scp096Damage.cs" company="Exiled Team">
+// <copyright file="Scp939Damage.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,15 +7,9 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using PlayerRoles.PlayableScps.Scp939;
-    using PlayerStatsSystem;
 
     public class Scp939Damage : AttackerDamage
     {
@@ -43,5 +37,29 @@ namespace Exiled.API.Features.Damage.Attacker
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScpDamage"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="DamageType"/> to give.</param>
+        /// <param name="damage">The ammount of damage to dealt.</param>
+        /// <param name="attacker">The player who attack.</param>
+        /// <returns>.</returns>
+        public static new Scp939Damage Create(DamageType type, float damage, Player attacker)
+        {
+            attacker ??= Server.Host;
+            return new(new(null, type switch
+            {
+                DamageType.Scp939Claw => Scp939DamageType.Claw,
+                DamageType.Scp939LungeSecondary => Scp939DamageType.LungeSecondary,
+                DamageType.Scp939LungeTarget => Scp939DamageType.LungeTarget,
+                _ => Scp939DamageType.None,
+            })
+            {
+                Damage = damage,
+                Attacker = attacker.Footprint,
+                _hitPos = attacker.RelativePosition,
+            });
+        }
     }
 }

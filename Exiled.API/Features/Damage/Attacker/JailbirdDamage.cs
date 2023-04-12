@@ -7,13 +7,9 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Exiled.API.Enums;
     using PlayerStatsSystem;
+    using UnityEngine;
 
     public class JailbirdDamage : AttackerDamage
     {
@@ -34,5 +30,17 @@ namespace Exiled.API.Features.Damage.Attacker
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; } = DamageType.Jailbird;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JailbirdDamage"/> class.
+        /// </summary>
+        /// <param name="damage">The ammount of damage to dealt.</param>
+        /// <param name="attacker">The player who attack.</param>
+        /// <returns>.</returns>
+        public static JailbirdDamage Create(float damage, Player attacker)
+        {
+            attacker ??= Server.Host;
+            return new(new(attacker.ReferenceHub, damage, Vector3.zero));
+        }
     }
 }

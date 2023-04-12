@@ -7,12 +7,6 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Pickups.Projectiles;
     using PlayerStatsSystem;
@@ -39,12 +33,12 @@ namespace Exiled.API.Features.Damage.Attacker
         public override DamageType Type { get; internal set; } = DamageType.Scp018;
 
         /// <summary>
-        /// .
+        /// Gets .
         /// </summary>
         public Scp018Projectile Scp018 { get; internal set; }
 
         /// <summary>
-        /// .
+        /// Gets .
         /// </summary>
         public Vector3 BallVelocity => Base._ballImpactVelocity;
     }
