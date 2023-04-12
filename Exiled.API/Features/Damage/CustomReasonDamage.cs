@@ -31,6 +31,8 @@ namespace Exiled.API.Features.Damage
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomReasonDamage"/> class.
         /// </summary>
+        /// <param name="type">The <see cref="DamageType"/> to give.</param>
+        /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
         internal CustomReasonDamage(DamageType type, float damage)
         {
             if (!CustomDamage.customDamage.TryGetValue(type, out CustomDamage customDamage))
@@ -40,14 +42,13 @@ namespace Exiled.API.Features.Damage
             Base = new(customDamage.DeathReason, damage, customDamage.CassieAnnouncement);
         }
 
-
         /// <summary>
         /// Gets the <see cref="CustomReasonDamageHandler"/> that this class is encapsulating.
         /// </summary>
         public new CustomReasonDamageHandler Base { get; }
 
         /// <summary>
-        /// CustomDamage.
+        /// Gets or sets customDamage.
         /// </summary>
         public CustomDamage CustomDamage { get; set; }
 

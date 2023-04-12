@@ -14,9 +14,11 @@ namespace Exiled.API.Features.Damage
     using System.Threading.Tasks;
 
     using PlayerStatsSystem;
+    using UnityEngine;
 
     public class StandardDamage : DamageBase
     {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardDamage"/> class.
         /// </summary>
@@ -32,5 +34,22 @@ namespace Exiled.API.Features.Damage
         /// </summary>
         public new StandardDamageHandler Base { get; }
 
+        /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public HitboxType Hitbox
+        {
+            get => Base.Hitbox;
+            set => Base.Hitbox = value;
+        }
+
+        /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public Vector3 StartVelocity
+        {
+            get => Base.StartVelocity;
+            set => Base.StartVelocity = value;
+        }
     }
 }

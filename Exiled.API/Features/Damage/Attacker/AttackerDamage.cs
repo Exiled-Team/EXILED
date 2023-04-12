@@ -12,7 +12,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
     using Exiled.API.Enums;
+    using Footprinting;
     using PlayerStatsSystem;
 
     public class AttackerDamage : StandardDamage
@@ -34,5 +36,43 @@ namespace Exiled.API.Features.Damage.Attacker
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }
+
+        /// <summary>
+        /// Gets a value indicating whether .
+        /// </summary>
+        public bool IgnoreFriendlyFireDetector => Base.IgnoreFriendlyFireDetector;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether .
+        /// </summary>
+        public bool IsFriendlyFire
+        {
+            get => Base.IsFriendlyFire;
+            set => Base.IsFriendlyFire = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether .
+        /// </summary>
+        public bool IsSuicide
+        {
+            get => Base.IsSuicide;
+            set => Base.IsSuicide = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether .
+        /// </summary>
+        public Footprint AttackerFootprint
+        {
+            get => Base.Attacker;
+            set => Base.Attacker = value;
+        }
+
+        public Player Attacker
+        {
+            get => Player.Get(AttackerFootprint);
+            set => Base.Attacker = value.Footprint;
+        }
     }
 }

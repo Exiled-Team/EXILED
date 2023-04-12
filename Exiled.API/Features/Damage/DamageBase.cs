@@ -21,6 +21,11 @@ namespace Exiled.API.Features.Damage
     public class DamageBase
     {
         /// <summary>
+        /// .
+        /// </summary>
+        public const float KillValue = StandardDamageHandler.KillValue;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DamageBase"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="DamageHandlerBase"/> class.</param>
@@ -38,6 +43,23 @@ namespace Exiled.API.Features.Damage
         /// Gets the <see cref="DamageType"/> for the damage.
         /// </summary>
         public virtual DamageType Type { get; internal set; }
+
+        /// <summary>
+        /// Gets .
+        /// </summary>
+        public string ServerLogsText => Base.ServerLogsText;
+
+        /// <summary>
+        /// Gets .
+        /// </summary>
+        public DamageHandlerBase.CassieAnnouncement CassieAnnouncement => Base.CassieDeathAnnouncement;
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="player">..</param>
+        /// <returns>...</returns>
+        public DamageHandlerBase.HandlerOutput Damage(Player player) => Base.ApplyDamage(player.ReferenceHub);
 
         /// <summary>
         /// .
@@ -80,12 +102,12 @@ namespace Exiled.API.Features.Damage
         /// .
         /// </summary>
         /// <returns>..</returns>
-        public static DamageBase Create(DamageType type, Player target, float damage = -1f, Player attacker = null)
+        public static DamageBase Create(DamageType type, Player target, float damage = KillValue, Player attacker = null)
         {
             return type switch
             {
-                DamageType.Firearm or DamageType.AK or DamageType.Crossvec or DamageType.Logicer or DamageType.E11Sr or DamageType.Shotgun or DamageType.Fsp9 => new FirearmDamage(type),
-                DamageType.ParticleDisruptor => new DisruptorDamage(),
+                DamageType.Firearm or DamageType.AK or DamageType.Crossvec or DamageType.Logicer or DamageType.E11Sr or DamageType.Shotgun or DamageType.Fsp9 or DamageType.Com15 or DamageType.Com18 or DamageType.Com45 or DamageType.MicroHid => new FirearmDamage(type),
+                DamageType.ParticleDisruptor => new DisruptorDamage(attacker, damage),
                 DamageType.Warhead => new WarheadDamage(),
                 DamageType.Scp018 => new Scp018Damage(),
                 DamageType.Scp or DamageType.Scp173 or DamageType.Scp106 => new ScpDamage(type),

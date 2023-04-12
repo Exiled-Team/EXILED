@@ -33,11 +33,13 @@ namespace Exiled.API.Features.Damage
         /// Initializes a new instance of the <see cref="CustomDamage"/> class.
         /// </summary>
         /// <param name="damageType">.</param>
-        /// <param name="deathReason">..</param>
-        /// <param name="cassieAnnouncement">...</param>
-        public CustomDamage(DamageType damageType, string deathReason, string cassieAnnouncement)
+        /// <param name="damageName">..</param>
+        /// <param name="deathReason">...</param>
+        /// <param name="cassieAnnouncement">....</param>
+        public CustomDamage(DamageType damageType, string damageName, string deathReason, string cassieAnnouncement = "")
         {
             DamageType = damageType;
+            DamageName = damageName;
             DeathReason = deathReason;
             CassieAnnouncement = cassieAnnouncement;
             customDamage.Add(damageType, this);
@@ -47,6 +49,11 @@ namespace Exiled.API.Features.Damage
         /// Gets or sets .
         /// </summary>
         public DamageType DamageType { get; set; }
+
+        /// <summary>
+        /// Gets or sets .
+        /// </summary>
+        public string DamageName { get; set; }
 
         /// <summary>
         /// Gets or sets .

@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
@@ -25,6 +26,17 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DisruptorDamage"/> class.
+        /// </summary>
+        /// <param name="attacker">The attacker <see cref="Player"/> to give.</param>
+        /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
+        internal DisruptorDamage(Player attacker, float damage)
+        {
+            attacker ??= Server.Host;
+            Base = new(attacker.Footprint, damage);
         }
 
         /// <summary>
