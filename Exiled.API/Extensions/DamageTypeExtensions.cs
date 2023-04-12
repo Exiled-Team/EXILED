@@ -8,7 +8,7 @@
 namespace Exiled.API.Extensions
 {
     using System.Collections.Generic;
-
+    using System.Linq;
     using Enums;
     using Exiled.API.Features.Damage;
     using Features;
@@ -20,34 +20,7 @@ namespace Exiled.API.Extensions
     /// </summary>
     public static class DamageTypeExtensions
     {
-        private static readonly Dictionary<byte, DamageType> TranslationIdConversionInternal = new()
-        {
-            { DeathTranslations.Asphyxiated.Id, DamageType.Asphyxiation },
-            { DeathTranslations.Bleeding.Id, DamageType.Bleeding },
-            { DeathTranslations.Crushed.Id, DamageType.Crushed },
-            { DeathTranslations.Decontamination.Id, DamageType.Decontamination },
-            { DeathTranslations.Explosion.Id, DamageType.Explosion },
-            { DeathTranslations.Falldown.Id, DamageType.Falldown },
-            { DeathTranslations.Poisoned.Id, DamageType.Poison },
-            { DeathTranslations.Recontained.Id, DamageType.Recontainment },
-            { DeathTranslations.Scp049.Id, DamageType.Scp049 },
-            { DeathTranslations.Scp096.Id, DamageType.Scp096SlapRight },
-            { DeathTranslations.Scp173.Id, DamageType.Scp173 },
-            { DeathTranslations.Scp207.Id, DamageType.Scp207 },
-            { DeathTranslations.Scp939Lunge.Id, DamageType.Scp939LungeTarget },
-            { DeathTranslations.Scp939Other.Id, DamageType.Scp939Claw },
-            { DeathTranslations.Tesla.Id, DamageType.Tesla },
-            { DeathTranslations.Unknown.Id, DamageType.Unknown },
-            { DeathTranslations.Warhead.Id, DamageType.Warhead },
-            { DeathTranslations.Zombie.Id, DamageType.Scp0492 },
-            { DeathTranslations.BulletWounds.Id, DamageType.Firearm },
-            { DeathTranslations.PocketDecay.Id, DamageType.PocketDimension },
-            { DeathTranslations.SeveredHands.Id, DamageType.SeveredHands },
-            { DeathTranslations.FriendlyFireDetector.Id, DamageType.FriendlyFireDetector },
-            { DeathTranslations.UsedAs106Bait.Id, DamageType.FemurBreaker },
-            { DeathTranslations.MicroHID.Id, DamageType.MicroHid },
-            { DeathTranslations.Hypothermia.Id, DamageType.Hypothermia },
-        };
+        private static readonly Dictionary<byte, DamageType> TranslationIdConversionInternal = TranslationConversionInternal.ToDictionary(x => x.Key.Id, x => x.Value);
 
         private static readonly Dictionary<DeathTranslation, DamageType> TranslationConversionInternal = new()
         {
