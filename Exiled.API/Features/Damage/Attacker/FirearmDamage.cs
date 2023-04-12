@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Threading.Tasks;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using PlayerStatsSystem;
 
@@ -27,21 +28,7 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
-            ItemType = Base.WeaponType;
-            Type = ItemType switch
-            {
-                ItemType.GunAK => DamageType.AK,
-                ItemType.GunCOM15 => DamageType.Com15,
-                ItemType.GunCOM18 => DamageType.Com18,
-                ItemType.GunCom45 => DamageType.Com45,
-                ItemType.GunCrossvec => DamageType.Crossvec,
-                ItemType.GunE11SR => DamageType.E11Sr,
-                ItemType.GunFSP9 => DamageType.Fsp9,
-                ItemType.GunLogicer => DamageType.Logicer,
-                ItemType.GunRevolver => DamageType.Revolver,
-                ItemType.GunShotgun => DamageType.Shotgun,
-                _ => DamageType.Firearm,
-            };
+            Type = DamageTypeExtensions.ItemConversion[Base.WeaponType];
         }
 
         /// <summary>
@@ -53,11 +40,6 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Gets .
         /// </summary>
         public Item Item => Attacker?.CurrentItem;
-
-        /// <summary>
-        /// Gets .
-        /// </summary>
-        public ItemType ItemType { get; }
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }

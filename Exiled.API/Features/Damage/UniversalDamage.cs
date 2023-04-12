@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Damage
     using System.Threading.Tasks;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using PlayerStatsSystem;
 
     public class UniversalDamage : StandardDamage
@@ -26,6 +27,7 @@ namespace Exiled.API.Features.Damage
             : base(damageHandler)
         {
             Base = damageHandler;
+            Type = DamageTypeExtensions.TranslationIdConversion[Base.TranslationId];
         }
 
         /// <summary>
