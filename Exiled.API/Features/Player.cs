@@ -17,11 +17,10 @@ namespace Exiled.API.Features
 
     using CustomPlayerEffects;
 
-    using DamageHandlers;
-
     using Enums;
 
     using Exiled.API.Features.Core.Interfaces;
+    using Exiled.API.Features.Damage;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
@@ -81,11 +80,9 @@ namespace Exiled.API.Features
     using VoiceChat;
     using VoiceChat.Playbacks;
 
-    using static DamageHandlers.DamageHandlerBase;
-
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Items.Firearm;
-    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
+    using FirearmPickup = Pickups.FirearmPickup;
     using HumanRole = Roles.HumanRole;
     using Random = UnityEngine.Random;
 
@@ -1937,23 +1934,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
-        /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
-        /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
-        /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
-        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null) =>
-            Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
-
-        /// <summary>
-        /// Hurts the player.
-        /// </summary>
-        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
-        /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
-        /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
-        /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
-        /// <param name="deathText"> The <see langword="string"/> death text to appear on <see cref="Player"/> screen. </param>
-        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CassieAnnouncement cassieAnnouncement = null, string deathText = null) =>
-            Hurt(new GenericDamageHandler(this, attacker, amount, damageType, cassieAnnouncement, deathText));
+        /// <param name="damageBase">The <see cref="DamageBase"/>.</param>
+        public void Hurt(DamageBase damageBase) =>
+            Hurt(damageBase.Base);
 
         /// <summary>
         /// Hurts the player.

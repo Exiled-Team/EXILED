@@ -69,6 +69,9 @@ namespace Exiled.API.Features.Damage.Attacker
             set => Base.Attacker = value;
         }
 
+        /// <summary>
+        /// .
+        /// </summary>
         public Player Attacker
         {
             get => Player.Get(AttackerFootprint);

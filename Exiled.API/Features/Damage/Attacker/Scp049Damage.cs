@@ -25,6 +25,13 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
+            Type = Base.DamageSubType switch
+            {
+                Scp049DamageHandler.AttackType.Scp0492 => DamageType.Scp0492,
+                Scp049DamageHandler.AttackType.Instakill => DamageType.Scp049,
+                Scp049DamageHandler.AttackType.CardiacArrest => DamageType.CardiacArrest,
+                _ => DamageType.Unknown,
+            };
         }
 
         /// <summary>
@@ -33,7 +40,7 @@ namespace Exiled.API.Features.Damage.Attacker
         public new Scp049DamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; internal set; } = DamageType.Scp049;
+        public override DamageType Type { get; internal set; }
 
     }
 }

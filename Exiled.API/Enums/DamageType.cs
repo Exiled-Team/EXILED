@@ -10,6 +10,7 @@ namespace Exiled.API.Enums
     using Features;
 
     using PlayerRoles;
+    using PlayerStatsSystem;
 
     /// <summary>
     /// Identifiers for types of damage.
@@ -131,9 +132,24 @@ namespace Exiled.API.Enums
         Scp049,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp096"/>.
+        /// Damage caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.GateKill"/>.
         /// </summary>
-        Scp096,
+        Scp096Gate,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.SlapLeft"/>.
+        /// </summary>
+        Scp096SlapLeft,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.SlapRight"/>.
+        /// </summary>
+        Scp096SlapRight,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleTypeId.Scp096"/> when <see cref="Scp096DamageHandler.AttackType.Charge"/>.
+        /// </summary>
+        Scp096Charge,
 
         /// <summary>
         /// Damage caused by <see cref="RoleTypeId.Scp173"/>.

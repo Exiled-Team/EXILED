@@ -26,6 +26,15 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
+            Type = Base._attackType switch
+            {
+                Scp096DamageHandler.AttackType.GateKill => DamageType.Scp096Gate,
+                Scp096DamageHandler.AttackType.SlapLeft => DamageType.Scp096SlapLeft,
+                Scp096DamageHandler.AttackType.SlapRight => DamageType.Scp096SlapRight,
+                Scp096DamageHandler.AttackType.Charge => DamageType.Scp096Charge,
+
+                _ => DamageType.Unknown,
+            };
         }
 
         /// <summary>
@@ -34,6 +43,6 @@ namespace Exiled.API.Features.Damage.Attacker
         public new Scp096DamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; internal set; } = DamageType.Scp096;
+        public override DamageType Type { get; internal set; }
     }
 }
