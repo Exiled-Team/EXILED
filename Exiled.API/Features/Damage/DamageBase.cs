@@ -70,7 +70,7 @@ namespace Exiled.API.Features.Damage
         /// .
         /// </summary>
         /// <returns>..</returns>
-        public static DamageBase Get(DamageHandlerBase damageHandler)
+        public static StandardDamage Get(DamageHandlerBase damageHandler)
         {
             if (damageHandler == null)
                 return null;
@@ -99,10 +99,11 @@ namespace Exiled.API.Features.Damage
                     UniversalDamageHandler universalDamageHandler => new UniversalDamage(universalDamageHandler),
                     _ => new StandardDamage(standardDamage),
                 },
-                _ => new DamageBase(damageHandler),
+                _ => null,
             };
         }
 
+        /*
         /// <summary>
         /// .
         /// </summary>
@@ -116,11 +117,11 @@ namespace Exiled.API.Features.Damage
                 DamageType.Warhead => new WarheadDamage(),
                 DamageType.Scp or DamageType.Scp173 or DamageType.Scp106 => new ScpDamage(type),
                 DamageType.Scp096Charge or DamageType.Scp096Gate or DamageType.Scp096SlapLeft or DamageType.Scp096SlapRight => new Scp096Damage(),
-                DamageType.Scp049 or DamageType.Scp0492 or DamageType.CardiacArrest => new Scp049Damage(type),
+                DamageType.Scp049 or DamageType.Scp0492 or DamageType.CardiacArrest => Scp049Damage.Damage(type, damage, attacker),
                 DamageType.Scp939Claw or DamageType.Scp939LungeTarget or DamageType.Scp939LungeSecondary => new Scp939Damage(type),
-                DamageType.Custom or _ => CustomReasonDamage.Damage(type, damage),
                 DamageType.Scp018 => new UniversalDamage(type),
+                DamageType.Custom or _ => CustomReasonDamage.Damage(type, damage),
             };
-        }
+        }*/
     }
 }

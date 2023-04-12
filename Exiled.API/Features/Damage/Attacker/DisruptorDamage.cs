@@ -27,7 +27,7 @@ namespace Exiled.API.Features.Damage.Attacker
         {
             Base = damageHandler;
         }
-
+        /*
         /// <summary>
         /// Initializes a new instance of the <see cref="DisruptorDamage"/> class.
         /// </summary>
@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Damage.Attacker
         {
             attacker ??= Server.Host;
             Base = new(attacker.Footprint, damage);
-        }
+        }*/
 
         /// <summary>
         /// Gets the <see cref="DisruptorDamageHandler"/> that this class is encapsulating.

@@ -35,6 +35,15 @@ namespace Exiled.API.Features.Damage
         public new StandardDamageHandler Base { get; }
 
         /// <summary>
+        /// Gets the damage to dealt.
+        /// </summary>
+        public float Damage
+        {
+            get => Base.Damage;
+            set => Base.Damage = value;
+        }
+
+        /// <summary>
         /// Gets or sets .
         /// </summary>
         public HitboxType Hitbox

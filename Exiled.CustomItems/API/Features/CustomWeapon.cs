@@ -12,7 +12,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Features.DamageHandlers;
+    using Exiled.API.Features.Damage.Attacker;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Pickups;
     using Exiled.Events.EventArgs.Player;
@@ -291,13 +291,13 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (!ev.DamageHandler.CustomBase.BaseIs(out FirearmDamageHandler firearmDamageHandler))
+            if (ev.DamageHandler is not FirearmDamage firearmDamage)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler not firearm");
                 return;
             }
 
-            if (!Check(firearmDamageHandler.Item))
+            if (!Check(firearmDamage.Item))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: type != type");
                 return;

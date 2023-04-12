@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Fixes
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
     using API.Features;
-    using API.Features.DamageHandlers;
 
     using EventArgs.Player;
 
@@ -32,17 +31,10 @@ namespace Exiled.Events.Patches.Fixes
         {
             if (!DamageHandlers.IdsByTypeHash.ContainsKey(handler.GetType().FullName.GetStableHashCode()))
             {
-                if (handler is GenericDamageHandler exiledHandler)
-                {
-                    handler = exiledHandler.Base;
-                }
-                else
-                {
-                    KillingPlayerEventArgs ev = new(Player.Get(__instance._hub), ref handler);
-                    Handlers.Player.OnKillPlayer(ev);
+                KillingPlayerEventArgs ev = new(Player.Get(__instance._hub), ref handler);
+                Handlers.Player.OnKillPlayer(ev);
 
-                    handler = ev.Handler;
-                }
+                handler = ev.Handler;
             }
         }
     }

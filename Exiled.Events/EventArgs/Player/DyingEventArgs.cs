@@ -11,12 +11,11 @@ namespace Exiled.Events.EventArgs.Player
     using System.Linq;
 
     using API.Features;
-    using API.Features.DamageHandlers;
     using API.Features.Items;
-
+    using Exiled.API.Features.Damage;
+    using Exiled.API.Features.Damage.Attacker;
     using Interfaces;
 
-    using CustomAttackerHandler = API.Features.DamageHandlers.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
@@ -35,9 +34,9 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public DyingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
-            DamageHandler = new CustomDamageHandler(target, damageHandler);
+            DamageHandler = DamageBase.Get(damageHandler);
             ItemsToDrop = new List<Item>(target?.Items?.ToList() ?? new());
-            Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
+            Attacker = DamageHandler is AttackerDamage attacker ? attacker.Attacker : null;
             Player = target;
         }
 
@@ -52,9 +51,9 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets the <see cref="CustomDamageHandler" />.
+        ///     Gets or sets the <see cref="StandardDamage" />.
         /// </summary>
-        public CustomDamageHandler DamageHandler { get; set; }
+        public StandardDamage DamageHandler { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player can be killed.

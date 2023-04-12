@@ -10,7 +10,9 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-
+    using Exiled.API.Enums;
+    using Exiled.API.Features.Damage;
+    using Exiled.API.Features.Damage.Attacker;
     using Exiled.API.Features.Pools;
 
     using MEC;
@@ -20,9 +22,6 @@ namespace Exiled.API.Features
     using PlayerStatsSystem;
 
     using Respawning;
-
-    using CustomFirearmHandler = DamageHandlers.FirearmDamageHandler;
-    using CustomHandlerBase = DamageHandlers.DamageHandlerBase;
 
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E.
@@ -143,16 +142,16 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scpName">SCP Name. Note that for larger numbers, C.A.S.S.I.E will pronounce the place (eg. "457" -> "four hundred fifty seven"). Spaces can be used to prevent this behavior.</param>
         /// <param name="info">Hit Information.</param>
-        public static void CustomScpTermination(string scpName, CustomHandlerBase info)
+        public static void CustomScpTermination(string scpName, DamageBase info)
         {
             string result = scpName;
-            if (info.Is(out MicroHidDamageHandler _))
+            if (info.Type is DamageType.Tesla)
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info.Is(out WarheadDamageHandler _))
+            else if (info.Type is DamageType.Warhead)
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info.Is(out UniversalDamageHandler _))
+            else if (info is UniversalDamage)
                 result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
+            else if (info is FirearmDamage firearm && firearm.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
 
             // result += "To be changed";

@@ -8,12 +8,11 @@
 namespace Exiled.Events.EventArgs.Map
 {
     using API.Features;
-    using API.Features.DamageHandlers;
     using API.Features.Roles;
-
+    using Exiled.API.Features.Damage;
+    using Exiled.API.Features.Damage.Attacker;
     using Interfaces;
 
-    using CustomAttackerHandler = API.Features.DamageHandlers.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
@@ -37,8 +36,8 @@ namespace Exiled.Events.EventArgs.Map
         {
             Player = scp;
             Role = scp.Role;
-            DamageHandler = new CustomDamageHandler(scp, damageHandlerBase);
-            Attacker = DamageHandler.BaseIs(out CustomAttackerHandler customAttackerHandler) ? customAttackerHandler.Attacker : null;
+            DamageHandler = DamageBase.Get(damageHandlerBase);
+            Attacker = DamageHandler is AttackerDamage attacker ? attacker.Attacker : null;
             TerminationCause = damageHandlerBase.CassieDeathAnnouncement.Announcement;
             IsAllowed = isAllowed;
         }
@@ -64,9 +63,9 @@ namespace Exiled.Events.EventArgs.Map
         public Player Attacker { get; }
 
         /// <summary>
-        ///     Gets or sets the <see cref="CustomDamageHandler" />.
+        ///     Gets or sets the <see cref="StandardDamage" />.
         /// </summary>
-        public CustomDamageHandler DamageHandler { get; set; }
+        public StandardDamage DamageHandler { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the SCP termination will be announced by C.A.S.S.I.E.

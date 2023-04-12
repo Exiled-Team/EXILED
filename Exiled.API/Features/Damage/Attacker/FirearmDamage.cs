@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Threading.Tasks;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Items;
     using PlayerStatsSystem;
 
     public class FirearmDamage : AttackerDamage
@@ -26,7 +27,8 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
-            Type = Base.WeaponType switch
+            ItemType = Base.WeaponType;
+            Type = ItemType switch
             {
                 ItemType.GunAK => DamageType.AK,
                 ItemType.GunCOM15 => DamageType.Com15,
@@ -46,6 +48,16 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Gets the <see cref="FirearmDamageHandler"/> that this class is encapsulating.
         /// </summary>
         public new FirearmDamageHandler Base { get; }
+
+        /// <summary>
+        /// Gets .
+        /// </summary>
+        public Item Item => Attacker?.CurrentItem;
+
+        /// <summary>
+        /// Gets .
+        /// </summary>
+        public ItemType ItemType { get; }
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }

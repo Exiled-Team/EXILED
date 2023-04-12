@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Interfaces
 {
     using API.Features;
-    using API.Features.DamageHandlers;
+    using Exiled.API.Features.Damage;
 
     /// <summary>
     ///     Event args for when a player is taking damage.
@@ -21,8 +21,8 @@ namespace Exiled.Events.EventArgs.Interfaces
         public Player Attacker { get; }
 
         /// <summary>
-        ///     Gets or sets the <see cref="DamageHandlerBase" /> managing the damage to the target.
+        ///     Gets or sets the <see cref="StandardDamage" /> managing the damage to the target.
         /// </summary>
-        public CustomDamageHandler DamageHandler { get; set; }
+        public StandardDamage DamageHandler { get; set; }
     }
 }

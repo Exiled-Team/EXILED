@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.DamageHandlers;
     using API.Features.Pools;
+    using Exiled.API.Features.Damage;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.Handlers;
 
@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Map
                     // hit = ev.DamageHandler.Base
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.DamageHandler))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(CustomDamageHandler), nameof(CustomDamageHandler.Base))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardDamage), nameof(StandardDamage.Base))),
                     new(OpCodes.Starg, 1),
 
                     // announcement = ev.TerminationCause

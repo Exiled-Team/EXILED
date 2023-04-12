@@ -10,9 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.DamageHandlers;
     using API.Features.Pools;
-
+    using Exiled.API.Features.Damage;
     using Exiled.Events.EventArgs.Player;
 
     using Handlers;
@@ -71,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // damage = ev.Handler.Damage;
                     new(OpCodes.Ldloc, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.Handler))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(CustomDamageHandler), nameof(CustomDamageHandler.Damage))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardDamage), nameof(StandardDamage.Damage))),
                     new(OpCodes.Starg_S, 1),
                 });
 

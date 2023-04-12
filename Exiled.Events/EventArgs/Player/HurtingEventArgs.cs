@@ -8,11 +8,10 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-    using API.Features.DamageHandlers;
-
+    using Exiled.API.Features.Damage;
+    using Exiled.API.Features.Damage.Attacker;
     using Interfaces;
 
-    using CustomAttackerHandler = API.Features.DamageHandlers.AttackerDamageHandler;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
@@ -31,9 +30,9 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public HurtingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
-            DamageHandler = new CustomDamageHandler(target, damageHandler);
+            DamageHandler = DamageBase.Get(damageHandler);
 
-            Attacker = DamageHandler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
+            Attacker = DamageHandler is AttackerDamage attacker ? attacker.Attacker : null;
             Player = target;
         }
 
@@ -57,9 +56,9 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets or sets the <see cref="CustomDamageHandler" /> for the event.
+        ///     Gets or sets the <see cref="DamageBase" /> for the event.
         /// </summary>
-        public CustomDamageHandler DamageHandler { get; set; }
+        public StandardDamage DamageHandler { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player will be dealt damage.

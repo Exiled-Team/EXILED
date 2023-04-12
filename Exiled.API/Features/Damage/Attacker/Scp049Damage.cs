@@ -42,5 +42,22 @@ namespace Exiled.API.Features.Damage.Attacker
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomReasonDamage"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="DamageType"/> to give.</param>
+        /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
+        /// <returns>.</returns>
+        public static Scp049Damage Damage(DamageType type, float damage, Player attacker)
+        {
+            attacker ??= Server.Host;
+            return new(new(attacker.Footprint, damage, type switch
+            {
+                DamageType.Scp049 => Scp049DamageHandler.AttackType.Instakill,
+                DamageType.Scp0492 => Scp049DamageHandler.AttackType.Scp0492,
+                DamageType.CardiacArrest => Scp049DamageHandler.AttackType.CardiacArrest,
+                _ => throw new NotImplementedException(),
+            }));
+        }
     }
 }

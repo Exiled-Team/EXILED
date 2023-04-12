@@ -9,7 +9,7 @@ namespace Exiled.API.Features.Pickups
 {
     using System;
 
-    using Exiled.API.Features.DamageHandlers;
+    using Exiled.API.Features.Damage;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Usables.Scp244;
@@ -115,9 +115,9 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Damages the Scp244Pickup.
         /// </summary>
-        /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
+        /// <param name="handler">The <see cref="StandardDamage"/> used to deal damage.</param>
         /// <returns><see langword="true"/> if the the damage has been deal; otherwise, <see langword="false"/>.</returns>
-        public bool Damage(DamageHandler handler) => Base.Damage(handler.Damage, handler, Vector3.zero);
+        public bool Damage(StandardDamage handler) => Base.Damage(handler.Damage, handler.Base, Vector3.zero);
 
         /// <summary>
         /// Returns the Scp244Pickup in a human readable format.

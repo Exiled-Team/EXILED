@@ -10,9 +10,8 @@ namespace Exiled.Events.Patches.Events.Scp244
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using API.Features.DamageHandlers;
     using API.Features.Pools;
-
+    using Exiled.API.Features.Damage;
     using Exiled.Events.EventArgs.Scp244;
 
     using Handlers;
@@ -96,7 +95,7 @@ namespace Exiled.Events.Patches.Events.Scp244
                     // ev.DamageHandler.Damage
                     new(OpCodes.Ldloc, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.Handler))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Damage))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardDamage), nameof(StandardDamage.Damage))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
