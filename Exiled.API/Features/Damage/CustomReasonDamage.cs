@@ -35,8 +35,9 @@ namespace Exiled.API.Features.Damage
         {
             if (!CustomDamage.customDamage.TryGetValue(type, out CustomDamage customDamage))
                 customDamage = new();
+
             CustomDamage = customDamage;
-            Base = new(customDamage, damage);
+            Base = new(customDamage.DeathReason, damage, customDamage.CassieAnnouncement);
         }
 
 
@@ -45,7 +46,10 @@ namespace Exiled.API.Features.Damage
         /// </summary>
         public new CustomReasonDamageHandler Base { get; }
 
-        public CustomDamage CustomDamagee { get; set; }
+        /// <summary>
+        /// CustomDamage.
+        /// </summary>
+        public CustomDamage CustomDamage { get; set; }
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }

@@ -19,6 +19,9 @@ namespace Exiled.API.Features.Damage
     {
         internal static Dictionary<DamageType, CustomDamage> customDamage = new();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomDamage"/> class.
+        /// </summary>
         public CustomDamage()
         {
             DamageType = DamageType.Custom;
@@ -26,6 +29,12 @@ namespace Exiled.API.Features.Damage
             CassieAnnouncement = string.Empty;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomDamage"/> class.
+        /// </summary>
+        /// <param name="damageType">.</param>
+        /// <param name="deathReason">..</param>
+        /// <param name="cassieAnnouncement">...</param>
         public CustomDamage(DamageType damageType, string deathReason, string cassieAnnouncement)
         {
             DamageType = damageType;
@@ -35,17 +44,17 @@ namespace Exiled.API.Features.Damage
         }
 
         /// <summary>
-        /// .
+        /// Gets or sets .
         /// </summary>
         public DamageType DamageType { get; set; }
 
         /// <summary>
-        /// .
+        /// Gets or sets .
         /// </summary>
         public string DeathReason { get; set; }
 
         /// <summary>
-        /// .
+        /// Gets or sets .
         /// </summary>
         public string CassieAnnouncement { get; set; }
 

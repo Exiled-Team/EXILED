@@ -64,7 +64,7 @@ namespace Exiled.API.Features.Damage
                         Scp018DamageHandler scp018DamageHandler => new Scp018Damage(scp018DamageHandler),
                         Scp049DamageHandler scp049DamageHandler => new Scp049Damage(scp049DamageHandler),
                         Scp096DamageHandler scp096DamageHandler => new Scp096Damage(scp096DamageHandler),
-                        Scp939DamageHandler scp939DamageHandler => new Scp939Damage(scp939DamageHandler)
+                        Scp939DamageHandler scp939DamageHandler => new Scp939Damage(scp939DamageHandler),
                         ScpDamageHandler scpDamageHandler => new ScpDamage(scpDamageHandler),
                         _ => new AttackerDamage(attackerDamageHandler),
                     },
@@ -91,7 +91,7 @@ namespace Exiled.API.Features.Damage
                 DamageType.Scp or DamageType.Scp173 or DamageType.Scp106 => new ScpDamage(type),
                 DamageType.Scp049 or DamageType.Scp0492 or DamageType.CardiacArrest => new Scp049Damage(type),
                 DamageType.Scp939 => new Scp939Damage(),
-                DamageType.Custom or _ => new CustomReasonDamage(),
+                DamageType.Custom or _ => new CustomReasonDamage(type, damage),
             };
         }
     }
