@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Initializes a new instance of the <see cref="JailbirdDamage"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="JailbirdDamageHandler"/> class.</param>
-        public JailbirdDamage(JailbirdDamageHandler damageHandler)
+        internal JailbirdDamage(JailbirdDamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;

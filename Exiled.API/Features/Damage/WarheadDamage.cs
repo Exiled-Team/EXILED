@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Damage
         /// Initializes a new instance of the <see cref="WarheadDamage"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="WarheadDamageHandler"/> class.</param>
-        public WarheadDamage(WarheadDamageHandler damageHandler)
+        internal WarheadDamage(WarheadDamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;

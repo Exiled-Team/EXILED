@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Initializes a new instance of the <see cref="DisruptorDamage"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="DisruptorDamageHandler"/> class.</param>
-        public DisruptorDamage(DisruptorDamageHandler damageHandler)
+        internal DisruptorDamage(DisruptorDamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;

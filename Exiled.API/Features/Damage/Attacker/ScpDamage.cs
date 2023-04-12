@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Initializes a new instance of the <see cref="ScpDamage"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="ScpDamageHandler"/> class.</param>
-        public ScpDamage(ScpDamageHandler damageHandler)
+        internal ScpDamage(ScpDamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;

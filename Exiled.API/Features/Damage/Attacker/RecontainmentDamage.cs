@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Initializes a new instance of the <see cref="RecontainmentDamage"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="RecontainmentDamageHandler"/> class.</param>
-        public RecontainmentDamage(RecontainmentDamageHandler damageHandler)
+        internal RecontainmentDamage(RecontainmentDamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;

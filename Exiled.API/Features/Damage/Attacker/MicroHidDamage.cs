@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// Initializes a new instance of the <see cref="MicroHidDamage"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="MicroHidDamageHandler"/> class.</param>
-        public MicroHidDamage(MicroHidDamageHandler damageHandler)
+        internal MicroHidDamage(MicroHidDamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;

@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Damage
         /// Initializes a new instance of the <see cref="UniversalDamage"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="UniversalDamageHandler"/> class.</param>
-        public UniversalDamage(UniversalDamageHandler damageHandler)
+        internal UniversalDamage(UniversalDamageHandler damageHandler)
             : base(damageHandler)
         {
             Base = damageHandler;
