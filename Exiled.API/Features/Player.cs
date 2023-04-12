@@ -1935,8 +1935,7 @@ namespace Exiled.API.Features
         /// Hurts the player.
         /// </summary>
         /// <param name="damageBase">The <see cref="DamageBase"/>.</param>
-        public void Hurt(DamageBase damageBase) =>
-            Hurt(damageBase.Base);
+        public void Hurt(DamageBase damageBase) => Hurt(damageBase.Base);
 
         /// <summary>
         /// Hurts the player.

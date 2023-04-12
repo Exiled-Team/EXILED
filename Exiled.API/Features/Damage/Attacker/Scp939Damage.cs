@@ -27,6 +27,13 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
+            Type = Base._damageType switch
+            {
+                Scp939DamageType.Claw => DamageType.Scp939Claw,
+                Scp939DamageType.LungeTarget => DamageType.Scp939LungeTarget,
+                Scp939DamageType.LungeSecondary => DamageType.Scp939LungeSecondary,
+                Scp939DamageType.None or _ => DamageType.Unknown,
+            };
         }
 
         /// <summary>
@@ -35,6 +42,6 @@ namespace Exiled.API.Features.Damage.Attacker
         public new Scp939DamageHandler Base { get; }
 
         /// <inheritdoc/>
-        public override DamageType Type { get; internal set; } = DamageType.Scp939;
+        public override DamageType Type { get; internal set; }
     }
 }

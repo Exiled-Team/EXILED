@@ -10,6 +10,7 @@ namespace Exiled.API.Enums
     using Features;
 
     using PlayerRoles;
+    using PlayerRoles.PlayableScps.Scp939;
     using PlayerStatsSystem;
 
     /// <summary>
@@ -157,9 +158,19 @@ namespace Exiled.API.Enums
         Scp173,
 
         /// <summary>
-        /// Damage caused by <see cref="RoleTypeId.Scp939"/>.
+        /// Damage caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.Claw"/>.
         /// </summary>
-        Scp939,
+        Scp939Claw,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.LungeTarget"/>.
+        /// </summary>
+        Scp939LungeTarget,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleTypeId.Scp939"/> when <see cref="Scp939DamageType.LungeSecondary"/>.
+        /// </summary>
+        Scp939LungeSecondary,
 
         /// <summary>
         /// Damage caused by <see cref="RoleTypeId.Scp0492"/>.

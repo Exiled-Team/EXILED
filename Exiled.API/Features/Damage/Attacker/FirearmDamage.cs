@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Damage.Attacker
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
@@ -25,6 +26,20 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
+            Type = Base.WeaponType switch
+            {
+                ItemType.GunAK => DamageType.AK,
+                ItemType.GunCOM15 => DamageType.Com15,
+                ItemType.GunCOM18 => DamageType.Com18,
+                ItemType.GunCom45 => DamageType.Com45,
+                ItemType.GunCrossvec => DamageType.Crossvec,
+                ItemType.GunE11SR => DamageType.E11Sr,
+                ItemType.GunFSP9 => DamageType.Fsp9,
+                ItemType.GunLogicer => DamageType.Logicer,
+                ItemType.GunRevolver => DamageType.Revolver,
+                ItemType.GunShotgun => DamageType.Shotgun,
+                _ => DamageType.Firearm,
+            };
         }
 
         /// <summary>
