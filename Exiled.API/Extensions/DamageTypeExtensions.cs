@@ -9,9 +9,9 @@ namespace Exiled.API.Extensions
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Enums;
     using Exiled.API.Features.Damage;
-    using Features;
     using PlayerRoles;
     using PlayerStatsSystem;
 

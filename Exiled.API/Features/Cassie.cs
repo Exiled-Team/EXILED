@@ -10,6 +10,7 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+
     using Exiled.API.Enums;
     using Exiled.API.Features.Damage;
     using Exiled.API.Features.Damage.Attacker;
