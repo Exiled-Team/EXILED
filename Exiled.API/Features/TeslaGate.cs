@@ -272,7 +272,7 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the idle range of the tesla gate; otherwise, <see langword="false"/>.</returns>
         public bool IsPlayerInIdleRange(Player player)
         {
-            if (player.ReferenceHub is null)
+            if (player.ReferenceHub.roleManager is null)
                 return false;
             return Base.PlayerInIdleRange(player.ReferenceHub);
         }
