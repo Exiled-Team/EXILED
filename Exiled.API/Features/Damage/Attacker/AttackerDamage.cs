@@ -31,9 +31,6 @@ namespace Exiled.API.Features.Damage.Attacker
         /// </summary>
         public new AttackerDamageHandler Base { get; }
 
-        /// <inheritdoc/>
-        public override DamageType Type { get; internal set; }
-
         /// <summary>
         /// Gets a value indicating whether .
         /// </summary>
