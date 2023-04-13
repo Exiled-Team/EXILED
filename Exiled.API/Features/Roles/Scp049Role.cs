@@ -284,7 +284,7 @@ namespace Exiled.API.Features.Roles
             SenseAbility.HasTarget = false;
             SenseAbility.Target = player.ReferenceHub;
 
-            if (SenseAbility.Target is null)
+            if (SenseAbility.Target is null || TurnedPlayers.Contains(player))
             {
                 SenseAbility.Cooldown.Trigger(Scp049SenseAbility.AttemptFailCooldown);
                 SenseAbility.ServerSendRpc(true);
@@ -303,6 +303,17 @@ namespace Exiled.API.Features.Roles
                 SenseAbility.HasTarget = true;
                 SenseAbility.ServerSendRpc(true);
             }
+        }
+
+        /// <summary>
+        /// Starts the Call Ability.
+        /// </summary>
+        /// <param name="cooldown">The Cooldown of the Ability.</param>
+        public void Call(float cooldown)
+        {
+            CallAbility.Duration.Trigger(cooldown);
+            CallAbility._serverTriggered = true;
+            CallAbility.ServerSendRpc(true);
         }
 
         /// <summary>

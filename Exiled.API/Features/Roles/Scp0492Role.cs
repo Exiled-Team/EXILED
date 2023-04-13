@@ -12,6 +12,7 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerStatsSystem;
 
     /// <summary>
     /// Defines a role that represents SCP-049-2.
@@ -129,5 +130,20 @@ namespace Exiled.API.Features.Roles
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to consume the body; otherwise, <see langword="false"/>.</returns>
         public bool IsInConsumeRange(Ragdoll ragdoll) => IsInConsumeRange(ragdoll.Base);
+
+        /// <summary>
+        /// Trigger the consume ability to consume the specified ragdoll.
+        /// </summary>
+        /// <param name="ragdoll">The <see cref="Ragdoll"/>to consume.</param>
+        public void Consume(Ragdoll ragdoll)
+        {
+            ZombieConsumeAbility.ConsumedRagdolls.Add(ragdoll.Base);
+            ConsumeAbility.Owner.playerStats.GetModule<HealthStat>().ServerHeal(100f);
+        }
+
+        /// <summary>
+        /// Trigger the attack ability.
+        /// </summary>
+        public void Attack() => AttackAbility.ServerPerformAttack();
     }
 }
