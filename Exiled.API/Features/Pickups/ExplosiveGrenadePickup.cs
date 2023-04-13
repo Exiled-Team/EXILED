@@ -92,5 +92,21 @@ namespace Exiled.API.Features.Pickups
 
             return item;
         }
+
+        /// <inheritdoc/>
+        internal override Pickup GetPickupInfo(Pickup pickup)
+        {
+            if (pickup is ExplosionGrenadeProjectile explosionGrenadeProjectile)
+            {
+                explosionGrenadeProjectile.MaxRadius = MaxRadius;
+                explosionGrenadeProjectile.ScpDamageMultiplier = ScpDamageMultiplier;
+                explosionGrenadeProjectile.BurnDuration = BurnDuration;
+                explosionGrenadeProjectile.DeafenDuration = DeafenDuration;
+                explosionGrenadeProjectile.ConcussDuration = ConcussDuration;
+                explosionGrenadeProjectile.FuseTime = FuseTime;
+            }
+
+            return pickup;
+        }
     }
 }

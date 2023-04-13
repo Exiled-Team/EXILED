@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Pickups.Projectiles;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -80,6 +81,20 @@ namespace Exiled.API.Features.Pickups
             }
 
             return item;
+        }
+
+        /// <inheritdoc/>
+        internal override Pickup GetPickupInfo(Pickup pickup)
+        {
+            if (pickup is FlashbangProjectile flashbangProjectile)
+            {
+                flashbangProjectile.MinimalDurationEffect = MinimalDurationEffect;
+                flashbangProjectile.AdditionalBlindedEffect = AdditionalBlindedEffect;
+                flashbangProjectile.SurfaceDistanceIntensifier = SurfaceDistanceIntensifier;
+                flashbangProjectile.FuseTime = FuseTime;
+            }
+
+            return pickup;
         }
     }
 }

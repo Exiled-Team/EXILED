@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Pickups
 {
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Pickups.Projectiles;
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.ThrowableProjectiles;
@@ -57,5 +58,20 @@ namespace Exiled.API.Features.Pickups
         /// Trigger the grenade to make it Explode.
         /// </summary>
         public void Explode() => Base._replaceNextFrame = true;
+
+        /// <summary>
+        /// .
+        /// </summary>
+        /// <param name="pickup">..</param>
+        /// <returns>...</returns>
+        internal virtual Pickup GetPickupInfo(Pickup pickup)
+        {
+            if (pickup is TimeGrenadeProjectile timeGrenadeProjectile)
+            {
+                timeGrenadeProjectile.FuseTime = FuseTime;
+            }
+
+            return pickup;
+        }
     }
 }

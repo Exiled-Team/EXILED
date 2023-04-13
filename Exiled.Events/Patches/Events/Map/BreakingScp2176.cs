@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(bool) })),
                     new(OpCodes.Dup),
 
-                    // Handlers.Map.OnExplodingGrenade(ev);
+                    // Handlers.Map.OnChangedIntoGrenade(ev);
                     new(OpCodes.Call, Method(typeof(Map), nameof(Map.OnExplodingGrenade))),
 
                     // if (!ev.IsAllowed)
