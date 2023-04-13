@@ -15,7 +15,6 @@ namespace Exiled.API.Features.Damage
     /// </summary>
     public class StandardDamage : DamageBase
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="StandardDamage"/> class.
         /// </summary>

@@ -19,7 +19,9 @@ namespace Exiled.API.Features.Damage
         /// <summary>
         /// ?.
         /// </summary>
+#pragma warning disable SA1401 // Fields should be private
         internal static Dictionary<DamageType, CustomDamage> DamageTypeToCustomDamage = new();
+#pragma warning restore SA1401 // Fields should be private
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomDamage"/> class.
