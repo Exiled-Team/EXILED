@@ -33,6 +33,8 @@ namespace Exiled.API.Features
     /// </summary>
     public class Room : MonoBehaviour, IWorldSpace
     {
+        #pragma warning disable IDE0051
+
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="RoomIdentifier"/>s and their corresponding <see cref="Room"/>.
         /// </summary>

@@ -11,6 +11,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using PlayerStatsSystem;
     using UnityEngine;
 
+    /// <summary>
+    /// A wrapper class for JailbirdDamageHandler.
+    /// </summary>
     public class JailbirdDamage : AttackerDamage
     {
         /// <summary>

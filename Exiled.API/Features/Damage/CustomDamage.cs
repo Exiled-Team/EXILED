@@ -8,13 +8,18 @@
 namespace Exiled.API.Features.Damage
 {
     using System.Collections.Generic;
-    using System.Linq;
-    using Exiled.API.Enums;
-    using PlayerStatsSystem;
 
+    using Exiled.API.Enums;
+
+    /// <summary>
+    /// ?.
+    /// </summary>
     public class CustomDamage
     {
-        internal static Dictionary<DamageType, CustomDamage> customDamage = new();
+        /// <summary>
+        /// ?.
+        /// </summary>
+        internal static Dictionary<DamageType, CustomDamage> DamageTypeToCustomDamage = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomDamage"/> class.
@@ -39,7 +44,7 @@ namespace Exiled.API.Features.Damage
             DamageName = damageName;
             DeathReason = deathReason;
             CassieAnnouncement = cassieAnnouncement;
-            customDamage.Add(damageType, this);
+            DamageTypeToCustomDamage.Add(damageType, this);
         }
 
         /// <summary>
@@ -61,6 +66,5 @@ namespace Exiled.API.Features.Damage
         /// Gets or sets .
         /// </summary>
         public string CassieAnnouncement { get; set; }
-
     }
 }

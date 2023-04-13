@@ -7,15 +7,12 @@
 
 namespace Exiled.API.Features.Damage
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for CustomReasonDamageHandler.
+    /// </summary>
     public class CustomReasonDamage : StandardDamage
     {
         /// <summary>
@@ -34,13 +31,9 @@ namespace Exiled.API.Features.Damage
         public new CustomReasonDamageHandler Base { get; }
 
         /// <summary>
-        /// Gets or sets customDamage.
+        /// Gets or sets DamageTypeToCustomDamage.
         /// </summary>
-        public CustomDamage CustomDamage
-        {
-            get =>;
-            set =>;
-        }
+        public CustomDamage CustomDamage { get; set; }
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }
@@ -53,7 +46,7 @@ namespace Exiled.API.Features.Damage
         /// <returns>.</returns>
         public static CustomReasonDamage Create(DamageType type, float damage)
         {
-            if (!CustomDamage.customDamage.TryGetValue(type, out CustomDamage customDamage))
+            if (!CustomDamage.DamageTypeToCustomDamage.TryGetValue(type, out CustomDamage customDamage))
                 customDamage = new();
             CustomReasonDamage customReasonDamagene = new(new(customDamage.DeathReason, damage, customDamage.CassieAnnouncement))
             {

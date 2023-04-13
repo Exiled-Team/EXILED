@@ -10,6 +10,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for DisruptorDamageHandler.
+    /// </summary>
     public class DisruptorDamage : AttackerDamage
     {
         /// <summary>
@@ -36,11 +39,10 @@ namespace Exiled.API.Features.Damage.Attacker
         /// <param name="damage">The ammount of damage to dealt.</param>
         /// <param name="attacker">The player who attack.</param>
         /// <returns>.</returns>
-        public static new DisruptorDamage Create(float damage, Player attacker)
+        public static DisruptorDamage Create(float damage, Player attacker)
         {
             attacker ??= Server.Host;
             return new(new(attacker.Footprint, damage));
         }
-
     }
 }

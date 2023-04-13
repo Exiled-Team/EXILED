@@ -10,6 +10,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for RecontainmentDamageHandler.
+    /// </summary>
     public class RecontainmentDamage : AttackerDamage
     {
         /// <summary>

@@ -12,6 +12,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using PlayerStatsSystem;
     using UnityEngine;
 
+    /// <summary>
+    /// A wrapper class for Scp018DamageHandler.
+    /// </summary>
     public class Scp018Damage : AttackerDamage
     {
         /// <summary>

@@ -11,6 +11,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using Footprinting;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for AttackerDamageHandler.
+    /// </summary>
     public class AttackerDamage : StandardDamage
     {
         /// <summary>
@@ -64,7 +67,7 @@ namespace Exiled.API.Features.Damage.Attacker
         }
 
         /// <summary>
-        /// .
+        /// Gets or sets .
         /// </summary>
         public Player Attacker
         {

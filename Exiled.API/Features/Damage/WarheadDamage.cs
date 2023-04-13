@@ -8,9 +8,11 @@
 namespace Exiled.API.Features.Damage
 {
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for WarheadDamageHandler.
+    /// </summary>
     public class WarheadDamage : StandardDamage
     {
         /// <summary>
@@ -33,7 +35,7 @@ namespace Exiled.API.Features.Damage
         /// </summary>
         /// <param name="damage">The ammount of damage to dealt.</param>
         /// <returns>.</returns>
-        public static new WarheadDamage Create(float damage)
+        public static WarheadDamage Create(float damage)
         {
             WarheadDamage warheadDamage = new(new())
             {
@@ -41,6 +43,5 @@ namespace Exiled.API.Features.Damage
             };
             return warheadDamage;
         }
-
     }
 }

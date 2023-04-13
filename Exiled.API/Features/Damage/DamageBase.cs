@@ -14,6 +14,9 @@ namespace Exiled.API.Features.Damage
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for DamageHandlerBase.
+    /// </summary>
     public class DamageBase
     {
         /// <summary>
@@ -45,7 +48,7 @@ namespace Exiled.API.Features.Damage
         /// <summary>
         /// Gets the <see cref="Name"/> for the damage.
         /// </summary>
-        public string Name => Enum.IsDefined(typeof(DamageType), Type) ? Type.ToString() : CustomDamage.customDamage.TryGetValue(Type, out CustomDamage customDamage) ? customDamage.DamageName : "Unknown";
+        public string Name => Enum.IsDefined(typeof(DamageType), Type) ? Type.ToString() : CustomDamage.DamageTypeToCustomDamage.TryGetValue(Type, out CustomDamage customDamage) ? customDamage.DamageName : "Unknown";
 
         /// <summary>
         /// Gets .

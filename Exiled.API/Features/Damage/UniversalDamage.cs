@@ -7,12 +7,15 @@
 
 namespace Exiled.API.Features.Damage
 {
+    using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using PlayerStatsSystem;
 
-    using System.Linq;
-
+    /// <summary>
+    /// A wrapper class for UniversalDamageHandler.
+    /// </summary>
     public class UniversalDamage : StandardDamage
     {
         /// <summary>
@@ -40,7 +43,7 @@ namespace Exiled.API.Features.Damage
         /// <param name="type">The <see cref="DamageType"/> to give.</param>
         /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
         /// <returns>.</returns>
-        public static new UniversalDamage Create(DamageType type, float damage)
+        public static UniversalDamage Create(DamageType type, float damage)
         {
             UniversalDamage universalDamage = new(new(damage, DamageTypeExtensions.TranslationConversion.FirstOrDefault(x => x.Value == type).Key))
             {

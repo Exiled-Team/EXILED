@@ -14,6 +14,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using Exiled.API.Features.Items;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for FirearmDamageHandler.
+    /// </summary>
     public class FirearmDamage : AttackerDamage
     {
         /// <summary>
@@ -24,7 +27,7 @@ namespace Exiled.API.Features.Damage.Attacker
             : base(damageHandler)
         {
             Base = damageHandler;
-            Type = DamageTypeExtensions.ItemConversion[Base.WeaponType];
+            Type = DamageTypeExtensions.ItemConversion.TryGetValue(Base.WeaponType, out DamageType damageType) ? damageType : DamageType.Firearm;
         }
 
         /// <summary>

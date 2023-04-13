@@ -8,9 +8,11 @@
 namespace Exiled.API.Features.Damage.Attacker
 {
     using Exiled.API.Enums;
-    using PlayerRoles.PlayableScps.Scp939;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for Scp096DamageHandler.
+    /// </summary>
     public class Scp096Damage : AttackerDamage
     {
         /// <summary>

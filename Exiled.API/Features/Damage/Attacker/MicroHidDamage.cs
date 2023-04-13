@@ -10,6 +10,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for MicroHidDamageHandler.
+    /// </summary>
     public class MicroHidDamage : AttackerDamage
     {
         /// <summary>

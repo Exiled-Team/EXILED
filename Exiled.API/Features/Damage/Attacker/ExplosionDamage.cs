@@ -11,6 +11,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using PlayerStatsSystem;
     using UnityEngine;
 
+    /// <summary>
+    /// A wrapper class for ExplosionDamageHandler.
+    /// </summary>
     public class ExplosionDamage : AttackerDamage
     {
         /// <summary>
@@ -37,11 +40,10 @@ namespace Exiled.API.Features.Damage.Attacker
         /// <param name="damage">The ammount of damage to dealt.</param>
         /// <param name="attacker">The player who attack.</param>
         /// <returns>.</returns>
-        public static new ExplosionDamage Create(float damage, Player attacker)
+        public static ExplosionDamage Create(float damage, Player attacker)
         {
             attacker ??= Server.Host;
             return new(new(attacker.Footprint, Vector3.zero, damage, 50));
         }
-
     }
 }

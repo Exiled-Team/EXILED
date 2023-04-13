@@ -12,6 +12,9 @@ namespace Exiled.API.Features.Damage.Attacker
     using Exiled.API.Enums;
     using PlayerStatsSystem;
 
+    /// <summary>
+    /// A wrapper class for Scp049DamageHandler.
+    /// </summary>
     public class Scp049Damage : AttackerDamage
     {
         /// <summary>
@@ -44,8 +47,9 @@ namespace Exiled.API.Features.Damage.Attacker
         /// </summary>
         /// <param name="type">The <see cref="DamageType"/> to give.</param>
         /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
+        /// <param name="attacker">...</param>
         /// <returns>.</returns>
-        public static Scp049Damage Create(DamageType type, float damage, Player attacker)
+        public static new Scp049Damage Create(DamageType type, float damage, Player attacker)
         {
             attacker ??= Server.Host;
             return new(new(attacker.Footprint, damage, type switch

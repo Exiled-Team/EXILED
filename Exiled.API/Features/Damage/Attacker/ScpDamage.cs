@@ -7,11 +7,15 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
+    using System.Linq;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using PlayerStatsSystem;
-    using System.Linq;
 
+    /// <summary>
+    /// A wrapper class for ScpDamageHandler.
+    /// </summary>
     public class ScpDamage : AttackerDamage
     {
         /// <summary>
@@ -47,7 +51,7 @@ namespace Exiled.API.Features.Damage.Attacker
         public static new ScpDamage Create(DamageType type, float damage, Player attacker)
         {
             attacker ??= Server.Host;
-            if (!CustomDamage.customDamage.TryGetValue(type, out CustomDamage customDamage))
+            if (!CustomDamage.DamageTypeToCustomDamage.TryGetValue(type, out CustomDamage customDamage))
                 customDamage = new();
             return new(new(attacker.ReferenceHub, damage, DamageTypeExtensions.TranslationConversion.FirstOrDefault(x => x.Value == type).Key));
         }

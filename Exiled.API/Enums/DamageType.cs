@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Enums
 {
+    using Exiled.API.Features.Damage;
     using Features;
 
     using PlayerRoles;
@@ -17,9 +18,9 @@ namespace Exiled.API.Enums
     /// Identifiers for types of damage.
     /// </summary>
     /// <seealso cref="Player.Hurt(float, DamageType, string)"/>
-    /// <seealso cref="Player.Hurt(Player, float, DamageType, Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement)"/>
-    /// <seealso cref="Player.Hurt(Player, float, DamageType, Features.DamageHandlers.DamageHandlerBase.CassieAnnouncement, string)"/>
     /// <seealso cref="Player.Kill(DamageType, string)"/>
+    /// <seealso cref="DamageBase.Create(DamageType, float, Player)"/>
+    /// <seealso cref="DamageBase.Type"/>
     public enum DamageType
     {
         /// <summary>

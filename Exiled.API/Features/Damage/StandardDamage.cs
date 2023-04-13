@@ -10,6 +10,9 @@ namespace Exiled.API.Features.Damage
     using PlayerStatsSystem;
     using UnityEngine;
 
+    /// <summary>
+    /// A wrapper class for StandardDamageHandler.
+    /// </summary>
     public class StandardDamage : DamageBase
     {
 
@@ -26,7 +29,7 @@ namespace Exiled.API.Features.Damage
         public new StandardDamageHandler Base { get; }
 
         /// <summary>
-        /// Gets the damage to dealt.
+        /// Gets or sets the damage to dealt.
         /// </summary>
         public float Damage
         {
