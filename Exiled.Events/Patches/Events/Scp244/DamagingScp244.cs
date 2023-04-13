@@ -94,7 +94,7 @@ namespace Exiled.Events.Patches.Events.Scp244
 
                     // ev.DamageHandler.Damage
                     new(OpCodes.Ldloc, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.Handler))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.DamageHandler))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StandardDamage), nameof(StandardDamage.Damage))),
                 });
 

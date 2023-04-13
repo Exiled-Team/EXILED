@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs.Interfaces
     /// <summary>
     ///     Event args for when a player is taking damage.
     /// </summary>
-    public interface IAttackerEvent : IPlayerEvent
+    public interface IAttackerEvent : IExiledEvent
     {
         /// <summary>
         ///     Gets the attacker <see cref="Player" />.

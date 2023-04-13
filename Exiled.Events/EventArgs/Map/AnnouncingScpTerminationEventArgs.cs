@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information before C.A.S.S.I.E announces an SCP termination.
     /// </summary>
-    public class AnnouncingScpTerminationEventArgs : IAttackerEvent, IDeniableEvent
+    public class AnnouncingScpTerminationEventArgs : IPlayerEvent, IAttackerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="AnnouncingScpTerminationEventArgs" /> class.

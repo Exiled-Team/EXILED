@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player dies.
     /// </summary>
-    public class DyingEventArgs : IAttackerEvent, IDeniableEvent
+    public class DyingEventArgs : IPlayerEvent, IAttackerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DyingEventArgs" /> class.

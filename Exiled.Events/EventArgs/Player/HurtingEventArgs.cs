@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player gets damaged.
     /// </summary>
-    public class HurtingEventArgs : IAttackerEvent, IDeniableEvent
+    public class HurtingEventArgs : IPlayerEvent, IAttackerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="HurtingEventArgs" /> class.
