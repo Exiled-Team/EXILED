@@ -536,10 +536,10 @@ namespace Exiled.API.Features
         /// <br /><see cref="RoleTypeId.Spectator"/> = <see cref="Roles.SpectatorRole"/>.
         /// <br /><see cref="RoleTypeId.Overwatch"/> = <see cref="Roles.OverwatchRole"/>.
         /// <br /><see cref="RoleTypeId.None"/> = <see cref="Roles.NoneRole"/>.
-        /// <br /><see cref="RoleTypeId.Scp049"/> = <see cref="Scp049Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp0492"/> = <see cref="Scp0492Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp049"/> = <see cref="Roles.Scp049Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp0492"/> = <see cref="Roles.Scp0492Role"/>.
         /// <br /><see cref="RoleTypeId.Scp079"/> = <see cref="Roles.Scp079Role"/>.
-        /// <br /><see cref="RoleTypeId.Scp096"/> = <see cref="Scp096Role"/>.
+        /// <br /><see cref="RoleTypeId.Scp096"/> = <see cref="Roles.Scp096Role"/>.
         /// <br /><see cref="RoleTypeId.Scp106"/> = <see cref="Roles.Scp106Role"/>.
         /// <br /><see cref="RoleTypeId.Scp173"/> = <see cref="Roles.Scp173Role"/>.
         /// <br /><see cref="RoleTypeId.Scp939"/> = <see cref="Roles.Scp939Role"/>.

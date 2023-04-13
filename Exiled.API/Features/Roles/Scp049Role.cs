@@ -9,10 +9,17 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
+    using CustomPlayerEffects;
+    using Exiled.API.Enums;
+
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerStatsSystem;
+
+    using UnityEngine;
 
     using Scp049GameRole = PlayerRoles.PlayableScps.Scp049.Scp049Role;
 
@@ -28,6 +35,7 @@ namespace Exiled.API.Features.Roles
         internal Scp049Role(Scp049GameRole baseRole)
             : base(baseRole)
         {
+            Base = baseRole;
             SubroutineModule = baseRole.SubroutineModule;
             HumeShieldModule = baseRole.HumeShieldModule;
 
@@ -45,6 +53,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp049SenseAbility subroutine not found in Scp049Role::ctor");
 
             SenseAbility = scp049SenseAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp049AttackAbility scp049AttackAbility))
+                Log.Error("Scp049AttackAbility subroutine not found in Scp049Role::ctor");
+
+            AttackAbility = scp049AttackAbility;
         }
 
         /// <summary>
@@ -65,6 +78,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-049's <see cref="Scp049ResurrectAbility"/>.
         /// </summary>
         public Scp049ResurrectAbility ResurrectAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-049's <see cref="Scp049AttackAbility"/>.
+        /// </summary>
+        public Scp049AttackAbility AttackAbility { get; }
 
         /// <summary>
         /// Gets SCP-049's <see cref="Scp049CallAbility"/>.
@@ -97,6 +115,16 @@ namespace Exiled.API.Features.Roles
         public Ragdoll RecallingRagdoll => Ragdoll.Get(ResurrectAbility.CurRagdoll);
 
         /// <summary>
+        /// Gets all the dead zombies.
+        /// </summary>
+        public HashSet<uint> DeadZombies => Scp049ResurrectAbility.DeadZombies;
+
+        /// <summary>
+        /// Gets all the resurrected players.
+        /// </summary>
+        public Dictionary<uint, int> ResurrectedPlayers => Scp049ResurrectAbility.ResurrectedPlayers;
+
+        /// <summary>
         /// Gets or sets the amount of time before SCP-049 can use its Doctor's Call ability again.
         /// </summary>
         public float CallCooldown
@@ -121,6 +149,173 @@ namespace Exiled.API.Features.Roles
                 SenseAbility.ServerSendRpc(true);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the amount of time before SCP-049 can attack again.
+        /// </summary>
+        public float RemainingAttackCooldown
+        {
+            get => AttackAbility.Cooldown.Remaining;
+            set
+            {
+                AttackAbility.Cooldown.Remaining = value;
+                AttackAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the duration of the <see cref="Scp049CallAbility"/>.
+        /// </summary>
+        public float RemainingCallDuration
+        {
+            get => CallAbility.Duration.Remaining;
+            set
+            {
+                CallAbility.Duration.Remaining = value;
+                CallAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the duration of the <see cref="Scp049SenseAbility"/>.
+        /// </summary>
+        public float RemainingGoodSenseDuration
+        {
+            get => SenseAbility.Duration.Remaining;
+            set
+            {
+                SenseAbility.Duration.Remaining = value;
+                SenseAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the distance of the Sense Ability.
+        /// </summary>
+        public float SenseDistance
+        {
+            get => SenseAbility._distanceThreshold;
+            set => SenseAbility._distanceThreshold = value;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Scp049GameRole"/> instance.
+        /// </summary>
+        public new Scp049GameRole Base { get; }
+
+        /// <summary>
+        /// Lose the current target of the Good Sense ability.
+        /// </summary>
+        public void LoseSenseTarget() => SenseAbility.ServerLoseTarget();
+
+        /// <summary>
+        /// Resurrects a <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to resurrect.</param>
+        /// <returns>The Resurrected player.</returns>
+        public bool Resurrect(Player player)
+        {
+            player.ReferenceHub.transform.position = ResurrectAbility.ScpRole.FpcModule.Position;
+
+            HumeShieldModuleBase humeShield = ResurrectAbility.ScpRole.HumeShieldModule;
+            humeShield.HsCurrent = Mathf.Min(humeShield.HsCurrent + 100f, humeShield.HsMax);
+
+            return Resurrect(Ragdoll.GetLast(player));
+        }
+
+        /// <summary>
+        /// Resurrects a <see cref="Ragdoll"/> owner.
+        /// </summary>
+        /// <param name="ragdoll">The Ragdoll to resurrect.</param>
+        /// <returns>The Resurrected Ragdoll.</returns>
+        public bool Resurrect(Ragdoll ragdoll)
+        {
+            if (ragdoll is null)
+                return false;
+
+            ResurrectAbility.CurRagdoll = ragdoll.Base;
+            ResurrectAbility.ServerComplete();
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attacks a Player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to attack.</param>
+        public void Attack(Player player)
+        {
+            AttackAbility._target = player.ReferenceHub;
+
+            if (AttackAbility._target is null || !AttackAbility.IsTargetValid(AttackAbility._target))
+                return;
+
+            AttackAbility.Cooldown.Trigger(Scp049AttackAbility.CooldownTime);
+            CardiacArrest cardiacArrest = AttackAbility._target.playerEffectsController.GetEffect<CardiacArrest>();
+
+            if (cardiacArrest.IsEnabled)
+            {
+                AttackAbility._target.playerStats.DealDamage(new Scp049DamageHandler(AttackAbility.Owner, -1f, Scp049DamageHandler.AttackType.Instakill));
+            }
+            else
+            {
+                cardiacArrest.SetAttacker(AttackAbility.Owner);
+                cardiacArrest.Intensity = 1;
+                cardiacArrest.ServerChangeDuration(AttackAbility._statusEffectDuration, false);
+            }
+
+            SenseAbility.HasTarget = false;
+            SenseAbility.Cooldown.Trigger(Scp049SenseAbility.ReducedCooldown);
+            SenseAbility.ServerSendRpc(true);
+
+            AttackAbility.ServerSendRpc(true);
+            Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);
+        }
+
+        /// <summary>
+        /// Trigger the Sense Ability on the specified <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The Player to sense.</param>
+        public void Sense(Player player)
+        {
+            if (!SenseAbility.Cooldown.IsReady || !SenseAbility.Duration.IsReady)
+                return;
+
+            SenseAbility.HasTarget = false;
+            SenseAbility.Target = player.ReferenceHub;
+
+            if (SenseAbility.Target is null)
+            {
+                SenseAbility.Cooldown.Trigger(Scp049SenseAbility.AttemptFailCooldown);
+                SenseAbility.ServerSendRpc(true);
+                return;
+            }
+            else
+            {
+                if (!(SenseAbility.Target.roleManager.CurrentRole is PlayerRoles.HumanRole humanRole))
+                    return;
+
+                var radius = humanRole.FpcModule.CharController.radius;
+                if (!VisionInformation.GetVisionInformation(SenseAbility.Owner, SenseAbility.Owner.PlayerCameraReference, humanRole.CameraPosition, radius, SenseAbility._distanceThreshold).IsLooking)
+                    return;
+
+                SenseAbility.Duration.Trigger(Scp049SenseAbility.ReducedCooldown);
+                SenseAbility.HasTarget = true;
+                SenseAbility.ServerSendRpc(true);
+            }
+        }
+
+        /// <summary>
+        /// Refresh the <see cref="Scp049CallAbility"/> duration.
+        /// </summary>
+        public void RefreshCallDuration() => CallAbility.ServerRefreshDuration();
+
+        /// <summary>
+        /// Gets the amount of resurrections of a <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to check.</param>
+        /// <returns>The amount of resurrections of the checked player.</returns>
+        public int GetResurrectionCount(Player player) => Scp049ResurrectAbility.GetResurrectionsNumber(player.ReferenceHub);
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.
@@ -151,5 +346,12 @@ namespace Exiled.API.Features.Roles
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
         public bool IsInRecallRange(Ragdoll ragdoll) => IsInRecallRange(ragdoll.Base);
+
+        /// <summary>
+        /// Gets the Spawn Chance of SCP-049.
+        /// </summary>
+        /// <param name="alreadySpawned">The List of Roles already spawned.</param>
+        /// <returns>The Spawn Chance.</returns>
+        public float GetSpawnChance(List<RoleTypeId> alreadySpawned) => Base.GetSpawnChance(alreadySpawned);
     }
 }
