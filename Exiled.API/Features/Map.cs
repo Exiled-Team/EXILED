@@ -301,7 +301,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void CleanAllItems()
         {
-            foreach (Pickup pickup in Pickup.List)
+            foreach (Pickup pickup in Pickup.List.ToList())
                 pickup.Destroy();
         }
 
@@ -320,7 +320,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void CleanAllRagdolls()
         {
-            foreach (Ragdoll ragDoll in Ragdoll.List)
+            foreach (Ragdoll ragDoll in Ragdoll.List.ToList())
                 ragDoll.Destroy();
         }
 
