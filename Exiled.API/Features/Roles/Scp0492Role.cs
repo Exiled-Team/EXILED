@@ -137,8 +137,8 @@ namespace Exiled.API.Features.Roles
         /// <param name="ragdoll">The <see cref="Ragdoll"/>to consume.</param>
         public void Consume(Ragdoll ragdoll)
         {
-            ZombieConsumeAbility.ConsumedRagdolls.Add(ragdoll.Base);
-            ConsumeAbility.Owner.playerStats.GetModule<HealthStat>().ServerHeal(100f);
+            ConsumeAbility.CurRagdoll = ragdoll.Base;
+            ConsumeAbility.ServerComplete();
         }
 
         /// <summary>
