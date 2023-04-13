@@ -60,44 +60,35 @@ namespace Exiled.API.Features.Damage
         /// </summary>
         /// <param name="player">..</param>
         /// <returns>...</returns>
-        public DamageHandlerBase.HandlerOutput Damage(Player player) => Base.ApplyDamage(player.ReferenceHub);
+        public DamageHandlerBase.HandlerOutput ApplyDamage(Player player) => Base.ApplyDamage(player.ReferenceHub);
 
         /// <summary>
         /// .
         /// </summary>
         /// <returns>..</returns>
-        public static StandardDamage Get(DamageHandlerBase damageHandler)
+        public static StandardDamage Get(DamageHandlerBase damageHandler) => damageHandler switch
         {
-            if (damageHandler == null)
-                return null;
-
-            return damageHandler switch
+            CustomReasonDamageHandler customReasonDamageHandler => new CustomReasonDamage(customReasonDamageHandler),
+            AttackerDamageHandler attackerDamageHandler => attackerDamageHandler switch
             {
-                StandardDamageHandler standardDamage => standardDamage switch
-                {
-                    CustomReasonDamageHandler customReasonDamageHandler => new CustomReasonDamage(customReasonDamageHandler),
-                    AttackerDamageHandler attackerDamageHandler => attackerDamageHandler switch
-                    {
-                        DisruptorDamageHandler disruptorDamageHandler => new DisruptorDamage(disruptorDamageHandler),
-                        ExplosionDamageHandler explosionDamageHandler => new ExplosionDamage(explosionDamageHandler),
-                        FirearmDamageHandler firearmDamageHandler => new FirearmDamage(firearmDamageHandler),
-                        JailbirdDamageHandler jailbirdDamageHandler => new JailbirdDamage(jailbirdDamageHandler),
-                        MicroHidDamageHandler microHidDamageHandler => new MicroHidDamage(microHidDamageHandler),
-                        RecontainmentDamageHandler recontainmentDamageHandler => new RecontainmentDamage(recontainmentDamageHandler),
-                        Scp018DamageHandler scp018DamageHandler => new Scp018Damage(scp018DamageHandler),
-                        Scp049DamageHandler scp049DamageHandler => new Scp049Damage(scp049DamageHandler),
-                        Scp096DamageHandler scp096DamageHandler => new Scp096Damage(scp096DamageHandler),
-                        Scp939DamageHandler scp939DamageHandler => new Scp939Damage(scp939DamageHandler),
-                        ScpDamageHandler scpDamageHandler => new ScpDamage(scpDamageHandler),
-                        _ => new AttackerDamage(attackerDamageHandler),
-                    },
-                    WarheadDamageHandler warheadDamageHandler => new WarheadDamage(warheadDamageHandler),
-                    UniversalDamageHandler universalDamageHandler => new UniversalDamage(universalDamageHandler),
-                    _ => new StandardDamage(standardDamage),
-                },
-                _ => null,
-            };
-        }
+                DisruptorDamageHandler disruptorDamageHandler => new DisruptorDamage(disruptorDamageHandler),
+                ExplosionDamageHandler explosionDamageHandler => new ExplosionDamage(explosionDamageHandler),
+                FirearmDamageHandler firearmDamageHandler => new FirearmDamage(firearmDamageHandler),
+                JailbirdDamageHandler jailbirdDamageHandler => new JailbirdDamage(jailbirdDamageHandler),
+                MicroHidDamageHandler microHidDamageHandler => new MicroHidDamage(microHidDamageHandler),
+                RecontainmentDamageHandler recontainmentDamageHandler => new RecontainmentDamage(recontainmentDamageHandler),
+                Scp018DamageHandler scp018DamageHandler => new Scp018Damage(scp018DamageHandler),
+                Scp049DamageHandler scp049DamageHandler => new Scp049Damage(scp049DamageHandler),
+                Scp096DamageHandler scp096DamageHandler => new Scp096Damage(scp096DamageHandler),
+                Scp939DamageHandler scp939DamageHandler => new Scp939Damage(scp939DamageHandler),
+                ScpDamageHandler scpDamageHandler => new ScpDamage(scpDamageHandler),
+                _ => new AttackerDamage(attackerDamageHandler),
+            },
+            WarheadDamageHandler warheadDamageHandler => new WarheadDamage(warheadDamageHandler),
+            UniversalDamageHandler universalDamageHandler => new UniversalDamage(universalDamageHandler),
+            StandardDamageHandler standardDamageHandler => new StandardDamage(standardDamageHandler),
+            _ => null,
+        };
 
         /// <summary>
         /// .
