@@ -13,6 +13,7 @@ namespace Exiled.API.Features.Roles
     using Mirror;
 
     using PlayerRoles;
+    using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
@@ -67,6 +68,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp173BreakneckSpeedsAbility not found in Scp173Role::ctor");
 
             BreakneckSpeedsAbility = scp173BreakneckSpeedsAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp173SnapAbility scp173SnapAbility))
+                Log.Error("Scp173SnapAbility not found in Scp173Role::ctor");
+
+            SnapAbility = scp173SnapAbility;
         }
 
         /// <summary>
@@ -117,6 +123,11 @@ namespace Exiled.API.Features.Roles
         /// Gets the SCP-173's <see cref="Scp173AudioPlayer"/>.
         /// </summary>
         public Scp173AudioPlayer AudioPlayer { get; }
+
+        /// <summary>
+        /// Gets the SCP-173's <see cref="Scp173SnapAbility"/>.
+        /// </summary>
+        public Scp173SnapAbility SnapAbility { get; }
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-173 can use breakneck speed again.
@@ -246,6 +257,23 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="targetPos">The Target Position.</param>
         public void Blink(Vector3 targetPos) => BlinkTimer.ServerBlink(targetPos);
+
+        /// <summary>
+        /// Snap a <see cref="Player"/> (Attack).
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/>to snap.</param>
+        public void Snap(Player player)
+        {
+            SnapAbility._targetHub = player.ReferenceHub;
+
+            if (SnapAbility._targetHub == null || !(SnapAbility._targetHub.roleManager.CurrentRole is IFpcRole) || SnapAbility.IsSpeeding)
+                return;
+
+            player.ReferenceHub.playerStats.DealDamage(SnapAbility.ScpRole.DamageHandler);
+
+            Hitmarker.SendHitmarker(SnapAbility.Owner, 1f);
+            AudioPlayer.ServerSendSound(Scp173AudioPlayer.Scp173SoundId.Snap);
+        }
 
         /// <summary>
         /// Gets the Spawn Chance of SCP-173.

@@ -58,6 +58,11 @@ namespace Exiled.API.Features.Roles
                 Log.Error("Scp049AttackAbility subroutine not found in Scp049Role::ctor");
 
             AttackAbility = scp049AttackAbility;
+
+            if (!SubroutineModule.TryGetSubroutine(out Scp049AudioPlayer scp049AudioPlayer))
+                Log.Error("Scp049AudioPlayer subroutine not found in Scp049Role::ctor");
+
+            AudioPlayer = scp049AudioPlayer;
         }
 
         /// <summary>
@@ -93,6 +98,11 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-049's <see cref="Scp049SenseAbility"/>.
         /// </summary>
         public Scp049SenseAbility SenseAbility { get; }
+
+        /// <summary>
+        /// Gets SCP-049's <see cref="Scp049AudioPlayer"/>.
+        /// </summary>
+        public Scp049AudioPlayer AudioPlayer { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-049 is currently recalling a player.
@@ -357,6 +367,12 @@ namespace Exiled.API.Features.Roles
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
         public bool IsInRecallRange(Ragdoll ragdoll) => IsInRecallRange(ragdoll.Base);
+
+        /// <summary>
+        /// Sends a Sound to the Sense Ability Target.
+        /// </summary>
+        /// <param name="soundType">The SoundType to send.</param>
+        public void SendAudio(Scp049AudioPlayer.SoundType soundType) => AudioPlayer.ServerSendSound(soundType);
 
         /// <summary>
         /// Gets the Spawn Chance of SCP-049.
