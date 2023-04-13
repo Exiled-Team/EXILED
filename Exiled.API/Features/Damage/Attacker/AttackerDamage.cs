@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Damage.Attacker
 {
-    using Exiled.API.Enums;
     using Footprinting;
     using PlayerStatsSystem;
 
@@ -71,5 +70,8 @@ namespace Exiled.API.Features.Damage.Attacker
             get => Player.Get(AttackerFootprint);
             set => Base.Attacker = value.Footprint;
         }
+
+        /// <inheritdoc/>
+        public override string ToString() => $"{Damage} ({Type}) [{Hitbox}] -{AttackerFootprint.Nickname}-";
     }
 }

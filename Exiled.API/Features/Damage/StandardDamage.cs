@@ -53,5 +53,8 @@ namespace Exiled.API.Features.Damage
             get => Base.StartVelocity;
             set => Base.StartVelocity = value;
         }
+
+        /// <inheritdoc/>
+        public override string ToString() => $"{Damage} ({Type}) [{Hitbox}]";
     }
 }

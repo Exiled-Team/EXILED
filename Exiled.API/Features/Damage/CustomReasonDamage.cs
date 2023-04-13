@@ -54,5 +54,8 @@ namespace Exiled.API.Features.Damage
             };
             return customReasonDamagene;
         }
+
+        /// <inheritdoc/>
+        public override string ToString() => $"{Damage} (Custom : {Name}) [{Hitbox}]";
     }
 }

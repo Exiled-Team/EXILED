@@ -110,5 +110,8 @@ namespace Exiled.API.Features.Damage
         /// <param name="player">..</param>
         /// <returns>...</returns>
         public DamageHandlerBase.HandlerOutput ApplyDamage(Player player) => Base.ApplyDamage(player.ReferenceHub);
+
+        /// <inheritdoc/>
+        public override string ToString() => $"{Type} {Name}";
     }
 }
