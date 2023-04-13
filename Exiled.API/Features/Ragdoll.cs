@@ -237,6 +237,13 @@ namespace Exiled.API.Features
         internal static HashSet<BasicRagdoll> IgnoredRagdolls { get; set; } = new();
 
         /// <summary>
+        /// Gets the last ragdoll of the player.
+        /// </summary>
+        /// <param name="player">The player to get the last ragdoll.</param>
+        /// <returns>The Last Ragdoll.</returns>
+        public static Ragdoll GetLast(Player player) => Get(player).LastOrDefault();
+
+        /// <summary>
         /// Creates a new ragdoll.
         /// </summary>
         /// <param name="networkInfo">The data associated with the ragdoll.</param>

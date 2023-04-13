@@ -179,6 +179,16 @@ namespace Exiled.API.Features
         public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
 
         /// <summary>
+        /// Gets a value indicating whether or not this door is ignoring lockdown.
+        /// </summary>
+        public bool IgnoresLockdowns => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreLockdowns;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is ignoring remoteAdmin commands.
+        /// </summary>
+        public bool IgnoresRemoteAdmin => Base is INonInteractableDoor nonInteractableDoor && nonInteractableDoor.IgnoreRemoteAdmin;
+
+        /// <summary>
         /// Gets the door's Instance ID.
         /// </summary>
         public int InstanceId => Base.GetInstanceID();
@@ -534,7 +544,13 @@ namespace Exiled.API.Features
                 string doorName = GameObject.name.GetBefore(' ');
                 return doorName switch
                 {
-                    "LCZ" => Room?.Type.IsCheckpoint() ?? false ? Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor : DoorType.LightContainmentDoor,
+                    "LCZ" => Room?.Type switch
+                    {
+                        RoomType.LczCheckpointA or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA
+                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
+                        RoomType.LczAirlock => (Base.GetComponentInParent<AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
+                        _ => DoorType.LightContainmentDoor,
+                    },
                     "HCZ" => DoorType.HeavyContainmentDoor,
                     "EZ" => DoorType.EntranceDoor,
                     "Prison" => DoorType.PrisonDoor,
