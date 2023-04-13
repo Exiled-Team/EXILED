@@ -36,7 +36,11 @@ namespace Exiled.API.Features.Damage
         /// <summary>
         /// Gets or sets customDamage.
         /// </summary>
-        public CustomDamage CustomDamage { get; set; }
+        public CustomDamage CustomDamage
+        {
+            get =>;
+            set =>;
+        }
 
         /// <inheritdoc/>
         public override DamageType Type { get; internal set; }

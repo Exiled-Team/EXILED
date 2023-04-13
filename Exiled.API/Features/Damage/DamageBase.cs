@@ -25,10 +25,7 @@ namespace Exiled.API.Features.Damage
         /// Initializes a new instance of the <see cref="DamageBase"/> class.
         /// </summary>
         /// <param name="damageHandler">The base <see cref="DamageHandlerBase"/> class.</param>
-        internal DamageBase(DamageHandlerBase damageHandler)
-        {
-            Base = damageHandler;
-        }
+        internal DamageBase(DamageHandlerBase damageHandler) => Base = damageHandler;
 
         /// <summary>
         /// Gets the <see cref="DamageHandlerBase"/> of the item.

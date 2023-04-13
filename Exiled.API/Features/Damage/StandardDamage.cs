@@ -18,10 +18,7 @@ namespace Exiled.API.Features.Damage
         /// </summary>
         /// <param name="damageHandler">The base <see cref="StandardDamageHandler"/> class.</param>
         internal StandardDamage(StandardDamageHandler damageHandler)
-            : base(damageHandler)
-        {
-            Base = damageHandler;
-        }
+            : base(damageHandler) => Base = damageHandler;
 
         /// <summary>
         /// Gets the <see cref="StandardDamageHandler"/> that this class is encapsulating.
