@@ -45,6 +45,7 @@ namespace Exiled.API.Features.Damage.Attacker
         /// </summary>
         /// <param name="type">The <see cref="DamageType"/> to give.</param>
         /// <param name="damage">The ammount of damage <see cref="float"/> to dealt.</param>
+        /// <param name="attacker">The player who attack.</param>
         /// <returns>.</returns>
         public static new FirearmDamage Create(DamageType type, float damage, Player attacker)
         {
@@ -54,7 +55,7 @@ namespace Exiled.API.Features.Damage.Attacker
                 Damage = damage,
                 Attacker = attacker.Footprint,
                 WeaponType = itemtype,
-                _ammoType = itemtype,
+                _ammoType = itemtype.GetAmmoType().GetItemType(),
             });
         }
     }
