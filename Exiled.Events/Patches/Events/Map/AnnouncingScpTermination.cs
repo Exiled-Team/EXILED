@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Map
                     // hit = ev.DamageHandler.Base
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.DamageHandler))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardDamage), nameof(StandardDamage.Base))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamageBase), nameof(DamageBase.Base))),
                     new(OpCodes.Starg, 1),
 
                     // announcement = ev.TerminationCause
