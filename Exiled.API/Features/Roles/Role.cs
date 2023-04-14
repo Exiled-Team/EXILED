@@ -84,6 +84,11 @@ namespace Exiled.API.Features.Roles
         public Side Side => Base.Team.GetSide();
 
         /// <summary>
+        /// Gets the <see cref="Faction"/> of this <see cref="Role"/>.
+        /// </summary>
+        public Faction Faction => Base.Team.GetFaction();
+
+        /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this <see cref="Role"/>.
         /// </summary>
         public Color Color => Base.RoleColor;
