@@ -10,15 +10,15 @@ namespace Exiled.Events.EventArgs.Scp0492
     /// <summary>
     /// Contains all information before zombie attacks.
     /// </summary>
-    public class AttackingEventArgs : IPlayerEvent, IDeniableEvent
+    public class HurtingEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="AttackingEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="HurtingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public AttackingEventArgs(ReferenceHub player, ReferenceHub target, bool isAllowed = true)
+        public HurtingEventArgs(ReferenceHub player, ReferenceHub target, bool isAllowed = true)
         {
             Player = API.Features.Player.Get(player);
             Target = API.Features.Player.Get(target);

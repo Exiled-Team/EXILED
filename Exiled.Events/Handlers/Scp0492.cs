@@ -24,7 +24,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before 049-2 attacks a player.
         /// </summary>
-        public static event Events.CustomEventHandler<AttackingEventArgs> Attacking;
+        public static event Events.CustomEventHandler<HurtingEventArgs> Hurting;
 
         /// <summary>
         /// Called before 049-2 gets his benefits from consuming ability.
@@ -40,8 +40,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invokes before 049-2 attacks a player.
         /// </summary>
-        /// <param name="ev"><see cref="AttackingEventArgs"/> instance.</param>
-        public static void OnAttacking(AttackingEventArgs ev) => Attacking.InvokeSafely(ev);
+        /// <param name="ev"><see cref="HurtingEventArgs"/> instance.</param>
+        public static void OnHurting(HurtingEventArgs ev) => Hurting.InvokeSafely(ev);
 
         /// <summary>
         /// Invokes before 049-2 gets his benefits from consuming ability.
