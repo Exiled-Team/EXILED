@@ -63,6 +63,8 @@ namespace Exiled.Events.Commands.PluginManager
 
             plugin.OnUnregisteringCommands();
             plugin.OnDisabled();
+            Loader.Loader.Plugins.Remove(plugin);
+            Loader.Loader.Locations.Remove(plugin.Assembly);
             response = $"Plugin {plugin.Name} has been disabled!";
             return true;
         }
