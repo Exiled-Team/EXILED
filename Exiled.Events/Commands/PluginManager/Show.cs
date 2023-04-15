@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------
-// <copyright file="Plugins.cs" company="Exiled Team">
+// <copyright file="Show.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands.Show
+namespace Exiled.Events.Commands.PluginManager
 {
     using System;
     using System.Collections.Generic;
@@ -24,13 +24,18 @@ namespace Exiled.Events.Commands.Show
     /// <summary>
     /// The command to show all plugins.
     /// </summary>
-    public sealed class Plugins : ICommand
+    public sealed class Show : ICommand
     {
-        /// <inheritdoc/>
-        public string Command { get; } = "plugins";
+        /// <summary>
+        /// Gets static instance of the <see cref="Show"/> command.
+        /// </summary>
+        public static Show Instance { get; } = new();
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = { "sp", "showplugins" };
+        public string Command { get; } = "show";
+
+        /// <inheritdoc/>
+        public string[] Aliases { get; } = { "shw", "sh" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Get all plugins, names, authors and versions";
@@ -38,7 +43,7 @@ namespace Exiled.Events.Commands.Show
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            const string perm = "ee.showplugins";
+            const string perm = "pm.showplugins";
 
             if (!sender.CheckPermission(perm) && sender is PlayerCommandSender playerSender && !playerSender.ServerRoles.RaEverywhere)
             {
