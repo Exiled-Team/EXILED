@@ -71,8 +71,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Pickup"/> spawned.</returns>
         public virtual Pickup Throw(Vector3 position, float force, float weight, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHE, Player? player = null)
         {
-            if (player is null)
-                player = Server.Host;
+            player ??= Server.Host;
 
             player.Role.Is(out FpcRole fpcRole);
             var velocity = fpcRole.FirstPersonController.FpcModule.Motor.Velocity;

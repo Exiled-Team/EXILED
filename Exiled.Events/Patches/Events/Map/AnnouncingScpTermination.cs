@@ -68,9 +68,9 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, ret),
 
-                    // hit = ev.DamageHandler.Base
+                    // hit = ev.Damage.Base
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.DamageHandler))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.Damage))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DamageBase), nameof(DamageBase.Base))),
                     new(OpCodes.Starg, 1),
 

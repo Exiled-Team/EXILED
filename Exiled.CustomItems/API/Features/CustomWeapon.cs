@@ -285,13 +285,13 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (ev.DamageHandler is null)
+            if (ev.Damage is null)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler null");
                 return;
             }
 
-            if (ev.DamageHandler is not FirearmDamage firearmDamage)
+            if (ev.Damage is not FirearmDamage firearmDamage)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler not firearm");
                 return;

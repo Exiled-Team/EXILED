@@ -26,13 +26,13 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
         public OwnerDyingEventArgs(Item? item, DyingEventArgs ev)
-            : base(ev.Player, ev.DamageHandler.Base)
+            : base(ev.Player, ev.Damage.Base)
         {
             if (item is null)
                 Log.Warn("Item is null");
             if (ev.Player is null)
                 Log.Warn("Target is null");
-            if (ev.DamageHandler.Base is null)
+            if (ev.Damage.Base is null)
                 Log.Warn("handler base is null");
 
             Item = item;

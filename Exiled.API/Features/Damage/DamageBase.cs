@@ -46,6 +46,11 @@ namespace Exiled.API.Features.Damage
         public string ServerLogsText => Base.ServerLogsText;
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the player who dye by this Damage will spawn a ragdoll.
+        /// </summary>
+        public bool DisableRagdoll { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="Name"/> for the damage.
         /// </summary>
         public string Name => Enum.IsDefined(typeof(DamageType), Type) ? Type.ToString() : CustomDamage.DamageTypeToCustomDamage.TryGetValue(Type, out CustomDamage customDamage) ? customDamage.DamageName : "Unknown";

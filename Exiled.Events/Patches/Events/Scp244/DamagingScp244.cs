@@ -92,9 +92,9 @@ namespace Exiled.Events.Patches.Events.Scp244
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Scp244DeployablePickup), nameof(Scp244DeployablePickup._health))),
 
-                    // ev.DamageHandler.Damage
+                    // ev.Damage.Damage
                     new(OpCodes.Ldloc, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.DamageHandler))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingScp244EventArgs), nameof(DamagingScp244EventArgs.Damage))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StandardDamage), nameof(StandardDamage.Damage))),
                 });
 

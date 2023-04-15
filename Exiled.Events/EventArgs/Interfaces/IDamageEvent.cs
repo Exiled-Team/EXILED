@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="IAttackerEvent.cs" company="Exiled Team">
+// <copyright file="IDamageEvent.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -13,11 +13,11 @@ namespace Exiled.Events.EventArgs.Interfaces
     /// <summary>
     ///     Event args for when a player is taking damage.
     /// </summary>
-    public interface IAttackerEvent : IExiledEvent, IDamageEvent
+    public interface IDamageEvent : IExiledEvent
     {
         /// <summary>
-        ///     Gets the attacker <see cref="Player" />.
+        ///     Gets or sets the <see cref="StandardDamage" /> managing the damage to the target.
         /// </summary>
-        public Player Attacker { get; }
+        public StandardDamage Damage { get; set; }
     }
 }

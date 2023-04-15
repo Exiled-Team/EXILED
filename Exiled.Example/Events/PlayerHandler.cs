@@ -36,7 +36,7 @@ namespace Exiled.Example.Events
             if (ev.Player is null)
                 return;
 
-            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) died from {ev.DamageHandler.Type}! {ev.Attacker.Nickname} ({ev.Attacker.Role}) killed him!");
+            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) died from {ev.Damage.Type}! {ev.Attacker.Nickname} ({ev.Attacker.Role}) killed him!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
@@ -217,7 +217,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.Hurting"/>
         public void OnHurting(HurtingEventArgs ev)
         {
-            Log.Info($"{ev.Player} is being hurt by {ev.DamageHandler.Type}");
+            Log.Info($"{ev.Player} is being hurt by {ev.Damage.Type}");
 
             if (ev.Player.Role == RoleTypeId.Scientist)
             {

@@ -30,13 +30,13 @@ namespace Exiled.Events.EventArgs.Player
         ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="damageHandler">
-        ///     <inheritdoc cref="DamageHandler" />
+        ///     <inheritdoc cref="Damage" />
         /// </param>
         public DyingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
-            DamageHandler = DamageBase.Get(damageHandler);
+            Damage = DamageBase.Get(damageHandler);
             ItemsToDrop = new List<Item>(target?.Items?.ToList() ?? new());
-            Attacker = DamageHandler is AttackerDamage attacker ? attacker.Attacker : null;
+            Attacker = Damage is AttackerDamage attacker ? attacker.Attacker : null;
             Player = target;
         }
 
@@ -53,7 +53,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets or sets the <see cref="StandardDamage" />.
         /// </summary>
-        public StandardDamage DamageHandler { get; set; }
+        public StandardDamage Damage { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player can be killed.

@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs.Player
         ///  Initializes a new instance of the <see cref="KillingPlayerEventArgs"/> class.
         /// </summary>
         /// <param name="player"> Current player. </param>
-        /// <param name="handler"> DamageHandler instance. </param>
+        /// <param name="handler"> Damage instance. </param>
         public KillingPlayerEventArgs(API.Features.Player player, ref DamageHandlerBase handler)
         {
             Player = player;
