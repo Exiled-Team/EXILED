@@ -35,7 +35,7 @@ namespace Exiled.Events.Commands.PluginManager
         public string[] Aliases { get; } = { "e", "en" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Disable a plugin";
+        public string Description { get; } = "Enable a plugin";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
