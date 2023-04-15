@@ -26,11 +26,11 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// <param name="error"> <inheritdoc cref="ErrorCode"/> </param>
         /// <param name="isAllowed"> <inheritdoc cref="IsAllowed"/> </param>
         /// <remarks> See <see cref="ZombieConsumeAbility.ConsumedRagdolls"/> for all RagDolls consumed. </remarks>
-        public ConsumingCorpseEventArgs(Player player, Ragdoll ragDoll, ZombieConsumeAbility.ConsumeError error, bool isAllowed = true)
+        public ConsumingCorpseEventArgs(ReferenceHub player, BasicRagdoll ragDoll, byte error, bool isAllowed = true)
         {
-            Player = player;
-            Ragdoll = ragDoll;
-            ErrorCode = error;
+            Player = Player.Get(player);
+            Ragdoll = Ragdoll.Get(ragDoll);
+            ErrorCode = (ZombieConsumeAbility.ConsumeError)error;
             IsAllowed = isAllowed;
         }
 
