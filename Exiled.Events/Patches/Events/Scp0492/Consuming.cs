@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Scp0492
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
 
-                new(OpCodes.Call, Method(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.OnConsuming))),
+                new(OpCodes.Call, Method(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.OnConsumingCorpse))),
 
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ConsumingCorpseEventArgs), nameof(ConsumingCorpseEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, retLabel),
