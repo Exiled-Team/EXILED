@@ -35,6 +35,6 @@ namespace Exiled.Events.Handlers
         /// Invokes before 049-2 gets his benefits from consuming ability.
         /// </summary>
         /// <param name="ev"><inheritdoc cref="ConsumingCorpseEventArgs"/> instance.</param>
-        public static void OnConsuming(ConsumingCorpseEventArgs ev) => ConsumingCorpse.InvokeSafely(ev);
+        public static void OnConsumingCorpse(ConsumingCorpseEventArgs ev) => ConsumingCorpse.InvokeSafely(ev);
     }
 }
