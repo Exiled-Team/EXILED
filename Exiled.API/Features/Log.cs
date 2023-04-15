@@ -41,7 +41,21 @@ namespace Exiled.API.Features
         /// Server must have exiled_debug config enabled.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Debug(object message) => Debug(message.ToString());
+        public static void Debug(object message)
+        {
+            Assembly callingAssembly = Assembly.GetCallingAssembly();
+
+#if DEBUG
+            if (callingAssembly.GetName().Name is "Exiled.API")
+            {
+                Send($"[{callingAssembly.GetName().Name}] {message}", Discord.LogLevel.Debug, ConsoleColor.Green);
+                return;
+            }
+#endif
+
+            if (DebugEnabled.Contains(callingAssembly))
+                Send($"[{callingAssembly.GetName().Name}] {message}", Discord.LogLevel.Debug, ConsoleColor.Green);
+        }
 
         /// <summary>
         /// Sends a <see cref="Discord.LogLevel.Debug"/> level messages to the game console.
