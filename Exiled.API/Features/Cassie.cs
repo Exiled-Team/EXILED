@@ -150,7 +150,7 @@ namespace Exiled.API.Features
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
             else if (info.Type is DamageType.Warhead)
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info is UniversalDamage)
+            else if (info.Type is DamageType.Decontamination)
                 result += " LOST IN DECONTAMINATION SEQUENCE";
             else if (info is FirearmDamage firearm && firearm.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
