@@ -1,12 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exiled.Events.EventArgs.Interfaces;
+// -----------------------------------------------------------------------
+// <copyright file="HurtingEventArgs.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Exiled.Events.EventArgs.Scp0492
 {
+    using Exiled.Events.EventArgs.Interfaces;
+
     /// <summary>
     /// Contains all information before zombie attacks.
     /// </summary>
@@ -31,7 +33,7 @@ namespace Exiled.Events.EventArgs.Scp0492
         /// <summary>
         /// Gets the player who was attacked.
         /// </summary>
-        public API.Features.Player Target { get; }
+        public API.Features.Player Target { get; set; }
 
         /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;

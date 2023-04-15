@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Attacking.cs" company="Exiled Team">
+// <copyright file="Hurting.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,40 +7,40 @@
 
 namespace Exiled.Events.Patches.Events.Scp0492
 {
-    using Exiled.Events.EventArgs.Scp0492;
-    using HarmonyLib;
-    using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using RelativePositioning;
     using System.Collections.Generic;
     using System.Reflection.Emit;
-    using Exiled.API.Features.Pools;
-    using PlayerRoles.PlayableScps;
-    using PlayerRoles.PlayableScps.Subroutines;
+
+    using API.Features.Pools;
+    using Exiled.Events.EventArgs.Scp0492;
+    using HarmonyLib;
     using Mirror;
+    using PlayerRoles.PlayableScps;
+    using PlayerRoles.PlayableScps.Scp049.Zombies;
+    using PlayerRoles.PlayableScps.Subroutines;
+    using RelativePositioning;
 
     /// <summary>
     /// Patches <see cref="ScpAttackAbilityBase{T}.ServerProcessCmd(NetworkReader)"/>
-    /// to add <see cref="Attacking"/> event.
+    /// to add <see cref="Handlers.Scp0492.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ScpAttackAbilityBase<ZombieRole>), nameof(ScpAttackAbilityBase<ZombieRole>.ServerProcessCmd))]
-    internal class Attacking
+    internal class Hurting
     {
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             Label ret = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(HurtingEventArgs));
 
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = -3;
+            int offset = -2;
             int index = newInstructions.FindIndex(x => x.Calls(AccessTools.PropertyGetter(typeof(RelativePosition), nameof(RelativePosition.Position)))) + offset;
-
-            newInstructions[index + 1].WithLabels(ret);
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
-                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ScpStandardSubroutine<ZombieRole>), nameof(ScpStandardSubroutine<ZombieRole>.Owner))),
 
                     new(OpCodes.Ldloc_S, 4),
@@ -49,11 +49,20 @@ namespace Exiled.Events.Patches.Events.Scp0492
 
                     new(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(HurtingEventArgs))[0]),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
 
                     new(OpCodes.Call, AccessTools.Method(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.OnHurting))),
 
                     new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, ret),
+
+                    new(OpCodes.Ret),
+
+                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(ret),
+                    new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Target))),
+                    new(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.ReferenceHub))),
+                    new(OpCodes.Stloc_S, 4),
                 });
 
             foreach (var instruction in newInstructions)

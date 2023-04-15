@@ -31,6 +31,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-049-2 consumes a corpse.
         /// </summary>
+        [System.Obsolete("Use Scp0492.ConsumingCorpse instead", false)]
         public static event CustomEventHandler<ConsumingCorpseEventArgs> ConsumingCorpse;
 
         /// <summary>
@@ -59,6 +60,7 @@ namespace Exiled.Events.Handlers
         ///     Called before SCP-049-2 consumes a corpse.
         /// </summary>
         /// <param name="ev">The <see cref="ConsumingCorpseEventArgs" /> instance.</param>
+        [System.Obsolete("Use Scp0492.OnConsumingCorpse instead", false)]
         public static void OnConsumingCorpse(ConsumingCorpseEventArgs ev) => ConsumingCorpse.InvokeSafely(ev);
 
         /// <summary>

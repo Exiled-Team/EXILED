@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.EventArgs.Scp049
+namespace Exiled.Events.EventArgs.Scp0492
 {
     using API.Features;
 
@@ -16,7 +16,6 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     ///     Contains all information before zombie consumes RagDolls.
     /// </summary>
-    [System.Obsolete("Use Scp0492.ConsumingCorpseEventArgs instead", false)]
     public class ConsumingCorpseEventArgs : IPlayerEvent, IRagdollEvent, IDeniableEvent
     {
         /// <summary>

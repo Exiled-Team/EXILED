@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Consuming.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,33 +7,93 @@
 
 namespace Exiled.Events.Patches.Events.Scp0492
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.API.Features;
-    using Exiled.Events.EventArgs.Scp0492;
+    using Exiled.API.Features.Pools;
+
+    using Exiled.Events.EventArgs.Scp049;
+
     using HarmonyLib;
+
+    using PlayerRoles;
+    using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using PlayerStatsSystem;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="ZombieConsumeAbility.ServerComplete()"/> to add
-    /// <see cref="Handlers.Scp0492.Consuming"/> event.
+    ///     Patches <see cref="RagdollAbilityBase{T}.ServerProcessCmd"/>
+    ///     to add <see cref="Handlers.Scp0492.ConsumingCorpse" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(ZombieConsumeAbility), nameof(ZombieConsumeAbility.ServerComplete))]
-    internal class Consuming
+    // TODO: REWORK TRANSPILER
+    [HarmonyPatch]
+    public class Consuming
     {
-        public static bool Prefix(ZombieConsumeAbility __instance)
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.ServerProcessCmd))]
+        private static IEnumerable<CodeInstruction> OnConsumingCorpse(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (__instance.CurRagdoll != null && !ZombieConsumeAbility.ConsumedRagdolls.Add(__instance.CurRagdoll))
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            int offset = -1;
+            int index = newInstructions.FindLastIndex(instrc => instrc.LoadsField(Field(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>._errorCode)))) + offset;
+            Label retLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
-                return false;
+                new (OpCodes.Ldarg_0),
+                new (OpCodes.Call, Method(typeof(Consuming), nameof(Consuming.ServerProcessConsume))),
+                new (OpCodes.Br, retLabel),
+            });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        /// <summary>
+        /// Processes RagDoll ability for the Zombie interaction.
+        /// </summary>
+        /// <param name="zombieAbility"> <see cref="ZombieRole"/> parameterized <see cref="RagdollAbilityBase{T}"/>. </param>
+        private static void ServerProcessConsume(RagdollAbilityBase<ZombieRole> zombieAbility)
+        {
+            Transform transform = zombieAbility._ragdollTransform;
+
+            Ragdoll currentRagDoll = Ragdoll.Get(zombieAbility.CurRagdoll);
+
+            Player zombiePlayer = Player.Get(zombieAbility.Owner);
+
+            ZombieConsumeAbility.ConsumeError errorCode = (ZombieConsumeAbility.ConsumeError)zombieAbility._errorCode;
+
+            if (zombiePlayer.Role.Type != RoleTypeId.Scp049)
+            {
+                ConsumingCorpseEventArgs ev = new(zombiePlayer, currentRagDoll, errorCode);
+                Handlers.Scp049.OnConsumingCorpse(ev);
+
+                if (!ev.IsAllowed)
+                    return;
+
+                currentRagDoll = ev.Ragdoll;
+                errorCode = ev.ErrorCode;
             }
 
-            ConsumingEventArgs ev = new(API.Features.Player.Get(__instance.Owner), Ragdoll.Get(__instance.CurRagdoll));
-            Handlers.Scp0492.OnConsuming(ev);
+            bool errorCodeFlag = errorCode != ZombieConsumeAbility.ConsumeError.None;
 
-            if (ev.IsAllowed)
-                __instance.Owner.playerStats.GetModule<HealthStat>().ServerHeal(100f);
+            if (errorCodeFlag)
+            {
+                zombieAbility._ragdollTransform = transform;
+                zombieAbility.CurRagdoll = currentRagDoll.Base;
+                zombieAbility.ServerSendRpc(true);
+                return;
+            }
 
-            return false;
+            zombieAbility.IsInProgress = true;
         }
     }
 }
