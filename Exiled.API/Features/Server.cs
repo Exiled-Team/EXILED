@@ -198,6 +198,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the action to do at round end.
+        /// </summary>
+        public static ServerStatic.NextRoundAction StopNextRound
+        {
+            get => ServerStatic.StopNextRound;
+            set => ServerStatic.StopNextRound = value;
+        }
+
+        /// <summary>
         /// Gets the dictionary of the server's session variables.
         /// <para>
         /// Session variables can be used to save temporary data. Data is stored in a <see cref="Dictionary{TKey, TValue}"/>.
