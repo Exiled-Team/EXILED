@@ -161,6 +161,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the action to do at round end.
+        /// </summary>
+        public static ServerStatic.NextRoundAction StopNextRound
+        {
+            get => ServerStatic.StopNextRound;
+            set => ServerStatic.StopNextRound = value;
+        }
+
+        /// <summary>
         /// Restarts the round with custom settings.
         /// </summary>
         /// <param name="fastRestart">
