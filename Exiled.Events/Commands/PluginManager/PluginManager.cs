@@ -33,7 +33,7 @@ namespace Exiled.Events.Commands.PluginManager
         public override string[] Aliases { get; } = new[] { "plymanager", "plmanager", "pmanager", "plym" };
 
         /// <inheritdoc/>
-        public override string Description { get; } = "Manage plugin. Enable, disable, reload and show plugins.";
+        public override string Description { get; } = "Manage plugin. Enable, disable and show plugins.";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
