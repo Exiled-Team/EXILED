@@ -82,12 +82,6 @@ namespace Exiled.CustomRoles.API.Features
         public HashSet<Player> TrackedPlayers { get; } = new();
 
         /// <summary>
-        /// Gets all the tracked player names for players that have this role.
-        /// </summary>
-        [YamlIgnore]
-        public Dictionary<Player, string> TrackedPlayerNames { get; } = new();
-
-        /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> to spawn this role as.
         /// </summary>
         public virtual RoleTypeId Role { get; set; }
@@ -95,7 +89,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
-        public virtual List<CustomAbility> CustomAbilities { get; set; } = new();
+        public virtual List<CustomAbility>? CustomAbilities { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the starting inventory for the role.
@@ -540,15 +534,11 @@ namespace Exiled.CustomRoles.API.Features
             {
                 foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
                 {
-                    if (type != AmmoType.None)
-                        player.SetAmmo(type, 0);
-                }
-            }
+                    if (type == AmmoType.None)
+                        continue;
 
-            foreach (AmmoType ammo in Ammo.Keys)
-            {
-                Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.");
-                player.SetAmmo(ammo, Ammo[ammo]);
+                    player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
+                }
             }
 
             Log.Debug($"{Name}: Setting health values.");
@@ -563,11 +553,6 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             Log.Debug($"{Name}: Setting player info");
-
-            if (!TrackedPlayerNames.ContainsKey(player))
-                TrackedPlayerNames.Add(player, player.CustomName);
-            else
-                TrackedPlayerNames[player] = player.CustomName;
 
             player.CustomInfo = $"{player.CustomName}\n{CustomInfo}";
             player.InfoArea &= ~(PlayerInfoArea.Role | PlayerInfoArea.Nickname);
@@ -615,23 +600,22 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void RemoveRole(Player player)
         {
             Log.Debug($"{Name}: Removing role from {player.Nickname}");
-            TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
             player.InfoArea |= PlayerInfoArea.Role | PlayerInfoArea.Nickname;
             player.Scale = Vector3.one;
             if (RemovalKillsPlayer)
                 player.Role.Set(RoleTypeId.Spectator);
-            foreach (CustomAbility ability in CustomAbilities)
+            if (CustomAbilities is not null)
             {
-                ability.RemoveAbility(player);
+                foreach (CustomAbility ability in CustomAbilities)
+                {
+                    ability.RemoveAbility(player);
+                }
             }
 
             RoleRemoved(player);
             player.UniqueRole = string.Empty;
             player.TryRemoveCustomeRoleFriendlyFire(Name);
-
-            if (TrackedPlayerNames.ContainsKey(player))
-                player.CustomName = TrackedPlayerNames[player];
         }
 
         /// <summary>
@@ -907,13 +891,7 @@ namespace Exiled.CustomRoles.API.Features
             if (!Check(ev.Player))
                 return;
 
-            if (!TrackedPlayerNames.ContainsKey(ev.Player))
-                TrackedPlayerNames.Add(ev.Player, ev.NewName);
-            else
-                TrackedPlayerNames[ev.Player] = ev.NewName;
-
-            ev.Player.CustomInfo = $"{ev.NewName}\n{ev.Player.CustomInfo}";
-            ev.IsAllowed = false;
+            ev.Player.CustomInfo = $"{ev.NewName}\n{CustomInfo}";
         }
 
         private void OnInternalSpawning(SpawningEventArgs ev)
