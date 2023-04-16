@@ -530,17 +530,6 @@ namespace Exiled.CustomRoles.API.Features
                 TryAddItem(player, itemName);
             }
 
-            if (Ammo.Count > 0)
-            {
-                foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
-                {
-                    if (type == AmmoType.None)
-                        continue;
-
-                    player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
-                }
-            }
-
             Log.Debug($"{Name}: Setting health values.");
             player.Health = MaxHealth;
             player.MaxHealth = MaxHealth;
@@ -600,11 +589,10 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void RemoveRole(Player player)
         {
             Log.Debug($"{Name}: Removing role from {player.Nickname}");
+            TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
             player.InfoArea |= PlayerInfoArea.Role | PlayerInfoArea.Nickname;
             player.Scale = Vector3.one;
-            if (RemovalKillsPlayer)
-                player.Role.Set(RoleTypeId.Spectator);
             if (CustomAbilities is not null)
             {
                 foreach (CustomAbility ability in CustomAbilities)
@@ -616,6 +604,9 @@ namespace Exiled.CustomRoles.API.Features
             RoleRemoved(player);
             player.UniqueRole = string.Empty;
             player.TryRemoveCustomeRoleFriendlyFire(Name);
+
+            if (RemovalKillsPlayer)
+                player.Role.Set(RoleTypeId.Spectator);
         }
 
         /// <summary>
@@ -903,7 +894,26 @@ namespace Exiled.CustomRoles.API.Features
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
         {
             if (Check(ev.Player) && ((ev.NewRole == RoleTypeId.Spectator && !KeepRoleOnDeath) || (ev.NewRole != RoleTypeId.Spectator && ev.NewRole != Role && !KeepRoleOnChangingRole)))
+            {
                 RemoveRole(ev.Player);
+            }
+            else if (Check(ev.Player))
+            {
+                if (Ammo.Count > 0)
+                {
+                    ev.Ammo.Clear();
+                    Timing.CallDelayed(
+                        0.5f,
+                        () =>
+                        {
+                            foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
+                            {
+                                if (type != AmmoType.None)
+                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
+                            }
+                        });
+                }
+            }
         }
 
         private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
