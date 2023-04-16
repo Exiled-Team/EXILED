@@ -465,6 +465,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingNicknameEventArgs> ChangingNickname;
 
         /// <summary>
+        /// Invoked before <see cref="API.Features.Player"/> send a command.
+        /// </summary>
+        public static event CustomEventHandler<SendingCommandEventArgs> SendingCommand;
+
+        /// <summary>
         /// Called before reserved slot is resolved for a <see cref="API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="ReservedSlotsCheckEventArgs"/> instance.</param>
@@ -979,6 +984,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingNicknameEventArgs"/> instance.</param>
         public static void OnChangingNickname(ChangingNicknameEventArgs ev) => ChangingNickname.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before <see cref="API.Features.Player"/> send a command.
+        /// </summary>
+        /// <param name="ev">The <see cref="SendingCommandEventArgs"/> instance.</param>
+        public static void OnSendingCommand(SendingCommandEventArgs ev) => SendingCommand.InvokeSafely(ev);
 
         /// <summary>
         /// Called before pre-authenticating a <see cref="API.Features.Player"/>.
