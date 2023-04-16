@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs.Scp0492
         {
             Player = Player.Get(player);
             Ragdoll = Ragdoll.Get(ragDoll);
-            ErrorCode = (ZombieConsumeAbility.ConsumeError)error;
+            ErrorCode = error;
             IsAllowed = isAllowed;
         }
 

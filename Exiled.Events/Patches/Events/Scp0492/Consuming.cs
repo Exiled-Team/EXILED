@@ -38,29 +38,38 @@ namespace Exiled.Events.Patches.Events.Scp0492
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
+                // this.Owner
                 new (OpCodes.Ldarg_0),
                 new (OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<ZombieRole>), nameof(ScpStandardSubroutine<ZombieRole>.Owner))),
 
+                // this.CurRagdoll
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>.CurRagdoll))),
 
+                // this._errorCode
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(RagdollAbilityBase<ZombieRole>), nameof(RagdollAbilityBase<ZombieRole>._errorCode))),
 
+                // true
                 new(OpCodes.Ldc_I4_1),
 
+                // ConsumingCorpseEventArgs = new(this.Owner, this.Ragdoll, this._errorCode, true)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ConsumingCorpseEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc, ev.LocalIndex),
 
+                // Handlers.Scp0492.OnConsumingCorpse(ev)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.OnConsumingCorpse))),
 
+                // if (!ev.IsAllowed)
+                //   return
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ConsumingCorpseEventArgs), nameof(ConsumingCorpseEventArgs.IsAllowed))),
                 new(OpCodes.Brtrue_S, retLabel),
 
                 new(OpCodes.Ret),
 
+                // this._errorCode = ev.ErrorCode
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(retLabel),
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ConsumingCorpseEventArgs), nameof(ConsumingCorpseEventArgs.ErrorCode))),
