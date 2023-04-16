@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Pop),
                 new(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingNicknameEventArgs), nameof(ChangingNicknameEventArgs.NewName))).WithLabels(continueLabel),
-                new(OpCodes.Starg_S, 0),
+                new(OpCodes.Starg_S, 1),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
