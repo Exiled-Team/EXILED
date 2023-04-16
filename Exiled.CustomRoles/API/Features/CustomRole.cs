@@ -539,7 +539,10 @@ namespace Exiled.CustomRoles.API.Features
             if (Ammo.Count > 0)
             {
                 foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
-                    player.SetAmmo(type, 0);
+                {
+                    if (type != AmmoType.None)
+                        player.SetAmmo(type, 0);
+                }
             }
 
             foreach (AmmoType ammo in Ammo.Keys)
