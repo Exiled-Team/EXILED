@@ -250,7 +250,7 @@ namespace Exiled.API.Features
         /// <returns>The ragdoll.</returns>
         /// <exception cref="ArgumentException">Provided RoleType is not a valid ragdoll role (Spectator, Scp079, etc).</exception>
         /// <exception cref="InvalidOperationException">Unable to create a ragdoll.</exception>
-        public static Ragdoll Create(RagdollData networkInfo)
+        public static Ragdoll Create(RagdollData networkInfo) // TODO: return bool instead of throwing Error
         {
             if (networkInfo.RoleType.GetRoleBase() is not IRagdollRole ragdollRole)
                 throw new ArgumentException($"Provided RoleType '{networkInfo.RoleType}' is not a valid ragdoll role.");
