@@ -263,7 +263,7 @@ namespace Exiled.API.Features.Roles
             Attack.ReduceSinkholeCooldown();
             Hitmarker.SendHitmarker(Attack.Owner, 1f);
 
-            player.EnableEffect(EffectType.Traumatized, 180f);
+            player.EnableEffect(EffectType.Traumatized, Scp106Attack.TraumatizedDuration);
             player.EnableEffect(EffectType.Corroding);
             player.EnableEffect(EffectType.SinkHole);
         }

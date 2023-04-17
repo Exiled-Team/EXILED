@@ -245,7 +245,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="player">The <see cref="Player"/>to attack.</param>
         public void Attack(Player player)
         {
-            AttackAbility._target = player.ReferenceHub;
+            AttackAbility._target = player?.ReferenceHub;
 
             if (AttackAbility._target is null || !AttackAbility.IsTargetValid(AttackAbility._target))
                 return;
@@ -255,7 +255,7 @@ namespace Exiled.API.Features.Roles
 
             if (cardiacArrest.IsEnabled)
             {
-                AttackAbility._target.playerStats.DealDamage(new Scp049DamageHandler(AttackAbility.Owner, -1f, Scp049DamageHandler.AttackType.Instakill));
+                AttackAbility._target.playerStats.DealDamage(new Scp049DamageHandler(AttackAbility.Owner, StandardDamageHandler.KillValue, Scp049DamageHandler.AttackType.Instakill));
             }
             else
             {
@@ -292,10 +292,10 @@ namespace Exiled.API.Features.Roles
             }
             else
             {
-                if (!(SenseAbility.Target.roleManager.CurrentRole is PlayerRoles.HumanRole humanRole))
+                if (SenseAbility.Target.roleManager.CurrentRole is not PlayerRoles.HumanRole humanRole)
                     return;
 
-                var radius = humanRole.FpcModule.CharController.radius;
+                float radius = humanRole.FpcModule.CharController.radius;
                 if (!VisionInformation.GetVisionInformation(SenseAbility.Owner, SenseAbility.Owner.PlayerCameraReference, humanRole.CameraPosition, radius, SenseAbility._distanceThreshold).IsLooking)
                     return;
 

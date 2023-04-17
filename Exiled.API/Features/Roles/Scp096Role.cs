@@ -283,7 +283,7 @@ namespace Exiled.API.Features.Roles
         /// Shows the input prompt for the RageCycle ability.
         /// </summary>
         /// <param name="duration">The input prompt duration.</param>
-        public void ShowRageInput(float duration = 10f) => RageCycleAbility.ServerTryEnableInput(duration);
+        public void ShowRageInput(float duration = Scp096RageCycleAbility.DefaultActivationDuration) => RageCycleAbility.ServerTryEnableInput(duration);
 
         /// <summary>
         /// Gets the Spawn Chance of SCP-096.
