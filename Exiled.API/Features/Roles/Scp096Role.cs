@@ -14,13 +14,14 @@ namespace Exiled.API.Features.Roles
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp096;
     using PlayerRoles.PlayableScps.Subroutines;
+    using UnityEngine;
 
     using Scp096GameRole = PlayerRoles.PlayableScps.Scp096.Scp096Role;
 
     /// <summary>
     /// Defines a role that represents SCP-096.
     /// </summary>
-    public class Scp096Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp096Role : FpcRole, IStandardScpRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp096Role"/> class.
@@ -266,6 +267,22 @@ namespace Exiled.API.Features.Roles
         /// Trigger the attack ability.
         /// </summary>
         public void Attack() => AttackAbility.ServerAttack();
+
+        /// <summary>
+        /// Trigger the attack ability.
+        /// </summary>
+        /// <param name="player">The player to attack.</param>
+        /// TODO: FINISH THIS (NOT FINISHED)
+        public void Attack(Player player)
+        {
+            AttackAbility.LeftAttack = !AttackAbility.LeftAttack;
+            AttackAbility.ScpRole.StateController.SetAbilityState(Scp096AbilityState.Attacking);
+            Scp096HitHandler scp096HitHandler = AttackAbility.LeftAttack ? AttackAbility._leftHitHandler : AttackAbility._rightHitHandler;
+            scp096HitHandler.Clear();
+            AttackAbility._hitResult = AttackAbility.LeftAttack ? AttackAbility._leftHitHandler.DamageSphere(player.Position, AttackAbility._sphereHitboxRadius) : AttackAbility._rightHitHandler.DamageSphere(player.Position, AttackAbility._sphereHitboxRadius);
+            AttackAbility._audioPlayer.ServerPlayAttack(AttackAbility._hitResult);
+            AttackAbility.ServerSendRpc(true);
+        }
 
         /// <summary>
         /// Trigger the charge ability.
