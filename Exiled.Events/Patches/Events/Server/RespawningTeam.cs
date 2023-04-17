@@ -105,8 +105,8 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Stloc, 6),
                 });
 
-            offset = -4;
-            newInstructions.RemoveRange(newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(SpawnableTeamHandlerBase), nameof(SpawnableTeamHandlerBase.GenerateQueue))) + offset, 5);
+            offset = -6;
+            newInstructions.RemoveRange(newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(SpawnableTeamHandlerBase), nameof(SpawnableTeamHandlerBase.GenerateQueue))) + offset, 7);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
