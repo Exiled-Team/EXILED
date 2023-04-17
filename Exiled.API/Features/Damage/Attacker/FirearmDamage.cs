@@ -36,7 +36,7 @@ namespace Exiled.API.Features.Damage.Attacker
         public new FirearmDamageHandler Base { get; }
 
         /// <summary>
-        /// Gets .
+        /// Gets the item than deal you Damage.
         /// </summary>
         public Item Item => Attacker?.CurrentItem;
 
