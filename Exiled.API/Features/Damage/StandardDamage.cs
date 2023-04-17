@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Damage
         }
 
         /// <summary>
-        /// Gets or sets .
+        /// Gets or sets the hitbox where player get the Damage.
         /// </summary>
         public HitboxType Hitbox
         {
@@ -46,7 +46,7 @@ namespace Exiled.API.Features.Damage
         }
 
         /// <summary>
-        /// Gets or sets .
+        /// Gets or sets the velocity to add to the Ragdoll.
         /// </summary>
         public Vector3 StartVelocity
         {

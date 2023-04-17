@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Damage
     public class DamageBase
     {
         /// <summary>
-        /// .
+        /// The base game value than instant kill people.
         /// </summary>
         public const float KillValue = StandardDamageHandler.KillValue;
 
@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Damage
         public virtual DamageType Type { get; internal set; }
 
         /// <summary>
-        /// Gets .
+        /// Gets the logs than this Damage will make.
         /// </summary>
         public string ServerLogsText => Base.ServerLogsText;
 
@@ -114,7 +114,7 @@ namespace Exiled.API.Features.Damage
         /// </summary>
         /// <param name="player">..</param>
         /// <returns>...</returns>
-        public DamageHandlerBase.HandlerOutput ApplyDamage(Player player) => Base.ApplyDamage(player.ReferenceHub);
+        public DamageHandlerBase.HandlerOutput ApplyDamage(Player player) => player is not null ? Base.ApplyDamage(player.ReferenceHub) : DamageHandlerBase.HandlerOutput.Nothing;
 
         /// <inheritdoc/>
         public override string ToString() => $"{Type} {Name}";
