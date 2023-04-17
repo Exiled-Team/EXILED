@@ -25,7 +25,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-173.
     /// </summary>
-    public class Scp173Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp173Role : FpcRole, IStandardScpRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp173Role"/> class.
@@ -262,14 +262,14 @@ namespace Exiled.API.Features.Roles
         /// Snap a <see cref="Player"/> (Attack).
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to snap.</param>
-        public void Snap(Player player)
+        public void Attack(Player player)
         {
             SnapAbility._targetHub = player.ReferenceHub;
 
             if (SnapAbility._targetHub == null || !(SnapAbility._targetHub.roleManager.CurrentRole is IFpcRole) || SnapAbility.IsSpeeding)
                 return;
 
-            player.ReferenceHub.playerStats.DealDamage(SnapAbility.ScpRole.DamageHandler);
+            SnapAbility._targetHub.playerStats.DealDamage(SnapAbility.ScpRole.DamageHandler);
 
             Hitmarker.SendHitmarker(SnapAbility.Owner, 1f);
             AudioPlayer.ServerSendSound(Scp173AudioPlayer.Scp173SoundId.Snap);

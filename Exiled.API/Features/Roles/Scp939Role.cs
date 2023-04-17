@@ -13,11 +13,13 @@ namespace Exiled.API.Features.Roles
     using Exiled.API.Features.Pools;
 
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
     using PlayerRoles.PlayableScps.Scp939.Ripples;
     using PlayerRoles.PlayableScps.Subroutines;
+    using PlayerStatsSystem;
 
     using RelativePositioning;
 
@@ -28,7 +30,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-939.
     /// </summary>
-    public class Scp939Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp939Role : FpcRole, IStandardScpRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp939Role"/> class.
@@ -246,6 +248,45 @@ namespace Exiled.API.Features.Roles
             MimicryRecorder.RemoveRecordingsOfPlayer(target.ReferenceHub);
             MimicryRecorder.SavedVoicesModified = true;
         }
+
+        /// <summary>
+        /// Trigger the Claw Ability (Attack).
+        /// </summary>
+        /// <param name="player">The player to attack.</param>
+        public void Attack(Player player)
+        {
+            if (player == null)
+                return;
+
+            int num = Physics.OverlapSphereNonAlloc(ClawAbility.OverlapSphereOrigin, ClawAbility._detectionRadius, ScpAttackAbilityBase<Scp939GameRole>.DetectionsNonAlloc, (int)ScpAttackAbilityBase<Scp939GameRole>.DetectionMask);
+            ClawAbility._syncAttack = AttackResult.None;
+            for (int index = 0; index < num; ++index)
+            {
+                IDestructible component;
+                if (ScpAttackAbilityBase<Scp939GameRole>.DetectionsNonAlloc[index].TryGetComponent(out component) &&
+                    !Physics.Linecast(ClawAbility.PlyCam.position, component.CenterOfMass, (int)ScpAttackAbilityBase<Scp939GameRole>.BlockerMask) &&
+                    (!(component is HitboxIdentity hitboxIdentity1) || ScpAttackAbilityBase<Scp939GameRole>.TargettedPlayers.Remove(hitboxIdentity1.TargetHub)) &&
+                    component.Damage(ClawAbility.DamageAmount, ClawAbility.DamageHandler, component.CenterOfMass))
+                {
+                    ClawAbility.OnDestructibleDamaged(component);
+                    ClawAbility._syncAttack |= AttackResult.AttackedObject;
+                    if (component is HitboxIdentity hitboxIdentity)
+                    {
+                        player = Player.Get(hitboxIdentity.TargetHub);
+                        ClawAbility._syncAttack |= AttackResult.AttackedHuman;
+                        if (player.ReferenceHub.playerStats.GetModule<HealthStat>().CurValue <= 0.0)
+                            ClawAbility._syncAttack |= AttackResult.KilledHuman;
+                    }
+                }
+            }
+
+            ClawAbility.ServerSendRpc(true);
+        }
+
+        /// <summary>
+        /// Trigger the Claw Ability (Attack).
+        /// </summary>
+        public void Attack() => ClawAbility.ServerPerformAttack();
 
         /// <summary>
         /// Removes all recordings of player voices.
