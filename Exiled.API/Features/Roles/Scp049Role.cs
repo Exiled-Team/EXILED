@@ -215,6 +215,8 @@ namespace Exiled.API.Features.Roles
         /// <returns>The Resurrected player.</returns>
         public bool Resurrect(Player player)
         {
+            if (player is null)
+                return false;
             player.ReferenceHub.transform.position = ResurrectAbility.ScpRole.FpcModule.Position;
 
             HumeShieldModuleBase humeShield = ResurrectAbility.ScpRole.HumeShieldModule;
@@ -282,7 +284,7 @@ namespace Exiled.API.Features.Roles
                 return;
 
             SenseAbility.HasTarget = false;
-            SenseAbility.Target = player.ReferenceHub;
+            SenseAbility.Target = player?.ReferenceHub;
 
             if (SenseAbility.Target is null)
             {
@@ -315,21 +317,21 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to check.</param>
         /// <returns>The amount of resurrections of the checked player.</returns>
-        public int GetResurrectionCount(Player player) => Scp049ResurrectAbility.GetResurrectionsNumber(player.ReferenceHub);
+        public int GetResurrectionCount(Player player) => player is not null ? Scp049ResurrectAbility.GetResurrectionsNumber(player.ReferenceHub) : 0;
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.
         /// </summary>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if the body can be revived; otherwise, <see langword="false"/>.</returns>
-        public bool CanResurrect(BasicRagdoll ragdoll) => ResurrectAbility.CheckRagdoll(ragdoll);
+        public bool CanResurrect(BasicRagdoll ragdoll) => ragdoll is not null && ResurrectAbility.CheckRagdoll(ragdoll);
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not the ragdoll can be resurrected by SCP-049.
         /// </summary>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if the body can be revived; otherwise, <see langword="false"/>.</returns>
-        public bool CanResurrect(Ragdoll ragdoll) => ResurrectAbility.CheckRagdoll(ragdoll.Base);
+        public bool CanResurrect(Ragdoll ragdoll) => ragdoll is not null && ResurrectAbility.CheckRagdoll(ragdoll.Base);
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not SCP-049 is close enough to a ragdoll to revive it.
@@ -337,7 +339,7 @@ namespace Exiled.API.Features.Roles
         /// <remarks>This method only returns whether or not SCP-049 is close enough to the body to revive it; the body may have expired. Make sure to check <see cref="CanResurrect(BasicRagdoll)"/> to ensure the body can be revived.</remarks>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
-        public bool IsInRecallRange(BasicRagdoll ragdoll) => ResurrectAbility.IsCloseEnough(Owner.Position, ragdoll.transform.position);
+        public bool IsInRecallRange(BasicRagdoll ragdoll) => ragdoll is not null && ResurrectAbility.IsCloseEnough(Owner.Position, ragdoll.transform.position);
 
         /// <summary>
         /// Returns a <see langword="bool"/> indicating whether or not SCP-049 is close enough to a ragdoll to revive it.
@@ -345,7 +347,7 @@ namespace Exiled.API.Features.Roles
         /// <remarks>This method only returns whether or not SCP-049 is close enough to the body to revive it; the body may have expired. Make sure to check <see cref="CanResurrect(Ragdoll)"/> to ensure the body can be revived.</remarks>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
-        public bool IsInRecallRange(Ragdoll ragdoll) => IsInRecallRange(ragdoll.Base);
+        public bool IsInRecallRange(Ragdoll ragdoll) => ragdoll is not null && IsInRecallRange(ragdoll.Base);
 
         /// <summary>
         /// Gets the Spawn Chance of SCP-049.

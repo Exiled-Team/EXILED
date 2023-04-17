@@ -230,9 +230,7 @@ namespace Exiled.API.Features.Roles
         public bool UsePortal(Vector3 position, float cost = 0f)
         {
             if (Room.Get(position) is not Room room)
-            {
-                throw new System.InvalidOperationException("Invalid room provided.");
-            }
+                return false;
 
             HuntersAtlasAbility._syncRoom = room.Identifier;
             HuntersAtlasAbility._syncPos = position;
@@ -250,8 +248,10 @@ namespace Exiled.API.Features.Roles
         /// Send a player to the pocket dimension.
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to send.</param>
-        public void CapturePlayer(Player player)
+        public void CapturePlayer(Player player) // Convert to bool.
         {
+            if (player is null)
+                return;
             Attack._targetHub = player.ReferenceHub;
             DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, Attack._damage, DeathTranslations.PocketDecay);
 
