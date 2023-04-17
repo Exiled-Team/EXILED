@@ -153,16 +153,16 @@ namespace Exiled.Events.Patches.Generic
 
             Item.BaseToItem.Remove(itemBase);
 
+#if DEBUG
             Timing.CallDelayed(0.15f, () =>
             {
-#if DEBUG
                 Log.Debug($"Item ({serial}) removed from {player.Nickname}");
                 Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
 
                 foreach (Item item in player.Items)
                     Log.Debug($"{item})");
+        });
 #endif
-            });
         }
     }
 }

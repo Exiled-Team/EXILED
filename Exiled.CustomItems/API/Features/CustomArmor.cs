@@ -70,7 +70,7 @@ namespace Exiled.CustomItems.API.Features
 
             TrackedSerials.Add(armor.Serial);
 
-            Timing.CallDelayed(0.05f, () => OnAcquired(player));
+            OnAcquired(player);
 
             if (displayMessage)
                 ShowPickedUpMessage(player);

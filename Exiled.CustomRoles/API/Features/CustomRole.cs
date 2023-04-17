@@ -902,16 +902,8 @@ namespace Exiled.CustomRoles.API.Features
                 if (Ammo.Count > 0)
                 {
                     ev.Ammo.Clear();
-                    Timing.CallDelayed(
-                        0.5f,
-                        () =>
-                        {
-                            foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
-                            {
-                                if (type != AmmoType.None)
-                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
-                            }
-                        });
+                    foreach (var ammo in Ammo)
+                        ev.Ammo.Add(ammo.Key.GetItemType(), ammo.Value);
                 }
             }
         }

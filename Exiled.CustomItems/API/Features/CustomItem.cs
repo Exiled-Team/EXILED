@@ -777,7 +777,7 @@ namespace Exiled.CustomItems.API.Features
                 if (displayMessage)
                     ShowPickedUpMessage(player);
 
-                Timing.CallDelayed(0.05f, () => OnAcquired(player));
+                OnAcquired(player);
             }
             catch (Exception e)
             {
@@ -991,7 +991,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc cref="OnUpgrading(UpgradingEventArgs)"/>
-        protected virtual void OnUpgrading(API.EventArgs.UpgradingItemEventArgs ev)
+        protected virtual void OnUpgrading(UpgradingItemEventArgs ev)
         {
         }
 
@@ -1086,15 +1086,19 @@ namespace Exiled.CustomItems.API.Features
                     continue;
 
                 ev.Player.RemoveItem(item);
-
                 TrackedSerials.Remove(item.Serial);
-
-                Timing.CallDelayed(1.5f, () => Spawn(ev.Player.Position, item, null));
+                ev.Player.SessionVariables.Add("CustomItem", item);
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
 
             MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
+        }
+
+        private void OnInternalOwnerSpawned(SpawnedEventArgs ev)
+        {
+            if (ev.Reason is SpawnReason.Escaped && ev.Player.SessionVariables.TryGetValue("CustomItem", out object item))
+                Spawn(ev.Player.Position, (Item)item, null);
         }
 
         private void OnInternalOwnerHandcuffing(HandcuffingEventArgs ev)
@@ -1135,7 +1139,7 @@ namespace Exiled.CustomItems.API.Features
             if (!ev.IsAllowed)
                 return;
 
-            Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player));
+            OnAcquired(ev.Player);
         }
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
@@ -1149,7 +1153,7 @@ namespace Exiled.CustomItems.API.Features
             if (ShouldMessageOnGban)
             {
                 foreach (Player player in Player.Get(RoleTypeId.Spectator))
-                    Timing.CallDelayed(0.5f, () => player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{ev.Player.Nickname} (CustomItem: {Name})"));
+                    player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{ev.Player.Nickname} (CustomItem: {Name})");
             }
 
             OnChanging(ev);
@@ -1162,7 +1166,7 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            OnUpgrading(new API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
+            OnUpgrading(new UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
         }
 
         private void OnInternalUpgradingPickup(UpgradingPickupEventArgs ev)
@@ -1172,11 +1176,8 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            Timing.CallDelayed(3.5f, () =>
-            {
-                ev.Pickup.Position = ev.OutputPosition;
-                OnUpgrading(new UpgradingEventArgs(ev.Pickup.Base, ev.OutputPosition, ev.KnobSetting));
-            });
+            ev.Pickup.Position = ev.OutputPosition;
+            OnUpgrading(new UpgradingEventArgs(ev.Pickup.Base, ev.OutputPosition, ev.KnobSetting));
         }
     }
 }

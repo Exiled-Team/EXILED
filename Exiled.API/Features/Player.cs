@@ -2224,6 +2224,7 @@ namespace Exiled.API.Features
                 firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
 
+            Inventory.SendItemsNextFrame = true;
             return item;
         }
 
@@ -2386,13 +2387,6 @@ namespace Exiled.API.Features
                     acquisitionConfirmationTrigger.AcquisitionAlreadyReceived = true;
                 }
 
-                // Dont care, didnt ask, ratio
-                Timing.CallDelayed(0.02f, () =>
-                {
-                    if (item.Type is ItemType.SCP330 && item.Base != null)
-                        ((Scp330)item).Base.ServerRefreshBag();
-                });
-
                 ItemsValue.Add(item);
 
                 Inventory.SendItemsNextFrame = true;
@@ -2480,11 +2474,10 @@ namespace Exiled.API.Features
 
             Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
 
-            Timing.CallDelayed(0.02f, () =>
-            {
-                scp330.Base.Candies.Clear();
-                scp330.AddCandy(candyType);
-            });
+            scp330.Base.Candies.Clear();
+            scp330.AddCandy(candyType);
+
+            Inventory.SendItemsNextFrame = true;
 
             return true;
         }
@@ -2497,16 +2490,11 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            Timing.CallDelayed(
-                0.5f,
-                () =>
-                {
-                    if (newItems.IsEmpty())
-                        return;
+            if (newItems.IsEmpty())
+                return;
 
-                    foreach (ItemType item in newItems)
-                        AddItem(item);
-                });
+            foreach (ItemType item in newItems)
+                AddItem(item);
         }
 
         /// <summary>
