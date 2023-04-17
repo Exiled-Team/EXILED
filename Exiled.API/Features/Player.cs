@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Text.RegularExpressions;
 
     using Core;
 
@@ -91,6 +92,13 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player : IEntity, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
     {
+        /// <summary>
+        /// Validates custom player info.
+        /// Allows for up to 400 characters that are valid letters, numbers or math symbols in any language (so this includes regular alphabet, Russian alphabet, hiragana, kanji and whatever else you want) or matches a specific set or special characters such as space, etc... and that set includes <![CDATA[<, >]]> and \n
+        ///  - Written by Zabszk (Thanks to Beryl to having sharing it to Exiled).
+        /// </summary>
+        internal static readonly Regex PlayerCustomInfoRegex = new(@"^((?![\[\]])[\p{L}\p{P}\p{Sc}\p{N} ^=+|~`<>\n]){0,400}$", RegexOptions.Compiled);
+
 #pragma warning disable SA1401
         /// <summary>
         /// A list of the player's items.
@@ -370,6 +378,8 @@ namespace Exiled.API.Features
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
             set
             {
+                if (!PlayerCustomInfoRegex.IsMatch(value))
+                    Log.Error($"Exiled.API.Features.Player::CustomInfo (Invalid syntax) {value}");
                 InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
                 ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
             }
@@ -2590,7 +2600,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="size">The size of the hitmarker, ranging from <c>0</c> to <c><see cref="Hitmarker.MaxSize"/></c>).</param>
         public void ShowHitMarker(float size = 1f) =>
-            Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
+            Hitmarker.SendHitmarker(ReferenceHub, size);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.

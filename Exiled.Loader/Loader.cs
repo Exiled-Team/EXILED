@@ -145,8 +145,6 @@ namespace Exiled.Loader
                 Log.Info($"Loaded plugin {plugin.Name}@{(plugin.Version is not null ? $"{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}" : attribute is not null ? attribute.InformationalVersion : string.Empty)}");
 
                 Server.PluginAssemblies.Add(assembly, plugin);
-                if (plugin.Config.Debug)
-                    Log.DebugEnabled.Add(assembly);
                 Plugins.Add(plugin);
             }
         }
@@ -267,6 +265,9 @@ namespace Exiled.Loader
                         plugin.OnRegisteringCommands();
                         toLoad.Remove(plugin);
                     }
+
+                    if (plugin.Config.Debug)
+                        Log.DebugEnabled.Add(plugin.Assembly);
                 }
                 catch (Exception exception)
                 {
