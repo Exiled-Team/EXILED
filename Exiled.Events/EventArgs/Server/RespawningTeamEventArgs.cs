@@ -77,6 +77,8 @@ namespace Exiled.Events.EventArgs.Server
                 }
 
                 MaximumRespawnAmount = spawnableTeam.MaxWaveSize;
+                if (RespawnManager.SpawnableTeams.TryGetValue(nextKnownTeam, out SpawnableTeamHandlerBase @base))
+                    @base.GenerateQueue(SpawnQueue, Players.Count);
             }
         }
 
