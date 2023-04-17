@@ -2461,12 +2461,7 @@ namespace Exiled.API.Features
         {
             if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
             {
-                bool flag = bag.TryAddSpecific(candyType);
-
-                if (flag)
-                    bag.ServerRefreshBag();
-
-                return flag;
+                return ((Scp330)Item.Get(bag)).AddCandy(candyType);
             }
 
             if (Items.Count > 7)
@@ -2476,9 +2471,6 @@ namespace Exiled.API.Features
 
             scp330.Base.Candies.Clear();
             scp330.AddCandy(candyType);
-
-            Inventory.SendItemsNextFrame = true;
-
             return true;
         }
 
