@@ -2482,9 +2482,6 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            if (newItems.IsEmpty())
-                return;
-
             foreach (ItemType item in newItems)
                 AddItem(item);
         }
