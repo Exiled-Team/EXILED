@@ -312,7 +312,7 @@ namespace Exiled.API.Features
                 door.IsOpen = false;
             }
 
-            if (duration <= 0)
+            if (duration < 0)
                 return;
 
             Timing.CallDelayed(duration, UnlockAll);
