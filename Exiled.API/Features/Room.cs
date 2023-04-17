@@ -306,16 +306,23 @@ namespace Exiled.API.Features
         /// <seealso cref="Door.LockAll(float, IEnumerable{ZoneType}, DoorLockType)"/>
         public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
+            if (duration < 0)
+            {
+                foreach (Door door in Doors)
+                {
+                    door.ChangeLock(lockType);
+                    door.Unlock(duration, lockType);
+                    door.IsOpen = false;
+                }
+
+                return;
+            }
+
             foreach (Door door in Doors)
             {
                 door.ChangeLock(lockType);
                 door.IsOpen = false;
             }
-
-            if (duration < 0)
-                return;
-
-            Timing.CallDelayed(duration, UnlockAll);
         }
 
         /// <summary>

@@ -353,7 +353,7 @@ namespace Exiled.API.Features
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
-                Timing.CallDelayed(duration, () => door.Unlock());
+                door.Unlock(duration, lockType);
             }
         }
 
@@ -380,7 +380,7 @@ namespace Exiled.API.Features
             {
                 door.IsOpen = false;
                 door.ChangeLock(lockType);
-                Timing.CallDelayed(duration, () => door.Unlock());
+                door.Unlock(duration, lockType);
             }
         }
 
