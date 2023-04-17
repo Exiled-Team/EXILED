@@ -335,16 +335,15 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ragdoll">The <see cref="BasicRagdoll"/> to get.</param>
         /// <returns>A <see cref="Ragdoll"/> or <see langword="null"/> if not found.</returns>
-        public static Ragdoll Get(BasicRagdoll ragdoll) => BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll)
-            ? doll
-            : new Ragdoll(ragdoll);
+        public static Ragdoll Get(BasicRagdoll ragdoll) => ragdoll is null ? null :
+            BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : new Ragdoll(ragdoll);
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> belonging to the <see cref="Player"/>, if any.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to get.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/>.</returns>
-        public static IEnumerable<Ragdoll> Get(Player player) => Ragdoll.List.Where(rd => rd.Owner == player);
+        public static IEnumerable<Ragdoll> Get(Player player) => List.Where(rd => rd.Owner == player);
 
         /// <summary>
         /// Gets the <see cref="IEnumerable{T}"/> of <see cref="Ragdoll"/> belonging to the <see cref="IEnumerable{T}"/> of <see cref="Player"/>, if any.
