@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Roles
     /// <summary>
     /// Defines a role that represents SCP-106.
     /// </summary>
-    public class Scp106Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp106Role : FpcRole, IStandardScpRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp106Role"/> class.
@@ -45,7 +45,7 @@ namespace Exiled.API.Features.Roles
             if (!SubroutineModule.TryGetSubroutine(out Scp106Attack scp106Attack))
                 Log.Error("Scp106Attack subroutine not found in Scp096Role::ctor");
 
-            Attack = scp106Attack;
+            AttackAbility = scp106Attack;
 
             if (!SubroutineModule.TryGetSubroutine(out Scp106StalkAbility scp106StalkAbility))
                 Log.Error("Scp106StalkAbility not found in Scp096Role::ctor");
@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="Scp106Attack"/>.
         /// </summary>
-        public Scp106Attack Attack { get; }
+        public Scp106Attack AttackAbility { get; }
 
         /// <summary>
         /// Gets the <see cref="Scp106Attack"/>.
@@ -186,11 +186,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float CaptureCooldown
         {
-            get => Attack._hitCooldown;
+            get => AttackAbility._hitCooldown;
             set
             {
-                Attack._hitCooldown = value;
-                Attack.ServerSendRpc(true);
+                AttackAbility._hitCooldown = value;
+                AttackAbility.ServerSendRpc(true);
             }
         }
 
@@ -247,21 +247,21 @@ namespace Exiled.API.Features.Roles
         }
 
         /// <summary>
-        /// Send a player to the pocket dimension.
+        /// Trigger the attack ability.
         /// </summary>
         /// <param name="player">The <see cref="Player"/>to send.</param>
-        public void CapturePlayer(Player player)
+        public void Attack(Player player)
         {
-            Attack._targetHub = player.ReferenceHub;
-            DamageHandlerBase handler = new ScpDamageHandler(Attack.Owner, Attack._damage, DeathTranslations.PocketDecay);
+            AttackAbility._targetHub = player.ReferenceHub;
+            DamageHandlerBase handler = new ScpDamageHandler(AttackAbility.Owner, AttackAbility._damage, DeathTranslations.PocketDecay);
 
-            if (!Attack._targetHub.playerStats.DealDamage(handler))
+            if (!AttackAbility._targetHub.playerStats.DealDamage(handler))
                 return;
 
-            Attack.SendCooldown(Attack._hitCooldown);
-            Attack.Vigor.VigorAmount += Scp106Attack.VigorCaptureReward;
-            Attack.ReduceSinkholeCooldown();
-            Hitmarker.SendHitmarker(Attack.Owner, 1f);
+            AttackAbility.SendCooldown(AttackAbility._hitCooldown);
+            AttackAbility.Vigor.VigorAmount += Scp106Attack.VigorCaptureReward;
+            AttackAbility.ReduceSinkholeCooldown();
+            Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);
 
             player.EnableEffect(EffectType.Traumatized, 180f);
             player.EnableEffect(EffectType.Corroding);
