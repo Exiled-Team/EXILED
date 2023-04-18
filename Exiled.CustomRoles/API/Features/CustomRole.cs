@@ -206,16 +206,16 @@ namespace Exiled.CustomRoles.API.Features
             return stringLookupTable[name];
         }
 
+        /// <inheritdoc cref="TryGet(uint,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
+        [Obsolete("Use TryGet(uint) instead", false)]
+        public static bool TryGet(int id, out CustomRole? customRole) => TryGet((uint)id, out customRole);
+
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by <inheritdoc cref="Id"/>.
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        [Obsolete("Use TryGet(uint) instead", false)]
-        public static bool TryGet(int id, out CustomRole? customRole) => TryGet((uint)id, out customRole);
-
-        /// <inheritdoc cref="TryGet(int,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
         public static bool TryGet(uint id, out CustomRole? customRole)
         {
             customRole = Get(id);
