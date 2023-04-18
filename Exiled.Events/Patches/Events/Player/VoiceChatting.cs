@@ -38,28 +38,35 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
+                // Player.Get(msg.Speaker);
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // msg
                 new(OpCodes.Ldarg_1),
 
+                // true
                 new(OpCodes.Ldc_I4_1),
 
+                // VoiceChattingEventArgs ev = new(Player, VoiceMessage);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(VoiceChattingEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
+                // Handlers.Player.OnVoiceChatting(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnVoiceChatting))),
 
+                // if (!ev.IsAllowed)
+                //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(VoiceChattingEventArgs), nameof(VoiceChattingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
 
+                // ev.VoiceMessage = msg;
                 new(OpCodes.Ldloc_S, ev.LocalIndex),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(VoiceChattingEventArgs), nameof(VoiceChattingEventArgs.VoiceMessage))),
                 new(OpCodes.Stloc_1),
-
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
