@@ -8,16 +8,18 @@
 namespace Exiled.API.Features.Roles
 {
     using PlayerRoles;
+    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.HumeShield;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Scp049.Zombies;
     using PlayerRoles.PlayableScps.Subroutines;
     using PlayerStatsSystem;
+    using UnityEngine;
 
     /// <summary>
     /// Defines a role that represents SCP-049-2.
     /// </summary>
-    public class Scp0492Role : FpcRole, ISubroutinedScpRole, IHumeShieldRole
+    public class Scp0492Role : FpcRole, IStandardScpRole, ISubroutinedScpRole, IHumeShieldRole
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp0492Role"/> class.
@@ -139,6 +141,39 @@ namespace Exiled.API.Features.Roles
         {
             ConsumeAbility.CurRagdoll = ragdoll.Base;
             ConsumeAbility.ServerComplete();
+            AttackAbility.ServerPerformAttack();
+        }
+
+        /// <summary>
+        /// Trigger the attack ability.
+        /// </summary>
+        /// <param name="player">The player to attack.</param>
+        public void Attack(Player player)
+        {
+            if (player == null)
+                return;
+
+            int num = Physics.OverlapSphereNonAlloc(AttackAbility.OverlapSphereOrigin, AttackAbility._detectionRadius, ScpAttackAbilityBase<ZombieRole>.DetectionsNonAlloc, (int)ScpAttackAbilityBase<ZombieRole>.DetectionMask);
+            AttackAbility._syncAttack = AttackResult.None;
+            for (int index = 0; index < num; ++index)
+            {
+                IDestructible component;
+                if (ScpAttackAbilityBase<ZombieRole>.DetectionsNonAlloc[index].TryGetComponent(out component) && !Physics.Linecast(AttackAbility.PlyCam.position, component.CenterOfMass, (int)ScpAttackAbilityBase<ZombieRole>.BlockerMask) && (!(component is HitboxIdentity hitboxIdentity1) || ScpAttackAbilityBase<ZombieRole>.TargettedPlayers.Remove(hitboxIdentity1.TargetHub)) &&
+                    component.Damage(AttackAbility.DamageAmount, AttackAbility.DamageHandler, component.CenterOfMass))
+                {
+                    AttackAbility.OnDestructibleDamaged(component);
+                    AttackAbility._syncAttack |= AttackResult.AttackedObject;
+                    if (component is HitboxIdentity hitboxIdentity)
+                    {
+                        player = Player.Get(hitboxIdentity.TargetHub);
+                        AttackAbility._syncAttack |= AttackResult.AttackedHuman;
+                        if (player.ReferenceHub.playerStats.GetModule<HealthStat>().CurValue <= 0.0)
+                            AttackAbility._syncAttack |= AttackResult.KilledHuman;
+                    }
+                }
+            }
+
+            AttackAbility.ServerSendRpc(true);
         }
 
         /// <summary>
