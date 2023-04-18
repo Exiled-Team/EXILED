@@ -202,7 +202,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <returns>The corresponding <see cref="TeslaGate"/> instance.</returns>
-        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => baseTeslaGate is null ? null :
+        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => baseTeslaGate == null ? null :
             BaseTeslaGateToTeslaGate.TryGetValue(baseTeslaGate, out TeslaGate teslagate) ? teslagate : new(baseTeslaGate);
 
         /// <summary>

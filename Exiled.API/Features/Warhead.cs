@@ -70,7 +70,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (InternalBlastDoors.IsEmpty())
+                if (InternalBlastDoors.Count is 0)
                     InternalBlastDoors.AddRange(Object.FindObjectsOfType<BlastDoor>());
 
                 return InternalBlastDoors.AsReadOnly();

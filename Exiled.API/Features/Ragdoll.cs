@@ -335,7 +335,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ragdoll">The <see cref="BasicRagdoll"/> to get.</param>
         /// <returns>A <see cref="Ragdoll"/> or <see langword="null"/> if not found.</returns>
-        public static Ragdoll Get(BasicRagdoll ragdoll) => ragdoll is null ? null :
+        public static Ragdoll Get(BasicRagdoll ragdoll) => ragdoll == null ? null :
             BasicRagdollToRagdoll.TryGetValue(ragdoll, out Ragdoll doll) ? doll : new Ragdoll(ragdoll);
 
         /// <summary>
