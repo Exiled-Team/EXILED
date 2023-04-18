@@ -5,7 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-
 namespace Exiled.Events.EventArgs.Player
 {
     using Exiled.API.Features;
