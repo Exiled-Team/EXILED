@@ -207,7 +207,7 @@ namespace Exiled.API.Extensions
                 writer.WriteUInt16(MessagePacking.GetId<RoleSyncInfo>());
                 writer.WriteUInt32(player.NetId);
                 writer.WriteRoleType(type);
-                if (type.GetTeam() == Team.FoundationForces)
+                if (PlayerRolesUtils.GetTeam(type) == Team.FoundationForces)
                     writer.WriteByte(unitId);
 
                 ushort syncH;
