@@ -5,10 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+
 namespace Exiled.Events.EventArgs.Player
 {
     using Exiled.API.Features;
     using Exiled.Events.EventArgs.Interfaces;
+
+    using PlayerRoles.Voice;
 
     using VoiceChat.Networking;
 
@@ -26,13 +29,17 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="voiceMessage">
         ///     <inheritdoc cref="VoiceMessage" />
         /// </param>
+        /// <param name="voiceModule">
+        ///     <inheritdoc cref="VoiceModule" />
+        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public VoiceChattingEventArgs(Player player, VoiceMessage voiceMessage, bool isAllowed = true)
+        public VoiceChattingEventArgs(Player player, VoiceMessage voiceMessage, VoiceModuleBase voiceModule, bool isAllowed = true)
         {
             Player = player;
             VoiceMessage = voiceMessage;
+            VoiceModule = voiceModule;
             IsAllowed = isAllowed;
         }
 
@@ -42,9 +49,14 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the <see cref="Player"/>'s <see cref="VoiceMessage" />.
+        ///     Gets or sets the <see cref="Player"/>'s <see cref="VoiceMessage" />.
         /// </summary>
-        public VoiceMessage VoiceMessage { get; }
+        public VoiceMessage VoiceMessage { get; set; }
+
+        /// <summary>
+        ///     Gets the <see cref="Player"/>'s <see cref="VoiceModuleBase" />.
+        /// </summary>
+        public VoiceModuleBase VoiceModule { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player can voicechat.
