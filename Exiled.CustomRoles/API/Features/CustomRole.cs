@@ -82,6 +82,12 @@ namespace Exiled.CustomRoles.API.Features
         public HashSet<Player> TrackedPlayers { get; } = new();
 
         /// <summary>
+        /// Gets all the tracked player names for players that have this role.
+        /// </summary>
+        [YamlIgnore]
+        public Dictionary<Player, string> TrackedPlayerNames { get; } = new();
+
+        /// <summary>
         /// Gets or sets the <see cref="RoleTypeId"/> to spawn this role as.
         /// </summary>
         public virtual RoleTypeId Role { get; set; }
@@ -89,7 +95,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
-        public virtual List<CustomAbility>? CustomAbilities { get; set; } = new();
+        public virtual List<CustomAbility> CustomAbilities { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the starting inventory for the role.
@@ -213,15 +219,15 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
         [Obsolete("Use TryGet(uint) instead", false)]
-        public static bool TryGet(int id, out CustomRole? customRole)
+        public static bool TryGet(int id, out CustomRole? customRole) => TryGet((uint)id, out customRole);
+
+        /// <inheritdoc cref="TryGet(int,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
+        public static bool TryGet(uint id, out CustomRole? customRole)
         {
             customRole = Get(id);
 
             return customRole is not null;
         }
-
-        /// <inheritdoc cref="TryGet(int,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
-        public static bool TryGet(uint id, out CustomRole? customRole) => TryGet(id, out customRole);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
@@ -530,6 +536,21 @@ namespace Exiled.CustomRoles.API.Features
                 TryAddItem(player, itemName);
             }
 
+            if (Ammo.Count > 0)
+            {
+                foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
+                {
+                    if (type != AmmoType.None)
+                        player.SetAmmo(type, 0);
+                }
+            }
+
+            foreach (AmmoType ammo in Ammo.Keys)
+            {
+                Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.");
+                player.SetAmmo(ammo, Ammo[ammo]);
+            }
+
             Log.Debug($"{Name}: Setting health values.");
             player.Health = MaxHealth;
             player.MaxHealth = MaxHealth;
@@ -542,6 +563,11 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             Log.Debug($"{Name}: Setting player info");
+
+            if (!TrackedPlayerNames.ContainsKey(player))
+                TrackedPlayerNames.Add(player, player.CustomName);
+            else
+                TrackedPlayerNames[player] = player.CustomName;
 
             player.CustomInfo = $"{player.CustomName}\n{CustomInfo}";
             player.InfoArea &= ~(PlayerInfoArea.Role | PlayerInfoArea.Nickname);
@@ -593,20 +619,19 @@ namespace Exiled.CustomRoles.API.Features
             player.CustomInfo = string.Empty;
             player.InfoArea |= PlayerInfoArea.Role | PlayerInfoArea.Nickname;
             player.Scale = Vector3.one;
-            if (CustomAbilities is not null)
+            if (RemovalKillsPlayer)
+                player.Role.Set(RoleTypeId.Spectator);
+            foreach (CustomAbility ability in CustomAbilities)
             {
-                foreach (CustomAbility ability in CustomAbilities)
-                {
-                    ability.RemoveAbility(player);
-                }
+                ability.RemoveAbility(player);
             }
 
             RoleRemoved(player);
             player.UniqueRole = string.Empty;
             player.TryRemoveCustomeRoleFriendlyFire(Name);
 
-            if (RemovalKillsPlayer)
-                player.Role.Set(RoleTypeId.Spectator);
+            if (TrackedPlayerNames.ContainsKey(player))
+                player.CustomName = TrackedPlayerNames[player];
         }
 
         /// <summary>
@@ -882,7 +907,13 @@ namespace Exiled.CustomRoles.API.Features
             if (!Check(ev.Player))
                 return;
 
-            ev.Player.CustomInfo = $"{ev.NewName}\n{CustomInfo}";
+            if (!TrackedPlayerNames.ContainsKey(ev.Player))
+                TrackedPlayerNames.Add(ev.Player, ev.NewName);
+            else
+                TrackedPlayerNames[ev.Player] = ev.NewName;
+
+            ev.Player.CustomInfo = $"{ev.NewName}\n{ev.Player.CustomInfo}";
+            ev.IsAllowed = false;
         }
 
         private void OnInternalSpawning(SpawningEventArgs ev)
@@ -894,26 +925,7 @@ namespace Exiled.CustomRoles.API.Features
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
         {
             if (Check(ev.Player) && ((ev.NewRole == RoleTypeId.Spectator && !KeepRoleOnDeath) || (ev.NewRole != RoleTypeId.Spectator && ev.NewRole != Role && !KeepRoleOnChangingRole)))
-            {
                 RemoveRole(ev.Player);
-            }
-            else if (Check(ev.Player))
-            {
-                if (Ammo.Count > 0)
-                {
-                    ev.Ammo.Clear();
-                    Timing.CallDelayed(
-                        0.5f,
-                        () =>
-                        {
-                            foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
-                            {
-                                if (type != AmmoType.None)
-                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
-                            }
-                        });
-                }
-            }
         }
 
         private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
