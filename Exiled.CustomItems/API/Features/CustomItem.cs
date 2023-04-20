@@ -1029,7 +1029,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.Reason == SpawnReason.Escaped)
+            if (ev.Reason is SpawnReason.Escaped or SpawnReason.Destroyed)
                 return;
 
             foreach (Item item in ev.Player.Items.ToList())
