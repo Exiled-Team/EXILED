@@ -24,6 +24,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Features.Core.Interfaces;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Npcs;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
@@ -678,6 +679,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player's <see cref="RoleTypeId"/> is equal to <see cref="RoleTypeId.Tutorial"/>.
         /// </summary>
         public bool IsTutorial => Role?.Type is RoleTypeId.Tutorial;
+
+        /// <summary>
+        /// Gets a value indicating whether if the <see cref="Player"/> is a <see cref="NpcBase"/>.
+        /// </summary>
+        public bool IsNpc => this is NpcBase;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's friendly fire is enabled.
