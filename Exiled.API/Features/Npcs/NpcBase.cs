@@ -9,6 +9,10 @@ namespace Exiled.API.Features.Npcs
 {
     using System.Collections.Generic;
 
+    using Extensions;
+    using InventorySystem;
+    using Items;
+
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
@@ -34,12 +38,13 @@ namespace Exiled.API.Features.Npcs
         /// </summary>
         /// /// <param name="scale">The Scale of the NPC.</param>
         /// <param name="roleTypeId">The RoleTypeId of the NPC.</param>
+        /// <param name="currentItem">The Current selected item of the NPC.</param>
         /// <param name="name">The Nickname of the NPC.</param>
         /// <param name="badge">The Badge of the NPC.</param>
-        public NpcBase(Vector3 scale, RoleTypeId roleTypeId, string name, string badge)
+        public NpcBase(Vector3 scale, RoleTypeId roleTypeId, ItemType currentItem, string name, string badge)
             : base(InstantiateReferenceHub())
         {
-            LoadNpc(roleTypeId, name, badge);
+            LoadNpc(roleTypeId, currentItem, name, badge);
             GameObject.transform.localScale = scale;
         }
 
@@ -119,6 +124,27 @@ namespace Exiled.API.Features.Npcs
             }
         }
 
+        /// <summary>
+        /// Gets or sets the current item of the NPC.
+        /// </summary>
+        public new Item CurrentItem
+        {
+            get => Item.Get(ReferenceHub.inventory.CurInstance);
+            set
+            {
+                if (value is null || value.Type == ItemType.None)
+                {
+                    Inventory.ServerSelectItem(0);
+                    return;
+                }
+
+                if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                    AddItem(value.Base);
+
+                Inventory.ServerSelectItem(value.Serial);
+            }
+        }
+
         private FakeConnection FakeConnection { get; set; }
 
         /// <summary>
@@ -149,7 +175,7 @@ namespace Exiled.API.Features.Npcs
             return gameObject.GetComponent<ReferenceHub>();
         }
 
-        private void LoadNpc(RoleTypeId roleTypeId = RoleTypeId.CustomRole, string nickname = "npc", string badge = "NPC")
+        private void LoadNpc(RoleTypeId roleTypeId = RoleTypeId.CustomRole, ItemType currentItem = ItemType.None, string nickname = "npc", string badge = "NPC")
         {
             FakeConnection = new FakeConnection(Id);
 
@@ -172,6 +198,8 @@ namespace Exiled.API.Features.Npcs
             ReferenceHub.serverRoles.SetText(badge);
 
             ReferenceHub.roleManager.ServerSetRole(roleTypeId, RoleChangeReason.RemoteAdmin);
+            ReferenceHub.inventory.ServerAddItem(currentItem);
+            ReferenceHub.inventory.ServerSelectItem(currentItem.GetItemBase().ItemSerial);
 
             SessionVariables.Add("IsNpc", true);
             Dictionary.Add(GameObject, this);
