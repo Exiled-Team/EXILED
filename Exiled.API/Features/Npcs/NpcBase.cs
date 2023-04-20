@@ -128,6 +128,7 @@ namespace Exiled.API.Features.Npcs
         {
             Dictionary.Remove(GameObject);
             NetworkServer.Destroy(GameObject);
+            FakeConnection.Disconnect();
         }
 
         /// <summary>
@@ -159,6 +160,7 @@ namespace Exiled.API.Features.Npcs
             {
                 ReferenceHub.characterClassManager._privUserId = "npc";
                 ReferenceHub.queryProcessor._ipAddress = "127.0.0.WAN";
+                ReferenceHub.characterClassManager.UserId = $"npc{Id}@server";
             }
             catch
             {
