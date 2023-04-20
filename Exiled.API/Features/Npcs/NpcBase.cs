@@ -193,7 +193,7 @@ namespace Exiled.API.Features.Npcs
                 // Ignore
             }
 
-            ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Host;
+            ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
             ReferenceHub.nicknameSync.Network_myNickSync = nickname;
             ReferenceHub.serverRoles.SetText(badge);
 
