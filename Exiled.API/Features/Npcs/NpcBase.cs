@@ -9,9 +9,9 @@ namespace Exiled.API.Features.Npcs
 {
     using System.Collections.Generic;
 
-    using Extensions;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Items;
     using InventorySystem;
-    using Items;
 
     using Mirror;
     using PlayerRoles;
@@ -198,8 +198,12 @@ namespace Exiled.API.Features.Npcs
             ReferenceHub.serverRoles.SetText(badge);
 
             ReferenceHub.roleManager.ServerSetRole(roleTypeId, RoleChangeReason.RemoteAdmin);
-            ReferenceHub.inventory.ServerAddItem(currentItem);
-            ReferenceHub.inventory.ServerSelectItem(currentItem.GetItemBase().ItemSerial);
+
+            if (currentItem is not ItemType.None)
+            {
+                ReferenceHub.inventory.ServerAddItem(currentItem);
+                ReferenceHub.inventory.ServerSelectItem(currentItem.GetItemBase().ItemSerial);
+            }
 
             SessionVariables.Add("IsNpc", true);
             Dictionary.Add(GameObject, this);
