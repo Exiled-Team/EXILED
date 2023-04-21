@@ -56,6 +56,7 @@ namespace Exiled.CustomItems.API.Features
         private static Dictionary<Type, CustomItem?> typeLookupTable = new();
         private static Dictionary<string, CustomItem?> stringLookupTable = new();
         private static Dictionary<uint, CustomItem?> idLookupTable = new();
+        private bool displayMessage;
 
         private ItemType type = ItemType.None;
 
@@ -774,7 +775,9 @@ namespace Exiled.CustomItems.API.Features
                 if (!TrackedSerials.Contains(item.Serial))
                     TrackedSerials.Add(item.Serial);
 
-                Timing.CallDelayed(0.05f, () => OnAcquired(player, displayMessage));
+                this.displayMessage = displayMessage;
+
+                Timing.CallDelayed(0.05f, () => OnAcquired(player));
             }
             catch (Exception e)
             {
@@ -996,8 +999,7 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        /// <param name="displayMessage">Indicates a value whether <see cref="ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        protected virtual void OnAcquired(Player player, bool displayMessage = true)
+        protected virtual void OnAcquired(Player player) // TODO: Male field 'displayMessage' parameter
         {
             if (displayMessage)
                 ShowPickedUpMessage(player);
