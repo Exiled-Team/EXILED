@@ -42,10 +42,11 @@ namespace Exiled.API.Features.Npcs
         /// <param name="currentItem">The Current selected item of the NPC.</param>
         /// <param name="name">The Nickname of the NPC.</param>
         /// <param name="badge">The Badge of the NPC.</param>
-        public NpcBase(Vector3 scale, RoleTypeId roleTypeId, ItemType currentItem, string name, string badge)
+        /// <param name="badgeColor">The Color of the Badge.</param>
+        public NpcBase(Vector3 scale, RoleTypeId roleTypeId, ItemType currentItem, string name, string badge, string badgeColor)
             : base(InstantiateReferenceHub())
         {
-            LoadNpc(roleTypeId, currentItem, name, badge);
+            LoadNpc(roleTypeId, currentItem, name, badge, badgeColor);
             GameObject.transform.localScale = scale;
         }
 
@@ -83,6 +84,15 @@ namespace Exiled.API.Features.Npcs
                 ReferenceHub.nicknameSync.Network_myNickSync = value;
                 Respawn();
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the Color of the badge of the NPC.
+        /// </summary>
+        public string BadgeColor
+        {
+            get => ReferenceHub.serverRoles.Network_myColor;
+            set => ReferenceHub.serverRoles.Network_myColor = value;
         }
 
         /// <summary>
@@ -194,7 +204,7 @@ namespace Exiled.API.Features.Npcs
             return gameObject.GetComponent<ReferenceHub>();
         }
 
-        private void LoadNpc(RoleTypeId roleTypeId = RoleTypeId.CustomRole, ItemType currentItem = ItemType.None, string nickname = "npc", string badge = "NPC")
+        private void LoadNpc(RoleTypeId roleTypeId = RoleTypeId.CustomRole, ItemType currentItem = ItemType.None, string nickname = "npc", string badge = "NPC", string badgeColor = "yellow")
         {
             FakeConnection = new FakeConnection(Id);
 
@@ -212,15 +222,17 @@ namespace Exiled.API.Features.Npcs
                 // Ignore
             }
 
-            ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Unverified;
+            ReferenceHub.characterClassManager.InstanceMode = ClientInstanceMode.Host;
             ReferenceHub.nicknameSync.Network_myNickSync = nickname;
-            ReferenceHub.serverRoles.SetText(badge);
+            ReferenceHub.serverRoles.Network_myColor = badgeColor;
+            ReferenceHub.serverRoles.Network_myText = badge;
 
             ReferenceHub.roleManager.ServerSetRole(roleTypeId, RoleChangeReason.RemoteAdmin);
 
             if (currentItem is not ItemType.None)
             {
                 ReferenceHub.inventory.ServerAddItem(currentItem);
+
                 ReferenceHub.inventory.ServerSelectItem(currentItem.GetItemBase().ItemSerial);
             }
 
