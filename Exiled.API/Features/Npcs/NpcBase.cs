@@ -8,6 +8,7 @@
 namespace Exiled.API.Features.Npcs
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
@@ -148,9 +149,27 @@ namespace Exiled.API.Features.Npcs
         private FakeConnection FakeConnection { get; set; }
 
         /// <summary>
+        /// Gets a NPC by its nickname.
+        /// </summary>
+        /// <param name="nickname">The nickname of the NPC.</param>
+        /// <param name="npc">The NPC parameter.</param>
+        /// <returns>The NPC with the specified nickname.</returns>
+        public static bool GetByNickname(string nickname, out NpcBase npc)
+        {
+            foreach (var npcBase in Dictionary.Values.Where(npcBase => npcBase.NickName == nickname))
+            {
+                npc = npcBase;
+                return true;
+            }
+
+            npc = null;
+            return false;
+        }
+
+        /// <summary>
         /// Destroys the NPC.
         /// </summary>
-        public virtual void Destroy()
+        public void Destroy()
         {
             Dictionary.Remove(GameObject);
             NetworkServer.Destroy(GameObject);
