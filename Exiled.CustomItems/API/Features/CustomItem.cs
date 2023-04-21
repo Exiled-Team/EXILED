@@ -999,7 +999,7 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player) // TODO: Male field 'displayMessage' parameter
+        protected virtual void OnAcquired(Player player) // TODO: Make field 'displayMessage' parameter
         {
             if (displayMessage)
                 ShowPickedUpMessage(player);
