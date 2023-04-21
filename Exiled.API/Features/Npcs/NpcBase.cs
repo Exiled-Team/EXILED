@@ -164,9 +164,66 @@ namespace Exiled.API.Features.Npcs
         /// <param name="nickname">The nickname of the NPC.</param>
         /// <param name="npc">The NPC parameter.</param>
         /// <returns>The NPC with the specified nickname.</returns>
-        public static bool GetByNickname(string nickname, out NpcBase npc)
+        public static bool Get(string nickname, out NpcBase npc)
         {
             foreach (var npcBase in Dictionary.Values.Where(npcBase => npcBase.NickName == nickname))
+            {
+                npc = npcBase;
+                return true;
+            }
+
+            npc = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a NPC inside the <see cref="Dictionary"/>.
+        /// </summary>
+        /// <param name="npc">The NPC to get.</param>
+        /// <returns>The specified NPC.</returns>
+        public static bool Get(NpcBase npc)
+        {
+            return Dictionary.TryGetValue(npc.GameObject, out npc);
+        }
+
+        /// <summary>
+        /// Gets a NPC by a specified <see cref="ReferenceHub"/>.
+        /// </summary>
+        /// <param name="referenceHub">The ReferenceHub of the NPC.</param>
+        /// <param name="npc">The NPC parameter.</param>
+        /// <returns>The NPC with the specified ReferenceHub.</returns>
+        public static bool Get(ReferenceHub referenceHub, out NpcBase npc)
+        {
+            foreach (var npcBase in Dictionary.Values.Where(npcBase => npcBase.ReferenceHub == referenceHub))
+            {
+                npc = npcBase;
+                return true;
+            }
+
+            npc = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Gets a NPC by a specified <see cref="GameObject"/>.
+        /// </summary>
+        /// <param name="gameObject">The GameObject of the NPC.</param>
+        /// <param name="npc">The NPC parameter.</param>
+        /// <returns>The NPC with the specified GameObject.</returns>
+        public static bool Get(GameObject gameObject, out NpcBase npc)
+        {
+            return Dictionary.TryGetValue(gameObject, out npc);
+        }
+
+        /// <summary>
+        /// Gets a NPC by a specified ID.
+        /// </summary>
+        /// <param name="id">The ID of the NPC.</param>
+        /// <param name="npc">The NPC parameter.</param>
+        /// <returns>The NPC with the specified ID.</returns>
+        public static bool Get(int id, out NpcBase npc)
+        {
+            foreach (var npcBase in Dictionary.Values.Where(npcBase => npcBase.Id == id))
             {
                 npc = npcBase;
                 return true;
