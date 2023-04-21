@@ -774,10 +774,7 @@ namespace Exiled.CustomItems.API.Features
                 if (!TrackedSerials.Contains(item.Serial))
                     TrackedSerials.Add(item.Serial);
 
-                if (displayMessage)
-                    ShowPickedUpMessage(player);
-
-                Timing.CallDelayed(0.05f, () => OnAcquired(player));
+                Timing.CallDelayed(0.05f, () => OnAcquired(player, displayMessage));
             }
             catch (Exception e)
             {
@@ -999,7 +996,12 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player) => ShowPickedUpMessage(player);
+        /// <param name="displayMessage">Indicates a value whether <see cref="ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
+        protected virtual void OnAcquired(Player player, bool displayMessage = true)
+        {
+            if (displayMessage)
+                ShowPickedUpMessage(player);
+        }
 
         /// <summary>
         /// Clears the lists of item uniqIDs and Pickups since any still in the list will be invalid.
