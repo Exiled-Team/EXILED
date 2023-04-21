@@ -166,7 +166,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalThrowingRequest(ThrowingRequestEventArgs ev)
         {
-            if (ev.Throwable.Serial == 0 || ev.Throwable.Projectile.Info == PickupSyncInfo.None)
+            if (ev.Throwable.Projectile.Info == PickupSyncInfo.None)
                 return;
 
             if (!Check(ev.Player.CurrentItem))
@@ -194,7 +194,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
-            if (ev.Projectile is null || ev.Projectile.Info == PickupSyncInfo.None)
+            if (ev.Projectile.Info == PickupSyncInfo.None)
                 return;
 
             if (Check(ev.Projectile))
