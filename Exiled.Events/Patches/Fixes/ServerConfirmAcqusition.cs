@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Fixes <see cref="Firearm.ServerConfirmAcqusition"/> method for NPCs (Null Connections).
+    /// Patches <see cref="Firearm.ServerConfirmAcqusition"/> to prevent the acquisition of firearms by NPCs (Null Connections).
     /// </summary>
     [HarmonyPatch(typeof(Firearm), nameof(Firearm.ServerConfirmAcqusition))]
     internal static class ServerConfirmAcqusition
