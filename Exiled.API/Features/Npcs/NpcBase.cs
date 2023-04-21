@@ -231,9 +231,11 @@ namespace Exiled.API.Features.Npcs
 
             if (currentItem is not ItemType.None)
             {
-                ReferenceHub.inventory.ServerAddItem(currentItem);
+                var item = Item.Create(currentItem);
 
-                ReferenceHub.inventory.ServerSelectItem(currentItem.GetItemBase().ItemSerial);
+                ReferenceHub.inventory.ServerAddItem(item.Type, item.Serial);
+
+                ReferenceHub.inventory.ServerSelectItem(item.Serial);
             }
 
             SessionVariables.Add("IsNpc", true);
