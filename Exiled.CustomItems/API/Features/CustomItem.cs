@@ -56,7 +56,6 @@ namespace Exiled.CustomItems.API.Features
         private static Dictionary<Type, CustomItem?> typeLookupTable = new();
         private static Dictionary<string, CustomItem?> stringLookupTable = new();
         private static Dictionary<uint, CustomItem?> idLookupTable = new();
-        private bool displayMessage;
 
         private ItemType type = ItemType.None;
 
@@ -775,9 +774,7 @@ namespace Exiled.CustomItems.API.Features
                 if (!TrackedSerials.Contains(item.Serial))
                     TrackedSerials.Add(item.Serial);
 
-                this.displayMessage = displayMessage;
-
-                Timing.CallDelayed(0.05f, () => OnAcquired(player));
+                Timing.CallDelayed(0.05f, () => OnAcquired(player, displayMessage));
             }
             catch (Exception e)
             {
@@ -999,10 +996,23 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player) // TODO: Make field 'displayMessage' parameter
+        [Obsolete("Use OnAcquired(Player, bool) instead.")]
+        protected virtual void OnAcquired(Player player)
+        {
+        }
+
+        /// <summary>
+        /// Called anytime the item enters a player's inventory by any means.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
+        /// <param name="displayMessage">Whether or not the Pickup hint should be displayed.</param>
+        protected virtual void OnAcquired(Player player, bool displayMessage)
         {
             if (displayMessage)
                 ShowPickedUpMessage(player);
+#pragma warning disable CS0618
+            OnAcquired(player);
+#pragma warning restore CS0618
         }
 
         /// <summary>
@@ -1139,7 +1149,7 @@ namespace Exiled.CustomItems.API.Features
             if (!ev.IsAllowed)
                 return;
 
-            Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player));
+            Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player, true));
         }
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
