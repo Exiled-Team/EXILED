@@ -239,6 +239,7 @@ namespace Exiled.API.Features.Npcs
         /// <param name="referenceHub">The ReferenceHub of the NPC.</param>
         /// <param name="npc">The NPC parameter.</param>
         /// <returns>The NPC with the specifications.</returns>
+        // TODO: MAKE THIS BETTER
         public static bool TryGetNpc(ReferenceHub referenceHub, out NpcBase npc)
         {
             return Get(referenceHub, out npc);
