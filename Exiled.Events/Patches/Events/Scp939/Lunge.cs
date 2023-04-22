@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     /// <summary>
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
-    ///     to add the <see cref="Scp939" /> event.
+    ///     to add the <see cref="Handlers.Scp939.OnLunging" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
     internal static class Lunge
