@@ -166,6 +166,10 @@ namespace Exiled.Updater
                     Log.Info("No new versions found, you're using the most recent version of Exiled!");
                 }
             }
+            catch (Utf8Json.JsonParsingException)
+            {
+                Log.Error("Encountered GitHub ratelimit, unable to check and download the latest version of Exiled.");
+            }
             catch (Exception ex)
             {
                 Log.Error($"{nameof(FindUpdate)} threw an exception:\n{ex}");
