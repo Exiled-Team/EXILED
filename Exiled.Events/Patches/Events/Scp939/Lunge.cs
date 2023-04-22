@@ -34,8 +34,6 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Hitmarker), nameof(Hitmarker.SendHitmarker), new[] { typeof(ReferenceHub), typeof(float) }))) + 1;
 
-            Log.Info(index);
-
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
