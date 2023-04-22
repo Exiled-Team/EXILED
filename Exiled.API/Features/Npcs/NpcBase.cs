@@ -234,6 +234,17 @@ namespace Exiled.API.Features.Npcs
         }
 
         /// <summary>
+        /// Gets a NPC by a specified <see cref="ReferenceHub"/> (Mostly used in the Player.Get method).
+        /// </summary>
+        /// <param name="referenceHub">The ReferenceHub of the NPC.</param>
+        /// <param name="npc">The NPC parameter.</param>
+        /// <returns>The NPC with the specifications.</returns>
+        public static bool TryGetNpc(ReferenceHub referenceHub, out NpcBase npc)
+        {
+            return Get(referenceHub, out npc);
+        }
+
+        /// <summary>
         /// Destroys the NPC.
         /// </summary>
         public void Destroy()
