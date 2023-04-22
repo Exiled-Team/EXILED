@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp939
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -17,7 +16,6 @@ namespace Exiled.Events.Patches.Events.Scp939
     using HarmonyLib;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp939;
-    using PlayerRoles.PlayableScps.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
@@ -26,34 +24,42 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
+    [HarmonyPatch]
     internal static class Lunge
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.TriggerLunge))]
+        private static IEnumerable<CodeInstruction> OnExecutingLunge(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            Label returnLabel = generator.DefineLabel();
 
-            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
-
-            const int offset = -1;
-            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.TriggerLunge)))) + offset;
-
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp939Role>), nameof(ScpStandardSubroutine<Scp939Role>.Owner))),
-                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LungingEventArgs))[0]),
-                new(OpCodes.Dup),
-                new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnLunging))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(LungingEventArgs), nameof(LungingEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
+                new(OpCodes.Call, Method(typeof(Lunge), nameof(ProcessLunge))),
+                new(OpCodes.Br, returnLabel),
             });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static void ProcessLunge(Scp939LungeAbility lungeAbility)
+        {
+            var currentScp = Player.Get(lungeAbility.Owner);
+            var ev = new LungingEventArgs(currentScp);
+
+            Handlers.Scp939.OnLunging(ev);
+            if (!ev.IsAllowed)
+                return;
+
+            lungeAbility.TriggerPos = lungeAbility.CurPos;
+            lungeAbility.State = Scp939LungeState.Triggered;
         }
     }
 }
