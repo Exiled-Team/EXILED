@@ -32,8 +32,6 @@ namespace Exiled.Events.Patches.Events.Scp939
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
-
             int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Hitmarker), nameof(Hitmarker.SendHitmarker), new[] { typeof(ReferenceHub), typeof(float) }))) + 1;
 
             Log.Info(index);
