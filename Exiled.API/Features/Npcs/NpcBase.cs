@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Npcs
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
     using InventorySystem;
 
@@ -100,12 +99,12 @@ namespace Exiled.API.Features.Npcs
         /// </summary>
         public string Badge
         {
-            get => ReferenceHub.serverRoles.FixedBadge;
-            set => ReferenceHub.serverRoles.SetText(value);
+            get => ReferenceHub.serverRoles.Network_myText;
+            set => ReferenceHub.serverRoles.Network_myText = value;
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the NPC has godmode.
+        /// Gets or sets a value indicating whether the NPC has GodMode.
         /// </summary>
         public bool GodModeEnabled
         {
@@ -231,18 +230,6 @@ namespace Exiled.API.Features.Npcs
 
             npc = null;
             return false;
-        }
-
-        /// <summary>
-        /// Gets a NPC by a specified <see cref="ReferenceHub"/> (Mostly used in the Player.Get method).
-        /// </summary>
-        /// <param name="referenceHub">The ReferenceHub of the NPC.</param>
-        /// <param name="npc">The NPC parameter.</param>
-        /// <returns>The NPC with the specifications.</returns>
-        // TODO: MAKE THIS BETTER
-        public static bool TryGetNpc(ReferenceHub referenceHub, out NpcBase npc)
-        {
-            return Get(referenceHub, out npc);
         }
 
         /// <summary>
