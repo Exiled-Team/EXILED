@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     /// <summary>
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
-    ///     to add the <see cref="Handlers.Scp939.OnLunging" /> event.
+    ///     to add the <see cref="Scp939" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
     internal static class Lunge
@@ -36,10 +36,15 @@ namespace Exiled.Events.Patches.Events.Scp939
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
+                // Player.Get(base.Owner)
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp939Role>), nameof(ScpStandardSubroutine<Scp939Role>.Owner))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // LungingEventArgs = new(Player)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LungingEventArgs))[0]),
+
+                // Handlers.Scp939.OnLunging(ev)
                 new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnLunging))),
             });
 
