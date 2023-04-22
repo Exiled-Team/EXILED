@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using HarmonyLib;
     using Mirror;
     using PlayerRoles.PlayableScps.Scp939;
+    using PlayerRoles.PlayableScps.Subroutines;
 
     using static HarmonyLib.AccessTools;
 
@@ -24,42 +25,32 @@ namespace Exiled.Events.Patches.Events.Scp939
     ///     Patches <see cref="Scp939LungeAbility.ServerProcessCmd(NetworkReader)" />
     ///     to add the <see cref="Scp939" /> event.
     /// </summary>
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ServerProcessCmd))]
     internal static class Lunge
     {
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.TriggerLunge))]
-        private static IEnumerable<CodeInstruction> OnExecutingLunge(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+
+            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(Hitmarker), nameof(Hitmarker.SendHitmarker), new[] { typeof(ReferenceHub), typeof(float) }))) + 1;
+
+            Log.Info(index);
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Lunge), nameof(ProcessLunge))),
-                new(OpCodes.Br, returnLabel),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ScpStandardSubroutine<Scp939Role>), nameof(ScpStandardSubroutine<Scp939Role>.Owner))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(LungingEventArgs))[0]),
+                new(OpCodes.Call, Method(typeof(Handlers.Scp939), nameof(Handlers.Scp939.OnLunging))),
             });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-
-        private static void ProcessLunge(Scp939LungeAbility lungeAbility)
-        {
-            var currentScp = Player.Get(lungeAbility.Owner);
-            var ev = new LungingEventArgs(currentScp);
-
-            Handlers.Scp939.OnLunging(ev);
-            if (!ev.IsAllowed)
-                return;
-
-            lungeAbility.TriggerPos = lungeAbility.CurPos;
-            lungeAbility.State = Scp939LungeState.Triggered;
         }
     }
 }
