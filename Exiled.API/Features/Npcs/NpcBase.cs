@@ -262,10 +262,7 @@ namespace Exiled.API.Features.Npcs
 
             ReferenceHub.roleManager.ServerSetRole(roleTypeId, RoleChangeReason.RemoteAdmin);
 
-            if (currentItem is not ItemType.None)
-            {
-                CurrentItem = currentItem == ItemType.None ? null : Item.Create(currentItem);
-            }
+            CurrentItem = currentItem == ItemType.None ? null : Item.Create(currentItem);
 
             SessionVariables.Add("IsNpc", true);
             Dictionary.Add(GameObject, this);
