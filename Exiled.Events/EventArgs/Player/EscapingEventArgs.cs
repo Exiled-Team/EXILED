@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
+    using Exiled.API.Enums;
     using Interfaces;
 
     using PlayerRoles;
@@ -27,10 +27,15 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="newRole">
         ///     <inheritdoc cref="NewRole" />
         /// </param>
-        public EscapingEventArgs(Player player, RoleTypeId newRole)
+        /// <param name="escapeScenario">
+        ///     <inheritdoc cref="EscapeScenario" />
+        /// </param>
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario)
         {
             Player = player;
             NewRole = newRole;
+            EscapeScenario = escapeScenario;
+            IsAllowed = escapeScenario is not EscapeScenario.CustomEscape;
         }
 
         /// <summary>
@@ -44,8 +49,13 @@ namespace Exiled.Events.EventArgs.Player
         public RoleTypeId NewRole { get; set; }
 
         /// <summary>
+        ///     Gets or sets the EscapeScenario that will represent for this player.
+        /// </summary>
+        public EscapeScenario EscapeScenario { get; set; }
+
+        /// <summary>
         ///     Gets or sets a value indicating whether or not the player can escape.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
     }
 }

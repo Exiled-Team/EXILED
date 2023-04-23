@@ -265,6 +265,9 @@ namespace Exiled.Loader
                         plugin.OnRegisteringCommands();
                         toLoad.Remove(plugin);
                     }
+
+                    if (plugin.Config.Debug)
+                        Log.DebugEnabled.Add(plugin.Assembly);
                 }
                 catch (Exception exception)
                 {

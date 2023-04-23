@@ -64,7 +64,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="name">The name of the role to get.</param>
         /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
-        public static CustomAbility Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
+        public static CustomAbility? Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
@@ -73,7 +73,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="customAbility">The custom role.</param>
         /// <returns>True if the role exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
-        public static bool TryGet(string name, out CustomAbility customAbility)
+        public static bool TryGet(string name, out CustomAbility? customAbility)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name));
@@ -89,7 +89,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
         /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
-        public static IEnumerable<CustomAbility> RegisterAbilities(bool skipReflection = false, object overrideClass = null)
+        public static IEnumerable<CustomAbility> RegisterAbilities(bool skipReflection = false, object? overrideClass = null)
         {
             List<CustomAbility> abilities = new();
             Assembly assembly = Assembly.GetCallingAssembly();
@@ -98,7 +98,7 @@ namespace Exiled.CustomRoles.API.Features
                 if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null)
                     continue;
 
-                CustomAbility customAbility = null;
+                CustomAbility? customAbility = null;
 
                 if (!skipReflection && Server.PluginAssemblies.ContainsKey(assembly))
                 {
@@ -133,7 +133,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
         /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
-        public static IEnumerable<CustomAbility> RegisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false, bool skipReflection = false, object overrideClass = null)
+        public static IEnumerable<CustomAbility> RegisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false, bool skipReflection = false, object? overrideClass = null)
         {
             List<CustomAbility> abilities = new();
             Assembly assembly = Assembly.GetCallingAssembly();
@@ -143,7 +143,7 @@ namespace Exiled.CustomRoles.API.Features
                     (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
                     continue;
 
-                CustomAbility customAbility = null;
+                CustomAbility? customAbility = null;
 
                 if (!skipReflection && Server.PluginAssemblies.ContainsKey(assembly))
                 {
@@ -258,7 +258,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>True if the ability registered properly.</returns>
         internal bool TryRegister()
         {
-            if (!CustomRoles.Instance.Config.IsEnabled)
+            if (!CustomRoles.Instance!.Config.IsEnabled)
                 return false;
 
             if (!Registered.Contains(this))

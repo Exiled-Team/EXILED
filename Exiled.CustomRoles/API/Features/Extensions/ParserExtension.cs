@@ -27,7 +27,7 @@ namespace Exiled.CustomRoles.API.Features.Extensions
         /// <param name="key">The key found.</param>
         /// <param name="value">The value found.</param>
         /// <returns><see langword="true"/> when a valid mapping entry is found; otherwise, <see langword="false"/>.</returns>
-        public static bool TryFindMappingEntry(this ParsingEventBuffer parser, Func<Scalar, bool> selector, out Scalar key, out ParsingEvent value)
+        public static bool TryFindMappingEntry(this ParsingEventBuffer parser, Func<Scalar, bool> selector, out Scalar? key, out ParsingEvent? value)
         {
             parser.Consume<MappingStart>();
             do

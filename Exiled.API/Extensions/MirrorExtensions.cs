@@ -23,6 +23,7 @@ namespace Exiled.API.Extensions
     using Mirror;
 
     using PlayerRoles;
+    using PlayerRoles.FirstPersonControl;
 
     using RelativePositioning;
 
@@ -188,10 +189,40 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
-        public static void ChangeAppearance(this Player player, RoleTypeId type)
+        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, byte) instead.", true)]
+        public static void ChangeAppearance(this Player player, RoleTypeId type) => ChangeAppearance(player, type, 0);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="type">Model type.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0)
         {
             foreach (Player target in Player.List.Where(x => x != player))
-                target.Connection.Send(new RoleSyncInfo(player.ReferenceHub, type, target.ReferenceHub));
+            {
+                PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
+                writer.WriteUInt16(MessagePacking.GetId<RoleSyncInfo>());
+                writer.WriteUInt32(player.NetId);
+                writer.WriteRoleType(type);
+                if (type.GetTeam() == Team.FoundationForces)
+                    writer.WriteByte(unitId);
+
+                ushort syncH;
+                if (player.Role.Base is FpcStandardRoleBase fpc)
+                {
+                    fpc.FpcModule.MouseLook.GetSyncValues(0, out syncH, out _);
+                    writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
+                    writer.WriteUInt16(syncH);
+                }
+
+                target.Connection.Send(writer.ToArraySegment());
+            }
+
+            // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
+            player.Position += Vector3.up * 0.25f;
         }
 
         /// <summary>
