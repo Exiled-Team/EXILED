@@ -11,8 +11,6 @@ namespace Exiled.API.Features.Npcs
     using System.Linq;
 
     using Exiled.API.Features.Items;
-    using InventorySystem;
-
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
@@ -31,6 +29,8 @@ namespace Exiled.API.Features.Npcs
         public NpcBase()
             : base(InstantiateReferenceHub())
         {
+            LoadNpc();
+            GameObject.transform.localScale = Vector3.one;
         }
 
         /// <summary>
@@ -131,27 +131,6 @@ namespace Exiled.API.Features.Npcs
                 }
 
                 NetworkServer.UnSpawn(GameObject);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the current item of the NPC.
-        /// </summary>
-        public new Item CurrentItem
-        {
-            get => Item.Get(ReferenceHub.inventory.CurInstance);
-            set
-            {
-                if (value is null || value.Type == ItemType.None)
-                {
-                    Inventory.ServerSelectItem(0);
-                    return;
-                }
-
-                if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
-                    AddItem(value.Base);
-
-                Inventory.ServerSelectItem(value.Serial);
             }
         }
 
@@ -269,8 +248,6 @@ namespace Exiled.API.Features.Npcs
             // Try Catch required to prevent errors while setting the UserId and the IpAddress of the NPC.
             try
             {
-                ReferenceHub.characterClassManager._privUserId = "npc";
-                ReferenceHub.queryProcessor._ipAddress = "127.0.0.WAN";
                 ReferenceHub.characterClassManager.UserId = $"npc{Id}@server";
             }
             catch
@@ -287,11 +264,7 @@ namespace Exiled.API.Features.Npcs
 
             if (currentItem is not ItemType.None)
             {
-                var item = Item.Create(currentItem);
-
-                ReferenceHub.inventory.ServerAddItem(item.Type, item.Serial);
-
-                ReferenceHub.inventory.ServerSelectItem(item.Serial);
+                CurrentItem = currentItem == ItemType.None ? null : Item.Create(currentItem);
             }
 
             SessionVariables.Add("IsNpc", true);
