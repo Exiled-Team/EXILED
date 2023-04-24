@@ -331,10 +331,10 @@ namespace Exiled.API.Extensions
                 return ItemCategory.Medical;
             if (type.IsWeapon())
                 return ItemCategory.Firearm;
-            if (type.IsScp())
-                return ItemCategory.SCPItem;
             if (type.IsThrowable())
                 return ItemCategory.Grenade;
+            if (type.IsScp())
+                return ItemCategory.SCPItem;
 
             return ItemCategory.None;
         }
