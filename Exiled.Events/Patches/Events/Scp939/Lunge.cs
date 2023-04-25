@@ -30,9 +30,7 @@ namespace Exiled.Events.Patches.Events.Scp939
         {
             LungingEventArgs ev = new LungingEventArgs(__instance.Owner, __instance.IsReady);
             Scp939.OnLunging(ev);
-            if (!ev.IsAllowed)
-                return false;
-            return true;
+            return ev.IsAllowed;
         }
     }
 }
