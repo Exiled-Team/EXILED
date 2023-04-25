@@ -41,7 +41,6 @@ namespace Exiled.Events.EventArgs.Server
         /// </param>
         public RespawningTeamEventArgs(List<Player> players, int maxRespawn, SpawnableTeamType nextKnownTeam, bool isAllowed = true)
         {
-            players.RemoveRange(maxRespawn, players.Count - maxRespawn);
             Players = players;
             MaximumRespawnAmount = maxRespawn;
 
