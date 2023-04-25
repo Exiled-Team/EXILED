@@ -11,10 +11,10 @@ namespace Exiled.Events.Patches.Events.Warhead
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
+    using Exiled.Events.EventArgs.Warhead;
     using Handlers;
-
     using HarmonyLib;
+    using Interactables.Interobjects.DoorUtils;
 
     using static HarmonyLib.AccessTools;
 
@@ -25,9 +25,26 @@ namespace Exiled.Events.Patches.Events.Warhead
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     internal static class Detonated
     {
+        private static bool Prefix(AlphaWarheadController __instance)
+        {
+            DetonatingEventArgs ev = new();
+            Warhead.OnDetonating(ev);
+
+            if (!ev.IsAllowed)
+            {
+                __instance.Info.StartTime = 0.0;
+                __instance.NetworkInfo = __instance.Info;
+                return false;
+            }
+
+            return true;
+        }
+
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            Label retLabel = generator.DefineLabel();
 
             const int offset = 1;
             int index = newInstructions.FindIndex(
