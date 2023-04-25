@@ -13,13 +13,11 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection.Emit;
 
     using API.Features.Pools;
-
     using Exiled.Events.EventArgs.Server;
     using Exiled.Events.Handlers;
-
     using HarmonyLib;
-
     using Respawning;
+    using Respawning.NamingRules;
 
     using static HarmonyLib.AccessTools;
 
@@ -36,8 +34,8 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = -2;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_3) + offset;
+            int offset = -3;
+            int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(UnitNamingRule), nameof(UnitNamingRule.TryGetNamingRule)))) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
 
