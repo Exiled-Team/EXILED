@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs.Scp939
     /// <summary>
     ///     Contains all information after SCP-939 uses its lunge ability.
     /// </summary>
-    public class LungingEventArgs : IPlayerEvent // TODO: Rename to 'LungedEventArgs'
+    public class LungingEventArgs : IPlayerEvent, IDeniableEvent // TODO: Rename to 'LungedEventArgs' and remove IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="LungingEventArgs" /> class.
