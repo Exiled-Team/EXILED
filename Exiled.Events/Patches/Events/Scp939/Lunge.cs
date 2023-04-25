@@ -22,8 +22,8 @@ namespace Exiled.Events.Patches.Events.Scp939
     {
         private static void Postfix(Scp939LungeAbility __instance)
         {
-            LungingEventArgs ev = new(Player.Get(__instance.Owner));
-            Handlers.Scp939.OnLunging(ev);
+            LungedEventArgs ev = new(Player.Get(__instance.Owner));
+            Handlers.Scp939.OnLunged(ev);
         }
     }
 }
