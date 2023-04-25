@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+
 namespace Exiled.Events.Patches.Events.Warhead
 {
     using System.Collections.Generic;
@@ -14,35 +16,58 @@ namespace Exiled.Events.Patches.Events.Warhead
     using Exiled.Events.EventArgs.Warhead;
     using Handlers;
     using HarmonyLib;
-    using Interactables.Interobjects.DoorUtils;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="AlphaWarheadController.Detonate" />.
-    ///     Adds the WarheadDetonated event.
+    ///     Patches <see cref="AlphaWarheadController.Detonate" />
+    ///     to add <see cref="Warhead.Detonating"/> and <see cref="Warhead.Detonated"/> events.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     internal static class Detonated
     {
-        private static bool Prefix(AlphaWarheadController __instance)
-        {
-            DetonatingEventArgs ev = new();
-            Warhead.OnDetonating(ev);
-
-            if (!ev.IsAllowed)
-            {
-                __instance.Info.StartTime = 0.0;
-                __instance.NetworkInfo = __instance.Info;
-                return false;
-            }
-
-            return true;
-        }
-
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            Label continueLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(DetonatingEventArgs));
+
+            newInstructions[0].WithLabels(continueLabel);
+
+            newInstructions.InsertRange(
+                0,
+                new CodeInstruction[]
+                {
+                    // DetonatingEventArgs ev = new();
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DetonatingEventArgs))[0]),
+                    new(OpCodes.Stloc, ev.LocalIndex),
+
+                    // Handlers.Warhead.OnDetonating(ev);
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnDetonating))),
+
+                    // if (ev.IsAllowed)
+                    //    goto continueLabel;
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DetonatingEventArgs), nameof(DetonatingEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, continueLabel),
+
+                    // this.Info.StartTime = 0.0;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldflda, Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Info))),
+                    new(OpCodes.Ldc_R8, 0.0),
+                    new(OpCodes.Stfld, Field(typeof(AlphaWarheadSyncInfo), nameof(AlphaWarheadSyncInfo.StartTime))),
+
+                    // this.NetworkInfo = this.Info;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Info))),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(AlphaWarheadController), nameof(AlphaWarheadController.NetworkInfo))),
+
+                    // return;
+                    new(OpCodes.Ret),
+                });
 
             const int offset = 1;
             int index = newInstructions.FindIndex(
@@ -56,8 +81,8 @@ namespace Exiled.Events.Patches.Events.Warhead
                     new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnDetonated))),
                 });
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            foreach (var instruction in newInstructions)
+                yield return instruction;
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
