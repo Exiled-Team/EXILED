@@ -11,24 +11,29 @@ namespace Exiled.Events.EventArgs.Scp939
     using Interfaces;
 
     /// <summary>
-    ///     Contains all information after SCP-939 uses its lunge ability.
+    /// Contains all information after SCP-939 uses its lunge ability.
     /// </summary>
     public class LungedEventArgs : IPlayerEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LungedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="LungedEventArgs"/> class.
         /// </summary>
-        /// <param name="player">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
-        public LungedEventArgs(Player player)
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="target"><inheritdoc cref="Target"/></param>
+        public LungedEventArgs(ReferenceHub player, ReferenceHub target)
         {
-            Player = player;
+            Player = Player.Get(player);
+            Target = target == null ? null : Player.Get(target);
         }
 
         /// <summary>
-        ///     Gets the player who's controlling SCP-939.
+        /// Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Get the player who got attacked.
+        /// </summary>
+        public Player Target { get; }
     }
 }

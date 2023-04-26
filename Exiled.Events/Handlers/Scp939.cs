@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Scp939;
@@ -27,12 +25,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         ///     Invoked before SCP-939 uses its lunge ability.
         /// </summary>
-        [Obsolete("Event doesn't fire. Use Lunged event", false)]
         public static event CustomEventHandler<LungingEventArgs> Lunging;
 
         /// <summary>
         ///     Invoked after SCP-939 uses its lunge ability.
         /// </summary>
+        /// <remarks>Fires only if SCP-939 hurts somebody</remarks>
         public static event CustomEventHandler<LungedEventArgs> Lunged;
 
         /// <summary>
@@ -65,7 +63,6 @@ namespace Exiled.Events.Handlers
         ///     Called before SCP-939 uses its lunge ability.
         /// </summary>
         /// <param name="ev">The <see cref="LungingEventArgs" /> instance.</param>
-        [Obsolete("Event doesn't fire. Use OnLunged", false)]
         public static void OnLunging(LungingEventArgs ev) => Lunging.InvokeSafely(ev);
 
         /// <summary>

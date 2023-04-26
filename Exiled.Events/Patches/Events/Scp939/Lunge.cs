@@ -7,22 +7,22 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Scp939;
     using HarmonyLib;
+    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp939;
 
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     /// <summary>
-    ///     Patches <see cref="Scp939LungeAbility.TriggerLunge()" />
-    ///     to add the <see cref="Handlers.Scp939.Lunging" /> event.
+    ///     Patches <see cref="Scp939LungeAbility.ClientSendHit(HumanRole)"/>
+    ///     to add the <see cref="Handlers.Scp939.Lunged"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.TriggerLunge))]
+    [HarmonyPatch(typeof(Scp939LungeAbility), nameof(Scp939LungeAbility.ClientSendHit))]
     internal static class Lunge
     {
-        private static void Postfix(Scp939LungeAbility __instance)
+        private static void Postfix(Scp939LungeAbility __instance, HumanRole human)
         {
-            LungedEventArgs ev = new(Player.Get(__instance.Owner));
+            LungedEventArgs ev = new(__instance.Owner, human.TryGetOwner(out var hub) ? hub : null);
             Handlers.Scp939.OnLunged(ev);
         }
     }
