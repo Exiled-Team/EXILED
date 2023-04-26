@@ -43,7 +43,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             int moveIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_2) + moveOffset;
 
-#pragma warning disable CS0618
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(referenceHub)
@@ -69,10 +68,6 @@ namespace Exiled.Events.Patches.Events.Player
                 // Handlers.Player.OnThrowingRequest(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingRequest))),
 
-                // if (ev.IsAllowed) return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowingRequestEventArgs), nameof(ThrowingRequestEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
-
                 // Networkconnection.Serial
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(ThrowableNetworkHandler.ThrowableItemRequestMessage), nameof(ThrowableNetworkHandler.ThrowableItemRequestMessage.Serial))),
@@ -95,7 +90,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowableNetworkHandler.ThrowableItemRequestMessage))[0]),
                 new(OpCodes.Starg_S, 1),
             });
-#pragma warning restore CS0618
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
