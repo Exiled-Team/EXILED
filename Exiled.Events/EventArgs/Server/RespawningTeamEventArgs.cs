@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
 namespace Exiled.Events.EventArgs.Server
 {
     using System.Collections.Generic;
@@ -25,6 +23,7 @@ namespace Exiled.Events.EventArgs.Server
     public class RespawningTeamEventArgs : IDeniableEvent
     {
         private SpawnableTeamType nextKnownTeam;
+        private int maximumRespawnAmount;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RespawningTeamEventArgs" /> class.
@@ -62,18 +61,18 @@ namespace Exiled.Events.EventArgs.Server
         /// </summary>
         public int MaximumRespawnAmount
         {
-            get => MaximumRespawnAmount;
+            get => maximumRespawnAmount;
             set
             {
-                if (value == MaximumRespawnAmount)
+                if (value == maximumRespawnAmount)
                     return;
 
-                if (value < MaximumRespawnAmount)
+                if (value < maximumRespawnAmount)
                 {
                     Players.RemoveRange(value, Players.Count - value);
                 }
 
-                MaximumRespawnAmount = value;
+                maximumRespawnAmount = value;
             }
         }
 
