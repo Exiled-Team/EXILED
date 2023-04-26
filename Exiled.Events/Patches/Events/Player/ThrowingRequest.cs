@@ -62,7 +62,6 @@ namespace Exiled.Events.Patches.Events.Player
                 // ThrowingRequestEventArgs ev = new(Player.Get(referenceHub), ThrowableItem,Networkconnection.Request, true);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowingRequestEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnThrowingRequest(ev);
