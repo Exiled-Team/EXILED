@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Scp106
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(TeleportingEventArgs));
-            Label retLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
             int offset = -2;
             int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ret) + offset;
@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                     // if (ev.IsAllowed)
                     //     goto continueLabel;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, retLabel),
+                    new(OpCodes.Brtrue_S, continueLabel),
 
                     // return this.Owner.transform.position;
                     new(OpCodes.Ldarg_0),
@@ -76,7 +76,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                     new(OpCodes.Ret),
 
                     // safePosition = ev.Position;
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(retLabel),
+                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.Position))),
                     new(OpCodes.Stloc_0),
                 });
