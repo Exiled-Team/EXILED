@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp106HuntersAtlasAbility.ServerProcessCmd" />.
+    ///     Patches <see cref="Scp106HuntersAtlasAbility.GetSafePosition" />.
     ///     Adds the <see cref="Handlers.Scp106.Teleporting" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106HuntersAtlasAbility), nameof(Scp106HuntersAtlasAbility.GetSafePosition))]
