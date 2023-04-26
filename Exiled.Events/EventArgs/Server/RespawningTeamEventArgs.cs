@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+
 namespace Exiled.Events.EventArgs.Server
 {
     using System.Collections.Generic;
@@ -58,7 +60,22 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         ///     Gets or sets the maximum amount of respawnable players.
         /// </summary>
-        public int MaximumRespawnAmount { get; set; }
+        public int MaximumRespawnAmount
+        {
+            get => MaximumRespawnAmount;
+            set
+            {
+                if (value == MaximumRespawnAmount)
+                    return;
+
+                if (value < MaximumRespawnAmount)
+                {
+                    Players.RemoveRange(value, Players.Count - value);
+                }
+
+                MaximumRespawnAmount = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating what the next respawnable team is.

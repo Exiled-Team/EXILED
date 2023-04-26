@@ -100,22 +100,6 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetHubs))),
                     new(OpCodes.Stloc_1),
 
-                    // if (num >= list.Count)
-                    //     goto skipLabel;
-                    new(OpCodes.Ldloc_2),
-                    new(OpCodes.Ldloc_1),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.Count))),
-                    new(OpCodes.Bge, skipLabel),
-
-                    // list.RemoveRange(num, list.Count - num);
-                    new(OpCodes.Ldloc_1),
-                    new(OpCodes.Ldloc_2),
-                    new(OpCodes.Ldloc_1),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.Count))),
-                    new(OpCodes.Ldloc_2),
-                    new(OpCodes.Sub),
-                    new(OpCodes.Call, Method(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.RemoveRange))),
-
                     // queueToFill = ev.SpawnQueue;
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnQueue))).WithLabels(skipLabel),
                     new(OpCodes.Stloc, 6),
