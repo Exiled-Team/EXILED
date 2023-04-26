@@ -89,7 +89,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
-        public virtual List<CustomAbility> CustomAbilities { get; set; } = new();
+        public virtual List<CustomAbility>? CustomAbilities { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the starting inventory for the role.
@@ -206,22 +206,22 @@ namespace Exiled.CustomRoles.API.Features
             return stringLookupTable[name];
         }
 
+        /// <inheritdoc cref="TryGet(uint,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
+        [Obsolete("Use TryGet(uint) instead", false)]
+        public static bool TryGet(int id, out CustomRole? customRole) => TryGet((uint)id, out customRole);
+
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by <inheritdoc cref="Id"/>.
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        [Obsolete("Use TryGet(uint) instead", false)]
-        public static bool TryGet(int id, out CustomRole? customRole)
+        public static bool TryGet(uint id, out CustomRole? customRole)
         {
             customRole = Get(id);
 
             return customRole is not null;
         }
-
-        /// <inheritdoc cref="TryGet(int,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
-        public static bool TryGet(uint id, out CustomRole? customRole) => TryGet(id, out customRole);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
@@ -281,7 +281,16 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
         /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
-        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object?overrideClass = null)
+        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null) => RegisterRoles(skipReflection, overrideClass, true);
+
+        /// <summary>
+        /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
+        /// <param name="inheritAttributes">Whether or not inherited attributes should be taken into account for registration.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> RegisterRoles(bool skipReflection = false, object? overrideClass = null, bool inheritAttributes = true)
         {
             List<CustomRole> roles = new();
 
@@ -291,14 +300,14 @@ namespace Exiled.CustomRoles.API.Features
 
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.BaseType != typeof(CustomRole) && type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null)
+                if (type.BaseType != typeof(CustomRole) && type.GetCustomAttribute(typeof(CustomRoleAttribute), inheritAttributes) is null)
                 {
-                    Log.Debug($"{type} base: {type.BaseType} -- {type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null}");
+                    Log.Debug($"{type} base: {type.BaseType} -- {type.GetCustomAttribute(typeof(CustomRoleAttribute), inheritAttributes) is null}");
                     continue;
                 }
 
                 Log.Debug("Getting attributed for {type");
-                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true).Cast<Attribute>())
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), inheritAttributes).Cast<Attribute>())
                 {
                     CustomRole? customRole = null;
 
@@ -464,7 +473,7 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>True if the player has this role.</returns>
-        public virtual bool Check(Player player) => TrackedPlayers.Contains(player);
+        public virtual bool Check(Player? player) => player is not null && TrackedPlayers.Contains(player);
 
         /// <summary>
         /// Initializes this role manager.
@@ -521,12 +530,6 @@ namespace Exiled.CustomRoles.API.Features
                 TryAddItem(player, itemName);
             }
 
-            foreach (AmmoType ammo in Ammo.Keys)
-            {
-                Log.Debug($"{Name}: Adding {Ammo[ammo]} {ammo} to inventory.");
-                player.SetAmmo(ammo, Ammo[ammo]);
-            }
-
             Log.Debug($"{Name}: Setting health values.");
             player.Health = MaxHealth;
             player.MaxHealth = MaxHealth;
@@ -539,8 +542,10 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             Log.Debug($"{Name}: Setting player info");
-            player.CustomInfo = CustomInfo;
-            player.InfoArea &= ~PlayerInfoArea.Role;
+
+            player.CustomInfo = $"{player.CustomName}\n{CustomInfo}";
+            player.InfoArea &= ~(PlayerInfoArea.Role | PlayerInfoArea.Nickname);
+
             if (CustomAbilities is not null)
             {
                 foreach (CustomAbility ability in CustomAbilities)
@@ -586,18 +591,22 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Removing role from {player.Nickname}");
             TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
-            player.InfoArea |= PlayerInfoArea.Role;
+            player.InfoArea |= PlayerInfoArea.Role | PlayerInfoArea.Nickname;
             player.Scale = Vector3.one;
-            if (RemovalKillsPlayer)
-                player.Role.Set(RoleTypeId.Spectator);
-            foreach (CustomAbility ability in CustomAbilities)
+            if (CustomAbilities is not null)
             {
-                ability.RemoveAbility(player);
+                foreach (CustomAbility ability in CustomAbilities)
+                {
+                    ability.RemoveAbility(player);
+                }
             }
 
             RoleRemoved(player);
             player.UniqueRole = string.Empty;
             player.TryRemoveCustomeRoleFriendlyFire(Name);
+
+            if (RemovalKillsPlayer)
+                player.Role.Set(RoleTypeId.Spectator);
         }
 
         /// <summary>
@@ -819,6 +828,7 @@ namespace Exiled.CustomRoles.API.Features
         protected virtual void SubscribeEvents()
         {
             Log.Debug($"{Name}: Loading events.");
+            Exiled.Events.Handlers.Player.ChangingNickname += OnInternalChangingNickname;
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning += OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
@@ -833,6 +843,7 @@ namespace Exiled.CustomRoles.API.Features
                 RemoveRole(player);
 
             Log.Debug($"{Name}: Unloading events.");
+            Exiled.Events.Handlers.Player.ChangingNickname -= OnInternalChangingNickname;
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning -= OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
@@ -866,6 +877,14 @@ namespace Exiled.CustomRoles.API.Features
         {
         }
 
+        private void OnInternalChangingNickname(ChangingNicknameEventArgs ev)
+        {
+            if (!Check(ev.Player))
+                return;
+
+            ev.Player.CustomInfo = $"{ev.NewName}\n{CustomInfo}";
+        }
+
         private void OnInternalSpawning(SpawningEventArgs ev)
         {
             if (SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
@@ -875,7 +894,26 @@ namespace Exiled.CustomRoles.API.Features
         private void OnInternalChangingRole(ChangingRoleEventArgs ev)
         {
             if (Check(ev.Player) && ((ev.NewRole == RoleTypeId.Spectator && !KeepRoleOnDeath) || (ev.NewRole != RoleTypeId.Spectator && ev.NewRole != Role && !KeepRoleOnChangingRole)))
+            {
                 RemoveRole(ev.Player);
+            }
+            else if (Check(ev.Player))
+            {
+                if (Ammo.Count > 0)
+                {
+                    ev.Ammo.Clear();
+                    Timing.CallDelayed(
+                        0.5f,
+                        () =>
+                        {
+                            foreach (AmmoType type in Enum.GetValues(typeof(AmmoType)))
+                            {
+                                if (type != AmmoType.None)
+                                    ev.Player.SetAmmo(type, Ammo.ContainsKey(type) ? Ammo[type] : (ushort)0);
+                            }
+                        });
+                }
+            }
         }
 
         private void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
