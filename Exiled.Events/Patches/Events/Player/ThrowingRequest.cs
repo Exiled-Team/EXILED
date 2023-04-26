@@ -43,6 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int moveIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_2) + moveOffset;
 
+#pragma warning disable CS0618
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(referenceHub)
@@ -94,6 +95,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowableNetworkHandler.ThrowableItemRequestMessage))[0]),
                 new(OpCodes.Starg_S, 1),
             });
+#pragma warning restore CS0618
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 

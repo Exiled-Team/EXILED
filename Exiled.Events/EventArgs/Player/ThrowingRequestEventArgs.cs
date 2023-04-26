@@ -7,11 +7,12 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
-
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -31,7 +32,9 @@ namespace Exiled.Events.EventArgs.Player
             Player = player;
             Throwable = (Throwable)Item.Get(item);
             RequestType = (ThrowRequest)request;
+#pragma warning disable CS0618
             IsAllowed = isAllowed;
+#pragma warning restore CS0618
         }
 
         /// <summary>
@@ -52,6 +55,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets a value indicating whether or not the grenade can be thrown.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        [Obsolete("Deprecated. Setting it to false will result in desync.")]
+        public bool IsAllowed { get; set; } = true; // TODO: Remove this property.
     }
 }
