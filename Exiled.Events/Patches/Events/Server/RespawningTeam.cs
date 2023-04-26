@@ -40,7 +40,6 @@ namespace Exiled.Events.Patches.Events.Server
             LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
 
             Label continueLabel = generator.DefineLabel();
-            Label skipLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 index,
@@ -101,7 +100,7 @@ namespace Exiled.Events.Patches.Events.Server
                     new(OpCodes.Stloc_1),
 
                     // queueToFill = ev.SpawnQueue;
-                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnQueue))).WithLabels(skipLabel),
+                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnQueue))),
                     new(OpCodes.Stloc, 6),
                 });
 
