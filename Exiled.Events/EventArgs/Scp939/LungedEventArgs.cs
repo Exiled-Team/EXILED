@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public Player Player { get; }
 
         /// <summary>
-        /// Get the player who got attacked.
+        /// Gets the player who got attacked.
         /// </summary>
         public Player Target { get; }
     }
