@@ -7,15 +7,17 @@
 
 namespace Exiled.Loader.Features.Configs
 {
+    extern alias Yaml;
+
     using System;
 
-    using YamlDotNet.Core;
-    using YamlDotNet.Serialization;
+    using IObjectDescriptor = Yaml::YamlDotNet.Serialization.IObjectDescriptor;
+    using ScalarStyle = Yaml::YamlDotNet.Core.ScalarStyle;
 
     /// <summary>
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    public sealed class CommentsObjectDescriptor : IObjectDescriptor
+    public sealed class CommentsObjectDescriptor : Yaml::YamlDotNet.Serialization.IObjectDescriptor
     {
         private readonly IObjectDescriptor innerDescriptor;
 
@@ -35,16 +37,16 @@ namespace Exiled.Loader.Features.Configs
         /// </summary>
         public string Comment { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IObjectDescriptor" />
         public object Value => innerDescriptor.Value;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IObjectDescriptor" />
         public Type Type => innerDescriptor.Type;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IObjectDescriptor" />
         public Type StaticType => innerDescriptor.StaticType;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IObjectDescriptor" />
         public ScalarStyle ScalarStyle => innerDescriptor.ScalarStyle;
     }
 }

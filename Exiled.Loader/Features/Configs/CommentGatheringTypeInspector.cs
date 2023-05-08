@@ -7,17 +7,19 @@
 
 namespace Exiled.Loader.Features.Configs
 {
+    extern alias Yaml;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.TypeInspectors;
+    using IPropertyDescriptor = Yaml::YamlDotNet.Serialization.IPropertyDescriptor;
+    using ITypeInspector = Yaml::YamlDotNet.Serialization.ITypeInspector;
 
     /// <summary>
     /// Spurce: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    public sealed class CommentGatheringTypeInspector : TypeInspectorSkeleton
+    public sealed class CommentGatheringTypeInspector : Yaml::YamlDotNet.Serialization.TypeInspectors.TypeInspectorSkeleton
     {
         private readonly ITypeInspector innerTypeDescriptor;
 

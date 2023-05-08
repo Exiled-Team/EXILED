@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomRoles.API.Features.Parsers
 {
+    extern alias Yaml;
+
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -14,9 +16,9 @@ namespace Exiled.CustomRoles.API.Features.Parsers
 
     using Exiled.CustomRoles.API.Features.Interfaces;
 
-    using YamlDotNet.Core;
-    using YamlDotNet.Core.Events;
-    using YamlDotNet.Serialization;
+    using Yaml::YamlDotNet.Core;
+    using Yaml::YamlDotNet.Core.Events;
+    using Yaml::YamlDotNet.Serialization;
 
     /// <summary>
     /// A node resolver for <see cref="CustomAbility"/>.
@@ -37,7 +39,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             typeDiscriminators = discriminators;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="INodeDeserializer"/>
         public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object?> nestedObjectDeserializer, out object? value)
         {
             if (!reader.Accept<MappingStart>(out MappingStart? mapping))

@@ -52,16 +52,10 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets FuseTime.
         /// </summary>
-        public float FuseTime
+        public double FuseTime
         {
-            get => Base._fuseTime;
-            set
-            {
-                if (IsActive)
-                    Base.RpcSetTime(value);
-                else
-                    Base._fuseTime = value;
-            }
+            get => Base.TargetTime;
+            set => Base.TargetTime = value;
         }
 
         /// <summary>
@@ -73,9 +67,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
             set
             {
                 if (value && Base.TargetTime == 0.0f)
-                    Base.RpcSetTime(FuseTime);
+                    Base.TargetTime = FuseTime;
                 else if (!value && Base.TargetTime != 0.0f)
-                    Base.RpcSetTime(-Time.timeSinceLevelLoad);
+                    Base.TargetTime = -Time.timeSinceLevelLoad;
             }
         }
 

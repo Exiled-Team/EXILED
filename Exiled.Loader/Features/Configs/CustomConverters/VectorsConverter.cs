@@ -7,6 +7,8 @@
 
 namespace Exiled.Loader.Features.Configs.CustomConverters
 {
+    extern alias Yaml;
+
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -16,28 +18,32 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
 
     using UnityEngine;
 
-    using YamlDotNet.Core;
-    using YamlDotNet.Core.Events;
-    using YamlDotNet.Serialization;
+    using Yaml::YamlDotNet.Core.Events;
+    using Yaml::YamlDotNet.Serialization;
+
+    using IEmitter = Yaml::YamlDotNet.Core.IEmitter;
+    using IParser = Yaml::YamlDotNet.Core.IParser;
+    using MappingEnd = Yaml::YamlDotNet.Core.Events.MappingEnd;
+    using MappingStart = Yaml::YamlDotNet.Core.Events.MappingStart;
 
     /// <summary>
     /// Converts a Vector2, Vector3 or Vector4 to Yaml configs and vice versa.
     /// </summary>
     public sealed class VectorsConverter : IYamlTypeConverter
     {
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public bool Accepts(Type type) => type == typeof(Vector2) || type == typeof(Vector3) || type == typeof(Vector4);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public object ReadYaml(IParser parser, Type type)
         {
-            if (!parser.TryConsume<MappingStart>(out _))
+            if (!Yaml::YamlDotNet.Core.ParserExtensions.TryConsume<MappingStart>(parser, out _))
                 throw new InvalidDataException($"Cannot deserialize object of type {type.FullName}.");
 
             List<object> coordinates = ListPool<object>.Pool.Get(4);
             int i = 0;
 
-            while (!parser.TryConsume<MappingEnd>(out _))
+            while (!Yaml::YamlDotNet.Core.ParserExtensions.TryConsume<MappingEnd>(parser, out _))
             {
                 if (i++ % 2 == 0)
                 {
@@ -45,7 +51,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
                     continue;
                 }
 
-                if (!parser.TryConsume(out Scalar scalar) || !float.TryParse(scalar.Value, NumberStyles.Float, CultureInfo.GetCultureInfo("en-US"), out float coordinate))
+                if (!Yaml::YamlDotNet.Core.ParserExtensions.TryConsume(parser, out Scalar scalar) || !float.TryParse(scalar.Value, NumberStyles.Float, CultureInfo.GetCultureInfo("en-US"), out float coordinate))
                 {
                     ListPool<object>.Pool.Return(coordinates);
                     throw new InvalidDataException($"Invalid float value.");
@@ -61,7 +67,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
             return vector;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
             Dictionary<string, float> coordinates = DictionaryPool<string, float>.Pool.Get();

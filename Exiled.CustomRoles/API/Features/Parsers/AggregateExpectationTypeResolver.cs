@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomRoles.API.Features.Parsers
 {
+    extern alias Yaml;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -17,8 +19,10 @@ namespace Exiled.CustomRoles.API.Features.Parsers
     using Exiled.CustomRoles.API.Features.Extensions;
     using Exiled.CustomRoles.API.Features.Interfaces;
 
-    using YamlDotNet.Core.Events;
-    using YamlDotNet.Serialization;
+    using Serialization;
+
+    using Yaml::YamlDotNet.Core.Events;
+    using Yaml::YamlDotNet.Serialization;
 
     /// <inheritdoc />
     public class AggregateExpectationTypeResolver<T> : ITypeDiscriminator

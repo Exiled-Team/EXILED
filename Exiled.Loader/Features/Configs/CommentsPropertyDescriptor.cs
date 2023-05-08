@@ -7,16 +7,19 @@
 
 namespace Exiled.Loader.Features.Configs
 {
+    extern alias Yaml;
+
     using System;
     using System.ComponentModel;
 
-    using YamlDotNet.Core;
-    using YamlDotNet.Serialization;
+    using IObjectDescriptor = Yaml::YamlDotNet.Serialization.IObjectDescriptor;
+    using IPropertyDescriptor = Yaml::YamlDotNet.Serialization.IPropertyDescriptor;
+    using ScalarStyle = Yaml::YamlDotNet.Core.ScalarStyle;
 
     /// <summary>
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    public sealed class CommentsPropertyDescriptor : IPropertyDescriptor
+    public sealed class CommentsPropertyDescriptor : Yaml::YamlDotNet.Serialization.IPropertyDescriptor
     {
         private readonly IPropertyDescriptor baseDescriptor;
 
@@ -30,43 +33,43 @@ namespace Exiled.Loader.Features.Configs
             Name = baseDescriptor.Name;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public string Name { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public Type Type => baseDescriptor.Type;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public Type TypeOverride
         {
             get => baseDescriptor.TypeOverride;
             set => baseDescriptor.TypeOverride = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public int Order { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public ScalarStyle ScalarStyle
         {
             get => baseDescriptor.ScalarStyle;
             set => baseDescriptor.ScalarStyle = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public bool CanWrite => baseDescriptor.CanWrite;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public void Write(object target, object value)
         {
             baseDescriptor.Write(target, value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public T GetCustomAttribute<T>()
             where T : Attribute => baseDescriptor.GetCustomAttribute<T>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public IObjectDescriptor Read(object target)
         {
             DescriptionAttribute description = baseDescriptor.GetCustomAttribute<DescriptionAttribute>();

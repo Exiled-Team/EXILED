@@ -48,9 +48,9 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="EffectGrenade.OnDestroy"/> for fixing cringe NW code :).
+    /// Patches EffectGrenade.OnDestroy for fixing cringe NW code :).
     /// </summary>
-    [HarmonyPatch(typeof(EffectGrenade), nameof(EffectGrenade.OnDestroy))]
+    [HarmonyPatch(typeof(EffectGrenade), nameof(EffectGrenade.ServerFuseEnd))]
     internal static class EffectGrenadesListRemove
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -59,32 +59,6 @@ namespace Exiled.Events.Patches.Generic
             yield return new CodeInstruction(OpCodes.Ldarg_0);
             yield return new(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.OnDestroy)));
             yield return new(OpCodes.Ret);
-        }
-    }
-
-    /// <summary>
-    /// Patches <see cref="EffectGrenade.ServerFuseEnd"/> for fixing cringe NW code :).
-    /// </summary>
-    [HarmonyPatch(typeof(EffectGrenade), nameof(EffectGrenade.ServerFuseEnd))]
-    internal static class ServerFuseEndListRemove
-    {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-
-            Label skip = generator.DefineLabel();
-
-            // PlayExplosionEffects()
-            newInstructions.InsertRange(0, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new(OpCodes.Callvirt, Method(typeof(EffectGrenade), nameof(EffectGrenade.PlayExplosionEffects))),
-            });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 

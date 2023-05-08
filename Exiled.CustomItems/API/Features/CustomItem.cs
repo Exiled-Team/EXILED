@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomItems.API.Features
 {
+    extern alias Yaml;
+
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -37,7 +39,7 @@ namespace Exiled.CustomItems.API.Features
 
     using UnityEngine;
 
-    using YamlDotNet.Serialization;
+    using Yaml::YamlDotNet.Serialization;
 
     using static CustomItems;
 

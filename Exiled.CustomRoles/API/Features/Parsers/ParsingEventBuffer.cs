@@ -7,10 +7,13 @@
 
 namespace Exiled.CustomRoles.API.Features.Parsers
 {
+    extern alias Yaml;
+
     using System.Collections.Generic;
 
-    using YamlDotNet.Core;
-    using YamlDotNet.Core.Events;
+    using Yaml::YamlDotNet.Core;
+
+    using ParsingEvent = Yaml::YamlDotNet.Core.Events.ParsingEvent;
 
     /// <inheritdoc />
     public class ParsingEventBuffer : IParser
@@ -29,10 +32,10 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             current = events.First;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IParser"/>
         public ParsingEvent? Current => current?.Value;
 
-        /// <inheritdoc />
+        /// <inheritdoc cref="IParser"/>
         public bool MoveNext()
         {
             current = current?.Next;

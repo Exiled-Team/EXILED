@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Spawn
 {
+    extern alias Yaml;
+
     using System;
 
     using Extensions;
@@ -15,7 +17,7 @@ namespace Exiled.API.Features.Spawn
 
     using UnityEngine;
 
-    using YamlDotNet.Serialization;
+    using Yaml::YamlDotNet.Serialization;
 
     /// <summary>
     /// Defines a spawn point that follows a base-game role spawn point.

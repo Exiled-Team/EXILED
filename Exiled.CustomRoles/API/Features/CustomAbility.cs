@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomRoles.API.Features
 {
+    extern alias Yaml;
+
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -17,7 +19,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Features.Attributes;
     using Exiled.API.Interfaces;
 
-    using YamlDotNet.Serialization;
+    using Yaml::YamlDotNet.Serialization;
 
     /// <summary>
     /// The custom ability base class.

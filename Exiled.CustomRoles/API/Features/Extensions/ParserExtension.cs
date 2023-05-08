@@ -7,12 +7,15 @@
 
 namespace Exiled.CustomRoles.API.Features.Extensions
 {
+    extern alias Yaml;
+
     using System;
 
     using Exiled.CustomRoles.API.Features.Parsers;
 
-    using YamlDotNet.Core;
-    using YamlDotNet.Core.Events;
+    using Yaml::YamlDotNet.Core.Events;
+
+    using static Yaml::YamlDotNet.Core.ParserExtensions;
 
     /// <summary>
     /// Extensions for <see cref="ParsingEventBuffer"/>.
