@@ -18,7 +18,7 @@
 
     <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
-        <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
+        <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" Aliases="Yaml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -50,10 +50,6 @@
         <DependentUpon>AutoUpdateFiles.tt</DependentUpon>
       </Compile>
     </ItemGroup>
-
-
-
-
 
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
         <PostBuildEvent>if not "$(EXILED_DEV_PLUGINAPI_REFERENCE)"=="" copy /y "$(OutputPath)$(AssemblyName).dll" "$(EXILED_DEV_PLUGINAPI_REFERENCE)\"</PostBuildEvent>

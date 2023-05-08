@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Spawn
 {
+    extern alias Yaml;
+
     using System;
 
     using Exiled.API.Enums;
@@ -14,8 +16,6 @@ namespace Exiled.API.Features.Spawn
     using Extensions;
 
     using UnityEngine;
-
-    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Handles dynamic spawn locations.
@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Spawn
         public override float Chance { get; set; }
 
         /// <inheritdoc/>
-        [YamlIgnore]
+        [Yaml::YamlDotNet.Serialization.YamlIgnoreAttribute]
         public override string Name
         {
             get => Location.ToString();
@@ -39,7 +39,7 @@ namespace Exiled.API.Features.Spawn
         }
 
         /// <inheritdoc/>
-        [YamlIgnore]
+        [Yaml::YamlDotNet.Serialization.YamlIgnoreAttribute]
         public override Vector3 Position
         {
             get => Location.GetPosition();

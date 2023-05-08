@@ -117,7 +117,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int offset = 1;
             int index = newInstructions.FindIndex(
-                instruction => instruction.Calls(Method(typeof(GameObjectPools.PoolObject), nameof(GameObjectPools.PoolObject.SpawnPoolObject)))) + offset;
+                instruction => instruction.Calls(Method(typeof(GameObjectPools.PoolObject), nameof(GameObjectPools.PoolObject.SetupPoolObject)))) + offset;
 
             newInstructions[index].WithLabels(continueLabel1);
 

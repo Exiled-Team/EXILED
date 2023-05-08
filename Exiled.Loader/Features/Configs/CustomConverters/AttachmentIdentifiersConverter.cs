@@ -7,6 +7,8 @@
 
 namespace Exiled.Loader.Features.Configs.CustomConverters
 {
+    extern alias Yaml;
+
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -15,28 +17,30 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
 
     using InventorySystem.Items.Firearms.Attachments;
 
-    using YamlDotNet.Core;
-    using YamlDotNet.Core.Events;
-    using YamlDotNet.Serialization;
+    using Yaml::YamlDotNet.Core.Events;
+    using Yaml::YamlDotNet.Serialization;
+
+    using IEmitter = Yaml::YamlDotNet.Core.IEmitter;
+    using IParser = Yaml::YamlDotNet.Core.IParser;
 
     /// <summary>
     /// Converts a <see cref="IEnumerable{T}"/> of <see cref="AttachmentName"/> to Yaml configs and vice versa.
     /// </summary>
     public sealed class AttachmentIdentifiersConverter : IYamlTypeConverter
     {
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public bool Accepts(Type type) => type == typeof(AttachmentName);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public object ReadYaml(IParser parser, Type type)
         {
-            if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentName name))
-                throw new InvalidDataException($"Invalid AttachmentNameTranslation value: {scalar.Value}.");
+            if (!Yaml::YamlDotNet.Core.ParserExtensions.TryConsume(parser, out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentName name))
+                throw new InvalidDataException($"Invalid AttachmentNameTranslation value: {scalar?.Value}.");
 
             return Enum.Parse(type, name.ToString());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
             AttachmentName name = default;

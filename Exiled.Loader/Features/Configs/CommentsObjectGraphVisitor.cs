@@ -7,21 +7,24 @@
 
 namespace Exiled.Loader.Features.Configs
 {
-    using YamlDotNet.Core;
-    using YamlDotNet.Core.Events;
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.ObjectGraphVisitors;
+    extern alias Yaml;
+
+    using Yaml::YamlDotNet.Core.Events;
+
+    using IEmitter = Yaml::YamlDotNet.Core.IEmitter;
+    using IObjectDescriptor = Yaml::YamlDotNet.Serialization.IObjectDescriptor;
+    using IPropertyDescriptor = Yaml::YamlDotNet.Serialization.IPropertyDescriptor;
 
     /// <summary>
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    public sealed class CommentsObjectGraphVisitor : ChainedObjectGraphVisitor
+    public sealed class CommentsObjectGraphVisitor : Yaml::YamlDotNet.Serialization.ObjectGraphVisitors.ChainedObjectGraphVisitor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommentsObjectGraphVisitor"/> class.
         /// </summary>
         /// <param name="nextVisitor">The next visitor instance.</param>
-        public CommentsObjectGraphVisitor(IObjectGraphVisitor<IEmitter> nextVisitor)
+        public CommentsObjectGraphVisitor(Yaml::YamlDotNet.Serialization.IObjectGraphVisitor<IEmitter> nextVisitor)
             : base(nextVisitor)
         {
         }

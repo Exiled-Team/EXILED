@@ -7,11 +7,15 @@
 
 namespace Exiled.Loader.Features.Configs
 {
+    extern alias Yaml;
+
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    using YamlDotNet.Core;
-    using YamlDotNet.Serialization;
+    using Exiled.API.Features;
+
+    using INodeDeserializer = Yaml::YamlDotNet.Serialization.INodeDeserializer;
+    using IParser = Yaml::YamlDotNet.Core.IParser;
 
     /// <summary>
     /// Basic configs validation.
@@ -29,17 +33,26 @@ namespace Exiled.Loader.Features.Configs
             this.nodeDeserializer = nodeDeserializer;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="INodeDeserializer"/>
         public bool Deserialize(IParser parser, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
         {
-            if (nodeDeserializer.Deserialize(parser, expectedType, nestedObjectDeserializer, out value))
+            try
             {
-                Validator.ValidateObject(value, new ValidationContext(value, null, null), true);
+                if (nodeDeserializer.Deserialize(parser, expectedType, nestedObjectDeserializer, out value))
+                {
+                    Validator.ValidateObject(value, new ValidationContext(value, null, null), true);
 
-                return true;
+                    return true;
+                }
+
+                return false;
             }
-
-            return false;
+            catch (Exception e)
+            {
+                Log.Error(e);
+                value = null;
+                return false;
+            }
         }
     }
 }

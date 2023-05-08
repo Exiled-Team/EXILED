@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomRoles.API.Features
 {
+    extern alias Yaml;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -26,13 +28,11 @@ namespace Exiled.CustomRoles.API.Features
 
     using MEC;
 
-    using Mirror;
-
     using PlayerRoles;
 
     using UnityEngine;
 
-    using YamlDotNet.Serialization;
+    using Yaml::YamlDotNet.Serialization;
 
     /// <summary>
     /// The custom role base class.
