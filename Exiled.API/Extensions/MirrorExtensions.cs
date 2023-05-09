@@ -55,7 +55,8 @@ namespace Exiled.API.Extensions
                     foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2)))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
-                    foreach (MethodInfo method in typeof(GeneratedNetworkCode).GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2) && (x.ReturnType == typeof(void))))
+                    Type fuckNorthwood = Assembly.GetAssembly(typeof(RoleTypeId)).GetType("Mirror.GeneratedNetworkCode");
+                    foreach (MethodInfo method in fuckNorthwood.GetMethods().Where(x => !x.IsGenericMethod && (x.GetParameters()?.Length == 2) && (x.ReturnType == typeof(void))))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
                     foreach (Type serializer in typeof(ServerConsole).Assembly.GetTypes().Where(x => x.Name.EndsWith("Serializer")))
@@ -104,9 +105,9 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Gets a <see cref="NetworkBehaviour.SetDirtyBit(ulong)"/>'s <see cref="MethodInfo"/>.
+        /// Gets a <see cref="NetworkBehaviour.SetSyncVarDirtyBit(ulong)"/>'s <see cref="MethodInfo"/>.
         /// </summary>
-        public static MethodInfo SetDirtyBitsMethodInfo => setDirtyBitsMethodInfoValue ??= typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetDirtyBit));
+        public static MethodInfo SetDirtyBitsMethodInfo => setDirtyBitsMethodInfoValue ??= typeof(NetworkBehaviour).GetMethod(nameof(NetworkBehaviour.SetSyncVarDirtyBit));
 
         /// <summary>
         /// Gets a NetworkServer.SendSpawnMessage's <see cref="MethodInfo"/>.
@@ -201,11 +202,11 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0)
         {
-            foreach (Player target in Player.List.Where(x => x != player))
+            foreach (Player target in Player.List)
             {
-                PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
-                writer.WriteUInt16(MessagePacking.GetId<RoleSyncInfo>());
-                writer.WriteUInt32(player.NetId);
+                NetworkWriterPooled writer = NetworkWriterPool.Get();
+                writer.WriteUShort(38952);
+                writer.WriteUInt(player.NetId);
                 writer.WriteRoleType(type);
                 if (PlayerRolesUtils.GetTeam(type) == Team.FoundationForces)
                     writer.WriteByte(unitId);
@@ -215,7 +216,7 @@ namespace Exiled.API.Extensions
                 {
                     fpc.FpcModule.MouseLook.GetSyncValues(0, out syncH, out _);
                     writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
-                    writer.WriteUInt16(syncH);
+                    writer.WriteUShort(syncH);
                 }
 
                 target.Connection.Send(writer.ToArraySegment());
@@ -284,20 +285,22 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
+            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} tried to send a fake syncvar. This is currently broken. This warning does not indicate an error, but expect something to not work as intended.");
+            /*
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
-                targetWriter.WriteUInt64(SyncVarDirtyBits[propertyName]);
+                targetWriter.WriteULong(SyncVarDirtyBits[propertyName]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
             }
 
-            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
-            PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            NetworkWriterPooled writer2 = NetworkWriterPool.Get();
 
             MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
-
-            NetworkWriterPool.Recycle(writer);
-            NetworkWriterPool.Recycle(writer2);
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(writer.ToArraySegment());
+            NetworkWriterPool.Return(writer);
+            NetworkWriterPool.Return(writer2);
+            */
         }
 
         /// <summary>
@@ -318,7 +321,9 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
-            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
+            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} has tried to send a fake RPC. This is currently broken. This warning does not indicate an error, but expect something to not be working as intended.");
+            /*
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
                 WriterExtensions[value.GetType()].Invoke(null, new[] { writer, value });
@@ -326,14 +331,15 @@ namespace Exiled.API.Extensions
             RpcMessage msg = new()
             {
                 netId = behaviorOwner.netId,
-                componentIndex = GetComponentIndex(behaviorOwner, targetType),
-                functionHash = (targetType.FullName.GetStableHashCode() * 503) + rpcName.GetStableHashCode(),
+                componentIndex = (byte)GetComponentIndex(behaviorOwner, targetType),
+                functionHash = (ushort)((targetType.FullName.GetStableHashCode() * 503) + rpcName.GetStableHashCode()),
                 payload = writer.ToArraySegment(),
             };
 
             target.Connection.Send(msg, 0);
 
-            NetworkWriterPool.Recycle(writer);
+            NetworkWriterPool.Return(writer);
+            */
         }
 
         /// <summary>
@@ -357,12 +363,12 @@ namespace Exiled.API.Extensions
         /// </example>
         public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
         {
-            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
-            PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            NetworkWriterPooled writer2 = NetworkWriterPool.Get();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
-            NetworkWriterPool.Recycle(writer);
-            NetworkWriterPool.Recycle(writer2);
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(new EntityStateMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            NetworkWriterPool.Return(writer);
+            NetworkWriterPool.Return(writer2);
         }
 
         /// <summary>
@@ -414,7 +420,7 @@ namespace Exiled.API.Extensions
 
             // Write init position
             int position = owner.Position;
-            owner.WriteInt32(0);
+            owner.WriteUInt(0);
             int position2 = owner.Position;
 
             // Write custom sync data
@@ -429,7 +435,7 @@ namespace Exiled.API.Extensions
             // Write syncdata position data
             int position3 = owner.Position;
             owner.Position = position;
-            owner.WriteInt32(position3 - position2);
+            owner.WriteInt(position3 - position2);
             owner.Position = position3;
 
             // Copy owner to observer

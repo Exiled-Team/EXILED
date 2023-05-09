@@ -26,8 +26,6 @@ namespace Exiled.CustomRoles.API.Features
 
     using MEC;
 
-    using Mirror;
-
     using PlayerRoles;
 
     using UnityEngine;

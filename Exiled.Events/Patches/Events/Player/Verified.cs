@@ -22,10 +22,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete" />.
+    ///     Patches <see cref="ServerRoles.UserCode_CmdServerSignatureComplete__String__String__String__Boolean" />.
     ///     Adds the <see cref="Handlers.Player.Verified" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
+    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete__String__String__String__Boolean))]
     internal static class Verified
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

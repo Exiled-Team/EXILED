@@ -24,10 +24,10 @@ namespace Exiled.Events.Patches.Events.Map
     using ExiledEvents = Exiled.Events.Events;
 
     /// <summary>
-    /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
+    /// Patches <see cref="FlashbangGrenade.ServerFuseEnd()"/>.
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
+    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ServerFuseEnd))]
     internal static class ExplodingFlashGrenade
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
