@@ -11,6 +11,8 @@ namespace Exiled.API.Features.Pickups.Projectiles
 
     using InventorySystem.Items.ThrowableProjectiles;
 
+    using Mirror;
+
     /// <summary>
     /// A wrapper class for TimeGrenade.
     /// </summary>
@@ -52,7 +54,12 @@ namespace Exiled.API.Features.Pickups.Projectiles
         public float FuseTime
         {
             get => Base._fuseTime;
-            set => Base._fuseTime = value;
+            set
+            {
+                Base._fuseTime = value;
+                if (IsActive)
+                    Base.TargetTime = NetworkTime.time + value;
+            }
         }
 
         /// <summary>
