@@ -285,6 +285,8 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
+            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} tried to send a fake syncvar. This is currently broken. This warning does not indicate an error, but expect something to not work as intended.");
+            /*
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
                 targetWriter.WriteULong(SyncVarDirtyBits[propertyName]);
@@ -298,6 +300,7 @@ namespace Exiled.API.Extensions
             target.ReferenceHub.networkIdentity.connectionToClient.Send(writer.ToArraySegment());
             NetworkWriterPool.Return(writer);
             NetworkWriterPool.Return(writer2);
+            */
         }
 
         /// <summary>
@@ -318,6 +321,8 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
+            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} has tried to send a fake RPC. This is currently broken. This warning does not indicate an error, but expect something to not be working as intended.");
+            /*
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
@@ -334,6 +339,7 @@ namespace Exiled.API.Extensions
             target.Connection.Send(msg, 0);
 
             NetworkWriterPool.Return(writer);
+            */
         }
 
         /// <summary>
