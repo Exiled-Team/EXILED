@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information before receving a throwing request.
     /// </summary>
-    public class ThrowingRequestEventArgs : IPlayerEvent, IDeniableEvent // TODO: Remove IDeniableEvent
+    public class ThrowingRequestEventArgs : IPlayerEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ThrowingRequestEventArgs"/> class.
@@ -48,11 +48,5 @@ namespace Exiled.Events.EventArgs.Player
         ///  Gets or sets the type of throw being requested.
         /// </summary>
         public ThrowRequest RequestType { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the grenade can be thrown.
-        /// </summary>
-        [Obsolete("Deprecated.")]
-        public bool IsAllowed { get; set; } = true; // TODO: Remove this property.
     }
 }
