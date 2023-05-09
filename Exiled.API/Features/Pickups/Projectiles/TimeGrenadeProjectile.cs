@@ -51,7 +51,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets FuseTime.
         /// </summary>
-        public double FuseTime
+        public float FuseTime
         {
             get => Base.TargetTime;
             set => Base.TargetTime = value;
