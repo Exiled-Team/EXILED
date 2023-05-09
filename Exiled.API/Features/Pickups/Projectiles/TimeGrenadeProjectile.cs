@@ -11,8 +11,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
 
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using UnityEngine;
-
     /// <summary>
     /// A wrapper class for TimeGrenade.
     /// </summary>
@@ -51,10 +49,10 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// <summary>
         /// Gets or sets FuseTime.
         /// </summary>
-        public double FuseTime
+        public float FuseTime
         {
-            get => Base.TargetTime;
-            set => Base.TargetTime = value;
+            get => Base._fuseTime;
+            set => Base._fuseTime = value;
         }
 
         /// <summary>
@@ -62,13 +60,13 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         public bool IsActive
         {
-            get => Base.TargetTime != 0.0f;
+            get => Base.TargetTime != 0.0;
             set
             {
-                if (value && Base.TargetTime == 0.0f)
+                if (value && Base.TargetTime == 0.0)
                     Base.TargetTime = FuseTime;
-                else if (!value && Base.TargetTime != 0.0f)
-                    Base.TargetTime = -Time.timeSinceLevelLoad;
+                else if (!value && Base.TargetTime != 0.0)
+                    Base.TargetTime = 0.0;
             }
         }
 
