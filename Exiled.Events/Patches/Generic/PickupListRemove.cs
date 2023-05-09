@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches EffectGrenade.OnDestroy for fixing cringe NW code :).
     /// </summary>
-    [HarmonyPatch(typeof(EffectGrenade), nameof(EffectGrenade.ServerFuseEnd))]
+    // [HarmonyPatch(typeof(EffectGrenade), nameof(EffectGrenade.ServerFuseEnd))]
     internal static class EffectGrenadesListRemove
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

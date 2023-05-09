@@ -202,10 +202,10 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0)
         {
-            foreach (Player target in Player.List.Where(x => x != player))
+            foreach (Player target in Player.List)
             {
                 NetworkWriterPooled writer = NetworkWriterPool.Get();
-                writer.WriteSByte((sbyte)type);
+                writer.WriteUShort(38952);
                 writer.WriteUInt(player.NetId);
                 writer.WriteRoleType(type);
                 if (type.GetTeam() == Team.FoundationForces)
@@ -295,7 +295,7 @@ namespace Exiled.API.Extensions
             NetworkWriterPooled writer2 = NetworkWriterPool.Get();
 
             MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new EntityStateMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(writer.ToArraySegment());
             NetworkWriterPool.Return(writer);
             NetworkWriterPool.Return(writer2);
         }
