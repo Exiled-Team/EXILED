@@ -7,8 +7,6 @@
 
 namespace Exiled.Loader.Features.Configs.CustomConverters
 {
-    extern alias Yaml;
-
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -17,11 +15,9 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
 
     using InventorySystem.Items.Firearms.Attachments;
 
-    using Yaml::YamlDotNet.Core.Events;
-    using Yaml::YamlDotNet.Serialization;
-
-    using IEmitter = Yaml::YamlDotNet.Core.IEmitter;
-    using IParser = Yaml::YamlDotNet.Core.IParser;
+    using YamlDotNet.Core;
+    using YamlDotNet.Core.Events;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Converts a <see cref="IEnumerable{T}"/> of <see cref="AttachmentName"/> to Yaml configs and vice versa.
@@ -34,7 +30,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         /// <inheritdoc cref="IYamlTypeConverter" />
         public object ReadYaml(IParser parser, Type type)
         {
-            if (!Yaml::YamlDotNet.Core.ParserExtensions.TryConsume(parser, out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentName name))
+            if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentName name))
                 throw new InvalidDataException($"Invalid AttachmentNameTranslation value: {scalar?.Value}.");
 
             return Enum.Parse(type, name.ToString());

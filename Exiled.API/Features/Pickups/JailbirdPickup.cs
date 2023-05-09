@@ -11,10 +11,6 @@ namespace Exiled.API.Features.Pickups
 
     using InventorySystem.Items.Jailbird;
 
-    using PlayerStatsSystem;
-
-    using UnityEngine;
-
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
 
     /// <summary>

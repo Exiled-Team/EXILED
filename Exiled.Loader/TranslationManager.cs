@@ -7,8 +7,6 @@
 
 namespace Exiled.Loader
 {
-    extern alias Yaml;
-
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -21,7 +19,7 @@ namespace Exiled.Loader
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
 
-    using YamlException = Yaml::YamlDotNet.Core.YamlException;
+    using YamlDotNet.Core;
 
     /// <summary>
     /// Used to handle plugin translations.
@@ -153,7 +151,7 @@ namespace Exiled.Loader
 
                 return translations.All(plugin => SaveSeparatedTranslation(plugin.Key, Loader.Serializer.Serialize(plugin.Value)));
             }
-            catch (Yaml::YamlDotNet.Core.YamlException yamlException)
+            catch (YamlException yamlException)
             {
                 Log.Error($"An error has occurred while serializing translations:\n{yamlException}");
 

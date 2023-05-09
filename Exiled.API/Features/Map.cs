@@ -18,7 +18,6 @@ namespace Exiled.API.Features
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Roles;
     using Exiled.API.Features.Toys;
 
     using Hazards;

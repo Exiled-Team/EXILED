@@ -7,8 +7,6 @@
 
 namespace Exiled.Loader
 {
-    extern alias Yaml;
-
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -30,11 +28,9 @@ namespace Exiled.Loader
     using Features.Configs;
     using Features.Configs.CustomConverters;
 
-    using DeserializerBuilder = Yaml::YamlDotNet.Serialization.DeserializerBuilder;
-    using IDeserializer = Yaml::YamlDotNet.Serialization.IDeserializer;
-    using ObjectNodeDeserializer = Yaml::YamlDotNet.Serialization.NodeDeserializers.ObjectNodeDeserializer;
-    using SerializerBuilder = Yaml::YamlDotNet.Serialization.SerializerBuilder;
-    using UnderscoredNamingConvention = Yaml::YamlDotNet.Serialization.NamingConventions.UnderscoredNamingConvention;
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NamingConventions;
+    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugins.
@@ -96,7 +92,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets or sets the serializer for configs and translations.
         /// </summary>
-        public static Yaml::YamlDotNet.Serialization.ISerializer Serializer { get; set; } = new SerializerBuilder()
+        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new ColorConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())

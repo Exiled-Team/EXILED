@@ -7,19 +7,16 @@
 
 namespace Exiled.Loader.Features.Configs
 {
-    extern alias Yaml;
-
     using System;
     using System.ComponentModel;
 
-    using IObjectDescriptor = Yaml::YamlDotNet.Serialization.IObjectDescriptor;
-    using IPropertyDescriptor = Yaml::YamlDotNet.Serialization.IPropertyDescriptor;
-    using ScalarStyle = Yaml::YamlDotNet.Core.ScalarStyle;
+    using YamlDotNet.Core;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    public sealed class CommentsPropertyDescriptor : Yaml::YamlDotNet.Serialization.IPropertyDescriptor
+    public sealed class CommentsPropertyDescriptor : IPropertyDescriptor
     {
         private readonly IPropertyDescriptor baseDescriptor;
 
