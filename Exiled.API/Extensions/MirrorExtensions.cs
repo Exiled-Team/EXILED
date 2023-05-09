@@ -202,7 +202,7 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0)
         {
-            foreach (Player target in Player.List)
+            foreach (Player target in Player.List.Where(x => x != player))
             {
                 NetworkWriterPooled writer = NetworkWriterPool.Get();
                 writer.WriteUShort(38952);
