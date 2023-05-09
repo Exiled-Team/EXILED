@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1402
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -17,7 +16,6 @@ namespace Exiled.Events.Patches.Generic
     using HarmonyLib;
 
     using InventorySystem.Items.Pickups;
-    using InventorySystem.Items.ThrowableProjectiles;
 
     using static HarmonyLib.AccessTools;
 
