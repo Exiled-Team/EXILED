@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Server
     ///     Patches CheaterReport.UserCode_CmdReport__UInt32__String__Byte\u005B\u005D__Boolean(uint, string, byte[], bool) />.
     ///     Adds the <see cref="Server.ReportingCheater" /> and <see cref="Server.LocalReporting" /> events.
     /// </summary>
-    [HarmonyPatch(typeof(CheaterReport), @"UserCode_CmdReport__UInt32__String__Byte__Boolean")]
+    [HarmonyPatch(typeof(CheaterReport), @"UserCode_CmdReport__UInt32__String__Byte[]__Boolean")]
     internal static class Reporting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

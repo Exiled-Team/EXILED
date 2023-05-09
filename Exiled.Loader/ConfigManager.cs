@@ -101,9 +101,8 @@ namespace Exiled.Loader
 
             try
             {
-                string thing = Loader.Serializer.Serialize(rawDeserializedConfig);
-                Log.Warn(thing);
-                config = (IConfig)Loader.Deserializer.Deserialize(thing, plugin.Config.GetType());
+                string rawConfigString = Loader.Serializer.Serialize(rawDeserializedConfig);
+                config = (IConfig)Loader.Deserializer.Deserialize(rawConfigString, plugin.Config.GetType());
                 plugin.Config.CopyProperties(config);
             }
             catch (YamlException yamlException)
