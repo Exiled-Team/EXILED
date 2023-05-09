@@ -8,7 +8,6 @@
 namespace Exiled.API.Features.Items
 {
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Interfaces;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
@@ -51,7 +50,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
-        public float FuseTime
+        public double FuseTime
         {
             get => Projectile.FuseTime;
             set => Projectile.FuseTime = value;
