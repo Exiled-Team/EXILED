@@ -7,13 +7,10 @@
 
 namespace Exiled.CustomRoles.API.Features.Parsers
 {
-    extern alias Yaml;
-
     using System.Collections.Generic;
 
-    using Yaml::YamlDotNet.Core;
-
-    using ParsingEvent = Yaml::YamlDotNet.Core.Events.ParsingEvent;
+    using YamlDotNet.Core;
+    using YamlDotNet.Core.Events;
 
     /// <inheritdoc />
     public class ParsingEventBuffer : IParser

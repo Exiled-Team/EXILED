@@ -7,8 +7,6 @@
 
 namespace Exiled.CustomRoles.API.Features.Parsers
 {
-    extern alias Yaml;
-
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -16,9 +14,9 @@ namespace Exiled.CustomRoles.API.Features.Parsers
 
     using Exiled.CustomRoles.API.Features.Interfaces;
 
-    using Yaml::YamlDotNet.Core;
-    using Yaml::YamlDotNet.Core.Events;
-    using Yaml::YamlDotNet.Serialization;
+    using YamlDotNet.Core;
+    using YamlDotNet.Core.Events;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// A node resolver for <see cref="CustomAbility"/>.
@@ -71,7 +69,7 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             }
             catch (Exception exception)
             {
-                throw new YamlException(start ?? default, reader.Current?.End ?? default, "Failed when resolving abstract type", exception);
+                throw new YamlException(start ?? new(), reader.Current?.End ?? new(), "Failed when resolving abstract type", exception);
             }
 
             buffer.Reset();

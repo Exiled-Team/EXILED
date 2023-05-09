@@ -7,15 +7,13 @@
 
 namespace Exiled.Loader.Features.Configs
 {
-    extern alias Yaml;
-
     using System;
     using System.ComponentModel.DataAnnotations;
 
     using Exiled.API.Features;
 
-    using INodeDeserializer = Yaml::YamlDotNet.Serialization.INodeDeserializer;
-    using IParser = Yaml::YamlDotNet.Core.IParser;
+    using YamlDotNet.Core;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Basic configs validation.
@@ -40,6 +38,8 @@ namespace Exiled.Loader.Features.Configs
             {
                 if (nodeDeserializer.Deserialize(parser, expectedType, nestedObjectDeserializer, out value))
                 {
+                    if (value is null)
+                        Log.Error("Null value");
                     Validator.ValidateObject(value, new ValidationContext(value, null, null), true);
 
                     return true;

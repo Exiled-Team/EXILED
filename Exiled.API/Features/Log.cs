@@ -9,10 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
-
-    using Interfaces;
 
     /// <summary>
     /// A set of tools to print messages on the server console.

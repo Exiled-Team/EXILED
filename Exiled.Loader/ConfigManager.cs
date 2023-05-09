@@ -7,8 +7,6 @@
 
 namespace Exiled.Loader
 {
-    extern alias Yaml;
-
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -21,7 +19,7 @@ namespace Exiled.Loader
     using Exiled.API.Features;
     using Exiled.API.Features.Pools;
 
-    using YamlException = Yaml::YamlDotNet.Core.YamlException;
+    using YamlDotNet.Core;
 
     /// <summary>
     /// Used to handle plugin configs.
@@ -103,11 +101,9 @@ namespace Exiled.Loader
 
             try
             {
-                Log.Warn("Dum");
                 string thing = Loader.Serializer.Serialize(rawDeserializedConfig);
-                Log.Warn("dum2");
+                Log.Warn(thing);
                 config = (IConfig)Loader.Deserializer.Deserialize(thing, plugin.Config.GetType());
-                Log.Warn("dum3");
                 plugin.Config.CopyProperties(config);
             }
             catch (YamlException yamlException)

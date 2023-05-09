@@ -7,8 +7,6 @@
 
 namespace Exiled.CustomRoles.API.Features
 {
-    extern alias Yaml;
-
     using System;
     using System.Collections.Generic;
 
@@ -16,7 +14,7 @@ namespace Exiled.CustomRoles.API.Features
 
     using MEC;
 
-    using Yaml::YamlDotNet.Serialization;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// The base class for active (on-use) abilities.

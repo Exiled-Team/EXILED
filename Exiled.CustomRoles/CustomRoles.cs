@@ -7,8 +7,6 @@
 
 namespace Exiled.CustomRoles
 {
-    extern alias Yaml;
-
     using System.Collections.Generic;
 
     using Exiled.API.Features;
@@ -18,8 +16,9 @@ namespace Exiled.CustomRoles
     using Exiled.Loader;
     using Exiled.Loader.Features.Configs.CustomConverters;
 
-    using ObjectNodeDeserializer = Yaml::YamlDotNet.Serialization.NodeDeserializers.ObjectNodeDeserializer;
-    using UnderscoredNamingConvention = Yaml::YamlDotNet.Serialization.NamingConventions.UnderscoredNamingConvention;
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NamingConventions;
+    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Handles all custom role API functions.
@@ -33,7 +32,7 @@ namespace Exiled.CustomRoles
         /// </summary>
         public CustomRoles()
         {
-            Loader.Deserializer = new Yaml::YamlDotNet.Serialization.DeserializerBuilder()
+            Loader.Deserializer = new DeserializerBuilder()
                 .WithTypeConverter(new VectorsConverter())
                 .WithTypeConverter(new ColorConverter())
                 .WithTypeConverter(new AttachmentIdentifiersConverter())
