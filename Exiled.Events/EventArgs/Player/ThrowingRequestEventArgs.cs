@@ -26,8 +26,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Throwable"/></param>
         /// <param name="request"><inheritdoc cref="RequestType"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ThrowingRequestEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true)
+        public ThrowingRequestEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request)
         {
             Player = player;
             Throwable = (Throwable)Item.Get(item);
