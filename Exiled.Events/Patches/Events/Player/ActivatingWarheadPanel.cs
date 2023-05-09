@@ -13,9 +13,13 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features;
     using API.Features.Pools;
 
+    using Exiled.API.Enums;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
+
+    using InventorySystem.Items.Keycards;
 
     using static HarmonyLib.AccessTools;
 
@@ -30,121 +34,90 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
-            LocalBuilder cmp_0x01 = generator.DeclareLocal(typeof(bool));
+            LocalBuilder curItem = generator.DeclareLocal(typeof(Item));
+            LocalBuilder keycard = generator.DeclareLocal(typeof(Keycard));
 
-            Label jne = generator.DefineLabel();
-            Label ceq = generator.DefineLabel();
-            Label je = generator.DefineLabel();
-            Label jmp = generator.DefineLabel();
-            Label cmp = generator.DefineLabel();
-            Label ret = generator.DefineLabel();
+            Label eventLabel = generator.DefineLabel();
+            Label retLabel = generator.DefineLabel();
 
             int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.LoadsField(Field(typeof(ServerRoles), nameof(ServerRoles.BypassMode)))) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
 
-            // Remove brtrue.s
-            newInstructions.RemoveAt(index);
+            int instructionsToRemove = 25;
+            newInstructions.RemoveRange(index, instructionsToRemove);
 
-            offset = -3;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Isinst) + offset;
+            newInstructions.InsertRange(index, new CodeInstruction[]
+            {
+                // isAllowed = false;
+                new(OpCodes.Ldc_I4_0),
+                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
 
-            newInstructions[index].labels.Add(jne);
+                // if (Player.Get(this._hub).IsBypassModeEnabled)
+                //    isAllowed = true;
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsBypassModeEnabled))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, isAllowed.LocalIndex),
+                new(OpCodes.Brtrue_S, eventLabel),
 
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    // bypassmode check
-                    new(OpCodes.Stloc_S, isAllowed.LocalIndex),
-                    new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
-                    new(OpCodes.Brfalse_S, jne),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloc_S, player),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Position))),
+                new(OpCodes.Call, Method(typeof(PlayerInteract), nameof(PlayerInteract.ChckDis))),
+                new(OpCodes.Brfalse_S, eventLabel),
 
-                    // isAllowed = true
-                    new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                // if (Player.Get(this._hub).CurrentItem != null)
+                //    if (player.CurrentItem is Keycard keycard)
+                //        if (keycard.Permissions.HasFlag(AlphaWarhead))
+                //            isAllowed = true;
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.CurrentItem))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, curItem),
+                new(OpCodes.Brfalse_S, eventLabel),
+                new(OpCodes.Ldloc_S, curItem),
+                new(OpCodes.Isinst, typeof(Keycard)),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, keycard.LocalIndex),
+                new(OpCodes.Brfalse_S, eventLabel),
+                new(OpCodes.Ldloc_S, keycard),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Keycard), nameof(Keycard.Permissions))),
+                new(OpCodes.Box, typeof(KeycardPermissions)),
+                new(OpCodes.Ldc_I4_8),
+                new(OpCodes.Box, typeof(KeycardPermissions)),
+                new(OpCodes.Call, Method(typeof(System.Enum), nameof(System.Enum.HasFlag))),
+                new(OpCodes.Brfalse_S, eventLabel),
+                new(OpCodes.Ldc_I4_1),
+                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+            });
 
-                    // goto jmp
-                    new(OpCodes.Br_S, jmp),
-                });
+            offset = -2;
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_2) + offset;
 
-            offset = 1;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
+            newInstructions.InsertRange(index, new[]
+            {
+                // ev = new(player, isAllowed)
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex).WithLabels(eventLabel),
+                new(OpCodes.Ldloc, isAllowed.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
+                new(OpCodes.Dup),
 
-            // Remove brfalse.s
-            newInstructions.RemoveAt(index);
+                // Handlers.Player.OnActivatingWarheadPanel
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
 
-            offset = 1;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
+                // if (!ev.IsAllowed)
+                //    return;
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
+                new(OpCodes.Brfalse_S, retLabel),
+            });
 
-            newInstructions.InsertRange(
-                index,
-                new[]
-                {
-                    // Item null check
-                    new(OpCodes.Brfalse_S, ceq),
-
-                    // cmp_0x01 = true
-                    new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
-                    new(OpCodes.Br_S, je),
-
-                    // ceq:
-                    //
-                    // cmp_0x01 = false
-                    new CodeInstruction(OpCodes.Ldc_I4_0).WithLabels(ceq),
-                    new(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
-
-                    // je:
-                    //
-                    // if (!cmp_0x01)
-                    //    goto jmp;
-                    new CodeInstruction(OpCodes.Ldloc_S, cmp_0x01.LocalIndex).WithLabels(je),
-                    new(OpCodes.Brfalse_S, jmp),
-                });
-
-            offset = -1;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
-
-            // Remove brfalse.s
-            newInstructions.RemoveAt(index);
-
-            offset = 0;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
-
-            newInstructions.InsertRange(
-                index,
-                new[]
-                {
-                    // isAllowed = cmp_0x01 == hasFlagCheck
-                    new(OpCodes.Ldloc_S, cmp_0x01.LocalIndex),
-                    new(OpCodes.Ceq),
-                    new(OpCodes.Stloc_S, isAllowed.LocalIndex),
-
-                    // jmp:
-                    //
-                    // Player.Get(this._hub)
-                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jmp),
-                    new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
-                    // isAllowed
-                    new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
-
-                    // ActivatingWarheadPanelEventArgs ev = new(Player, bool)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
-                    new(OpCodes.Dup),
-
-                    // Handlers.Player.OnActivatingWarheadPanel(ev)
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
-
-                    // if (!ev.IsAllowed)
-                    //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, ret),
-                });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(ret);
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
