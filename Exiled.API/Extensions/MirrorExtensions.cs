@@ -23,7 +23,10 @@ namespace Exiled.API.Extensions
     using Mirror;
 
     using PlayerRoles;
+    using PlayerRoles.Filmmaker;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.SpawnData;
+    using PlayerRoles.Spectating;
 
     using RelativePositioning;
 
@@ -212,7 +215,7 @@ namespace Exiled.API.Extensions
                     writer.WriteByte(unitId);
 
                 ushort syncH;
-                if (player.Role.Base is FpcStandardRoleBase fpc)
+                if (type.IsFpcRole() && player.Role.Base is FpcStandardRoleBase fpc)
                 {
                     fpc.FpcModule.MouseLook.GetSyncValues(0, out syncH, out _);
                     writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
