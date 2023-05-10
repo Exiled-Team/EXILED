@@ -62,15 +62,10 @@ namespace Exiled.Events.Patches.Events.Player
                 // ThrowingRequestEventArgs ev = new(Player.Get(referenceHub), ThrowableItem,Networkconnection.Request, true);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowingRequestEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnThrowingRequest(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingRequest))),
-
-                // if (ev.IsAllowed) return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowingRequestEventArgs), nameof(ThrowingRequestEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
 
                 // Networkconnection.Serial
                 new(OpCodes.Ldarg_1),
