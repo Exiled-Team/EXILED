@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Generic
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ServerConsole.RefreshEmailSetStatus"/> to prevent the server from being listed.
+    /// Patches <see cref="FpcServerPositionDistributor.WriteAll"/> to add <see cref="FpcRole.IsInvisible"/> and <see cref="FpcRole.IsInvisibleFor"/> functional.
     /// </summary>
     [HarmonyPatch(typeof(FpcServerPositionDistributor), nameof(FpcServerPositionDistributor.WriteAll))]
     internal class GhostModePatch
