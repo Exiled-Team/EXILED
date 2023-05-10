@@ -171,7 +171,7 @@ namespace Exiled.API.Enums
         InsufficientLighting,
 
         /// <summary>
-        /// Disable ambiant sound.
+        /// Disable ambient sound.
         /// </summary>
         SoundtrackMute,
 
@@ -184,5 +184,10 @@ namespace Exiled.API.Enums
         /// Make Scp106 able to see you when he are in the ground (stalking).
         /// </summary>
         Traumatized,
+
+        /// <summary>
+        /// Same effect as Scp207, but Healing instead of Hurting.
+        /// </summary>
+        AntiScp207,
     }
 }
