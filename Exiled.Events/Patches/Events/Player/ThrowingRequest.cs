@@ -31,9 +31,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = 4;
+            int offset = 5;
 
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Dup) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Isinst) + offset;
 
             Label returnLabel = generator.DefineLabel();
 
@@ -56,21 +56,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(ThrowableNetworkHandler.ThrowableItemRequestMessage), nameof(ThrowableNetworkHandler.ThrowableItemRequestMessage.Request))),
 
-                // true
-                new(OpCodes.Ldc_I4_1),
-
                 // ThrowingRequestEventArgs ev = new(Player.Get(referenceHub), ThrowableItem,Networkconnection.Request, true);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowingRequestEventArgs))[0]),
-                new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnThrowingRequest(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnThrowingRequest))),
-
-                // if (ev.IsAllowed) return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowingRequestEventArgs), nameof(ThrowingRequestEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, returnLabel),
 
                 // Networkconnection.Serial
                 new(OpCodes.Ldarg_1),

@@ -14,8 +14,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
 
     using PlayerRoles;
 
-    using UnityEngine;
-
     /// <summary>
     /// A wrapper class for ExplosionGrenade.
     /// </summary>
