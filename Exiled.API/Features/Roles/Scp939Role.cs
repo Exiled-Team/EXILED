@@ -246,7 +246,6 @@ namespace Exiled.API.Features.Roles
             if (target is null)
                 return;
             MimicryRecorder.RemoveRecordingsOfPlayer(target.ReferenceHub);
-            MimicryRecorder.SavedVoicesModified = true;
         }
 
         /// <summary>
@@ -295,7 +294,6 @@ namespace Exiled.API.Features.Roles
         {
             MimicryRecorder.SavedVoices.Clear();
             MimicryRecorder._serverSentVoices.Clear();
-            MimicryRecorder.SavedVoicesModified = true;
         }
 
         /// <summary>
