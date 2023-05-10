@@ -189,5 +189,10 @@ namespace Exiled.API.Enums
         /// Same effect as Scp207, but Healing instead of Hurting.
         /// </summary>
         AntiScp207,
+
+        /// <summary>
+        /// The Effect that SCP-079 gives the Scanned player with the Breach Scanner.
+        /// </summary>
+        Scanned,
     }
 }
