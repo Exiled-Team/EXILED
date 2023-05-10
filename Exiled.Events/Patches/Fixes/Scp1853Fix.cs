@@ -22,10 +22,10 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="Scp1853.OnEffectUpdate"/>.
+    /// Patch the Scp1853.OnEffectUpdate.
     /// Fix Spamming EnableEffect.
     /// </summary>
-    [HarmonyPatch(typeof(Scp1853), nameof(Scp1853.OnEffectUpdate))]
+    // [HarmonyPatch(typeof(Scp1853), nameof(Scp1853.OnEffectUpdate))]
     internal static class Scp1853Fix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
