@@ -53,10 +53,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
                     new(OpCodes.Dup),
 
-                    // if (!ev.IsAllowed)
-                    //      return;
+                    // Handlers.Player.OnActivatingWarheadPanel(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
 
+                    // if (!ev.IsAllowed)
+                    //      return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, retLabel),
 
