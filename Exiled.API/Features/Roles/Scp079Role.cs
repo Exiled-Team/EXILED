@@ -211,7 +211,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets or sets SCP-079's abilities. Can be <see langword="null"/>.
         /// </summary>
-        public Scp079AbilityBase[] Abilities
+        public IScp079AuxRegenModifier[] Abilities
         {
             get => AuxManager._abilities;
             set => AuxManager._abilities = value;

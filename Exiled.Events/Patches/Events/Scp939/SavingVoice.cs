@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             if (scp939DamageHandler.Attacker.Hub != __instance.Owner)
                 return false;
 
-            if (__instance.IsMuted(VoiceChatMutes.GetFlags(ply)))
+            if (VoiceChatMutes.IsMuted(ply))
                 return false;
 
             // Should consider whether to allow users to have this with their own custom DNT
