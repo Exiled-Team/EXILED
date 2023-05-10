@@ -19,11 +19,11 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
-
+    using Footprinting;
     using Hazards;
-
+    using InventorySystem;
     using InventorySystem.Items.Firearms.BasicMessages;
-
+    using InventorySystem.Items.ThrowableProjectiles;
     using Items;
 
     using LightContainmentZoneDecontamination;
@@ -40,7 +40,7 @@ namespace Exiled.API.Features
     using RelativePositioning;
 
     using UnityEngine;
-
+    using Utils;
     using Utils.Networking;
 
     using Object = UnityEngine.Object;
@@ -312,6 +312,21 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
         public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f)
             => Camera.Get(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+
+        /// <summary>
+        /// Explode.
+        /// </summary>
+        /// <param name="position">The position where explosion will be created.</param>
+        /// <param name="attacker">The player who create the explosion.</param>
+        public static void Explode(Vector3 position, Player attacker = null)
+        {
+            attacker ??= Server.Host;
+            if (!InventoryItemLoader.TryGetItem(ItemType.GrenadeHE, out ThrowableItem throwableItem)
+                || throwableItem.Projectile is not ExplosionGrenade explosionGrenade)
+                return;
+            ExplosionUtils.ServerSpawnEffect(position, ItemType.GrenadeHE);
+            ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+        }
 
         /// <summary>
         /// Clears the lazy loading game object cache.
