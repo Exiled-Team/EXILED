@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             Label continueLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(DetonatingEventArgs));
 
-            newInstructions[0].WithLabels(continueLabel);
+            newInstructions[0].labels.Add(continueLabel);
 
             newInstructions.InsertRange(
                 0,
@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Warhead
                 {
                     // DetonatingEventArgs ev = new();
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DetonatingEventArgs))[0]),
-                    new(OpCodes.Stloc, ev.LocalIndex),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Warhead.OnDetonating(ev);
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -79,8 +79,8 @@ namespace Exiled.Events.Patches.Events.Warhead
                     new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnDetonated))),
                 });
 
-            foreach (var instruction in newInstructions)
-                yield return instruction;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
