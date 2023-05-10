@@ -7,18 +7,17 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-    using System;
-
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Interfaces;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
     /// Contains all information before receving a throwing request.
     /// </summary>
-    public class ThrowingRequestEventArgs : IPlayerEvent
+    public class ThrowingRequestEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ThrowingRequestEventArgs"/> class.
@@ -26,11 +25,13 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Throwable"/></param>
         /// <param name="request"><inheritdoc cref="RequestType"/></param>
-        public ThrowingRequestEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request)
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public ThrowingRequestEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true)
         {
             Player = player;
             Throwable = (Throwable)Item.Get(item);
             RequestType = (ThrowRequest)request;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -47,5 +48,10 @@ namespace Exiled.Events.EventArgs.Player
         ///  Gets or sets the type of throw being requested.
         /// </summary>
         public ThrowRequest RequestType { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the grenade can be thrown.
+        /// </summary>
+        public bool IsAllowed { get; set; } = true;
     }
 }
