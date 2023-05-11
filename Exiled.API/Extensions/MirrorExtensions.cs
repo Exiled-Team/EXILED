@@ -23,7 +23,10 @@ namespace Exiled.API.Extensions
     using Mirror;
 
     using PlayerRoles;
+    using PlayerRoles.Filmmaker;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.SpawnData;
+    using PlayerRoles.Spectating;
 
     using RelativePositioning;
 
@@ -200,9 +203,19 @@ namespace Exiled.API.Extensions
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
-        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0)
+        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), unitId);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="type">Model type.</param>
+        /// <param name="playersToAffect">The players who should see the changed appearance.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, byte unitId = 0)
         {
-            foreach (Player target in Player.List)
+            foreach (Player target in playersToAffect)
             {
                 NetworkWriterPooled writer = NetworkWriterPool.Get();
                 writer.WriteUShort(38952);
@@ -212,7 +225,7 @@ namespace Exiled.API.Extensions
                     writer.WriteByte(unitId);
 
                 ushort syncH;
-                if (player.Role.Base is FpcStandardRoleBase fpc)
+                if (type.IsFpcRole() && player.Role.Base is FpcStandardRoleBase fpc)
                 {
                     fpc.FpcModule.MouseLook.GetSyncValues(0, out syncH, out _);
                     writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
