@@ -10,16 +10,13 @@ namespace Exiled.API.Features
 #pragma warning disable SA1402
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using CommandSystem;
-
     using Enums;
-
     using Extensions;
-
     using Interfaces;
-
     using RemoteAdmin;
 
     /// <summary>
@@ -123,6 +120,14 @@ namespace Exiled.API.Features
 
                         if (!typeCommands.TryGetValue(type, out ICommand command))
                             command = (ICommand)Activator.CreateInstance(type);
+
+                        if (CommandProcessor.RemoteAdminCommandHandler.AllCommands.Any(x => x.Command == command.Command)
+                            || GameCore.Console.singleton.ConsoleCommandHandler.AllCommands.Any(x => x.Command == command.Command)
+                            || QueryProcessor.DotCommandHandler.AllCommands.Any(x => x.Command == command.Command))
+                        {
+                            Log.Error($"Command with same name has already registered! ({command.Command})");
+                            continue;
+                        }
 
                         if (commandType == typeof(RemoteAdminCommandHandler))
                             CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
