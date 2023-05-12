@@ -5,7 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-
 namespace Exiled.Events.Patches.Generic
 {
     using System.Collections.Generic;
@@ -31,11 +30,6 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            /*
-              If ((referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && ExiledEvents.Instance.Config.TutorialNotAffectedByScp079Scan) || Scp079Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
-                   return;
-             */
-
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label returnLabel = generator.DefineLabel();
@@ -44,9 +38,11 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions[0].labels.Add(continueLabel);
 
+            // if ((referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && ExiledEvents.Instance.Config.TutorialNotAffectedByScp079Scan) || Scp079Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
+            //     return;
             newInstructions.InsertRange(
                 0,
-                new CodeInstruction[]
+                new[]
                 {
                     // if (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial)
                     new(OpCodes.Ldarg_1),
