@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Generic
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             /*
-              If (referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && ExiledEvents.Instance.Config.TutorialNotAffectedByScp079Scan)
+              If ((referenceHub.roleManager.CurrentRole.RoleTypeId == RoleTypeId.Tutorial && ExiledEvents.Instance.Config.TutorialNotAffectedByScp079Scan) || Scp079Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
                    return;
              */
 
@@ -40,8 +40,9 @@ namespace Exiled.Events.Patches.Generic
 
             Label returnLabel = generator.DefineLabel();
             Label skip = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
-            newInstructions[0].labels.Add(skip);
+            newInstructions[0].labels.Add(continueLabel);
 
             newInstructions.InsertRange(
                 0,
@@ -60,6 +61,13 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.TutorialNotAffectedByScp079Scan))),
                     new(OpCodes.Brfalse_S, returnLabel),
+
+                    // if (Scp079Role.TurnedPlayers.Contains(Player.Get(referenceHub)))
+                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(API.Features.Roles.Scp079Role), nameof(API.Features.Roles.Scp079Role.TurnedPlayers))).WithLabels(skip),
+                    new (OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
+                    new(OpCodes.Brfalse_S, continueLabel),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

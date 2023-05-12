@@ -42,6 +42,7 @@ namespace Exiled.Events.Handlers.Internal
         {
             Scp173Role.TurnedPlayers.Clear();
             Scp096Role.TurnedPlayers.Clear();
+            Scp079Role.TurnedPlayers.Clear();
 
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_END);
 
