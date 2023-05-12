@@ -3170,8 +3170,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Explode the player.
         /// </summary>
-        /// <param name="attacker">player who create the explosion.</param>
-        public void Explode(Player attacker = null) => ExplosionUtils.ServerExplode(attacker?.ReferenceHub ?? Server.Host.ReferenceHub);
+        public void Explode() => ExplosionUtils.ServerExplode(ReferenceHub);
 
         /// <summary>
         /// Converts the player in a human-readable format.
