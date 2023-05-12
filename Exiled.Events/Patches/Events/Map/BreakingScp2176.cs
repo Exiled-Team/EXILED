@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Ldc_I4_1),
 
                     // new ExplodingGrenadeEventArgs(Player, EffectGrenade)
-                    new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(bool) })),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ExplodingGrenadeEventArgs))[1]),
                     new(OpCodes.Dup),
 
                     // Handlers.Map.OnExplodingGrenade(ev);
