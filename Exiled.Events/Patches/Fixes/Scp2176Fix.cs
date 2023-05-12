@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Scp1853Fix.cs" company="Exiled Team">
+// <copyright file="Scp2176Fix.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
