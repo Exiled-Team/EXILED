@@ -23,6 +23,7 @@ namespace Exiled.Events.EventArgs.Server
     public class RespawningTeamEventArgs : IDeniableEvent
     {
         private SpawnableTeamType nextKnownTeam;
+        private int maximumRespawnAmount;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="RespawningTeamEventArgs" /> class.
@@ -58,7 +59,19 @@ namespace Exiled.Events.EventArgs.Server
         /// <summary>
         ///     Gets or sets the maximum amount of respawnable players.
         /// </summary>
-        public int MaximumRespawnAmount { get; set; }
+        public int MaximumRespawnAmount
+        {
+            get => maximumRespawnAmount;
+            set
+            {
+                if (value < maximumRespawnAmount)
+                {
+                    Players.RemoveRange(value, Players.Count - value);
+                }
+
+                maximumRespawnAmount = value;
+            }
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating what the next respawnable team is.
