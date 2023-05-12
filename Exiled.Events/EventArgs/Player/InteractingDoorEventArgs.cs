@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using API.Enums;
     using API.Features;
 
     using Interactables.Interobjects.DoorUtils;
@@ -30,11 +31,15 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true)
+        /// <param name="doorLockType">
+        ///     <inheritdoc cref="DoorLockType" />
+        /// </param>
+        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true, DoorBeepType doorLockType = DoorBeepType.InteractionAllowed)
         {
             Player = player;
             Door = Door.Get(door);
             IsAllowed = isAllowed;
+            DoorLockType = doorLockType;
         }
 
         /// <summary>
@@ -51,5 +56,10 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the player who's interacting with the door.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the access is granted or not.
+        /// </summary>
+        public DoorBeepType DoorLockType { get; set; }
     }
 }

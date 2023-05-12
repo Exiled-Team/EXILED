@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1512
     using System;
 
+    using API.Enums;
     using API.Features;
     using Exiled.Events.EventArgs.Player;
 
@@ -36,58 +37,62 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, false);
-
-                bool bypassDenied = false;
-                bool allowInteracting = false;
+                InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, true, DoorBeepType.InteractionAllowed);
 
                 if (__instance.ActiveLocks > 0 && !ply.serverRoles.BypassMode)
                 {
                     DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)__instance.ActiveLocks);
-                    if ((!mode.HasFlagFast(DoorLockMode.CanClose) || !mode.HasFlagFast(DoorLockMode.CanOpen)) &&
-                        (!mode.HasFlagFast(DoorLockMode.ScpOverride) || !ply.IsSCP(true)) &&
-                        (mode == DoorLockMode.FullLock || (__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanClose)) ||
-                        (!__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanOpen))))
+                    if ((!mode.HasFlagFast(DoorLockMode.CanClose) || !mode.HasFlagFast(DoorLockMode.CanOpen)) && (!mode.HasFlagFast(DoorLockMode.ScpOverride) || !ply.IsSCP(true)) && (mode == DoorLockMode.FullLock || (__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanClose)) || (!__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanOpen))))
                     {
-                        ev.IsAllowed = false;
-                        bypassDenied = true;
+                        if (!EventManager.ExecuteEvent(PluginAPI.Enums.ServerEventType.PlayerInteractDoor, new object[]
+                        {
+                            ply,
+                            __instance,
+                            false,
+                        }))
+                        {
+                            return false;
+                        }
+                        ev.DoorLockType = DoorBeepType.LockBypassDenied;
                     }
                 }
-
-                if (!bypassDenied && (allowInteracting = __instance.AllowInteracting(ply, colliderId)))
+                if (!__instance.AllowInteracting(ply, colliderId))
                 {
-                    if (ply.GetRoleId() == RoleTypeId.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply))
-                    {
-                        ev.IsAllowed = true;
-                    }
-                    else
-                    {
-                        ev.IsAllowed = false;
-                    }
+                    ev.IsAllowed = false;
+                    ev.DoorLockType = DoorBeepType.InteractionDenied;
                 }
-
-                Handlers.Player.OnInteractingDoor(ev);
-
-                if (EventManager.ExecuteEvent(PluginAPI.Enums.ServerEventType.PlayerInteractDoor, new object[] { ply, __instance, ev.IsAllowed }))
+                bool flag = ply.GetRoleId() == RoleTypeId.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply);
+                if (!EventManager.ExecuteEvent(PluginAPI.Enums.ServerEventType.PlayerInteractDoor, new object[]
                 {
-                    if (ev.IsAllowed && allowInteracting)
+                    ply,
+                    __instance,
+                    flag,
+                }))
+                {
+                    return false;
+                }
+                if (flag)
+                {
+                    Handlers.Player.OnInteractingDoor(ev);
+                    if (ev.IsAllowed)
                     {
-                        __instance.NetworkTargetState = !__instance.TargetState;
-                        __instance._triggerPlayer = ply;
-                    }
-                    else if (bypassDenied)
-                    {
-                        __instance.LockBypassDenied(ply, colliderId);
-                    }
-                    // Don't call the RPC if the door is still moving
-                    else if (allowInteracting)
-                    {
-                        // To avoid breaking their API, call the access denied event
-                        // when our event prevents the door from opening
-                        __instance.PermissionsDenied(ply, colliderId);
-                        DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
+                        switch (ev.DoorLockType)
+                        {
+                            case DoorBeepType.PermissionDenied:
+                                __instance.PermissionsDenied(ply, colliderId);
+                                DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
+                                break;
+                            case DoorBeepType.LockBypassDenied:
+                                __instance.LockBypassDenied(ply, colliderId);
+                                break;
+                            default:
+                                __instance.NetworkTargetState = !__instance.TargetState;
+                                __instance._triggerPlayer = ply;
+                                break;
+                        }
                     }
                 }
+
                 return false;
             }
             catch (Exception exception)
