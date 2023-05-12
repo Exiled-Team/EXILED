@@ -385,6 +385,7 @@ namespace Exiled.API.Features
                 {
                     if (!PlayerCustomInfoRegex.IsMatch(value))
                         Log.Error($"Exiled.API.Features.Player::CustomInfo (Invalid syntax) {value}");
+
                     InfoArea |= PlayerInfoArea.CustomInfo;
                 }
 
