@@ -9,17 +9,10 @@ namespace Exiled.Events.Patches.Fixes
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
-
-    using API.Features;
     using API.Features.Pools;
-
-    using CustomPlayerEffects;
-
-    using Exiled.API.Enums;
 
     using HarmonyLib;
     using InventorySystem.Items.ThrowableProjectiles;
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patch the Scp2176Projectile.ServerFuseEnd.
