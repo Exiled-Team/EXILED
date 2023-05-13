@@ -215,25 +215,23 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, byte unitId = 0)
         {
-            foreach (Player target in playersToAffect)
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            writer.WriteUShort(38952);
+            writer.WriteUInt(player.NetId);
+            writer.WriteRoleType(type);
+            if (type.GetTeam() == Team.FoundationForces)
+                writer.WriteByte(unitId);
+
+            if (player.Role.Base is IFpcRole fpc)
             {
-                NetworkWriterPooled writer = NetworkWriterPool.Get();
-                writer.WriteUShort(38952);
-                writer.WriteUInt(player.NetId);
-                writer.WriteRoleType(type);
-                if (PlayerRolesUtils.GetTeam(type) == Team.FoundationForces)
-                    writer.WriteByte(unitId);
-
-                ushort syncH;
-                if (type.IsFpcRole() && player.Role.Base is FpcStandardRoleBase fpc)
-                {
-                    fpc.FpcModule.MouseLook.GetSyncValues(0, out syncH, out _);
-                    writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
-                    writer.WriteUShort(syncH);
-                }
-
-                target.Connection.Send(writer.ToArraySegment());
+                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort syncH, out _);
+                writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
+                writer.WriteUShort(syncH);
             }
+
+            foreach (Player target in playersToAffect)
+                target.Connection.Send(writer.ToArraySegment());
+            NetworkWriterPool.Return(writer);
 
             // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
             player.Position += Vector3.up * 0.25f;

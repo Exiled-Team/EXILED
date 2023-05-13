@@ -516,17 +516,22 @@ namespace Exiled.CustomRoles.API.Features
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
             }
 
-            if (!KeepInventoryOnSpawn)
-            {
-                Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
-                player.ClearInventory();
-            }
+            Timing.CallDelayed(
+                0.25f,
+                () =>
+                {
+                    if (!KeepInventoryOnSpawn)
+                    {
+                        Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
+                        player.ClearInventory();
+                    }
 
-            foreach (string itemName in Inventory)
-            {
-                Log.Debug($"{Name}: Adding {itemName} to inventory.");
-                TryAddItem(player, itemName);
-            }
+                    foreach (string itemName in Inventory)
+                    {
+                        Log.Debug($"{Name}: Adding {itemName} to inventory.");
+                        TryAddItem(player, itemName);
+                    }
+                });
 
             Log.Debug($"{Name}: Setting health values.");
             player.Health = MaxHealth;
