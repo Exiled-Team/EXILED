@@ -24,7 +24,9 @@ namespace Exiled.API.Features
     using InventorySystem;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.ThrowableProjectiles;
-    using Items;
+    using InventorySystem.Items.Pickups;
+
+  using Items;
 
     using LightContainmentZoneDecontamination;
 
@@ -291,6 +293,44 @@ namespace Exiled.API.Features
             NetworkServer.Spawn(tantrum.gameObject);
 
             return tantrum.gameObject;
+        }
+
+        /// <summary>
+        /// Destroy all <see cref="ItemPickupBase"/> objects.
+        /// </summary>
+        public static void CleanAllItems()
+        {
+            foreach (Pickup pickup in Pickup.List.ToList())
+                pickup.Destroy();
+        }
+
+        /// <summary>
+        /// Destroy all the <see cref="Pickup"/> objects from the specified list.
+        /// </summary>
+        /// <param name="pickups">The List of pickups to destroy.</param>
+        public static void CleanAllItems(IEnumerable<Pickup> pickups)
+        {
+            foreach (Pickup pickup in pickups)
+                pickup.Destroy();
+        }
+
+        /// <summary>
+        /// Destroy all <see cref="BasicRagdoll"/> objects.
+        /// </summary>
+        public static void CleanAllRagdolls()
+        {
+            foreach (Ragdoll ragDoll in Ragdoll.List.ToList())
+                ragDoll.Destroy();
+        }
+
+        /// <summary>
+        /// Destroy all <see cref="Ragdoll"/> objects from the specified list.
+        /// </summary>
+        /// <param name="ragDolls">The List of RagDolls to destroy.</param>
+        public static void CleanAllRagdolls(IEnumerable<Ragdoll> ragDolls)
+        {
+            foreach (Ragdoll ragDoll in ragDolls)
+                ragDoll.Destroy();
         }
 
         /// <summary>
