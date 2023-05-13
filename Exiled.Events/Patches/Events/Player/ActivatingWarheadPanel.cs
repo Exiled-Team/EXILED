@@ -33,17 +33,15 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label retLabel = generator.DefineLabel();
             Label ev = generator.DefineLabel();
-            Label bypassCheck = generator.DefineLabel();
             Label cardCheck = generator.DefineLabel();
 
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder allowed = generator.DeclareLocal(typeof(bool));
             LocalBuilder card = generator.DeclareLocal(typeof(Keycard));
 
-            int offset = 1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
+            int index = newInstructions.FindIndex(i => i.Is(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._sr))));
 
-            newInstructions.RemoveRange(index, 25);
+            newInstructions.RemoveRange(index, 17);
 
             newInstructions[index].labels.Add(retLabel);
 
@@ -52,7 +50,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new[]
                 {
                     // Player player = Player.Get(this._hub);
-                    new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Stloc_S, player.LocalIndex),
@@ -61,19 +58,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Stloc_S, allowed.LocalIndex),
 
-                    // if (!this.ChckDis(player.Position)
-                    //      return;
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldloc_S, player.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Position))),
-                    new(OpCodes.Call, Method(typeof(PlayerInteract), nameof(PlayerInteract.ChckDis))),
-                    new(OpCodes.Brtrue_S, bypassCheck),
-
-                    new(OpCodes.Ret),
-
                     // if (player.IsBypassModeEnabled)
                     //      allowed = true;
-                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(bypassCheck),
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsBypassModeEnabled))),
                     new(OpCodes.Brfalse_S, cardCheck),
 
