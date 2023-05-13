@@ -121,20 +121,26 @@ namespace Exiled.API.Features
                         if (!typeCommands.TryGetValue(type, out ICommand command))
                             command = (ICommand)Activator.CreateInstance(type);
 
-                        if (CommandProcessor.RemoteAdminCommandHandler.AllCommands.Any(x => x.Command == command.Command)
-                            || GameCore.Console.singleton.ConsoleCommandHandler.AllCommands.Any(x => x.Command == command.Command)
-                            || QueryProcessor.DotCommandHandler.AllCommands.Any(x => x.Command == command.Command))
+                        try
                         {
-                            Log.Error($"Command with same name has already registered! ({command.Command})");
-                            continue;
+                            if (commandType == typeof(RemoteAdminCommandHandler))
+                                CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
+                            else if (commandType == typeof(GameConsoleCommandHandler))
+                                GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+                            else if (commandType == typeof(ClientCommandHandler))
+                                QueryProcessor.DotCommandHandler.RegisterCommand(command);
                         }
-
-                        if (commandType == typeof(RemoteAdminCommandHandler))
-                            CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
-                        else if (commandType == typeof(GameConsoleCommandHandler))
-                            GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
-                        else if (commandType == typeof(ClientCommandHandler))
-                            QueryProcessor.DotCommandHandler.RegisterCommand(command);
+                        catch (ArgumentException e)
+                        {
+                            if (e.Message.StartsWith("An"))
+                            {
+                                Log.Error($"Command with same name has already registered! Command: {command.Command}");
+                            }
+                            else
+                            {
+                                Log.Error($"An error has occurred while registering a command: {e}");
+                            }
+                        }
 
                         Commands[commandType][type] = command;
                     }
