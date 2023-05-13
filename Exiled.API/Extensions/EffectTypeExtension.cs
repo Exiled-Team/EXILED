@@ -63,6 +63,8 @@ namespace Exiled.API.Extensions
             EffectType.SoundtrackMute => typeof(SoundtrackMute),
             EffectType.SpawnProtected => typeof(SpawnProtected),
             EffectType.Traumatized => typeof(Traumatized),
+            EffectType.AntiScp207 => typeof(AntiScp207),
+            EffectType.Scanned => typeof(Scanned),
 
             // This should never happen
             _ => throw new InvalidOperationException("Invalid effect enum provided"),
@@ -95,7 +97,7 @@ namespace Exiled.API.Extensions
         public static bool IsNegative(this EffectType effect) => IsHarmful(effect) || effect is EffectType.AmnesiaItems
             or EffectType.AmnesiaVision or EffectType.Blinded or EffectType.Burned or EffectType.Concussed or EffectType.Deafened
             or EffectType.Disabled or EffectType.Ensnared or EffectType.Exhausted or EffectType.Flashed or EffectType.SinkHole
-            or EffectType.Stained or EffectType.InsufficientLighting or EffectType.SoundtrackMute;
+            or EffectType.Stained or EffectType.InsufficientLighting or EffectType.SoundtrackMute or EffectType.Scanned;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> is a positive effect.
@@ -105,7 +107,7 @@ namespace Exiled.API.Extensions
         /// <seealso cref="IsHealing(EffectType)"/>
         public static bool IsPositive(this EffectType effect) => effect is EffectType.BodyshotReduction or EffectType.DamageReduction
             or EffectType.Invigorated or EffectType.Invisible or EffectType.MovementBoost or EffectType.RainbowTaste
-            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality;
+            or EffectType.Scp207 or EffectType.Scp1853 or EffectType.Vitality or EffectType.AntiScp207;
 
         /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> affects the player's movement speed.
