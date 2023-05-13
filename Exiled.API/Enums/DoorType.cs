@@ -57,11 +57,6 @@ namespace Exiled.API.Enums
         Scp096,
 
         /// <summary>
-        /// Represents the 106_BOTTOM door.
-        /// </summary>
-        Scp106Bottom,
-
-        /// <summary>
         /// Represents the 106_PRIMARY door.
         /// </summary>
         Scp106Primary,
