@@ -12,11 +12,12 @@ namespace Exiled.API.Features
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using Decals;
+
     using Enums;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features.Pickups;
-    using Exiled.API.Features.Roles;
     using Exiled.API.Features.Toys;
 
     using Hazards;
@@ -204,11 +205,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts the light containment zone decontamination process.
         /// </summary>
-        public static void StartDecontamination()
-        {
-            DecontaminationController.Singleton.FinishDecontamination();
-            DecontaminationController.Singleton.NetworkRoundStartTime = -1f;
-        }
+        public static void StartDecontamination() => DecontaminationController.Singleton.ForceDecontamination();
 
         /// <summary>
         /// Turns off all lights in the facility.
@@ -301,7 +298,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">The position of the blood decal.</param>
         /// <param name="direction">The direction of the blood decal.</param>
-        public static void PlaceBlood(Vector3 position, Vector3 direction) => new GunHitMessage(position, direction, true).SendToAuthenticated(0);
+        public static void PlaceBlood(Vector3 position, Vector3 direction) => new GunDecalMessage(position, direction, DecalPoolType.Blood).SendToAuthenticated(0);
 
         /// <summary>
         /// Gets all the near cameras.

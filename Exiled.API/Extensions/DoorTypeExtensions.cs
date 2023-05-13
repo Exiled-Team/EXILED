@@ -9,8 +9,6 @@ namespace Exiled.API.Extensions
 {
     using Exiled.API.Enums;
 
-    using MapGeneration;
-
     /// <summary>
     /// A set of extensions for <see cref="DoorType"/>.
     /// </summary>

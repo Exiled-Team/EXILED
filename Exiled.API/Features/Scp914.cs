@@ -11,8 +11,6 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
-    using Utils.ConfigHandler;
-
     /// <summary>
     /// A set of tools to modify SCP-914's behaviour.
     /// </summary>

@@ -1025,7 +1025,7 @@ namespace Exiled.API.Features
                 if (value)
                     ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
                 else
-                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag(false);
+                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag__Boolean(false);
             }
         }
 

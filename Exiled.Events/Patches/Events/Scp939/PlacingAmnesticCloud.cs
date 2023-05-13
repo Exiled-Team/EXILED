@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     {
         private static bool Prefix(Scp939AmnesticCloudAbility __instance, NetworkReader reader)
         {
-            bool flag = reader.ReadBoolean();
+            bool flag = reader.ReadBool();
             bool toAll = flag != __instance.TargetState;
 
             PlacingAmnesticCloudEventArgs ev = new(__instance.Owner, flag, __instance.Cooldown.IsReady, __instance._failedCooldown);

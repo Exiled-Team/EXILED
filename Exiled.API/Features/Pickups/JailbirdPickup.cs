@@ -10,7 +10,6 @@ namespace Exiled.API.Features.Pickups
     using Exiled.API.Interfaces;
 
     using InventorySystem.Items.Jailbird;
-    using UnityEngine;
 
     using BaseJailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
 
@@ -19,26 +18,6 @@ namespace Exiled.API.Features.Pickups
     /// </summary>
     public class JailbirdPickup : Pickup, IWrapper<BaseJailbirdPickup>
     {
-        /// <summary>
-        /// Number of Charges use before the weapon become AlmostDepleted.
-        /// </summary>
-        public const int ChargesWarning = JailbirdItem.ChargesWarning;
-
-        /// <summary>
-        /// Number of Charges use before the weapon will being destroy.
-        /// </summary>
-        public const int ChargesLimit = JailbirdItem.ChargesLimit;
-
-        /// <summary>
-        /// Number of Damage made before the weapon become AlmostDepleted.
-        /// </summary>
-        public const float DamageWarning = JailbirdItem.DamageWarning;
-
-        /// <summary>
-        /// Number of Damage made before the weapon will being destroy.
-        /// </summary>
-        public const float DamageLimit = JailbirdItem.DamageLimit;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="JailbirdPickup"/> class.
         /// </summary>
@@ -73,17 +52,6 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the amount of damage remaining before the Jailbird breaks.
-        /// </summary>
-        /// <remarks>Modifying this value will directly modify <see cref="TotalDamageDealt"/>.</remarks>
-        /// <seealso cref="TotalDamageDealt"/>
-        public float RemainingDamage
-        {
-            get => JailbirdItem.DamageLimit - TotalDamageDealt;
-            set => TotalDamageDealt = Mathf.Clamp(JailbirdItem.DamageLimit - value, 0, JailbirdItem.DamageLimit);
-        }
-
-        /// <summary>
         /// Gets or sets the number of times the item has been charged and used.
         /// </summary>
         public int TotalCharges
@@ -93,30 +61,13 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets or sets the amount of charges remaining before the Jailbird breaks.
+        /// Gets or sets the <see cref="JailbirdWearState"/> of the item.
         /// </summary>
-        /// <remarks>Modifying this value will directly modify <see cref="TotalCharges"/>.</remarks>
-        /// <seealso cref="TotalCharges"/>
-        public int RemainingCharges
+        public JailbirdWearState WearState
         {
-            get => JailbirdItem.ChargesLimit - TotalCharges;
-            set => TotalCharges = Mathf.Clamp(JailbirdItem.ChargesLimit - value, 0, JailbirdItem.ChargesLimit);
+            get => Base.NetworkWear;
+            set => Base.NetworkWear = value;
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the weapon warn the player than the Item will be broken.
-        /// </summary>
-        public bool IsAlmostDepleted => IsDamageWarning || IsChargesWarning;
-
-        /// <summary>
-        /// Gets a value indicating whether .
-        /// </summary>
-        public bool IsDamageWarning => TotalDamageDealt >= DamageWarning;
-
-        /// <summary>
-        /// Gets a value indicating whether .
-        /// </summary>
-        public bool IsChargesWarning => TotalCharges >= ChargesWarning;
 
         /// <summary>
         /// Returns the jailbird in a human readable format.
