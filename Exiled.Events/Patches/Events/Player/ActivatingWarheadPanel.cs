@@ -126,16 +126,5 @@ namespace Exiled.Events.Patches.Events.Player
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
-
-        private static bool HandleRequest(Player player)
-        {
-            if (player.IsBypassModeEnabled)
-                return true;
-
-            if (player.CurrentItem != null && player.CurrentItem is Keycard card && card.Permissions.HasFlag(KeycardPermissions.AlphaWarhead))
-                return true;
-
-            return false;
-        }
     }
 }
