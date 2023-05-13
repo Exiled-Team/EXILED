@@ -54,12 +54,16 @@ namespace Exiled.Events.Patches.Events.Player
                             return false;
                         }
                         ev.DoorLockType = DoorBeepType.LockBypassDenied;
+                        Process(__instance, ply, colliderId, ev);
+                        return false;
                     }
                 }
                 if (!__instance.AllowInteracting(ply, colliderId))
                 {
                     ev.IsAllowed = false;
                     ev.DoorLockType = DoorBeepType.InteractionDenied;
+                    Process(__instance, ply, colliderId, ev);
+                    return false;
                 }
                 bool flag = ply.GetRoleId() == RoleTypeId.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply);
                 if (!EventManager.ExecuteEvent(PluginAPI.Enums.ServerEventType.PlayerInteractDoor, new object[]
@@ -73,24 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 if (flag)
                 {
-                    Handlers.Player.OnInteractingDoor(ev);
-                    if (ev.IsAllowed)
-                    {
-                        switch (ev.DoorLockType)
-                        {
-                            case DoorBeepType.PermissionDenied:
-                                __instance.PermissionsDenied(ply, colliderId);
-                                DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
-                                break;
-                            case DoorBeepType.LockBypassDenied:
-                                __instance.LockBypassDenied(ply, colliderId);
-                                break;
-                            default:
-                                __instance.NetworkTargetState = !__instance.TargetState;
-                                __instance._triggerPlayer = ply;
-                                break;
-                        }
-                    }
+                    Process(__instance, ply, colliderId, ev);
                 }
                 return false;
             }
@@ -98,6 +85,28 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 Log.Error($"{typeof(InteractingDoor).FullName}.{nameof(Prefix)}:\n{exception}");
                 return true;
+            }
+        }
+
+        private static void Process(DoorVariant __instance, ReferenceHub ply, byte colliderId, InteractingDoorEventArgs ev)
+        {
+            Handlers.Player.OnInteractingDoor(ev);
+            if (ev.IsAllowed)
+            {
+                switch (ev.DoorLockType)
+                {
+                    case DoorBeepType.PermissionDenied:
+                        __instance.PermissionsDenied(ply, colliderId);
+                        DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
+                        break;
+                    case DoorBeepType.LockBypassDenied:
+                        __instance.LockBypassDenied(ply, colliderId);
+                        break;
+                    default:
+                        __instance.NetworkTargetState = !__instance.TargetState;
+                        __instance._triggerPlayer = ply;
+                        break;
+                }
             }
         }
     }
