@@ -80,7 +80,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(x => Bounds.Contains(Position));
+        public IEnumerable<Player> Players => Player.List.Where(x => Bounds.Contains(x.Position));
 
         /// <summary>
         /// Gets the lift's name.
