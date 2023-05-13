@@ -8,6 +8,7 @@
 namespace Exiled.API.Enums
 {
     using System;
+
     using static Interactables.Interobjects.ElevatorManager;
 
     /// <summary>
