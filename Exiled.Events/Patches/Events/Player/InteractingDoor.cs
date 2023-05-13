@@ -92,7 +92,6 @@ namespace Exiled.Events.Patches.Events.Player
                         }
                     }
                 }
-
                 return false;
             }
             catch (Exception exception)
