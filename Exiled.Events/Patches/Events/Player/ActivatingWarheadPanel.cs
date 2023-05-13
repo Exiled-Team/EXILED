@@ -7,14 +7,15 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using API.Features;
     using API.Features.Pools;
-
+    using Exiled.API.Enums;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs.Player;
-
     using HarmonyLib;
 
     using static HarmonyLib.AccessTools;
@@ -31,25 +32,81 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label retLabel = generator.DefineLabel();
+            Label ev = generator.DefineLabel();
+            Label bypassCheck = generator.DefineLabel();
+            Label cardCheck = generator.DefineLabel();
 
-            int offset = -1;
-            int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract)))) + offset;
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            LocalBuilder allowed = generator.DeclareLocal(typeof(bool));
+            LocalBuilder card = generator.DeclareLocal(typeof(Keycard));
 
-            newInstructions[index + 1].labels.Add(retLabel);
+            int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
+
+            newInstructions.RemoveRange(index, 25);
+
+            newInstructions[index].labels.Add(retLabel);
 
             newInstructions.InsertRange(
                 index,
-                new CodeInstruction[]
+                new[]
                 {
                     // Player player = Player.Get(this._hub);
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Stloc_S, player.LocalIndex),
 
-                    // true
+                    // allowed = false;
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Stloc_S, allowed.LocalIndex),
+
+                    // if (!this.ChckDis(player.Position)
+                    //      return;
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Position))),
+                    new(OpCodes.Call, Method(typeof(PlayerInteract), nameof(PlayerInteract.ChckDis))),
+                    new(OpCodes.Brtrue_S, bypassCheck),
+
+                    new(OpCodes.Ret),
+
+                    // if (player.IsBypassModeEnabled)
+                    //      allowed = true;
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(bypassCheck),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsBypassModeEnabled))),
+                    new(OpCodes.Brfalse_S, cardCheck),
+
                     new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Stloc_S, allowed.LocalIndex),
+                    new(OpCodes.Br_S, ev),
 
-                    // ActivatingWarheadPanekEventArgs ev = new(player, true);
+                    // if (player.CurrentItem != null && player.CurrentItem is Keycard card && card.Permissions.HasFlag(KeycardPermissions.AlphaWarhead))
+                    //      allowed = true;
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(cardCheck),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.CurrentItem))),
+                    new(OpCodes.Brfalse_S, ev),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.CurrentItem))),
+                    new(OpCodes.Isinst, typeof(Keycard)),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, card.LocalIndex),
+                    new(OpCodes.Brfalse_S, ev),
+                    new(OpCodes.Ldloc_S, card.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Keycard), nameof(Keycard.Permissions))),
+                    new(OpCodes.Box, typeof(KeycardPermissions)),
+                    new(OpCodes.Ldc_I4_8),
+                    new(OpCodes.Box, typeof(KeycardPermissions)),
+                    new(OpCodes.Call, Method(typeof(Enum), nameof(Enum.HasFlag))),
+                    new(OpCodes.Stloc_S, allowed.LocalIndex),
+
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(ev),
+
+                    // allowed
+                    new(OpCodes.Ldloc_S, allowed.LocalIndex),
+
+                    // ActivatingWarheadPanekEventArgs ev = new(player, allowed);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
                     new(OpCodes.Dup),
 
@@ -68,6 +125,17 @@ namespace Exiled.Events.Patches.Events.Player
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static bool HandleRequest(Player player)
+        {
+            if (player.IsBypassModeEnabled)
+                return true;
+
+            if (player.CurrentItem != null && player.CurrentItem is Keycard card && card.Permissions.HasFlag(KeycardPermissions.AlphaWarhead))
+                return true;
+
+            return false;
         }
     }
 }
