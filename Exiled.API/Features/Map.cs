@@ -206,11 +206,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts the light containment zone decontamination process.
         /// </summary>
-        public static void StartDecontamination()
-        {
-            DecontaminationController.Singleton.FinishDecontamination();
-            DecontaminationController.Singleton.NetworkRoundStartTime = -1f;
-        }
+        public static void StartDecontamination() => DecontaminationController.Singleton.ForceDecontamination();
 
         /// <summary>
         /// Turns off all lights in the facility.
