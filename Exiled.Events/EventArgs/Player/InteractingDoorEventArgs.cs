@@ -58,7 +58,7 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the access is granted or not.
+        ///     Gets or sets a value indicating the result of the interaction.
         /// </summary>
         public DoorBeepType DoorLockType { get; set; }
     }
