@@ -31,15 +31,15 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        /// <param name="doorLockType">
-        ///     <inheritdoc cref="DoorLockType" />
+        /// <param name="interactionResult">
+        ///     <inheritdoc cref="InteractionResult" />
         /// </param>
-        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true, DoorBeepType doorLockType = DoorBeepType.InteractionAllowed)
+        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true, DoorBeepType interactionResult = DoorBeepType.InteractionAllowed)
         {
             Player = player;
             Door = Door.Get(door);
             IsAllowed = isAllowed;
-            DoorLockType = doorLockType;
+            InteractionResult = interactionResult;
         }
 
         /// <summary>
@@ -60,6 +60,6 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets or sets a value indicating the result of the interaction.
         /// </summary>
-        public DoorBeepType DoorLockType { get; set; }
+        public DoorBeepType InteractionResult { get; set; }
     }
 }

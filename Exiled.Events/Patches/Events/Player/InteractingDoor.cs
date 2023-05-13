@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                         {
                             return false;
                         }
-                        ev.DoorLockType = DoorBeepType.LockBypassDenied;
+                        ev.InteractionResult = DoorBeepType.LockBypassDenied;
                         Process(__instance, ply, colliderId, ev);
                         return false;
                     }
@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!__instance.AllowInteracting(ply, colliderId))
                 {
                     ev.IsAllowed = false;
-                    ev.DoorLockType = DoorBeepType.InteractionDenied;
+                    ev.InteractionResult = DoorBeepType.InteractionDenied;
                     Process(__instance, ply, colliderId, ev);
                     return false;
                 }
@@ -93,7 +93,7 @@ namespace Exiled.Events.Patches.Events.Player
             Handlers.Player.OnInteractingDoor(ev);
             if (ev.IsAllowed)
             {
-                switch (ev.DoorLockType)
+                switch (ev.InteractionResult)
                 {
                     case DoorBeepType.PermissionDenied:
                         __instance.PermissionsDenied(ply, colliderId);
