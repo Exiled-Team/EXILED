@@ -205,8 +205,9 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(string name, out CustomItem? customItem)
         {
-            if (name is null)
-                throw new ArgumentNullException(nameof(name));
+            customItem = null;
+            if (string.IsNullOrEmpty(name))
+                return false;
 
             customItem = uint.TryParse(name, out uint id) ? Get(id) : Get(name);
 
@@ -234,8 +235,9 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out CustomItem? customItem)
         {
+            customItem = null;
             if (player is null)
-                throw new ArgumentNullException(nameof(player));
+                return false;
 
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Check(player.CurrentItem));
 
@@ -248,10 +250,11 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <param name="customItems">The player's <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/>.</param>
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
-        public static bool TryGet(Player player, out IEnumerable<CustomItem>? customItems)
+        public static bool TryGet(Player player, out IEnumerable<CustomItem?> customItems)
         {
+            customItems = Enumerable.Empty<CustomItem>();
             if (player is null)
-                throw new ArgumentNullException(nameof(player));
+                return false;
 
             customItems = Registered.Where(tempCustomItem => player.Items.Any(tempCustomItem.Check));
 
