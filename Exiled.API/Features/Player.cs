@@ -60,10 +60,6 @@ namespace Exiled.API.Features
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.PlayableScps.Scp079;
-    using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
@@ -1026,7 +1022,7 @@ namespace Exiled.API.Features
                 if (value)
                     ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
                 else
-                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag(false);
+                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag__Boolean(false);
             }
         }
 

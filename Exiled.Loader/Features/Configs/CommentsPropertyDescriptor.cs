@@ -30,43 +30,43 @@ namespace Exiled.Loader.Features.Configs
             Name = baseDescriptor.Name;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public string Name { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public Type Type => baseDescriptor.Type;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public Type TypeOverride
         {
             get => baseDescriptor.TypeOverride;
             set => baseDescriptor.TypeOverride = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public int Order { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public ScalarStyle ScalarStyle
         {
             get => baseDescriptor.ScalarStyle;
             set => baseDescriptor.ScalarStyle = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public bool CanWrite => baseDescriptor.CanWrite;
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public void Write(object target, object value)
         {
             baseDescriptor.Write(target, value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public T GetCustomAttribute<T>()
             where T : Attribute => baseDescriptor.GetCustomAttribute<T>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IPropertyDescriptor"/>
         public IObjectDescriptor Read(object target)
         {
             DescriptionAttribute description = baseDescriptor.GetCustomAttribute<DescriptionAttribute>();

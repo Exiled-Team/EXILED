@@ -252,9 +252,9 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="FlashbangGrenade.PlayExplosionEffects()"/>.
+    /// Patches <see cref="FlashbangGrenade.ServerFuseEnd()"/>.
     /// </summary>
-    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PlayExplosionEffects))]
+    [HarmonyPatch(typeof(FlashbangGrenade), nameof(FlashbangGrenade.ServerFuseEnd))]
     internal static class FlashbangGrenadePlayExplosionEffectsPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -280,7 +280,7 @@ namespace Exiled.Events.Patches.Generic
                     new(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
                     // referenceHub
-                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldloc_3),
 
                     // CheckFriendlyFirePlayer(this.PreviousOwner.Hub, referenceHub)
                     new(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayer))),
