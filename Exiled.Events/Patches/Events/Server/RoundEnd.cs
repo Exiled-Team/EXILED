@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs.Server;
     using GameCore;
     using HarmonyLib;
@@ -23,6 +24,8 @@ namespace Exiled.Events.Patches.Events.Server
     using PluginAPI.Events;
     using RoundRestarting;
     using UnityEngine;
+
+    using Round = API.Features.Round;
 
     /// <summary>
     ///     Patches <see cref="RoundSummary.Start" />.
@@ -47,6 +50,9 @@ namespace Exiled.Events.Patches.Events.Server
                         RoundSummary.SumInfo_ClassList newList = default;
                         foreach (ReferenceHub referenceHub in ReferenceHub.AllHubs)
                         {
+                            if (Round.IgnoredPlayers.Contains(referenceHub))
+                                continue;
+
                             switch (referenceHub.GetTeam())
                             {
                                 case Team.SCPs:
