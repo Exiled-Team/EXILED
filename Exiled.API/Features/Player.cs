@@ -61,10 +61,6 @@ namespace Exiled.API.Features
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.PlayableScps.Scp079;
-    using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
@@ -1029,7 +1025,7 @@ namespace Exiled.API.Features
                 if (value)
                     ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
                 else
-                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag(false);
+                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag__Boolean(false);
             }
         }
 
@@ -1154,6 +1150,13 @@ namespace Exiled.API.Features
         /// <param name="sender">The command sender.</param>
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSystem.ICommandSender sender) => Get(sender as CommandSender);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the <see cref="Footprinting.Footprint"/>, if any.
+        /// </summary>
+        /// <param name="footprint">The Footprint.</param>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
+        public static Player Get(Footprint footprint) => Get(footprint.Hub);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSender"/>, if any.
@@ -1324,6 +1327,14 @@ namespace Exiled.API.Features
         /// <param name="player">The player that matches the given <see cref="CommandSystem.ICommandSender"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
         public static bool TryGet(CommandSystem.ICommandSender sender, out Player player) => (player = Get(sender)) is not null;
+
+        /// <summary>
+        /// Try-get a player given a <see cref="Footprinting.Footprint"/>.
+        /// </summary>
+        /// <param name="footprint">The <see cref="Footprinting.Footprint"/>.</param>
+        /// <param name="player">The player that matches the given <see cref="Footprinting.Footprint"/>, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(Footprint footprint, out Player player) => (player = Get(footprint)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="CommandSender"/>.

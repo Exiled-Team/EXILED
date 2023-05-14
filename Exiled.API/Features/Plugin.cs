@@ -10,16 +10,13 @@ namespace Exiled.API.Features
 #pragma warning disable SA1402
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
 
     using CommandSystem;
-
     using Enums;
-
     using Extensions;
-
     using Interfaces;
-
     using RemoteAdmin;
 
     /// <summary>
@@ -124,12 +121,26 @@ namespace Exiled.API.Features
                         if (!typeCommands.TryGetValue(type, out ICommand command))
                             command = (ICommand)Activator.CreateInstance(type);
 
-                        if (commandType == typeof(RemoteAdminCommandHandler))
-                            CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
-                        else if (commandType == typeof(GameConsoleCommandHandler))
-                            GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
-                        else if (commandType == typeof(ClientCommandHandler))
-                            QueryProcessor.DotCommandHandler.RegisterCommand(command);
+                        try
+                        {
+                            if (commandType == typeof(RemoteAdminCommandHandler))
+                                CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
+                            else if (commandType == typeof(GameConsoleCommandHandler))
+                                GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+                            else if (commandType == typeof(ClientCommandHandler))
+                                QueryProcessor.DotCommandHandler.RegisterCommand(command);
+                        }
+                        catch (ArgumentException e)
+                        {
+                            if (e.Message.StartsWith("An"))
+                            {
+                                Log.Error($"Command with same name has already registered! Command: {command.Command}");
+                            }
+                            else
+                            {
+                                Log.Error($"An error has occurred while registering a command: {e}");
+                            }
+                        }
 
                         Commands[commandType][type] = command;
                     }

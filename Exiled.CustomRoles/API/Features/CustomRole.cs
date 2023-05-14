@@ -26,8 +26,6 @@ namespace Exiled.CustomRoles.API.Features
 
     using MEC;
 
-    using Mirror;
-
     using PlayerRoles;
 
     using UnityEngine;
@@ -132,6 +130,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual float SpawnChance { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the spawn system is ignored for this role or not.
+        /// </summary>
+        public virtual bool IgnoreSpawnSystem { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether players keep this Custom Role when they switch roles: Class-D -> Scientist for example.
         /// </summary>
         public virtual bool KeepRoleOnChangingRole { get; set; }
@@ -206,22 +209,22 @@ namespace Exiled.CustomRoles.API.Features
             return stringLookupTable[name];
         }
 
+        /// <inheritdoc cref="TryGet(uint,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
+        [Obsolete("Use TryGet(uint) instead", false)]
+        public static bool TryGet(int id, out CustomRole? customRole) => TryGet((uint)id, out customRole);
+
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by <inheritdoc cref="Id"/>.
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        [Obsolete("Use TryGet(uint) instead", false)]
-        public static bool TryGet(int id, out CustomRole? customRole)
+        public static bool TryGet(uint id, out CustomRole? customRole)
         {
             customRole = Get(id);
 
             return customRole is not null;
         }
-
-        /// <inheritdoc cref="TryGet(int,out Exiled.CustomRoles.API.Features.CustomRole?)"/>
-        public static bool TryGet(uint id, out CustomRole? customRole) => TryGet(id, out customRole);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
@@ -518,17 +521,22 @@ namespace Exiled.CustomRoles.API.Features
                     player.Role.Set(Role, SpawnReason.ForceClass, RoleSpawnFlags.All);
             }
 
-            if (!KeepInventoryOnSpawn)
-            {
-                Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
-                player.ClearInventory();
-            }
+            Timing.CallDelayed(
+                0.25f,
+                () =>
+                {
+                    if (!KeepInventoryOnSpawn)
+                    {
+                        Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.");
+                        player.ClearInventory();
+                    }
 
-            foreach (string itemName in Inventory)
-            {
-                Log.Debug($"{Name}: Adding {itemName} to inventory.");
-                TryAddItem(player, itemName);
-            }
+                    foreach (string itemName in Inventory)
+                    {
+                        Log.Debug($"{Name}: Adding {itemName} to inventory.");
+                        TryAddItem(player, itemName);
+                    }
+                });
 
             Log.Debug($"{Name}: Setting health values.");
             player.Health = MaxHealth;
@@ -832,6 +840,7 @@ namespace Exiled.CustomRoles.API.Features
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning += OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.Destroying += OnDestroying;
         }
 
         /// <summary>
@@ -847,6 +856,7 @@ namespace Exiled.CustomRoles.API.Features
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning -= OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.Destroying += OnDestroying;
         }
 
         /// <summary>
@@ -887,7 +897,7 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnInternalSpawning(SpawningEventArgs ev)
         {
-            if (SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
+            if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
                 AddRole(ev.Player);
         }
 
@@ -913,5 +923,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Check(ev.Player))
                 ev.Role = Role;
         }
+
+        private void OnDestroying(DestroyingEventArgs ev) => RemoveRole(ev.Player);
     }
 }

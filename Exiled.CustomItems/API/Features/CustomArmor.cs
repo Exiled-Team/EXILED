@@ -70,8 +70,8 @@ namespace Exiled.CustomItems.API.Features
 
             TrackedSerials.Add(armor.Serial);
 
-            OnAcquired(player);
-
+            OnAcquired(player, displayMessage);
+            
             if (displayMessage)
                 ShowPickedUpMessage(player);
         }
