@@ -107,13 +107,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public ushort Serial
         {
-            get
-            {
-                if (Base.Info.Serial is 0)
-                    return Serial = ItemSerialGenerator.GenerateNext();
-                return Base.Info.Serial;
-            }
-
+            get => Base.Info.Serial;
             set
             {
                 Base.Info.Serial = value;
@@ -366,6 +360,7 @@ namespace Exiled.API.Features.Pickups
             ItemType.KeycardGuard or ItemType.KeycardJanitor or ItemType.KeycardO5 or ItemType.KeycardScientist or ItemType.KeycardContainmentEngineer or ItemType.KeycardFacilityManager or ItemType.KeycardResearchCoordinator or ItemType.KeycardZoneManager or ItemType.KeycardNTFCommander or ItemType.KeycardNTFLieutenant or ItemType.KeycardNTFOfficer => new KeycardPickup(type),
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
+            ItemType.Jailbird => new JailbirdPickup(),
             _ => new Pickup(type),
         };
 

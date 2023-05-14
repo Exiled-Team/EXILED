@@ -46,63 +46,72 @@ namespace Exiled.CustomRoles.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("customroles.give"))
+            try
             {
-                response = "Permission Denied, required: customroles.give";
-                return false;
-            }
-
-            if (arguments.Count == 0)
-            {
-                response = "give <Custom role name/Custom role ID> [Nickname/PlayerID/UserID/all/*]";
-                return false;
-            }
-
-            if (!CustomRole.TryGet(arguments.At(0), out CustomRole role))
-            {
-                response = $"Custom role {arguments.At(0)} not found!";
-                return false;
-            }
-
-            if (arguments.Count == 1)
-            {
-                if (sender is PlayerCommandSender playerCommandSender)
+                if (!sender.CheckPermission("customroles.give"))
                 {
-                    Player player = Player.Get(playerCommandSender);
-
-                    role.AddRole(player);
-                    response = $"{role.Name} given to {player.Nickname}.";
-                    return true;
+                    response = "Permission Denied, required: customroles.give";
+                    return false;
                 }
 
-                response = "Failed to provide a valid player.";
-                return false;
-            }
+                if (arguments.Count == 0)
+                {
+                    response = "give <Custom role name/Custom role ID> [Nickname/PlayerID/UserID/all/*]";
+                    return false;
+                }
 
-            string identifier = string.Join(" ", arguments.Skip(1));
+                if (!CustomRole.TryGet(arguments.At(0), out CustomRole? role) || role is null)
+                {
+                    response = $"Custom role {arguments.At(0)} not found!";
+                    return false;
+                }
 
-            switch (identifier)
-            {
-                case "*":
-                case "all":
-                    List<Player> players = ListPool<Player>.Pool.Get(Player.List);
-
-                    foreach (Player player in players)
-                        role.AddRole(player);
-
-                    response = $"Custom role {role.Name} given to all players.";
-                    ListPool<Player>.Pool.Return(players);
-                    return true;
-                default:
-                    if (Player.Get(identifier) is not Player ply)
+                if (arguments.Count == 1)
+                {
+                    if (sender is PlayerCommandSender playerCommandSender)
                     {
-                        response = $"Unable to find a player: {identifier}";
-                        return false;
+                        Player player = Player.Get(playerCommandSender);
+
+                        role.AddRole(player);
+                        response = $"{role.Name} given to {player.Nickname}.";
+                        return true;
                     }
 
-                    role.AddRole(ply);
-                    response = $"{role.Name} given to {ply.Nickname}.";
-                    return true;
+                    response = "Failed to provide a valid player.";
+                    return false;
+                }
+
+                string identifier = string.Join(" ", arguments.Skip(1));
+
+                switch (identifier)
+                {
+                    case "*":
+                    case "all":
+                        List<Player> players = ListPool<Player>.Pool.Get(Player.List);
+
+                        foreach (Player player in players)
+                            role.AddRole(player);
+
+                        response = $"Custom role {role.Name} given to all players.";
+                        ListPool<Player>.Pool.Return(players);
+                        return true;
+                    default:
+                        if (Player.Get(identifier) is not Player ply)
+                        {
+                            response = $"Unable to find a player: {identifier}";
+                            return false;
+                        }
+
+                        role.AddRole(ply);
+                        response = $"{role.Name} given to {ply.Nickname}.";
+                        return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                response = "Error";
+                return false;
             }
         }
     }

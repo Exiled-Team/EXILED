@@ -35,7 +35,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets or sets an action to override the behavior of <see cref="CanUseAbility"/>.
         /// </summary>
         [YamlIgnore]
-        public virtual Func<bool> CanUseOverride { get; set; }
+        public virtual Func<bool>? CanUseOverride { get; set; }
 
         /// <summary>
         /// Gets the last time this ability was used.
@@ -137,6 +137,6 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
         protected virtual void ShowMessage(Player player) =>
-            player.ShowHint(string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, Name, Description), CustomRoles.Instance.Config.UsedAbilityHint.Duration);
+            player.ShowHint(string.Format(CustomRoles.Instance!.Config.UsedAbilityHint.Content, Name, Description), CustomRoles.Instance.Config.UsedAbilityHint.Duration);
     }
 }

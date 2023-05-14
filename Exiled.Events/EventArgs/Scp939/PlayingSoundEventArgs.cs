@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public PlayingSoundEventArgs(ReferenceHub player, EnvMimicryOption sound, bool isReady, float cooldown, bool isAllowed = true)
+        public PlayingSoundEventArgs(ReferenceHub player, EnvMimicrySequence sound, bool isReady, float cooldown, bool isAllowed = true)
         {
             Player = Player.Get(player);
             Sound = sound;
@@ -52,7 +52,7 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <summary>
         ///     Gets the sound being played.
         /// </summary>
-        public EnvMimicryOption Sound { get; }
+        public EnvMimicrySequence Sound { get; }
 
         /// <summary>
         ///     Gets a value indicating whether or not SCP-939's environmental mimicry cooldown is ready.

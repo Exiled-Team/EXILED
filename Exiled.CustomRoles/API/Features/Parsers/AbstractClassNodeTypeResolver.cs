@@ -37,21 +37,21 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             typeDiscriminators = discriminators;
         }
 
-        /// <inheritdoc />
-        public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object> nestedObjectDeserializer, out object value)
+        /// <inheritdoc cref="INodeDeserializer"/>
+        public bool Deserialize(IParser reader, Type expectedType, Func<IParser, Type, object?> nestedObjectDeserializer, out object? value)
         {
-            if (!reader.Accept(out MappingStart mapping))
+            if (!reader.Accept<MappingStart>(out MappingStart? mapping))
             {
                 value = null;
                 return false;
             }
 
-            IEnumerable<ITypeDiscriminator> supportedTypes = typeDiscriminators.Where(t => t.BaseType == expectedType);
+            IEnumerable<ITypeDiscriminator> supportedTypes = typeDiscriminators.Where(t => t.BaseType == expectedType).ToArray();
             if (!supportedTypes.Any())
             {
                 if (original.Deserialize(reader, expectedType, nestedObjectDeserializer, out value))
                 {
-                    Validator.ValidateObject(value, new ValidationContext(value, null, null), true);
+                    Validator.ValidateObject(value!, new ValidationContext(value!, null, null), true);
 
                     return true;
                 }
@@ -59,8 +59,8 @@ namespace Exiled.CustomRoles.API.Features.Parsers
                 return false;
             }
 
-            Mark start = reader.Current.Start;
-            Type actualType;
+            Mark? start = reader.Current?.Start;
+            Type? actualType;
             ParsingEventBuffer buffer;
             try
             {
@@ -69,14 +69,14 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             }
             catch (Exception exception)
             {
-                throw new YamlException(start, reader.Current.End, "Failed when resolving abstract type", exception);
+                throw new YamlException(start ?? new(), reader.Current?.End ?? new(), "Failed when resolving abstract type", exception);
             }
 
             buffer.Reset();
 
-            if (original.Deserialize(buffer, actualType, nestedObjectDeserializer, out value))
+            if (original.Deserialize(buffer, actualType!, nestedObjectDeserializer, out value))
             {
-                Validator.ValidateObject(value, new ValidationContext(value, null, null), true);
+                Validator.ValidateObject(value!, new ValidationContext(value!, null, null), true);
 
                 return true;
             }
@@ -84,12 +84,12 @@ namespace Exiled.CustomRoles.API.Features.Parsers
             return false;
         }
 
-        private static Type CheckWithDiscriminators(Type expectedType, IEnumerable<ITypeDiscriminator> supportedTypes, ParsingEventBuffer buffer)
+        private static Type? CheckWithDiscriminators(Type expectedType, IEnumerable<ITypeDiscriminator> supportedTypes, ParsingEventBuffer buffer)
         {
             foreach (ITypeDiscriminator discriminator in supportedTypes)
             {
                 buffer.Reset();
-                if (!discriminator.TryResolve(buffer, out Type actualType))
+                if (!discriminator.TryResolve(buffer, out Type? actualType))
                     continue;
 
                 return actualType;

@@ -32,16 +32,23 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
+            Label jumpLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
 
-            int offset = -4;
+            int offset = -6;
             int index = newInstructions.FindIndex(
                 instruction => instruction.Calls(Method(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus)))) + offset;
+
+            newInstructions[index] = new CodeInstruction(OpCodes.Brtrue_S, jumpLabel);
+            offset = 2;
+            index += offset;
 
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
+                    new CodeInstruction(OpCodes.Nop).WithLabels(jumpLabel),
+
                     // Player.Get(referenceHub)
                     new CodeInstruction(OpCodes.Ldloc_0),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),

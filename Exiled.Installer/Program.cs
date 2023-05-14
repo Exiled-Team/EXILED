@@ -63,6 +63,7 @@ namespace Exiled.Installer
 
         internal async static Task MainSafe(CommandSettings args)
         {
+            bool error = false;
             try
             {
                 Console.WriteLine(Header);
@@ -104,7 +105,7 @@ namespace Exiled.Installer
                 Console.WriteLine(Resources.Program_MainSafe_Release_found_);
                 Console.WriteLine(FormatRelease(targetRelease!));
 
-                ReleaseAsset exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(ExiledAssetName, StringComparison.OrdinalIgnoreCase));
+                ReleaseAsset? exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(ExiledAssetName, StringComparison.OrdinalIgnoreCase));
                 if (exiledAsset is null)
                 {
                     Console.WriteLine(Resources.Program_MainSafe_____ASSETS____);
@@ -145,7 +146,7 @@ namespace Exiled.Installer
             }
 
             if (args.Exit)
-                Environment.Exit(0);
+                Environment.Exit(error ? 1 : 0);
         }
 
         private async static Task<IEnumerable<Release>> GetReleases()

@@ -57,7 +57,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem? item))
             {
                 response = $" {arguments.At(0)} is not a valid custom item.";
                 return false;
@@ -69,35 +69,38 @@ namespace Exiled.CustomItems.Commands
             {
                 position = location.GetPosition();
             }
-            else if (Player.Get(arguments.At(1)) is Player player)
-            {
-                if (player.IsDead)
-                {
-                    response = $"Cannot spawn custom items under dead players!";
-                    return false;
-                }
-
-                position = player.Position;
-            }
-            else if (arguments.Count > 3)
-            {
-                if (!float.TryParse(arguments.At(1), out float x) || !float.TryParse(arguments.At(2), out float y) || !float.TryParse(arguments.At(3), out float z))
-                {
-                    response = "Invalid coordinates selected.";
-                    return false;
-                }
-
-                position = new Vector3(x, y, z);
-            }
             else
             {
-                response = $"Unable to find spawn location: {arguments.At(1)}.";
-                return false;
+                if (Player.Get(arguments.At(1)) is Player player)
+                {
+                    if (player.IsDead)
+                    {
+                        response = $"Cannot spawn custom items under dead players!";
+                        return false;
+                    }
+
+                    position = player.Position;
+                }
+                else if (arguments.Count > 3)
+                {
+                    if (!float.TryParse(arguments.At(1), out float x) || !float.TryParse(arguments.At(2), out float y) || !float.TryParse(arguments.At(3), out float z))
+                    {
+                        response = "Invalid coordinates selected.";
+                        return false;
+                    }
+
+                    position = new Vector3(x, y, z);
+                }
+                else
+                {
+                    response = $"Unable to find spawn location: {arguments.At(1)}.";
+                    return false;
+                }
             }
 
-            item.Spawn(position, null);
+            item?.Spawn(position);
 
-            response = $"{item.Name} ({item.Type}) has been spawned at {position}.";
+            response = $"{item?.Name} ({item?.Type}) has been spawned at {position}.";
             return true;
         }
     }
