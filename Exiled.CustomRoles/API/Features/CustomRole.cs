@@ -130,6 +130,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual float SpawnChance { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the spawn system is ignored for this role or not.
+        /// </summary>
+        public virtual bool IgnoreSpawnSystem { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether players keep this Custom Role when they switch roles: Class-D -> Scientist for example.
         /// </summary>
         public virtual bool KeepRoleOnChangingRole { get; set; }
@@ -835,6 +840,7 @@ namespace Exiled.CustomRoles.API.Features
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning += OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.Destroying += OnDestroying;
         }
 
         /// <summary>
@@ -850,6 +856,7 @@ namespace Exiled.CustomRoles.API.Features
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning -= OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.Destroying += OnDestroying;
         }
 
         /// <summary>
@@ -924,5 +931,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Check(ev.Player))
                 ev.Role = Role;
         }
+
+        private void OnDestroying(DestroyingEventArgs ev) => RemoveRole(ev.Player);
     }
 }
