@@ -69,6 +69,52 @@ namespace Exiled.API.Extensions
         };
 
         /// <summary>
+        /// Gets the <see cref="EffectType"/> of the specified <see cref="StatusEffectBase"/>.
+        /// </summary>
+        /// <param name="statusEffectBase">The <see cref="StatusEffectBase"/> enum.</param>
+        /// <returns>The <see cref="EffectType"/>.</returns>
+        public static EffectType GetEffectType(this StatusEffectBase statusEffectBase) => statusEffectBase switch
+        {
+            AmnesiaItems => EffectType.AmnesiaItems,
+            AmnesiaVision => EffectType.AmnesiaVision,
+            Asphyxiated => EffectType.Asphyxiated,
+            Bleeding => EffectType.Bleeding,
+            Blinded => EffectType.Blinded,
+            BodyshotReduction => EffectType.BodyshotReduction,
+            Burned => EffectType.Burned,
+            CardiacArrest => EffectType.CardiacArrest,
+            Concussed => EffectType.Concussed,
+            Corroding => EffectType.Corroding,
+            DamageReduction => EffectType.DamageReduction,
+            Deafened => EffectType.Deafened,
+            Decontaminating => EffectType.Decontaminating,
+            Disabled => EffectType.Disabled,
+            Ensnared => EffectType.Ensnared,
+            Exhausted => EffectType.Exhausted,
+            Flashed => EffectType.Flashed,
+            Hemorrhage => EffectType.Hemorrhage,
+            Hypothermia => EffectType.Hypothermia,
+            InsufficientLighting => EffectType.InsufficientLighting,
+            Invigorated => EffectType.Invigorated,
+            Invisible => EffectType.Invisible,
+            MovementBoost => EffectType.MovementBoost,
+            Poisoned => EffectType.Poisoned,
+            RainbowTaste => EffectType.RainbowTaste,
+            Scp207 => EffectType.Scp207,
+            Scp1853 => EffectType.Scp1853,
+            SeveredHands => EffectType.SeveredHands,
+            Sinkhole => EffectType.SinkHole,
+            Stained => EffectType.Stained,
+            Vitality => EffectType.Vitality,
+            SoundtrackMute => EffectType.SoundtrackMute,
+            SpawnProtected => EffectType.SpawnProtected,
+            Traumatized => EffectType.Traumatized,
+
+            // This should never happen
+            _ => throw new InvalidOperationException("Invalid effect status base provided"),
+        };
+
+        /// <summary>
         /// Returns whether or not the provided <paramref name="effect"/> drains health over time.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
