@@ -29,8 +29,8 @@ namespace Exiled.CustomItems.API
         {
             foreach (Item item in player.Items)
             {
-                if (CustomItem.TryGet(item, out CustomItem customItem))
-                    customItem.TrackedSerials.Remove(item.Serial);
+                if (CustomItem.TryGet(item, out CustomItem? customItem))
+                    customItem?.TrackedSerials.Remove(item.Serial);
             }
 
             player.ClearInventory();

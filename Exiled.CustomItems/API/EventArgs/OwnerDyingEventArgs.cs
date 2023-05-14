@@ -25,7 +25,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
-        public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
+        public OwnerDyingEventArgs(Item? item, DyingEventArgs ev)
             : base(ev.Player, ev.DamageHandler.Base)
         {
             if (item is null)
@@ -41,6 +41,6 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <summary>
         /// Gets the item in the player's inventory.
         /// </summary>
-        public Item Item { get; }
+        public Item? Item { get; }
     }
 }
