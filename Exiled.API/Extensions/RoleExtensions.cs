@@ -54,7 +54,7 @@ namespace Exiled.API.Extensions
             Team.OtherAlive => Side.Tutorial,
             _ => Side.None,
         };
-        
+
         /// <summary>
         /// Gets the <see cref="Team"/> of the given <see cref="RoleTypeId"/>.
         /// </summary>
