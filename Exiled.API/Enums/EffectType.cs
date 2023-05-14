@@ -184,5 +184,15 @@ namespace Exiled.API.Enums
         /// Make Scp106 able to see you when he are in the ground (stalking).
         /// </summary>
         Traumatized,
+
+        /// <summary>
+        /// Make Scp106 able to see you when he are in the ground (stalking).
+        /// </summary>
+        AntiScp207,
+
+        /// <summary>
+        /// Scanned by SCP-079.
+        /// </summary>
+        Scanned,
     }
 }
