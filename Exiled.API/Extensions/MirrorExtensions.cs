@@ -219,7 +219,7 @@ namespace Exiled.API.Extensions
             writer.WriteUShort(38952);
             writer.WriteUInt(player.NetId);
             writer.WriteRoleType(type);
-            if (type.GetTeam() == Team.FoundationForces)
+            if (PlayerRolesUtils.GetTeam(type) == Team.FoundationForces)
                 writer.WriteByte(unitId);
 
             if (player.Role.Base is IFpcRole fpc)
