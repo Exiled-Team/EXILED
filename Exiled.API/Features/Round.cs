@@ -143,6 +143,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the action to do at round end.
+        /// </summary>
+        public static ServerStatic.NextRoundAction NextRoundAction
+        {
+            get => ServerStatic.StopNextRound;
+            set => ServerStatic.StopNextRound = value;
+        }
+
+        /// <summary>
         /// Gets the number of rounds since the server started.
         /// </summary>
         public static int UptimeRounds => RoundRestart.UptimeRounds;

@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection.Emit;
 
     using API.Features;
@@ -38,10 +39,11 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label returnLabel = generator.DefineLabel();
+            Label jump = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
 
-            const int offset = 2;
+            int offset = 2;
             int index = newInstructions.FindLastIndex(
                 instruction => instruction.Calls(Method(typeof(FirearmBaseStats), nameof(FirearmBaseStats.DamageAtDistance)))) + offset;
 
@@ -49,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
-                    // Player.Get(this.Hub)
+                    // this.Hub
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Hub))),
 
@@ -67,6 +69,39 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!ev.CanHurt)
                     //    return;
                     new(OpCodes.Brfalse_S, returnLabel),
+                });
+
+            offset = -3;
+            index = newInstructions.FindLastIndex(
+                instruction => instruction.Calls(Method(typeof(StandardHitregBase), nameof(StandardHitregBase.PlaceBulletholeDecal)))) + offset;
+
+            // replace the original goto label
+            newInstructions.FindAll(instruction => instruction.opcode == OpCodes.Brfalse).ForEach(instruction => instruction.operand = jump);
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new CodeInstruction(OpCodes.Nop).WithLabels(jump),
+
+                    // this.Hub
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StandardHitregBase), nameof(StandardHitregBase.Hub))),
+
+                    // hit
+                    new(OpCodes.Ldarg_2),
+
+                    // destructible
+                    new(OpCodes.Ldnull),
+
+                    // damage
+                    new(OpCodes.Ldc_R4, 0f),
+                    new(OpCodes.Stloc_S, 1),
+                    new(OpCodes.Ldloca_S, 1),
+
+                    // Shot.ProcessShot
+                    new(OpCodes.Call, Method(typeof(Shot), nameof(ProcessShot), new[] { typeof(ReferenceHub), typeof(RaycastHit), typeof(IDestructible), typeof(float).MakeByRefType(), })),
+                    new(OpCodes.Pop),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
