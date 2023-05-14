@@ -99,7 +99,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
-        public double FuseTime
+        public float FuseTime
         {
             get => Projectile.FuseTime;
             set => Projectile.FuseTime = value;

@@ -23,7 +23,10 @@ namespace Exiled.API.Extensions
     using Mirror;
 
     using PlayerRoles;
+    using PlayerRoles.Filmmaker;
     using PlayerRoles.FirstPersonControl;
+    using PlayerRoles.SpawnData;
+    using PlayerRoles.Spectating;
 
     using RelativePositioning;
 
@@ -200,27 +203,35 @@ namespace Exiled.API.Extensions
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
-        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0)
+        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), unitId);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="type">Model type.</param>
+        /// <param name="playersToAffect">The players who should see the changed appearance.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, byte unitId = 0)
         {
-            foreach (Player target in Player.List)
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            writer.WriteUShort(38952);
+            writer.WriteUInt(player.NetId);
+            writer.WriteRoleType(type);
+            if (PlayerRolesUtils.GetTeam(type) == Team.FoundationForces)
+                writer.WriteByte(unitId);
+
+            if (player.Role.Base is IFpcRole fpc)
             {
-                NetworkWriterPooled writer = NetworkWriterPool.Get();
-                writer.WriteUShort(38952);
-                writer.WriteUInt(player.NetId);
-                writer.WriteRoleType(type);
-                if (type.GetTeam() == Team.FoundationForces)
-                    writer.WriteByte(unitId);
-
-                ushort syncH;
-                if (player.Role.Base is FpcStandardRoleBase fpc)
-                {
-                    fpc.FpcModule.MouseLook.GetSyncValues(0, out syncH, out _);
-                    writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
-                    writer.WriteUShort(syncH);
-                }
-
-                target.Connection.Send(writer.ToArraySegment());
+                fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort syncH, out _);
+                writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
+                writer.WriteUShort(syncH);
             }
+
+            foreach (Player target in playersToAffect)
+                target.Connection.Send(writer.ToArraySegment());
+            NetworkWriterPool.Return(writer);
 
             // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
             player.Position += Vector3.up * 0.25f;
@@ -285,6 +296,8 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
+            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} tried to send a fake syncvar. This is currently broken. This warning does not indicate an error, but expect something to not work as intended.");
+            /*
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
                 targetWriter.WriteULong(SyncVarDirtyBits[propertyName]);
@@ -298,6 +311,7 @@ namespace Exiled.API.Extensions
             target.ReferenceHub.networkIdentity.connectionToClient.Send(writer.ToArraySegment());
             NetworkWriterPool.Return(writer);
             NetworkWriterPool.Return(writer2);
+            */
         }
 
         /// <summary>
@@ -318,6 +332,8 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
+            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} has tried to send a fake RPC. This is currently broken. This warning does not indicate an error, but expect something to not be working as intended.");
+            /*
             NetworkWriterPooled writer = NetworkWriterPool.Get();
 
             foreach (object value in values)
@@ -334,6 +350,7 @@ namespace Exiled.API.Extensions
             target.Connection.Send(msg, 0);
 
             NetworkWriterPool.Return(writer);
+            */
         }
 
         /// <summary>
