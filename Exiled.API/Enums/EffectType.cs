@@ -171,7 +171,7 @@ namespace Exiled.API.Enums
         InsufficientLighting,
 
         /// <summary>
-        /// Disable ambiant sound.
+        /// Disable ambient sound.
         /// </summary>
         SoundtrackMute,
 
@@ -186,12 +186,12 @@ namespace Exiled.API.Enums
         Traumatized,
 
         /// <summary>
-        /// Make Scp106 able to see you when he are in the ground (stalking).
+        /// Same effect as Scp207, but Healing instead of Hurting.
         /// </summary>
         AntiScp207,
 
         /// <summary>
-        /// Scanned by SCP-079.
+        /// The Effect that SCP-079 gives the Scanned player with the Breach Scanner.
         /// </summary>
         Scanned,
     }
