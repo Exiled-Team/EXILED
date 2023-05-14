@@ -78,6 +78,11 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<ElevatorDoor> Doors => internalDoorsList;
 
         /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IEnumerable<Player> Players => Player.List.Where(x => Bounds.Contains(x.Position));
+
+        /// <summary>
         /// Gets the lift's name.
         /// </summary>
         public string Name => Group.ToString();

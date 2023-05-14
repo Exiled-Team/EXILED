@@ -24,19 +24,19 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
     /// </summary>
     public sealed class AttachmentIdentifiersConverter : IYamlTypeConverter
     {
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public bool Accepts(Type type) => type == typeof(AttachmentName);
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public object ReadYaml(IParser parser, Type type)
         {
             if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentName name))
-                throw new InvalidDataException($"Invalid AttachmentNameTranslation value: {scalar.Value}.");
+                throw new InvalidDataException($"Invalid AttachmentNameTranslation value: {scalar?.Value}.");
 
             return Enum.Parse(type, name.ToString());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc cref="IYamlTypeConverter" />
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
             AttachmentName name = default;

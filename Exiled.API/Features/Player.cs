@@ -12,6 +12,7 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Text.RegularExpressions;
 
     using Core;
 
@@ -60,10 +61,6 @@ namespace Exiled.API.Features
 
     using PlayerRoles;
     using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.PlayableScps.Scp079;
-    using PlayerRoles.PlayableScps.Scp106;
-    using PlayerRoles.PlayableScps.Scp173;
-    using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.RoleAssign;
     using PlayerRoles.Spectating;
     using PlayerRoles.Voice;
@@ -94,6 +91,13 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player : IEntity, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
     {
+        /// <summary>
+        /// Validates custom player info.
+        /// Allows for up to 400 characters that are valid letters, numbers or math symbols in any language (so this includes regular alphabet, Russian alphabet, hiragana, kanji and whatever else you want) or matches a specific set or special characters such as space, etc... and that set includes <![CDATA[<, >]]> and \n
+        ///  - Written by Zabszk (Thanks to Beryl to having sharing it to Exiled).
+        /// </summary>
+        internal static readonly Regex PlayerCustomInfoRegex = new(@"^((?![\[\]])[\p{L}\p{P}\p{Sc}\p{N} ^=+|~`<>\n]){0,400}$", RegexOptions.Compiled);
+
 #pragma warning disable SA1401
         /// <summary>
         /// A list of the player's items.
@@ -373,6 +377,8 @@ namespace Exiled.API.Features
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
             set
             {
+                if (!PlayerCustomInfoRegex.IsMatch(value))
+                    Log.Error($"Exiled.API.Features.Player::CustomInfo (Invalid syntax) {value}");
                 InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
                 ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
             }
@@ -1019,7 +1025,7 @@ namespace Exiled.API.Features
                 if (value)
                     ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
                 else
-                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag(false);
+                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag__Boolean(false);
             }
         }
 
@@ -1144,6 +1150,13 @@ namespace Exiled.API.Features
         /// <param name="sender">The command sender.</param>
         /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSystem.ICommandSender sender) => Get(sender as CommandSender);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the <see cref="Footprinting.Footprint"/>, if any.
+        /// </summary>
+        /// <param name="footprint">The Footprint.</param>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
+        public static Player Get(Footprint footprint) => Get(footprint.Hub);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSender"/>, if any.
@@ -1314,6 +1327,14 @@ namespace Exiled.API.Features
         /// <param name="player">The player that matches the given <see cref="CommandSystem.ICommandSender"/>, or <see langword="null"/> if no player is found.</param>
         /// <returns>A boolean indicating whether or not a player was found.</returns>
         public static bool TryGet(CommandSystem.ICommandSender sender, out Player player) => (player = Get(sender)) is not null;
+
+        /// <summary>
+        /// Try-get a player given a <see cref="Footprinting.Footprint"/>.
+        /// </summary>
+        /// <param name="footprint">The <see cref="Footprinting.Footprint"/>.</param>
+        /// <param name="player">The player that matches the given <see cref="Footprinting.Footprint"/>, or <see langword="null"/> if no player is found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(Footprint footprint, out Player player) => (player = Get(footprint)) is not null;
 
         /// <summary>
         /// Try-get a player given a <see cref="CommandSender"/>.
@@ -2588,7 +2609,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="size">The size of the hitmarker, ranging from <c>0</c> to <c><see cref="Hitmarker.MaxSize"/></c>).</param>
         public void ShowHitMarker(float size = 1f) =>
-            Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
+            Hitmarker.SendHitmarker(ReferenceHub, size);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.
