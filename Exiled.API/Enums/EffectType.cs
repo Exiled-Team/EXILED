@@ -191,7 +191,7 @@ namespace Exiled.API.Enums
         AntiScp207,
 
         /// <summary>
-        /// The Effect that SCP-079 gives the Scanned player with the Breach Scanner.
+        /// The effect that SCP-079 gives the Scanned player with the Breach Scanner.
         /// </summary>
         Scanned,
     }
