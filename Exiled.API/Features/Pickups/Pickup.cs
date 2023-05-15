@@ -367,6 +367,7 @@ namespace Exiled.API.Features.Pickups
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
             ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP2176 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline => new UsablePickup(type),
+            ItemType.Jailbird => new JailbirdPickup(),
             _ => new Pickup(type),
         };
 

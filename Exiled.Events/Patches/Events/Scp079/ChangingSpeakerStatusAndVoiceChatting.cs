@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using API.Features.Pools;
 
-    using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Scp079;
     using Exiled.Events.Handlers;
 
@@ -45,13 +44,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             newInstructions[index].WithLabels(continueLabel);
 
-            // VoiceChattingEventArgs voiceChattingEv = new(Player.Get(this.Owner), this, true)
-            //
-            // Handlers.Player.OnVoiceChatting(voiceChattingEv)
-            //
-            // if (!voiceChattingEv.IsAllowed)
-            //    return;
-            //
             // if (base.CurrentChannel != VoiceChatChannel.Proximity)
             //    goto continueLabel;
             //
@@ -64,31 +56,6 @@ namespace Exiled.Events.Patches.Events.Scp079
                 index,
                 new CodeInstruction[]
                 {
-                    // Player.Get(this.Owner)
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, PropertyGetter(typeof(VoiceModuleBase), nameof(VoiceModuleBase.Owner))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, player.LocalIndex),
-
-                    // this
-                    new(OpCodes.Ldarg_0),
-
-                    // true
-                    new(OpCodes.Ldc_I4_1),
-
-                    // VoiceChattingEventArgs voiceChattingEv = new(Player, VoiceModuleBase, bool)
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(VoiceChattingEventArgs))[0]),
-                    new(OpCodes.Dup),
-
-                    // Handlers.Player.OnVoiceChatting(voiceChattingEv)
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnVoiceChatting))),
-
-                    // if (!voiceChattingEv.IsAllowed)
-                    //    return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(VoiceChattingEventArgs), nameof(VoiceChattingEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, returnLabel),
-
                     // if (this.Role.RoleTypeId != RoleTypeId.Scp079)
                     //    goto continueLabel;
                     new(OpCodes.Ldarg_0),
