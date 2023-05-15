@@ -130,6 +130,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual float SpawnChance { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the spawn system is ignored for this role or not.
+        /// </summary>
+        public virtual bool IgnoreSpawnSystem { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether players keep this Custom Role when they switch roles: Class-D -> Scientist for example.
         /// </summary>
         public virtual bool KeepRoleOnChangingRole { get; set; }
@@ -591,6 +596,8 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
         public virtual void RemoveRole(Player player)
         {
+            if (!TrackedPlayers.Contains(player))
+                return;
             Log.Debug($"{Name}: Removing role from {player.Nickname}");
             TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
@@ -835,6 +842,7 @@ namespace Exiled.CustomRoles.API.Features
             Exiled.Events.Handlers.Player.ChangingRole += OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning += OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll += OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.Destroying += OnDestroying;
         }
 
         /// <summary>
@@ -850,6 +858,7 @@ namespace Exiled.CustomRoles.API.Features
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Spawning -= OnInternalSpawning;
             Exiled.Events.Handlers.Player.SpawningRagdoll -= OnSpawningRagdoll;
+            Exiled.Events.Handlers.Player.Destroying += OnDestroying;
         }
 
         /// <summary>
@@ -890,7 +899,7 @@ namespace Exiled.CustomRoles.API.Features
 
         private void OnInternalSpawning(SpawningEventArgs ev)
         {
-            if (SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
+            if (!IgnoreSpawnSystem && SpawnChance > 0 && !Check(ev.Player) && ev.Player.Role.Type == Role && Loader.Random.NextDouble() * 100 <= SpawnChance)
                 AddRole(ev.Player);
         }
 
@@ -924,5 +933,7 @@ namespace Exiled.CustomRoles.API.Features
             if (Check(ev.Player))
                 ev.Role = Role;
         }
+
+        private void OnDestroying(DestroyingEventArgs ev) => RemoveRole(ev.Player);
     }
 }
