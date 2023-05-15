@@ -368,6 +368,7 @@ namespace Exiled.API.Features
             Firearm.BaseCodesValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();
             Warhead.InternalBlastDoors.Clear();
+            Round.IgnoredPlayers.Clear();
         }
     }
 }

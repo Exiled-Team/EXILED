@@ -191,7 +191,6 @@ namespace Exiled.Events.Patches.Events.Server
                                 RoundEndedEventArgs roundEndedEventArgs = new((API.Enums.LeadingTeam)leadingTeam, newList, num5);
 
                                 Handlers.Server.OnRoundEnded(roundEndedEventArgs);
-                                Round.IgnoredPlayers.Clear();
                             }
 
                             yield return Timing.WaitForSeconds(num5 - 1);
