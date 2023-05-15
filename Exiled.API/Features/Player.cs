@@ -377,32 +377,35 @@ namespace Exiled.API.Features
                 else
                 {
                     // NW Client check.
-                    foreach (var token in value.Split('<'))
+                    if (value.Contains('<'))
                     {
-                        if (token.StartsWith("/", StringComparison.Ordinal) ||
-                            token.StartsWith("b>", StringComparison.Ordinal) ||
-                            token.StartsWith("i>", StringComparison.Ordinal) ||
-                            token.StartsWith("size=", StringComparison.Ordinal) ||
-                            token.Length is 0)
-                            continue;
+                        foreach (var token in value.Split('<'))
+                        {
+                            if (token.StartsWith("/", StringComparison.Ordinal) ||
+                                token.StartsWith("b>", StringComparison.Ordinal) ||
+                                token.StartsWith("i>", StringComparison.Ordinal) ||
+                                token.StartsWith("size=", StringComparison.Ordinal) ||
+                                token.Length is 0)
+                                continue;
 
-                        if (token.StartsWith("color=", StringComparison.Ordinal))
-                        {
-                            if (token.Length < 14 || token[13] != '>')
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
-                            else if (!Misc.AllowedColors.ContainsValue(token.Substring(6, 7)))
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad colour reject) Info: {value}");
-                        }
-                        else if (token.StartsWith("#", StringComparison.Ordinal))
-                        {
-                            if (token.Length < 8 || token[7] != '>')
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
-                            else if (!Misc.AllowedColors.ContainsValue(token.Substring(0, 7)))
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad colour reject) Info: {value}");
-                        }
-                        else
-                        {
-                            Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                            if (token.StartsWith("color=", StringComparison.Ordinal))
+                            {
+                                if (token.Length < 14 || token[13] != '>')
+                                    Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad text reject) \ntoken: {token} \nInfo: {value}");
+                                else if (!Misc.AllowedColors.ContainsValue(token.Substring(6, 7)))
+                                    Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad colour reject) \ntoken: {token} \nInfo: {value}");
+                            }
+                            else if (token.StartsWith("#", StringComparison.Ordinal))
+                            {
+                                if (token.Length < 8 || token[7] != '>')
+                                    Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad text reject) \ntoken: {token} \nInfo: {value}");
+                                else if (!Misc.AllowedColors.ContainsValue(token.Substring(0, 7)))
+                                    Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad colour reject) \ntoken: {token} \nInfo: {value}");
+                            }
+                            else
+                            {
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad colour reject) \ntoken: {token} \nInfo: {value}");
+                            }
                         }
                     }
 
