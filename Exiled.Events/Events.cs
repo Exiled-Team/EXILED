@@ -135,7 +135,6 @@ namespace Exiled.Events
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
 
             EventManager.UnregisterEvents<Handlers.Warhead>(this);
-            Handlers.Player.PreAuthenticating += ev => ev.Reject(RejectionReason.Banned, true);
         }
 
         /// <summary>
