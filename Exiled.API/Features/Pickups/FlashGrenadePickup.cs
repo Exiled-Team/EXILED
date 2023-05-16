@@ -49,11 +49,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public float SurfaceDistanceIntensifier { get; set; }
 
-        /// <summary>
-        /// .
-        /// </summary>
-        /// <param name="item"> ..</param>
-        /// <returns> ...</returns>
+        /// <inheritdoc/>
         internal override Pickup GetItemInfo(Item item)
         {
             base.GetItemInfo(item);
@@ -84,9 +80,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <inheritdoc/>
-        internal override Pickup GetPickupInfo(Pickup pickup)
+        internal override Pickup GetPickupInfo(Projectile projectile)
         {
-            if (pickup is FlashbangProjectile flashbangProjectile)
+            if (projectile is FlashbangProjectile flashbangProjectile)
             {
                 flashbangProjectile.MinimalDurationEffect = MinimalDurationEffect;
                 flashbangProjectile.AdditionalBlindedEffect = AdditionalBlindedEffect;
@@ -94,7 +90,7 @@ namespace Exiled.API.Features.Pickups
                 flashbangProjectile.FuseTime = FuseTime;
             }
 
-            return pickup;
+            return projectile;
         }
     }
 }

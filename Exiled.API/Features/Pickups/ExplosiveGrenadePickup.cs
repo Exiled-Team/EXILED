@@ -94,9 +94,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <inheritdoc/>
-        internal override Pickup GetPickupInfo(Pickup pickup)
+        internal override Pickup GetPickupInfo(Projectile projectile)
         {
-            if (pickup is ExplosionGrenadeProjectile explosionGrenadeProjectile)
+            if (projectile is ExplosionGrenadeProjectile explosionGrenadeProjectile)
             {
                 explosionGrenadeProjectile.MaxRadius = MaxRadius;
                 explosionGrenadeProjectile.ScpDamageMultiplier = ScpDamageMultiplier;
@@ -106,7 +106,7 @@ namespace Exiled.API.Features.Pickups
                 explosionGrenadeProjectile.FuseTime = FuseTime;
             }
 
-            return pickup;
+            return projectile;
         }
     }
 }
