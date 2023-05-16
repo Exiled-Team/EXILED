@@ -18,6 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using HarmonyLib;
 
     using PlayerRoles;
+    using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.Voice;
 
     using static HarmonyLib.AccessTools;
@@ -37,8 +38,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             Label continueLabel = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
-
-            LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
             const int index = 0;
 
@@ -74,7 +73,9 @@ namespace Exiled.Events.Patches.Events.Scp079
                     new(OpCodes.Brfalse_S, continueLabel),
 
                     // player
-                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(VoiceModuleBase), nameof(VoiceModuleBase._owner))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // value
                     new(OpCodes.Ldarg_1),
