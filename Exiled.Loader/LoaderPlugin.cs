@@ -9,12 +9,11 @@ namespace Exiled.Loader
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
+    using NorthwoodLib;
     using PluginAPI.Core.Attributes;
-
-    using Log = API.Features.Log;
-    using Paths = API.Features.Paths;
 
     /// <summary>
     /// The PluginAPI Plugin class for the EXILED Loader.
@@ -37,7 +36,7 @@ namespace Exiled.Loader
         {
             if (!Config.IsEnabled)
             {
-                Log.Info("EXILED is disabled on this server via config.");
+                ServerConsole.AddLog("EXILED is disabled on this server via config.", ConsoleColor.Red);
                 return;
             }
 
@@ -56,24 +55,35 @@ namespace Exiled.Loader
                 return;
             }
 
-            Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
-
-            Paths.Reload(Config.ExiledDirectoryPath);
-
-            Log.Info($"Exiled root path set to: {Paths.Exiled}");
-
-            Directory.CreateDirectory(Paths.Exiled);
-            Directory.CreateDirectory(Paths.Configs);
-            Directory.CreateDirectory(Paths.Plugins);
-            Directory.CreateDirectory(Paths.Dependencies);
-
-            if (!File.Exists(Path.Combine(Paths.Dependencies, "Exiled.API.dll")))
+            try
             {
-                Log.Error($"Exiled.API.dll was not found at {Path.Combine(Paths.Dependencies, "Exiled.API.dll")}, Exiled won't be loaded!");
-                return;
-            }
+                ServerConsole.AddLog("[Exiled.Loader] Exiled is loading...", ConsoleColor.DarkRed);
 
-            new Loader().Run();
+                string rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED");
+
+                if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
+                    rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-Testing");
+
+                string dependenciesPath = Path.Combine(rootPath, "Plugins", "dependencies");
+
+                if (!Directory.Exists(rootPath))
+                    Directory.CreateDirectory(rootPath);
+
+                if (!File.Exists(Path.Combine(dependenciesPath, "Exiled.API.dll")))
+                {
+                    ServerConsole.AddLog($"[Exiled.Bootstrap] Exiled.API.dll was not found, Exiled won't be loaded!", ConsoleColor.DarkRed);
+                    return;
+                }
+
+                new Loader().Run(new[]
+                            {
+                                Assembly.Load(File.ReadAllBytes(Path.Combine(dependenciesPath, "Exiled.API.dll"))),
+                            });
+            }
+            catch (Exception exception)
+            {
+                ServerConsole.AddLog($"[Exiled.Bootstrap] Exiled loading error: {exception}", ConsoleColor.DarkRed);
+            }
         }
     }
 }

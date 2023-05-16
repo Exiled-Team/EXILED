@@ -364,8 +364,16 @@ namespace Exiled.Loader
                 Thread.Sleep(5000);
             }
 
+            Log.Info($"Loading EXILED Version: {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}");
+
             if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
+
+            Paths.Reload(LoaderPlugin.Config.ExiledDirectoryPath);
+            Directory.CreateDirectory(Paths.Exiled);
+            Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Plugins);
+            Directory.CreateDirectory(Paths.Dependencies);
 
             LoadDependencies();
             LoadPlugins();
