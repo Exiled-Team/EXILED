@@ -36,7 +36,7 @@ namespace Exiled.Loader
         {
             if (!Config.IsEnabled)
             {
-                ServerConsole.AddLog("EXILED is disabled on this server via config.", ConsoleColor.Red);
+                ServerConsole.AddLog("EXILED is disabled on this server via config.", ConsoleColor.DarkRed);
                 return;
             }
 
@@ -59,10 +59,12 @@ namespace Exiled.Loader
             {
                 ServerConsole.AddLog("[Exiled.Loader] Exiled is loading...", ConsoleColor.DarkRed);
 
-                string rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED");
+                string rootPath = Path.Combine(Config.ExiledDirectoryPath, "EXILED");
 
                 if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
-                    rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-Testing");
+                    rootPath = Path.Combine(Config.ExiledDirectoryPath, "EXILED-Testing");
+
+                ServerConsole.AddLog($"[Exiled.Loader] Exiled root path set to: {rootPath}", ConsoleColor.Cyan);
 
                 string dependenciesPath = Path.Combine(rootPath, "Plugins", "dependencies");
 
