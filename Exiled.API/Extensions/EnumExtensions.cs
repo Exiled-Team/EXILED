@@ -39,7 +39,7 @@ namespace Exiled.API.Extensions
         /// <param name="arr">The array of bool to convert.</param>
         /// <returns>The <typeparamref name="T"/> module that was requested.</returns>
         public static T ToFlagEnum<T>(this bool[] arr)
-            where T : struct
+            where T : Enum
         {
             if (typeof(T).BaseType != typeof(Enum))
                 throw new TypeAccessException("This extension method is for flag enums");
