@@ -48,8 +48,8 @@ namespace Exiled.Events.Handlers.Internal
             TeslaGate.IgnoredPlayers.Clear();
             TeslaGate.IgnoredRoles.Clear();
             TeslaGate.IgnoredTeams.Clear();
-            
-            Round.IgnoredPlayers.Clear();
+
+            API.Features.Round.IgnoredPlayers.Clear();
         }
 
         /// <inheritdoc cref="Handlers.Server.OnRoundStarted" />
