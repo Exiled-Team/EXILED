@@ -11,7 +11,7 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Events.EventArgs.Map;
 
     /// <summary>
-    /// .
+    /// Handles <see cref="Handlers.Map.ChangedIntoGrenade"/> event.
     /// </summary>
     internal static class ExplodingGrenade
     {

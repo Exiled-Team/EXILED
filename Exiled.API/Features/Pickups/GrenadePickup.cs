@@ -60,18 +60,18 @@ namespace Exiled.API.Features.Pickups
         public void Explode() => Base._replaceNextFrame = true;
 
         /// <summary>
-        /// .
+        /// Returns the Projectile with the according property from the Pickup.
         /// </summary>
-        /// <param name="pickup">..</param>
-        /// <returns>...</returns>
-        internal virtual Pickup GetPickupInfo(Pickup pickup)
+        /// <param name="projectile"> Pickup-related data to give to the Projectile.</param>
+        /// <returns>A Projectile containing the Pickup-related data.</returns>
+        internal virtual Pickup GetPickupInfo(Projectile projectile)
         {
-            if (pickup is TimeGrenadeProjectile timeGrenadeProjectile)
+            if (projectile is TimeGrenadeProjectile timeGrenadeProjectile)
             {
                 timeGrenadeProjectile.FuseTime = FuseTime;
             }
 
-            return pickup;
+            return projectile;
         }
     }
 }

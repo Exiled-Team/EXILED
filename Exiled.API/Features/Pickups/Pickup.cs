@@ -467,10 +467,10 @@ namespace Exiled.API.Features.Pickups
         public override string ToString() => $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{IsLocked}- ={InUse}=";
 
         /// <summary>
-        /// .
+        /// Returns the Pickup with the according property from the Item.
         /// </summary>
-        /// <param name="item"> ..</param>
-        /// <returns> ...</returns>
+        /// <param name="item"> Item-related data to give to the Pickup.</param>
+        /// <returns>A Pickup containing the Item-related data.</returns>
         internal virtual Pickup GetItemInfo(Items.Item item)
         {
             if (item is not null)
@@ -482,10 +482,10 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// .
+        /// Returns the Item with the according property from the Pickup.
         /// </summary>
-        /// <param name="item"> ..</param>
-        /// <returns> ...</returns>
+        /// <param name="item"> Pickup-related data to give to the Item.</param>
+        /// <returns>A Item containing the Pickup-related data.</returns>
         internal virtual Items.Item GetPickupInfo(Items.Item item)
         {
             if (item is not null)

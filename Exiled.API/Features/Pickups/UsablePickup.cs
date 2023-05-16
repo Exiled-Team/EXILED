@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Pickups
     using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// .
+    /// A wrapper class for dropped Usable Pickup.
     /// </summary>
     public class UsablePickup : Pickup
     {
