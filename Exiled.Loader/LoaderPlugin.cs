@@ -73,7 +73,7 @@ namespace Exiled.Loader
 
                 if (!File.Exists(Path.Combine(dependenciesPath, "Exiled.API.dll")))
                 {
-                    ServerConsole.AddLog($"[Exiled.Bootstrap] Exiled.API.dll was not found, Exiled won't be loaded!", ConsoleColor.DarkRed);
+                    ServerConsole.AddLog($"[Exiled.Loader] Exiled.API.dll was not found, Exiled won't be loaded!", ConsoleColor.DarkRed);
                     return;
                 }
 
@@ -84,7 +84,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                ServerConsole.AddLog($"[Exiled.Bootstrap] Exiled loading error: {exception}", ConsoleColor.DarkRed);
+                ServerConsole.AddLog($"[Exiled.Loader] Exiled loading error: {exception}", ConsoleColor.DarkRed);
             }
         }
     }
