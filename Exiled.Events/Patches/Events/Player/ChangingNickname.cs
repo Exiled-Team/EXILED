@@ -27,25 +27,36 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            Label continueLabel = generator.DefineLabel();
+
+            Label ret = generator.DefineLabel();
+
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingNicknameEventArgs));
 
             const int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brtrue) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
-                // Player.Get(this._hub);
-                new(OpCodes.Ldarg_0),
+                // Player player = Player.Get(this._hub);
+                // if (player == null)
+                //     return;
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new(OpCodes.Ldfld, Field(typeof(NicknameSync), nameof(NicknameSync._hub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, player.LocalIndex),
+                new(OpCodes.Brfalse_S, ret),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
 
                 // value;
                 new(OpCodes.Ldarg_1),
 
-                // new ChangingNicknameEventArgs(Player.Get(this._hub, value)
+                // var ev = new ChangingNicknameEventArgs(Player.Get(this._hub, value)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingNicknameEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.OnChangingNickname(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingNickname))),
@@ -53,12 +64,13 @@ namespace Exiled.Events.Patches.Events.Player
                 // if (!ev.IsAllowed)
                 //    return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingNicknameEventArgs), nameof(ChangingNicknameEventArgs.IsAllowed))),
-                new(OpCodes.Brtrue_S, continueLabel),
-                new(OpCodes.Pop),
-                new(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingNicknameEventArgs), nameof(ChangingNicknameEventArgs.NewName))).WithLabels(continueLabel),
+                new(OpCodes.Brfalse_S, ret),
+                new(OpCodes.Ldloc_S, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingNicknameEventArgs), nameof(ChangingNicknameEventArgs.NewName))),
                 new(OpCodes.Starg_S, 1),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
