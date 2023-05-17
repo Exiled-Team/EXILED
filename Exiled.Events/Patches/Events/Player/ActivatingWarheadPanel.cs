@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            Label retLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
             Label ev = generator.DefineLabel();
             Label cardCheck = generator.DefineLabel();
 
@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.RemoveRange(index, 17);
 
-            newInstructions[index].labels.Add(retLabel);
+            newInstructions[index].labels.Add(continueLabel);
 
             newInstructions.InsertRange(
                 index,
@@ -103,7 +103,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!ev.IsAllowed)
                     //      return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, retLabel),
+                    new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Ret),
                 });
