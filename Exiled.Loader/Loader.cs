@@ -96,6 +96,7 @@ namespace Exiled.Loader
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new ColorConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())
+            .WithEventEmitter(eventEmitter => new TypeAssigningEventEmitter(eventEmitter))
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
