@@ -36,7 +36,7 @@ namespace Exiled.Example.Events
             if (ev.Player is null)
                 return;
 
-            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) died from {ev.DamageHandler.Type}! {ev.Attacker.Nickname} ({ev.Attacker.Role}) killed him!");
+            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) died from {ev.DamageHandler.Type}! {ev.Attacker?.Nickname ?? "None"} ({ev.Attacker?.Role.ToString() ?? "None"}) killed him!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
