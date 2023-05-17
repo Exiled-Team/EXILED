@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingEventArgs));
 
             const int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -71,6 +71,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldloc, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.NewRole))),
                     new(OpCodes.Stloc_0),
+
+                    // escapeScenarioType = ev.EscapeScenario
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(EscapingEventArgs), nameof(EscapingEventArgs.EscapeScenario))),
+                    new(OpCodes.Stloc_1),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
