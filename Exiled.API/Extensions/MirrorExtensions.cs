@@ -193,7 +193,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
-        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, byte) instead.", true)]
+        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, bool, byte) instead.", true)]
         public static void ChangeAppearance(this Player player, RoleTypeId type) => ChangeAppearance(player, type, 0);
 
         /// <summary>
@@ -202,8 +202,9 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
+        /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
-        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), unitId);
+        public static void ChangeAppearance(this Player player, RoleTypeId type, bool skipJump = false, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), skipJump, unitId);
 
         /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
@@ -212,8 +213,9 @@ namespace Exiled.API.Extensions
         /// <param name="player">Player to change.</param>
         /// <param name="type">Model type.</param>
         /// <param name="playersToAffect">The players who should see the changed appearance.</param>
+        /// <param name="skipJump">Whether or not to skip the little jump that works around an invisibility issue.</param>
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
-        public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, byte unitId = 0)
+        public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             writer.WriteUShort(38952);
@@ -234,8 +236,30 @@ namespace Exiled.API.Extensions
             NetworkWriterPool.Return(writer);
 
             // To counter a bug that makes the player invisible until they move after changing their appearance, we will teleport them upwards slightly to force a new position update for all clients.
-            player.Position += Vector3.up * 0.25f;
+            if (!skipJump)
+                player.Position += Vector3.up * 0.25f;
         }
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="type">Model type.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, bool, byte) instead.", true)]
+        public static void ChangeAppearance(this Player player, RoleTypeId type, byte unitId = 0) => ChangeAppearance(player, type, Player.List.Where(x => x != player), unitId);
+
+        /// <summary>
+        /// Change <see cref="Player"/> character model for appearance.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleTypeId"/> changes.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="type">Model type.</param>
+        /// <param name="playersToAffect">The players who should see the changed appearance.</param>
+        /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
+        [Obsolete("Use ChangeAppearance(Player, RoleTypeId, IEnumerable<Player>, bool, byte) instead.", true)]
+        public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, byte unitId = 0) => ChangeAppearance(player, type, playersToAffect, false, unitId);
 
         /// <summary>
         /// Send CASSIE announcement that only <see cref="Player"/> can hear.
