@@ -141,7 +141,6 @@ namespace Exiled.API.Features.Roles
         {
             ConsumeAbility.CurRagdoll = ragdoll.Base;
             ConsumeAbility.ServerComplete();
-            AttackAbility.ServerPerformAttack();
         }
 
         /// <summary>
