@@ -5,14 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Linq;
-using Exiled.API.Features;
-
-namespace Exiled.Loader.Features.Configs.CustomConverters
+namespace Exiled.Loader.Features.Configs
 {
     using System;
 
-    using JetBrains.Annotations;
+    using Exiled.API.Features;
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.EventEmitters;
@@ -25,7 +22,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         private long count = 0;
 
         /// <inheritdoc cref="ChainedEventEmitter"/>
-        public TypeAssigningEventEmitter([NotNull] IEventEmitter nextEmitter)
+        public TypeAssigningEventEmitter(IEventEmitter nextEmitter)
             : base(nextEmitter)
         {
         }
@@ -36,10 +33,12 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
             Log.Info(eventInfo.Source.Value?.ToString() + ' ' + count + ' ' + (count % 2 != 0));
 
             if (eventInfo.Source.StaticType != typeof(object))
+            {
                 count++;
 
-            if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) is TypeCode.String && count % 2 != 0)
-                eventInfo.Style = ScalarStyle.SingleQuoted;
+                if (Type.GetTypeCode(eventInfo.Source.StaticType) is TypeCode.String && count % 2 != 0)
+                    eventInfo.Style = ScalarStyle.SingleQuoted;
+            }
 
             base.Emit(eventInfo, emitter);
         }
