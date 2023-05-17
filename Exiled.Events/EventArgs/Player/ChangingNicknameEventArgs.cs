@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs.Player
         public ChangingNicknameEventArgs(Player player, string newName)
         {
             Player = player;
-            OldName = player?.CustomName;
+            OldName = player.CustomName;
             NewName = newName;
         }
 
