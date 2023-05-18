@@ -224,7 +224,7 @@ namespace Exiled.API.Extensions
             if (PlayerRolesUtils.GetTeam(type) == Team.FoundationForces)
                 writer.WriteByte(unitId);
 
-            if (player.Role.Base is IFpcRole fpc)
+            if (type != RoleTypeId.Spectator && player.Role.Base is IFpcRole fpc)
             {
                 fpc.FpcModule.MouseLook.GetSyncValues(0, out ushort syncH, out _);
                 writer.WriteRelativePosition(new(player.ReferenceHub.transform.position));
