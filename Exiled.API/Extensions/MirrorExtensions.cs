@@ -217,6 +217,9 @@ namespace Exiled.API.Extensions
         /// <param name="unitId">The UnitNameId to use for the player's new role, if the player's new role uses unit names. (is NTF).</param>
         public static void ChangeAppearance(this Player player, RoleTypeId type, IEnumerable<Player> playersToAffect, bool skipJump = false, byte unitId = 0)
         {
+            if (player.Role.Type is RoleTypeId.Spectator or RoleTypeId.Filmmaker or RoleTypeId.Overwatch)
+                throw new InvalidOperationException("You cannot change a spectator into non-spectator via change appearance.");
+
             NetworkWriterPooled writer = NetworkWriterPool.Get();
             writer.WriteUShort(38952);
             writer.WriteUInt(player.NetId);
