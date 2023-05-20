@@ -32,7 +32,7 @@ namespace Exiled.Loader.Features.Configs
             Log.Info(UnderscoredNamingConvention.Instance.Properties.FindIndex(x => x == eventInfo.Source.Value));
 
             if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
-                eventInfo.Style = ScalarStyle.DoubleQuoted;
+                eventInfo.Style = ScalarStyle.SingleQuoted;
 
             base.Emit(eventInfo, emitter);
         }
