@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="TypeAssigningEventEmitter.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -32,7 +32,7 @@ namespace Exiled.Loader.Features.Configs
             Log.Info(UnderscoredNamingConvention.Instance.Properties.FindIndex(x => x == eventInfo.Source.Value));
 
             if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
-                eventInfo.Style = ScalarStyle.SingleQuoted;
+                eventInfo.Style = ScalarStyle.DoubleQuoted;
 
             base.Emit(eventInfo, emitter);
         }
