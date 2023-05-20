@@ -19,8 +19,6 @@ namespace Exiled.Loader.Features.Configs
     /// </summary>
     public class TypeAssigningEventEmitter : ChainedEventEmitter
     {
-        private long count = 0;
-
         /// <inheritdoc cref="ChainedEventEmitter"/>
         public TypeAssigningEventEmitter(IEventEmitter nextEmitter)
             : base(nextEmitter)
@@ -30,15 +28,11 @@ namespace Exiled.Loader.Features.Configs
         /// <inheritdoc/>
         public override void Emit(ScalarEventInfo eventInfo, IEmitter emitter)
         {
-            Log.Info(eventInfo.Source.Value?.ToString() + ' ' + count + ' ' + (count % 2 != 0));
+            Log.Info(eventInfo.Source.Value);
+            Log.Info(UnderscoredNamingConvention.Instance.Properties.FindIndex(x => x == eventInfo.Source.Value));
 
-            if (eventInfo.Source.StaticType != typeof(object))
-            {
-                count++;
-
-                if (Type.GetTypeCode(eventInfo.Source.StaticType) is TypeCode.String && count % 2 != 0)
-                    eventInfo.Style = ScalarStyle.SingleQuoted;
-            }
+            if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
+                eventInfo.Style = ScalarStyle.SingleQuoted;
 
             base.Emit(eventInfo, emitter);
         }

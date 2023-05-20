@@ -29,7 +29,6 @@ namespace Exiled.Loader
     using Features.Configs.CustomConverters;
 
     using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
