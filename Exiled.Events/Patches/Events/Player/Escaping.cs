@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingEventArgs));
 
-            const int offset = 0;
+            const int offset = 2;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call) + offset;
 
             newInstructions.InsertRange(
