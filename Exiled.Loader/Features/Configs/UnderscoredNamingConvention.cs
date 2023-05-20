@@ -1,24 +1,23 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="UnderscoredNamingConvention.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Features;
-
 namespace Exiled.Loader.Features.Configs
 {
     using System.Collections.Generic;
 
     using Exiled.API.Extensions;
+    using Exiled.API.Features;
     using YamlDotNet.Serialization;
 
     /// <inheritdoc cref="YamlDotNet.Serialization.NamingConventions.UnderscoredNamingConvention"/>
     public class UnderscoredNamingConvention : INamingConvention
     {
         /// <inheritdoc cref="YamlDotNet.Serialization.NamingConventions.UnderscoredNamingConvention.Instance"/>
-        public static UnderscoredNamingConvention Instance => new();
+        public static UnderscoredNamingConvention Instance { get; } = new();
 
         /// <summary>
         /// Gets the list.
