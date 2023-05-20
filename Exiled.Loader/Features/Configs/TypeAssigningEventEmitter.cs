@@ -29,15 +29,8 @@ namespace Exiled.Loader.Features.Configs
         /// <inheritdoc/>
         public override void Emit(ScalarEventInfo eventInfo, IEmitter emitter)
         {
-            if (UnderscoredNamingConvention.Instance.Properties.FirstOrDefault() == eventInfo.Source.Value)
-            {
-                UnderscoredNamingConvention.Instance.Properties.RemoveAt(0);
-            }
-            else
-            {
-                if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String)
-                    eventInfo.Style = LoaderPlugin.Config.ScalarStyle;
-            }
+            if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
+                eventInfo.Style = LoaderPlugin.Config.ScalarStyle;
 
             base.Emit(eventInfo, emitter);
         }
