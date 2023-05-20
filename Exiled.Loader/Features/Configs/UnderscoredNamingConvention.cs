@@ -29,7 +29,6 @@ namespace Exiled.Loader.Features.Configs
         {
             string newValue = value.ToSnakeCase();
             Properties.Add(newValue);
-            Log.Warn(string.Join(" ", Properties));
             return newValue;
         }
     }

@@ -28,9 +28,6 @@ namespace Exiled.Loader.Features.Configs
         /// <inheritdoc/>
         public override void Emit(ScalarEventInfo eventInfo, IEmitter emitter)
         {
-            Log.Info(eventInfo.Source.Value);
-            Log.Info(UnderscoredNamingConvention.Instance.Properties.FindIndex(x => x == eventInfo.Source.Value));
-
             if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
                 eventInfo.Style = ScalarStyle.SingleQuoted;
 
