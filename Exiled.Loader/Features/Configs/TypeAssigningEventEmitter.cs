@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Enums;
+
 namespace Exiled.Loader.Features.Configs
 {
     using System;
@@ -29,7 +31,14 @@ namespace Exiled.Loader.Features.Configs
         public override void Emit(ScalarEventInfo eventInfo, IEmitter emitter)
         {
             if (eventInfo.Source.StaticType != typeof(object) && Type.GetTypeCode(eventInfo.Source.StaticType) == TypeCode.String && !UnderscoredNamingConvention.Instance.Properties.Contains(eventInfo.Source.Value))
-                eventInfo.Style = ScalarStyle.SingleQuoted;
+            {
+                eventInfo.Style = LoaderPlugin.Config.QuotesType switch
+                {
+                    QuotesType.SingleQuoted => ScalarStyle.SingleQuoted,
+                    QuotesType.DoubleQuoted => ScalarStyle.DoubleQuoted,
+                    _ => ScalarStyle.Any
+                };
+            }
 
             base.Emit(eventInfo, emitter);
         }

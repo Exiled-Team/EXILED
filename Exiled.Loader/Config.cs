@@ -57,5 +57,11 @@ namespace Exiled.Loader
         /// </summary>
         [Description("The config files distribution type (Default, Separated)")]
         public ConfigType ConfigType { get; set; } = ConfigType.Default;
+
+        /// <summary>
+        /// Gets or sets the quotes wrapper type.
+        /// </summary>
+        [Description("Indicates in which qoutes strings in configs will be wrapped (NoQuotes, SingleQuoted, DoubleQuoted)")]
+        public QuotesType QuotesType { get; set; } = QuotesType.SingleQuoted;
     }
 }
