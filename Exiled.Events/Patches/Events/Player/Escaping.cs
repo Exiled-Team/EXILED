@@ -43,6 +43,11 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new[]
                 {
+                    // if (escapeScenario == Escape.EscapeScenarioType.None) return;
+                    new(OpCodes.Ldloc_1),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Beq_S, returnLabel),
+
                     // Player.Get(hub)
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
