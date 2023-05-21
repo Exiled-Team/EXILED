@@ -35,27 +35,6 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="escapeScenario">
         ///     <inheritdoc cref="EscapeScenario" />
         /// </param>
-        [Obsolete("Use EscapingEventArgs(Player, RoleTypeId, EscapeScenario, Dictionary<SpawnableTeamType, float>) instead.", true)]
-        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario)
-        {
-            Player = player;
-            NewRole = newRole;
-            EscapeScenario = escapeScenario;
-            IsAllowed = escapeScenario is not EscapeScenario.CustomEscape;
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="EscapingEventArgs" /> class.
-        /// </summary>
-        /// <param name="player">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
-        /// <param name="newRole">
-        ///     <inheritdoc cref="NewRole" />
-        /// </param>
-        /// <param name="escapeScenario">
-        ///     <inheritdoc cref="EscapeScenario" />
-        /// </param>
         /// <param name="ticketsToChange">
         ///     <inheritdoc cref="EscapingEventArgs.TicketsToChange"/>
         /// </param>
@@ -86,13 +65,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="ticketsToGrant">
         ///     A <see langword="float"/> that <see cref="TicketsToChange"/> will be initialized with.
         /// </param>
-        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, SpawnableTeamType teamToGrantTickets, float ticketsToGrant)
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, SpawnableTeamType teamToGrantTickets = SpawnableTeamType.None, float ticketsToGrant = 0f)
+        : this(player, newRole, escapeScenario, ticketsToChange: new Dictionary<SpawnableTeamType, float>())
         {
-            Player = player;
-            NewRole = newRole;
-            EscapeScenario = escapeScenario;
-            IsAllowed = escapeScenario is not EscapeScenario.CustomEscape;
-            TicketsToChange = new Dictionary<SpawnableTeamType, float>();
             if (teamToGrantTickets != SpawnableTeamType.None)
                 TicketsToChange[teamToGrantTickets] = ticketsToGrant;
         }
