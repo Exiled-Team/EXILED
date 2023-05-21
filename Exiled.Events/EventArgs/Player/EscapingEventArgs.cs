@@ -7,11 +7,16 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using System;
+    using System.Collections.Generic;
+
     using API.Features;
     using Exiled.API.Enums;
     using Interfaces;
 
     using PlayerRoles;
+
+    using Respawning;
 
     /// <summary>
     ///     Contains all information before a player escapes.
@@ -30,12 +35,66 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="escapeScenario">
         ///     <inheritdoc cref="EscapeScenario" />
         /// </param>
+        [Obsolete("Use EscapingEventArgs(Player, RoleTypeId, EscapeScenario, Dictionary<SpawnableTeamType, float>) instead.", true)]
         public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario)
         {
             Player = player;
             NewRole = newRole;
             EscapeScenario = escapeScenario;
             IsAllowed = escapeScenario is not EscapeScenario.CustomEscape;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EscapingEventArgs" /> class.
+        /// </summary>
+        /// <param name="player">
+        ///     <inheritdoc cref="Player" />
+        /// </param>
+        /// <param name="newRole">
+        ///     <inheritdoc cref="NewRole" />
+        /// </param>
+        /// <param name="escapeScenario">
+        ///     <inheritdoc cref="EscapeScenario" />
+        /// </param>
+        /// <param name="ticketsToChange">
+        ///     <inheritdoc cref="EscapingEventArgs.TicketsToChange"/>
+        /// </param>
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, Dictionary<SpawnableTeamType, float> ticketsToChange)
+        {
+            Player = player;
+            NewRole = newRole;
+            EscapeScenario = escapeScenario;
+            IsAllowed = escapeScenario is not EscapeScenario.CustomEscape;
+            TicketsToChange = ticketsToChange;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EscapingEventArgs" /> class.
+        /// </summary>
+        /// <param name="player">
+        ///     <inheritdoc cref="Player" />
+        /// </param>
+        /// <param name="newRole">
+        ///     <inheritdoc cref="NewRole" />
+        /// </param>
+        /// <param name="escapeScenario">
+        ///     <inheritdoc cref="EscapeScenario" />
+        /// </param>
+        /// <param name="teamToGrantTickets">
+        ///     A <see cref="SpawnableTeamType"/> that <see cref="TicketsToChange"/> will be initialized with.
+        /// </param>
+        /// <param name="ticketsToGrant">
+        ///     A <see langword="float"/> that <see cref="TicketsToChange"/> will be initialized with.
+        /// </param>
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, SpawnableTeamType teamToGrantTickets, float ticketsToGrant)
+        {
+            Player = player;
+            NewRole = newRole;
+            EscapeScenario = escapeScenario;
+            IsAllowed = escapeScenario is not EscapeScenario.CustomEscape;
+            TicketsToChange = new Dictionary<SpawnableTeamType, float>();
+            if (teamToGrantTickets != SpawnableTeamType.None)
+                TicketsToChange[teamToGrantTickets] = ticketsToGrant;
         }
 
         /// <summary>
@@ -52,6 +111,11 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets or sets the EscapeScenario that will represent for this player.
         /// </summary>
         public EscapeScenario EscapeScenario { get; set; }
+
+        /// <summary>
+        ///     Gets the TicketsToChange that will represent the amount of tickets granted after the player escapes.
+        /// </summary>
+        public Dictionary<SpawnableTeamType, float> TicketsToChange { get; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player can escape.
