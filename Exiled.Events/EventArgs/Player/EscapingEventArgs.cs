@@ -88,7 +88,7 @@ namespace Exiled.Events.EventArgs.Player
         public EscapeScenario EscapeScenario { get; set; }
 
         /// <summary>
-        ///     Gets the TicketsToChange that will represent the amount of tickets granted after the player escapes.
+        ///     Gets or sets the TicketsToChange that will represent the amount of tickets granted after the player escapes.
         /// </summary>
         public Dictionary<SpawnableTeamType, float> TicketsToChange { get; set; }
 
