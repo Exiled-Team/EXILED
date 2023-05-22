@@ -123,9 +123,9 @@ namespace Exiled.Events.Patches.Events.Player
                         // goto skip
                         new(OpCodes.Brtrue_S, skip),
 
-                        // ev.InteractionResult = DoorBeepType.InteractionDenied;
+                        // ev.InteractionResult = DoorBeepType.PermissionDenied;
                         new(OpCodes.Ldloc_S, ev.LocalIndex),
-                        new(OpCodes.Ldc_I4_2),
+                        new(OpCodes.Ldc_I4_0),
                         new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.InteractionResult))),
 
                         // InteractingDoor.Process(__instance, ply, colliderId, ev);
