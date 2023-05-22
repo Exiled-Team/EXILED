@@ -205,8 +205,9 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(string name, out CustomItem? customItem)
         {
-            if (name is null)
-                throw new ArgumentNullException(nameof(name));
+            customItem = null;
+            if (string.IsNullOrEmpty(name))
+                return false;
 
             customItem = uint.TryParse(name, out uint id) ? Get(id) : Get(name);
 
@@ -234,8 +235,9 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out CustomItem? customItem)
         {
+            customItem = null;
             if (player is null)
-                throw new ArgumentNullException(nameof(player));
+                return false;
 
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Check(player.CurrentItem));
 
@@ -250,8 +252,9 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out IEnumerable<CustomItem>? customItems)
         {
+            customItems = Enumerable.Empty<CustomItem>();
             if (player is null)
-                throw new ArgumentNullException(nameof(player));
+                return false;
 
             customItems = Registered.Where(tempCustomItem => player.Items.Any(tempCustomItem.Check));
 
@@ -774,10 +777,7 @@ namespace Exiled.CustomItems.API.Features
                 if (!TrackedSerials.Contains(item.Serial))
                     TrackedSerials.Add(item.Serial);
 
-                if (displayMessage)
-                    ShowPickedUpMessage(player);
-
-                Timing.CallDelayed(0.05f, () => OnAcquired(player));
+                Timing.CallDelayed(0.05f, () => OnAcquired(player, displayMessage));
             }
             catch (Exception e)
             {
@@ -999,7 +999,24 @@ namespace Exiled.CustomItems.API.Features
         /// Called anytime the item enters a player's inventory by any means.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
-        protected virtual void OnAcquired(Player player) => ShowPickedUpMessage(player);
+        [Obsolete("Use OnAcquired(Player, bool) instead.")]
+        protected virtual void OnAcquired(Player player)
+        {
+        }
+
+        /// <summary>
+        /// Called anytime the item enters a player's inventory by any means.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
+        /// <param name="displayMessage">Whether or not the Pickup hint should be displayed.</param>
+        protected virtual void OnAcquired(Player player, bool displayMessage)
+        {
+            if (displayMessage)
+                ShowPickedUpMessage(player);
+#pragma warning disable CS0618
+            OnAcquired(player);
+#pragma warning restore CS0618
+        }
 
         /// <summary>
         /// Clears the lists of item uniqIDs and Pickups since any still in the list will be invalid.
@@ -1135,7 +1152,7 @@ namespace Exiled.CustomItems.API.Features
             if (!ev.IsAllowed)
                 return;
 
-            Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player));
+            Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player, true));
         }
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
