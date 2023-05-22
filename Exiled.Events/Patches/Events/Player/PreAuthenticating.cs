@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             int offset = -1;
-            int index = newInstructions.FindLastIndex(x => x.Is(OpCodes.Callvirt, PropertyGetter(typeof(NetManager), nameof(NetManager.ConnectedPeersCount)))) + offset;
+            int index = newInstructions.FindLastIndex(x => x.Calls(Method(typeof(ConnectionRequest), nameof(ConnectionRequest.Accept)))) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(PreAuthenticatingEventArgs));
             LocalBuilder str = generator.DeclareLocal(typeof(string));
@@ -108,7 +108,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldnull),
                     new(OpCodes.Stloc_S, writer.LocalIndex),
 
-                    // if (IsForced(ev, ref writer)
+                    // if (!IsForced(ev, ref writer)
                     // {
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Ldloca_S, writer.LocalIndex),
