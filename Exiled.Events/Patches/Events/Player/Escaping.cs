@@ -124,8 +124,8 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void GrantAllTickets(EscapingEventArgs ev)
         {
-            foreach (var kvp in ev.TicketsToChange)
-                RespawnTokensManager.ModifyTokens(kvp.Key, kvp.Value);
+            if (ev.RespawnTickets.Key != SpawnableTeamType.None)
+                RespawnTokensManager.ModifyTokens(ev.RespawnTickets.Key, ev.RespawnTickets.Value);
         }
     }
 

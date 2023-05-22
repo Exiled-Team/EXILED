@@ -31,7 +31,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
         public OwnerEscapingEventArgs(Item item, EscapingEventArgs ev)
-            : this(item, ev.Player, ev.NewRole, ev.EscapeScenario, ev.TicketsToChange)
+            : this(item, ev.Player, ev.NewRole, ev.EscapeScenario, ev.RespawnTickets)
         {
         }
 
@@ -42,7 +42,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="player"><inheritdoc cref="EscapingEventArgs.Player"/></param>
         /// <param name="newRole"><inheritdoc cref="EscapingEventArgs.NewRole"/></param>
         /// <param name="escapeScenario"><inheritdoc cref="EscapingEventArgs.EscapeScenario"/></param>
-        [Obsolete("Use OwnerEscapingEventArgs(Item, Player, RoleTypeId, EscapeScenario, Dictionary<SpawnableTeamType, float>) instead.", true)]
+        [Obsolete("Use OwnerEscapingEventArgs(Item, Player, RoleTypeId, EscapeScenario, KeyValuePair<SpawnableTeamType, float>) instead.", true)]
         public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole, EscapeScenario escapeScenario)
             : base(player, newRole, escapeScenario)
         {
@@ -56,9 +56,9 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="player"><inheritdoc cref="EscapingEventArgs.Player"/></param>
         /// <param name="newRole"><inheritdoc cref="EscapingEventArgs.NewRole"/></param>
         /// <param name="escapeScenario"><inheritdoc cref="EscapingEventArgs.EscapeScenario"/></param>
-        /// <param name="ticketsToChange"><inheritdoc cref="EscapingEventArgs.TicketsToChange"/></param>
-        public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole, EscapeScenario escapeScenario, Dictionary<SpawnableTeamType, float> ticketsToChange)
-            : base(player, newRole, escapeScenario, ticketsToChange)
+        /// <param name="respawnTickets"><inheritdoc cref="EscapingEventArgs.RespawnTickets"/></param>
+        public OwnerEscapingEventArgs(Item item, Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets = default)
+            : base(player, newRole, escapeScenario, respawnTickets)
         {
             Item = item;
         }

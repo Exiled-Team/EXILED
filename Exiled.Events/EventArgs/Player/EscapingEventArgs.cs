@@ -35,16 +35,33 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="escapeScenario">
         ///     <inheritdoc cref="EscapeScenario" />
         /// </param>
-        /// <param name="ticketsToChange">
-        ///     <inheritdoc cref="EscapingEventArgs.TicketsToChange"/>
-        /// </param>
-        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, Dictionary<SpawnableTeamType, float> ticketsToChange)
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario)
         {
             Player = player;
             NewRole = newRole;
             EscapeScenario = escapeScenario;
             IsAllowed = escapeScenario is not EscapeScenario.CustomEscape;
-            TicketsToChange = ticketsToChange;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EscapingEventArgs" /> class.
+        /// </summary>
+        /// <param name="player">
+        ///     <inheritdoc cref="Player" />
+        /// </param>
+        /// <param name="newRole">
+        ///     <inheritdoc cref="NewRole" />
+        /// </param>
+        /// <param name="escapeScenario">
+        ///     <inheritdoc cref="EscapeScenario" />
+        /// </param>
+        /// <param name="respawnTickets">
+        ///     <inheritdoc cref="EscapingEventArgs.RespawnTickets"/>
+        /// </param>
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets)
+            : this(player, newRole, escapeScenario)
+        {
+            RespawnTickets = respawnTickets;
         }
 
         /// <summary>
@@ -60,16 +77,16 @@ namespace Exiled.Events.EventArgs.Player
         ///     <inheritdoc cref="EscapeScenario" />
         /// </param>
         /// <param name="teamToGrantTickets">
-        ///     A <see cref="SpawnableTeamType"/> that <see cref="TicketsToChange"/> will be initialized with.
+        ///     A <see cref="SpawnableTeamType"/> that <see cref="RespawnTickets"/> will be initialized with.
         /// </param>
         /// <param name="ticketsToGrant">
-        ///     A <see langword="float"/> that <see cref="TicketsToChange"/> will be initialized with.
+        ///     A <see langword="float"/> that <see cref="RespawnTickets"/> will be initialized with.
         /// </param>
-        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, SpawnableTeamType teamToGrantTickets = SpawnableTeamType.None, float ticketsToGrant = 0f)
-        : this(player, newRole, escapeScenario, ticketsToChange: new Dictionary<SpawnableTeamType, float>())
+        public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, SpawnableTeamType teamToGrantTickets, float ticketsToGrant)
+            : this(player, newRole, escapeScenario)
         {
             if (teamToGrantTickets != SpawnableTeamType.None)
-                TicketsToChange[teamToGrantTickets] = ticketsToGrant;
+                RespawnTickets = new KeyValuePair<SpawnableTeamType, float>(teamToGrantTickets, ticketsToGrant);
         }
 
         /// <summary>
@@ -88,9 +105,10 @@ namespace Exiled.Events.EventArgs.Player
         public EscapeScenario EscapeScenario { get; set; }
 
         /// <summary>
-        ///     Gets or sets the TicketsToChange that will represent the amount of tickets granted after the player escapes.
+        ///     Gets or sets the RespawnTickets that will represent the amount of tickets granted to a specific <see cref="SpawnableTeamType"/> after the player escapes.
         /// </summary>
-        public Dictionary<SpawnableTeamType, float> TicketsToChange { get; set; }
+        /// <seealso cref="RespawnTokensManager"/>
+        public KeyValuePair<SpawnableTeamType, float> RespawnTickets { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether or not the player can escape.
