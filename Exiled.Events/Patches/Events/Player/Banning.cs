@@ -7,116 +7,109 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using API.Features;
-
     using CommandSystem;
-
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
-
+    using Footprinting;
     using HarmonyLib;
 
-    using PluginAPI.Enums;
-    using PluginAPI.Events;
-
-    using Log = API.Features.Log;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="BanPlayer.BanUser(ReferenceHub, ICommandSender, string, long)" />.
+    ///     Patches <see cref="BanPlayer.BanUser(Footprint, ICommandSender, string, long)" />.
     ///     Adds the <see cref="Handlers.Player.Banning" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), typeof(ReferenceHub), typeof(ICommandSender), typeof(string), typeof(long))]
+    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), typeof(Footprint), typeof(ICommandSender), typeof(string), typeof(long))]
     internal static class Banning
     {
-        private static bool Prefix(ReferenceHub target, ICommandSender issuer, string reason, long duration, ref bool __result)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
-            {
-                if (duration == 0L)
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+
+            int offset = -5;
+            int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(TimeBehaviour), nameof(TimeBehaviour.CurrentTimestamp)))) + offset;
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(BanningEventArgs));
+
+            Label continueLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(
+                index,
+                new[]
                 {
-                    __result = BanPlayer.KickUser(target, issuer, reason);
-                    return false;
-                }
+                    // Player player = Player.Get(issuer);
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(Footprint) })),
 
-                if (duration > long.MaxValue)
-                    duration = long.MaxValue;
+                    // Player target = Player.Get
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ICommandSender) })),
 
-                if (target.serverRoles.BypassStaff)
+                    // reason
+                    new(OpCodes.Ldarg_S, 3),
+
+                    // duration
+                    new(OpCodes.Ldarg_S, 4),
+
+                    // true
+                    new(OpCodes.Ldc_I4_1),
+
+                    // BanningEventArgs ev = new(player, target, reason, duration, true);
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(BanningEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    // Handlers.Player.OnBanning(ev);
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnBanning))),
+
+                    // if (!ev.IsAllowed)
+                    //      return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, continueLabel),
+
+                    new(OpCodes.Ret),
+
+                    // loading ev 3 times
+                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+
+                    // duration = ev.Duration;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Duration))),
+                    new(OpCodes.Starg_S, 3),
+
+                    // reason = ev.Reason;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Reason))),
+                    new(OpCodes.Starg_S, 2),
+
+                    // target = ev.Target.ReferenceHub;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Target))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
+                    new(OpCodes.Starg_S, 0),
+                });
+
+            index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldstr);
+
+            newInstructions.RemoveRange(index, 3);
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
                 {
-                    __result = false;
-                    return false;
-                }
+                    // ev.FullMessage
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.FullMessage))),
+                });
 
-                long issuanceTime = TimeBehaviour.CurrentTimestamp();
-                long banExpirationTime = TimeBehaviour.GetBanExpirationTime((uint)duration);
-                string originalName = BanPlayer.ValidateNick(target.nicknameSync.MyNick);
-                string message = $"You have been banned. {(!string.IsNullOrEmpty(reason) ? "Reason: " + reason : string.Empty)}";
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                BanningEventArgs ev = new(Player.Get(target), Player.Get(issuer), duration, reason, message);
-
-                Handlers.Player.OnBanning(ev);
-
-                if (!ev.IsAllowed)
-                {
-                    __result = false;
-                    return false;
-                }
-
-                duration = ev.Duration;
-                reason = ev.Reason;
-                message = ev.FullMessage;
-
-                if (!EventManager.ExecuteEvent(ServerEventType.PlayerBanned, new object[]
-                {
-                    target,
-                    issuer,
-                    reason,
-                    duration,
-                }))
-                {
-                    __result = false;
-                    return false;
-                }
-
-                BanPlayer.ApplyIpBan(target, issuer, reason, duration);
-
-                BanHandler.IssueBan(
-                    new BanDetails
-                    {
-                        OriginalName = originalName,
-                        Id = target.characterClassManager.UserId,
-                        IssuanceTime = issuanceTime,
-                        Expires = banExpirationTime,
-                        Reason = reason,
-                        Issuer = issuer.LogName,
-                    }, BanHandler.BanType.UserId);
-
-                if (!string.IsNullOrEmpty(target.characterClassManager.UserId2))
-                {
-                    BanHandler.IssueBan(
-                        new BanDetails
-                        {
-                            OriginalName = originalName,
-                            Id = target.characterClassManager.UserId2,
-                            IssuanceTime = issuanceTime,
-                            Expires = banExpirationTime,
-                            Reason = reason,
-                            Issuer = issuer.LogName,
-                        }, BanHandler.BanType.UserId);
-                }
-
-                ServerConsole.Disconnect(target.gameObject, message);
-
-                __result = true;
-                return false;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"Exiled.Events.Patches.Events.Player.Banning: {exception}\n{exception.StackTrace}");
-                return true;
-            }
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
     }
 }
