@@ -44,6 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(InteractingDoorEventArgs));
             Label jmp = generator.DefineLabel();
+            Label skip = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 0,
@@ -93,10 +94,14 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction[]
                 {
                         // ev.IsAllowed = false;
+                        new(OpCodes.Ldloc_S, ev.LocalIndex),
+                        new(OpCodes.Ldc_I4_0),
+                        new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
+
                         // ev.InteractionResult = DoorBeepType.InteractionDenied;
                         new(OpCodes.Ldloc_S, ev.LocalIndex),
                         new(OpCodes.Ldc_I4_2),
-                        new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
+                        new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.InteractionResult))),
 
                         // InteractingDoor.Process(__instance, ply, colliderId, ev);
                         new(OpCodes.Ldarg_0),
@@ -106,16 +111,25 @@ namespace Exiled.Events.Patches.Events.Player
                         new(OpCodes.Call, Method(typeof(InteractingDoor), nameof(InteractingDoor.Process))),
                 });
 
-            offset = -5;
+            offset = -6;
             index = newInstructions.FindIndex(instruction => instruction.Calls(PropertySetter(typeof(DoorVariant), nameof(DoorVariant.NetworkTargetState)))) + offset;
 
-            newInstructions.RemoveRange(index, 9);
+            newInstructions.RemoveRange(index, 19);
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
+                        // if (!flag)
+                        // goto skip
+                        new(OpCodes.Brtrue_S, skip),
+
+                        // ev.InteractionResult = DoorBeepType.InteractionDenied;
+                        new(OpCodes.Ldloc_S, ev.LocalIndex),
+                        new(OpCodes.Ldc_I4_2),
+                        new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.InteractionResult))),
+
                         // InteractingDoor.Process(__instance, ply, colliderId, ev);
-                        new(OpCodes.Ldarg_0),
+                        new CodeInstruction(OpCodes.Ldarg_0).WithLabels(skip),
                         new(OpCodes.Ldarg_1),
                         new(OpCodes.Ldarg_2),
                         new(OpCodes.Ldloc_S, ev.LocalIndex),
