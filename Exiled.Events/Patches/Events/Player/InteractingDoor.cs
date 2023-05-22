@@ -119,7 +119,7 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
-                        // if (!flag)
+                        // if (flag)
                         // goto skip
                         new(OpCodes.Brtrue_S, skip),
 
