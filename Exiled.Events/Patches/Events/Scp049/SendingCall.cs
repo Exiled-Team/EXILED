@@ -5,6 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PlayerRoles.FirstPersonControl;
+using PlayerRoles.PlayableScps.Subroutines;
+
 namespace Exiled.Events.Patches.Events.Scp049
 {
     using System.Collections.Generic;
@@ -24,23 +27,65 @@ namespace Exiled.Events.Patches.Events.Scp049
     ///     Patches <see cref="Scp049CallAbility.ServerProcessCmd" />.
     ///     Adds the <see cref="Handlers.Scp049.SendingCall" /> event.
     /// </summary>
-    // TODO: REWORK TRANSPILER
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(Scp049CallAbility), nameof(Scp049CallAbility.ServerProcessCmd))]
     public class SendingCall
     {
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(Scp049CallAbility), nameof(Scp049CallAbility.ServerProcessCmd))]
-        private static IEnumerable<CodeInstruction> OnSendingCall(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(SendingCall), nameof(SendingCall.ProcessCall))),
-                new(OpCodes.Br, returnLabel),
-            });
+            Label returnLabel = generator.DefineLabel();
+            Label evLabel = generator.DefineLabel();
+
+            LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
+            LocalBuilder ev = generator.DeclareLocal(typeof(SendingCallEventArgs));
+
+            newInstructions.InsertRange(
+                0,
+                new[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp049CallAbility), nameof(Scp049CallAbility._serverTriggered))),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                    new(OpCodes.Brtrue_S, evLabel),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(Scp049CallAbility), nameof(Scp049CallAbility.Cooldown))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(AbilityCooldown), nameof(AbilityCooldown.IsReady))),
+                    new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(evLabel),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049CallAbility), nameof(Scp049CallAbility.Owner))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    new(OpCodes.Ldc_R4, 20f),
+
+                    new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
+
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingCallEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S),
+
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnSendingCall))),
+
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SendingCallEventArgs), nameof(SendingCallEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, returnLabel),
+
+                    new(OpCodes.Ret),
+                });
+
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldc_R4);
+
+            newInstructions.RemoveAt(index);
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SendingCallEventArgs), nameof(SendingCallEventArgs.Duration))),
+                });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 

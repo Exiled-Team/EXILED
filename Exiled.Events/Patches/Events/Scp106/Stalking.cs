@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PlayerRoles.FirstPersonControl;
+
 namespace Exiled.Events.Patches.Events.Scp106
 {
     using System.Collections.Generic;
@@ -25,25 +27,59 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Patches <see cref="Scp106StalkAbility.ServerProcessCmd"/>.
     /// To add the <see cref="Handlers.Scp106.Stalking"/> event.
     /// </summary>
-    // TODO: REWORK TRANSPILER
-    [HarmonyPatch]
+    [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.ServerProcessCmd))]
     public class Stalking
     {
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.ServerProcessCmd))]
         private static IEnumerable<CodeInstruction> OnStalking(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
-            {
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Call, Method(typeof(Stalking), nameof(ServerProcessStalk))),
-                new(OpCodes.Br, returnLabel),
-            });
+            Label continueLabel = generator.DefineLabel();
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            LocalBuilder ev = generator.DeclareLocal(typeof(StalkingEventArgs));
+
+            int offset = 3;
+            int index = newInstructions.FindIndex(x => x.Is(OpCodes.Callvirt, PropertyGetter(typeof(FirstPersonMovementModule), nameof(FirstPersonMovementModule.IsGrounded)))) + offset;
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Scp106StalkAbility), nameof(Scp106StalkAbility.Owner))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    new(OpCodes.Ldarg_0),
+
+                    new(OpCodes.Ldc_I4_1),
+
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StalkingEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
+
+                    new(OpCodes.Call, Method(typeof(Handlers.Scp106), nameof(Handlers.Scp106.OnStalking))),
+
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, continueLabel),
+
+                    new(OpCodes.Ret),
+                });
+
+            offset = -3;
+            index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldc_R4) + offset;
+
+            newInstructions.RemoveRange(index, 4);
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.Vigor))),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.MinimumVigor)))
+                });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

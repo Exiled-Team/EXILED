@@ -7,24 +7,25 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using Exiled.API.Features.DamageHandlers;
     using Interfaces;
-
-    using PlayerStatsSystem;
 
     /// <summary>
     /// Contains all information before player data to kill player is sent.
     /// </summary>
-    public class KillingPlayerEventArgs : IPlayerEvent
+    public class KillingPlayerEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///  Initializes a new instance of the <see cref="KillingPlayerEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="KillingPlayerEventArgs"/> class.
         /// </summary>
-        /// <param name="player"> Current player. </param>
-        /// <param name="handler"> DamageHandler instance. </param>
-        public KillingPlayerEventArgs(API.Features.Player player, ref DamageHandlerBase handler)
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="handler"><inheritdoc cref="Handler"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public KillingPlayerEventArgs(API.Features.Player player, PlayerStatsSystem.DamageHandlerBase handler, bool isAllowed = true)
         {
             Player = player;
-            Handler = handler;
+            Handler = new DamageHandler(player, handler);
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -35,6 +36,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets current Damage Handler.
         /// </summary>
-        public DamageHandlerBase Handler { get; set; }
+        public DamageHandler Handler { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsAllowed { get; set; }
     }
 }
