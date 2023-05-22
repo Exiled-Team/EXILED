@@ -86,7 +86,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // string message = string.Format("Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin.", ev.UserId, request.RemoteEndPoint);
                     new(OpCodes.Ldstr, "Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin."),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Dup),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.UserId))),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(ConnectionRequest), nameof(ConnectionRequest.RemoteEndPoint))),
