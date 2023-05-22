@@ -3217,6 +3217,19 @@ namespace Exiled.API.Features
         public void Explode() => ExplosionUtils.ServerExplode(ReferenceHub);
 
         /// <summary>
+        /// Explode the player.
+        /// </summary>
+        /// <param name="projectileType">The projectile that will create the explosion.</param>
+        /// <param name="attacker">The Player that will causing the explosion.</param>
+        public void Explode2(ProjectileType projectileType, Player attacker = null) => Map.Explode(Position, projectileType, attacker);
+
+        /// <summary>
+        /// Spawn projectile effect on the player.
+        /// </summary>
+        /// <param name="projectileType">The projectile that will create the effect.</param>
+        public void ExplodeEffect(ProjectileType projectileType) => Map.ExplodeEffect(Position, projectileType);
+
+        /// <summary>
         /// Converts the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>

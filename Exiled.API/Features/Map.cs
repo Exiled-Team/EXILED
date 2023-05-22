@@ -343,15 +343,33 @@ namespace Exiled.API.Features
         /// Explode.
         /// </summary>
         /// <param name="position">The position where explosion will be created.</param>
+        /// <param name="projectileType">The projectile that will create the explosion.</param>
         /// <param name="attacker">The player who create the explosion.</param>
-        public static void Explode(Vector3 position, Player attacker = null)
+        public static void Explode(Vector3 position, ProjectileType projectileType, Player attacker = null)
         {
-            attacker ??= Server.Host;
-            if (!InventoryItemLoader.TryGetItem(ItemType.GrenadeHE, out ThrowableItem throwableItem)
-                || throwableItem.Projectile is not ExplosionGrenade explosionGrenade)
+            ItemType item;
+            if ((item = projectileType.GetItemType()) is ItemType.None)
                 return;
-            ExplosionUtils.ServerSpawnEffect(position, ItemType.GrenadeHE);
-            ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+            attacker ??= Server.Host;
+            if (!InventoryItemLoader.TryGetItem(item, out ThrowableItem throwableItem))
+                return;
+            ExplosionUtils.ServerSpawnEffect(position, item);
+
+            if (throwableItem.Projectile is ExplosionGrenade explosionGrenade)
+                ExplosionGrenade.Explode(attacker.Footprint, position, explosionGrenade);
+        }
+
+        /// <summary>
+        /// Spawn projectile effect.
+        /// </summary>
+        /// <param name="position">The position where effect will be created.</param>
+        /// <param name="projectileType">The projectile that will create the effect.</param>
+        public static void ExplodeEffect(Vector3 position, ProjectileType projectileType)
+        {
+            ItemType item;
+            if ((item = projectileType.GetItemType()) is ItemType.None)
+                return;
+            ExplosionUtils.ServerSpawnEffect(position, item);
         }
 
         /// <summary>
