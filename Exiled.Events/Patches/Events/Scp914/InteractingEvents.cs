@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             });
 
             offset = 0;
-            index = newInstructions.FindLastIndex(i => i.operand == (object)(short)PluginAPI.Enums.ServerEventType.Scp914Activate) + offset;
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldc_I4_S) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
