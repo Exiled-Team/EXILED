@@ -73,6 +73,7 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
+                    // jmp
                     // ev.InteractionResult = DoorBeepType.LockBypassDenied;
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(jmp),
                     new(OpCodes.Ldc_I4_1),
@@ -128,6 +129,7 @@ namespace Exiled.Events.Patches.Events.Player
                         new(OpCodes.Ldc_I4_0),
                         new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.InteractionResult))),
 
+                        // skip
                         // InteractingDoor.Process(__instance, ply, colliderId, ev);
                         new CodeInstruction(OpCodes.Ldarg_0).WithLabels(skip),
                         new(OpCodes.Ldarg_1),
