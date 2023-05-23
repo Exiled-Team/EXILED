@@ -23,6 +23,9 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <param name="player">
         ///     <inheritdoc cref="Player" />
         /// </param>
+        /// <param name="isAllowed">
+        ///     <inheritdoc cref="IsAllowed" />
+        /// </param>
         public LungingEventArgs(ReferenceHub player, bool isAllowed = true)
         {
             Player = Player.Get(player);
@@ -32,7 +35,7 @@ namespace Exiled.Events.EventArgs.Scp939
         ///     Gets the player who's controlling SCP-939.
         /// </summary>
         public Player Player { get; }
-        
+
         /// <summary>
         ///     Gets or sets a value indicating whether or not SCP-939 can lunge.
         /// </summary>
