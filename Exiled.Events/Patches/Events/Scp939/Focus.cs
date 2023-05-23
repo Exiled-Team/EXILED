@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp939
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingFocusEventArgs));
+            LocalBuilder state = generator.DeclareLocal(typeof(bool));
 
             Label ret = generator.DefineLabel();
 
@@ -51,6 +51,8 @@ namespace Exiled.Events.Patches.Events.Scp939
                 // reader.ReadBool()
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Callvirt, Method(typeof(NetworkReaderExtensions), nameof(NetworkReaderExtensions.ReadBool))),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc_S, state.LocalIndex),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
@@ -58,8 +60,6 @@ namespace Exiled.Events.Patches.Events.Scp939
                 // ChangingFocusEventArgs ev = new(referenceHub, state, isAllowed);
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingFocusEventArgs))[0]),
                 new(OpCodes.Dup),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Scp939.OnChangingFocus(ev);
                 new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnChangingFocus))),
@@ -68,13 +68,10 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingFocusEventArgs), nameof(ChangingFocusEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
 
-                // this.
+                // this
                 // ev.State
                 new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldloc, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingFocusEventArgs), nameof(ChangingFocusEventArgs.State))),
-
-                // this.FocusKeyHeld(ev.State);
+                new(OpCodes.Ldloc, state.LocalIndex),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
