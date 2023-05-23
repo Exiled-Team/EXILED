@@ -153,47 +153,5 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
-
-        private static void ProcessSense(Scp049SenseAbility senseAbility, NetworkReader reader)
-        {
-            if (!senseAbility.Cooldown.IsReady || !senseAbility.Duration.IsReady)
-            {
-                return;
-            }
-
-            senseAbility.HasTarget = false;
-            senseAbility.Target = reader.ReadReferenceHub();
-
-            senseAbility.CanFindTarget(out ReferenceHub hub);
-            senseAbility.Target = hub;
-
-            ActivatingSenseEventArgs ev = new(senseAbility.Owner, senseAbility.Target);
-            Scp049.OnActivatingSense(ev);
-
-            if (!ev.IsAllowed)
-                return;
-
-            if (senseAbility.Target == null)
-            {
-                senseAbility.Cooldown.Trigger(ev.Cooldown);
-                senseAbility.ServerSendRpc(true);
-                return;
-            }
-
-            PlayerRoles.HumanRole humanRole = senseAbility.Target.roleManager.CurrentRole as PlayerRoles.HumanRole;
-            if (humanRole == null)
-            {
-                return;
-            }
-
-            if (!VisionInformation.GetVisionInformation(senseAbility.Owner, senseAbility.Owner.PlayerCameraReference, humanRole.CameraPosition, humanRole.FpcModule.CharController.radius, senseAbility._distanceThreshold, true, true, 0).IsLooking)
-            {
-                return;
-            }
-
-            senseAbility.Duration.Trigger(ev.Duration);
-            senseAbility.HasTarget = true;
-            senseAbility.ServerSendRpc(true);
-        }
     }
 }
