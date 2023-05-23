@@ -72,6 +72,7 @@ namespace Exiled.Events.Patches.Events.Scp939
                 // ev.State
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ChangingFocusEventArgs), nameof(ChangingFocusEventArgs.State))),
 
                 // this.FocusKeyHeld(ev.State);
             });
