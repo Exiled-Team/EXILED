@@ -5,11 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using PlayerStatsSystem;
-
 namespace Exiled.Events.EventArgs.Player
 {
     using Interfaces;
+    using PlayerStatsSystem;
 
     /// <summary>
     /// Contains all information before player data to kill player is sent.

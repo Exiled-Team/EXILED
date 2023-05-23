@@ -93,7 +93,7 @@ namespace Exiled.Events.EventArgs.Player
         }
 
         /// <summary>
-        ///     Gets the ban issuer.
+        ///     Gets or sets the ban issuer.
         /// </summary>
         public Player Player
         {

@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using PlayerRoles.FirstPersonControl;
-
 namespace Exiled.Events.Patches.Events.Scp106
 {
     using System.Collections.Generic;
@@ -14,11 +12,9 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using API.Features;
     using API.Features.Pools;
-
     using Exiled.Events.EventArgs.Scp106;
-
     using HarmonyLib;
-
+    using PlayerRoles.FirstPersonControl;
     using PlayerRoles.PlayableScps.Scp106;
 
     using static HarmonyLib.AccessTools;
@@ -78,7 +74,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.Vigor))),
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.MinimumVigor)))
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.MinimumVigor))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
