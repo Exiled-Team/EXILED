@@ -37,6 +37,8 @@ namespace Exiled.Events.Patches.Events.Scp106
             int offset = 3;
             int index = newInstructions.FindIndex(x => x.Is(OpCodes.Callvirt, PropertyGetter(typeof(FirstPersonMovementModule), nameof(FirstPersonMovementModule.IsGrounded)))) + offset;
 
+            newInstructions[index].labels.Add(continueLabel);
+
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
@@ -72,14 +74,16 @@ namespace Exiled.Events.Patches.Events.Scp106
             offset = -3;
             index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ldc_R4) + offset;
 
+            IEnumerable<Label> lables = newInstructions[index].ExtractLabels();
+
             newInstructions.RemoveRange(index, 4);
 
             newInstructions.InsertRange(
                 index,
-                new CodeInstruction[]
+                new[]
                 {
                     // ev.Vigor
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(lables),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(StalkingEventArgs), nameof(StalkingEventArgs.Vigor))),
 
                     // ev.MinimumVigor
