@@ -9,17 +9,20 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
     using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using API.Features;
 
     using CommandSystem;
-
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
-    using PluginAPI.Enums;
-    using PluginAPI.Events;
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     using Log = API.Features.Log;
 
@@ -30,46 +33,53 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.KickUser), typeof(ReferenceHub), typeof(ICommandSender), typeof(string))]
     internal static class Kicking
     {
-        private static bool Prefix(ReferenceHub target, ICommandSender issuer, string reason, ref bool __result)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            Label jmp = generator.DefineLabel();
+
+            const int offset = -5;
+
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brtrue_S);
+            newInstructions[index] = new CodeInstruction(OpCodes.Brtrue_S, jmp);
+
+            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(ServerConsole), nameof(ServerConsole.Disconnect), new Type[] { typeof(GameObject), typeof(string) }))) + offset;
+
+            // remove base game logic
+            newInstructions.RemoveRange(index, 7);
+
+            newInstructions.InsertRange(
+                index,
+                new CodeInstruction[]
+                {
+                    // jmp
+                    // Kicking.Process(ReferenceHub target, ICommandSender issuer, string reason);
+                    new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jmp),
+                    new(OpCodes.Ldarg_1),
+                    new(OpCodes.Ldarg_2),
+                    new(OpCodes.Call, Method(typeof(Kicking), nameof(Kicking.Process))),
+                });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static bool Process(ReferenceHub target, ICommandSender issuer, string reason)
+        {
+            string message = $"You have been kicked. {(!string.IsNullOrEmpty(reason) ? "Reason: " + reason : string.Empty)}";
+
+            KickingEventArgs ev = new(Player.Get(target), Player.Get(issuer), reason, message);
+            Handlers.Player.OnKicking(ev);
+
+            if (!ev.IsAllowed)
             {
-                string message = $"You have been kicked. {(!string.IsNullOrEmpty(reason) ? "Reason: " + reason : string.Empty)}";
-
-                KickingEventArgs ev = new(Player.Get(target), Player.Get(issuer), reason, message);
-
-                Handlers.Player.OnKicking(ev);
-
-                if (!ev.IsAllowed)
-                {
-                    __result = false;
-                    return false;
-                }
-
-                reason = ev.Reason;
-                message = ev.FullMessage;
-
-                if (!EventManager.ExecuteEvent(ServerEventType.PlayerKicked, new object[]
-                {
-                    target,
-                    issuer,
-                    reason,
-                }))
-                {
-                    __result = false;
-                    return false;
-                }
-
-                ServerConsole.Disconnect(target.gameObject, message);
-
-                __result = true;
                 return false;
             }
-            catch (Exception exception)
-            {
-                Log.Error($"Exiled.Events.Patches.Events.Player.Kicking: {exception}\n{exception.StackTrace}");
-                return true;
-            }
+
+            ServerConsole.Disconnect(target.gameObject, ev.FullMessage);
+            return true;
         }
     }
 }
