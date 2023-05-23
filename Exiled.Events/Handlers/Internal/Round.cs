@@ -40,6 +40,7 @@ namespace Exiled.Events.Handlers.Internal
         /// <inheritdoc cref="Handlers.Server.OnRestartingRound" />
         public static void OnRestartingRound()
         {
+            Scp049Role.TurnedPlayers.Clear();
             Scp173Role.TurnedPlayers.Clear();
             Scp096Role.TurnedPlayers.Clear();
 
