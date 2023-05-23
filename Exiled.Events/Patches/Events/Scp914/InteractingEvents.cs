@@ -83,14 +83,14 @@ namespace Exiled.Events.Patches.Events.Scp914
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // ActivatingEventArgs ev = new(referenceHub, scp914KnobSetting, isAllowed);
+                // ActivatingEventArgs ev2 = new(referenceHub, scp914KnobSetting, isAllowed);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingEventArgs))[0]),
                 new(OpCodes.Dup),
 
-                // Scp914.OnActivating(ev);
+                // Scp914.OnActivating(ev2);
                 new(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnActivating))),
 
-                // if (!ev.IsAllowed)
+                // if (!ev2.IsAllowed)
                 //     return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingEventArgs), nameof(ActivatingEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
