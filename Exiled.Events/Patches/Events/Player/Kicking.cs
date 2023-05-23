@@ -62,12 +62,18 @@ namespace Exiled.Events.Patches.Events.Player
 
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+
                     new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Reason))),
                     new(OpCodes.Starg_S, 2),
 
                     new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Target))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
                     new(OpCodes.Starg_S, 0),
+
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Player))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Sender))),
+                    new(OpCodes.Starg_S, 1),
                 });
 
             int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldstr);

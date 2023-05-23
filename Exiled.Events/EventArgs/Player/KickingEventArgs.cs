@@ -19,6 +19,7 @@ namespace Exiled.Events.EventArgs.Player
     public class KickingEventArgs : IPlayerEvent, IDeniableEvent
     {
         private bool isAllowed;
+        private Player issuer;
         private Player target;
 
         /// <summary>
@@ -94,7 +95,20 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Gets the ban issuer.
         /// </summary>
-        public Player Player { get; }
+        public Player Player
+        {
+            get => issuer;
+            set
+            {
+                if (value is null || issuer == value)
+                    return;
+
+                if (Events.Instance.Config.ShouldLogBans && issuer is not null)
+                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name, $" changed the ban issuer from user {issuer.Nickname} ({issuer.UserId}) to {value.Nickname} ({value.UserId})");
+
+                issuer = value;
+            }
+        }
 
         /// <summary>
         ///     Logs the kick, anti-backdoor protection from malicious plugins.

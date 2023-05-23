@@ -85,7 +85,6 @@ namespace Exiled.Events.Patches.Fixes
 
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(KillingPlayerEventArgs), nameof(KillingPlayerEventArgs.Handler))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Base))),
                     new(OpCodes.Starg_S, 1),
                 });
 

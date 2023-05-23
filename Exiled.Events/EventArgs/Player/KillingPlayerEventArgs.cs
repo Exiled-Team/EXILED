@@ -5,9 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using PlayerStatsSystem;
+
 namespace Exiled.Events.EventArgs.Player
 {
-    using Exiled.API.Features.DamageHandlers;
     using Interfaces;
 
     /// <summary>
@@ -21,10 +22,10 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="handler"><inheritdoc cref="Handler"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public KillingPlayerEventArgs(API.Features.Player player, PlayerStatsSystem.DamageHandlerBase handler, bool isAllowed = true)
+        public KillingPlayerEventArgs(API.Features.Player player, DamageHandlerBase handler, bool isAllowed = true)
         {
             Player = player;
-            Handler = new DamageHandler(player, handler);
+            Handler = handler;
             IsAllowed = isAllowed;
         }
 
@@ -36,7 +37,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         /// Gets or sets current Damage Handler.
         /// </summary>
-        public DamageHandler Handler { get; set; }
+        public DamageHandlerBase Handler { get; set; }
 
         /// <inheritdoc/>
         public bool IsAllowed { get; set; }

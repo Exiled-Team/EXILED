@@ -74,8 +74,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                     new(OpCodes.Ret),
 
-                    // loading ev 3 times
+                    // loading ev 4 times
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
+                    new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
 
@@ -87,10 +88,15 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Reason))),
                     new(OpCodes.Starg_S, 2),
 
-                    // target = ev.Target.ReferenceHub;
+                    // target = ev.Target.Footprint;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Target))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Footprint))),
                     new(OpCodes.Starg_S, 0),
+
+                    // issuer = ev.Player.Sender;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BanningEventArgs), nameof(BanningEventArgs.Player))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Sender))),
+                    new(OpCodes.Starg_S, 1),
                 });
 
             index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldstr);
