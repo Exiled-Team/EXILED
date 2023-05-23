@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using CustomPlayerEffects;
 
     using PlayerRoles;
