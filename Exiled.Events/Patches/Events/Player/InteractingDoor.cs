@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloc_3, ev.LocalIndex).WithLabels(continueLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.Door))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Door), nameof(Door.Base))),
-                    new(OpCodes.Starg_S, 0)
+                    new(OpCodes.Starg_S, 0),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
