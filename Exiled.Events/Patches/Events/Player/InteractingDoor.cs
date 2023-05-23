@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(
                 index,
-                new CodeInstruction[]
+                new[]
                 {
                     // Player player = Player.Get(ply);
                     new(OpCodes.Ldarg_1),
@@ -65,6 +65,12 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Ret),
+
+                    // this = ev.Door.Base;
+                    new CodeInstruction(OpCodes.Ldloc_3, ev.LocalIndex).WithLabels(continueLabel),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.Door))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Door), nameof(Door.Base))),
+                    new(OpCodes.Starg_S, 0)
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

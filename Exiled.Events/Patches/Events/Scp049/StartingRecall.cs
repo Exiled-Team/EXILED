@@ -36,25 +36,33 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
+                // Player player = Player.Get(this.Owner);
                 new(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049ResurrectAbility), nameof(Scp049ResurrectAbility.Owner))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // Player target = Player.Get(ragdoll.Info.OwnerHub);
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Ldfld, Field(typeof(BasicRagdoll), nameof(BasicRagdoll.Info))),
                 new(OpCodes.Ldfld, Field(typeof(RagdollData), nameof(RagdollData.OwnerHub))),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // Ragdoll doll = Rangdoll.Get(ragdoll);
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(Ragdoll), nameof(Ragdoll.Get), new[] { typeof(BasicRagdoll) })),
 
+                // true
                 new(OpCodes.Ldc_I4_1),
 
+                // StartingRecallEventArgs ev = new(player, target, doll, true);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingRecallEventArgs))[0]),
                 new(OpCodes.Dup),
 
+                // Handlers.Scp049.OnStartingRecall(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnStartingRecall))),
 
+                // if (!ev.IsAllowed)
+                //      return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(StartingRecallEventArgs), nameof(StartingRecallEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, retLabel),
             });

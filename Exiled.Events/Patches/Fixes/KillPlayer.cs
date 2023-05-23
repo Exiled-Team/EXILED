@@ -47,6 +47,8 @@ namespace Exiled.Events.Patches.Fixes
                 0,
                 new[]
                 {
+                    // if (DamageHandlers.IdsByTypeHash.ContainsKey(DamageHandlerBase.GetType().FullName.GetStableHashCode())
+                    //      return;
                     new(OpCodes.Ldsfld, Field(typeof(DamageHandlers), nameof(DamageHandlers.IdsByTypeHash))),
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(DamageHandlerBase), nameof(DamageHandlerBase.GetType))),
@@ -55,6 +57,9 @@ namespace Exiled.Events.Patches.Fixes
                     new(OpCodes.Call, Method(typeof(Dictionary<int, byte>), nameof(Dictionary<int, byte>.ContainsKey))),
                     new(OpCodes.Brtrue_S, retLabel),
 
+                    // if (handler is GenericDamageHandler exiledHandler)
+                    //      handler = exiledHandler;
+                    //      return;
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Isinst, typeof(GenericDamageHandler)),
                     new(OpCodes.Dup),
@@ -65,24 +70,32 @@ namespace Exiled.Events.Patches.Fixes
                     new(OpCodes.Starg_S, 1),
                     new(OpCodes.Br_S, skipLabel),
 
+                    // Player player = Player.Get(this._hub);
                     new CodeInstruction(OpCodes.Ldarg_0).WithLabels(continueLabel),
                     new(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // handler
                     new(OpCodes.Ldarg_1),
 
+                    // true
                     new(OpCodes.Ldc_I4_1),
 
+                    // KillingPlayerEventArgs ev = new(player, handler, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(KillingPlayerEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
+                    // Handlers.Player.OnKillPlayer(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnKillPlayer))),
 
+                    // if (!ev.IsAllowed)
+                    //      return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(KillingPlayerEventArgs), nameof(KillingPlayerEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, retLabel),
 
+                    // handler = ev.Handler;
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(KillingPlayerEventArgs), nameof(KillingPlayerEventArgs.Handler))),
                     new(OpCodes.Starg_S, 1),

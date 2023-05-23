@@ -40,6 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 0,
                 new[]
                 {
+                    // bool isAllowed = !this._serverTriggered && this.Cooldown.IsReady;
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldfld, Field(typeof(Scp049CallAbility), nameof(Scp049CallAbility._serverTriggered))),
                     new(OpCodes.Dup),
@@ -50,21 +51,28 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AbilityCooldown), nameof(AbilityCooldown.IsReady))),
                     new(OpCodes.Stloc_S, isAllowed.LocalIndex),
 
+                    // Player player = Player.Get(this.Owner);
                     new CodeInstruction(OpCodes.Ldarg_0).WithLabels(evLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049CallAbility), nameof(Scp049CallAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // 20f
                     new(OpCodes.Ldc_R4, 20f),
 
+                    // isAllowed
                     new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
 
+                    // SendingCallEventArgs ev = new(player, 20f, isAllowed);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingCallEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S),
 
+                    // Handlers.Scp049.OnSendingCall(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnSendingCall))),
 
+                    // if (!ev.IsAllowed)
+                    //      return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SendingCallEventArgs), nameof(SendingCallEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, returnLabel),
 
@@ -79,6 +87,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 index,
                 new CodeInstruction[]
                 {
+                    // ev.Duration
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(SendingCallEventArgs), nameof(SendingCallEventArgs.Duration))),
                 });
@@ -89,25 +98,6 @@ namespace Exiled.Events.Patches.Events.Scp049
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-
-        /// <summary>
-        /// Process's Scp049 call ability.
-        /// </summary>
-        /// <param name="callAbility"> <see cref="Scp049CallAbility"/>. </param>
-        private static void ProcessCall(Scp049CallAbility callAbility)
-        {
-            Player currentScp = Player.Get(callAbility.Owner);
-            float duration = Scp049CallAbility.EffectDuration;
-
-            var ev = new SendingCallEventArgs(currentScp, duration, !callAbility._serverTriggered && callAbility.Cooldown.IsReady);
-            Handlers.Scp049.OnSendingCall(ev);
-
-            if (!ev.IsAllowed)
-                return;
-            callAbility.Duration.Trigger(ev.Duration);
-            callAbility._serverTriggered = true;
-            callAbility.ServerSendRpc(true);
         }
     }
 }

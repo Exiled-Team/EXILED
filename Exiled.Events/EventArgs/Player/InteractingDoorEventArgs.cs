@@ -43,9 +43,9 @@ namespace Exiled.Events.EventArgs.Player
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        ///     Gets the <see cref="API.Features.Door" /> instance.
+        ///     Gets or sets the <see cref="API.Features.Door" /> instance.
         /// </summary>
-        public Door Door { get; }
+        public Door Door { get; set; }
 
         /// <summary>
         ///     Gets the player who's interacting with the door.

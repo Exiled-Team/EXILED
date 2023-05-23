@@ -42,6 +42,10 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             newInstructions[index].labels.Add(cantSense);
 
+            // Player target = Player.Get(this.Target);
+            //
+            // if ((player.Role.Type == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanScp049SenseTutorial) || Exiled.API.Features.Roles.Scp049Role.TurnedPlayers.Contains(target))
+            //      return;
             newInstructions.InsertRange(
                 index,
                 new[]
@@ -49,9 +53,9 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Target))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, target.LocalIndex),
 
-                    new(OpCodes.Ldloc_S, target.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
                     new(OpCodes.Ldc_I4_S, 14),
@@ -77,19 +81,26 @@ namespace Exiled.Events.Patches.Events.Scp049
                 index,
                 new[]
                 {
+                    // Player player = Player.Get(this.Owner);
                     new CodeInstruction(OpCodes.Ldarg_0).WithLabels(evLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp049SenseAbility), nameof(Scp049SenseAbility.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // target
                     new(OpCodes.Ldloc_S, target.LocalIndex),
 
+                    // true
                     new(OpCodes.Ldc_I4_1),
 
+                    // ActivatingSenseEventArgs ev = new(player, target, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingSenseEventArgs))[0]),
                     new(OpCodes.Dup),
 
+                    // Handlers.Scp049.OnActivatingSense(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnActivatingSense))),
 
+                    // if (!ev.IsAllowed)
+                    //      return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingSenseEventArgs), nameof(ActivatingSenseEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, continueLabel),
 
