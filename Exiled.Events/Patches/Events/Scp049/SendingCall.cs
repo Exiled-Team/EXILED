@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingCallEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Scp049.OnSendingCall(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Scp049), nameof(Handlers.Scp049.OnSendingCall))),

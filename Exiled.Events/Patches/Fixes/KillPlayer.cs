@@ -12,8 +12,8 @@ namespace Exiled.Events.Patches.Fixes
     using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.DamageHandlers;
     using EventArgs.Player;
+    using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Pools;
     using HarmonyLib;
     using Mirror;
@@ -35,6 +35,7 @@ namespace Exiled.Events.Patches.Fixes
 
             LocalBuilder ev = generator.DeclareLocal(typeof(KillingPlayerEventArgs));
             LocalBuilder handler = generator.DeclareLocal(typeof(GenericDamageHandler));
+            LocalBuilder hub = generator.DeclareLocal(typeof(ReferenceHub));
 
             Label retLabel = generator.DefineLabel();
             Label continueLabel = generator.DefineLabel();
@@ -99,6 +100,25 @@ namespace Exiled.Events.Patches.Fixes
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(KillingPlayerEventArgs), nameof(KillingPlayerEventArgs.Handler))),
                     new(OpCodes.Starg_S, 1),
+
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
+                    new(OpCodes.Stloc_S, hub.LocalIndex),
+
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(KillingPlayerEventArgs), nameof(KillingPlayerEventArgs.Player))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
+                    new(OpCodes.Stfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
+                });
+
+            newInstructions.InsertRange(
+                newInstructions.Count - 1,
+                new CodeInstruction[]
+                {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Ldloc_S, hub.LocalIndex),
+                    new(OpCodes.Stfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)

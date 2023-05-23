@@ -30,8 +30,8 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = -5;
-            int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(TimeBehaviour), nameof(TimeBehaviour.CurrentTimestamp)))) + offset;
+            int offset = -4;
+            int index = newInstructions.FindIndex(x => x.Calls(Method(typeof(BanPlayer), nameof(BanPlayer.ApplyIpBan), new[] { typeof(Footprint), typeof(ICommandSender), typeof(string), typeof(long) }))) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(BanningEventArgs));
 
@@ -49,11 +49,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ICommandSender) })),
 
-                    // reason
-                    new(OpCodes.Ldarg_S, 3),
-
                     // duration
-                    new(OpCodes.Ldarg_S, 4),
+                    new(OpCodes.Ldarg_3),
+
+                    // reason
+                    new(OpCodes.Ldarg_2),
 
                     // true
                     new(OpCodes.Ldc_I4_1),

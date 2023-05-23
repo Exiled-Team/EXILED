@@ -53,19 +53,19 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // KickingEventArgs ev = new(player, target, reason, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(KickingEventArgs))[0]),
+                    /*new(OpCodes.Dup),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),*/
 
                     // Handlers.Player.OnKicking(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnKicking))),
 
                     // if (!ev.IsAllowed)
                     //      return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickedEventArgs), nameof(KickingEventArgs.IsAllowed))),
+                    /*new(OpCodes.Callvirt, PropertyGetter(typeof(KickedEventArgs), nameof(KickingEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, continueLabel),
 
-                    new(OpCodes.Ret),
+                    new(OpCodes.Ret),*/
 
                     // loading ev 3 times
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
