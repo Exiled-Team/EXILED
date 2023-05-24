@@ -38,6 +38,7 @@ sidebar_position: 1
 ```md title="Latest Updated: 08/23/2021"
 | Id  | RoleTypeId     | Team | Side            | LeadingTeam     |
 |-----|----------------|------|-----------------|-----------------|
+-1 | None | Dead | None | Draw|
 0 | Scp173 | SCPs | Scp | Anomalies|
 1 | ClassD | ClassD | ChaosInsurgency | ChaosInsurgency|
 2 | Spectator | Dead | None | Draw|
@@ -61,7 +62,6 @@ sidebar_position: 1
 20 | ChaosMarauder | ChaosInsurgency | ChaosInsurgency | ChaosInsurgency|
 21 | Overwatch | Dead | None | Draw|
 22 | Filmmaker | Dead | None | Draw|
--1 | None | Dead | None | Draw|
 ```
 
 </details>
@@ -72,6 +72,7 @@ sidebar_position: 1
 
 ```md  title="Latest Updated: 24/05/2023"
 <Item>                        (<id>)
+None -1
 KeycardJanitor 0
 KeycardScientist 1
 KeycardResearchCoordinator 2
@@ -124,7 +125,6 @@ GunCom45 48
 SCP1576 49
 Jailbird 50
 AntiSCP207 51
-None -1
 ```
 
 </details>
