@@ -2,6 +2,8 @@
 <#@ assembly name="System" #>
 <#@ assembly name="%EXILED_REFERENCES%\System.Core.dll" #>
 <#@ assembly name="%EXILED_REFERENCES%\Assembly-CSharp-Publicized.dll" #>
+<#@ assembly name="bin\Release\Exiled.API.dll" #>
+<#@ import namespace="Exiled.API.Enums" #>
 <#@ import namespace="System.Linq" #>
 <#@ output extension=".md" #>
 ---
@@ -77,53 +79,6 @@ sidebar_position: 1
 ```md  title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
 <Item>                        (<id>)
 <#= string.Join("\n",Enum.GetValues(typeof(ItemType)).Cast<ItemType>().ToList().Select(x => $"{x} {(int)x}"))#>
-None                         -1
-KeycardJanitor                0
-KeycardScientist              1
-KeycardResearchCoordinator    2
-KeycardZoneManager            3
-KeycardGuard                  4
-KeycardNTFOfficer             5
-KeycardContainmentEngineer    6
-KeycardNTFLieutenant          7
-KeycardNTFCommander           8
-KeycardFacilityManager        9
-KeycardChaosInsurgency       10
-KeycardO5                    11
-Radio                        12
-GunCOM15                     13
-Medkit                       14
-Flashlight                   15
-MicroHID                     16
-SCP500                       17
-SCP207                       18
-Ammo12gauge                  19
-GunE11SR                     20
-GunCrossvec                  21
-Ammo556x45                   22
-GunFSP9                      23
-GunLogicer                   24
-GrenadeHE                    25
-GrenadeFlash                 26
-Ammo44cal                    27
-Ammo762x39                   28
-Ammo9x19                     29
-GunCOM18                     30
-SCP018                       31
-SCP268                       32
-Adrenaline                   33
-Painkillers                  34
-Coin                         35
-ArmorLight                   36
-ArmorCombat                  37
-ArmorHeavy                   38
-GunRevolver                  39
-GunAK                        40
-GunShotgun                   41
-SCP330                       42
-SCP2176                      43
-SCP244a                      44
-SCP244b                      45
 ```
 
 </details>
@@ -148,48 +103,7 @@ Ammo44Cal
 <details><summary> <b>Doors</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-UnknownDoor
-Scp914Door
-GR18Inner
-Scp049Gate
-Scp049Armory
-Scp079First
-Scp079Second
-Scp096
-Scp106Bottom
-Scp106Primary
-Scp106Secondary
-Scp173Gate
-Scp173Connector
-Scp173Armory
-Scp173Bottom
-GR18Gate
-Scp914Gate
-CheckpointEntrance
-CheckpointLczA
-CheckpointLczB
-EntranceDoor
-EscapePrimary
-EscapeSecondary
-ServersBottom
-GateA
-GateB
-HczArmory
-HeavyContainmentDoor
-HID
-HIDLeft
-HIDRight
-Intercom
-LczArmory
-LczCafe
-LczWc
-LightContainmentDoor
-NukeArmory
-NukeSurface
-PrisonDoor
-SurfaceGate
-Scp330
-Scp330Chamber
+<#= string.Join("\n",Enum.GetValues(typeof(DoorType)).Cast<DoorType>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -201,55 +115,7 @@ Scp330Chamber
 <details><summary> <b>Rooms</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-Unknown
-LczArmory
-LczCurve
-LczStraight
-Lcz330
-Lcz914
-LczCrossing
-LczTCross
-LczCafe
-LczPlants
-LczToilets
-LczAirlock
-Lcz173
-LczClassDSpawn
-LczChkpB
-LczGlassBox
-LczChkpA
-Hcz079
-HczEzCheckpoint
-HczArmory
-Hcz939
-HczHid
-Hcz049
-HczChkpA
-HczCrossing
-Hcz106
-HczNuke
-HczTesla
-HczServers
-HczChkpB
-HczTCross
-HczCurve
-Hcz096
-EzVent
-EzIntercom
-EzGateA
-EzDownstairsPcs
-EzCurve
-EzPcs
-EzCrossing
-EzCollapsedTunnel
-EzConference
-EzStraight
-EzCafeteria
-EzUpstairsPcs
-EzGateB
-EzShelter
-Pocket
-Surface
+<#= string.Join("\n",Enum.GetValues(typeof(RoomType)).Cast<RoomType>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -259,13 +125,7 @@ Surface
 <details><summary> <b>Elevators</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-Unknown
-GateA
-GateB
-Nuke
-Scp049
-LczA
-LczB
+<#= string.Join("\n",Enum.GetValues(typeof(ElevatorType)).Cast<ElevatorType>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -275,42 +135,7 @@ LczB
 <details><summary> <b>DamageType</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-Unknown
-Falldown
-Warhead
-Decontamination
-Asphyxiation
-Poison
-Bleeding
-MicroHid
-Tesla
-Scp
-Explosion
-Scp018
-Scp207
-Recontainment
-Crushed
-FemurBreaker
-PocketDimension
-FriendlyFireDetector
-SeveredHands
-Custom
-Scp049
-Scp0492
-Scp096
-Scp173
-Scp106
-Scp939
-Crossvec
-Logicer
-Revolver
-Shotgun
-AK
-Com15
-Com18
-Fsp9
-E11Sr
-Hypothermia
+<#= string.Join("\n",Enum.GetValues(typeof(DamageType)).Cast<DamageType>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -347,36 +172,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Effects</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-Amnesia
-Asphyxiated
-Bleeding
-Blinded
-Burned
-Concussed
-Corroding
-Deafened
-Decontaminating
-Disabled
-Ensnared
-Exhausted
-Flashed
-Hemorrhage
-Invigorated
-BodyshotReduction
-Poisoned
-Scp207
-Invisible
-SinkHole
-Visuals939
-DamageReduction
-MovementBoost
-RainbowTaste
-SeveredHands
-Stained
-Visual173Blink
-Vitality
-Hypothermia
-Scp1853
+<#= string.Join("\n",Enum.GetValues(typeof(EffectType)).Cast<EffectType>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -386,18 +182,7 @@ Scp1853
 <details><summary> <b>Keycard Perms</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<0> None
-<1> Checkpoints
-<2> ExitGates
-<4> Intercom
-<8> AlphaWarhead
-<16> ContainmentLevelOne
-<32> ContainmentLevelTwo
-<64> ContainmentLevelThree
-<128> ArmoryLevelOne
-<256> ArmoryLevelTwo
-<512> ArmoryLevelThree
-<1024> ScpOverride
+<#= string.Join("\n",Enum.GetValues(typeof(KeycardPermissions)).Cast<KeycardPermissions>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -407,16 +192,7 @@ Scp1853
 <details><summary> <b>Lock Type</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-[0] <unlocked> None 
-[1] Regular079 
-[2] Lockdown079 
-[4] Warhead 
-[8] AdminCommand
-[16] DecontLockdown
-[32] DecontEvacuate
-[64] SpecialDoorFeature
-[128] NoPower
-[256] Isolation
+<#= string.Join("\n",Enum.GetValues(typeof(DoorLockType)).Cast<DoorLockType>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -449,10 +225,7 @@ Scp2176Pedestal
 <details><summary> <b>Blood</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-Default
-Scp106
-Spreaded
-Faded
+<#= string.Join("\n",Enum.GetValues(typeof(BloodType)).Cast<BloodType>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -462,11 +235,7 @@ Faded
 <details><summary> <b>GeneratorState</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-[1] None
-[2] Unlocked
-[4] Open
-[8] Activating
-[16] Engaged
+<#= string.Join("\n",Enum.GetValues(typeof(GeneratorState)).Cast<GeneratorState>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -476,11 +245,7 @@ Faded
 <details><summary> <b>Hot Keys</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-Keycard
-PrimaryFirearm
-SecondaryFirearm
-Medical
-Grenade
+<#= string.Join("\n",Enum.GetValues(typeof(HotkeyButton)).Cast<HotkeyButton>().ToList().Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -575,15 +340,7 @@ ShotgunDoubleShot
 <details><summary> <b>Spawn Reasons</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-None
-RoundStart
-LateJoin
-Respawn
-Died
-Escaped
-Revived
-ForceClass
-Overwatch
+<#= string.Join("\n",Enum.GetValues(typeof(SpawnReason)).Cast<SpawnReason>().ToList().Select(x => $"{x} {(int)x}"))#>
 
 ```
 

@@ -2,6 +2,8 @@
 
 
 
+
+
 ---
 sidebar_position: 1
 ---
@@ -127,53 +129,6 @@ SCP1576 49
 Jailbird 50
 AntiSCP207 51
 None -1
-None                         -1
-KeycardJanitor                0
-KeycardScientist              1
-KeycardResearchCoordinator    2
-KeycardZoneManager            3
-KeycardGuard                  4
-KeycardNTFOfficer             5
-KeycardContainmentEngineer    6
-KeycardNTFLieutenant          7
-KeycardNTFCommander           8
-KeycardFacilityManager        9
-KeycardChaosInsurgency       10
-KeycardO5                    11
-Radio                        12
-GunCOM15                     13
-Medkit                       14
-Flashlight                   15
-MicroHID                     16
-SCP500                       17
-SCP207                       18
-Ammo12gauge                  19
-GunE11SR                     20
-GunCrossvec                  21
-Ammo556x45                   22
-GunFSP9                      23
-GunLogicer                   24
-GrenadeHE                    25
-GrenadeFlash                 26
-Ammo44cal                    27
-Ammo762x39                   28
-Ammo9x19                     29
-GunCOM18                     30
-SCP018                       31
-SCP268                       32
-Adrenaline                   33
-Painkillers                  34
-Coin                         35
-ArmorLight                   36
-ArmorCombat                  37
-ArmorHeavy                   38
-GunRevolver                  39
-GunAK                        40
-GunShotgun                   41
-SCP330                       42
-SCP2176                      43
-SCP244a                      44
-SCP244b                      45
 ```
 
 </details>
@@ -198,48 +153,63 @@ Ammo44Cal
 <details><summary> <b>Doors</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-UnknownDoor
-Scp914Door
-GR18Inner
-Scp049Gate
-Scp049Armory
-Scp079First
-Scp079Second
-Scp096
-Scp106Bottom
-Scp106Primary
-Scp106Secondary
-Scp173Gate
-Scp173Connector
-Scp173Armory
-Scp173Bottom
-GR18Gate
-Scp914Gate
-CheckpointEntrance
-CheckpointLczA
-CheckpointLczB
-EntranceDoor
-EscapePrimary
-EscapeSecondary
-ServersBottom
-GateA
-GateB
-HczArmory
-HeavyContainmentDoor
-HID
-HIDLeft
-HIDRight
-Intercom
-LczArmory
-LczCafe
-LczWc
-LightContainmentDoor
-NukeArmory
-NukeSurface
-PrisonDoor
-SurfaceGate
-Scp330
-Scp330Chamber
+UnknownDoor 0
+Scp914Door 1
+GR18Inner 2
+Scp049Gate 3
+Scp049Armory 4
+Scp079First 5
+Scp079Second 6
+Scp096 7
+Scp106Bottom 8
+Scp106Primary 9
+Scp106Secondary 10
+Scp173Gate 11
+Scp173Connector 12
+Scp173Armory 13
+Scp173Bottom 14
+GR18Gate 15
+Scp914Gate 16
+Scp939Cryo 17
+CheckpointLczA 18
+CheckpointLczB 19
+EntranceDoor 20
+EscapePrimary 21
+EscapeSecondary 22
+ServersBottom 23
+GateA 24
+GateB 25
+HczArmory 26
+HeavyContainmentDoor 27
+HID 28
+HIDLeft 29
+HIDRight 30
+Intercom 31
+LczArmory 32
+LczCafe 33
+LczWc 34
+LightContainmentDoor 35
+NukeArmory 36
+NukeSurface 37
+PrisonDoor 38
+SurfaceGate 39
+Scp330 40
+Scp330Chamber 41
+CheckpointGate 42
+SurfaceDoor 43
+CheckpointEzHczA 44
+CheckpointEzHczB 45
+UnknownGate 46
+UnknownElevator 47
+ElevatorGateA 48
+ElevatorGateB 49
+ElevatorNuke 50
+ElevatorScp049 51
+ElevatorLczA 52
+ElevatorLczB 53
+CheckpointArmoryA 54
+CheckpointArmoryB 55
+Airlock 56
 ```
 
 </details>
@@ -251,55 +221,61 @@ Scp330Chamber
 <details><summary> <b>Rooms</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-Unknown
-LczArmory
-LczCurve
-LczStraight
-Lcz330
-Lcz914
-LczCrossing
-LczTCross
-LczCafe
-LczPlants
-LczToilets
-LczAirlock
-Lcz173
-LczClassDSpawn
-LczChkpB
-LczGlassBox
-LczChkpA
-Hcz079
-HczEzCheckpoint
-HczArmory
-Hcz939
-HczHid
-Hcz049
-HczChkpA
-HczCrossing
-Hcz106
-HczNuke
-HczTesla
-HczServers
-HczChkpB
-HczTCross
-HczCurve
-Hcz096
-EzVent
-EzIntercom
-EzGateA
-EzDownstairsPcs
-EzCurve
-EzPcs
-EzCrossing
-EzCollapsedTunnel
-EzConference
-EzStraight
-EzCafeteria
-EzUpstairsPcs
-EzGateB
-EzShelter
-Pocket
-Surface
+Unknown 0
+LczArmory 1
+LczCurve 2
+LczStraight 3
+Lcz012 4
+Lcz914 5
+LczCrossing 6
+LczTCross 7
+LczCafe 8
+LczPlants 9
+LczToilets 10
+LczAirlock 11
+Lcz173 12
+LczClassDSpawn 13
+LczCheckpointB 14
+LczGlassBox 15
+LczCheckpointA 16
+Hcz079 17
+HczEzCheckpointA 18
+HczEzCheckpointB 19
+HczArmory 20
+Hcz939 21
+HczHid 22
+Hcz049 23
+HczCrossing 24
+Hcz106 25
+HczNuke 26
+HczTesla 27
+HczServers 28
+HczTCross 29
+HczCurve 30
+Hcz096 31
+EzVent 32
+EzIntercom 33
+EzGateA 34
+EzDownstairsPcs 35
+EzCurve 36
+EzPcs 37
+EzCrossing 38
+EzCollapsedTunnel 39
+EzConference 40
+EzStraight 41
+EzCafeteria 42
+EzUpstairsPcs 43
+EzGateB 44
+EzShelter 45
+Pocket 46
+Surface 47
+HczStraight 48
+EzTCross 49
+Lcz330 50
+EzCheckpointHallway 51
+HczTestRoom 52
+HczElevatorA 53
+HczElevatorB 54
 ```
 
 </details>
@@ -309,13 +285,13 @@ Surface
 <details><summary> <b>Elevators</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-Unknown
-GateA
-GateB
-Nuke
-Scp049
-LczA
-LczB
+Unknown 0
+GateA 1
+GateB 2
+Nuke 3
+Scp049 4
+LczA 5
+LczB 6
 ```
 
 </details>
@@ -325,42 +301,47 @@ LczB
 <details><summary> <b>DamageType</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-Unknown
-Falldown
-Warhead
-Decontamination
-Asphyxiation
-Poison
-Bleeding
-MicroHid
-Tesla
-Scp
-Explosion
-Scp018
-Scp207
-Recontainment
-Crushed
-FemurBreaker
-PocketDimension
-FriendlyFireDetector
-SeveredHands
-Custom
-Scp049
-Scp0492
-Scp096
-Scp173
-Scp106
-Scp939
-Crossvec
-Logicer
-Revolver
-Shotgun
-AK
-Com15
-Com18
-Fsp9
-E11Sr
-Hypothermia
+Unknown 0
+Falldown 1
+Warhead 2
+Decontamination 3
+Asphyxiation 4
+Poison 5
+Bleeding 6
+Firearm 7
+MicroHid 8
+Tesla 9
+Scp 10
+Explosion 11
+Scp018 12
+Scp207 13
+Recontainment 14
+Crushed 15
+FemurBreaker 16
+PocketDimension 17
+FriendlyFireDetector 18
+SeveredHands 19
+Custom 20
+Scp049 21
+Scp096 22
+Scp173 23
+Scp939 24
+Scp0492 25
+Scp106 26
+Crossvec 27
+Logicer 28
+Revolver 29
+Shotgun 30
+AK 31
+Com15 32
+Com18 33
+Fsp9 34
+E11Sr 35
+Hypothermia 36
+ParticleDisruptor 37
+CardiacArrest 38
+Com45 39
+Jailbird 40
 ```
 
 </details>
@@ -397,36 +378,42 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Effects</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-Amnesia
-Asphyxiated
-Bleeding
-Blinded
-Burned
-Concussed
-Corroding
-Deafened
-Decontaminating
-Disabled
-Ensnared
-Exhausted
-Flashed
-Hemorrhage
-Invigorated
-BodyshotReduction
-Poisoned
-Scp207
-Invisible
-SinkHole
-Visuals939
-DamageReduction
-MovementBoost
-RainbowTaste
-SeveredHands
-Stained
-Visual173Blink
-Vitality
-Hypothermia
-Scp1853
+AmnesiaItems 0
+AmnesiaVision 1
+Asphyxiated 2
+Bleeding 3
+Blinded 4
+Burned 5
+Concussed 6
+Corroding 7
+Deafened 8
+Decontaminating 9
+Disabled 10
+Ensnared 11
+Exhausted 12
+Flashed 13
+Hemorrhage 14
+Invigorated 15
+BodyshotReduction 16
+Poisoned 17
+Scp207 18
+Invisible 19
+SinkHole 20
+DamageReduction 21
+MovementBoost 22
+RainbowTaste 23
+SeveredHands 24
+Stained 25
+Vitality 26
+Hypothermia 27
+Scp1853 28
+CardiacArrest 29
+InsufficientLighting 30
+SoundtrackMute 31
+SpawnProtected 32
+Traumatized 33
+AntiScp207 34
+Scanned 35
 ```
 
 </details>
@@ -436,18 +423,18 @@ Scp1853
 <details><summary> <b>Keycard Perms</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-<0> None
-<1> Checkpoints
-<2> ExitGates
-<4> Intercom
-<8> AlphaWarhead
-<16> ContainmentLevelOne
-<32> ContainmentLevelTwo
-<64> ContainmentLevelThree
-<128> ArmoryLevelOne
-<256> ArmoryLevelTwo
-<512> ArmoryLevelThree
-<1024> ScpOverride
+None 0
+Checkpoints 1
+ExitGates 2
+Intercom 4
+AlphaWarhead 8
+ContainmentLevelOne 16
+ContainmentLevelTwo 32
+ContainmentLevelThree 64
+ArmoryLevelOne 128
+ArmoryLevelTwo 256
+ArmoryLevelThree 512
+ScpOverride 1024
 ```
 
 </details>
@@ -457,16 +444,17 @@ Scp1853
 <details><summary> <b>Lock Type</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-[0] <unlocked> None 
-[1] Regular079 
-[2] Lockdown079 
-[4] Warhead 
-[8] AdminCommand
-[16] DecontLockdown
-[32] DecontEvacuate
-[64] SpecialDoorFeature
-[128] NoPower
-[256] Isolation
+None 0
+Regular079 1
+Lockdown079 2
+Warhead 4
+AdminCommand 8
+DecontLockdown 16
+DecontEvacuate 32
+SpecialDoorFeature 64
+NoPower 128
+Isolation 256
+Lockdown2176 512
 ```
 
 </details>
@@ -499,10 +487,10 @@ Scp2176Pedestal
 <details><summary> <b>Blood</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-Default
-Scp106
-Spreaded
-Faded
+Default 0
+Scp106 1
+Spreaded 2
+Faded 3
 ```
 
 </details>
@@ -512,11 +500,11 @@ Faded
 <details><summary> <b>GeneratorState</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-[1] None
-[2] Unlocked
-[4] Open
-[8] Activating
-[16] Engaged
+None 1
+Unlocked 2
+Open 4
+Activating 8
+Engaged 16
 ```
 
 </details>
@@ -526,11 +514,11 @@ Faded
 <details><summary> <b>Hot Keys</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-Keycard
-PrimaryFirearm
-SecondaryFirearm
-Medical
-Grenade
+Keycard 0
+PrimaryFirearm 1
+SecondaryFirearm 2
+Medical 3
+Grenade 4
 ```
 
 </details>
@@ -625,15 +613,15 @@ ShotgunDoubleShot
 <details><summary> <b>Spawn Reasons</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-None
-RoundStart
-LateJoin
-Respawn
-Died
-Escaped
-Revived
-ForceClass
-Overwatch
+None 0
+RoundStart 1
+LateJoin 2
+Respawn 3
+Died 4
+Escaped 5
+Revived 6
+ForceClass 7
+Destroyed 8
 
 ```
 
