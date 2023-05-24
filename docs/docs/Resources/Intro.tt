@@ -76,7 +76,7 @@ sidebar_position: 1
 
 ```md  title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
 <Item>                        (<id>)
-<#= Enum.GetValues(typeof(ItemType)).Cast<ItemType>().ToList().Select(x => $"{x} {(int)x}\n")#>
+<#= string.Join("\n",Enum.GetValues(typeof(ItemType)).Cast<ItemType>().ToList().Select(x => $"{x} {(int)x}"))#>
 None                         -1
 KeycardJanitor                0
 KeycardScientist              1
