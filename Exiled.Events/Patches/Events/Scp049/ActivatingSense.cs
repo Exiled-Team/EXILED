@@ -9,22 +9,15 @@ namespace Exiled.Events.Patches.Events.Scp049
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
-
-    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Scp049;
     using Exiled.Events.Handlers;
     using HarmonyLib;
 
-    using Mirror;
-
     using PlayerRoles;
-    using PlayerRoles.PlayableScps;
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.PlayableScps.Subroutines;
-    using UnityEngine;
-    using Utils.Networking;
 
     using static HarmonyLib.AccessTools;
 
