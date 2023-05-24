@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 {
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using Exiled.API.Features.Pools;
     using Exiled.API.Features.Roles;
     using Exiled.Events.EventArgs.Scp049;
