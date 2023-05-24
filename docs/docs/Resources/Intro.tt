@@ -59,7 +59,7 @@ sidebar_position: 1
 
 ```md  title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
 <Item>                        (<id>)
-<#= string.Join("\n",Enum.GetValues(typeof(ItemType)).Cast<ItemType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(ItemType)).Cast<ItemType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -70,7 +70,7 @@ sidebar_position: 1
 <details><summary> <b>Ammo</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(AmmoType)).Cast<AmmoType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(AmmoType)).Cast<AmmoType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -80,7 +80,7 @@ sidebar_position: 1
 <details><summary> <b>Doors</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(DoorType)).Cast<DoorType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(DoorType)).Cast<DoorType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -92,7 +92,7 @@ sidebar_position: 1
 <details><summary> <b>Rooms</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(RoomType)).Cast<RoomType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(RoomType)).Cast<RoomType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -102,7 +102,7 @@ sidebar_position: 1
 <details><summary> <b>Elevators</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(ElevatorType)).Cast<ElevatorType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(ElevatorType)).Cast<ElevatorType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -112,7 +112,7 @@ sidebar_position: 1
 <details><summary> <b>DamageType</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(DamageType)).Cast<DamageType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(DamageType)).Cast<DamageType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -149,7 +149,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Effects</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(EffectType)).Cast<EffectType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(EffectType)).Cast<EffectType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -159,7 +159,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Keycard Perms</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(KeycardPermissions)).Cast<KeycardPermissions>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(KeycardPermissions)).Cast<KeycardPermissions>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -169,7 +169,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Lock Type</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(DoorLockType)).Cast<DoorLockType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(DoorLockType)).Cast<DoorLockType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -179,7 +179,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Structures</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(MapGeneration.Distributors.StructureType)).Cast<MapGeneration.Distributors.StructureType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(MapGeneration.Distributors.StructureType)).Cast<MapGeneration.Distributors.StructureType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -189,7 +189,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Blood</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(BloodType)).Cast<BloodType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(BloodType)).Cast<BloodType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -199,7 +199,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>GeneratorState</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(GeneratorState)).Cast<GeneratorState>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(GeneratorState)).Cast<GeneratorState>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -209,7 +209,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Hot Keys</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(HotkeyButton)).Cast<HotkeyButton>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(HotkeyButton)).Cast<HotkeyButton>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -235,7 +235,7 @@ Custom
 <details><summary> <b>BroadcastFlags</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(Broadcast.BroadcastFlags)).Cast<Broadcast.BroadcastFlags>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(Broadcast.BroadcastFlags)).Cast<Broadcast.BroadcastFlags>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -247,7 +247,7 @@ Custom
 <details><summary> <b>Attachment Names</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(InventorySystem.Items.Firearms.Attachments.AttachmentName)).Cast<InventorySystem.Items.Firearms.Attachments.AttachmentName>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(InventorySystem.Items.Firearms.Attachments.AttachmentName)).Cast<InventorySystem.Items.Firearms.Attachments.AttachmentName>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -257,7 +257,7 @@ Custom
 <details><summary> <b>Spawn Reasons</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-<#= string.Join("\n",Enum.GetValues(typeof(SpawnReason)).Cast<SpawnReason>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(SpawnReason)).Cast<SpawnReason>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
