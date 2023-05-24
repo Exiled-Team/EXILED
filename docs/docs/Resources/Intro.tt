@@ -1,6 +1,6 @@
 <#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System" #>
-<#@ assembly name="%EXILED_REFERENCES%\System.Linq.dll" #>
+<#@ assembly name="%EXILED_REFERENCES%\System.Core.dll" #>
 <#@ assembly name="%EXILED_REFERENCES%\Assembly-CSharp-Publicized.dll" #>
 <#@ import namespace="System.Linq" #>
 <#@ output extension=".md" #>
