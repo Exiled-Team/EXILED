@@ -1,16 +1,10 @@
-
-
-
-
-
-
 ---
 sidebar_position: 1
 ---
 
 ### Index
 
-- [RoleType, Team, Side, Faction](#roletype-team-side-and-faction)
+- [RoleType, Team, Side, LeadingTeam](#roletype-team-side-and-leadingteam)
 - [ItemType](#itemtype)
 - [AmmoType](#ammotype)
 - [DoorType](#doortype)
@@ -37,35 +31,37 @@ sidebar_position: 1
 
 ## Resources
 
-### RoleType, Team, Side and Faction
+### RoleType, Team, Side and LeadingTeam
 
 <details><summary> <b>Roles</b></summary>
 
 ```md title="Latest Updated: 08/23/2021"
-| Id  | RoleType       | Team | Side            | Faction         |
+| Id  | RoleTypeId     | Team | Side            | LeadingTeam     |
 |-----|----------------|------|-----------------|-----------------|
-| -1  | None           | RIP  | None            | Others          |
-| 0   | Scp173         | SCP  | Scp             | SCP             |
-| 1   | ClassD         | CDP  | ChaosInsurgency | FoundationEnemy |
-| 2   | Spectator      | RIP  | None            | Others          |
-| 3   | Scp106         | SCP  | Scp             | SCP             |
-| 4   | NtfSpecialist  | MTF  | Mtf             | FoundationStaff |
-| 5   | Scp049         | SCP  | Scp             | SCP             |
-| 6   | Scientist      | RSC  | Mtf             | FoundationStaff |
-| 7   | Scp079         | SCP  | Scp             | SCP             |
-| 8   | ChaosConscript | CHI  | ChaosInsurgency | FoundationEnemy |
-| 9   | Scp096         | SCP  | Scp             | SCP             |
-| 10  | Scp0492        | SCP  | Scp             | SCP             |
-| 11  | NtfSergeant    | MTF  | Mtf             | FoundationStaff |
-| 12  | NtfCaptain     | MTF  | Mtf             | FoundationStaff |
-| 13  | NtfPrivate     | MTF  | Mtf             | FoundationStaff |
-| 14  | Tutorial       | TUT  | Tutorial        | Others          |
-| 15  | FacilityGuard  | MTF  | Mtf             | FoundationStaff |
-| 16  | Scp93953       | SCP  | Scp             | SCP             |
-| 17  | Scp93989       | SCP  | Scp             | SCP             |
-| 18  | ChaosRifleman  | CHI  | ChaosInsurgency | FoundationEnemy |
-| 19  | ChaosRepressor | CHI  | ChaosInsurgency | FoundationEnemy |
-| 20  | ChaosMarauder  | CHI  | ChaosInsurgency | FoundationEnemy |
+0 | Scp173 | SCPs | Scp | Anomalies|
+1 | ClassD | ClassD | ChaosInsurgency | ChaosInsurgency|
+2 | Spectator | Dead | None | Draw|
+3 | Scp106 | SCPs | Scp | Anomalies|
+4 | NtfSpecialist | FoundationForces | Mtf | FacilityForces|
+5 | Scp049 | SCPs | Scp | Anomalies|
+6 | Scientist | Scientists | Mtf | FacilityForces|
+7 | Scp079 | SCPs | Scp | Anomalies|
+8 | ChaosConscript | ChaosInsurgency | ChaosInsurgency | ChaosInsurgency|
+9 | Scp096 | SCPs | Scp | Anomalies|
+10 | Scp0492 | SCPs | Scp | Anomalies|
+11 | NtfSergeant | FoundationForces | Mtf | FacilityForces|
+12 | NtfCaptain | FoundationForces | Mtf | FacilityForces|
+13 | NtfPrivate | FoundationForces | Mtf | FacilityForces|
+14 | Tutorial | OtherAlive | Tutorial | Draw|
+15 | FacilityGuard | FoundationForces | Mtf | FacilityForces|
+16 | Scp939 | SCPs | Scp | Anomalies|
+17 | CustomRole | Dead | None | Draw|
+18 | ChaosRifleman | ChaosInsurgency | ChaosInsurgency | ChaosInsurgency|
+19 | ChaosRepressor | ChaosInsurgency | ChaosInsurgency | ChaosInsurgency|
+20 | ChaosMarauder | ChaosInsurgency | ChaosInsurgency | ChaosInsurgency|
+21 | Overwatch | Dead | None | Draw|
+22 | Filmmaker | Dead | None | Draw|
+-1 | None | Dead | None | Draw|
 ```
 
 </details>

@@ -4,7 +4,9 @@
 <#@ assembly name="%EXILED_REFERENCES%\Assembly-CSharp-Publicized.dll" #>
 <#@ assembly name="bin\Release\Exiled.API.dll" #>
 <#@ import namespace="Exiled.API.Enums" #>
+<#@ import namespace="Exiled.API.Extensions" #>
 <#@ import namespace="System.Linq" #>
+<#@ import namespace="PlayerRoles" #>
 <#@ output extension=".md" #>
 ---
 sidebar_position: 1
@@ -12,7 +14,7 @@ sidebar_position: 1
 
 ### Index
 
-- [RoleType, Team, Side, Faction](#roletype-team-side-and-faction)
+- [RoleType, Team, Side, LeadingTeam](#roletype-team-side-and-leadingteam)
 - [ItemType](#itemtype)
 - [AmmoType](#ammotype)
 - [DoorType](#doortype)
@@ -39,35 +41,14 @@ sidebar_position: 1
 
 ## Resources
 
-### RoleType, Team, Side and Faction
+### RoleType, Team, Side and LeadingTeam
 
 <details><summary> <b>Roles</b></summary>
 
 ```md title="Latest Updated: 08/23/2021"
-| Id  | RoleType       | Team | Side            | Faction         |
+| Id  | RoleTypeId     | Team | Side            | LeadingTeam     |
 |-----|----------------|------|-----------------|-----------------|
-| -1  | None           | RIP  | None            | Others          |
-| 0   | Scp173         | SCP  | Scp             | SCP             |
-| 1   | ClassD         | CDP  | ChaosInsurgency | FoundationEnemy |
-| 2   | Spectator      | RIP  | None            | Others          |
-| 3   | Scp106         | SCP  | Scp             | SCP             |
-| 4   | NtfSpecialist  | MTF  | Mtf             | FoundationStaff |
-| 5   | Scp049         | SCP  | Scp             | SCP             |
-| 6   | Scientist      | RSC  | Mtf             | FoundationStaff |
-| 7   | Scp079         | SCP  | Scp             | SCP             |
-| 8   | ChaosConscript | CHI  | ChaosInsurgency | FoundationEnemy |
-| 9   | Scp096         | SCP  | Scp             | SCP             |
-| 10  | Scp0492        | SCP  | Scp             | SCP             |
-| 11  | NtfSergeant    | MTF  | Mtf             | FoundationStaff |
-| 12  | NtfCaptain     | MTF  | Mtf             | FoundationStaff |
-| 13  | NtfPrivate     | MTF  | Mtf             | FoundationStaff |
-| 14  | Tutorial       | TUT  | Tutorial        | Others          |
-| 15  | FacilityGuard  | MTF  | Mtf             | FoundationStaff |
-| 16  | Scp93953       | SCP  | Scp             | SCP             |
-| 17  | Scp93989       | SCP  | Scp             | SCP             |
-| 18  | ChaosRifleman  | CHI  | ChaosInsurgency | FoundationEnemy |
-| 19  | ChaosRepressor | CHI  | ChaosInsurgency | FoundationEnemy |
-| 20  | ChaosMarauder  | CHI  | ChaosInsurgency | FoundationEnemy |
+<#= string.Join("\n",Enum.GetValues(typeof(RoleTypeId)).Cast<RoleTypeId>().ToList().Select(x => $"{(int)x} | {x} | {RoleExtensions.GetTeam(x)} | {RoleExtensions.GetSide(RoleExtensions.GetTeam(x))} | {RoleExtensions.GetLeadingTeam(RoleExtensions.GetTeam(x))}|"))#>
 ```
 
 </details>
