@@ -134,12 +134,13 @@ AntiSCP207 51
 
 <details><summary> <b>Ammo</b></summary>
 
-```md title="Latest Updated: 05/08/2022"
-Nato9
-Nato556
-Nato762
-Ammo12Gauge
-Ammo44Cal
+```md title="Latest Updated: 24/05/2023"
+None 0
+Nato556 1
+Nato762 2
+Nato9 3
+Ammo12Gauge 4
+Ammo44Cal 5
 ```
 
 </details>
@@ -460,20 +461,12 @@ Lockdown2176 512
 <details><summary> <b>Structures</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-WorkStation
-LargeGunLocker
-RifleRack
-MiscLocker
-Generator
-RegularMedkit
-AdrenalineMedkit
-Scp018Pedestal
-Scp207Pedestal
-Scp244Pedestal
-Scp268Pedestal
-Scp500Pedestal
-Scp1853Pedestal
-Scp2176Pedestal
+StandardLocker 0
+LargeGunLocker 1
+ScpPedestal 2
+Scp079Generator 3
+SmallWallCabinet 4
+Workstation 5
 ```
 
 </details>
@@ -535,14 +528,14 @@ Custom
 
 </details>
 
-### BroadcastType
+### BroadcastFlags
 
-<details><summary> <b>BroadcastType</b></summary>
+<details><summary> <b>BroadcastFlags</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-Normal
-Monospaced
-AdminChat
+Normal 0
+Truncated 1
+AdminChat 2
 ```
 
 </details>
@@ -554,52 +547,52 @@ AdminChat
 <details><summary> <b>Attachment Names</b></summary>
 
 ```md title="Latest Updated: 24/05/2023"
-None
-IronSights
-DotSight
-HoloSight
-NightVisionSight
-AmmoSight
-ScopeSight
-StandardStock
-ExtendedStock
-RetractedStock
-LightweightStock
-HeavyStock
-RecoilReducingStock
-Foregrip
-Laser
-Flashlight
-AmmoCounter
-StandardBarrel
-ExtendedBarrel
-SoundSuppressor
-FlashHider
-MuzzleBrake
-MuzzleBooster
-StandardMagFMJ
-StandardMagAP
-StandardMagJHP
-ExtendedMagFMJ
-ExtendedMagAP
-ExtendedMagJHP
-DrumMagFMJ
-DrumMagAP
-DrumMagJHP
-LowcapMagFMJ
-LowcapMagAP
-LowcapMagJHP
-CylinderMag4
-CylinderMag6
-CylinderMag8
-CarbineBody
-RifleBody
-ShortBarrel
-ShotgunChoke
-ShotgunExtendedBarrel
-NoRifleStock
-ShotgunSingleShot
-ShotgunDoubleShot
+None 0
+IronSights 1
+DotSight 2
+HoloSight 3
+NightVisionSight 4
+AmmoSight 5
+ScopeSight 6
+StandardStock 7
+ExtendedStock 8
+RetractedStock 9
+LightweightStock 10
+HeavyStock 11
+RecoilReducingStock 12
+Foregrip 13
+Laser 14
+Flashlight 15
+AmmoCounter 16
+StandardBarrel 17
+ExtendedBarrel 18
+SoundSuppressor 19
+FlashHider 20
+MuzzleBrake 21
+MuzzleBooster 22
+StandardMagFMJ 23
+StandardMagAP 24
+StandardMagJHP 25
+ExtendedMagFMJ 26
+ExtendedMagAP 27
+ExtendedMagJHP 28
+DrumMagFMJ 29
+DrumMagAP 30
+DrumMagJHP 31
+LowcapMagFMJ 32
+LowcapMagAP 33
+LowcapMagJHP 34
+CylinderMag4 35
+CylinderMag6 36
+CylinderMag8 37
+CarbineBody 38
+RifleBody 39
+ShortBarrel 40
+ShotgunChoke 41
+ShotgunExtendedBarrel 42
+NoRifleStock 43
+ShotgunSingleShot 44
+ShotgunDoubleShot 45
 ```
 
 </details>
@@ -618,7 +611,6 @@ Escaped 5
 Revived 6
 ForceClass 7
 Destroyed 8
-
 ```
 
 </details>

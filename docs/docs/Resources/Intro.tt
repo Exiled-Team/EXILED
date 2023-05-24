@@ -69,12 +69,8 @@ sidebar_position: 1
 
 <details><summary> <b>Ammo</b></summary>
 
-```md title="Latest Updated: 05/08/2022"
-Nato9
-Nato556
-Nato762
-Ammo12Gauge
-Ammo44Cal
+```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+<#= string.Join("\n",Enum.GetValues(typeof(AmmoType)).Cast<AmmoType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -183,20 +179,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 <details><summary> <b>Structures</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-WorkStation
-LargeGunLocker
-RifleRack
-MiscLocker
-Generator
-RegularMedkit
-AdrenalineMedkit
-Scp018Pedestal
-Scp207Pedestal
-Scp244Pedestal
-Scp268Pedestal
-Scp500Pedestal
-Scp1853Pedestal
-Scp2176Pedestal
+<#= string.Join("\n",Enum.GetValues(typeof(MapGeneration.Distributors.StructureType)).Cast<MapGeneration.Distributors.StructureType>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -247,14 +230,12 @@ Custom
 
 </details>
 
-### BroadcastType
+### BroadcastFlags
 
-<details><summary> <b>BroadcastType</b></summary>
+<details><summary> <b>BroadcastFlags</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-Normal
-Monospaced
-AdminChat
+<#= string.Join("\n",Enum.GetValues(typeof(Broadcast.BroadcastFlags)).Cast<Broadcast.BroadcastFlags>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -266,52 +247,7 @@ AdminChat
 <details><summary> <b>Attachment Names</b></summary>
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-None
-IronSights
-DotSight
-HoloSight
-NightVisionSight
-AmmoSight
-ScopeSight
-StandardStock
-ExtendedStock
-RetractedStock
-LightweightStock
-HeavyStock
-RecoilReducingStock
-Foregrip
-Laser
-Flashlight
-AmmoCounter
-StandardBarrel
-ExtendedBarrel
-SoundSuppressor
-FlashHider
-MuzzleBrake
-MuzzleBooster
-StandardMagFMJ
-StandardMagAP
-StandardMagJHP
-ExtendedMagFMJ
-ExtendedMagAP
-ExtendedMagJHP
-DrumMagFMJ
-DrumMagAP
-DrumMagJHP
-LowcapMagFMJ
-LowcapMagAP
-LowcapMagJHP
-CylinderMag4
-CylinderMag6
-CylinderMag8
-CarbineBody
-RifleBody
-ShortBarrel
-ShotgunChoke
-ShotgunExtendedBarrel
-NoRifleStock
-ShotgunSingleShot
-ShotgunDoubleShot
+<#= string.Join("\n",Enum.GetValues(typeof(InventorySystem.Items.Firearms.Attachments.AttachmentName)).Cast<InventorySystem.Items.Firearms.Attachments.AttachmentName>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
 ```
 
 </details>
@@ -322,7 +258,6 @@ ShotgunDoubleShot
 
 ```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
 <#= string.Join("\n",Enum.GetValues(typeof(SpawnReason)).Cast<SpawnReason>().ToList().OrderBy(x => x).Select(x => $"{x} {(int)x}"))#>
-
 ```
 
 </details>
