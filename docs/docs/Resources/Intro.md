@@ -25,7 +25,7 @@ sidebar_position: 1
 - [Attachment Names](#attachmentnames)
 - [Spawn Reasons](#spawnreasons)
 - [Prefabs](#prefabs)
-string.PadLeft
+
 ### External resources
 
 - [Available Colors (en.scpslgame.com)](https://en.scpslgame.com/index.php/Docs:Permissions#Colors)
