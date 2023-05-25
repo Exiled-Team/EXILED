@@ -91,13 +91,6 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player : IEntity, IPosition // Todo: Convert to IWorldSpace (Rotation Vector3 -> Quaternion)
     {
-        /// <summary>
-        /// Validates custom player info.
-        /// Allows for up to 400 characters that are valid letters, numbers or math symbols in any language (so this includes regular alphabet, Russian alphabet, hiragana, kanji and whatever else you want) or matches a specific set or special characters such as space, etc... and that set includes <![CDATA[<, >]]> and \n
-        ///  - Written by Zabszk (Thanks to Beryl to having sharing it to Exiled).
-        /// </summary>
-        internal static readonly Regex PlayerCustomInfoRegex = new(@"^((?![\[\]])[\p{L}\p{P}\p{Sc}\p{N} ^=+|~`<>\n]){0,400}$", RegexOptions.Compiled);
-
 #pragma warning disable SA1401
         /// <summary>
         /// A list of the player's items.
@@ -377,9 +370,45 @@ namespace Exiled.API.Features
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
             set
             {
-                if (!PlayerCustomInfoRegex.IsMatch(value))
-                    Log.Error($"Exiled.API.Features.Player::CustomInfo (Invalid syntax) {value}");
-                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
+                if (string.IsNullOrEmpty(value))
+                {
+                    InfoArea &= PlayerInfoArea.CustomInfo;
+                }
+                else
+                {
+                    // NW Client check.
+                    foreach (var token in value.Split('<'))
+                    {
+                        if (token.StartsWith("/", StringComparison.Ordinal) ||
+                            token.StartsWith("b>", StringComparison.Ordinal) ||
+                            token.StartsWith("i>", StringComparison.Ordinal) ||
+                            token.StartsWith("size=", StringComparison.Ordinal) ||
+                            token.Length is 0)
+                            continue;
+
+                        if (token.StartsWith("color=", StringComparison.Ordinal))
+                        {
+                            if (token.Length < 14 || token[13] != '>')
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                            else if (!Misc.AllowedColors.ContainsValue(token.Substring(6, 7)))
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad colour reject) Info: {value}");
+                        }
+                        else if (token.StartsWith("#", StringComparison.Ordinal))
+                        {
+                            if (token.Length < 8 || token[7] != '>')
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                            else if (!Misc.AllowedColors.ContainsValue(token.Substring(0, 7)))
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad colour reject) Info: {value}");
+                        }
+                        else
+                        {
+                            Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                        }
+                    }
+
+                    InfoArea |= PlayerInfoArea.CustomInfo;
+                }
+
                 ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
             }
         }
