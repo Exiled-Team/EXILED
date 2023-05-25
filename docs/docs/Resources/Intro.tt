@@ -1,8 +1,11 @@
 <#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System" #>
 <#@ assembly name="%EXILED_REFERENCES%\System.Core.dll" #>
+<#@ assembly name="%EXILED_REFERENCES%\Mirror.dll" #>
+<#@ assembly name="%EXILED_REFERENCES%\UnityEngine.CoreModule.dll" #>
 <#@ assembly name="%EXILED_REFERENCES%\Assembly-CSharp-Publicized.dll" #>
 <#@ assembly name="bin\Release\Exiled.API.dll" #>
+<#@ assembly name="bin\Release\Exiled.Loader.dll" #>
 <#@ import namespace="Exiled.API.Enums" #>
 <#@ import namespace="Exiled.API.Extensions" #>
 <#@ import namespace="System.Linq" #>
@@ -45,7 +48,7 @@ sidebar_position: 1
 
 <details><summary> <b>Roles</b></summary>
 
-```md title="Latest Updated: 08/23/2021"
+```md title="Latest Updated: Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion"
 | Id  | RoleTypeId     | Team | Side            | LeadingTeam     |
 |-----|----------------|------|-----------------|-----------------|
 <#= string.Join("\n",Enum.GetValues(typeof(RoleTypeId)).Cast<RoleTypeId>().ToList().OrderBy(x => x).Select(x => $"{(int)x} | {x} | {RoleExtensions.GetTeam(x)} | {RoleExtensions.GetSide(RoleExtensions.GetTeam(x))} | {RoleExtensions.GetLeadingTeam(RoleExtensions.GetTeam(x))}|"))#>
@@ -57,7 +60,7 @@ sidebar_position: 1
 
 <details><summary> <b>Items</b></summary>
 
-```md  title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md  title="Latest Updated: <#= Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion#>"
 <Item>                        (<id>)
 <#= string.Join("\n",Enum.GetValues(typeof(ItemType)).Cast<ItemType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
@@ -69,7 +72,7 @@ sidebar_position: 1
 
 <details><summary> <b>Ammo</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(AmmoType)).Cast<AmmoType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -79,7 +82,7 @@ sidebar_position: 1
 
 <details><summary> <b>Doors</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(DoorType)).Cast<DoorType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -91,7 +94,7 @@ sidebar_position: 1
 
 <details><summary> <b>Rooms</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(RoomType)).Cast<RoomType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -101,7 +104,7 @@ sidebar_position: 1
 
 <details><summary> <b>Elevators</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(ElevatorType)).Cast<ElevatorType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -111,7 +114,7 @@ sidebar_position: 1
 
 <details><summary> <b>DamageType</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(DamageType)).Cast<DamageType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -148,7 +151,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Effects</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(EffectType)).Cast<EffectType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -158,7 +161,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Keycard Perms</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(KeycardPermissions)).Cast<KeycardPermissions>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -168,7 +171,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Lock Type</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(DoorLockType)).Cast<DoorLockType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -178,7 +181,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Structures</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion#>"
 <#= string.Join("\n",Enum.GetValues(typeof(MapGeneration.Distributors.StructureType)).Cast<MapGeneration.Distributors.StructureType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -188,7 +191,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Blood</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(BloodType)).Cast<BloodType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -198,7 +201,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>GeneratorState</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(GeneratorState)).Cast<GeneratorState>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -208,7 +211,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Hot Keys</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(HotkeyButton)).Cast<HotkeyButton>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -218,14 +221,8 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Intercom States</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
-Ready
-Transmitting
-TransmittingBypass
-Restarting
-AdminSpeaking
-Muted
-Custom
+```md title="Latest Updated: <#= Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion#>"
+<#= string.Join("\n",Enum.GetValues(typeof(PlayerRoles.Voice.IntercomState)).Cast<PlayerRoles.Voice.IntercomState>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
 </details>
@@ -234,7 +231,7 @@ Custom
 
 <details><summary> <b>BroadcastFlags</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion#>"
 <#= string.Join("\n",Enum.GetValues(typeof(Broadcast.BroadcastFlags)).Cast<Broadcast.BroadcastFlags>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -246,7 +243,7 @@ Custom
 
 <details><summary> <b>Attachment Names</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(InventorySystem.Items.Firearms.Attachments.AttachmentName)).Cast<InventorySystem.Items.Firearms.Attachments.AttachmentName>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -256,7 +253,7 @@ Custom
 
 <details><summary> <b>Spawn Reasons</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: <#= System.Reflection.Assembly.GetAssembly(typeof(Exiled.Loader.Loader)).GetName().Version#>"
 <#= string.Join("\n",Enum.GetValues(typeof(SpawnReason)).Cast<SpawnReason>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
@@ -266,7 +263,7 @@ Custom
 
 <details><summary> <b>Available Prefabs</b></summary>
 
-```md title="Latest Updated: <#= DateTime.UtcNow.ToString("d")#>"
+```md title="Latest Updated: 02/13/2022"
 Guid                                 | Name
 
 43658aa2-f339-6044-eb2b-937db0c2c4bd | Player  
