@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label retLabel = generator.DefineLabel();
 
-            const int offset = 3;
+            const int offset = -2;
             int index = newInstructions.FindIndex(
                 instruction => instruction.Calls(Method(typeof(PersonalRadioPlayback), nameof(PersonalRadioPlayback.IsTransmitting)))) + offset;
 
