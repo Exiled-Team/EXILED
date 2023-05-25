@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else
                 {
-                    Player.UnverifiedPlayers.Add(hub, player);
+                    Player.UnverifiedPlayers.Add(hub.gameObject, player);
 
                     Handlers.Player.OnJoined(new JoinedEventArgs(player));
                 }
