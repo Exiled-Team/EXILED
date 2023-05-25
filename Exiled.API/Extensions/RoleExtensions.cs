@@ -60,7 +60,6 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="roleType">The <see cref="RoleTypeId"/>.</param>
         /// <returns><see cref="Team"/>.</returns>
-        [Obsolete("Use PlayerRolesUtils.GetTeam(roleType) instead", false)]
         public static Team GetTeam(this RoleTypeId roleType) => roleType switch
         {
             RoleTypeId.ChaosConscript or RoleTypeId.ChaosMarauder or RoleTypeId.ChaosRepressor or RoleTypeId.ChaosRifleman => Team.ChaosInsurgency,
