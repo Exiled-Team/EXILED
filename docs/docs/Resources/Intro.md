@@ -72,7 +72,6 @@ sidebar_position: 1
 <details><summary> <b>Items</b></summary>
 
 ```md  title="Latest Updated: 12.0.2.0"
-<Item>                        (<id>)
 [-1] None 
 [0] KeycardJanitor 
 [1] KeycardScientist 

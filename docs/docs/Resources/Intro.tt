@@ -61,7 +61,6 @@ sidebar_position: 1
 <details><summary> <b>Items</b></summary>
 
 ```md  title="Latest Updated: <#= Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion#>"
-<Item>                        (<id>)
 <#= string.Join("\n",Enum.GetValues(typeof(ItemType)).Cast<ItemType>().ToList().OrderBy(x => x).Select(x => $"[{(int)x}] {x} "))#>
 ```
 
