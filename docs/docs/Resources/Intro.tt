@@ -49,9 +49,9 @@ sidebar_position: 1
 <details><summary> <b>Roles</b></summary>
 
 ```md title="Latest Updated: <#= Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion#>"
-| Id  | RoleTypeId     | Team | Side            | LeadingTeam     |
-|-----|----------------|------|-----------------|-----------------|
-<#= string.Join("\n",Enum.GetValues(typeof(RoleTypeId)).Cast<RoleTypeId>().ToList().OrderBy(x => x).Select(x => $"| {StringExtensions.PadBoth((int)x, 5} | {StringExtensions.PadBoth(x, 16)} | {(StringExtensions.PadBoth(RoleExtensions.GetTeam(x), 6))} | {RoleExtensions.GetSide(RoleExtensions.GetTeam(x))} | {RoleExtensions.GetLeadingTeam(RoleExtensions.GetTeam(x))}|"))#>
+| Id  | RoleTypeId     | Team               | Side               | LeadingTeam       |
+|-----|----------------|--------------------|--------------------|-------------------|
+<#= string.Join("\n",Enum.GetValues(typeof(RoleTypeId)).Cast<RoleTypeId>().ToList().OrderBy(x => x).Select(x => $"| {StringExtensions.PadBoth(((int)x).ToString(), 3)} | {StringExtensions.PadBoth(x.ToString(), 14)} | {StringExtensions.PadBoth(RoleExtensions.GetTeam(x).ToString(), 18)} | {StringExtensions.PadBoth(RoleExtensions.GetSide(RoleExtensions.GetTeam(x)).ToString(), 18)} | {StringExtensions.PadBoth(RoleExtensions.GetLeadingTeam(RoleExtensions.GetTeam(x)).ToString(), 18)}|"))#>
 ```
 
 </details>

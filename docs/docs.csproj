@@ -21,7 +21,20 @@
         <PackageReference Include="System.Memory" Version="4.5.5" />
         <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
     </ItemGroup>
-
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="docs\Resources\Intro.md">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Intro.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="docs\Resources\Intro.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Intro.md</LastGenOutput>
+    </Content>
+  </ItemGroup>
     <ItemGroup>
         <Reference Include="Assembly-CSharp">
           <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
@@ -36,6 +49,9 @@
         <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
         <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
         <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
+    </ItemGroup>
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
