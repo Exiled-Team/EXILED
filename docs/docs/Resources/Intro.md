@@ -36,7 +36,7 @@ sidebar_position: 1
 
 <details><summary> <b>Roles</b></summary>
 
-```md title="Latest Updated: Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion"
+```md title="Latest Updated: 12.0.2.0"
 | Id  | RoleTypeId     | Team | Side            | LeadingTeam     |
 |-----|----------------|------|-----------------|-----------------|
 -1 | None | Dead | None | Draw|
