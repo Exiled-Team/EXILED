@@ -40,26 +40,34 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new[]
                 {
+                    // Player player = Player.Get(thus.OwnerHub);
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(AnimatedCharacterModel), nameof(AnimatedCharacterModel.OwnerHub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                    // this
                     new(OpCodes.Ldloc_0),
 
+                    // true
                     new(OpCodes.Ldc_I4_1),
 
+                    // MakingNoiseEventArgs ev = new(player, this, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(MakingNoiseEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
 
+                    // Handlers.Player.OnMakingNoise(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnMakingNoise))),
 
+                    // if (!ev.IsAllowed)
+                    //      return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(MakingNoiseEventArgs), nameof(MakingNoiseEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, continueLabel),
 
                     new(OpCodes.Ret),
 
+                    // distance = ev.Distance;
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(MakingNoiseEventArgs), nameof(MakingNoiseEventArgs.Distance))),
                     new(OpCodes.Stloc_0),
