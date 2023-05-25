@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="VoiceChatting.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -36,33 +36,33 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label retLabel = generator.DefineLabel();
-            Label voiceRoleLabel = generator.DefineLabel();
+            Label isMutedLabel = generator.DefineLabel();
+            List<Label> labels;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(VoiceChattingEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
-            LocalBuilder voiceRole = generator.DeclareLocal(typeof(IVoiceRole));
 
-            newInstructions[0].labels.Add(voiceRoleLabel);
+            const int offset = 3;
+            int index = newInstructions.FindIndex(i => i.Calls(Method(typeof(VoiceModuleBase), nameof(VoiceModuleBase.CheckRateLimit)))) + offset;
 
-            newInstructions.InsertRange(0, new CodeInstruction[]
+            // retrieve the base game jump label
+            labels = newInstructions[index].ExtractLabels();
+            newInstructions[index].labels.Add(isMutedLabel);
+
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // Player.Get(msg.Speaker);
-                new(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(labels),
                 new(OpCodes.Ldfld, Field(typeof(VoiceMessage), nameof(VoiceMessage.Speaker))),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, player.LocalIndex),
 
-                // if (player.Role.Base is not IVoiceRole voiceRole)
-                //      ignore.
-                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Base))),
-                new(OpCodes.Isinst, typeof(IVoiceRole)),
-                new(OpCodes.Dup),
-                new(OpCodes.Stloc_S, voiceRole.LocalIndex),
+                // if (player is null)
+                //      go to base game logic
                 new(OpCodes.Ldnull),
                 new(OpCodes.Cgt_Un),
-                new(OpCodes.Brfalse_S, voiceRoleLabel),
+                new(OpCodes.Brfalse_S, isMutedLabel),
 
                 // Player.Get(msg.Speaker);
                 new(OpCodes.Ldloc_S, player.LocalIndex),
@@ -71,13 +71,16 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldarg_1),
 
                 // voiceModule.
-                new(OpCodes.Ldloc_S, voiceRole.LocalIndex),
+                new(OpCodes.Ldloc_S, player.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Base))),
+                new(OpCodes.Isinst, typeof(IVoiceRole)),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(IVoiceRole), nameof(IVoiceRole.VoiceModule))),
 
                 // true
                 new(OpCodes.Ldc_I4_1),
 
-                // VoiceChattingEventArgs ev = new(Player, VoiceMessage);
+                // VoiceChattingEventArgs ev = new(Player, VoiceMessage, VoiceModuleBase, true);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(VoiceChattingEventArgs))[0]),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
