@@ -174,5 +174,18 @@ namespace Exiled.API.Extensions
             byte[] hash = Sha256.ComputeHash(textData);
             return BitConverter.ToString(hash).Replace("-", string.Empty);
         }
+
+        /// <summary>
+        /// Put space to center the text.
+        /// </summary>
+        /// <param name="str">String to return in middle.</param>
+        /// <param name="length"> number of char than string will be return.</param>
+        /// <returns>return the modifed string.</returns>
+        public static string PadBoth(this string str, int length)
+        {
+            int spaces = length - str.Length;
+            int padLeft = (spaces / 2) + str.Length;
+            return str.PadLeft(padLeft).PadRight(length);
+        }
     }
 }

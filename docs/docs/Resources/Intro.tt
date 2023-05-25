@@ -51,7 +51,7 @@ sidebar_position: 1
 ```md title="Latest Updated: <#= Exiled.Loader.AutoUpdateFiles.RequiredSCPSLVersion#>"
 | Id  | RoleTypeId     | Team | Side            | LeadingTeam     |
 |-----|----------------|------|-----------------|-----------------|
-<#= string.Join("\n",Enum.GetValues(typeof(RoleTypeId)).Cast<RoleTypeId>().ToList().OrderBy(x => x).Select(x => $"{(int)x} | {x} | {RoleExtensions.GetTeam(x)} | {RoleExtensions.GetSide(RoleExtensions.GetTeam(x))} | {RoleExtensions.GetLeadingTeam(RoleExtensions.GetTeam(x))}|"))#>
+<#= string.Join("\n",Enum.GetValues(typeof(RoleTypeId)).Cast<RoleTypeId>().ToList().OrderBy(x => x).Select(x => $"| {StringExtensions.PadBoth((int)x, 5} | {StringExtensions.PadBoth(x, 16)} | {(StringExtensions.PadBoth(RoleExtensions.GetTeam(x), 6))} | {RoleExtensions.GetSide(RoleExtensions.GetTeam(x))} | {RoleExtensions.GetLeadingTeam(RoleExtensions.GetTeam(x))}|"))#>
 ```
 
 </details>
