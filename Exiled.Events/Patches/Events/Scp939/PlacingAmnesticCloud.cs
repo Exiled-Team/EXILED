@@ -68,8 +68,8 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Dup),
                 new(OpCodes.Stloc_S, ev.LocalIndex),
 
-                // Scp939.OnLunging(ev);
-                new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.PlacingAmnesticCloud))),
+                // Scp939.OnPlacingAmnesticCloud(ev);
+                new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnPlacingAmnesticCloud))),
 
                 // if (ev.IsAllowed)
                 //    goto Jump;
