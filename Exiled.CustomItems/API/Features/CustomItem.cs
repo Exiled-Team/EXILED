@@ -815,7 +815,14 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Called when the item is unregistered.
         /// </summary>
-        public virtual void Destroy() => UnsubscribeEvents();
+        public virtual void Destroy()
+        {
+            UnsubscribeEvents();
+
+            typeLookupTable.Remove(GetType());
+            stringLookupTable.Remove(Name);
+            idLookupTable.Remove(Id);
+        }
 
         /// <summary>
         /// Checks the specified pickup to see if it is a custom item.

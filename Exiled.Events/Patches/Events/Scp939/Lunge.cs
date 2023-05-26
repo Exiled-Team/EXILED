@@ -7,12 +7,17 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Scp939;
     using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp939;
 
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     ///     Patches <see cref="Scp939LungeAbility.ClientSendHit(HumanRole)"/>
     ///     to add the <see cref="Handlers.Scp939.Lunged"/> event.
