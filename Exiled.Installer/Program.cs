@@ -280,16 +280,16 @@ namespace Exiled.Installer
         private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
         {
             Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
-            Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : VersionLimit;
+            Version targetVersion = args.TargetVersion is not null ? new Version(args.TargetVersion) : new Version(releases.First().TagName);
 
             foreach (Release r in releases)
             {
                 release = r;
 
-                if (targetVersion == new Version(r.TagName))
-                    return true;
+                if (targetVersion != new Version(r.TagName))
+                    continue;
 
-                if ((r.Prerelease && args.PreReleases) || !r.Prerelease)
+                if (targetVersion.IsPreRelease && args.PreReleases)
                     return true;
             }
 
