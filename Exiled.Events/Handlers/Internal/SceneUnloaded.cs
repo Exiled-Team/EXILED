@@ -33,7 +33,6 @@ namespace Exiled.Events.Handlers.Internal
         /// </remarks>
         public static void OnSceneUnloaded(Scene _)
         {
-            Player.IdsCache.Clear();
             Player.UserIdsCache.Clear();
             Player.Dictionary.Clear();
             Map.ToysValue.Clear();
