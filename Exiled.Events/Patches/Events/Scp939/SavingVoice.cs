@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Scp939
 
                 // if (!ev.IsAllowed)
                 //     return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(LungingEventArgs), nameof(LungingEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SavingVoiceEventArgs), nameof(SavingVoiceEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
 
