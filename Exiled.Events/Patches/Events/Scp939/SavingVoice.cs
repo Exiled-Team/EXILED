@@ -56,12 +56,12 @@ namespace Exiled.Events.Patches.Events.Scp939
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(SavingVoiceEventArgs))[0]),
                 new(OpCodes.Dup),
 
-                // Scp939.OnLunging(ev);
+                // Scp939.OnSavingVoice(ev);
                 new(OpCodes.Call, Method(typeof(Scp939), nameof(Scp939.OnSavingVoice))),
 
                 // if (!ev.IsAllowed)
                 //     return;
-                new(OpCodes.Callvirt, PropertyGetter(typeof(LungingEventArgs), nameof(LungingEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SavingVoiceEventArgs), nameof(SavingVoiceEventArgs.IsAllowed))),
                 new(OpCodes.Brfalse_S, ret),
             });
 
