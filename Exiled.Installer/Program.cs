@@ -289,11 +289,13 @@ namespace Exiled.Installer
                 if (targetVersion != new Version(r.TagName))
                     continue;
 
-                if (targetVersion.IsPreRelease && args.PreReleases)
-                    return true;
+                if (targetVersion.IsPreRelease && !args.PreReleases)
+                    continue;
+
+                return true;
             }
 
-            release = null;
+            release = releases.First();
             return false;
         }
     }
