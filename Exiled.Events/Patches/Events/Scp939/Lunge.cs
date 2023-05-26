@@ -7,16 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Scp939
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
-    using Exiled.API.Features.Pools;
+#pragma warning disable SA1313
     using Exiled.Events.EventArgs.Scp939;
     using HarmonyLib;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp939;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="Scp939LungeAbility.ClientSendHit(HumanRole)"/>
