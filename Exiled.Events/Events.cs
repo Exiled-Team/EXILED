@@ -97,7 +97,14 @@ namespace Exiled.Events
 
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
-            AnimatedCharacterModel.OnFootstepPlayed += Handlers.Player.OnMakingNoise;
+            AnimatedCharacterModel.OnFootstepPlayed += (model, f) =>
+            {
+                Log.Info(model.OwnerHub.nicknameSync.MyNick);
+            };
+            Handlers.Player.MakingNoise += ev =>
+            {
+                Log.Info(ev.Player.Id);
+            };
 
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
@@ -128,8 +135,6 @@ namespace Exiled.Events
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
-
-            AnimatedCharacterModel.OnFootstepPlayed -= Handlers.Player.OnMakingNoise;
 
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
