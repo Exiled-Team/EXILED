@@ -150,11 +150,6 @@ namespace Exiled.API.Features
         /// </summary>
         public static Dictionary<string, Player> UserIdsCache { get; } = new(20);
 
-        /// <summary>
-        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their ids.
-        /// </summary>
-        public static Dictionary<int, Player> IdsCache { get; } = new(20);
-
         /// <inheritdoc/>
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
 
@@ -370,13 +365,9 @@ namespace Exiled.API.Features
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
             set
             {
-                if (string.IsNullOrEmpty(value))
+                // NW Client check.
+                if (value.Contains('<'))
                 {
-                    InfoArea &= PlayerInfoArea.CustomInfo;
-                }
-                else
-                {
-                    // NW Client check.
                     foreach (var token in value.Split('<'))
                     {
                         if (token.StartsWith("/", StringComparison.Ordinal) ||
@@ -389,26 +380,25 @@ namespace Exiled.API.Features
                         if (token.StartsWith("color=", StringComparison.Ordinal))
                         {
                             if (token.Length < 14 || token[13] != '>')
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad text reject) \ntoken: {token} \nInfo: {value}");
                             else if (!Misc.AllowedColors.ContainsValue(token.Substring(6, 7)))
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad colour reject) Info: {value}");
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad color reject) \ntoken: {token} \nInfo: {value}");
                         }
                         else if (token.StartsWith("#", StringComparison.Ordinal))
                         {
                             if (token.Length < 8 || token[7] != '>')
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad text reject) \ntoken: {token} \nInfo: {value}");
                             else if (!Misc.AllowedColors.ContainsValue(token.Substring(0, 7)))
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad colour reject) Info: {value}");
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad color reject) \ntoken: {token} \nInfo: {value}");
                         }
                         else
                         {
-                            Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                            Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad color reject) \ntoken: {token} \nInfo: {value}");
                         }
                     }
-
-                    InfoArea |= PlayerInfoArea.CustomInfo;
                 }
 
+                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
                 ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
             }
         }
@@ -1136,7 +1126,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
-        internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new();
+        internal static ConditionalWeakTable<GameObject, Player> UnverifiedPlayers { get; } = new();
 
         /// <summary>
         /// Converts NwPluginAPI player to EXILED player.
@@ -1249,8 +1239,10 @@ namespace Exiled.API.Features
             if (gameObject == null)
                 return null;
 
-            Dictionary.TryGetValue(gameObject, out Player player);
+            if (Dictionary.TryGetValue(gameObject, out Player player))
+                return player;
 
+            UnverifiedPlayers.TryGetValue(gameObject, out player);
             return player;
         }
 
@@ -1259,23 +1251,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="id">The player id.</param>
         /// <returns>Returns the player found or <see langword="null"/> if not found.</returns>
-        public static Player Get(int id)
-        {
-            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub is not null)
-                return player;
-
-            foreach (Player playerFound in Dictionary.Values)
-            {
-                if (playerFound.Id != id)
-                    continue;
-
-                IdsCache[id] = playerFound;
-
-                return playerFound;
-            }
-
-            return null;
-        }
+        public static Player Get(int id) => ReferenceHub.HubByPlayerIds.TryGetValue(id, out ReferenceHub referenceHub) ? Get(referenceHub) : null;
 
         /// <summary>
         /// Gets the <see cref="Player"/> by identifier.
