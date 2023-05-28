@@ -53,19 +53,19 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // KickingEventArgs ev = new(player, target, reason, true);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(KickingEventArgs))[0]),
-                    /*new(OpCodes.Dup),
                     new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),*/
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Player.OnKicking(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnKicking))),
 
                     // if (!ev.IsAllowed)
                     //      return;
-                    /*new(OpCodes.Callvirt, PropertyGetter(typeof(KickedEventArgs), nameof(KickingEventArgs.IsAllowed))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.IsAllowed))),
                     new(OpCodes.Brtrue_S, continueLabel),
 
-                    new(OpCodes.Ret),*/
+                    new(OpCodes.Ret),
 
                     // loading ev 3 times
                     new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
@@ -76,15 +76,15 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Reason))),
                     new(OpCodes.Starg_S, 2),
 
-                    // target = ev.Target.ReferenceHub;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Target))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
-                    new(OpCodes.Starg_S, 0),
-
                     // issuer = ev.Player.Sender;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Player))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Sender))),
                     new(OpCodes.Starg_S, 1),
+
+                    // target = ev.Target.ReferenceHub;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Target))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
+                    new(OpCodes.Starg_S, 0),
                 });
 
             int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldstr);
