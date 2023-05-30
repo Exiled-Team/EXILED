@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Fixes
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Type), nameof(Type.FullName))),
                     new(OpCodes.Call, Method(typeof(Extensions), nameof(Extensions.GetStableHashCode))),
                     new(OpCodes.Call, Method(typeof(Dictionary<int, byte>), nameof(Dictionary<int, byte>.ContainsKey))),
-                    new(OpCodes.Brtrue_S, retLabel),
+                    new(OpCodes.Brtrue_S, skipLabel),
 
                     // if (handler is GenericDamageHandler exiledHandler)
                     //      handler = exiledHandler;
