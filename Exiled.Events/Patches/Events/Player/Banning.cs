@@ -52,8 +52,9 @@ namespace Exiled.Events.Patches.Events.Player
                 long issuanceTime = TimeBehaviour.CurrentTimestamp();
                 long banExpirationTime = TimeBehaviour.GetBanExpirationTime((uint)duration);
                 string originalName = BanPlayer.ValidateNick(target.nicknameSync.MyNick);
+                string message = $"You have been banned. {(!string.IsNullOrEmpty(reason) ? "Reason: " + reason : string.Empty)}";
 
-                BanningEventArgs ev = new(Player.Get(target), Player.Get(issuer), duration, reason);
+                BanningEventArgs ev = new(Player.Get(target), Player.Get(issuer), duration, reason, message);
 
                 Handlers.Player.OnBanning(ev);
 
@@ -65,6 +66,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 duration = ev.Duration;
                 reason = ev.Reason;
+                message = ev.FullMessage;
 
                 if (!EventManager.ExecuteEvent(ServerEventType.PlayerBanned, new object[]
                 {
@@ -105,7 +107,7 @@ namespace Exiled.Events.Patches.Events.Player
                         }, BanHandler.BanType.UserId);
                 }
 
-                ServerConsole.Disconnect(target.gameObject, ev.FullMessage);
+                ServerConsole.Disconnect(target.gameObject, message);
 
                 __result = true;
                 return false;
