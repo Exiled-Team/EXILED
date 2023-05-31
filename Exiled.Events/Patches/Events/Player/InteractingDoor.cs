@@ -7,16 +7,23 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
+#pragma warning disable SA1313
+#pragma warning disable SA1005
+#pragma warning disable SA1515
+#pragma warning disable SA1513
+#pragma warning disable SA1512
+    using System;
 
     using API.Features;
-    using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
+
     using HarmonyLib;
+
     using Interactables.Interobjects.DoorUtils;
 
-    using static HarmonyLib.AccessTools;
+    using PlayerRoles;
+
+    using PluginAPI.Events;
 
     /// <summary>
     ///     Patches <see cref="DoorVariant.ServerInteract(ReferenceHub, byte)" />.
@@ -25,56 +32,69 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(DoorVariant), nameof(DoorVariant.ServerInteract), typeof(ReferenceHub), typeof(byte))]
     internal static class InteractingDoor
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(DoorVariant __instance, ReferenceHub ply, byte colliderId)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            try
+            {
+                InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, false);
 
-            int offset = -1;
-            int index = newInstructions.FindIndex(x => x.Is(OpCodes.Ldfld, Field(typeof(DoorVariant), nameof(DoorVariant.ActiveLocks)))) + offset;
+                bool bypassDenied = false;
+                bool allowInteracting = false;
 
-            Label continueLabel = generator.DefineLabel();
-
-            LocalBuilder ev = generator.DeclareLocal(typeof(InteractingDoorEventArgs));
-
-            newInstructions.InsertRange(
-                index,
-                new[]
+                if (__instance.ActiveLocks > 0 && !ply.serverRoles.BypassMode)
                 {
-                    // Player player = Player.Get(ply);
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)__instance.ActiveLocks);
+                    if ((!mode.HasFlagFast(DoorLockMode.CanClose) || !mode.HasFlagFast(DoorLockMode.CanOpen)) &&
+                        (!mode.HasFlagFast(DoorLockMode.ScpOverride) || !ply.IsSCP(true)) &&
+                        (mode == DoorLockMode.FullLock || (__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanClose)) ||
+                        (!__instance.TargetState && !mode.HasFlagFast(DoorLockMode.CanOpen))))
+                    {
+                        ev.IsAllowed = false;
+                        bypassDenied = true;
+                    }
+                }
 
-                    // this
-                    new(OpCodes.Ldarg_0),
+                if (!bypassDenied && (allowInteracting = __instance.AllowInteracting(ply, colliderId)))
+                {
+                    if (ply.GetRoleId() == RoleTypeId.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply))
+                    {
+                        ev.IsAllowed = true;
+                    }
+                    else
+                    {
+                        ev.IsAllowed = false;
+                    }
+                }
 
-                    // true
-                    new(OpCodes.Ldc_I4_1),
+                Handlers.Player.OnInteractingDoor(ev);
 
-                    // InteractingDoorEventArgs ev = new(player, this, true);
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingDoorEventArgs))[0]),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
-
-                    // Handlers.Player.OnInteractingDoor(ev);
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingDoor))),
-
-                    // if (!ev.IsAllowed)
-                    //      return;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, continueLabel),
-
-                    new(OpCodes.Ret),
-
-                    // this = ev.Door.Base;
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.Door))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Door), nameof(Door.Base))),
-                    new(OpCodes.Starg_S, 0),
-                });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                    yield return newInstructions[z];
+                if (EventManager.ExecuteEvent(PluginAPI.Enums.ServerEventType.PlayerInteractDoor, new object[] { ply, __instance, ev.IsAllowed }))
+                {
+                    if (ev.IsAllowed && allowInteracting)
+                    {
+                        __instance.NetworkTargetState = !__instance.TargetState;
+                        __instance._triggerPlayer = ply;
+                    }
+                    else if (bypassDenied)
+                    {
+                        __instance.LockBypassDenied(ply, colliderId);
+                    }
+                    // Don't call the RPC if the door is still moving
+                    else if (allowInteracting)
+                    {
+                        // To avoid breaking their API, call the access denied event
+                        // when our event prevents the door from opening
+                        __instance.PermissionsDenied(ply, colliderId);
+                        DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
+                    }
+                }
+                return false;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"{typeof(InteractingDoor).FullName}.{nameof(Prefix)}:\n{exception}");
+                return true;
+            }
         }
     }
 }
