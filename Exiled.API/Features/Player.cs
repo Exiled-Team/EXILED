@@ -431,7 +431,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is fully connected to the server.
         /// </summary>
-        public bool IsConnected => GameObject != null;
+        public bool IsConnected => GameObject;
 
         /// <summary>
         /// Gets a value indicating whether or not the player has a reserved slot.
