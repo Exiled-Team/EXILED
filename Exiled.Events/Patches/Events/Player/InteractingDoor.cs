@@ -43,11 +43,11 @@ namespace Exiled.Events.Patches.Events.Player
                 0,
                 new CodeInstruction[]
                 {
-                    // InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, true);
+                    // InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, false);
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldc_I4_1),
+                    new(OpCodes.Ldc_I4_0),
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingDoorEventArgs))[0]),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
                 });
@@ -60,11 +60,6 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
-                    // ev.IsAllowed = false;
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(jmp),
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
-
                     // Handlers.Player.OnInteractingDoor(ev);
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Dup),
@@ -83,11 +78,6 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
-                    // ev.IsAllowed = false;
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Ldc_I4_0),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
-
                     // Handlers.Player.OnInteractingDoor(ev);
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Dup),
