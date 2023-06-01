@@ -25,12 +25,12 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="issuer">The ban issuer.</param>
         /// <param name="duration">The ban seconds duration.</param>
         /// <param name="reason">The ban reason.</param>
+        /// <param name="fullMessage">The ban full message.</param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
-        public BanningEventArgs(Player target, Player issuer, long duration, string reason, bool isAllowed = true)
-            : base(target, issuer, reason, isAllowed)
+        public BanningEventArgs(Player target, Player issuer, long duration, string reason, string fullMessage, bool isAllowed = true)
+            : base(target, issuer, reason, fullMessage, isAllowed)
         {
             Duration = duration;
-            FullMessage = $"You have been banned. {(!string.IsNullOrEmpty(reason) ? "Reason: " + reason : string.Empty)}";
         }
 
         /// <summary>
