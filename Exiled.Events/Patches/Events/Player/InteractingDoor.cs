@@ -103,7 +103,7 @@ namespace Exiled.Events.Patches.Events.Player
             index = newInstructions.FindIndex(i => i.Calls(Method(typeof(DoorVariant), nameof(DoorVariant.PermissionsDenied)))) + offset;
             newInstructions[index].WithLabels(permissionDenied);
 
-            offset = -6;
+            offset = -5;
             index = newInstructions.FindIndex(instruction => instruction.Calls(PropertySetter(typeof(DoorVariant), nameof(DoorVariant.NetworkTargetState)))) + offset;
 
             newInstructions.InsertRange(
