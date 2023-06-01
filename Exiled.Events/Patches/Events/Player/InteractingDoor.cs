@@ -8,26 +8,16 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
-#pragma warning disable SA1005
-#pragma warning disable SA1515
-#pragma warning disable SA1513
-#pragma warning disable SA1512
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using API.Features;
-    using Exiled.API.Enums;
     using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
 
     using HarmonyLib;
 
     using Interactables.Interobjects.DoorUtils;
-
-    using PlayerRoles;
-
-    using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
@@ -43,48 +33,46 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(InteractingDoorEventArgs));
-            Label jmp = generator.DefineLabel();
-            Label skip = generator.DefineLabel();
+
+            List<Label> labels = null;
+            Label interactionAllowed = generator.DefineLabel();
+            Label permissionDenied = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 0,
                 new CodeInstruction[]
                 {
-                    // InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, true, DoorBeepType.InteractionAllowed);
+                    // InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, true);
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Ldc_I4_3),
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingDoorEventArgs))[0]),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
                 });
 
-            int offset = -5;
+            int offset = -3;
             int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(DoorVariant), nameof(DoorVariant.LockBypassDenied)))) + offset;
-            newInstructions[index] = new CodeInstruction(OpCodes.Brtrue_S, jmp);
-
-            offset = 2;
-            index += offset;
-
-            newInstructions.RemoveRange(index, 4);
+            labels = newInstructions[index].ExtractLabels();
 
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
-                    // jmp
-                    // ev.InteractionResult = DoorBeepType.LockBypassDenied;
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(jmp),
-                    new(OpCodes.Ldc_I4_1),
-                    new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.InteractionResult))),
+                    // ev.IsAllowed = false;
+                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(labels),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
 
-                    // InteractingDoor.Process(__instance, ply, colliderId, ev);
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Ldarg_2),
+                    // Handlers.Player.OnInteractingDoor(ev);
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Call, Method(typeof(InteractingDoor), nameof(InteractingDoor.Process))),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingDoor))),
+
+                    // if (ev.IsAllowed)
+                    //    go to interactionAllowed;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, interactionAllowed),
                 });
 
             offset = 2;
@@ -94,76 +82,52 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new CodeInstruction[]
                 {
-                        // ev.IsAllowed = false;
-                        new(OpCodes.Ldloc_S, ev.LocalIndex),
-                        new(OpCodes.Ldc_I4_0),
-                        new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
+                    // ev.IsAllowed = false;
+                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Ldc_I4_0),
+                    new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
 
-                        // ev.InteractionResult = DoorBeepType.InteractionDenied;
-                        new(OpCodes.Ldloc_S, ev.LocalIndex),
-                        new(OpCodes.Ldc_I4_2),
-                        new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.InteractionResult))),
+                    // Handlers.Player.OnInteractingDoor(ev);
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingDoor))),
 
-                        // InteractingDoor.Process(__instance, ply, colliderId, ev);
-                        new(OpCodes.Ldarg_0),
-                        new(OpCodes.Ldarg_1),
-                        new(OpCodes.Ldarg_2),
-                        new(OpCodes.Ldloc_S, ev.LocalIndex),
-                        new(OpCodes.Call, Method(typeof(InteractingDoor), nameof(InteractingDoor.Process))),
+                    // if (ev.IsAllowed)
+                    //    go to interactionAllowed;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
+                    new(OpCodes.Brtrue_S, interactionAllowed),
                 });
+
+            // attaching permission denied label
+            offset = -3;
+            index = newInstructions.FindIndex(i => i.Calls(Method(typeof(DoorVariant), nameof(DoorVariant.PermissionsDenied)))) + offset;
+            newInstructions[index].WithLabels(permissionDenied);
 
             offset = -6;
             index = newInstructions.FindIndex(instruction => instruction.Calls(PropertySetter(typeof(DoorVariant), nameof(DoorVariant.NetworkTargetState)))) + offset;
 
-            newInstructions.RemoveRange(index, 19);
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
                 {
-                        // if (flag)
-                        // goto skip
-                        new(OpCodes.Brtrue_S, skip),
-
-                        // ev.InteractionResult = DoorBeepType.PermissionDenied;
+                        // Handlers.Player.OnInteractingDoor(ev);
                         new(OpCodes.Ldloc_S, ev.LocalIndex),
-                        new(OpCodes.Ldc_I4_0),
-                        new(OpCodes.Callvirt, PropertySetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.InteractionResult))),
+                        new(OpCodes.Dup),
+                        new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingDoor))),
 
-                        // skip
-                        // InteractingDoor.Process(__instance, ply, colliderId, ev);
-                        new CodeInstruction(OpCodes.Ldarg_0).WithLabels(skip),
-                        new(OpCodes.Ldarg_1),
-                        new(OpCodes.Ldarg_2),
-                        new(OpCodes.Ldloc_S, ev.LocalIndex),
-                        new(OpCodes.Call, Method(typeof(InteractingDoor), nameof(InteractingDoor.Process))),
+                        // if (!ev.IsAllowed)
+                        //    go to permission denied;
+                        new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
+                        new(OpCodes.Brfalse_S, permissionDenied),
+
+                        // insert interaction Allowed label
+                        new CodeInstruction(OpCodes.Nop).WithLabels(interactionAllowed),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
-        }
-
-        private static void Process(DoorVariant __instance, ReferenceHub ply, byte colliderId, InteractingDoorEventArgs ev)
-        {
-            Handlers.Player.OnInteractingDoor(ev);
-            if (ev.IsAllowed)
-            {
-                switch (ev.InteractionResult)
-                {
-                    case DoorBeepType.PermissionDenied:
-                        __instance.PermissionsDenied(ply, colliderId);
-                        DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
-                        break;
-                    case DoorBeepType.LockBypassDenied:
-                        __instance.LockBypassDenied(ply, colliderId);
-                        break;
-                    default:
-                        __instance.NetworkTargetState = !__instance.TargetState;
-                        __instance._triggerPlayer = ply;
-                        break;
-                }
-            }
         }
     }
 }
