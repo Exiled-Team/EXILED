@@ -99,6 +99,8 @@ namespace Exiled.Events.Patches.Events.Player
             jmp2 = newInstructions[index].ExtractLabels();
             newInstructions.RemoveRange(index, 2);
 
+            // insert interaction Allowed label
+            newInstructions[index].WithLabels(interactionAllowed);
             newInstructions.InsertRange(
                 index,
                 new CodeInstruction[]
@@ -117,9 +119,6 @@ namespace Exiled.Events.Patches.Events.Player
                     //    go to permission denied;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, permissionDenied),
-
-                    // insert interaction Allowed label
-                    new CodeInstruction(OpCodes.Nop).WithLabels(interactionAllowed),
                 });
 
             for (int z = 0; z < newInstructions.Count; z++)
