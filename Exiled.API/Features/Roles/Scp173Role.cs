@@ -207,6 +207,7 @@ namespace Exiled.API.Features.Roles
             {
                 BlinkTimer._initialStopTime = NetworkTime.time;
                 BlinkTimer._totalCooldown = value;
+                BlinkTimer.ServerSendRpc(true);
             }
         }
 
