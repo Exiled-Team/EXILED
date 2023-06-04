@@ -54,15 +54,16 @@ namespace Exiled.Events.Patches.Events.Player
                 new[]
                 {
                     // player = Player.Get(this._hub)
-                    //
-                    // if (player == null)
-                    //    goto continueLabel;
                     new CodeInstruction(OpCodes.Ldarg_0),
                     new(OpCodes.Call, PropertyGetter(typeof(PlayerRoleManager), nameof(PlayerRoleManager.Hub))),
                     new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, player.LocalIndex),
-                    new(OpCodes.Brfalse_S, continueLabel),
+
+                    // if (!Player.IsVerified)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(API.Features.Player.IsVerified))),
+                    new(OpCodes.Brfalse_S, returnLabel),
 
                     // player
                     new(OpCodes.Ldloc_S, player.LocalIndex),

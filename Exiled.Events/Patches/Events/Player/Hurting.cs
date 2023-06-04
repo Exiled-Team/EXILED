@@ -52,7 +52,13 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Dup),
                     new(OpCodes.Stloc, player.LocalIndex),
+
+                    // if (!Player.IsVerified)
+                    //   return;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
+                    new(OpCodes.Brfalse_S, ret),
 
                     // if (handler is RecontainmentDamageHandler)
                     // {
