@@ -40,9 +40,11 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label notRecontainment = generator.DefineLabel();
             Label ret = generator.DefineLabel();
+            Label skip = generator.DefineLabel();
 
             const int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            newInstructions[index].WithLabels(skip);
 
             newInstructions.InsertRange(
                 index,
@@ -58,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!Player.IsVerified)
                     //   return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
-                    new(OpCodes.Brfalse_S, ret),
+                    new(OpCodes.Brfalse_S, skip),
 
                     // if (handler is RecontainmentDamageHandler)
                     // {
