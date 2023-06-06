@@ -36,7 +36,7 @@ sidebar_position: 1
 
 <details><summary> <b>Roles</b></summary>
 
-```md title="Latest Updated: 12.0.2.0"
+```md title="Latest Updated: 13.0.0.0"
 | Id  | RoleTypeId     | Team             | Side             | LeadingTeam     |
 |-----|----------------|------------------|------------------|-----------------|
 | -1  | None           | Dead             | None             | Draw            |
@@ -71,7 +71,7 @@ sidebar_position: 1
 
 <details><summary> <b>Items</b></summary>
 
-```md  title="Latest Updated: 12.0.2.0"
+```md  title="Latest Updated: 13.0.0.0"
 [-1] None 
 [0] KeycardJanitor 
 [1] KeycardScientist 
@@ -452,6 +452,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 [128] NoPower 
 [256] Isolation 
 [512] Lockdown2176 
+[1073741824] Plugin 
 ```
 
 </details>
@@ -460,7 +461,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Structures</b></summary>
 
-```md title="Latest Updated: 12.0.2.0"
+```md title="Latest Updated: 13.0.0.0"
 [0] StandardLocker 
 [1] LargeGunLocker 
 [2] ScpPedestal 
@@ -516,7 +517,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>Intercom States</b></summary>
 
-```md title="Latest Updated: 12.0.2.0"
+```md title="Latest Updated: 13.0.0.0"
 [0] Ready 
 [1] Starting 
 [2] InUse 
@@ -530,7 +531,7 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 
 <details><summary> <b>BroadcastFlags</b></summary>
 
-```md title="Latest Updated: 12.0.2.0"
+```md title="Latest Updated: 13.0.0.0"
 [0] Normal 
 [1] Truncated 
 [2] AdminChat 
@@ -607,8 +608,9 @@ PlayerStatsSystem::Scp018DamageHandler : AttackerDamageHandler
 [4] Died 
 [5] Escaped 
 [6] Revived 
-[7] ForceClass 
+[7] RemoteAdmin 
 [8] Destroyed 
+[255] Plugin 
 ```
 
 </details>

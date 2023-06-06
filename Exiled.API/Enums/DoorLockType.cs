@@ -22,57 +22,57 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Unlocked.
         /// </summary>
-        None = 1 << 0,
+        None = 0,
 
         /// <summary>
         /// Regular SCP-079 door lock.
         /// </summary>
-        Regular079 = 1 << 1,
+        Regular079 = 1 << 0,
 
         /// <summary>
         /// SCP-079 lockdown room lock.
         /// </summary>
-        Lockdown079 = 1 << 2,
+        Lockdown079 = 1 << 1,
 
         /// <summary>
         /// Alpha Warhead detonation lock.
         /// </summary>
-        Warhead = 1 << 3,
+        Warhead = 1 << 2,
 
         /// <summary>
         /// Locked via admin command.
         /// </summary>
-        AdminCommand = 1 << 4,
+        AdminCommand = 1 << 3,
 
         /// <summary>
         /// Locked by decontamination lockdown (after decon starts).
         /// </summary>
-        DecontLockdown = 1 << 5, // 0x0010
+        DecontLockdown = 1 << 4, // 0x0010
 
         /// <summary>
         /// Locked by decontamination evacuation (during final countdown to decon).
         /// </summary>
-        DecontEvacuate = 1 << 6, // 0x0020
+        DecontEvacuate = 1 << 5, // 0x0020
 
         /// <summary>
         /// Special door features.
         /// </summary>
-        SpecialDoorFeature = 1 << 7, // 0x0040
+        SpecialDoorFeature = 1 << 6, // 0x0040
 
         /// <summary>
         /// Door has no power.
         /// </summary>
-        NoPower = 1 << 8, // 0x0080
+        NoPower = 1 << 7, // 0x0080
 
         /// <summary>
         /// Isloation.
         /// </summary>
-        Isolation = 1 << 9, // 0x0100
+        Isolation = 1 << 8, // 0x0100
 
         /// <summary>
         /// Locked down by SCP-2176.
         /// </summary>
-        Lockdown2176 = 1 << 10,
+        Lockdown2176 = 1 << 9,
 
         /// <summary>
         /// Locked down by Plugin.

@@ -22,26 +22,26 @@ namespace Exiled.API.Enums
         /// <summary>
         /// None.
         /// </summary>
-        None = 1 << 1,
+        None = 1 << 0,
 
         /// <summary>
         /// Generator is unlocked.
         /// </summary>
-        Unlocked = 1 << 2,
+        Unlocked = 1 << 1,
 
         /// <summary>
         /// Generator is open.
         /// </summary>
-        Open = 1 << 3,
+        Open = 1 << 2,
 
         /// <summary>
         /// Generator is activating.
         /// </summary>
-        Activating = 1 << 4,
+        Activating = 1 << 3,
 
         /// <summary>
         /// Generator is engaged.
         /// </summary>
-        Engaged = 1 << 5,
+        Engaged = 1 << 4,
     }
 }
