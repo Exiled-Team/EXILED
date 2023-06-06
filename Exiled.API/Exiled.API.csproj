@@ -67,6 +67,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Enums\RoleType.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>RoleType.tt</DependentUpon>
+      </Compile>
       <Compile Update="Enums\SpawnReason.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
