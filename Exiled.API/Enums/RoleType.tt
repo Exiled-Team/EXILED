@@ -1,0 +1,25 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="%EXILED_REFERENCES%\Assembly-CSharp-Publicized.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="PlayerRoles" #>
+<#@ output extension=".cs" #>
+// -----------------------------------------------------------------------
+// <copyright file="RoleType.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+#pragma warning disable CS1591
+#pragma warning disable SA1602
+namespace Exiled.API.Enums
+{
+    /// <summary>
+    /// Possible spawn reasons.
+    /// </summary>
+    public enum RoleType
+    {
+<#= string.Join("\n",Enum.GetValues(typeof(RoleTypeId)).Cast<RoleTypeId>().ToList().OrderBy(x => x).Select(x => $"        {x} = {(int)x},"))#>
+    }
+}

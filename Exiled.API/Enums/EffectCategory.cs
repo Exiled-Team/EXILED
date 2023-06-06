@@ -17,26 +17,26 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents an uncategorized effect.
         /// </summary>
-        None = 0,
+        None = 1 << 0,
 
         /// <summary>
         /// Represents an effect with a positive player impact.
         /// </summary>
-        Positive = 1,
+        Positive = 1 << 1,
 
         /// <summary>
         /// Represents an effect with a negative player impact.
         /// </summary>
-        Negative = 2,
+        Negative = 1 << 2,
 
         /// <summary>
         /// Represents an effect which modifies a player's movement speed.
         /// </summary>
-        Movement = 4,
+        Movement = 1 << 3,
 
         /// <summary>
         /// Represents an effect which deals damage to a player over time.
         /// </summary>
-        Harmful = 8,
+        Harmful = 1 << 4,
     }
 }

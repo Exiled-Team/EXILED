@@ -1,3 +1,9 @@
+<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="%EXILED_REFERENCES%\Assembly-CSharp-Publicized.dll" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="PlayerRoles" #>
+<#@ output extension=".cs" #>
 // -----------------------------------------------------------------------
 // <copyright file="SpawnReason.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
@@ -14,15 +20,7 @@ namespace Exiled.API.Enums
     /// </summary>
     public enum SpawnReason : byte
     {
-        None = 0,
-        RoundStart = 1,
-        LateJoin = 2,
-        Respawn = 3,
-        Died = 4,
-        Escaped = 5,
-        Revived = 6,
-        RemoteAdmin = 7,
-        Destroyed = 8,
+<#= string.Join("\n",Enum.GetValues(typeof(RoleChangeReason)).Cast<RoleChangeReason>().ToList().OrderBy(x => x).Select(x => $"        {x} = {(int)x},"))#>
         Plugin = byte.MaxValue,
     }
 }

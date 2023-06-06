@@ -12,7 +12,7 @@
 <#@ import namespace="PlayerRoles" #>
 <#@ output extension=".md" #>
 ---
-sidebar_position: 1
+sidebar_position: <#= $"{1 << 62} {int.MaxValue / 2 + 1}"#>
 ---
 
 ### Index

@@ -17,6 +17,19 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="Enums\RoleType.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>RoleType.tt</DependentUpon>
+      </None>
+      <None Include="Enums\SpawnReason.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SpawnReason.tt</DependentUpon>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
         <PackageReference Include="System.Memory" Version="4.5.5" />
         <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
@@ -36,6 +49,29 @@
         <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
         <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
         <Reference Include="YamlDotNet" HintPath="$(EXILED_REFERENCES)\YamlDotNet.dll" Private="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Enums\RoleType.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>RoleType.cs</LastGenOutput>
+      </None>
+      <None Update="Enums\SpawnReason.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SpawnReason.cs</LastGenOutput>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Enums\SpawnReason.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SpawnReason.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
