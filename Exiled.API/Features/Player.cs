@@ -3180,11 +3180,28 @@ namespace Exiled.API.Features
             : componentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
+        /// Get the time cooldown on this ItemType.
+        /// </summary>
+        /// <param name="itemType">The itemtypes to choose for getting cooldown.</param>
+        /// <returns>Return the time in seconds of the cooldowns.</returns>
+        public float GetCooldownItem(ItemType itemType)
+            => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : 0;
+
+        /// <summary>
         /// Set the time cooldown on this ItemType.
         /// </summary>
         /// <param name="time">The times for the cooldown.</param>
         /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
+        [Obsolete("Use SetCooldownItem instead", true)]
         public void GetCooldownItem(float time, ItemType itemType)
+            => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
+
+        /// <summary>
+        /// Set the time cooldown on this ItemType.
+        /// </summary>
+        /// <param name="time">The times for the cooldown.</param>
+        /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
+        public void SetCooldownItem(float time, ItemType itemType) // TODO: rename to SetCooldownItem
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
 
         /// <summary>
