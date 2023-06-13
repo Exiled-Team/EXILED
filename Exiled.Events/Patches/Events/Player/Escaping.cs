@@ -124,7 +124,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void GrantAllTickets(EscapingEventArgs ev)
         {
-            if (ev.RespawnTickets.Key != SpawnableTeamType.None)
+            if (ev.RespawnTickets.Key == SpawnableTeamType.NineTailedFox || ev.RespawnTickets.Key == SpawnableTeamType.ChaosInsurgency)
                 RespawnTokensManager.ModifyTokens(ev.RespawnTickets.Key, ev.RespawnTickets.Value);
         }
     }
