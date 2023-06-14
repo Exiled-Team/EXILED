@@ -82,7 +82,7 @@ namespace Exiled.API.Features
 
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Items.Firearm;
-    using FirearmPickup = Exiled.API.Features.Pickups.FirearmPickup;
+    using FirearmPickup = Pickups.FirearmPickup;
     using HumanRole = Roles.HumanRole;
     using Random = UnityEngine.Random;
 
@@ -365,13 +365,9 @@ namespace Exiled.API.Features
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
             set
             {
-                if (string.IsNullOrEmpty(value))
+                // NW Client check.
+                if (value.Contains('<'))
                 {
-                    InfoArea &= PlayerInfoArea.CustomInfo;
-                }
-                else
-                {
-                    // NW Client check.
                     foreach (var token in value.Split('<'))
                     {
                         if (token.StartsWith("/", StringComparison.Ordinal) ||
@@ -384,26 +380,25 @@ namespace Exiled.API.Features
                         if (token.StartsWith("color=", StringComparison.Ordinal))
                         {
                             if (token.Length < 14 || token[13] != '>')
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad text reject) \ntoken: {token} \nInfo: {value}");
                             else if (!Misc.AllowedColors.ContainsValue(token.Substring(6, 7)))
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad colour reject) Info: {value}");
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad color reject) \ntoken: {token} \nInfo: {value}");
                         }
                         else if (token.StartsWith("#", StringComparison.Ordinal))
                         {
                             if (token.Length < 8 || token[7] != '>')
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad text reject) \ntoken: {token} \nInfo: {value}");
                             else if (!Misc.AllowedColors.ContainsValue(token.Substring(0, 7)))
-                                Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad colour reject) Info: {value}");
+                                Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad color reject) \ntoken: {token} \nInfo: {value}");
                         }
                         else
                         {
-                            Log.Error($"Custom info of player {Nickname} has been REJECTED. reason: (Bad text reject) Info: {value}");
+                            Log.Error($"Custom info of player {Nickname} has been REJECTED. \nreason: (Bad color reject) \ntoken: {token} \nInfo: {value}");
                         }
                     }
-
-                    InfoArea |= PlayerInfoArea.CustomInfo;
                 }
 
+                InfoArea = string.IsNullOrEmpty(value) ? InfoArea & ~PlayerInfoArea.CustomInfo : InfoArea |= PlayerInfoArea.CustomInfo;
                 ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
             }
         }
@@ -1066,7 +1061,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => CurrentRoom?.Type == RoomType.Pocket;
+        public bool IsInPocketDimension => CurrentRoom?.Type is RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player should use stamina system.
@@ -1086,7 +1081,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is empty.
         /// </summary>
-        public bool IsInventoryEmpty => Items.Count == 0;
+        public bool IsInventoryEmpty => Items.Count is 0;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's inventory is full.
@@ -1425,16 +1420,7 @@ namespace Exiled.API.Features
         /// <param name="userId">The UserId of the player to add.</param>
         /// <returns><see langword="true"/> if the slot was successfully added, or <see langword="false"/> if the provided UserId already has a reserved slot.</returns>
         /// <seealso cref="GiveReservedSlot()"/>
-        public static bool AddReservedSlot(string userId)
-        {
-            if (!ReservedSlot.HasReservedSlot(userId, out _))
-            {
-                ReservedSlot.Users.Add(userId);
-                return true;
-            }
-
-            return false;
-        }
+        public static bool AddReservedSlot(string userId) => ReservedSlot.Users.Add(userId);
 
         /// <summary>
         /// Reloads the reserved slot list, clearing all reserved slot changes made with add/remove methods and reverting to the reserved slots files.
@@ -1645,9 +1631,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="customRoleFriendlyFireMultiplier"> New rules for CustomeRoleFriendlyFireMultiplier to set to. </param>
         public void TrySetCustomRoleFriendlyFire(Dictionary<string, Dictionary<RoleTypeId, float>> customRoleFriendlyFireMultiplier)
-        {
-            CustomRoleFriendlyFireMultiplier = customRoleFriendlyFireMultiplier;
-        }
+            => CustomRoleFriendlyFireMultiplier = customRoleFriendlyFireMultiplier;
 
         /// <summary>
         /// Sets the <see cref="CustomRoleFriendlyFireMultiplier"/>.
@@ -1675,7 +1659,7 @@ namespace Exiled.API.Features
         /// Forces the player to reload their current weapon.
         /// </summary>
         /// <exception cref="InvalidOperationException">If the item is not a firearm.</exception>
-        public void ReloadWeapon()
+        public void ReloadWeapon() // TODO: Convert to bool instead of Exception
         {
             if (CurrentItem is Firearm firearm)
             {
@@ -1708,14 +1692,14 @@ namespace Exiled.API.Features
         /// <param name="group">The group to be set.</param>
         public void SetRank(string name, UserGroup group)
         {
-            if (ServerStatic.GetPermissionsHandler()._groups.ContainsKey(name))
+            if (ServerStatic.GetPermissionsHandler()._groups.TryGetValue(name, out UserGroup userGroup))
             {
-                ServerStatic.GetPermissionsHandler()._groups[name].BadgeColor = group.BadgeColor;
-                ServerStatic.GetPermissionsHandler()._groups[name].BadgeText = name;
-                ServerStatic.GetPermissionsHandler()._groups[name].HiddenByDefault = !group.Cover;
-                ServerStatic.GetPermissionsHandler()._groups[name].Cover = group.Cover;
+                userGroup.BadgeColor = group.BadgeColor;
+                userGroup.BadgeText = name;
+                userGroup.HiddenByDefault = !group.Cover;
+                userGroup.Cover = group.Cover;
 
-                ReferenceHub.serverRoles.SetGroup(ServerStatic.GetPermissionsHandler()._groups[name], false, false, group.Cover);
+                ReferenceHub.serverRoles.SetGroup(userGroup, false, false, group.Cover);
             }
             else
             {
@@ -1747,10 +1731,7 @@ namespace Exiled.API.Features
         /// <param name="cuffer">The cuffer player.</param>
         public void Handcuff(Player cuffer)
         {
-            if (cuffer?.ReferenceHub == null)
-                return;
-
-            if (!IsCuffed && (Vector3.Distance(Position, cuffer.Position) <= 130f))
+            if (cuffer is not null && !IsCuffed && (cuffer.Position - Position).sqrMagnitude <= DisarmingHandlers.ServerDisarmingDistanceSqrt)
                 Cuffer = cuffer;
         }
 
@@ -1785,7 +1766,7 @@ namespace Exiled.API.Features
         /// Drops the held item. Will not do anything if the player is not holding an item.
         /// </summary>
         /// <seealso cref="CurrentItem"/>
-        public void DropHeldItem()
+        public void DropHeldItem() // TODO: Return Pickup.
         {
             if (CurrentItem is null)
                 return;
@@ -1879,10 +1860,7 @@ namespace Exiled.API.Features
         /// <param name="serial">The <see cref="Item"/> serial to remove.</param>
         /// <param name="destroy">Whether or not to destroy the item.</param>
         /// <returns>A value indicating whether or not the <see cref="Item"/> was removed.</returns>
-        public bool RemoveItem(ushort serial, bool destroy = true)
-        {
-            return RemoveItem(Item.Get(serial), destroy);
-        }
+        public bool RemoveItem(ushort serial, bool destroy = true) => RemoveItem(Item.Get(serial), destroy);
 
         /// <summary>
         /// Removes all <see cref="Item"/>'s that satisfy the condition from the player's inventory.
@@ -2016,14 +1994,14 @@ namespace Exiled.API.Features
         /// Forces the player to use an item.
         /// </summary>
         /// <param name="usableItem">The ItemType to be used.</param>
-        public void UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem));
+        public void UseItem(ItemType usableItem) => UseItem(Item.Create(usableItem)); // TODO: Convert to bool if succesfully done.
 
         /// <summary>
         /// Forces the player to use an item.
         /// </summary>
         /// <param name="item">The item to be used.</param>
         /// <exception cref="ArgumentException">The provided item is not a usable item.</exception>
-        public void UseItem(Item item)
+        public void UseItem(Item item) // TODO: Convert to bool if succesfully done instead of throwing error.
         {
             if (item is not Usable usableItem)
                 throw new ArgumentException($"The provided item [{item.Type}] is not a usable item.", nameof(item));
@@ -2518,16 +2496,8 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            Timing.CallDelayed(
-                0.5f,
-                () =>
-                {
-                    if (newItems.IsEmpty())
-                        return;
-
-                    foreach (ItemType item in newItems)
-                        AddItem(item);
-                });
+            foreach (ItemType item in newItems)
+                AddItem(item);
         }
 
         /// <summary>
@@ -3189,7 +3159,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="time">The times for the cooldown.</param>
         /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
-        public void GetCooldownItem(float time, ItemType itemType)
+        public void GetCooldownItem(float time, ItemType itemType) // TODO: Set not Get
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
 
         /// <summary>

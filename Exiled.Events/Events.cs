@@ -97,14 +97,13 @@ namespace Exiled.Events
 
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
-            AnimatedCharacterModel.OnFootstepPlayed += Handlers.Player.OnMakingNoise;
-
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
 
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Warhead>(this);
+            EventManager.RegisterEvents<Handlers.Player>(this);
         }
 
         /// <inheritdoc/>
@@ -129,12 +128,11 @@ namespace Exiled.Events
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
 
-            AnimatedCharacterModel.OnFootstepPlayed -= Handlers.Player.OnMakingNoise;
-
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
 
             EventManager.UnregisterEvents<Handlers.Warhead>(this);
+            EventManager.UnregisterEvents<Handlers.Player>(this);
         }
 
         /// <summary>

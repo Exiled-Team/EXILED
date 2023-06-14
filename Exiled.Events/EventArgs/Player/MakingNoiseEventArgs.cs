@@ -16,21 +16,19 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player makes noise.
     /// </summary>
-    public class MakingNoiseEventArgs : IPlayerEvent
+    public class MakingNoiseEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MakingNoiseEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="MakingNoiseEventArgs" /> class.
         /// </summary>
-        /// <param name="animatedCharacterModel">
-        ///     The <see cref="AnimatedCharacterModel"/> instance.
-        /// </param>
-        /// <param name="distance">
-        ///     <inheritdoc cref="Distance" />
-        /// </param>
-        public MakingNoiseEventArgs(AnimatedCharacterModel animatedCharacterModel, float distance)
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="distance"><inheritdoc cref="Distance"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public MakingNoiseEventArgs(Player player, float distance, bool isAllowed = true)
         {
-            Player = Player.Get(animatedCharacterModel.OwnerHub);
+            Player = player;
             Distance = distance;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -39,8 +37,11 @@ namespace Exiled.Events.EventArgs.Player
         public Player Player { get; }
 
         /// <summary>
-        ///     Gets the footsteps distance.
+        ///     Gets or sets the footsteps distance.
         /// </summary>
-        public float Distance { get; }
+        public float Distance { get; set; }
+
+        /// <inheritdoc/>
+        public bool IsAllowed { get; set; }
     }
 }
