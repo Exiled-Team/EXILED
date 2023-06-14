@@ -70,7 +70,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (InternalBlastDoors.Count == 0)
+                if (InternalBlastDoors.Count is 0)
                     InternalBlastDoors.AddRange(Object.FindObjectsOfType<BlastDoor>());
 
                 return InternalBlastDoors.AsReadOnly();
@@ -138,12 +138,7 @@ namespace Exiled.API.Features
         public static float DetonationTimer
         {
             get => AlphaWarheadController.TimeUntilDetonation;
-            set
-            {
-                Controller.Info.StartTime = NetworkTime.time;
-                Controller.CurScenario.TimeToDetonate = (int)value;
-                Controller.CurScenario.AdditionalTime = 0;
-            }
+            set => Controller.ForceTime(value);
         }
 
         /// <summary>
