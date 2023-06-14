@@ -58,14 +58,18 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc, player.LocalIndex),
 
-                    // if (!Player.IsVerified && !Player.IsNpc)
-                    //   skip event call
+                    // if (Player.IsVerified)
+                    //  goto jmp
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
                     new(OpCodes.Brtrue_S, jmp),
+
+                    // if (Player.IsNpc)
+                    // skip the event invoke
                     new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsNpc))),
                     new(OpCodes.Brfalse_S, skip),
 
+                    // jmp
                     // if (handler is RecontainmentDamageHandler)
                     // {
                     //    if (player.Role == RoleTypeId.Scp079)
