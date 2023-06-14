@@ -37,10 +37,12 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder ev = generator.DeclareLocal(typeof(HurtingEventArgs));
+            LocalBuilder boolean = generator.DeclareLocal(typeof(bool));
 
             Label notRecontainment = generator.DefineLabel();
             Label ret = generator.DefineLabel();
             Label skip = generator.DefineLabel();
+            Label jmp = generator.DefineLabel();
 
             const int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
@@ -57,9 +59,12 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc, player.LocalIndex),
 
-                    // if (!Player.IsVerified)
-                    //   return;
+                    // if (!Player.IsVerified && !Player.IsNpc)
+                    //   skip event call
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
+                    new(OpCodes.Brtrue_S, jmp),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsNpc))),
                     new(OpCodes.Brfalse_S, skip),
 
                     // if (handler is RecontainmentDamageHandler)
@@ -70,7 +75,7 @@ namespace Exiled.Events.Patches.Events.Player
                     //        return;
                     //    }
                     // }
-                    new(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Ldarg_1).WithLabels(jmp),
                     new(OpCodes.Isinst, typeof(RecontainmentDamageHandler)),
                     new(OpCodes.Brfalse, notRecontainment),
 
