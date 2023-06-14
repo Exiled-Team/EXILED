@@ -63,8 +63,8 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
                     new(OpCodes.Brtrue_S, jmp),
 
-                    // if (Player.IsNpc)
-                    // skip the event invoke
+                    // if (!Player.IsNpc)
+                    //  skip the event invoke
                     new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsNpc))),
                     new(OpCodes.Brfalse_S, skip),
