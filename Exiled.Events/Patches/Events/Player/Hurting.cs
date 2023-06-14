@@ -37,7 +37,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder ev = generator.DeclareLocal(typeof(HurtingEventArgs));
-            LocalBuilder boolean = generator.DeclareLocal(typeof(bool));
 
             Label notRecontainment = generator.DefineLabel();
             Label ret = generator.DefineLabel();
