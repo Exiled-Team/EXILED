@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="ActivatingSenseEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -24,10 +24,10 @@ namespace Exiled.Events.EventArgs.Scp049
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ActivatingSenseEventArgs(ReferenceHub player, ReferenceHub target, bool isAllowed = true)
+        public ActivatingSenseEventArgs(Player player, Player target, bool isAllowed = true)
         {
-            Player = Player.Get(player);
-            Target = Player.Get(target);
+            Player = player;
+            Target = target;
             IsAllowed = isAllowed;
             Cooldown = Scp049SenseAbility.AttemptFailCooldown;
             Duration = Scp049SenseAbility.EffectDuration;
@@ -39,12 +39,12 @@ namespace Exiled.Events.EventArgs.Scp049
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the Player who the sense ability is affecting.
+        /// Gets the Player who the sense ability is affecting.
         /// </summary>
-        public Player Target { get; set; }
+        public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets the cooldown of when the ability failed.
+        /// Gets or sets the cooldown of the ability.
         /// </summary>
         public float Cooldown { get; set; }
 
