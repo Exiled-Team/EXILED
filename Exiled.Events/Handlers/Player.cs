@@ -792,10 +792,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> makes noise.
         /// </summary>
-        /// <param name="animatedCharacterModel"> The <see cref="AnimatedCharacterModel"/> instance.</param>
-        /// <param name="distance">The footsteps distance.</param>
-        public static void OnMakingNoise(AnimatedCharacterModel animatedCharacterModel, float distance)
-            => MakingNoise.InvokeSafely(new MakingNoiseEventArgs(animatedCharacterModel, distance));
+        /// <param name="ev">The <see cref="MakingNoiseEventArgs"/> instance.</param>
+        public static void OnMakingNoise(MakingNoiseEventArgs ev) => MakingNoise.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> jumps.
