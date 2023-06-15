@@ -150,6 +150,11 @@ namespace Exiled.API.Features
         /// </summary>
         public static Dictionary<string, Player> UserIdsCache { get; } = new(20);
 
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their ids.
+        /// </summary>
+        public static Dictionary<int, Player> IdsCache { get; } = new(20);
+
         /// <inheritdoc/>
         public IReadOnlyCollection<EActor> ComponentsInChildren => componentsInChildren;
 
@@ -1256,7 +1261,23 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="id">The player id.</param>
         /// <returns>Returns the player found or <see langword="null"/> if not found.</returns>
-        public static Player Get(int id) => ReferenceHub.HubByPlayerIds.TryGetValue(id, out ReferenceHub referenceHub) ? Get(referenceHub) : null;
+        public static Player Get(int id)
+        {
+            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub is not null)
+                return player;
+
+            foreach (Player playerFound in Dictionary.Values)
+            {
+                if (playerFound.Id != id)
+                    continue;
+
+                IdsCache[id] = playerFound;
+
+                return playerFound;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Gets the <see cref="Player"/> by identifier.
