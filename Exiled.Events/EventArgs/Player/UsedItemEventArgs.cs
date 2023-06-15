@@ -32,15 +32,8 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public UsedItemEventArgs(Player player, UsableItem item)
         {
-            try
-            {
-                Player = player;
-                Item = item is null ? null : (Usable)API.Features.Items.Item.Get(item);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{nameof(UsedItemEventArgs)}.ctor: {e}");
-            }
+            Player = player;
+            Item = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
         }
 
         /// <summary>
