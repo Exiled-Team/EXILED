@@ -141,7 +141,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the time that the ragdoll was spawned.
         /// </summary>
-        public double CreationTime => NetworkInfo.CreationTime;
+         public DateTime CreationTime => DateTime.Now - TimeSpan.FromSeconds(NetworkInfo.CreationTime);
 
         /// <summary>
         /// Gets the <see cref="RoleTypeId"/> of the ragdoll.
