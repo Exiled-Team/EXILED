@@ -45,7 +45,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             const int offset = 1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
-            newInstructions[index].WithLabels(skip);
 
             newInstructions.InsertRange(
                 index,
@@ -108,6 +107,9 @@ namespace Exiled.Events.Patches.Events.Player
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, ret),
+
+                    // skip
+                    new CodeInstruction(OpCodes.Nop).WithLabels(skip),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(ret);
