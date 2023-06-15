@@ -86,7 +86,7 @@ namespace Exiled.Events
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
-            UsableItemsController.ServerOnUsingCompleted += (x, y) => Handlers.Player.OnUsedItem(new(x, y));
+            UsableItemsController.ServerOnUsingCompleted += (hub, usable) => Handlers.Player.OnUsedItem(new(hub, usable));
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
