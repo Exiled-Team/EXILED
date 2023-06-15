@@ -192,24 +192,23 @@ namespace Exiled.Events.Patches.Events.Player
                 new[]
                 {
                     // if (player == null)
-                    //     continue
+                    //   return
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, returnLabel),
 
                     // if (Player.IsVerified)
-                    //  goto jmp
+                    //   goto jmp3;
                     new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsVerified))),
                     new(OpCodes.Brtrue_S, jmp3),
 
                     // if (!Player.IsNpc)
-                    //  goto continueLabel;
+                    //   return
                     new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsNpc))),
                     new(OpCodes.Brfalse_S, returnLabel),
 
-                    // jmp
-
+                    // jmp3
                     // player
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(jmp3),
 
