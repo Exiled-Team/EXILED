@@ -30,9 +30,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="item">
         ///     <inheritdoc cref="Item" />
         /// </param>
-        public UsedItemEventArgs(Player player, UsableItem item)
+        public UsedItemEventArgs(ReferenceHub player, UsableItem item)
         {
-            Player = player;
+            Player = Player.Get(player);
             Item = API.Features.Items.Item.Get(item) is Usable usable ? usable : null;
         }
 

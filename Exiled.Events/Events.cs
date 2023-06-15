@@ -16,9 +16,9 @@ namespace Exiled.Events
     using API.Features;
 
     using EventArgs.Interfaces;
-
+    using Exiled.API.Features.Pickups;
     using HarmonyLib;
-
+    using InventorySystem.Items.Usables;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
@@ -86,7 +86,7 @@ namespace Exiled.Events
 
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Internal.MapGenerated.OnMapGenerated;
-
+            UsableItemsController.ServerOnUsingCompleted += (x, y) => Handlers.Player.OnUsedItem(new(x, y));
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
