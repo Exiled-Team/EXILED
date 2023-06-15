@@ -45,6 +45,11 @@ namespace Exiled.Events.Patches.Events.Player
         {
             if (newRole.ServerSpawnReason != RoleChangeReason.Destroyed && Player.TryGet(hub, out Player player))
             {
+                if (!player.IsVerified && !player.IsNpc)
+                {
+                    return true;
+                }
+
                 Vector3 oldPosition = hub.transform.position;
                 float oldRotation = (prevRole as IFpcRole)?.FpcModule.MouseLook.CurrentVertical ?? 0;
 
