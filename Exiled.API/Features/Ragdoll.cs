@@ -144,6 +144,7 @@ namespace Exiled.API.Features
         public DateTime CreationTime
         {
             get => DateTime.Now - TimeSpan.FromSeconds(NetworkInfo.CreationTime);
+            set => NetworkInfo.CreationTime = value;
         }
         
         /// <summary>
