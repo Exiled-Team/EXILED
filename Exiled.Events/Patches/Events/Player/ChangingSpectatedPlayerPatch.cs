@@ -31,9 +31,15 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
             LocalBuilder owner = generator.DeclareLocal(typeof(ReferenceHub));
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
+            Label jmp = generator.DefineLabel();
+            Label skip = generator.DefineLabel();
+
+            const int index = 0;
+            newInstructions[index].WithLabels(skip);
             newInstructions.InsertRange(
-                0,
+                index,
                 new[]
                 {
                     // _ = this.TryGetOwner(out ReferenceHub owner)
@@ -42,8 +48,26 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerRoleBase), nameof(PlayerRoleBase.TryGetOwner), new[] { typeof(ReferenceHub).MakeByRefType() })),
                     new CodeInstruction(OpCodes.Pop),
 
-                    // owner
+                    // Player player = Player.Get(owner)
                     new CodeInstruction(OpCodes.Ldloc_S, owner.LocalIndex),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, player.LocalIndex),
+
+                    // if (Player.IsVerified)
+                    //  goto jmp;
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
+                    new(OpCodes.Brtrue_S, jmp),
+
+                    // if (!Player.IsNpc)
+                    //  skip the event invoke
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsNpc))),
+                    new(OpCodes.Brfalse_S, skip),
+
+                    // jmp
+                    // owner
+                    new CodeInstruction(OpCodes.Ldloc_S, owner.LocalIndex).WithLabels(jmp),
 
                     // this.SyncedSpectatedNetId
                     new CodeInstruction(OpCodes.Ldarg_0),
