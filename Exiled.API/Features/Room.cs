@@ -197,9 +197,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roomIdentifier">The <see cref="Identifier"/> to search with.</param>
         /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
-        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentifierToRoom.TryGetValue(roomIdentifier, out Room room)
-            ? room
-            : null;
+        public static Room Get(RoomIdentifier roomIdentifier) => roomIdentifier == null ? null :
+            RoomIdentifierToRoom.TryGetValue(roomIdentifier, out Room room) ? room : null;
 
         /// <summary>
         /// Gets a <see cref="Room"/> from a given <see cref="RoomIdentifier"/>.
