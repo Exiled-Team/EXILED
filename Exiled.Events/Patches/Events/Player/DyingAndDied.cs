@@ -36,12 +36,19 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label ret = generator.DefineLabel();
+            Label jmp = generator.DefineLabel();
+            Label jmp2 = generator.DefineLabel();
+            Label skip = generator.DefineLabel();
+            Label skip2 = generator.DefineLabel();
 
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder oldRole = generator.DeclareLocal(typeof(RoleTypeId));
 
+            int index = 0;
+
+            newInstructions[index].WithLabels(skip);
             newInstructions.InsertRange(
-                0,
+                index,
                 new CodeInstruction[]
                 {
                     // Player player = Player.Get(this._hub)
@@ -51,7 +58,22 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, ret),
-                    new(OpCodes.Ldloc_S, player),
+
+                     // if (Player.IsVerified)
+                    //  goto jmp
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
+                    new(OpCodes.Brtrue_S, jmp),
+
+                    // if (!Player.IsNpc)
+                    //  skip the event invoke
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsNpc))),
+                    new(OpCodes.Brfalse_S, skip),
+
+                    // jmp
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(jmp),
 
                     // handler
                     new(OpCodes.Ldarg_1),
@@ -75,12 +97,28 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc, oldRole.LocalIndex),
                 });
 
+            index = newInstructions.Count - 1;
+
+            newInstructions[index].WithLabels(skip2);
             newInstructions.InsertRange(
-                newInstructions.Count - 1,
+                index,
                 new CodeInstruction[]
                 {
-                    // player
+                    // if (Player.IsVerified)
+                    //  goto jmp2
                     new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
+                    new(OpCodes.Brtrue_S, jmp2),
+
+                    // if (!Player.IsNpc)
+                    //  skip the event invoke
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsNpc))),
+                    new(OpCodes.Brfalse_S, skip2),
+
+                    // jmp2
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(jmp2),
 
                     // oldRole
                     new(OpCodes.Ldloc_S, oldRole.LocalIndex),

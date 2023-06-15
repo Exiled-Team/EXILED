@@ -45,6 +45,9 @@ namespace Exiled.Events.Patches.Events.Player
             Label continueLabel = generator.DefineLabel();
             Label continueLabel1 = generator.DefineLabel();
             Label continueLabel2 = generator.DefineLabel();
+            Label jmp = generator.DefineLabel();
+            Label jmp2 = generator.DefineLabel();
+            Label jmp3 = generator.DefineLabel();
 
             LocalBuilder changingRoleEventArgs = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
@@ -64,8 +67,21 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Stloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel),
 
-                    // player
+                    // if (Player.IsVerified)
+                    //  goto jmp
                     new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsVerified))),
+                    new(OpCodes.Brtrue_S, jmp),
+
+                    // if (!Player.IsNpc)
+                    //  goto continueLabel;
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsNpc))),
+                    new(OpCodes.Brfalse_S, continueLabel),
+
+                    // jmp
+                    // player
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(jmp),
 
                     // newRole
                     new(OpCodes.Ldarg_1),
@@ -131,7 +147,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse_S, continueLabel1),
 
                     // player.Role = Role.Create(roleBase);
-                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Ldloc_2),
                     new(OpCodes.Call, Method(typeof(Role), nameof(Role.Create))),
                     new(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
@@ -151,8 +167,21 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, continueLabel2),
 
+                    // if (Player.IsVerified)
+                    //  goto jmp2;
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsVerified))),
+                    new(OpCodes.Brtrue_S, jmp2),
+
+                    // if (!Player.IsNpc)
+                    //  goto continueLabel2;
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsNpc))),
+                    new(OpCodes.Brfalse_S, continueLabel2),
+
+                    // jmp2
                     // changingRoleEventArgs
-                    new(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldloc_S, changingRoleEventArgs.LocalIndex).WithLabels(jmp2),
 
                     // ChangingRole.ChangeInventory(changingRoleEventArgs, oldRoleType);
                     new(OpCodes.Call, Method(typeof(ChangingRoleAndSpawned), nameof(ChangeInventory))),
@@ -167,8 +196,22 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Brfalse_S, returnLabel),
 
+                    // if (Player.IsVerified)
+                    //  goto jmp
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsVerified))),
+                    new(OpCodes.Brtrue_S, jmp3),
+
+                    // if (!Player.IsNpc)
+                    //  goto continueLabel;
+                    new(OpCodes.Ldloc_S, player.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsNpc))),
+                    new(OpCodes.Brfalse_S, returnLabel),
+
+                    // jmp
+
                     // player
-                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex).WithLabels(jmp3),
 
                     // OldRole
                     new(OpCodes.Ldloc_0),
