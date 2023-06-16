@@ -265,9 +265,12 @@ namespace Exiled.API.Features.Roles
                 cardiacArrest.ServerChangeDuration(AttackAbility._statusEffectDuration, false);
             }
 
-            SenseAbility.HasTarget = false;
-            SenseAbility.Cooldown.Trigger(Scp049SenseAbility.ReducedCooldown);
-            SenseAbility.ServerSendRpc(true);
+            if (SenseAbility.HasTarget && AttackAbility._target != SenseAbility.Target)
+            {
+                SenseAbility.HasTarget = false;
+                SenseAbility.Cooldown.Trigger(Scp049SenseAbility.ReducedCooldown);
+                SenseAbility.ServerSendRpc(true);
+            }
 
             AttackAbility.ServerSendRpc(true);
             Hitmarker.SendHitmarker(AttackAbility.Owner, 1f);
