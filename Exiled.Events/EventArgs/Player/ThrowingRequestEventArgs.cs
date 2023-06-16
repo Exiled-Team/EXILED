@@ -35,7 +35,9 @@ namespace Exiled.Events.EventArgs.Player
         /// <inheritdoc />
         public Player Player { get; }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the item being thrown.
+        /// </summary>
         public Throwable Throwable { get; set; }
 
         /// <inheritdoc />

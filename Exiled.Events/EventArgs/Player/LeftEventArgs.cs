@@ -27,6 +27,5 @@ namespace Exiled.Events.EventArgs.Player
         ///     Gets the joined player.
         /// </summary>
         public Player Player { get; }
-
     }
 }

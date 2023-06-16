@@ -36,7 +36,9 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     Gets the SCP-106 who sent the player to the pocket dimension.
+        /// </summary>
         public Player Scp106 { get; }
 
         /// <summary>

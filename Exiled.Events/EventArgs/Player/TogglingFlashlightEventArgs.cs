@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before a player toggles the flashlight.
     /// </summary>
-    public class TogglingFlashlightEventArgs : IPlayerEvent, IExiledEvent, IDeniableEvent
+    public class TogglingFlashlightEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
         private readonly bool initialState;
 

@@ -20,9 +20,6 @@ namespace Exiled.Events.EventArgs.Player
         /// <summary>
         ///     Initializes a new instance of the <see cref="FlippingCoinEventArgs" /> class.
         /// </summary>
-        /// <param name="player">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
         /// <param name="coin">
         ///     <inheritdoc cref="Item" />
         /// </param>

@@ -77,7 +77,6 @@ namespace Exiled.Events.EventArgs.Item
         public bool IsAllowed { get; set; }
 
         /// <inheritdoc />
-
         public Firearm Firearm { get; }
 
         /// <inheritdoc />

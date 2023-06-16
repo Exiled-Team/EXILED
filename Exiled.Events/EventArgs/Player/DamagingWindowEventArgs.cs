@@ -28,7 +28,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         /// <param name="damage">The damage being dealt.</param>
         /// <param name="handler">
-        ///     <inheritdoc cref="Handler" />
+        ///     <inheritdoc cref="DamageHandler" />
         /// </param>
         public DamagingWindowEventArgs(BreakableWindow window, float damage, DamageHandlerBase handler)
         {

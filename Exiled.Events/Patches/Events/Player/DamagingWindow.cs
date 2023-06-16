@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     // damage = ev.Handler.Damage;
                     new(OpCodes.Ldloc, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.Handler))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DamagingWindowEventArgs), nameof(DamagingWindowEventArgs.DamageHandler))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(CustomDamageHandler), nameof(CustomDamageHandler.Damage))),
                     new(OpCodes.Starg_S, 1),
                 });

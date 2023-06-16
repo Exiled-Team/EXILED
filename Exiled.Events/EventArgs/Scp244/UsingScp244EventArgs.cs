@@ -9,7 +9,6 @@ namespace Exiled.Events.EventArgs.Scp244
 {
     using API.Features;
     using API.Features.Items;
-    using Exiled.API.Features.Pickups;
     using Interfaces;
 
     using InventorySystem.Items.Usables.Scp244;
@@ -17,7 +16,7 @@ namespace Exiled.Events.EventArgs.Scp244
     /// <summary>
     ///     Contains all information before radio battery charge is changed.
     /// </summary>
-    public class UsingScp244EventArgs : IPlayerEvent, IPickupEvent, IDeniableEvent
+    public class UsingScp244EventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingScp244EventArgs" /> class.
@@ -44,7 +43,7 @@ namespace Exiled.Events.EventArgs.Scp244
         public Scp244 Scp244 { get; }
 
         /// <inheritdoc />
-        public Pickup Pickup => Scp244;
+        public Item Item => Scp244;
 
         /// <inheritdoc />
         public bool IsAllowed { get; set; }
