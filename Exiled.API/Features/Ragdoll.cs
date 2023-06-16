@@ -144,7 +144,11 @@ namespace Exiled.API.Features
         public DateTime CreationTime
         {
             get => DateTime.Now - TimeSpan.FromSeconds(NetworkInfo.CreationTime);
-            set => NetworkInfo.CreationTime = value;
+            set
+            {
+                float creationTime = (float)(NetworkTime.time - (DateTime.Now - value).TotalSeconds);
+                NetworkInfo = new RagdollData(NetworkInfo.OwnerHub, NetworkInfo.Handler, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, creationTime);
+            }
         }
         
         /// <summary>
