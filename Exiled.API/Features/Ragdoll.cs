@@ -143,7 +143,7 @@ namespace Exiled.API.Features
         /// </summary>
         public DateTime CreationTime
         {
-            get => DateTime.Now - TimeSpan.FromSeconds(NetworkInfo.CreationTime);
+            get => DateTime.Now - TimeSpan.FromSeconds(NetworkInfo.ExistenceTime);
             set
             {
                 float creationTime = (float)(NetworkTime.time - (DateTime.Now - value).TotalSeconds);
