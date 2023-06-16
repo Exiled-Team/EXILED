@@ -8,27 +8,41 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     ///     Contains all information before unmuting a player.
     /// </summary>
-    public class RevokingMuteEventArgs : IssuingMuteEventArgs
+    public class RevokingMuteEventArgs : IPlayerEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RevokingMuteEventArgs" /> class.
         /// </summary>
         /// <param name="player">
-        ///    The player who's being unmuted.
+        ///     <inheritdoc cref="Player" />
         /// </param>
         /// <param name="isIntercom">
-        ///    Indicates whether the player is being intercom unmuted or not.
+        ///     <inheritdoc cref="IsIntercom" />
         /// </param>
         /// <param name="isAllowed">
-        ///    Indicates whether or not the player can be unmuted.
+        ///     <inheritdoc cref="IsAllowed" />
         /// </param>
         public RevokingMuteEventArgs(Player player, bool isIntercom, bool isAllowed = true)
-            : base(player, isIntercom, isAllowed)
         {
+            Player = player;
+            IsIntercom = isIntercom;
+            IsAllowed = isAllowed;
         }
+
+        /// <inheritdoc />
+        public Player Player { get; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the player is being intercom muted or not.
+        /// </summary>
+        public bool IsIntercom { get; set; }
+
+        /// <inheritdoc />
+        public bool IsAllowed { get; set; }
     }
 }

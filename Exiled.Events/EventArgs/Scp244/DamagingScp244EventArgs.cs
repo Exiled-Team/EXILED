@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs.Scp244
     /// <summary>
     ///     Contains all information before damage is dealt to a <see cref="Scp244DeployablePickup" />.
     /// </summary>
-    public class DamagingScp244EventArgs : IDeniableEvent
+    public class DamagingScp244EventArgs : IPickupEvent, IDamageEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DamagingScp244EventArgs" /> class.
@@ -37,8 +37,8 @@ namespace Exiled.Events.EventArgs.Scp244
         public DamagingScp244EventArgs(Scp244DeployablePickup scp244, float damage, DamageHandlerBase handler)
         {
             IsAllowed = handler is ExplosionDamageHandler;
-            Pickup = (Scp244Pickup)API.Features.Pickups.Pickup.Get(scp244);
-            Handler = new(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler)
+            Scp244 = (Scp244Pickup)Pickup.Get(scp244);
+            DamageHandler = new(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler)
             {
                 Damage = damage,
             };
@@ -47,16 +47,15 @@ namespace Exiled.Events.EventArgs.Scp244
         /// <summary>
         ///     Gets the <see cref="Scp244Pickup"/> object that is damaged.
         /// </summary>
-        public Scp244Pickup Pickup { get; }
+        public Scp244Pickup Scp244 { get; }
 
-        /// <summary>
-        ///     Gets the Damage handler for this event.
-        /// </summary>
-        public DamageHandler Handler { get; }
+        /// <inheritdoc />
+        public Pickup Pickup => Scp244;
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the <see cref="Scp244Pickup"/> can be broken.
-        /// </summary>
+        /// <inheritdoc />
+        public CustomDamageHandler DamageHandler { get; set; }
+
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

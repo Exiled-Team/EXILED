@@ -49,14 +49,10 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public WorkstationStatus NewStatus { get; set; } = WorkstationStatus.PoweringUp;
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the workstation can be activated.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's trying to activate the workstation.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

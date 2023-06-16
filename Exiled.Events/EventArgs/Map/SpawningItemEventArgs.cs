@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information before the server spawns an item.
     /// </summary>
-    public class SpawningItemEventArgs : IDeniableEvent, IPickupEvent
+    public class SpawningItemEventArgs : IDeniableEvent, IPickupEvent, IDoorEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="SpawningItemEventArgs" /> class.
@@ -35,13 +35,11 @@ namespace Exiled.Events.EventArgs.Map
         public SpawningItemEventArgs(ItemPickupBase pickupBase, bool shouldInitiallySpawn, DoorVariant door)
         {
             Pickup = Pickup.Get(pickupBase);
-            TriggerDoor = Door.Get(door);
+            Door = Door.Get(door);
             ShouldInitiallySpawn = shouldInitiallySpawn;
         }
 
-        /// <summary>
-        ///     Gets a value indicating the pickup being spawned.
-        /// </summary>
+        /// <inheritdoc />
         public Pickup Pickup { get; }
 
         /// <summary>
@@ -49,19 +47,15 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         public bool ShouldInitiallySpawn { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating the trigger door for pickup.
-        /// </summary>
+        /// <inheritdoc />
         /// <remarks>
         ///     Works only when <see cref="ShouldInitiallySpawn"/> is false.
         ///     null when <see cref="ShouldInitiallySpawn"/> is true.
         ///     Can be not fully initialized.
         /// </remarks>
-        public Door TriggerDoor { get; set; }
+        public Door Door { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the item can be spawned.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

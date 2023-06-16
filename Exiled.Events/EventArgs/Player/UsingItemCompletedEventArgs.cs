@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="UsedItemEventArgs.cs" company="Exiled Team">
+// <copyright file="UsingItemCompletedEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,30 +7,25 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-    using System;
-
     using API.Features;
-    using API.Features.Items;
-
+    using Exiled.API.Features.Items;
     using Interfaces;
 
     using InventorySystem.Items.Usables;
 
     /// <summary>
-    ///     Contains all information after a player used an item.
+    ///     Contains all information before a player uses an item.
     /// </summary>
-    public class UsedItemEventArgs : IPlayerEvent, IUsableEvent
+    public class UsingItemCompletedEventArgs : IPlayerEvent, IUsableEvent, IDeniableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UsedItemEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="UsingItemCompletedEventArgs" /> class.
         /// </summary>
-        /// <param name="player">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
+        /// <param name="player">The player who's going to use the item.</param>
         /// <param name="item">
-        ///     <inheritdoc cref="Item" />
+        ///     <inheritdoc cref="UsedItemEventArgs.Item" />
         /// </param>
-        public UsedItemEventArgs(Player player, UsableItem item)
+        public UsingItemCompletedEventArgs(Player player, UsableItem item)
         {
             Player = player;
             Usable = Item.Get(item) is Usable usable ? usable : null;
@@ -46,5 +41,8 @@ namespace Exiled.Events.EventArgs.Player
 
         /// <inheritdoc />
         public Player Player { get; }
+
+        /// <inheritdoc />
+        public bool IsAllowed { get; set; } = true;
     }
 }

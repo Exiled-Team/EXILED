@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="StalkingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -48,14 +48,10 @@ namespace Exiled.Events.EventArgs.Scp106
         /// </summary>
         public float MinimumVigor { get; set; }
 
-        /// <summary>
-        /// Gets the player who's controlling SCP-106.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-106 can stalk.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

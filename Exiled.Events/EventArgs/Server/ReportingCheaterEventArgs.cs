@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Server
     /// <summary>
     ///     Contains all information before reporting a cheater.
     /// </summary>
-    public class ReportingCheaterEventArgs : IPlayerEvent, IDeniableEvent
+    public class ReportingCheaterEventArgs : IPlayerEvent, ITargetEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ReportingCheaterEventArgs" /> class.

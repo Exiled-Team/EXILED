@@ -14,26 +14,24 @@ namespace Exiled.Events.EventArgs.Scp0492
     /// <summary>
     /// Contains all information before a <see cref="Scp0492Role"/> enters Bloodlust.
     /// </summary>
-    public class TriggeringBloodlustEventArgs : IPlayerEvent, IDeniableEvent
+    public class TriggeringBloodlustEventArgs : IPlayerEvent, ITargetEvent, IDeniableEvent
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TriggeringBloodlustEventArgs"/> class.
         /// </summary>
-        /// <param name="player">The <see cref="API.Features.Player"/> triggering the event.</param>
+        /// <param name="target">The <see cref="API.Features.Player"/> triggering the event.</param>
         /// <param name="scp0492">The <see cref="API.Features.Player"/> who is SCP-049-2.</param>
-        public TriggeringBloodlustEventArgs(Player player, Player scp0492)
+        public TriggeringBloodlustEventArgs(Player target, Player scp0492)
         {
-            Player = player;
-            Scp0492 = scp0492;
+            Player = scp0492;
+            Target = target;
         }
 
         /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Player"/> who is SCP-049-2.
-        /// </summary>
-        public Player Scp0492 { get; }
+        /// <inheritdoc />
+        public Player Target { get; }
 
         /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;

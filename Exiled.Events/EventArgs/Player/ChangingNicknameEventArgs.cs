@@ -37,14 +37,10 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public string NewName { get; set; }
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Player"/> who's name is being changed.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the event should be allowed.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

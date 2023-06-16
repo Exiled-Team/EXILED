@@ -37,15 +37,14 @@ namespace Exiled.Events.EventArgs.Item
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Player"/> who's changing the <see cref="Firearm"/>'s ammo.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Items.Firearm"/> the ammo is being changed to.
-        /// </summary>
+        /// <inheritdoc />
         public Firearm Firearm { get; }
+
+        /// <inheritdoc />
+        public Item Item => Firearm;
 
         /// <summary>
         /// Gets the old ammo.
@@ -57,9 +56,7 @@ namespace Exiled.Events.EventArgs.Item
         /// </summary>
         public byte NewAmmo { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the ammo can be changed.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

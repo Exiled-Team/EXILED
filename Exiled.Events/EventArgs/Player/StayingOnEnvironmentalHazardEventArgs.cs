@@ -27,9 +27,7 @@ namespace Exiled.Events.EventArgs.Player
             EnvironmentalHazard = environmentalHazard;
         }
 
-        /// <summary>
-        /// Gets the player who's staying on the environmental hazard.
-        /// </summary>
+        /// <inheritdoc />
         public API.Features.Player Player { get; }
 
         /// <summary>

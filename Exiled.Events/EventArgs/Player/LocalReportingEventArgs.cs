@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains information before a report is sent to local administrators.
     /// </summary>
-    public class LocalReportingEventArgs : IPlayerEvent, IDeniableEvent
+    public class LocalReportingEventArgs : IPlayerEvent, ITargetEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="LocalReportingEventArgs" /> class.
@@ -39,9 +39,7 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the report target.
-        /// </summary>
+        /// <inheritdoc />
         public Player Target { get; }
 
         /// <summary>
@@ -49,14 +47,10 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public string Reason { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the report can be processed or not.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the report issuer.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

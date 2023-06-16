@@ -37,9 +37,7 @@ namespace Exiled.Events.EventArgs.Player
             Duration = duration;
         }
 
-        /// <summary>
-        ///     Gets the <see cref="Player" /> receiving the effect.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -73,9 +71,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public byte CurrentIntensity { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the effect will be applied.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

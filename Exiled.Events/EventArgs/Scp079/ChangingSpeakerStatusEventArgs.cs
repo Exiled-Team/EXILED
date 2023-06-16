@@ -34,19 +34,13 @@ namespace Exiled.Events.EventArgs.Scp079
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the room that the speaker is located in.
-        /// </summary>
+        /// <inheritdoc />
         public Room Room { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether SCP-079 is speaking or not.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

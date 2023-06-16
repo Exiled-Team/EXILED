@@ -52,15 +52,13 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new[]
                 {
-                    // Player.Get(ReferenceHub)
+                    // this
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]).MoveLabelsFrom(newInstructions[replaceIndex]),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // isTails
                     new(OpCodes.Ldloc_1),
 
-                    // FlippingCoinEventArgs ev = new(Player, bool)
+                    // FlippingCoinEventArgs ev = new(Coin, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(FlippingCoinEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),

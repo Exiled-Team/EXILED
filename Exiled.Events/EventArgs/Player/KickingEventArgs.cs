@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before kicking a player from the server.
     /// </summary>
-    public class KickingEventArgs : IPlayerEvent, IDeniableEvent
+    public class KickingEventArgs : IPlayerEvent, ITargetEvent, IDeniableEvent
     {
         private bool isAllowed;
         private Player issuer;
@@ -49,9 +49,7 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets the ban target.
-        /// </summary>
+        /// <inheritdoc />
         public Player Target
         {
             get => target;
@@ -77,9 +75,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public string FullMessage { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not action is taken against the target.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed
         {
             get => isAllowed;
@@ -95,9 +91,7 @@ namespace Exiled.Events.EventArgs.Player
             }
         }
 
-        /// <summary>
-        ///     Gets or sets the ban issuer.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player
         {
             get => issuer;

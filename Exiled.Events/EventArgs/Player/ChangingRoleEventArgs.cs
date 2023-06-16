@@ -115,9 +115,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public RoleSpawnFlags SpawnFlags { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the event can continue.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

@@ -85,9 +85,7 @@ namespace Exiled.Events.EventArgs.Item
         /// </summary>
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> who's changing attachments.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

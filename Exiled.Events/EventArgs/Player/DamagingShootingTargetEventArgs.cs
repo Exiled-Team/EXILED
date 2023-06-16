@@ -85,19 +85,13 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public float Distance { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the target can be damaged.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the item which is being used to deal the damage.
-        /// </summary>
+        /// <inheritdoc />
         public Item Item { get; }
 
-        /// <summary>
-        ///     Gets the player who's damaging the shooting target.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

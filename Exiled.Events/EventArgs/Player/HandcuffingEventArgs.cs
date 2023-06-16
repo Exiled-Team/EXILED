@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before handcuffing a player.
     /// </summary>
-    public class HandcuffingEventArgs : IPlayerEvent, IDeniableEvent
+    public class HandcuffingEventArgs : IPlayerEvent, ITargetEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="HandcuffingEventArgs" /> class.

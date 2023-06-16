@@ -8,23 +8,40 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
+    using Exiled.Events.EventArgs.Interfaces;
     using MapGeneration.Distributors;
 
     /// <summary>
     ///     Contains all information before a player ejects a tablet from a generator.
     /// </summary>
-    public class StoppingGeneratorEventArgs : ActivatingGeneratorEventArgs
+    public class StoppingGeneratorEventArgs : IPlayerEvent, IGeneratorEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StoppingGeneratorEventArgs" /> class.
         /// </summary>
-        /// <param name="player">The player who's ejecting the tablet.</param>
-        /// <param name="generator">The <see cref="Scp079Generator" /> instance.</param>
-        /// <param name="isAllowed">Indicates whether or not the tablet can be ejected.</param>
+        /// <param name="player">
+        ///     <inheritdoc cref="Player" />
+        /// </param>
+        /// <param name="generator">
+        ///     <inheritdoc cref="Generator" />
+        /// </param>
+        /// <param name="isAllowed">
+        ///     <inheritdoc cref="IsAllowed" />
+        /// </param>
         public StoppingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
-            : base(player, generator, isAllowed)
         {
+            Player = player;
+            Generator = Generator.Get(generator);
+            IsAllowed = isAllowed;
         }
+
+        /// <inheritdoc />
+        public bool IsAllowed { get; set; }
+
+        /// <inheritdoc />
+        public Generator Generator { get; }
+
+        /// <inheritdoc />
+        public Player Player { get; }
     }
 }

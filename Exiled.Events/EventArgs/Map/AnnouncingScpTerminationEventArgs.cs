@@ -53,24 +53,16 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         public string TerminationCause { get; set; }
 
-        /// <summary>
-        ///     Gets the player the announcement is being played for.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the player who killed the SCP.
-        /// </summary>
+        /// <inheritdoc />
         public Player Attacker { get; }
 
-        /// <summary>
-        ///     Gets or sets the <see cref="CustomDamageHandler" />.
-        /// </summary>
+        /// <inheritdoc />
         public CustomDamageHandler DamageHandler { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the SCP termination will be announced by C.A.S.S.I.E.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

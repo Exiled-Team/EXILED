@@ -52,9 +52,7 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         public int UnitNumber { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the NTF spawn will be announced by C.A.S.S.I.E.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

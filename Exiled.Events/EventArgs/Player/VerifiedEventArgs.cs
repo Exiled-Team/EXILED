@@ -24,9 +24,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public VerifiedEventArgs(Player player) => Player = player;
 
-        /// <summary>
-        ///     Gets the verified player.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

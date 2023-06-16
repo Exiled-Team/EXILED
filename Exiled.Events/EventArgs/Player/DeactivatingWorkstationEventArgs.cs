@@ -36,9 +36,7 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> last user of the workstation.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -51,9 +49,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public WorkstationStatus NewStatus { get; set; } = WorkstationStatus.PoweringDown;
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the workstation can be deactivated.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

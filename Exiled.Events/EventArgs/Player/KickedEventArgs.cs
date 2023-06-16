@@ -36,9 +36,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public string Reason { get; }
 
-        /// <summary>
-        ///     Gets the kicked player.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

@@ -31,9 +31,7 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the player who's making noise.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>

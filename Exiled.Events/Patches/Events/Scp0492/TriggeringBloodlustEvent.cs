@@ -29,24 +29,31 @@ namespace Exiled.Events.Patches.Events.Scp0492
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            Label continueLabel = newInstructions[newInstructions.FindIndex(i => i.opcode == OpCodes.Leave_S) + 1].labels[0];
+            Label leave = newInstructions[newInstructions.FindIndex(i => i.opcode == OpCodes.Leave_S) + 1].labels[0];
 
             const int offset = -1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_S) + offset;
 
             newInstructions.InsertRange(index, new CodeInstruction[]
             {
+                // Player.Get(referenceHub)
                 new(OpCodes.Ldloc_1),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // Player.Get(owner)
                 new(OpCodes.Ldarg_1),
                 new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // TriggeringBloodlustEventArgs ev = new(Player, Player)
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringBloodlustEventArgs))[0]),
                 new(OpCodes.Dup),
+
+                // Handlers.Scp0492.OnTriggeringBloodlust(ev);
                 new(OpCodes.Call, Method(typeof(Handlers.Scp0492), nameof(Handlers.Scp0492.OnTriggeringBloodlust))),
+
+                // if (!ev.IsAllowed) return;
                 new(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringBloodlustEventArgs), nameof(TriggeringBloodlustEventArgs.IsAllowed))),
-                new(OpCodes.Brfalse_S, continueLabel),
+                new(OpCodes.Brfalse_S, leave),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

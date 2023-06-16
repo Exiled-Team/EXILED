@@ -49,15 +49,11 @@ namespace Exiled.Events.EventArgs.Scp096
         /// </summary>
         public Scp096Role Scp096 { get; }
 
-        /// <summary>
-        ///     Gets the player who is controlling SCP-096.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Door" /> to be cried on.
-        ///     <remarks>the value can be null</remarks>
-        /// </summary>
+        /// <inheritdoc />
+        /// <remarks>the value can be null.</remarks>
         public Door Door { get; }
 
         /// <summary>
@@ -65,9 +61,7 @@ namespace Exiled.Events.EventArgs.Scp096
         /// </summary>
         public GameObject GameObject { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-096 can try not to cry.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

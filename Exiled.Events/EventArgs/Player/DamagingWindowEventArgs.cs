@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before damage is dealt to a <see cref="BreakableWindow" />.
     /// </summary>
-    public class DamagingWindowEventArgs : IPlayerEvent, IDeniableEvent
+    public class DamagingWindowEventArgs : IPlayerEvent, IDamageEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="DamagingWindowEventArgs" /> class.
@@ -33,9 +33,11 @@ namespace Exiled.Events.EventArgs.Player
         public DamagingWindowEventArgs(BreakableWindow window, float damage, DamageHandlerBase handler)
         {
             Window = Window.Get(window);
-            Handler = new DamageHandler(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler);
-            Handler.Damage = damage;
-            Player = Handler.Attacker;
+            DamageHandler = new CustomDamageHandler(handler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null, handler)
+            {
+                Damage = damage,
+            };
+            Player = DamageHandler.Attacker;
         }
 
         /// <summary>
@@ -43,19 +45,13 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Window Window { get; }
 
-        /// <summary>
-        ///     Gets or sets the Damage handler for this event.
-        /// </summary>
-        public DamageHandler Handler { get; set; }
+        /// <inheritdoc />
+        public CustomDamageHandler DamageHandler { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the window can be broken.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> causing the damage.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

@@ -44,10 +44,8 @@ namespace Exiled.Events.Patches.Events.Player
                 index,
                 new[]
                 {
-                    // Player.Get(base.Owner)
+                    // this
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // (RadioRangeLevel)this._rangeId
                     new(OpCodes.Ldarg_0),

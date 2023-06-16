@@ -24,9 +24,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public LandingEventArgs(Player player) => Player = player;
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> who's landing.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

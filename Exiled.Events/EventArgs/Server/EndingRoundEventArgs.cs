@@ -51,9 +51,7 @@ namespace Exiled.Events.EventArgs.Server
         /// </summary>
         public bool IsRoundEnded { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the event can be executed or not.
-        /// </summary>
+        /// <inheritdoc />
         [Obsolete("Use IsRoundEnded instead", true)]
         public bool IsAllowed
         {

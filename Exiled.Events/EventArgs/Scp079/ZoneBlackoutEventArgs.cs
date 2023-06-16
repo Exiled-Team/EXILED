@@ -54,9 +54,7 @@ namespace Exiled.Events.EventArgs.Scp079
             IsAllowed = scp079HudTranslation is Scp079HudTranslation.Zoom;
         }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -84,9 +82,7 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public float Cooldown { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-079 can lockdown a room.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

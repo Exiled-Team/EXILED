@@ -73,19 +73,17 @@ namespace Exiled.Events.EventArgs.Item
         /// </summary>
         public uint NewCode { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the attachments can be changed.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Firearm" /> which is being modified.
-        /// </summary>
+        /// <inheritdoc />
+
         public Firearm Firearm { get; }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> who's changing attachments.
-        /// </summary>
+        /// <inheritdoc />
+        public Item Item => Firearm;
+
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

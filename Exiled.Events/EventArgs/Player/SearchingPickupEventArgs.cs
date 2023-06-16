@@ -62,19 +62,13 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public float SearchTime { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the Pickup can be searched.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the Pickup that is being searched.
-        /// </summary>
+        /// <inheritdoc />
         public Pickup Pickup { get; }
 
-        /// <summary>
-        ///     Gets the Player who's searching the Pickup.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

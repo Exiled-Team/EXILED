@@ -45,9 +45,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Player NewTarget { get; }
 
-        /// <summary>
-        ///     Gets player that is changing spectated player.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

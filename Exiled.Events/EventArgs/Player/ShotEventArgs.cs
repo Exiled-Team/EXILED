@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information after a player has fired a weapon.
     /// </summary>
-    public class ShotEventArgs : IPlayerEvent
+    public class ShotEventArgs : IPlayerEvent, ITargetEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="ShotEventArgs" /> class.
@@ -46,9 +46,7 @@ namespace Exiled.Events.EventArgs.Player
             }
         }
 
-        /// <summary>
-        ///     Gets the target of the shot. Can be <see langword="null" />!.
-        /// </summary>
+        /// <inheritdoc />
         public Player Target { get; }
 
         /// <summary>
@@ -81,9 +79,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public bool CanHurt { get; set; } = true;
 
-        /// <summary>
-        ///     Gets the player who shot.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

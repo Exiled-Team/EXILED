@@ -43,9 +43,7 @@ namespace Exiled.Events.EventArgs.Scp939
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-939 can play the sound.
-        /// </summary>
+        /// <inheritdoc />
         /// <remarks>This will default to <see langword="false"/> if <see cref="IsReady"/> is <see langword="false"/>. In this case, setting it to <see langword="true"/> will override the cooldown.</remarks>
         public bool IsAllowed { get; set; }
 
@@ -64,9 +62,7 @@ namespace Exiled.Events.EventArgs.Scp939
         /// </summary>
         public float Cooldown { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-939.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

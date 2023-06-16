@@ -55,19 +55,13 @@ namespace Exiled.Events.EventArgs.Scp914
         /// </summary>
         public Scp914KnobSetting KnobSetting { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the upgrade is successful.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets a list of items to be upgraded inside SCP-914.
-        /// </summary>
+        /// <inheritdoc />
         public Item Item { get; }
 
-        /// <summary>
-        ///     Gets the <see cref="Player" /> who owns the item to be upgraded.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

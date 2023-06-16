@@ -24,9 +24,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </param>
         public DroppingNothingEventArgs(Player player) => Player = player;
 
-        /// <summary>
-        ///     Gets the player who's dropping the null item.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

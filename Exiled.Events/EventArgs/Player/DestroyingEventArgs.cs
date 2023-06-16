@@ -30,9 +30,7 @@ namespace Exiled.Events.EventArgs.Player
 #endif
         }
 
-        /// <summary>
-        ///     Gets the destoying player.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

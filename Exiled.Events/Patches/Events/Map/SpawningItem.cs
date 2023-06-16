@@ -103,7 +103,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Ceq),
 
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.TriggerDoor))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.Door))),
                     new(OpCodes.Ldnull),
                     new(OpCodes.Cgt_Un),
 
@@ -130,7 +130,7 @@ namespace Exiled.Events.Patches.Events.Map
             {
                 // door = ev.Door.Base
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.TriggerDoor))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.Door))),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Door), nameof(API.Features.Door.Base))),
             });
 

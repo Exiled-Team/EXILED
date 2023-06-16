@@ -31,14 +31,10 @@ namespace Exiled.Events.EventArgs.Warhead
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the warhead can be stopped.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's going to stop the warhead.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

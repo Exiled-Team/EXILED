@@ -38,14 +38,10 @@ namespace Exiled.Events.EventArgs.Scp079
             IsAllowed = auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy;
         }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.TeslaGate" /> that SCP-079 is triggering.
-        /// </summary>
+        /// <inheritdoc />
         public API.Features.TeslaGate Tesla { get; }
 
         /// <summary>
@@ -53,9 +49,7 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-079 can interact with the tesla gate.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

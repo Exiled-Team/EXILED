@@ -27,9 +27,7 @@ namespace Exiled.Events.EventArgs.Scp079
             Player = target;
         }
 
-        /// <summary>
-        ///     Gets the player that previously controlled SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

@@ -37,9 +37,7 @@ namespace Exiled.Events.EventArgs.Player
             }
         }
 
-        /// <summary>
-        /// Gets the player that is toggling overwatch.
-        /// </summary>
+        /// <inheritdoc />
         public API.Features.Player Player { get; }
 
         /// <summary>
@@ -47,9 +45,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public bool IsEnabled { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the event is allowed or not.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

@@ -45,9 +45,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Item NewItem { get; }
 
-        /// <summary>
-        ///     Gets the player who's changed the item.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

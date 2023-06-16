@@ -33,14 +33,10 @@ namespace Exiled.Events.EventArgs.Map
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the activated generator.
-        /// </summary>
+        /// <inheritdoc />
         public Generator Generator { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the generator can be activated or not.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

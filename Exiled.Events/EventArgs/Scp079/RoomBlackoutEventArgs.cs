@@ -48,14 +48,10 @@ namespace Exiled.Events.EventArgs.Scp079
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the room that will be locked down.
-        /// </summary>
+        /// <inheritdoc />
         public Room Room { get; }
 
         /// <summary>
@@ -73,9 +69,7 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public double Cooldown { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-079 can black out the room.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

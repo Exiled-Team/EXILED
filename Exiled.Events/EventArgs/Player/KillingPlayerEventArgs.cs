@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
+    using Exiled.API.Features.DamageHandlers;
     using Interfaces;
 
     using PlayerStatsSystem;
@@ -14,27 +15,23 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     /// Contains all information before player data to kill player is sent.
     /// </summary>
-    public class KillingPlayerEventArgs : IPlayerEvent
+    public class KillingPlayerEventArgs : IPlayerEvent, IDamageEvent
     {
         /// <summary>
         ///  Initializes a new instance of the <see cref="KillingPlayerEventArgs"/> class.
         /// </summary>
         /// <param name="player"> Current player. </param>
         /// <param name="handler"> DamageHandler instance. </param>
-        public KillingPlayerEventArgs(API.Features.Player player, ref DamageHandlerBase handler)
+        public KillingPlayerEventArgs(API.Features.Player player, PlayerStatsSystem.DamageHandlerBase handler)
         {
             Player = player;
-            Handler = handler;
+            DamageHandler = new CustomDamageHandler(Player, handler);
         }
 
-        /// <summary>
-        /// Gets or sets current player.
-        /// </summary>
+        /// <inheritdoc />
         public API.Features.Player Player { get; set; }
 
-        /// <summary>
-        /// Gets or sets current Damage Handler.
-        /// </summary>
-        public DamageHandlerBase Handler { get; set; }
+        /// <inheritdoc />
+        public CustomDamageHandler DamageHandler { get; set; }
     }
 }

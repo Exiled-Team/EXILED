@@ -33,9 +33,7 @@ namespace Exiled.Events.EventArgs.Player
             SpawnFlags = Player.Role.SpawnFlags;
         }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Player" /> who spawned.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>

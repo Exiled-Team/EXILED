@@ -45,19 +45,13 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public RoleTypeId TargetOldRole { get; }
 
-        /// <summary>
-        ///     Gets the killed player.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets or sets the <see cref="DamageHandler" />.
-        /// </summary>
+        /// <inheritdoc />
         public CustomDamageHandler DamageHandler { get; set; }
 
-        /// <summary>
-        ///     Gets the killer player.
-        /// </summary>
+        /// <inheritdoc />
         public Player Attacker { get; }
     }
 }

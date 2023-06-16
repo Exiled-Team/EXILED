@@ -16,7 +16,7 @@ namespace Exiled.Events.EventArgs.Map
     /// <summary>
     ///     Contains all information before placing a blood decal.
     /// </summary>
-    public class PlacingBloodEventArgs : IPlayerEvent, IDeniableEvent
+    public class PlacingBloodEventArgs : IPlayerEvent, ITargetEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlacingBloodEventArgs" /> class.
@@ -41,14 +41,10 @@ namespace Exiled.Events.EventArgs.Map
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the <see cref="Player"/> who's placing the blood.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the target's <see cref="Player"/> instance.
-        /// </summary>
+        /// <inheritdoc />
         public Player Target { get; }
 
         /// <summary>
@@ -56,9 +52,7 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         public Vector3 Position { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the blood can be placed.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

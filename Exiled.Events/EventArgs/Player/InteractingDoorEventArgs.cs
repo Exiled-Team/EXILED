@@ -37,19 +37,13 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can interact with the door.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the <see cref="API.Features.Door" /> instance.
-        /// </summary>
+        /// <inheritdoc />
         public Door Door { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's interacting with the door.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

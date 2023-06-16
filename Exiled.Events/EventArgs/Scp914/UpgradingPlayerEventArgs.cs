@@ -63,14 +63,10 @@ namespace Exiled.Events.EventArgs.Scp914
         /// </summary>
         public Scp914KnobSetting KnobSetting { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the event can continue.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
 
-        /// <summary>
-        ///     Gets the player being upgraded.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

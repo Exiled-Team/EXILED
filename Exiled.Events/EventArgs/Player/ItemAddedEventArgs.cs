@@ -32,19 +32,13 @@ namespace Exiled.Events.EventArgs.Player
             Pickup = Pickup.Get(pickupBase);
         }
 
-        /// <summary>
-        /// Gets the player that had the item added.
-        /// </summary>
+        /// <inheritdoc />
         public API.Features.Player Player { get; }
 
-        /// <summary>
-        /// Gets the item that was added.
-        /// </summary>
+        /// <inheritdoc />
         public Item Item { get; }
 
-        /// <summary>
-        /// Gets the pickup that the item originated from or <see langword="null"/> if the item was not picked up.
-        /// </summary>
+        /// <inheritdoc />
         public Pickup Pickup { get; }
     }
 }

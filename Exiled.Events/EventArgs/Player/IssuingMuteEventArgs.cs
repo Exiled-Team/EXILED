@@ -35,9 +35,7 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the player who's being muted.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -45,9 +43,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public bool IsIntercom { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can be muted.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

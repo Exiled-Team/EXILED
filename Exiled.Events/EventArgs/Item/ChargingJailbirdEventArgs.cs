@@ -25,23 +25,22 @@ namespace Exiled.Events.EventArgs.Item
         public ChargingJailbirdEventArgs(ReferenceHub player, InventorySystem.Items.ItemBase swingItem, bool isAllowed = true)
         {
             Player = Player.Get(player);
-            Item = Item.Get(swingItem);
+            Jailbird = (Jailbird)Item.Get(swingItem);
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Player"/> who's charging an item.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
         /// Gets the <see cref="API.Features.Items.Item"/> that is being charged. This will always be a <see cref="Jailbird"/>.
         /// </summary>
-        public Item Item { get; }
+        public Jailbird Jailbird { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the Jailbird can be charged.
-        /// </summary>
+        /// <inheritdoc />
+        public Item Item => Jailbird;
+
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

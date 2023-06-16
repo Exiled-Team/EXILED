@@ -35,9 +35,7 @@ namespace Exiled.Events.EventArgs.Player
             IsTransmitting = voiceModule == null ? false : voiceModule.ServerIsSending && voiceModule.CurrentChannel == VoiceChatChannel.Radio;
         }
 
-        /// <summary>
-        ///     Gets the player who's transmitting.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -50,9 +48,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public bool IsTransmitting { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can transmit.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

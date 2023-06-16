@@ -42,14 +42,10 @@ namespace Exiled.Events.EventArgs.Scp096
         /// </summary>
         public Scp096Role Scp096 { get; }
 
-        /// <summary>
-        ///     Gets the player who is controlling SCP-096.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-096 can charge.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

@@ -44,9 +44,7 @@ namespace Exiled.Events.EventArgs.Scp079
             IsAllowed = auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy;
         }
 
-        /// <summary>
-        ///     Gets the player who is controlling SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -54,9 +52,7 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 
-        /// <summary>
-        ///     Gets <see cref="Room" /> SCP-079 is in.
-        /// </summary>
+        /// <inheritdoc />
         public Room Room { get; }
 
         /// <summary>
@@ -64,8 +60,8 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public Lift Lift { get; }
 
+        /// <inheritdoc />
         /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-079 can teleport.
         ///     Defaults to a <see cref="bool" /> describing whether or not SCP-079 has enough auxiliary power to teleport.
         /// </summary>
         public bool IsAllowed { get; set; }

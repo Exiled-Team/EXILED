@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information before radio battery charge is changed.
     /// </summary>
-    public class UsingRadioBatteryEventArgs : IPlayerEvent, IDeniableEvent
+    public class UsingRadioBatteryEventArgs : IPlayerEvent, IItemEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="UsingRadioBatteryEventArgs" /> class.
@@ -47,14 +47,15 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Radio Radio { get; }
 
+        /// <inheritdoc />
+        public Item Item => Radio;
+
         /// <summary>
         ///     Gets or sets the radio battery drain per second.
         /// </summary>
         public float Drain { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the radio battery charge can be changed or not.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
         /// <summary>

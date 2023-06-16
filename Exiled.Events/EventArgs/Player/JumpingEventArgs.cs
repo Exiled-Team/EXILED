@@ -37,9 +37,7 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the player who's jumping.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -56,9 +54,7 @@ namespace Exiled.Events.EventArgs.Player
             set => Direction += Vector3.up * value;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the client data can be synchronized with the server.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

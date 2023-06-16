@@ -33,9 +33,7 @@ namespace Exiled.Events.EventArgs.Player
             TeleportPosition = position;
         }
 
-        /// <summary>
-        ///     Gets the player who's escaping the pocket dimension.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -43,9 +41,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Vector3 TeleportPosition { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can successfully escape the pocket dimension.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

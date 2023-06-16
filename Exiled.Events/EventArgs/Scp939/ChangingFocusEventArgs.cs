@@ -34,9 +34,7 @@ namespace Exiled.Events.EventArgs.Scp939
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-939 can focus.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
         /// <summary>
@@ -44,9 +42,7 @@ namespace Exiled.Events.EventArgs.Scp939
         /// </summary>
         public bool State { get; }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-939.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

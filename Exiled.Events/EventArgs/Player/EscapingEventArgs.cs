@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs.Player
         ///     <inheritdoc cref="EscapeScenario" />
         /// </param>
         /// <param name="respawnTickets">
-        ///     <inheritdoc cref="EscapingEventArgs.RespawnTickets"/>
+        ///     <inheritdoc cref="RespawnTickets"/>
         /// </param>
         public EscapingEventArgs(Player player, RoleTypeId newRole, EscapeScenario escapeScenario, KeyValuePair<SpawnableTeamType, float> respawnTickets)
             : this(player, newRole, escapeScenario)
@@ -89,9 +89,7 @@ namespace Exiled.Events.EventArgs.Player
                 RespawnTickets = new KeyValuePair<SpawnableTeamType, float>(teamToGrantTickets, ticketsToGrant);
         }
 
-        /// <summary>
-        ///     Gets the player who's escaping.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -110,9 +108,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <seealso cref="RespawnTokensManager"/>
         public KeyValuePair<SpawnableTeamType, float> RespawnTickets { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can escape.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

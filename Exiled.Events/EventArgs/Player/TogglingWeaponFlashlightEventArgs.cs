@@ -37,26 +37,21 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-#pragma warning disable SA1623 // Property summary documentation should match accessors
         /// <summary>
-        ///     Gets or sets the new weapon's flashlight state.
+        ///     Gets or sets a value indicating whether the new weapon's flashlight state.
         /// </summary>
         public bool NewState { get; set; }
-#pragma warning restore SA1623 // Property summary documentation should match accessors
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the weapon's flashlight can be toggled.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Firearm" /> being held.
-        /// </summary>
+        /// <inheritdoc />
         public Firearm Firearm { get; }
 
-        /// <summary>
-        ///     Gets the player who's toggling the weapon's flashlight.
-        /// </summary>
+        /// <inheritdoc />
+        public Item Item => Firearm;
+
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

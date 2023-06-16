@@ -54,9 +54,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public int Amount { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the ammo can be dropped.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed
         {
             get
@@ -74,9 +72,7 @@ namespace Exiled.Events.EventArgs.Player
             }
         }
 
-        /// <summary>
-        ///     Gets the player who's dropping the ammo.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

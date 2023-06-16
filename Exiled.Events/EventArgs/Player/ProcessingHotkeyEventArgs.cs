@@ -41,14 +41,10 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public HotkeyButton Hotkey { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the hotkey is allowed to be pressed.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's pressing the hotkey.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

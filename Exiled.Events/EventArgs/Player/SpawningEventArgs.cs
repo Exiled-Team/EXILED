@@ -42,9 +42,7 @@ namespace Exiled.Events.EventArgs.Player
             OldRole = Role.Create(oldRole);
         }
 
-        /// <summary>
-        ///     Gets the spawning <see cref="Player"/>.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>

@@ -8,21 +8,39 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
+    using Exiled.Events.EventArgs.Interfaces;
 
     /// <summary>
     ///     Contains all information before freeing a handcuffed player.
     /// </summary>
-    public class RemovingHandcuffsEventArgs : HandcuffingEventArgs
+    public class RemovingHandcuffsEventArgs : IPlayerEvent, ITargetEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="RemovingHandcuffsEventArgs" /> class.
         /// </summary>
-        /// <param name="cuffer">The cuffer player.</param>
-        /// <param name="target">The target player to be uncuffed.</param>
-        /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
+        /// <param name="cuffer">
+        ///     <inheritdoc cref="Player" />
+        /// </param>
+        /// <param name="target">
+        ///     <inheritdoc cref="Target" />
+        /// </param>
+        /// <param name="isAllowed">
+        ///     <inheritdoc cref="IsAllowed" />
+        /// </param>
         public RemovingHandcuffsEventArgs(Player cuffer, Player target, bool isAllowed = true)
-            : base(cuffer, target, isAllowed)
         {
+            Player = cuffer;
+            Target = target;
+            IsAllowed = isAllowed;
         }
+
+        /// <inheritdoc />
+        public Player Target { get; }
+
+        /// <inheritdoc />
+        public bool IsAllowed { get; set; }
+
+        /// <inheritdoc />
+        public Player Player { get; }
     }
 }

@@ -40,14 +40,10 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public int NewLevel { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the level is successfully granted.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

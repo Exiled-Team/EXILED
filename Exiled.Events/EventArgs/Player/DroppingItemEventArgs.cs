@@ -51,9 +51,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public bool IsThrown { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the item can be dropped.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed
         {
             get
@@ -71,14 +69,10 @@ namespace Exiled.Events.EventArgs.Player
             }
         }
 
-        /// <summary>
-        ///     Gets the item to be dropped.
-        /// </summary>
+        /// <inheritdoc />
         public Item Item { get; }
 
-        /// <summary>
-        ///     Gets the player who's dropping the item.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

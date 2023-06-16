@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="SendingCallEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -29,9 +29,7 @@ namespace Exiled.Events.EventArgs.Scp049
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        /// Gets the player who is controlling SCP-049.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
         /// <summary>
@@ -39,9 +37,7 @@ namespace Exiled.Events.EventArgs.Scp049
         /// </summary>
         public float Duration { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the server will send 049 information on the call.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

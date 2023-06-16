@@ -49,14 +49,10 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public Lift Lift { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can interact with the elevator.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's interacting with the elevator.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

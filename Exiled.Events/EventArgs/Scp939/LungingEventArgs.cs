@@ -31,14 +31,10 @@ namespace Exiled.Events.EventArgs.Scp939
             Player = Player.Get(player);
         }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-939.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-939 can lunge.
-        /// </summary>
+        /// <inheritdoc />
         [Obsolete("Deprecated.")]
         public bool IsAllowed { get; set; } = true;
     }

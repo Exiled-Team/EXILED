@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Player
     /// <summary>
     ///     Contains all information after banning a player from the server.
     /// </summary>
-    public class BannedEventArgs : IPlayerEvent
+    public class BannedEventArgs : IPlayerEvent, ITargetEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="BannedEventArgs" /> class.

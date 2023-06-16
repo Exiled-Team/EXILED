@@ -32,9 +32,7 @@ namespace Exiled.Events.EventArgs.Server
         /// </summary>
         public UnitNamingRule UnitNamingRule { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the unit name can be added.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

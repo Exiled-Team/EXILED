@@ -37,19 +37,13 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the switch can be flipped.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the <see cref="Generator" /> instance.
-        /// </summary>
+        /// <inheritdoc />
         public Generator Generator { get; }
 
-        /// <summary>
-        ///     Gets the player who's filpping the switch of the generator.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

@@ -31,14 +31,10 @@ namespace Exiled.Events.EventArgs.Scp914
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-914 can be activated.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's activating SCP-914.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

@@ -25,9 +25,7 @@ namespace Exiled.Events.EventArgs.Map
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not light containment zone decontamination can begin.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

@@ -37,19 +37,13 @@ namespace Exiled.Events.EventArgs.Player
             Pickup = Pickup.Get(pickup);
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the item can be picked up.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the dropped pickup.
-        /// </summary>
+        /// <inheritdoc />
         public Pickup Pickup { get; }
 
-        /// <summary>
-        ///     Gets the player who dropped the item.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

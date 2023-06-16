@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ConsumingCorpseEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -34,14 +34,10 @@ namespace Exiled.Events.EventArgs.Scp049
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the player who is controlling SCP-049-2.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the RagDoll to be consumed.
-        /// </summary>
+        /// <inheritdoc />
         public Ragdoll Ragdoll { get; }
 
         /// <summary>
@@ -49,9 +45,7 @@ namespace Exiled.Events.EventArgs.Scp049
         /// </summary>
         public ZombieConsumeAbility.ConsumeError ErrorCode { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether 049-2 can consume a corpse.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

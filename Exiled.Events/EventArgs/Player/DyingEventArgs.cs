@@ -46,24 +46,16 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public List<Item> ItemsToDrop { get; set; }
 
-        /// <summary>
-        ///     Gets the dying player.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets or sets the <see cref="CustomDamageHandler" />.
-        /// </summary>
+        /// <inheritdoc />
         public CustomDamageHandler DamageHandler { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can be killed.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
 
-        /// <summary>
-        ///     Gets the killing player.
-        /// </summary>
+        /// <inheritdoc />
         public Player Attacker { get; }
     }
 }

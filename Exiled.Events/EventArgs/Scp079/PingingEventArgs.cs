@@ -59,9 +59,7 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public Vector3 SyncNormal { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the event is allowed to continue.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
         /// <summary>
@@ -79,14 +77,10 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public Vector3 Position { get; set; }
 
-        /// <summary>
-        /// Gets the room where the ping is located in.
-        /// </summary>
+        /// <inheritdoc />
         public Room Room { get; }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

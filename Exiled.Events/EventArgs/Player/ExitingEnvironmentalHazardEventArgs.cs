@@ -29,9 +29,7 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        /// Gets the player who's exiting from the environmental hazard.
-        /// </summary>
+        /// <inheritdoc />
         public API.Features.Player Player { get; }
 
         /// <summary>
@@ -39,9 +37,7 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public EnvironmentalHazard EnvironmentalHazard { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the player should be affected by the environmental hazard.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

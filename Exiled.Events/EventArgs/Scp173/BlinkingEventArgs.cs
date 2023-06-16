@@ -57,14 +57,10 @@ namespace Exiled.Events.EventArgs.Scp173
         /// </summary>
         public List<Player> Targets { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player is allowed to blink.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
 
-        /// <summary>
-        ///     Gets the player who controlling SCP-173.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

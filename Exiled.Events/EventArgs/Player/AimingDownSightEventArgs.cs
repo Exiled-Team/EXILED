@@ -51,14 +51,13 @@ namespace Exiled.Events.EventArgs.Player
         /// </summary>
         public bool AdsOut { get; }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Firearm" /> used to trigger the aim action.
-        /// </summary>
+        /// <inheritdoc />
         public Firearm Firearm { get; }
 
-        /// <summary>
-        ///     Gets the player who's triggering the aim action.
-        /// </summary>
+        /// <inheritdoc />
+        public Item Item => Firearm;
+
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

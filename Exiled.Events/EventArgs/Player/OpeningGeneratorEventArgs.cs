@@ -37,19 +37,13 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the generator can be opened.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the generator that is opening.
-        /// </summary>
+        /// <inheritdoc />
         public Generator Generator { get; }
 
-        /// <summary>
-        ///     Gets the player who's opening the generator.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

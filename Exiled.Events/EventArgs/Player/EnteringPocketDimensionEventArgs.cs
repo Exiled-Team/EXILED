@@ -8,7 +8,7 @@
 namespace Exiled.Events.EventArgs.Player
 {
     using API.Features;
-
+    using Exiled.API.Features.Roles;
     using Interfaces;
 
     /// <summary>
@@ -32,22 +32,22 @@ namespace Exiled.Events.EventArgs.Player
         {
             Player = player;
             Scp106 = scp106;
+            Scp106Role = Scp106.Role as Scp106Role;
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the SCP-106 who sent the player to the pocket dimension.
-        /// </summary>
+        /// <inheritdoc />
         public Player Scp106 { get; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can enter the pocket dimension.
+        ///     Gets the SCP-106 Role who sent the player to the pocket dimension.
         /// </summary>
+        public Scp106Role Scp106Role { get; }
+
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's entering the pocket dimension.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Scp096
     /// <summary>
     ///     Contains all information before adding a target to SCP-096.
     /// </summary>
-    public class AddingTargetEventArgs : IPlayerEvent, IDeniableEvent
+    public class AddingTargetEventArgs : IPlayerEvent, ITargetEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="AddingTargetEventArgs" /> class.
@@ -39,14 +39,10 @@ namespace Exiled.Events.EventArgs.Scp096
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the <see cref="Player" /> that is controlling SCP-096.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the <see cref="Player" /> being added as a target.
-        /// </summary>
+        /// <inheritdoc />
         public Player Target { get; }
 
         /// <summary>
@@ -54,9 +50,7 @@ namespace Exiled.Events.EventArgs.Scp096
         /// </summary>
         public bool IsLooking { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the target is allowed to be added.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

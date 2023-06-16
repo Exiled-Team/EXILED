@@ -33,19 +33,16 @@ namespace Exiled.Events.EventArgs.Player
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the weapon can be reloaded.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the <see cref="API.Features.Items.Firearm" /> being reloaded.
-        /// </summary>
+        /// <inheritdoc />
         public Firearm Firearm { get; }
 
-        /// <summary>
-        ///     Gets the player who's reloading the weapon.
-        /// </summary>
+        /// <inheritdoc />
+        public Item Item => Firearm;
+
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

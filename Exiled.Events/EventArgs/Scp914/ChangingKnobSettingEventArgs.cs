@@ -48,14 +48,10 @@ namespace Exiled.Events.EventArgs.Scp914
             set => knobSetting = value > Scp914KnobSetting.VeryFine ? Scp914KnobSetting.Coarse : value;
         }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-914's knob setting can be changed.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's changing the SCP-914 knob setting.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

@@ -37,9 +37,7 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         public float Duration { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the lights can be turned off.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

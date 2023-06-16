@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs.Scp079
     /// <summary>
     ///     Contains all information before SCP-079 uses a speaker.
     /// </summary>
-    public class StartingSpeakerEventArgs : IPlayerEvent, IDeniableEvent
+    public class StartingSpeakerEventArgs : IPlayerEvent, IRoomEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StartingSpeakerEventArgs" /> class.
@@ -38,14 +38,10 @@ namespace Exiled.Events.EventArgs.Scp079
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the player who's controlling SCP-079.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the room that the speaker is located in.
-        /// </summary>
+        /// <inheritdoc />
         public Room Room { get; }
 
         /// <summary>
@@ -53,9 +49,7 @@ namespace Exiled.Events.EventArgs.Scp079
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not SCP-079 can use the speaker.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

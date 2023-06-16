@@ -31,9 +31,7 @@ namespace Exiled.Events.EventArgs.Map
             Type = Pickup.Type;
         }
 
-        /// <summary>
-        /// Gets a value indicating the pickup being changed.
-        /// </summary>
+        /// <inheritdoc />
         public Pickup Pickup { get; }
 
         /// <summary>
@@ -41,9 +39,7 @@ namespace Exiled.Events.EventArgs.Map
         /// </summary>
         public ItemType Type { get; set; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the pickup will be changed.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; } = true;
     }
 }

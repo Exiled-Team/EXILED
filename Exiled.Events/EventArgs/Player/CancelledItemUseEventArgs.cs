@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="UsedItemEventArgs.cs" company="Exiled Team">
+// <copyright file="CancelledItemUseEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,38 +7,30 @@
 
 namespace Exiled.Events.EventArgs.Player
 {
-    using System;
-
     using API.Features;
-    using API.Features.Items;
-
-    using Interfaces;
-
+    using Exiled.API.Features.Items;
+    using Exiled.Events.EventArgs.Interfaces;
     using InventorySystem.Items.Usables;
 
     /// <summary>
-    ///     Contains all information after a player used an item.
+    ///     Contains all information before a player cancels usage of an item.
     /// </summary>
-    public class UsedItemEventArgs : IPlayerEvent, IUsableEvent
+    public class CancelledItemUseEventArgs : IPlayerEvent, IUsableEvent
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="UsedItemEventArgs" /> class.
+        ///     Initializes a new instance of the <see cref="CancelledItemUseEventArgs" /> class.
         /// </summary>
-        /// <param name="player">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
+        /// <param name="player">The player who's stopping the use of an item.</param>
         /// <param name="item">
-        ///     <inheritdoc cref="Item" />
+        ///     <inheritdoc cref="UsedItemEventArgs.Item" />
         /// </param>
-        public UsedItemEventArgs(Player player, UsableItem item)
+        public CancelledItemUseEventArgs(Player player, UsableItem item)
         {
             Player = player;
             Usable = Item.Get(item) is Usable usable ? usable : null;
         }
 
-        /// <summary>
-        ///     Gets the item that the player using.
-        /// </summary>
+        /// <inheritdoc />
         public Usable Usable { get; }
 
         /// <inheritdoc />

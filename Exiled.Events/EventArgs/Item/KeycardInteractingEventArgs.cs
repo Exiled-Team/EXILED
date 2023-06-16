@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs.Item
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public KeycardInteractingEventArgs(BaseKeycardPickup pickup, Player player, DoorVariant door, bool isAllowed = true)
         {
-            Pickup = Pickup.Get(pickup);
+            KeycardPickup = (KeycardPickup)Pickup.Get(pickup);
             Player = player;
             Door = Door.Get(door);
             IsAllowed = isAllowed;
@@ -38,21 +38,18 @@ namespace Exiled.Events.EventArgs.Item
         /// <summary>
         /// Gets the pickup that's interacting with the door.
         /// </summary>
-        public Pickup Pickup { get; }
+        public KeycardPickup KeycardPickup { get; }
 
-        /// <summary>
-        /// Gets the player who's threw the keycard.
-        /// </summary>
+        /// <inheritdoc />
+        public Pickup Pickup => KeycardPickup;
+
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Door"/> instance.
-        /// </summary>
+        /// <inheritdoc />
         public Door Door { get; }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the keycard can interact with the door.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
     }
 }

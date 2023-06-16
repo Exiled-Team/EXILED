@@ -36,14 +36,10 @@ namespace Exiled.Events.EventArgs.Scp330
         /// </summary>
         public ICandy Candy { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether or not the player can eat SCP-330.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who's eating SCP-330.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
     }
 }

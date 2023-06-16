@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs.Scp049
     /// <summary>
     ///     Contains all information before SCP-049 begins recalling a player.
     /// </summary>
-    public class StartingRecallEventArgs : IPlayerEvent, IRagdollEvent, IDeniableEvent
+    public class StartingRecallEventArgs : IPlayerEvent, IRagdollEvent, ITargetEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StartingRecallEventArgs" /> class.
@@ -39,24 +39,16 @@ namespace Exiled.Events.EventArgs.Scp049
             IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        ///     Gets the player who's getting recalled.
-        /// </summary>
+        /// <inheritdoc />
         public Player Target { get; }
 
-        /// <summary>
-        ///     Gets or sets a value indicating whether the recall can begin.
-        /// </summary>
+        /// <inheritdoc />
         public bool IsAllowed { get; set; }
 
-        /// <summary>
-        ///     Gets the player who is controlling SCP-049.
-        /// </summary>
+        /// <inheritdoc />
         public Player Player { get; }
 
-        /// <summary>
-        ///     Gets the Ragdoll who's getting recalled.
-        /// </summary>
+        /// <inheritdoc />
         public Ragdoll Ragdoll { get; }
     }
 }
