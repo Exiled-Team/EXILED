@@ -150,6 +150,7 @@ namespace Exiled.API.Features
                 NetworkInfo = new RagdollData(NetworkInfo.OwnerHub, NetworkInfo.Handler, NetworkInfo.RoleType, NetworkInfo.StartPosition, NetworkInfo.StartRotation, NetworkInfo.Nickname, creationTime);
             }
         }
+
         /// <summary>
         /// Gets the <see cref="RoleTypeId"/> of the ragdoll.
         /// </summary>
