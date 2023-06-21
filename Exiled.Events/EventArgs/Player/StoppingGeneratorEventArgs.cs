@@ -12,22 +12,16 @@ namespace Exiled.Events.EventArgs.Player
     using MapGeneration.Distributors;
 
     /// <summary>
-    ///     Contains all information before a player ejects a tablet from a generator.
+    ///     Contains all information before a player flips the switch of the generator.
     /// </summary>
     public class StoppingGeneratorEventArgs : IPlayerEvent, IGeneratorEvent, IDeniableEvent
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="StoppingGeneratorEventArgs" /> class.
         /// </summary>
-        /// <param name="player">
-        ///     <inheritdoc cref="Player" />
-        /// </param>
-        /// <param name="generator">
-        ///     <inheritdoc cref="Generator" />
-        /// </param>
-        /// <param name="isAllowed">
-        ///     <inheritdoc cref="IsAllowed" />
-        /// </param>
+        /// <param name="player">The player who's flipping the switch.</param>
+        /// <param name="generator">The <see cref="Scp079Generator" /> instance.</param>
+        /// <param name="isAllowed">Indicates whether or not the switch of the generator can be flipped.</param>
         public StoppingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
             Player = player;
