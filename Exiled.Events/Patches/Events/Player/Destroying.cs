@@ -55,13 +55,13 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ceq),
                     new(OpCodes.Brtrue_S, continueLabel),
 
-                    // if (Player.IsVerified)
+                    // if (player.IsVerified)
                     //  goto jmp
                     new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsVerified))),
                     new(OpCodes.Brtrue_S, jmp),
 
-                    // if (!Player.IsNpc)
+                    // if (!player.IsNpc)
                     //  goto continueLabel;
                     new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(API.Features.Player.IsNPC))),
