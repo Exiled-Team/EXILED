@@ -85,7 +85,7 @@ namespace Exiled.Events.Patches.Events.Scp939
             });
 
             // Remove this.Cooldown.IsReady from if (this.Cooldown.IsReady)
-            offset = -2;
+            offset = -12;
             index = newInstructions.FindLastIndex(i => i.operand == (object)Method(typeof(AbilityCooldown), nameof(AbilityCooldown.Trigger))) + offset;
             newInstructions.RemoveRange(index, 2);
 
