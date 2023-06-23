@@ -16,7 +16,7 @@ namespace Exiled.API.Features.Pickups.Projectiles
     /// <summary>
     /// A wrapper class for Scp018Projectile.
     /// </summary>
-    public class Scp018Projectile : ExplosionGrenadeProjectile, IWrapper<BaseScp018Projectile>
+    public class Scp018Projectile : TimeGrenadeProjectile, IWrapper<BaseScp018Projectile>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp018Projectile"/> class.
