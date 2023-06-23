@@ -68,13 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
                 reason = ev.Reason;
                 message = ev.FullMessage;
 
-                if (!EventManager.ExecuteEvent(ServerEventType.PlayerBanned, new object[]
-                {
-                    target,
-                    issuer,
-                    reason,
-                    duration,
-                }))
+                if (!EventManager.ExecuteEvent(new PlayerBannedEvent(target, ev.Player.ReferenceHub, reason, duration)))
                 {
                     __result = false;
                     return false;
