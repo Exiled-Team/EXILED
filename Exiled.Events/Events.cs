@@ -19,6 +19,8 @@ namespace Exiled.Events
 
     using HarmonyLib;
 
+    using InventorySystem;
+
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
@@ -97,8 +99,6 @@ namespace Exiled.Events
 
             InventorySystem.InventoryExtensions.OnItemAdded += Handlers.Player.OnItemAdded;
 
-            AnimatedCharacterModel.OnFootstepPlayed += Handlers.Player.OnMakingNoise;
-
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
 
@@ -129,8 +129,6 @@ namespace Exiled.Events
             CharacterClassManager.OnRoundStarted -= Handlers.Server.OnRoundStarted;
 
             InventorySystem.InventoryExtensions.OnItemAdded -= Handlers.Player.OnItemAdded;
-
-            AnimatedCharacterModel.OnFootstepPlayed -= Handlers.Player.OnMakingNoise;
 
             RagdollManager.OnRagdollSpawned -= Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved -= Handlers.Internal.RagdollList.OnRemovedRagdoll;
@@ -199,9 +197,10 @@ namespace Exiled.Events
                 {
                     Harmony.CreateClassProcessor(type).Patch();
                 }
-                catch (Exception exception)
+                catch (HarmonyException exception)
                 {
                     Log.Error($"Patching by attributes failed!\n{exception}");
+
                     failedPatch++;
                     continue;
                 }

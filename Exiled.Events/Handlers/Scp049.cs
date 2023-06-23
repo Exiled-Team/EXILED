@@ -39,6 +39,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SendingCallEventArgs> SendingCall;
 
         /// <summary>
+        /// Invoked before SCP-049 attacks player.
+        /// </summary>
+        public static event CustomEventHandler<AttackingEventArgs> Attacking;
+
+        /// <summary>
         ///     Called before SCP-049 finishes recalling a player.
         /// </summary>
         /// <param name="ev">The <see cref="FinishingRecallEventArgs" /> instance.</param>
@@ -61,5 +66,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SendingCallEventArgs" /> instance.</param>
         public static void OnSendingCall(SendingCallEventArgs ev) => SendingCall.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-049 attacks player.
+        /// </summary>
+        /// <param name="ev">The <see cref="AttackingEventArgs"/> instance.</param>
+        public static void OnAttacking(AttackingEventArgs ev) => Attacking.InvokeSafely(ev);
     }
 }
