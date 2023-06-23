@@ -34,15 +34,18 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="reason">
         ///     <inheritdoc cref="Reason" />
         /// </param>
+        /// <param name="fullMessage">
+        ///     <inheritdoc cref="FullMessage" />
+        /// </param>
         /// <param name="isAllowed">
         ///     <inheritdoc cref="IsAllowed" />
         /// </param>
-        public KickingEventArgs(Player target, Player issuer, string reason, bool isAllowed = true)
+        public KickingEventArgs(Player target, Player issuer, string reason, string fullMessage, bool isAllowed = true)
         {
             Target = target;
             Player = issuer;
             Reason = reason;
-            FullMessage = $"You have been kicked. {(!string.IsNullOrEmpty(reason) ? "Reason: " + reason : string.Empty)}";
+            FullMessage = fullMessage;
             IsAllowed = isAllowed;
         }
 
