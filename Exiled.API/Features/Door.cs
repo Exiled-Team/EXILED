@@ -461,7 +461,7 @@ namespace Exiled.API.Features
             switch (Base)
             {
                 case BasicDoor basic:
-                    basic.RpcPlayBeepSound(beep != DoorBeepType.InteractionAllowed);
+                    basic.RpcPlayBeepSound(beep is not DoorBeepType.InteractionAllowed);
                     break;
                 case CheckpointDoor chkPt:
                     chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 3));
@@ -475,7 +475,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
         public void ChangeLock(DoorLockType lockType)
         {
-            if (lockType == DoorLockType.None)
+            if (lockType is DoorLockType.None)
             {
                 Base.NetworkActiveLocks = 0;
             }
@@ -586,7 +586,6 @@ namespace Exiled.API.Features
                 "CHECKPOINT_EZ_HCZ_B" => DoorType.CheckpointEzHczB,
                 "106_PRIMARY" => DoorType.Scp106Primary,
                 "106_SECONDARY" => DoorType.Scp106Secondary,
-                "106_BOTTOM" => DoorType.Scp106Bottom,
                 "ESCAPE_PRIMARY" => DoorType.EscapePrimary,
                 "ESCAPE_SECONDARY" => DoorType.EscapeSecondary,
                 "INTERCOM" => DoorType.Intercom,

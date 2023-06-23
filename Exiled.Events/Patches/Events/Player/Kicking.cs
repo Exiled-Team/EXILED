@@ -7,16 +7,21 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
+#pragma warning disable SA1313
+    using System;
 
     using API.Features;
+
     using CommandSystem;
-    using Exiled.API.Features.Pools;
+
     using Exiled.Events.EventArgs.Player;
+
     using HarmonyLib;
 
-    using static HarmonyLib.AccessTools;
+    using PluginAPI.Enums;
+    using PluginAPI.Events;
+
+    using Log = API.Features.Log;
 
     /// <summary>
     ///     Patches <see cref="BanPlayer.KickUser(ReferenceHub, ICommandSender , string)" />.
@@ -25,85 +30,41 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.KickUser), typeof(ReferenceHub), typeof(ICommandSender), typeof(string))]
     internal static class Kicking
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(ReferenceHub target, ICommandSender issuer, string reason, ref bool __result)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
+            try
+            {
+                string message = $"You have been kicked. {(!string.IsNullOrEmpty(reason) ? "Reason: " + reason : string.Empty)}";
 
-            Label continueLabel = generator.DefineLabel();
+                KickingEventArgs ev = new(Player.Get(target), Player.Get(issuer), reason, message);
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(KickingEventArgs));
+                Handlers.Player.OnKicking(ev);
 
-            newInstructions.InsertRange(
-                0,
-                new[]
+                if (!ev.IsAllowed)
                 {
-                    // Player target = Player.Get(target);
-                    new(OpCodes.Ldarg_0),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    __result = false;
+                    return false;
+                }
 
-                    // Player player = Player.Get(issuer);
-                    new(OpCodes.Ldarg_1),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ICommandSender) })),
+                reason = ev.Reason;
+                message = ev.FullMessage;
 
-                    // reason
-                    new(OpCodes.Ldarg_2),
-
-                    // true
-                    new(OpCodes.Ldc_I4_1),
-
-                    // KickingEventArgs ev = new(player, target, reason, true);
-                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(KickingEventArgs))[0]),
-                    /*new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),*/
-
-                    // Handlers.Player.OnKicking(ev);
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnKicking))),
-
-                    // if (!ev.IsAllowed)
-                    //      return;
-                    /*new(OpCodes.Callvirt, PropertyGetter(typeof(KickedEventArgs), nameof(KickingEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, continueLabel),
-
-                    new(OpCodes.Ret),*/
-
-                    // loading ev 3 times
-                    new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(continueLabel),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-
-                    // reason = ev.Reason;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Reason))),
-                    new(OpCodes.Starg_S, 2),
-
-                    // target = ev.Target.ReferenceHub;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Target))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
-                    new(OpCodes.Starg_S, 0),
-
-                    // issuer = ev.Player.Sender;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.Player))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Sender))),
-                    new(OpCodes.Starg_S, 1),
-                });
-
-            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldstr);
-
-            newInstructions.RemoveRange(index, 3);
-
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
+                if (!EventManager.ExecuteEvent(new PlayerKickedEvent(target, issuer, reason)))
                 {
-                    // ev.FullMessage
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(KickingEventArgs), nameof(KickingEventArgs.FullMessage))),
-                });
+                    __result = false;
+                    return false;
+                }
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+                ServerConsole.Disconnect(target.gameObject, message);
 
-            ListPool<CodeInstruction>.Pool.Return(newInstructions);
+                __result = true;
+                return false;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"Exiled.Events.Patches.Events.Player.Kicking: {exception}\n{exception.StackTrace}");
+                return true;
+            }
         }
     }
 }

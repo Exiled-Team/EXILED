@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs.Scp939
 {
+    using System;
+
     using API.Features;
     using Interfaces;
 
@@ -34,6 +36,7 @@ namespace Exiled.Events.EventArgs.Scp939
         /// <summary>
         ///     Gets or sets a value indicating whether or not SCP-939 can lunge.
         /// </summary>
+        [Obsolete("Deprecated.")]
         public bool IsAllowed { get; set; } = true;
     }
 }
