@@ -37,8 +37,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label @break = (Label)newInstructions.FindLast(i => i.opcode == OpCodes.Leave_S).operand;
 
-            int offset = -2;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Newobj) + offset;
+            int offset = 0;
+            int index = newInstructions.FindLastIndex(i => i.LoadsConstant(ServerEventType.PlayerInteractElevator)) + offset;
 
             // InteractingElevatorEventArgs ev = new(Player.Get(referenceHub), elevatorChamber, true);
             //

@@ -188,8 +188,7 @@ namespace Exiled.API.Features.Items
             {
                 ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
 
-                ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-                ipb.Position = Owner.Position;
+                ipb.Info = new(Type, Owner.Position, default, Weight, ItemSerialGenerator.GenerateNext());
 
                 Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(ipb);
 
@@ -198,7 +197,7 @@ namespace Exiled.API.Features.Items
                 for (int i = 0; i < count; i++)
                     pickup.Candies.Add(type);
 
-                pickup.Base.InfoReceivedHook(default, pickup.Info);
+                pickup.Base.InfoReceived(default, pickup.Info);
                 pickup.Scale = Scale;
                 pickup.Spawn();
                 pickups.Add(pickup);
@@ -210,8 +209,7 @@ namespace Exiled.API.Features.Items
             {
                 ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
 
-                ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-                ipb.Position = Owner.Position;
+                ipb.Info = new(Type, Owner.Position, default, Weight, ItemSerialGenerator.GenerateNext());
 
                 Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(ipb);
 
@@ -219,7 +217,7 @@ namespace Exiled.API.Features.Items
                     pickup.ExposedCandy = exposedType;
 
                 pickup.Candies.Add(type);
-                pickup.Base.InfoReceivedHook(default, pickup.Info);
+                pickup.Base.InfoReceived(default, pickup.Info);
                 pickup.Scale = Scale;
                 pickup.Spawn();
                 pickups.Add(pickup);
@@ -239,9 +237,7 @@ namespace Exiled.API.Features.Items
         {
             Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
 
-            pickup.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Position = Owner.Position;
-            pickup.Rotation = rotation;
+            pickup.Info = new(Type, Owner.Position, rotation, Weight, ItemSerialGenerator.GenerateNext());
             pickup.Candies = new(Base.Candies);
             pickup.ExposedCandy = ExposedType;
             pickup.Scale = Scale;

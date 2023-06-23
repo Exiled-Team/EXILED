@@ -31,7 +31,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Indicates that the player has been authenticated as a Patreon.
         /// </summary>
-        Patreon, // TODO: Removing this it's have never exist
+        Patreon,
 
         /// <summary>
         /// Indicates that the player has been authenticated through an unknown provider.

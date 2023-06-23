@@ -66,8 +66,7 @@ namespace Exiled.Events.EventArgs.Server
             {
                 if (value < maximumRespawnAmount)
                 {
-                    if (Players.Count > value)
-                        Players.RemoveRange(value, Players.Count - value);
+                    Players.RemoveRange(value, Players.Count - value);
                 }
 
                 maximumRespawnAmount = value;

@@ -17,7 +17,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using HarmonyLib;
 
-    using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp079;
     using PlayerRoles.PlayableScps.Subroutines;
 
@@ -26,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     using Player = API.Features.Player;
 
     /// <summary>
-    ///     Patches <see cref="Scp079TierManager.ServerGrantExperience(int, Scp079HudTranslation, RoleTypeId)" />.
+    ///     Patches <see cref="Scp079TierManager.ServerGrantExperience(int, Scp079HudTranslation)" />.
     ///     Adds the <see cref="Scp079.GainingExperience" /> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079TierManager), nameof(Scp079TierManager.ServerGrantExperience))]

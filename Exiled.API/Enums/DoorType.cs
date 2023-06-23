@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
-
     using static Interactables.Interobjects.ElevatorManager;
 
     /// <summary>
@@ -61,7 +59,6 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the 106_BOTTOM door.
         /// </summary>
-        [Obsolete("This door no longer exists, and this enum item will be removed soon.")]
         Scp106Bottom,
 
         /// <summary>

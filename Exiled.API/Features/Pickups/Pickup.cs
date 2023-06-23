@@ -75,7 +75,7 @@ namespace Exiled.API.Features.Pickups
             {
                 ItemId = type,
                 Serial = ItemSerialGenerator.GenerateNext(),
-                WeightKg = itemBase.Weight,
+                Weight = itemBase.Weight,
             };
 
             Info = psi;
@@ -141,10 +141,10 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="PickupTime"/>
         public float Weight
         {
-            get => Info.WeightKg;
+            get => Info.Weight;
             set
             {
-                Base.Info.WeightKg = value;
+                Base.Info.Weight = value;
                 Info = Base.Info;
             }
         }
@@ -229,7 +229,11 @@ namespace Exiled.API.Features.Pickups
         public Vector3 Position
         {
             get => Base.transform.position;
-            set => Base.Position = value;
+            set
+            {
+                Base.transform.position = value;
+                Base.RefreshPositionAndRotation();
+            }
         }
 
         /// <summary>
@@ -237,7 +241,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public RelativePosition RelativePosition
         {
-            get => new(Room.transform.TransformPoint(Position));
+            get => Base.Info.RelativePosition;
             set => Position = value.Position;
         }
 
@@ -248,7 +252,11 @@ namespace Exiled.API.Features.Pickups
         public Quaternion Rotation
         {
             get => Base.transform.rotation;
-            set => Base.Rotation = value;
+            set
+            {
+                Base.transform.rotation = value;
+                Base.RefreshPositionAndRotation();
+            }
         }
 
         /// <summary>
@@ -353,7 +361,6 @@ namespace Exiled.API.Features.Pickups
             ItemType.ArmorLight or ItemType.ArmorCombat or ItemType.ArmorHeavy => new BodyArmorPickup(type),
             ItemType.SCP330 => new Scp330Pickup(),
             ItemType.Jailbird => new JailbirdPickup(),
-            ItemType.SCP1576 => new Scp1576Pickup(),
             _ => new Pickup(type),
         };
 

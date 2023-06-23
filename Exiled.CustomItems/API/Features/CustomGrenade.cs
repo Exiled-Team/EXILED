@@ -86,14 +86,16 @@ namespace Exiled.CustomItems.API.Features
                 ItemId = throwable.Type,
                 Locked = !throwable.Base._repickupable,
                 Serial = ItemSerialGenerator.GenerateNext(),
-                WeightKg = weight,
+                Weight = weight,
+                RelativePosition = new RelativePosition(transform.position),
+                RelativeRotation = new LowPrecisionQuaternion(transform.rotation),
             };
             if (thrownProjectile is TimeGrenade time)
                 time._fuseTime = fuseTime;
             thrownProjectile.NetworkInfo = newInfo;
             thrownProjectile.PreviousOwner = new Footprint(throwable.Owner.ReferenceHub);
             NetworkServer.Spawn(thrownProjectile.gameObject);
-            thrownProjectile.InfoReceivedHook(default, newInfo);
+            thrownProjectile.InfoReceived(default, newInfo);
             if (thrownProjectile.TryGetComponent(out Rigidbody component))
                 throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, ThrowableNetworkHandler.GetLimitedVelocity(velocity), force, throwable.Base.FullThrowSettings.UpwardsFactor);
             thrownProjectile.ServerActivate();

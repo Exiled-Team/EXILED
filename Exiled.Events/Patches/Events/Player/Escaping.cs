@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1402 // File may only contain a single type
 
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -125,7 +124,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void GrantAllTickets(EscapingEventArgs ev)
         {
-            if (Enum.IsDefined(typeof(SpawnableTeamType), ev.RespawnTickets.Key) && ev.RespawnTickets.Key != SpawnableTeamType.None)
+            if (ev.RespawnTickets.Key != SpawnableTeamType.None)
                 RespawnTokensManager.ModifyTokens(ev.RespawnTickets.Key, ev.RespawnTickets.Value);
         }
     }

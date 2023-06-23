@@ -10,7 +10,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Possible spawn reasons.
     /// </summary>
-    public enum SpawnReason : byte // TOTO: Remove this file and use Basegame
+    public enum SpawnReason : byte
     {
         /// <summary>
         /// No reason specified.

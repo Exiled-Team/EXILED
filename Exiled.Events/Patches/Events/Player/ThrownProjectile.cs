@@ -37,13 +37,11 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            int offset = -2;
+            int offset = -3;
             int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) }))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
-                new(OpCodes.Dup),
-
                 // API.Features.Player.Get(this.Owner)
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new(OpCodes.Callvirt, PropertyGetter(typeof(ThrowableItem), nameof(ThrowableItem.Owner))),
@@ -51,6 +49,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // this
                 new(OpCodes.Ldarg_0),
+
+                // thrownProjectile
+                new(OpCodes.Ldloc_0),
 
                 // ThrownItemEventArgs ev = new(Player.Get(this.Owner), this, thrownProjectile);
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrownProjectileEventArgs))[0]),

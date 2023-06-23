@@ -17,8 +17,6 @@ namespace Exiled.Events.Patches.Events.Scp173
 
     using HarmonyLib;
 
-    using PlayerRoles;
-
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Subroutines;
 
@@ -45,10 +43,9 @@ namespace Exiled.Events.Patches.Events.Scp173
                 0,
                 new[]
                 {
-                    // Player.Get(base.Role._lastOwner)
+                    // Player.Get(base.Owner)
                     new CodeInstruction(OpCodes.Ldarg_0),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(ScpSubroutineBase), nameof(ScpSubroutineBase.Role))),
-                    new(OpCodes.Ldfld, Field(typeof(PlayerRoleBase), nameof(PlayerRoleBase._lastOwner))),
+                    new(OpCodes.Call, PropertyGetter(typeof(ScpStandardSubroutine<Scp173Role>), nameof(ScpStandardSubroutine<Scp173Role>.Owner))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // this._observers.Observers

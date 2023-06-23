@@ -24,8 +24,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
-    using Events = Exiled.Events.Events;
-
     /// <summary>
     ///     Patches <see cref="ReservedSlot.HasReservedSlot(string, out bool)" />.
     ///     Adds the <see cref="Player.ReservedSlot" /> event.
@@ -42,8 +40,8 @@ namespace Exiled.Events.Patches.Events.Player
             Label skipLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(ReservedSlotsCheckEventArgs));
 
-            int offset = -2;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Newobj) + offset;
+            int offset = 0;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_S) + offset;
 
             newInstructions[index].WithLabels(baseGame);
 
@@ -110,7 +108,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void CallNwEvent(string userId, bool hasReservedSlot)
         {
-            EventManager.ExecuteEvent(new PlayerCheckReservedSlotEvent(userId, hasReservedSlot));
+            EventManager.ExecuteEvent<PlayerCheckReservedSlotCancellationData>(ServerEventType.PlayerCheckReservedSlot, userId, hasReservedSlot);
         }
     }
 }

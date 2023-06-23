@@ -98,8 +98,7 @@ namespace Exiled.API.Features.Items
 #endif
             ItemPickupBase ipb = Object.Instantiate(Projectile.Base, position, Quaternion.identity);
 
-            ipb.Info = new PickupSyncInfo(Type, Weight, ItemSerialGenerator.GenerateNext());
-            ipb.Position = Owner.Position;
+            ipb.Info = new PickupSyncInfo(Type, position, Quaternion.identity, Weight, ItemSerialGenerator.GenerateNext());
 
             FlashbangProjectile grenade = (FlashbangProjectile)Pickup.Get(ipb);
 

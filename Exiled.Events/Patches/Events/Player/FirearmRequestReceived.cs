@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using API.Features.Pools;
@@ -22,7 +21,6 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.Firearms.BasicMessages;
 
     using PluginAPI.Enums;
-    using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;
 
@@ -42,9 +40,9 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingWeaponFlashlightEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
 
-            int offset = -2;
+            int offset = 0;
             int index = newInstructions.FindIndex(
-                instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerReloadWeaponEvent))[0]) + offset;
+                instruction => instruction.opcode == OpCodes.Ldc_I4_S && (sbyte)instruction.operand == (sbyte)ServerEventType.PlayerReloadWeapon) + offset;
 
             Label returnLabel = generator.DefineLabel();
             Label skipAdsLabel = generator.DefineLabel();
@@ -73,9 +71,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse, returnLabel),
                 });
 
-            offset = -2;
+            offset = 0;
             index = newInstructions.FindIndex(
-                instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerUnloadWeaponEvent))[0]) + offset;
+                instruction => instruction.opcode == OpCodes.Ldc_I4_S && (sbyte)instruction.operand == (sbyte)ServerEventType.PlayerUnloadWeapon) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -101,9 +99,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse, returnLabel),
                 });
 
-            offset = -2;
+            offset = 0;
             index = newInstructions.FindIndex(
-                instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerDryfireWeaponEvent))[0]) + offset;
+                instruction => instruction.opcode == OpCodes.Ldc_I4_S && (sbyte)instruction.operand == (sbyte)ServerEventType.PlayerDryfireWeapon) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -129,9 +127,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse, returnLabel),
                 });
 
-            offset = -3;
+            offset = 0;
             index = newInstructions.FindIndex(
-                instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerAimWeaponEvent))[0]) + offset;
+                instruction => instruction.opcode == OpCodes.Ldc_I4_S && (sbyte)instruction.operand == (sbyte)ServerEventType.PlayerAimWeapon) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -166,9 +164,9 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Nop).WithLabels(skipAdsLabel),
                 });
 
-            offset = -3;
+            offset = 0;
             index = newInstructions.FindLastIndex(
-                instruction => instruction.opcode == OpCodes.Newobj && (ConstructorInfo)instruction.operand == GetDeclaredConstructors(typeof(PlayerAimWeaponEvent))[0]) + offset;
+                instruction => instruction.opcode == OpCodes.Ldc_I4_S && (sbyte)instruction.operand == (sbyte)ServerEventType.PlayerAimWeapon) + offset;
 
             newInstructions.InsertRange(
                 index,

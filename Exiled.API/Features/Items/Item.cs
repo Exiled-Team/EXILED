@@ -288,9 +288,7 @@ namespace Exiled.API.Features.Items
         {
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
 
-            ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            ipb.Position = Owner.Position;
-            ipb.Rotation = rotation;
+            ipb.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
             ipb.gameObject.transform.localScale = Scale;
 
             Pickup pickup = Pickup.Get(ipb);
