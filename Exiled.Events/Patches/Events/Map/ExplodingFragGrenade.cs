@@ -84,7 +84,7 @@ namespace Exiled.Events.Patches.Events.Map
                     new(OpCodes.Ldloc_3),
 
                     // ExplodingGrenadeEventArgs ev = new(player, position, grenade, colliders);
-                    new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Footprint), typeof(Vector3), typeof(EffectGrenade), typeof(Collider[]) })),
+                    new(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Footprint), typeof(Vector3), typeof(ExplosionGrenade), typeof(Collider[]) })),
                     new(OpCodes.Dup),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc, ev.LocalIndex),

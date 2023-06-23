@@ -75,7 +75,7 @@ namespace Exiled.API.Features.Pickups
             {
                 ItemId = type,
                 Serial = ItemSerialGenerator.GenerateNext(),
-                Weight = itemBase.Weight,
+                WeightKg = itemBase.Weight,
             };
 
             Info = psi;
@@ -141,10 +141,10 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="PickupTime"/>
         public float Weight
         {
-            get => Info.Weight;
+            get => Info.WeightKg;
             set
             {
-                Base.Info.Weight = value;
+                Base.Info.WeightKg = value;
                 Info = Base.Info;
             }
         }
@@ -229,11 +229,7 @@ namespace Exiled.API.Features.Pickups
         public Vector3 Position
         {
             get => Base.transform.position;
-            set
-            {
-                Base.transform.position = value;
-                Base.RefreshPositionAndRotation();
-            }
+            set => Base.Position = value;
         }
 
         /// <summary>
@@ -241,7 +237,7 @@ namespace Exiled.API.Features.Pickups
         /// </summary>
         public RelativePosition RelativePosition
         {
-            get => Base.Info.RelativePosition;
+            get => new(Room.transform.TransformPoint(Position));
             set => Position = value.Position;
         }
 
@@ -252,11 +248,7 @@ namespace Exiled.API.Features.Pickups
         public Quaternion Rotation
         {
             get => Base.transform.rotation;
-            set
-            {
-                Base.transform.rotation = value;
-                Base.RefreshPositionAndRotation();
-            }
+            set => Base.Rotation = value;
         }
 
         /// <summary>
@@ -368,6 +360,7 @@ namespace Exiled.API.Features.Pickups
             ItemType.SCP330 => new Scp330Pickup(),
             ItemType.SCP500 or ItemType.SCP268 or ItemType.SCP207 or ItemType.SCP2176 or ItemType.SCP1853 or ItemType.Painkillers or ItemType.Medkit or ItemType.Adrenaline => new UsablePickup(type),
             ItemType.Jailbird => new JailbirdPickup(),
+            ItemType.SCP1576 => new Scp1576Pickup(),
             _ => new Pickup(type),
         };
 
