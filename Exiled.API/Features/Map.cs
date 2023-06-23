@@ -215,7 +215,7 @@ namespace Exiled.API.Features
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
         public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified)
         {
-            foreach (FlickerableLightController controller in FlickerableLightController.Instances)
+            foreach (RoomLightController controller in RoomLightController.Instances)
             {
                 Room room = controller.GetComponentInParent<Room>();
                 if (room is null)

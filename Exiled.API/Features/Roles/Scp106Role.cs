@@ -9,6 +9,8 @@ namespace Exiled.API.Features.Roles
 {
     using System.Collections.Generic;
 
+    using CustomPlayerEffects;
+
     using Exiled.API.Enums;
     using PlayerRoles;
     using PlayerRoles.PlayableScps.HumeShield;
@@ -126,11 +128,6 @@ namespace Exiled.API.Features.Roles
         /// Gets a value indicating whether or not SCP-106 can activate teslas.
         /// </summary>
         public bool CanActivateTesla => Base.CanActivateShock;
-
-        /// <summary>
-        /// Gets a value indicating whether or not SCP-106 is ready for idle.
-        /// </summary>
-        public bool CanActivateIdle => Base.CanActivateIdle;
 
         /// <summary>
         /// Gets a value indicating whether if SCP-106 <see cref="Scp106StalkAbility"/> can be cleared.
@@ -263,7 +260,6 @@ namespace Exiled.API.Features.Roles
             Attack.ReduceSinkholeCooldown();
             Hitmarker.SendHitmarker(Attack.Owner, 1f);
 
-            player.EnableEffect(EffectType.Traumatized, Scp106Attack.TraumatizedDuration);
             player.EnableEffect(EffectType.Corroding);
             player.EnableEffect(EffectType.SinkHole);
         }
