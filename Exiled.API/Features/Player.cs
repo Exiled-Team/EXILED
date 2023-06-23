@@ -1251,7 +1251,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="id">The player id.</param>
         /// <returns>Returns the player found or <see langword="null"/> if not found.</returns>
-        public static Player Get(int id) => ReferenceHub.HubByPlayerIds.TryGetValue(id, out ReferenceHub referenceHub) ? Get(referenceHub) : null;
+        public static Player Get(int id) => ReferenceHub.TryGetHub(id, out ReferenceHub referenceHub) ? Get(referenceHub) : null;
 
         /// <summary>
         /// Gets the <see cref="Player"/> by identifier.
@@ -2178,7 +2178,7 @@ namespace Exiled.API.Features
         /// <param name="checkMinimals">Whether or not ammo limits will be taken into consideration.</param>
         /// <returns><see langword="true"/> if ammo was dropped; otherwise, <see langword="false"/>.</returns>
         public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) =>
-            Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
+            Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals).Any();
 
         /// <summary>
         /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="AmmoType"/>.
