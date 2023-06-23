@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldarg_1),
 
                     // distance
-                    new(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldloc_3),
 
                     // hitLocation
                     new(OpCodes.Ldarg_3),

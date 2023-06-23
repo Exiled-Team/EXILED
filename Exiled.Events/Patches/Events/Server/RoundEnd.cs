@@ -109,7 +109,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                         if (!roundSummary._roundEnded)
                         {
-                            RoundEndConditionsCheckCancellationData.RoundEndConditionsCheckCancellation cancellation = EventManager.ExecuteEvent<RoundEndConditionsCheckCancellationData>(ServerEventType.RoundEndConditionsCheck, new object[] { shouldRoundEnd }).Cancellation;
+                            RoundEndConditionsCheckCancellationData.RoundEndConditionsCheckCancellation cancellation = EventManager.ExecuteEvent<RoundEndConditionsCheckCancellationData>(new RoundEndConditionsCheckEvent(shouldRoundEnd)).Cancellation;
                             int num4 = (int)cancellation;
                             if (num4 != 1)
                             {
@@ -150,14 +150,14 @@ namespace Exiled.Events.Patches.Events.Server
                         if (endingRoundEventArgs.IsRoundEnded)
                         {
                             roundSummary._roundEnded = true;
-                            RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
+                            RoundEndCancellationData roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(new RoundEndEvent(leadingTeam));
                             while (roundEndCancellationData.IsCancelled)
                             {
                                 if (roundEndCancellationData.Delay <= 0f)
                                     break;
 
                                 yield return Timing.WaitForSeconds(roundEndCancellationData.Delay);
-                                roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(ServerEventType.RoundEnd, new object[] { leadingTeam });
+                                roundEndCancellationData = EventManager.ExecuteEvent<RoundEndCancellationData>(new RoundEndEvent(leadingTeam));
                             }
 
                             if (Statistics.FastestEndedRound.Duration > RoundStart.RoundLength)
