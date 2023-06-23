@@ -49,12 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
                 reason = ev.Reason;
                 message = ev.FullMessage;
 
-                if (!EventManager.ExecuteEvent(ServerEventType.PlayerKicked, new object[]
-                {
-                    target,
-                    issuer,
-                    reason,
-                }))
+                if (!EventManager.ExecuteEvent(new PlayerKickedEvent(target, issuer, reason)))
                 {
                     __result = false;
                     return false;
