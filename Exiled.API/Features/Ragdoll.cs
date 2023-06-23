@@ -58,16 +58,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the <see cref="BasicRagdoll"/>s clean up time.
         /// </summary>
-        public static int CleanUpTime
+        public static int FreezeTime
         {
-            get => RagdollManager.CleanupTime;
-            set => RagdollManager.CleanupTime = value;
+            get => RagdollManager.FreezeTime;
+            set => RagdollManager.FreezeTime = value;
         }
 
         /// <summary>
         /// Gets a value indicating whether or not the clean up event can be executed.
         /// </summary>
-        public bool AllowCleanUp => NetworkInfo.ExistenceTime < CleanUpTime;
+        public bool AllowCleanUp => NetworkInfo.ExistenceTime < FreezeTime;
 
         /// <summary>
         /// Gets the <see cref="BasicRagdoll"/> instance of the ragdoll.
@@ -111,7 +111,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the ragdoll has been already cleaned up.
         /// </summary>
-        public bool IsCleanedUp => Base._cleanedUp;
+        public bool IsFrozen => Base._frozen;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the ragdoll can be cleaned up.
