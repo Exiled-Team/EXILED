@@ -111,6 +111,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             // This is to find the location of the next return (End point)
             int includeSameLine = 1;
             int nextReturn = newInstructions.FindIndex(addShouldSeverIndex, instruction => instruction.opcode == OpCodes.Ret) + includeSameLine;
+            Label originalLabel = newInstructions[addShouldSeverIndex].ExtractLabels()[0];
 
             // Remove original code from after RpcMakeSound to next return and then fully replace it.
             newInstructions.RemoveRange(addShouldSeverIndex, nextReturn - addShouldSeverIndex);
@@ -124,7 +125,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 {
                     // if (!ev.ShouldSever)
                     //    goto shouldNotSever;
-                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(originalLabel),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingScp330EventArgs), nameof(InteractingScp330EventArgs.ShouldSever))),
                     new(OpCodes.Brfalse, shouldNotSever),
 

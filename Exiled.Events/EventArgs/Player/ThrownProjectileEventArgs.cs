@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs.Player
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Throwable"/></param>
         /// <param name="projectile"><inheritdoc cref="Projectile"/></param>
-        public ThrownProjectileEventArgs(Player player, ThrowableItem item, ThrownProjectile projectile)
+        public ThrownProjectileEventArgs(ThrownProjectile projectile, Player player, ThrowableItem item)
         {
             Player = player;
             Throwable = (Throwable)Item.Get(item);
