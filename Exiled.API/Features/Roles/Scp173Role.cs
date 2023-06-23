@@ -192,9 +192,19 @@ namespace Exiled.API.Features.Roles
             get => BlinkTimer.AbilityReady;
             set
             {
-                BlinkTimer._endSustainTime = -1;
-                BlinkTimer._totalCooldown = 0;
-                BlinkTimer._initialStopTime = NetworkTime.time;
+                if (value)
+                {
+                    BlinkTimer._endSustainTime = -1;
+                    BlinkTimer._totalCooldown = 0;
+                    BlinkTimer._initialStopTime = NetworkTime.time;
+                }
+                else
+                {
+                    BlinkTimer.ResetObject();
+                    BlinkTimer._observers.UpdateObservers();
+                }
+
+                BlinkTimer.ServerSendRpc(true);
             }
         }
 
@@ -208,6 +218,7 @@ namespace Exiled.API.Features.Roles
             {
                 BlinkTimer._initialStopTime = NetworkTime.time;
                 BlinkTimer._totalCooldown = value;
+                BlinkTimer.ServerSendRpc(true);
             }
         }
 
