@@ -63,7 +63,9 @@ namespace Exiled.API.Features.Items
         {
             Scp244Pickup pickup = (Scp244Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
 
-            pickup.Info = new(Type, position, rotation, pickup.Weight, Serial);
+            pickup.Info = new(Type, pickup.Weight, Serial);
+            pickup.Position = Owner.Position;
+            pickup.Rotation = rotation;
             pickup.State = Base._primed ? Scp244State.Active : Scp244State.Idle;
             pickup.Scale = Scale;
 

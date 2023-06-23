@@ -207,7 +207,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the doors SCP-079 has locked. Can be <see langword="null"/>.
         /// </summary>
-        public IEnumerable<Door> LockedDoors => DoorLockChanger._lockedDoors.Select(x => Door.Get(x));
+        public Door LockedDoor => Door.Get(DoorLockChanger.LockedDoor);
 
         /// <summary>
         /// Gets or sets SCP-079's abilities. Can be <see langword="null"/>.
@@ -356,7 +356,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Unlocks all doors that SCP-079 has locked.
         /// </summary>
-        public void UnlockAllDoors() => DoorLockChanger.ServerUnlockAll();
+        public void UnlockAllDoors() => DoorLockChanger.ServerUnlock();
 
         /// <summary>
         /// Forces SCP-079's signal to be lost for the specified amount of time.
@@ -376,13 +376,29 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="door">The door to lock.</param>
         /// <returns><see langword="true"/> if the door has been lock; otherwise, <see langword="false"/>.</returns>
-        public bool LockDoor(Door door) => door is not null && DoorLockChanger.SetDoorLock(door.Base, true); // TODO: Add skipCheck = false.
+        public bool LockDoor(Door door)
+        {
+            if (door is not null)
+            {
+                DoorLockChanger.LockedDoor = door.Base;
+                door.Lock((float)DoorLockChanger._lockTime, DoorLockType.Regular079);
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Unlocks the provided <paramref name="door"/>.
         /// </summary>
         /// <param name="door">The door to unlock.</param>
-        public void UnlockDoor(Door door) => _ = door is not null && DoorLockChanger.SetDoorLock(door.Base, false); // TODO: Convert to bool and add skipCheck = false.
+        public void UnlockDoor(Door door)
+        {
+            if (door is not null && Door.Get(DoorLockChanger.LockedDoor) == door)
+            {
+                door.Unlock();
+            }
+        }
 
         /// <summary>
         /// Marks a room as being modified by SCP-079 (granting experience if a kill happens in the room).
@@ -453,7 +469,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="consumeEnergy">Indicates if the energy cost should be consumed or not.</param>
         public void BlackoutZone(bool consumeEnergy = true)
         {
-            foreach (FlickerableLightController lightController in FlickerableLightController.Instances)
+            foreach (RoomLightController lightController in RoomLightController.Instances)
             {
                 if (lightController.Room.Zone == BlackoutZoneAbility._syncZone)
                 {

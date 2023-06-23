@@ -18,7 +18,9 @@ namespace Exiled.Events
     using EventArgs.Interfaces;
     using Exiled.API.Features.Pickups;
     using HarmonyLib;
+	
     using InventorySystem.Items.Usables;
+    using InventorySystem;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
@@ -195,9 +197,10 @@ namespace Exiled.Events
                 {
                     Harmony.CreateClassProcessor(type).Patch();
                 }
-                catch (Exception exception)
+                catch (HarmonyException exception)
                 {
                     Log.Error($"Patching by attributes failed!\n{exception}");
+
                     failedPatch++;
                     continue;
                 }
