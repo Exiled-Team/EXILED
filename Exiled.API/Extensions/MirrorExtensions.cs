@@ -161,8 +161,8 @@ namespace Exiled.API.Extensions
         /// <param name="color">Color to set.</param>
         public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color)
         {
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightColor), color);
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightOverride), true);
+            target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), color);
+            target.SendFakeSyncVar(room.RoomLightControllerNetIdentity, typeof(RoomLightController), nameof(RoomLightController.NetworkOverrideColor), true);
         }
 
         /// <summary>
@@ -177,14 +177,13 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Sets <see cref="Room.LightIntensity"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
+        /// Sets <see cref="Room"/> of a <paramref name="room"/> that only the <paramref name="target"/> player can see.
         /// </summary>
         /// <param name="room">Room to modify.</param>
         /// <param name="target">Only this player can see room color.</param>
         /// <param name="multiplier">Light intensity multiplier to set.</param>
         public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
         {
-            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_lightIntensityMultiplier), multiplier);
         }
 
         /// <summary>
@@ -323,22 +322,22 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
-            Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} tried to send a fake syncvar. This is currently broken. This warning does not indicate an error, but expect something to not work as intended.");
-            /*
+            NetworkWriterPooled writer = NetworkWriterPool.Get();
+            NetworkWriterPooled writer2 = NetworkWriterPool.Get();
+            MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
+            target.Connection.Send(new EntityStateMessage
+            {
+                netId = behaviorOwner.netId,
+                payload = writer.ToArraySegment(),
+            });
+
+            NetworkWriterPool.Return(writer);
+            NetworkWriterPool.Return(writer2);
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
                 targetWriter.WriteULong(SyncVarDirtyBits[propertyName]);
-                WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
+                WriterExtensions[value.GetType()]?.Invoke(null, new object[2] { targetWriter, value });
             }
-
-            NetworkWriterPooled writer = NetworkWriterPool.Get();
-            NetworkWriterPooled writer2 = NetworkWriterPool.Get();
-
-            MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(writer.ToArraySegment());
-            NetworkWriterPool.Return(writer);
-            NetworkWriterPool.Return(writer2);
-            */
         }
 
         /// <summary>
@@ -439,7 +438,7 @@ namespace Exiled.API.Extensions
         // Make custom writer(private)
         private static void MakeCustomSyncWriter(NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer)
         {
-            byte behaviorDirty = 0;
+            ulong value = 0;
             NetworkBehaviour behaviour = null;
 
             // Get NetworkBehaviors index (behaviorDirty use index)
@@ -448,22 +447,22 @@ namespace Exiled.API.Extensions
                 if (behaviorOwner.NetworkBehaviours[i].GetType() == targetType)
                 {
                     behaviour = behaviorOwner.NetworkBehaviours[i];
-                    behaviorDirty = (byte)i;
+                    value = 1UL << (i & 31);
                     break;
                 }
             }
 
             // Write target NetworkBehavior's dirty
-            owner.WriteByte(behaviorDirty);
+            Compression.CompressVarUInt(owner, value);
 
             // Write init position
             int position = owner.Position;
-            owner.WriteUInt(0);
+            owner.WriteByte(0);
             int position2 = owner.Position;
 
             // Write custom sync data
             if (customSyncObject is not null)
-                customSyncObject.Invoke(owner);
+                customSyncObject(owner);
             else
                 behaviour.SerializeObjectsDelta(owner);
 
@@ -473,15 +472,12 @@ namespace Exiled.API.Extensions
             // Write syncdata position data
             int position3 = owner.Position;
             owner.Position = position;
-            owner.WriteInt(position3 - position2);
+            owner.WriteByte((byte)(position3 - position2 & 255));
             owner.Position = position3;
 
             // Copy owner to observer
             if (behaviour.syncMode != SyncMode.Observers)
-            {
-                ArraySegment<byte> arraySegment = owner.ToArraySegment();
-                observer.WriteBytes(arraySegment.Array, position, owner.Position - position);
-            }
+                observer.WriteBytes(owner.ToArraySegment().Array, position, owner.Position - position);
         }
     }
 }
