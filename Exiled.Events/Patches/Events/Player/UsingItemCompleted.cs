@@ -20,6 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using InventorySystem.Items.Usables;
+    using Mirror;
 
     using static HarmonyLib.AccessTools;
 
@@ -35,7 +36,6 @@ namespace Exiled.Events.Patches.Events.Player
         internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
-            Label ret = generator.DefineLabel();
             Label continueLabel = generator.DefineLabel();
 
             int offset = -2;
@@ -87,15 +87,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new(OpCodes.Ldfld, Field(typeof(CurrentlyUsedItem), nameof(CurrentlyUsedItem.ItemSerial))),
                 new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StatusMessage))[0]),
                 new(OpCodes.Ldc_I4_0),
-                new(OpCodes.Callvirt, typeof(Mirror.NetworkConnection).GetMethods().First(x => x.Name == nameof(Mirror.NetworkConnection.Send))),
+                new(OpCodes.Callvirt, Method(typeof(Mirror.NetworkConnection), nameof(Mirror.NetworkConnection.Send), new[] { typeof(StatusMessage).MakeGenericType(typeof(NetworkMessage)), typeof(int) })),
 
                 // goto ret;
-                new(OpCodes.Br_S, ret),
+                new(OpCodes.Br, newInstructions.Find(x => x.opcode == OpCodes.Br).operand),
             });
-
-            offset = 1;
-            index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Ldfld && x.operand == (object)Field(typeof(PlayerHandler), nameof(PlayerHandler.CurrentUsable))) + offset;
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
