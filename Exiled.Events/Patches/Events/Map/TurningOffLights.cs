@@ -19,10 +19,10 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FlickerableLightController.ServerFlickerLights"/>.
+    /// Patches <see cref="RoomLightController.ServerFlickerLights"/>.
     /// Adds the <see cref="Handlers.Map.TurningOffLights"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(FlickerableLightController), nameof(FlickerableLightController.ServerFlickerLights))]
+    [HarmonyPatch(typeof(RoomLightController), nameof(RoomLightController.ServerFlickerLights))]
     internal static class TurningOffLights
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
