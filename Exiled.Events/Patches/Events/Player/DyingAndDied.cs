@@ -39,6 +39,8 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder oldRole = generator.DeclareLocal(typeof(RoleTypeId));
             LocalBuilder ev = generator.DeclareLocal(typeof(DyingEventArgs));
 
+            newInstructions[0].labels.Add(continueLabel);
+
             newInstructions.InsertRange(
                 0,
                 new CodeInstruction[]
