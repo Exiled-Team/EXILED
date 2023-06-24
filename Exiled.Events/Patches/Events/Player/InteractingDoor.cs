@@ -134,8 +134,6 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static bool CanStateChange(DoorVariant variant)
         {
-            Log.Warn(variant.GetExactState());
-            Log.Warn(variant.GetExactState() > 0f && variant.GetExactState() < 1f);
             return !(variant.GetExactState() > 0f && variant.GetExactState() < 1f);
         }
     }
