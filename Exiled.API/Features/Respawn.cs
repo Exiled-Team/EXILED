@@ -144,10 +144,7 @@ namespace Exiled.API.Features
         public static void PlayEffects(byte[] effects)
         {
             foreach (RespawnEffectsController controller in RespawnEffectsController.AllControllers)
-            {
-                if (controller != null)
-                    controller.RpcPlayEffects(effects);
-            }
+                controller?.RpcPlayEffects(effects);
         }
 
         /// <summary>
