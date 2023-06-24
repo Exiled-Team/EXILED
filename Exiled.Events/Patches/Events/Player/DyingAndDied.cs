@@ -77,8 +77,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
                     new(OpCodes.Stloc_S, oldRole.LocalIndex),
 
-                    // loading ev 6 times
-
                     // handler = ev.DamageHandler.Base
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.DamageHandler))),
