@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Items.Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToPickup = new(new ComponentsEqualityComparer());
+        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToPickup = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
