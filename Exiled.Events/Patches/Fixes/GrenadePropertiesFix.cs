@@ -40,7 +40,9 @@ namespace Exiled.Events.Patches.Fixes
             Label cnt = generator.DefineLabel();
 
             const int offset = 1;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stfld) + offset;
+            int index = newInstructions.FindLastIndex(i => i.StoresField(Field(typeof(ThrowableItem), nameof(ThrowableItem._alreadyFired)))) + offset;
+
+            newInstructions.RemoveRange(index, 11);
 
             // if (Item.Get(this) is not Throwable throwable)
             // {
@@ -67,7 +69,6 @@ namespace Exiled.Events.Patches.Fixes
                 // return;
                 new(OpCodes.Ldstr, "Item is not Throwable, should never happen"),
                 new(OpCodes.Call, Method(typeof(API.Features.Log), nameof(API.Features.Log.Error), new[] { typeof(string) })),
-                new(OpCodes.Pop),
                 new(OpCodes.Ret),
 
                 // Projectile projectile = throwable.Projectile;
@@ -107,7 +108,6 @@ namespace Exiled.Events.Patches.Fixes
                 new(OpCodes.Ldloc_S, projectile.LocalIndex),
                 new(OpCodes.Ldc_I4_1),
                 new(OpCodes.Callvirt, PropertySetter(typeof(Projectile), nameof(Projectile.IsSpawned))),
-                new(OpCodes.Pop),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

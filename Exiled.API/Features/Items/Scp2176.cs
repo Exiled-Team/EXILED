@@ -70,7 +70,6 @@ namespace Exiled.API.Features.Items
             ItemPickupBase ipb = Object.Instantiate(Projectile.Base, position, Quaternion.identity);
 
             ipb.Info = new PickupSyncInfo(Type, Weight, ItemSerialGenerator.GenerateNext());
-            ipb.Position = position;
 
             Scp2176Projectile grenade = (Scp2176Projectile)Pickup.Get(ipb);
 
