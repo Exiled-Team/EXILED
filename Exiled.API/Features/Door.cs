@@ -560,7 +560,7 @@ namespace Exiled.API.Features
                     "Unsecured" => Room?.Type switch
                     {
                         RoomType.EzCheckpointHallway => DoorType.CheckpointGate,
-                        RoomType.Hcz049 => DoorType.Scp049Gate,
+                        RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
                     "Elevator" => (Base as ElevatorDoor)?.Group switch
@@ -596,6 +596,7 @@ namespace Exiled.API.Features
                 "HCZ_ARMORY" => DoorType.HczArmory,
                 "096" => DoorType.Scp096,
                 "049_ARMORY" => DoorType.Scp049Armory,
+                "079_ARMORY" => DoorType.Scp079Armory,
                 "914" => DoorType.Scp914Gate,
                 "GATE_A" => DoorType.GateA,
                 "079_FIRST" => DoorType.Scp079First,
