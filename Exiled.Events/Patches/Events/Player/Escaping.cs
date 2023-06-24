@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingEventArgs));
 
-            LocalBuilder teamToGrantTickets = generator.DeclareLocal(typeof(int));
+            LocalBuilder teamToGrantTickets = generator.DeclareLocal(typeof(SpawnableTeamType));
             LocalBuilder ticketsToGrant = generator.DeclareLocal(typeof(float));
 
             newInstructions.InsertRange(0, new[]
@@ -68,8 +68,8 @@ namespace Exiled.Events.Patches.Events.Player
                 });
             }
 
-            int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S) + offset;
+            int offset = -2;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
 
             newInstructions.InsertRange(
                 index,
