@@ -189,7 +189,6 @@ namespace Exiled.API.Features.Items
                 ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
 
                 ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-                ipb.Position = Owner.Position;
 
                 Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(ipb);
 
@@ -211,7 +210,6 @@ namespace Exiled.API.Features.Items
                 ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, Owner.Position, default);
 
                 ipb.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-                ipb.Position = Owner.Position;
 
                 Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(ipb);
 
@@ -240,8 +238,6 @@ namespace Exiled.API.Features.Items
             Scp330Pickup pickup = (Scp330Pickup)Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
 
             pickup.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
-            pickup.Position = Owner.Position;
-            pickup.Rotation = rotation;
             pickup.Candies = new(Base.Candies);
             pickup.ExposedCandy = ExposedType;
             pickup.Scale = Scale;
