@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Fixes
     /// <summary>
     /// Patches <see cref="ThrowableItem.ServerThrow(float, float, Vector3, Vector3)"/> to fix all grenade properties.
     /// </summary>
-    [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3), typeof(Vector3))]
+    // [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3), typeof(Vector3))]
     internal static class GrenadePropertiesFix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
