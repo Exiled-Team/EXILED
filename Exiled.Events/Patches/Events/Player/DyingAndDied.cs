@@ -69,40 +69,41 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!ev.IsAllowed)
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse, ret),
+                    new(OpCodes.Brfalse_S, ret),
 
                     // oldRole = player.Role.Type
                     new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
-                    new(OpCodes.Stloc, oldRole.LocalIndex),
+                    new(OpCodes.Stloc_S, oldRole.LocalIndex),
 
-                    // loading ev 5 times
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Dup),
+                    // loading ev 6 times
 
                     // handler = ev.DamageHandler.Base
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.DamageHandler))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(CustomDamageHandler), nameof(CustomDamageHandler.Base))),
                     new(OpCodes.Starg_S, 1),
 
                     // if (ev.Player.Items == ev.ItemsToDrop)
                     //      goto continueLabel
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Player))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Items))),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.ItemsToDrop))),
                     new(OpCodes.Beq_S, continueLabel),
 
                     // RemoveAllItems(ev.Player)
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Player))),
                     new(OpCodes.Call, Method(typeof(DyingAndDied), nameof(RemoveAllItems))),
 
                     // ev.Player.AddItem(ev.ItemsToDrop)
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.ItemsToDrop))),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Player))),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.ItemsToDrop))),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.AddItem), new[] { typeof(IEnumerable<API.Features.Items.Item>) })),
                 });
 
