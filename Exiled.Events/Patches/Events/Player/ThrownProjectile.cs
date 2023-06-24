@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="ThrowableItem.ServerThrow"/>.
     /// Adds the <see cref="Handlers.Player.ThrownProjectile"/> event.
     /// </summary>
-    // [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow))]
+    [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow))]
     internal static class ThrownProjectile
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
