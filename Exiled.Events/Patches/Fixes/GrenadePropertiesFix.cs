@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Fixes
             const int offset = 1;
             int index = newInstructions.FindLastIndex(i => i.StoresField(Field(typeof(ThrowableItem), nameof(ThrowableItem._alreadyFired)))) + offset;
 
-            newInstructions.RemoveRange(index, 12);
+            newInstructions.RemoveRange(index, 11);
 
             // if (Item.Get(this) is not Throwable throwable)
             // {
@@ -79,7 +79,6 @@ namespace Exiled.Events.Patches.Fixes
                 // ThrownProjectile baseProjectile = projectile.Base;
                 new(OpCodes.Stloc_S, projectile.LocalIndex),
                 new(OpCodes.Callvirt, DeclaredPropertyGetter(typeof(Projectile), nameof(Projectile.Base))),
-                new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
                 new(OpCodes.Dup),
