@@ -138,7 +138,7 @@ namespace Exiled.API.Features
             {
                 if (RoomLightController)
                 {
-                     RoomLightController.NetworkOverrideColor = value;
+                    RoomLightController.NetworkOverrideColor = value;
                 }
             }
         }
