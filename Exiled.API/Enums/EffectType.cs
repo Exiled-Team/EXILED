@@ -51,7 +51,7 @@ namespace Exiled.API.Enums
         Concussed,
 
         /// <summary>
-        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
+        /// Effect given to player after being hurt by SCP-106.
         /// </summary>
         Corroding,
 
@@ -194,5 +194,10 @@ namespace Exiled.API.Enums
         /// The effect that SCP-079 gives the Scanned player with the Breach Scanner.
         /// </summary>
         Scanned,
+
+        /// <summary>
+        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
+        /// </summary>
+        PocketCorroding,
     }
 }
