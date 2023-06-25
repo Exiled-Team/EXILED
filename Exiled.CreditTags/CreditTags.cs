@@ -53,6 +53,7 @@ namespace Exiled.CreditTags
             [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "DC143C"),
             [RankType.TournamentParticipant] = new Rank("Exiled Tournament Participant", "pink", "FF96DE"),
             [RankType.TournamentChampion] = new Rank("Exiled Tournament Champion", "deep_pink", "FF1493"),
+            [RankType.Donator] = new Rank("EXILED Supporter", "army_green", "4B5320"),
         };
 
         /// <summary>
