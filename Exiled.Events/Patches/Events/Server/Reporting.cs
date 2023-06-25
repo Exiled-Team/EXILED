@@ -90,10 +90,10 @@ namespace Exiled.Events.Patches.Events.Server
                 index,
                 new[]
                 {
-                    // Player.Get(base.gameObject)
+                    // Player.Get(this._hub)
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                    new(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                    new(OpCodes.Ldfld, Field(typeof(CheaterReport), nameof(CheaterReport._hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // Player.Get(referenceHub)
                     new(OpCodes.Ldloc_2),
