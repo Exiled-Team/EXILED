@@ -56,8 +56,8 @@ namespace Exiled.API.Features.Pickups
             // prevent prefabs like `InventoryItemLoader.AvailableItems[ItemType.GrenadeHE].PickupDropModel` from adding to pickup list
             if (pickupBase.Info.ItemId is ItemType.None)
                 return;
-
-            BaseToPickup.Add(pickupBase, this);
+            if (!BaseToPickup.ContainsKey(pickupBase))
+                BaseToPickup.Add(pickupBase, this);
         }
 
         /// <summary>
