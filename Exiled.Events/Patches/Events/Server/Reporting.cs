@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Server
             LocalBuilder evLocalReporting = generator.DeclareLocal(typeof(LocalReportingEventArgs));
             LocalBuilder evReportingCheater = generator.DeclareLocal(typeof(ReportingCheaterEventArgs));
 
-            int offset = -2;
+            int offset = -1;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newarr) + offset;
 
             Label ret = generator.DefineLabel();
