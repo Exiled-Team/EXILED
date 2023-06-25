@@ -98,6 +98,11 @@ namespace Exiled.API.Features.Pickups
         public Transform Transform => Base.transform;
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.Rigidbody"/> of the Pickup.
+        /// </summary>
+        public Rigidbody Rigidbody => (Base.PhysicsModule as PickupStandardPhysics).Rb;
+
+        /// <summary>
         /// Gets the current <see cref="Room"/> the Pickup is in.
         /// </summary>
         public Room Room => Room.FindParentRoom(GameObject);
@@ -228,7 +233,7 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
         public Vector3 Position
         {
-            get => Base.transform.position;
+            get => Base.Position;
             set => Base.Position = value;
         }
 
@@ -247,7 +252,7 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="CreateAndSpawn(ItemType, Vector3, Quaternion, Player)"/>
         public Quaternion Rotation
         {
-            get => Base.transform.rotation;
+            get => Base.Rotation;
             set => Base.Rotation = value;
         }
 
