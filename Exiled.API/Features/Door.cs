@@ -83,12 +83,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Features.Room"/> that the door is located in.
         /// </summary>
-        public Room Room => Rooms.Count == 0 ? null : Rooms[0];
+        public Room Room => Rooms.Count == 0 ? null : Rooms.First();
 
         /// <summary>
         /// Gets the <see cref="Features.Room"/>'s that the door is located in.
         /// </summary>
-        public ReadOnlyCollection<Room> Rooms { get; }
+        public IReadOnlyCollection<Room> Rooms { get; }
 
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
