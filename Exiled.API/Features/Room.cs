@@ -120,6 +120,14 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<Camera> Cameras { get; private set; }
 
         /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="RoomLightController"/> in the <see cref="Room"/>.
+        /// </summary>
+        /// <remarks>
+        /// Using that will make sense only for rooms with more than one light controller, in other cases better to use <see cref="RoomLightController"/>.
+        /// </remarks>
+        public IReadOnlyCollection<RoomLightController> RoomLightControllers { get; private set; }
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Pickup"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Pickup> Pickups => Pickup.List.Where(pickup => FindParentRoom(pickup.GameObject) == this);
@@ -160,7 +168,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the room's FlickerableLightController.
         /// </summary>
-        public RoomLightController RoomLightController { get; private set; }
+        public RoomLightController RoomLightController => RoomLightControllers.Count == 0 ? RoomLightControllers.ElementAt(0) : null;
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all known <see cref="Window"/>s in that <see cref="Room"/>.
@@ -181,6 +189,11 @@ namespace Exiled.API.Features
         /// Gets a <see cref="List{T}"/> containing all known <see cref="Camera"/>s in that <see cref="Room"/>.
         /// </summary>
         internal List<Camera> CamerasValue { get; } = new();
+
+        /// <summary>
+        /// Gets a <see cref="List{T}"/> containing all known <see cref="RoomLightController"/>s in that <see cref="Room"/>.
+        /// </summary>
+        internal List<RoomLightController> RoomLightControllersValue { get; } = new();
 
         /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.
@@ -453,8 +466,9 @@ namespace Exiled.API.Features
             Zone = FindZone(gameObject);
             Type = FindType(gameObject);
 
-            RoomLightController = gameObject.GetComponentInChildren<RoomLightController>();
+            RoomLightControllersValue.AddRange(gameObject.GetComponentsInChildren<RoomLightController>());
 
+            RoomLightControllers = RoomLightControllersValue.AsReadOnly();
             Windows = WindowsValue.AsReadOnly();
             Doors = DoorsValue.AsReadOnly();
             Speakers = SpeakersValue.AsReadOnly();
