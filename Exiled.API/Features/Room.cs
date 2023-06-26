@@ -125,30 +125,16 @@ namespace Exiled.API.Features
         public IEnumerable<Pickup> Pickups => Pickup.List.Where(pickup => FindParentRoom(pickup.GameObject) == this);
 
         /// <summary>
-        /// Gets or sets the intensity of the lights in the room.
-        /// </summary>
-        public float LightIntensity
-        {
-            get => (float)FlickerableLightController?.Network_lightIntensityMultiplier;
-            set
-            {
-                if (FlickerableLightController)
-                    FlickerableLightController.Network_lightIntensityMultiplier = value;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the color of the room's lights by changing the warhead color.
         /// </summary>
         public Color Color
         {
-            get => (Color)FlickerableLightController?.WarheadLightColor;
+            get => RoomLightController.NetworkOverrideColor;
             set
             {
-                if (FlickerableLightController)
+                if (RoomLightController)
                 {
-                    FlickerableLightController.WarheadLightColor = value;
-                    FlickerableLightController.WarheadLightOverride = true;
+                    RoomLightController.NetworkOverrideColor = value;
                 }
             }
         }
@@ -158,23 +144,23 @@ namespace Exiled.API.Features
         /// </summary>
         public bool AreLightsOff
         {
-            get => FlickerableLightController && !FlickerableLightController.NetworkLightsEnabled;
+            get => RoomLightController && !RoomLightController.NetworkLightsEnabled;
             set
             {
-                if (FlickerableLightController)
-                    FlickerableLightController.NetworkLightsEnabled = !value;
+                if (RoomLightController)
+                    RoomLightController.NetworkLightsEnabled = !value;
             }
         }
 
         /// <summary>
         /// Gets the FlickerableLightController's NetworkIdentity.
         /// </summary>
-        public NetworkIdentity FlickerableLightControllerNetIdentity => FlickerableLightController.netIdentity;
+        public NetworkIdentity RoomLightControllerNetIdentity => RoomLightController.netIdentity;
 
         /// <summary>
         /// Gets the room's FlickerableLightController.
         /// </summary>
-        public FlickerableLightController FlickerableLightController { get; private set; }
+        public RoomLightController RoomLightController { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> containing all known <see cref="Window"/>s in that <see cref="Room"/>.
@@ -208,16 +194,15 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roomIdentifier">The <see cref="Identifier"/> to search with.</param>
         /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
-        public static Room Get(RoomIdentifier roomIdentifier) => RoomIdentifierToRoom.TryGetValue(roomIdentifier, out Room room)
-            ? room
-            : null;
+        public static Room Get(RoomIdentifier roomIdentifier) => roomIdentifier == null ? null :
+            RoomIdentifierToRoom.TryGetValue(roomIdentifier, out Room room) ? room : null;
 
         /// <summary>
         /// Gets a <see cref="Room"/> from a given <see cref="RoomIdentifier"/>.
         /// </summary>
-        /// <param name="flickerableLightController">The <see cref="FlickerableLightController"/> to search with.</param>
+        /// <param name="flickerableLightController">The <see cref="RoomLightController"/> to search with.</param>
         /// <returns>The <see cref="Room"/> of the given identified, if any. Can be <see langword="null"/>.</returns>
-        public static Room Get(FlickerableLightController flickerableLightController) => flickerableLightController.GetComponentInParent<Room>();
+        public static Room Get(RoomLightController flickerableLightController) => flickerableLightController.GetComponentInParent<Room>();
 
         /// <summary>
         /// Gets a <see cref="Room"/> given the specified <see cref="Vector3"/>.
@@ -306,7 +291,7 @@ namespace Exiled.API.Features
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
-        public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
+        public void TurnOffLights(float duration) => RoomLightController?.ServerFlickerLights(duration);
 
         /// <summary>
         /// Locks all the doors in the room.
@@ -360,11 +345,10 @@ namespace Exiled.API.Features
         /// </summary>
         public void ResetColor()
         {
-            if (!FlickerableLightController)
+            if (!RoomLightController)
                 return;
 
-            FlickerableLightController.WarheadLightColor = FlickerableLightController.DefaultWarheadColor;
-            FlickerableLightController.WarheadLightOverride = false;
+            RoomLightController.OverrideColorHook(RoomLightController.NetworkOverrideColor, default);
         }
 
         /// <summary>
@@ -469,7 +453,7 @@ namespace Exiled.API.Features
             Zone = FindZone(gameObject);
             Type = FindType(gameObject);
 
-            FlickerableLightController = gameObject.GetComponentInChildren<FlickerableLightController>();
+            RoomLightController = gameObject.GetComponentInChildren<RoomLightController>();
 
             Windows = WindowsValue.AsReadOnly();
             Doors = DoorsValue.AsReadOnly();

@@ -41,5 +41,10 @@ namespace Exiled.CreditTags.Enums
         /// EXILED Tournament Champion.
         /// </summary>
         TournamentChampion = 5,
+
+        /// <summary>
+        /// EXILED Donator.
+        /// </summary>
+        Donator = 6,
     }
 }

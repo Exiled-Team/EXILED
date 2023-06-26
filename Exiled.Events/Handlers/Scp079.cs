@@ -79,11 +79,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ZoneBlackoutEventArgs> ZoneBlackout;
 
         /// <summary>
-        /// Invoked before SCP-079 performs scan.
-        /// </summary>
-        public static event CustomEventHandler<ScanningEventArgs> Scanning;
-
-        /// <summary>
         ///     Called before SCP-079 switches cameras.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingCameraEventArgs" /> instance.</param>
@@ -154,11 +149,5 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PingingEventArgs" /> instance.</param>
         public static void OnZoneBlackout(ZoneBlackoutEventArgs ev) => ZoneBlackout.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before SCP-079 performs scan.
-        /// </summary>
-        /// <param name="ev">The <see cref="ScanningEventArgs"/> instance.</param>
-        public static void OnScanning(ScanningEventArgs ev) => Scanning.InvokeSafely(ev);
     }
 }

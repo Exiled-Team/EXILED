@@ -317,6 +317,7 @@ namespace Exiled.Loader
 
             Plugins.Clear();
             Server.PluginAssemblies.Clear();
+            Locations.Clear();
 
             LoadPlugins();
 

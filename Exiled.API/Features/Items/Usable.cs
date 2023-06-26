@@ -111,7 +111,7 @@ namespace Exiled.API.Features.Items
         {
             Pickup pickup = Pickup.Get(Object.Instantiate(Base.PickupDropModel, position, rotation));
 
-            pickup.Info = new(Type, position, rotation, Weight, ItemSerialGenerator.GenerateNext());
+            pickup.Info = new(Type, Weight, ItemSerialGenerator.GenerateNext());
             pickup.Scale = Scale;
 
             if (spawn)

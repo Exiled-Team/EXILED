@@ -224,10 +224,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp079Generator">The <see cref="Scp079Generator"/> instance.</param>
         /// <returns>A <see cref="Generator"/> or <see langword="null"/> if not found.</returns>
-        public static Generator Get(Scp079Generator scp079Generator) =>
-            Scp079GeneratorToGenerator.TryGetValue(scp079Generator, out Generator generator) ?
-            generator :
-            new(scp079Generator);
+        public static Generator Get(Scp079Generator scp079Generator) => scp079Generator == null ? null :
+            Scp079GeneratorToGenerator.TryGetValue(scp079Generator, out Generator generator) ? generator : new(scp079Generator);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Generator"/> given the specified <see cref="GeneratorState"/>.

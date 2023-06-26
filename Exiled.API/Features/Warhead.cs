@@ -126,12 +126,7 @@ namespace Exiled.API.Features
         public static float DetonationTimer
         {
             get => AlphaWarheadController.TimeUntilDetonation;
-            set
-            {
-                Controller.Info.StartTime = NetworkTime.time;
-                Controller.CurScenario.TimeToDetonate = (int)value;
-                Controller.CurScenario.AdditionalTime = 0;
-            }
+            set => Controller.ForceTime(value);
         }
 
         /// <summary>

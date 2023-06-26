@@ -476,7 +476,7 @@ namespace Exiled.API.Features
             switch (Base)
             {
                 case BasicDoor basic:
-                    basic.RpcPlayBeepSound(beep != DoorBeepType.InteractionAllowed);
+                    basic.RpcPlayBeepSound(beep is not DoorBeepType.InteractionAllowed);
                     break;
                 case CheckpointDoor chkPt:
                     chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 3));
@@ -490,7 +490,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
         public void ChangeLock(DoorLockType lockType)
         {
-            if (lockType == DoorLockType.None)
+            if (lockType is DoorLockType.None)
             {
                 Base.NetworkActiveLocks = 0;
             }
@@ -564,7 +564,7 @@ namespace Exiled.API.Features
                     "Unsecured" => Room?.Type switch
                     {
                         RoomType.EzCheckpointHallway => DoorType.CheckpointGate,
-                        RoomType.Hcz049 => DoorType.Scp049Gate,
+                        RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
                     "Elevator" => (Base as ElevatorDoor)?.Group switch
@@ -590,7 +590,6 @@ namespace Exiled.API.Features
                 "CHECKPOINT_EZ_HCZ_B" => DoorType.CheckpointEzHczB,
                 "106_PRIMARY" => DoorType.Scp106Primary,
                 "106_SECONDARY" => DoorType.Scp106Secondary,
-                "106_BOTTOM" => DoorType.Scp106Bottom,
                 "ESCAPE_PRIMARY" => DoorType.EscapePrimary,
                 "ESCAPE_SECONDARY" => DoorType.EscapeSecondary,
                 "INTERCOM" => DoorType.Intercom,
@@ -601,6 +600,7 @@ namespace Exiled.API.Features
                 "HCZ_ARMORY" => DoorType.HczArmory,
                 "096" => DoorType.Scp096,
                 "049_ARMORY" => DoorType.Scp049Armory,
+                "079_ARMORY" => DoorType.Scp079Armory,
                 "914" => DoorType.Scp914Gate,
                 "GATE_A" => DoorType.GateA,
                 "079_FIRST" => DoorType.Scp079First,

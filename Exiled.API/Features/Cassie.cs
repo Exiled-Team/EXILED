@@ -110,7 +110,7 @@ namespace Exiled.API.Features
         /// <param name="message">The message, which duration will be calculated.</param>
         /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
         /// <returns>Duration (in seconds) of specified message.</returns>
-        public static float CalculateDuration(string message, bool rawNumber = false)
+        public static float CalculateDuration(string message, bool rawNumber = false) // TODO: Add Speed property
             => Announcer.CalculateDuration(message, rawNumber);
 
         /// <summary>

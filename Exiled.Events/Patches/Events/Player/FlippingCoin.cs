@@ -42,8 +42,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(FlippingCoinEventArgs));
 
-            int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.LoadsConstant(109)) + offset;
+            int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
 
             offset = -1;
             int replaceIndex = newInstructions.FindIndex(instruction => instruction.Calls(PropertyGetter(typeof(Random), nameof(Random.value)))) + offset;
