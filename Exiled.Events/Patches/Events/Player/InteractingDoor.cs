@@ -36,11 +36,16 @@ namespace Exiled.Events.Patches.Events.Player
             List<Label> jmp = null;
             Label interactionAllowed = generator.DefineLabel();
             Label permissionDenied = generator.DefineLabel();
+            Label retLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(
                 0,
                 new CodeInstruction[]
                 {
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Call, Method(typeof(InteractingDoor), nameof(InteractingDoor.CanStateChange))),
+                    new(OpCodes.Brfalse_S, retLabel),
+
                     // InteractingDoorEventArgs ev = new(Player.Get(ply), __instance, false);
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
@@ -119,10 +124,17 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brfalse_S, permissionDenied),
                 });
 
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
+        }
+
+        private static bool CanStateChange(DoorVariant variant)
+        {
+            return !(variant.GetExactState() > 0f && variant.GetExactState() < 1f);
         }
     }
 }
