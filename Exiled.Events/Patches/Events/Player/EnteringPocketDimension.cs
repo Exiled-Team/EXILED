@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label returnLabel = generator.DefineLabel();
 
             int offset = 0;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld && instruction.operand == (object)Field(typeof(Scp106Attack), nameof(Scp106Attack.OnPlayerTeleported))) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.LoadsField(Field(typeof(Scp106Attack), nameof(Scp106Attack.OnPlayerTeleported)))) + offset;
 
             // EnteringPocketDimensionEventArgs ev = new(Player.Get(this._targetHub), Player.Get(base.Owner), true);
             //
