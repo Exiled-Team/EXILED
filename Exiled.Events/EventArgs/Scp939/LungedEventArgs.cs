@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs.Scp939
         public LungedEventArgs(ReferenceHub player, ReferenceHub target)
         {
             Player = Player.Get(player);
-            Target = target == null ? null : Player.Get(target);
+            Target = Player.Get(target);
         }
 
         /// <summary>
