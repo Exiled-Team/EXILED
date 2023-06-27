@@ -13,16 +13,19 @@ namespace Exiled.Events.Patches.Events.Player
     using API.Features;
     using API.Features.Pools;
     using API.Features.Roles;
-    using Exiled.API.Features.DamageHandlers;
+
     using Exiled.Events.EventArgs.Player;
+
     using HarmonyLib;
+
     using PlayerRoles;
+
     using PlayerStatsSystem;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patches <see cref="PlayerStats.KillPlayer(PlayerStatsSystem.DamageHandlerBase)" />.
+    ///     Patches <see cref="PlayerStats.KillPlayer(DamageHandlerBase)" />.
     ///     Adds the <see cref="Handlers.Player.Died" /> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
@@ -33,13 +36,9 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
             Label ret = generator.DefineLabel();
-            Label continueLabel = generator.DefineLabel();
 
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder oldRole = generator.DeclareLocal(typeof(RoleTypeId));
-            LocalBuilder ev = generator.DeclareLocal(typeof(DyingEventArgs));
-
-            newInstructions[0].labels.Add(continueLabel);
 
             newInstructions.InsertRange(
                 0,
@@ -60,8 +59,6 @@ namespace Exiled.Events.Patches.Events.Player
                     // DyingEventArgs ev = new(Player, DamageHandlerBase)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(DyingEventArgs))[0]),
                     new(OpCodes.Dup),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Player.OnDying(ev)
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDying))),
@@ -69,40 +66,13 @@ namespace Exiled.Events.Patches.Events.Player
                     // if (!ev.IsAllowed)
                     //    return;
                     new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.IsAllowed))),
-                    new(OpCodes.Brfalse_S, ret),
+                    new(OpCodes.Brfalse, ret),
 
                     // oldRole = player.Role.Type
                     new(OpCodes.Ldloc_S, player.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Role), nameof(Role.Type))),
-                    new(OpCodes.Stloc_S, oldRole.LocalIndex),
-
-                    // handler = ev.DamageHandler.Base
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.DamageHandler))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(CustomDamageHandler), nameof(CustomDamageHandler.Base))),
-                    new(OpCodes.Starg_S, 1),
-
-                    // if (ev.Player.Items == ev.ItemsToDrop)
-                    //      goto continueLabel
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Player))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Items))),
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.ItemsToDrop))),
-                    new(OpCodes.Beq_S, continueLabel),
-
-                    // RemoveAllItems(ev.Player)
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Player))),
-                    new(OpCodes.Call, Method(typeof(DyingAndDied), nameof(RemoveAllItems))),
-
-                    // ev.Player.AddItem(ev.ItemsToDrop)
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Player))),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.ItemsToDrop))),
-                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.AddItem), new[] { typeof(IEnumerable<API.Features.Items.Item>) })),
+                    new(OpCodes.Stloc, oldRole.LocalIndex),
                 });
 
             newInstructions.InsertRange(
@@ -132,7 +102,5 @@ namespace Exiled.Events.Patches.Events.Player
 
             ListPool<CodeInstruction>.Pool.Return(newInstructions);
         }
-
-        private static void RemoveAllItems(Player player) => player.RemoveItem(_ => true);
     }
 }
