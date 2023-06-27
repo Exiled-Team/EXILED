@@ -79,7 +79,6 @@ namespace Exiled.API.Features.Pickups
             };
 
             Info = psi;
-            BaseToPickup.Add(Base, this);
         }
 
         /// <summary>
