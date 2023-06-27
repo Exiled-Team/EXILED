@@ -16,11 +16,11 @@ namespace Exiled.Events
     using API.Features;
 
     using EventArgs.Interfaces;
-
+    using Exiled.API.Features.Pickups;
     using HarmonyLib;
 
     using InventorySystem;
-
+    using InventorySystem.Items.Pickups;
     using PlayerRoles.FirstPersonControl.Thirdperson;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.RoleAssign;
@@ -101,7 +101,8 @@ namespace Exiled.Events
 
             RagdollManager.OnRagdollSpawned += Handlers.Internal.RagdollList.OnSpawnedRagdoll;
             RagdollManager.OnRagdollRemoved += Handlers.Internal.RagdollList.OnRemovedRagdoll;
-
+            ItemPickupBase.OnPickupAdded += x => Pickup.Get(x);
+            ItemPickupBase.OnPickupDestroyed += x => Pickup.BaseToPickup.Remove(x);
             ServerConsole.ReloadServerName();
 
             EventManager.RegisterEvents<Handlers.Warhead>(this);
