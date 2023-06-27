@@ -13,6 +13,7 @@ namespace Exiled.API.Features
 
     using CommandSystem;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features.Components;
 
     using Footprinting;
@@ -136,11 +137,12 @@ namespace Exiled.API.Features
         /// Spawns an NPC based on the given parameters.
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
-        /// <param name="id">The ID of the NPC.</param>
         /// <param name="role">The role type ID of the NPC.</param>
-        /// <param name="userID">The user ID of the NPC.</param>
+        /// <param name="id">The ID of the NPC.</param>
+        /// <param name="userId">The user ID of the NPC.</param>
+        /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
-        public static Npc Spawn(string name, int id, RoleTypeId role, string userID)
+        public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = "", Vector3? position = null)
         {
             GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
             Npc npc = new(newObject);
@@ -158,7 +160,7 @@ namespace Exiled.API.Features
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
             try
             {
-                hubPlayer.characterClassManager.UserId = userID;
+                hubPlayer.characterClassManager.UserId = string.IsNullOrEmpty(userId) ? "Dummy@localhost" : userId;
             }
             catch (Exception e)
             {
@@ -173,11 +175,14 @@ namespace Exiled.API.Features
                 0.3f,
                 () =>
                 {
-                    npc.Role.Set(role);
+                    npc.Role.Set(role, SpawnReason.RoundStart, position is null ? RoleSpawnFlags.All : RoleSpawnFlags.AssignInventory);
                     npc.IsVerified = true;
                 });
 
+            if (position is not null)
+                Timing.CallDelayed(0.5f, () => npc.Position = position.Value);
             npc.IsNPC = true;
+            npc.Id = id;
             return npc;
         }
 
