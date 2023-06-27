@@ -177,6 +177,7 @@ namespace Exiled.API.Features
                     npc.IsVerified = true;
                 });
 
+            npc.IsNPC = true;
             return npc;
         }
 
