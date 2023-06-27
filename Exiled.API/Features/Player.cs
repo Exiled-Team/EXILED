@@ -320,6 +320,11 @@ namespace Exiled.API.Features
         public bool IsVerified { get; internal set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the player is NPC.
+        /// </summary>
+        public bool IsNPC { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether or not the player has an active CustomName.
         /// </summary>
         public bool HasCustomName => ReferenceHub.nicknameSync.HasCustomName;
@@ -3155,11 +3160,28 @@ namespace Exiled.API.Features
             : componentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
+        /// Get the time cooldown on this ItemType.
+        /// </summary>
+        /// <param name="itemType">The itemtypes to choose for getting cooldown.</param>
+        /// <returns>Return the time in seconds of the cooldowns.</returns>
+        public float GetCooldownItem(ItemType itemType)
+            => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : -1;
+
+        /// <summary>
         /// Set the time cooldown on this ItemType.
         /// </summary>
         /// <param name="time">The times for the cooldown.</param>
         /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
-        public void GetCooldownItem(float time, ItemType itemType) // TODO: Set not Get
+        [Obsolete("Use SetCooldownItem instead", true)]
+        public void GetCooldownItem(float time, ItemType itemType)
+            => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
+
+        /// <summary>
+        /// Set the time cooldown on this ItemType.
+        /// </summary>
+        /// <param name="time">The times for the cooldown.</param>
+        /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
+        public void SetCooldownItem(float time, ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
 
         /// <summary>
