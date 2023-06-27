@@ -42,7 +42,7 @@ namespace Exiled.Loader
             }
 
             if (!Config.ShouldLoadOutdatedExiled &&
-                GameCore.Version.CompatibilityCheck(
+                !GameCore.Version.CompatibilityCheck(
                     (byte)AutoUpdateFiles.RequiredSCPSLVersion.Major,
                     (byte)AutoUpdateFiles.RequiredSCPSLVersion.Minor,
                     (byte)AutoUpdateFiles.RequiredSCPSLVersion.Revision,
