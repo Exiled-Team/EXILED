@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            int offset = -3;
+            int offset = -6;
             int index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(UnitNamingRule), nameof(UnitNamingRule.TryGetNamingRule)))) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new[]
                 {
                     // GetPlayers(list);
-                    new(OpCodes.Ldloc_1),
+                    new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
                     new(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetPlayers))),
 
                     // maxWaveSize
@@ -101,7 +101,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                     // queueToFill = ev.SpawnQueue;
                     new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnQueue))),
-                    new(OpCodes.Stloc, 6),
+                    new(OpCodes.Stloc, 7),
                 });
 
             offset = -6;
