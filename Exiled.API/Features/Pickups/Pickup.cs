@@ -48,6 +48,16 @@ namespace Exiled.API.Features.Pickups
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
+        /// <remarks>
+        /// Created only for <see cref="Projectile"/> properly work.
+        /// </remarks>
+        internal Pickup()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pickup"/> class.
+        /// </summary>
         /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         internal Pickup(ItemPickupBase pickupBase)
         {
@@ -168,9 +178,9 @@ namespace Exiled.API.Features.Pickups
         }
 
         /// <summary>
-        /// Gets the <see cref="ItemBase"/> of the item.
+        /// Gets or sets the <see cref="ItemBase"/> of the item.
         /// </summary>
-        public ItemPickupBase Base { get; }
+        public ItemPickupBase Base { get; protected set; }
 
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.

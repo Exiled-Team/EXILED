@@ -11,6 +11,9 @@ namespace Exiled.API.Features.Pickups.Projectiles
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
 
+    using InventorySystem;
+    using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
 
     using UnityEngine;
@@ -35,9 +38,21 @@ namespace Exiled.API.Features.Pickups.Projectiles
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         internal Projectile(ItemType type)
-            : base(type)
         {
-            Base = (ThrownProjectile)((Pickup)this).Base;
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase) || itemBase is not ThrowableItem throwable)
+                return;
+
+            base.Base = Base = Object.Instantiate(throwable.Projectile);
+
+            PickupSyncInfo psi = new()
+            {
+                ItemId = type,
+                Serial = ItemSerialGenerator.GenerateNext(),
+                WeightKg = itemBase.Weight,
+            };
+
+            Info = psi;
+            BaseToPickup.Add(Base, this);
         }
 
         /// <summary>
