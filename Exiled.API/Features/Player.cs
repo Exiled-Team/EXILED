@@ -1419,6 +1419,14 @@ namespace Exiled.API.Features
         public static bool TryGet(PluginAPI.Core.Player apiPlayer, out Player player) => (player = Get(apiPlayer)) is not null;
 
         /// <summary>
+        /// Try-get player by <see cref="Collider"/>.
+        /// </summary>
+        /// <param name="collider">The <see cref="Collider"/>.</param>
+        /// <param name="player">The player found or <see langword="null"/> if not found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(Collider collider, out Player player) => (player = Get(collider)) is not null;
+
+        /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
         /// </summary>
         /// <remarks>This method does not permanently give a user a reserved slot. The slot will be removed if the reserved slots are reloaded.</remarks>

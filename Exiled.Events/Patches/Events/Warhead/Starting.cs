@@ -29,9 +29,8 @@ namespace Exiled.Events.Patches.Events.Warhead
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 0;
-
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+            const int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
 
             Label returnLabel = generator.DefineLabel();
 
