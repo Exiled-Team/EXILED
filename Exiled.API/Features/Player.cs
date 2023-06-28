@@ -1419,6 +1419,14 @@ namespace Exiled.API.Features
         public static bool TryGet(PluginAPI.Core.Player apiPlayer, out Player player) => (player = Get(apiPlayer)) is not null;
 
         /// <summary>
+        /// Try-get player by <see cref="Collider"/>.
+        /// </summary>
+        /// <param name="collider">The <see cref="Collider"/>.</param>
+        /// <param name="player">The player found or <see langword="null"/> if not found.</param>
+        /// <returns>A boolean indicating whether or not a player was found.</returns>
+        public static bool TryGet(Collider collider, out Player player) => (player = Get(collider)) is not null;
+
+        /// <summary>
         /// Adds a player's UserId to the list of reserved slots.
         /// </summary>
         /// <remarks>This method does not permanently give a user a reserved slot. The slot will be removed if the reserved slots are reloaded.</remarks>
@@ -3160,11 +3168,28 @@ namespace Exiled.API.Features
             : componentsInChildren.Any(comp => type == comp.GetType());
 
         /// <summary>
+        /// Get the time cooldown on this ItemType.
+        /// </summary>
+        /// <param name="itemType">The itemtypes to choose for getting cooldown.</param>
+        /// <returns>Return the time in seconds of the cooldowns.</returns>
+        public float GetCooldownItem(ItemType itemType)
+            => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns.TryGetValue(itemType, out float value) ? value : -1;
+
+        /// <summary>
         /// Set the time cooldown on this ItemType.
         /// </summary>
         /// <param name="time">The times for the cooldown.</param>
         /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
-        public void GetCooldownItem(float time, ItemType itemType) // TODO: Set not Get
+        [Obsolete("Use SetCooldownItem instead", true)]
+        public void GetCooldownItem(float time, ItemType itemType)
+            => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
+
+        /// <summary>
+        /// Set the time cooldown on this ItemType.
+        /// </summary>
+        /// <param name="time">The times for the cooldown.</param>
+        /// <param name="itemType">The itemtypes to choose for being cooldown.</param>
+        public void SetCooldownItem(float time, ItemType itemType)
             => UsableItemsController.GetHandler(ReferenceHub).PersonalCooldowns[itemType] = Time.timeSinceLevelLoad + time;
 
         /// <summary>
