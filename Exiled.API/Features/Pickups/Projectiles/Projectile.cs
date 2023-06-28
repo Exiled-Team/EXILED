@@ -42,8 +42,6 @@ namespace Exiled.API.Features.Pickups.Projectiles
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase) || itemBase is not ThrowableItem throwable)
                 return;
 
-            Log.Warn(throwable.Projectile.gameObject.activeSelf);
-
             throwable.Projectile.gameObject.SetActive(false);
             base.Base = Base = Object.Instantiate(throwable.Projectile);
             throwable.Projectile.gameObject.SetActive(true);
