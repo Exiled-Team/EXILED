@@ -398,6 +398,7 @@ namespace Exiled.API.Features.Pickups
             pickup.Position = position;
             pickup.Rotation = rotation;
             pickup.PreviousOwner = previousOwner;
+
             pickup.Spawn();
 
             return pickup;
@@ -435,6 +436,12 @@ namespace Exiled.API.Features.Pickups
         /// <seealso cref="UnSpawn"/>
         public void Spawn()
         {
+            // condition for projectiles
+            if (!GameObject.activeSelf)
+            {
+                GameObject.SetActive(true);
+            }
+
             if (!IsSpawned)
             {
                 NetworkServer.Spawn(GameObject);
