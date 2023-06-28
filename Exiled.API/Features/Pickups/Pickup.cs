@@ -398,7 +398,6 @@ namespace Exiled.API.Features.Pickups
             pickup.Position = position;
             pickup.Rotation = rotation;
             pickup.PreviousOwner = previousOwner;
-
             pickup.Spawn();
 
             return pickup;
