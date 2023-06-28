@@ -13,35 +13,24 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Decals;
-
     using Enums;
-
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pickups;
     using Exiled.API.Features.Toys;
-
     using Hazards;
-
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Pickups;
-
     using Items;
-
     using LightContainmentZoneDecontamination;
-
     using MapGeneration;
     using MapGeneration.Distributors;
-
     using Mirror;
-
     using PlayerRoles;
     using PlayerRoles.PlayableScps.Scp173;
     using PlayerRoles.PlayableScps.Scp939;
-
     using RelativePositioning;
-
     using UnityEngine;
-
     using Utils.Networking;
 
     using Object = UnityEngine.Object;

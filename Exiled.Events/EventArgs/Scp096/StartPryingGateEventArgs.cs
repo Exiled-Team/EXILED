@@ -8,11 +8,9 @@
 namespace Exiled.Events.EventArgs.Scp096
 {
     using API.Features;
-
+    using Exiled.API.Features.Doors;
     using Interactables.Interobjects;
-
     using Interfaces;
-
     using PlayerRoles.PlayableScps.Scp096;
 
     /// <summary>

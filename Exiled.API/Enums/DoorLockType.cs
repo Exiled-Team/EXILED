@@ -9,7 +9,7 @@ namespace Exiled.API.Enums
 {
     using System;
 
-    using Features;
+    using Features.Doors;
 
     /// <summary>
     /// All possible door locks.

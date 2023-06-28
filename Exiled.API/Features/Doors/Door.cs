@@ -5,21 +5,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.API.Features.Doors
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Enums;
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Interfaces;
-    using Extensions;
-
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
-
     using MEC;
-
     using Mirror;
     using UnityEngine;
 
@@ -28,7 +26,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public class Door : IWrapper<DoorVariant>, IWorldSpace
+    public class Door : TypeCastObject<Door>, IWrapper<DoorVariant>, IWorldSpace
     {
         /// <summary>
         /// A <see cref="Dictionary{TKey,TValue}"/> containing all known <see cref="DoorVariant"/>s and their corresponding <see cref="Door"/>.
@@ -112,17 +110,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not this door is a gate.
         /// </summary>
-        public bool IsGate => Base is PryableDoor;
+        public bool IsGate => this is Gate;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is a checkpoint door.
         /// </summary>
-        public bool IsCheckpoint => Base is CheckpointDoor;
+        public bool IsCheckpoint => this is CheckpointDoor;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is an elevator door.
         /// </summary>
-        public bool IsElevator => Base is ElevatorDoor;
+        public bool IsElevator => this is ElevatorDoor;
 
         /// <summary>
         /// Gets a value indicating whether or not this door requires a keycard to open.
@@ -144,14 +142,35 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not SCP-106 can walk through the door.
+        /// Gets or sets a value indicating whether or not SCP-106 can walk through the door.
         /// </summary>
-        public bool AllowsScp106 => Base is IScp106PassableDoor door && door.IsScp106Passable;
+        public bool AllowsScp106
+        {
+            get => Base is IScp106PassableDoor { IsScp106Passable: true };
+            set
+            {
+                if (Base is IScp106PassableDoor door)
+                    door.IsScp106Passable = value;
+            }
+        }
 
         /// <summary>
-        /// Gets a value indicating whether or not the door is locked.
+        /// Gets or sets a value indicating whether or not the door is locked.
         /// </summary>
-        public bool IsLocked => DoorLockType > 0;
+        public bool IsLocked
+        {
+            get => DoorLockType > 0;
+            set
+            {
+                if (value)
+                {
+                    Lock(float.MaxValue, DoorLockType.AdminCommand);
+                    return;
+                }
+
+                Unlock();
+            }
+        }
 
         /// <summary>
         /// Gets or the door lock type.
@@ -443,6 +462,7 @@ namespace Exiled.API.Features
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
+        [Obsolete("Use Gate::TryPry() instead.")]
         public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate(null);
 
         /// <summary>
@@ -450,6 +470,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
         /// <param name="player">The amount of damage to deal.</param>
+        [Obsolete("Use Gate::TryPry(Player) instead.")]
         public bool TryPryOpen(Player player) => Base is PryableDoor pryable && pryable.TryPryGate(player.ReferenceHub);
 
         /// <summary>
@@ -463,7 +484,7 @@ namespace Exiled.API.Features
                 case BasicDoor basic:
                     basic.RpcPlayBeepSound(beep is not DoorBeepType.InteractionAllowed);
                     break;
-                case CheckpointDoor chkPt:
+                case Interactables.Interobjects.CheckpointDoor chkPt:
                     chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 3));
                     break;
             }
@@ -517,6 +538,13 @@ namespace Exiled.API.Features
         public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
 
         /// <summary>
+        /// Checks if specified player can interact with door.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if <see cref="Player"/> is allowed to interact. Otherwise, false.</returns>
+        public bool IsAllowedToInteract(Player player) => Base.AllowInteracting(player.ReferenceHub, 0);
+
+        /// <summary>
         /// Returns the Door in a human-readable format.
         /// </summary>
         /// <returns>A string containing Door-related data.</returns>
@@ -543,7 +571,7 @@ namespace Exiled.API.Features
                     "LCZ" => Room?.Type switch
                     {
                         RoomType.LczCheckpointA or RoomType.LczCheckpointB or RoomType.HczEzCheckpointA
-                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
+                        or RoomType.HczEzCheckpointB => Get(Base.GetComponentInParent<Interactables.Interobjects.CheckpointDoor>())?.Type ?? DoorType.LightContainmentDoor,
                         RoomType.LczAirlock => (Base.GetComponentInParent<AirlockController>() != null) ? DoorType.Airlock : DoorType.LightContainmentDoor,
                         _ => DoorType.LightContainmentDoor,
                     },
@@ -563,7 +591,7 @@ namespace Exiled.API.Features
                         RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
-                    "Elevator" => (Base as ElevatorDoor)?.Group switch
+                    "Elevator" => (Base as Interactables.Interobjects.ElevatorDoor)?.Group switch
                     {
                         ElevatorGroup.Nuke => DoorType.ElevatorNuke,
                         ElevatorGroup.Scp049 => DoorType.ElevatorScp049,

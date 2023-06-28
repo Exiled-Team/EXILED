@@ -12,16 +12,17 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Doors;
     using Exiled.API.Features.Pools;
     using Exiled.API.Interfaces;
-
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
-
     using UnityEngine;
 
     using static Interactables.Interobjects.ElevatorChamber;
     using static Interactables.Interobjects.ElevatorManager;
+
+    using ElevatorDoor = Exiled.API.Features.Doors.Door;
 
     /// <summary>
     /// The in-game lift.
@@ -47,8 +48,8 @@ namespace Exiled.API.Features
             Base = elevator;
             ElevatorChamberToLift.Add(elevator, this);
 
-            foreach (ElevatorDoor door in ElevatorDoor.AllElevatorDoors.First(elevator => elevator.Key == Group).Value)
-                internalDoorsList.Add(door);
+            foreach (Interactables.Interobjects.ElevatorDoor door in Interactables.Interobjects.ElevatorDoor.AllElevatorDoors.First(elevator => elevator.Key == Group).Value)
+                internalDoorsList.Add(Door.Get(door));
         }
 
         /// <summary>
@@ -180,7 +181,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="CurrentDestination"/>.
         /// </summary>
-        public ElevatorDoor CurrentDestination => Base.CurrentDestination;
+        public ElevatorDoor CurrentDestination => Door.Get(Base.CurrentDestination) as ElevatorDoor;
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances from the specified <see cref="Status"/>.
@@ -267,19 +268,19 @@ namespace Exiled.API.Features
             {
                 if (!forceLock)
                 {
-                    door.NetworkActiveLocks = 0;
+                    door.Base.NetworkActiveLocks = 0;
 
-                    door.ServerChangeLock(DoorLockReason.None, true);
+                    door.Base.ServerChangeLock(DoorLockReason.None, true);
                 }
                 else
                 {
-                    door.ServerChangeLock(lockReason, true);
+                    door.Base.ServerChangeLock(lockReason, true);
 
                     if (CurrentLevel != 1)
                         TrySetDestination(Group, 1, true);
                 }
 
-                Base.RefreshLocks(Group, door);
+                Base.RefreshLocks(Group, door.Base as Interactables.Interobjects.ElevatorDoor);
             }
         }
 
