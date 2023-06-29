@@ -73,24 +73,6 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Brtrue_S, interactionAllowed),
                 });
 
-            offset = 2;
-            index = newInstructions.FindIndex(instruction => instruction.Calls(Method(typeof(DoorVariant), nameof(DoorVariant.AllowInteracting)))) + offset;
-
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    // Handlers.Player.OnInteractingDoor(ev);
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Dup),
-                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingDoor))),
-
-                    // if (ev.IsAllowed)
-                    //    go to interactionAllowed;
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
-                    new(OpCodes.Brtrue_S, interactionAllowed),
-                });
-
             // attaching permission denied label
             offset = -3;
             index = newInstructions.FindIndex(i => i.Calls(Method(typeof(DoorVariant), nameof(DoorVariant.PermissionsDenied)))) + offset;
