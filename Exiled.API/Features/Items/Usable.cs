@@ -91,7 +91,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public float RemainingCooldown
         {
-            get => UsableItemsController.GlobalItemCooldowns[Serial];
+            get => UsableItemsController.GlobalItemCooldowns.TryGetValue(Serial, out float value) ? value : -1;
             set => UsableItemsController.GlobalItemCooldowns[Serial] = Time.timeSinceLevelLoad + value;
         }
 
