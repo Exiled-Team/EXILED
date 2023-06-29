@@ -138,11 +138,10 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="name">The name of the NPC.</param>
         /// <param name="role">The role type ID of the NPC.</param>
-        /// <param name="id">The ID of the NPC.</param>
         /// <param name="userId">The user ID of the NPC.</param>
         /// <param name="position">The position to spawn the NPC.</param>
         /// <returns>The <see cref="Npc"/> spawned.</returns>
-        public static Npc Spawn(string name, RoleTypeId role, int id = 0, string userId = "", Vector3? position = null)
+        public static Npc Spawn(string name, RoleTypeId role, string userId = "", Vector3? position = null)
         {
             GameObject newObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
             Npc npc = new(newObject);
@@ -156,7 +155,7 @@ namespace Exiled.API.Features
             }
 
             ReferenceHub hubPlayer = npc.ReferenceHub;
-            FakeConnection fakeConnection = new(id);
+            FakeConnection fakeConnection = new(Player.List.Count + Npc.List.Count);
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
             try
             {
@@ -182,7 +181,6 @@ namespace Exiled.API.Features
             if (position is not null)
                 Timing.CallDelayed(0.5f, () => npc.Position = position.Value);
             npc.IsNPC = true;
-            npc.Id = id;
             return npc;
         }
 
