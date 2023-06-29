@@ -341,7 +341,7 @@ namespace Exiled.API.Features.Pickups
         /// <br />- All valid firearms (not including the Micro HID) should be casted to the <see cref="FirearmPickup"/> class.
         /// <br />- All valid keycards should be casted to the <see cref="KeycardPickup"/> class.
         /// <br />- All valid armor should be casted to the <see cref="BodyArmorPickup"/> class.
-        /// <br />- All grenades and throwables (SCP-018 and SCP-2176) should be casted to the <see cref="GrenadePickup"/> class.
+        /// <br />- All grenades and throwables (not including SCP-018 and SCP-2176) should be casted to the <see cref="GrenadePickup"/> class.
         /// </para>
         /// <para>
         /// <br />The following have their own respective classes:
@@ -349,6 +349,8 @@ namespace Exiled.API.Features.Pickups
         /// <br />- The Micro HID can be casted to <see cref="MicroHIDPickup"/>.
         /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244Pickup"/>.
         /// <br />- SCP-330 can be casted to <see cref="Scp330Pickup"/>.
+        /// <br />- SCP-018 can be casted to <see cref="Projectiles.Scp018Projectile"/>.
+        /// <br />- SCP-2176 can be casted to <see cref="Projectiles.Scp2176Projectile"/>.
         /// </para>
         /// <para>
         /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Pickup"/> class.
