@@ -19,42 +19,40 @@ namespace Exiled.Events.Patches.Events.Warhead
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    ///     Patch the <see cref="PlayerInteract.UserCode_CmdDetonateWarhead" />.
+    ///     Patch the <see cref="AlphaWarheadController.StartDetonation" />.
     ///     Adds the <see cref="Handlers.Warhead.Starting" /> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdDetonateWarhead))]
+    [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))]
     internal static class Starting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Pool.Get(instructions);
 
-            const int offset = 1;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
-
             Label returnLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(StartingEventArgs));
 
-            // if (!Warhead.CanBeStarted)
-            //   return;
-            //
-            // StartingEventArgs ev = new(Player.Get(component), true);
+            const int offset = -2;
+            int index = newInstructions.FindIndex(instruction => instruction.StoresField(Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController._isAutomatic)))) + offset;
+
+            // StartingEventArgs ev = new(Player.Get(hub), isAutomatic, true);
             //
             // Handlers.Warhead.OnStarting(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
+            //
+            // IsAutomatic = ev.IsAuto;
             newInstructions.InsertRange(
                 index,
                 new[]
                 {
-                    // if (!Warhead.CanBestarted)
-                    //    return;
-                    new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.CanBeStarted))),
-                    new(OpCodes.Brfalse_S, returnLabel),
-
-                    // Player.Get(component)
-                    new(OpCodes.Ldloc_1),
+                    // Player.Get(hub)
+                    new CodeInstruction(OpCodes.Ldarg_3),
                     new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                    // isAutomatic
+                    new(OpCodes.Ldarg_1),
 
                     // true
                     new(OpCodes.Ldc_I4_1),
@@ -62,6 +60,8 @@ namespace Exiled.Events.Patches.Events.Warhead
                     // StartingEventArgs ev = new(Player, bool);
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
                     new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc_S, ev.LocalIndex),
 
                     // Handlers.Warhead.OnStarting(ev);
                     new(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
@@ -70,6 +70,11 @@ namespace Exiled.Events.Patches.Events.Warhead
                     //    return;
                     new(OpCodes.Call, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse_S, returnLabel),
+
+                    // IsAutomatic = ev.IsAuto;
+                    new(OpCodes.Ldloc_S, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAuto))),
+                    new(OpCodes.Starg_S, 1),
                 });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
