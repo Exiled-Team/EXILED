@@ -370,6 +370,8 @@ namespace Exiled.API.Features.Pickups
             ItemType.SCP330 => new Scp330Pickup(),
             ItemType.Jailbird => new JailbirdPickup(),
             ItemType.SCP1576 => new Scp1576Pickup(),
+            ItemType.SCP2176 => new Projectiles.Scp2176Projectile(),
+            ItemType.SCP018 => new Projectiles.Scp018Projectile(),
             _ => new Pickup(type),
         };
 
