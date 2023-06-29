@@ -1,4 +1,3 @@
-
 ---
 sidebar_position: 1
 ---
@@ -59,8 +58,8 @@ sidebar_position: 1
 | 16  | Scp939         | SCPs             | Scp              | Anomalies       |
 | 17  | CustomRole     | Dead             | None             | Draw            |
 | 18  | ChaosRifleman  | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
-| 19  | ChaosRepressor | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
-| 20  | ChaosMarauder  | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
+| 19  | ChaosMarauder  | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
+| 20  | ChaosRepressor | ChaosInsurgency  | ChaosInsurgency  | ChaosInsurgency |
 | 21  | Overwatch      | Dead             | None             | Draw            |
 | 22  | Filmmaker      | Dead             | None             | Draw            |
 ```
