@@ -83,56 +83,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClosed
-        {
-            get
-            {
-                if (IsGate)
-                {
-                    return !IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0;
-                }
-                else
-                {
-                    return ExactState is 0;
-                }
-            }
-        }
+        public bool IsFullyClosed => IsGate ? (!IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0) : ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public bool IsFullyOpen
-        {
-            get
-            {
-                if (IsGate)
-                {
-                    return IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0;
-                }
-                else
-                {
-                    return ExactState is 1;
-                }
-            }
-        }
+        public bool IsFullyOpen => IsGate ? (IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0) : ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public bool IsMoving
-        {
-            get
-            {
-                if (IsGate)
-                {
-                    return ((PryableDoor)Base)._remainingPryCooldown > 0;
-                }
-                else
-                {
-                    return ExactState is not(0 or 1);
-                }
-            }
-        }
+        public bool IsMoving => IsGate ? ((PryableDoor)Base)._remainingPryCooldown > 0 : ExactState is not(0 or 1);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
