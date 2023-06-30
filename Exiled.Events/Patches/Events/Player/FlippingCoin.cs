@@ -38,8 +38,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(FlippingCoinEventArgs));
 
-            int offset = -2;
-            int index = newInstructions.FindLastIndex(x => x.Calls(Method(typeof(Stopwatch), nameof(Stopwatch.Restart)))) + offset;
+            int offset = -5;
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Brtrue_S) + offset;
 
             newInstructions.InsertRange(
                 index,
@@ -67,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsAllowed))),
                     new(OpCodes.Brfalse, returnLabel),
 
-                    // flag = ev.IsTails
+                    // isTails = ev.IsTails
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(FlippingCoinEventArgs), nameof(FlippingCoinEventArgs.IsTails))),
                     new(OpCodes.Stloc_1),
