@@ -174,6 +174,7 @@ namespace Exiled.API.Features
             foreach (int i3 in ids)
                 RecyclablePlayerId.FreeIds.Enqueue(i3);
 
+            ListPool<int>.Pool.Return(ids);
             ReferenceHub hubPlayer = npc.ReferenceHub;
             FakeConnection fakeConnection = new(id);
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
