@@ -16,6 +16,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Components;
+    using Exiled.API.Features.Pools;
 
     using Footprinting;
 
@@ -161,6 +162,17 @@ namespace Exiled.API.Features
                 Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} tried to spawn an NPC with a duplicate PlayerID. Using auto-incremented ID instead to avoid issues..");
                 id = new RecyclablePlayerId(false).Value;
             }
+
+            List<int> ids = ListPool<int>.Pool.Get();
+            for (int i = 0; i < RecyclablePlayerId.FreeIds.Count; i++)
+            {
+                int i2 = RecyclablePlayerId.FreeIds.Dequeue();
+                if (i2 != id)
+                    ids.Add(i2);
+            }
+
+            foreach (int i3 in ids)
+                RecyclablePlayerId.FreeIds.Enqueue(i3);
 
             ReferenceHub hubPlayer = npc.ReferenceHub;
             FakeConnection fakeConnection = new(id);
