@@ -18,6 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using InventorySystem.Items.Flashlight;
+    using Utf8Json.Internal.DoubleConversion;
 
     using static HarmonyLib.AccessTools;
 
@@ -34,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingFlashlightEventArgs));
 
-            int offset = -16;
+            int offset = -8;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
 
             newInstructions.InsertRange(
@@ -51,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Ldarg_1),
                     new(OpCodes.Ldfld, Field(typeof(FlashlightNetworkHandler.FlashlightMessage), nameof(FlashlightNetworkHandler.FlashlightMessage.NewState))),
 
-                    // TogglingFlashlightEventArgs ev = new(Player, FlashlightItem, bool, bool)
+                    // TogglingFlashlightEventArgs ev = new(Player, FlashlightItem, bool)
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(TogglingFlashlightEventArgs))[0]),
                     new(OpCodes.Dup),
                     new(OpCodes.Stloc_S, ev.LocalIndex),
@@ -60,42 +61,19 @@ namespace Exiled.Events.Patches.Events.Player
                     new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnTogglingFlashlight))),
                 });
 
-            offset = -6;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
+            // Remove all msg.NewState to inject or logic
+            for (int i = 0; i < 2; i++)
+            {
+                offset = -1;
+                index = newInstructions.FindLastIndex(i => i.LoadsField(Field(typeof(FlashlightNetworkHandler.FlashlightMessage), nameof(FlashlightNetworkHandler.FlashlightMessage.NewState)))) + offset;
 
-            // Remove msg.NewState to inject or logic
-            newInstructions.RemoveRange(index, 2);
-
-            offset = -4;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
-
-            // Inject our logic
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
+                newInstructions.RemoveRange(index, 2);
+                newInstructions.InsertRange(index, new CodeInstruction[]
                 {
-                    // ev.NewState
                     new(OpCodes.Ldloc_S, ev.LocalIndex),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingFlashlightEventArgs), nameof(TogglingFlashlightEventArgs.NewState))),
                 });
-
-            offset = -1;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
-
-            // Remove msg.NewState to inject or logic
-            newInstructions.RemoveRange(index, 2);
-
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj);
-
-            // Inject our logic
-            newInstructions.InsertRange(
-                index,
-                new CodeInstruction[]
-                {
-                    // ev.NewState
-                    new(OpCodes.Ldloc_S, ev.LocalIndex),
-                    new(OpCodes.Callvirt, PropertyGetter(typeof(TogglingFlashlightEventArgs), nameof(TogglingFlashlightEventArgs.NewState))),
-                });
+            }
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

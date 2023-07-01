@@ -83,17 +83,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the door is fully closed.
         /// </summary>
-        public bool IsFullyClosed => ExactState is 0;
+        public bool IsFullyClosed => IsGate ? (!IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0) : ExactState is 0;
 
         /// <summary>
         /// Gets a value indicating whether the door is fully open.
         /// </summary>
-        public bool IsFullyOpen => ExactState is 1;
+        public bool IsFullyOpen => IsGate ? (IsOpen && ((PryableDoor)Base)._remainingPryCooldown <= 0) : ExactState is 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the door is currently moving.
         /// </summary>
-        public bool IsMoving => ExactState is not(0 or 1);
+        public bool IsMoving => IsGate ? ((PryableDoor)Base)._remainingPryCooldown > 0 : ExactState is not(0 or 1);
 
         /// <summary>
         /// Gets a value indicating the precise state of the door, from <c>0-1</c>. A value of <c>0</c> indicates the door is fully closed, while a value of <c>1</c> indicates the door is fully open. Values in-between represent the door's animation progress.
@@ -560,7 +560,7 @@ namespace Exiled.API.Features
                     "Unsecured" => Room?.Type switch
                     {
                         RoomType.EzCheckpointHallway => DoorType.CheckpointGate,
-                        RoomType.Hcz049 => DoorType.Scp049Gate,
+                        RoomType.Hcz049 => Position.y < -805 ? DoorType.Scp049Gate : DoorType.Scp173NewGate,
                         _ => DoorType.UnknownGate,
                     },
                     "Elevator" => (Base as ElevatorDoor)?.Group switch
@@ -596,6 +596,7 @@ namespace Exiled.API.Features
                 "HCZ_ARMORY" => DoorType.HczArmory,
                 "096" => DoorType.Scp096,
                 "049_ARMORY" => DoorType.Scp049Armory,
+                "079_ARMORY" => DoorType.Scp079Armory,
                 "914" => DoorType.Scp914Gate,
                 "GATE_A" => DoorType.GateA,
                 "079_FIRST" => DoorType.Scp079First,
