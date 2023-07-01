@@ -45,7 +45,7 @@ namespace Exiled.Events.EventArgs.Scp079
         }
 
         /// <summary>
-        ///     Gets or sets the from whish role you gain experience.
+        ///     Gets or sets the role that was used to gain experience.
         ///     <remark>The RoleType will be <see cref="RoleTypeId.None"/> when it's not an assisted experience.</remark>
         /// </summary>
         public RoleTypeId RoleType { get; set; }
