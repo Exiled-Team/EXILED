@@ -10,17 +10,12 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1600
 
     using System;
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
 
     using API.Features;
-    using API.Features.Pools;
     using Exiled.Events.EventArgs.Player;
     using Exiled.Loader.Features;
 
     using HarmonyLib;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     ///     Patches <see cref="ReferenceHub.Start" />.
