@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using InventorySystem.Items.Firearms.BasicMessages;
-
-    using PluginAPI.Enums;
     using PluginAPI.Events;
 
     using static HarmonyLib.AccessTools;

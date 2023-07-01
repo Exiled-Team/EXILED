@@ -15,11 +15,8 @@ namespace Exiled.Events.Patches.Events.Scp939
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
-    using PlayerRoles.PlayableScps.Scp939;
     using PlayerRoles.PlayableScps.Scp939.Mimicry;
     using PlayerStatsSystem;
-    using VoiceChat;
 
     using static HarmonyLib.AccessTools;
 
