@@ -129,6 +129,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the intensity of the lights in the room.
+        /// </summary>
+        public float LightIntensity
+        {
+            get => (Color.r + Color.g + Color.b) / 3;
+            set
+            {
+                Color = Color.clear * value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the color of the room's lights by changing the warhead color.
         /// </summary>
         public Color Color
