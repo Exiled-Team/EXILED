@@ -23,7 +23,6 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
-    using static HarmonyLib.Code;
 
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
     internal static class Destroying

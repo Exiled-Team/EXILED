@@ -10,7 +10,6 @@ namespace Exiled.CustomItems
     using System;
 
     using Exiled.API.Features;
-    using Exiled.CustomItems.API.Features;
     using Exiled.CustomItems.Events;
 
     using HarmonyLib;
