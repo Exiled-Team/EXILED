@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Scp939
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.API.Features.Pools;
     using Exiled.Events.EventArgs.Scp939;
     using HarmonyLib;
@@ -37,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Scp939
                 {
                     new(OpCodes.Ldarg_0),
                     new(OpCodes.Callvirt, PropertyGetter(typeof(Scp939ClawAbility), nameof(Scp939ClawAbility.Owner))),
-                    new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     new(OpCodes.Newobj, GetDeclaredConstructors(typeof(AttackedEventArgs))[0]),
 
