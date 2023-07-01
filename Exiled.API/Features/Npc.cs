@@ -15,6 +15,7 @@ namespace Exiled.API.Features
     using CommandSystem;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Components;
     using Exiled.API.Features.Pools;
 
@@ -157,24 +158,15 @@ namespace Exiled.API.Features
                 Log.Debug($"Ignore: {e}");
             }
 
-            if (!RecyclablePlayerId.FreeIds.Contains(id) && RecyclablePlayerId._autoIncrement >= id)
+            if (RecyclablePlayerId.FreeIds.Contains(id))
             {
-                Log.Warn($"{Assembly.GetCallingAssembly().GetName().Name} tried to spawn an NPC with a duplicate PlayerID. Using auto-incremented ID instead to avoid issues..");
-                id = new RecyclablePlayerId(false).Value;
+                RecyclablePlayerId.FreeIds.RemoveFromQueue(id);
+            }
+            else if (RecyclablePlayerId._autoIncrement >= id)
+            {
+                RecyclablePlayerId._autoIncrement = id = RecyclablePlayerId._autoIncrement + 1;
             }
 
-            List<int> ids = ListPool<int>.Pool.Get();
-            for (int i = 0; i < RecyclablePlayerId.FreeIds.Count; i++)
-            {
-                int i2 = RecyclablePlayerId.FreeIds.Dequeue();
-                if (i2 != id)
-                    ids.Add(i2);
-            }
-
-            foreach (int i3 in ids)
-                RecyclablePlayerId.FreeIds.Enqueue(i3);
-
-            ListPool<int>.Pool.Return(ids);
             ReferenceHub hubPlayer = npc.ReferenceHub;
             FakeConnection fakeConnection = new(id);
             NetworkServer.AddPlayerForConnection(fakeConnection, newObject);
