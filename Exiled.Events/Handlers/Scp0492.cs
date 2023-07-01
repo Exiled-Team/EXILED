@@ -9,7 +9,6 @@ namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs.Scp0492;
     using Exiled.Events.Extensions;
-    using Exiled.Events.Patches.Events.Scp0492;
 
     /// <summary>
     /// <see cref="API.Features.Roles.Scp0492Role"/> related events.

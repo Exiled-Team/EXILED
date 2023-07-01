@@ -28,10 +28,8 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
-    using Inventory = InventorySystem.Inventory;
-
-    #pragma warning disable CS1584 /// Semantically incorrect cref attribute.
-    #pragma warning disable SA1402 /// File may only contain a single type.
+#pragma warning disable CS1584 /// Semantically incorrect cref attribute.
+#pragma warning disable SA1402 /// File may only contain a single type.
     /// <summary>
     /// Patches <see cref="InventoryExtensions.ServerCreatePickup(ItemBase, PickupSyncInfo, Vector3, Quaternion, bool, Action{ItemPickupBase})"/> to save scale for pickups and control <see cref="Pickup.IsSpawned"/> property.
     /// </summary>
